@@ -32,7 +32,7 @@ template <class V, class M>
 ScalarGaussianRandomField<V,M>::ScalarGaussianRandomField(
   const char*                               prefix,
   const VectorSet<V,M>&              indexSet,
-  const BaseScalarFunction<V,M>&     meanFunction, 
+  const BaseScalarFunction<V,M>&     meanFunction,
   const BaseScalarCovarianceFunction<V,M>& covarianceFunction)
   :
   m_env                (indexSet.env()),

@@ -94,7 +94,7 @@ McOptionsValues::copy(const McOptionsValues& src)
   m_pseqDataOutputPeriod        = src.m_pseqDataOutputPeriod;
   m_pseqDataOutputFileName      = src.m_pseqDataOutputFileName;
   m_pseqDataOutputFileType      = src.m_pseqDataOutputFileType;
-  m_pseqDataOutputAllowedSet    = src.m_pseqDataOutputAllowedSet; 
+  m_pseqDataOutputAllowedSet    = src.m_pseqDataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_pseqComputeStats            = src.m_pseqComputeStats;
 #endif
@@ -106,7 +106,7 @@ McOptionsValues::copy(const McOptionsValues& src)
   m_qseqDataOutputPeriod        = src.m_qseqDataOutputPeriod;
   m_qseqDataOutputFileName      = src.m_qseqDataOutputFileName;
   m_qseqDataOutputFileType      = src.m_qseqDataOutputFileType;
-  m_qseqDataOutputAllowedSet    = src.m_qseqDataOutputAllowedSet; 
+  m_qseqDataOutputAllowedSet    = src.m_qseqDataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_qseqComputeStats            = src.m_qseqComputeStats;
 #endif
@@ -125,7 +125,7 @@ McOptionsValues::copy(const McOptionsValues& src)
 
 // Default constructor -----------------------------
 MonteCarloSGOptions::MonteCarloSGOptions(
-  const BaseEnvironment& env, 
+  const BaseEnvironment& env,
   const char*                   prefix)
   :
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -169,7 +169,7 @@ MonteCarloSGOptions::MonteCarloSGOptions(
 }
 // Constructor 2 -----------------------------------
 MonteCarloSGOptions::MonteCarloSGOptions(
-  const BaseEnvironment& env, 
+  const BaseEnvironment& env,
   const char*                   prefix,
   const McOptionsValues& alternativeOptionsValues)
   :
@@ -234,7 +234,7 @@ MonteCarloSGOptions::~MonteCarloSGOptions()
   if (m_qseqStatisticalOptionsObj) delete m_qseqStatisticalOptionsObj; // dakota
 #endif
   if (m_optionsDesc              ) delete m_optionsDesc;
-} 
+}
 // I/O methods -------------------------------------
 void
 MonteCarloSGOptions::scanOptionsValues()
@@ -269,7 +269,7 @@ MonteCarloSGOptions::scanOptionsValues()
 void
 MonteCarloSGOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
-  optionsDesc.add_options()     
+  optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                            "produce help message for Monte Carlo distribution calculator")
     (m_option_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV       ), "name of generic data output file"                            )
     (m_option_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write to generic data output file"         )

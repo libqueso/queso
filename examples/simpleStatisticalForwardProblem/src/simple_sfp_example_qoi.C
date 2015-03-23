@@ -58,14 +58,14 @@ qoiRoutine(
 
   // Actual code
   //
-  // This code exemplifies multiple Monte Carlo solvers, each calling this qoi routine. 
-  // In this simple example, only node 0 in each sub-environment does the job even though 
+  // This code exemplifies multiple Monte Carlo solvers, each calling this qoi routine.
+  // In this simple example, only node 0 in each sub-environment does the job even though
   // there might be more than one node per sub-environment.
   // In a more realistic situation, if the user is asking for multiple nodes per sub-
   // environment, then the model code in the qoi routine might really demand more than one
-  // node. Here we use 'env.subRank()' only. A realistic application might want to use 
+  // node. Here we use 'env.subRank()' only. A realistic application might want to use
   // either 'env.subComm()' or 'env.subComm().Comm()'.
-  
+
   const QUESO::BaseEnvironment& env = paramValues.env();
   if (env.subRank() == 0) {
     double coef1 = ((qoiRoutine_DataType *) functionDataPtr)->coef1;
@@ -75,6 +75,6 @@ qoiRoutine(
   else {
     qoiValues[0] = 0.;
   }
-  
+
   return;
 }

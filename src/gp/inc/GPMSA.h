@@ -281,7 +281,7 @@ public:
 
   // The space in which the emulator (simulator) lives
   // const VectorSpace<V, M> & m_emulatorSpace;
-  
+
   // The emulator state
   // const V & m_emulator;
 

@@ -43,10 +43,10 @@ template<class V, class M>
 class GenericVectorMdf : public BaseVectorMdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Constructor.
-  /*! Instantiates an object of the class given a prefix, the domain set, and a routine 
-   * (acting as a math function). */  
+  /*! Instantiates an object of the class given a prefix, the domain set, and a routine
+   * (acting as a math function). */
   GenericVectorMdf(const char*                    prefix,
                           const VectorSet<V,M>& domainSet,
                           double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec),
@@ -60,10 +60,10 @@ public:
   //! Finds the values of the vector MDF at each element of \c paramValues, by calling \c m_routinePtr, and saves it at \c mdfValues.
   void values(const V& paramValues, V& mdfVec) const;
   //@}
-  
+
   //! @name I/O method
-  //@{ 
-  //! TODO: Prints the vector MDF. 
+  //@{
+  //! TODO: Prints the vector MDF.
   /*! \todo: implement me!*/
   void print (std::ostream& os)                const;
   //@}

@@ -25,8 +25,8 @@
  *
  * $Id$
  *
- * Brief description of this file: 
- * 
+ * Brief description of this file:
+ *
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
@@ -69,7 +69,7 @@ void compute(const QUESO::FullEnvironment& env, unsigned int numModes) {
   paramMaxsA[0] = 3.;
   paramMaxsA[1] = 3.;
   QUESO::BoxSubset<QUESO::GslVector,QUESO::GslMatrix>
-  
+
   paramDomainA("paramA_",paramSpaceA,paramMinsA,paramMaxsA);
 
   QUESO::GslVector paramMinsB(paramSpaceB.zeroVector());
@@ -98,7 +98,7 @@ void compute(const QUESO::FullEnvironment& env, unsigned int numModes) {
   // Step 3 of 5: Instantiate the likelihood function object
   ////////////////////////////////////////////////////////
   likelihoodRoutine_DataType likelihoodRoutine_Data;
- 
+
   likelihoodRoutine_Data.numModes = numModes;
   QUESO::GenericScalarFunction<QUESO::GslVector,QUESO::GslMatrix>
     likelihoodFunctionObj("like_",
@@ -106,14 +106,14 @@ void compute(const QUESO::FullEnvironment& env, unsigned int numModes) {
                           likelihoodRoutine,
                           (void *) &likelihoodRoutine_Data,
                           true); // routine computes [-2.*ln(function)]
-  
+
     ////////////////////////////////////////////////////////
   // Step 4 of 5: Instantiate the inverse problem
   ////////////////////////////////////////////////////////
 #ifdef APPLS_MODAL_USES_CONCATENATION
   QUESO::UniformVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     priorRvA("priorA_", paramDomainA);
- 
+
   QUESO::GslVector alpha(paramSpaceB.zeroVector());
   alpha[0] = 3.;
   QUESO::GslVector beta(paramSpaceB.zeroVector());

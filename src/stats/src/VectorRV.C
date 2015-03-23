@@ -144,7 +144,7 @@ BaseVectorRV<V,M>::mdf() const
 //---------------------------------------------------
 #ifdef QUESO_HAS_ANN
 template <class V, class M>
-double 
+double
 BaseVectorRV<V,M>::estimateENT_ANN() const
 {
   ANNpointArray data;
@@ -157,7 +157,7 @@ BaseVectorRV<V,M>::estimateENT_ANN() const
   double eps = UQ_INFTH_ANN_EPS;
 
   // here it is assumed that the entropy for the
-  // entire joint RV will be computed 
+  // entire joint RV will be computed
   unsigned int dim = this->imageSet().vectorSpace().dimGlobal();
 
   // FIXME: get the number already stored, otherwise
@@ -170,7 +170,7 @@ BaseVectorRV<V,M>::estimateENT_ANN() const
   // allocate memory
   data = annAllocPts(N,dim);
   dists = new double[N];
-  
+
   // copy samples in the ANN data structure
   V smpRV( this->imageSet().vectorSpace().zeroVector() );
   for( unsigned int i = 0; i < N; i++ ) {
@@ -181,7 +181,7 @@ BaseVectorRV<V,M>::estimateENT_ANN() const
       data[ i ][ j ] = smpRV[ j ];
     }
   }
-  
+
   // get distance to knn for each point
   // (k+1) because the 1st nn is itself
   distANN_XY( data, data, dists, dim, dim, N, N, k+1, eps );
@@ -199,7 +199,7 @@ BaseVectorRV<V,M>::estimateENT_ANN() const
 
   // deallocate memory
   delete [] dists;
-  annDeallocPts( data );  
+  annDeallocPts( data );
 
   return ENT_est;
 }

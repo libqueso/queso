@@ -61,7 +61,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
     // Read kinetic parameters and convert heating rate to K/s
     int aux1 = fscanf(inp,"%lf %lf",&m_beta1,&m_variance1);
     m_beta1 /= 60.;
-  
+
     if(aux1) {}; // just to eliminate warnings
 
     unsigned int numObservations = 0;
@@ -97,7 +97,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
     // Read kinetic parameters and convert heating rate to K/s
     int aux2 = fscanf(inp,"%lf %lf",&m_beta2,&m_variance2);
     m_beta2 /= 60.;
-  
+
     if(aux2) {}; // just to eliminate warnings
 
     unsigned int numObservations = 0;
@@ -133,7 +133,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
     // Read kinetic parameters and convert heating rate to K/s
     int aux3 = fscanf(inp,"%lf %lf",&m_beta3,&m_variance3);
     m_beta3 /= 60.;
-  
+
     if(aux3) {}; // just to eliminate warnings
 
     unsigned int numObservations = 0;
@@ -179,7 +179,7 @@ likelihoodRoutine(
   const QUESO::BaseEnvironment& env = *(((likelihoodRoutine_Data*) functionDataPtr)->m_env);
 
   if (paramDirection  &&
-      functionDataPtr && 
+      functionDataPtr &&
       gradVector      &&
       hessianMatrix   &&
       hessianEffect) {
@@ -201,24 +201,24 @@ likelihoodRoutine(
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
-      	
+
     // integration
     const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
           gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
           gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
           gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params};
 
     double t = 0.1, t_final = 1900.;
     double h = 1e-3;
     double Mass[1];
     Mass[0]=1.;
-  
+
     unsigned int i = 0;
     double t_old = 0.;
     double M_old[1];
     M_old[0]=1.;
-	
+
     double misfit=0.;
     //unsigned int loopSize = 0;
     while ((t < t_final) && (i < Me.size())) {
@@ -229,19 +229,19 @@ likelihoodRoutine(
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
       //loopSize++;
-		
+
       while ( (i < Me.size()) && (t_old <= Te[i]) && (Te[i] <= t) ) {
         Mt[i] = (Te[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
         misfit += (Me[i]-Mt[i])*(Me[i]-Mt[i]);
         //printf("%i %lf %lf %lf %lf\n",i,Te[i],Me[i],Mt[i],misfit);
         i++;
       }
-		
+
       t_old=t;
       M_old[0]=Mass[0];
     }
     resultValue += misfit/variance;
-	
+
     //printf("loopSize = %d\n",loopSize);
     if ((paramValues.env().displayVerbosity() >= 10) && (paramValues.env().fullRank() == 0)) {
       printf("In likelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
@@ -264,24 +264,24 @@ likelihoodRoutine(
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
-      	
+
     // integration
     const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
           gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
           gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
           gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params};
 
     double t = 0.1, t_final = 1900.;
     double h = 1e-3;
     double Mass[1];
     Mass[0]=1.;
-  
+
     unsigned int i = 0;
     double t_old = 0.;
     double M_old[1];
     M_old[0]=1.;
-	
+
     double misfit=0.;
     //unsigned int loopSize = 0;
     while ((t < t_final) && (i < Me.size())) {
@@ -292,19 +292,19 @@ likelihoodRoutine(
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
       //loopSize++;
-		
+
       while ( (i < Me.size()) && (t_old <= Te[i]) && (Te[i] <= t) ) {
         Mt[i] = (Te[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
         misfit += (Me[i]-Mt[i])*(Me[i]-Mt[i]);
         //printf("%i %lf %lf %lf %lf\n",i,Te[i],Me[i],Mt[i],misfit);
         i++;
       }
-		
+
       t_old=t;
       M_old[0]=Mass[0];
     }
     resultValue += misfit/variance;
-	
+
     //printf("loopSize = %d\n",loopSize);
     if ((paramValues.env().displayVerbosity() >= 10) && (paramValues.env().fullRank() == 0)) {
       printf("In likelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);
@@ -327,24 +327,24 @@ likelihoodRoutine(
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
-      	
+
     // integration
     const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
           gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
           gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
           gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
+          gsl_odeiv_system     sys = {func, NULL, 1, (void *)params};
 
     double t = 0.1, t_final = 1900.;
     double h = 1e-3;
     double Mass[1];
     Mass[0]=1.;
-  
+
     unsigned int i = 0;
     double t_old = 0.;
     double M_old[1];
     M_old[0]=1.;
-	
+
     double misfit=0.;
     //unsigned int loopSize = 0;
     while ((t < t_final) && (i < Me.size())) {
@@ -355,19 +355,19 @@ likelihoodRoutine(
                           "gsl_odeiv_evolve_apply() failed");
       //printf("t = %6.1lf, mass = %10.4lf\n",t,Mass[0]);
       //loopSize++;
-		
+
       while ( (i < Me.size()) && (t_old <= Te[i]) && (Te[i] <= t) ) {
         Mt[i] = (Te[i]-t_old)*(Mass[0]-M_old[0])/(t-t_old) + M_old[0];
         misfit += (Me[i]-Mt[i])*(Me[i]-Mt[i]);
         //printf("%i %lf %lf %lf %lf\n",i,Te[i],Me[i],Mt[i],misfit);
         i++;
       }
-		
+
       t_old=t;
       M_old[0]=Mass[0];
     }
     resultValue += misfit/variance;
-	
+
     //printf("loopSize = %d\n",loopSize);
     if ((paramValues.env().displayVerbosity() >= 10) && (paramValues.env().fullRank() == 0)) {
       printf("In likelihoodRoutine(), A = %g, E = %g, beta = %.3lf: misfit = %lf, likelihood = %lf.\n",A,E,beta,misfit,resultValue);

@@ -83,7 +83,7 @@ BaseVectorCdf<V,M>::subWriteContents(
 // Method outside either class definition------------
 //---------------------------------------------------
 //! It calculated the maximum horizontal distances between two vector CDFs.
-// 
+//
 template <class V, class M>
 void
 horizontalDistances(const BaseVectorCdf<V,M>& cdf1,

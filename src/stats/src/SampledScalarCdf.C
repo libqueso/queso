@@ -48,7 +48,7 @@ SampledScalarCdf<T>::SampledScalarCdf(
   //  m_sortedCdfValues[i] = m_cdfValues[i];
   //}
   //std::sort(m_sortedCdfValues.begin(), m_sortedCdfValues.end());
- 
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving SampledScalarCdf<T>::constructor()"
                             << ": prefix = " << m_prefix
@@ -123,7 +123,7 @@ SampledScalarCdf<T>::inverse(double cdfValue) const
       result = m_cdfGrid[i];
       searchPosition = false;
     }
-    
+
     if (cdfValue == m_cdfValues[j]) {
       while ((0 < j) && (cdfValue == m_cdfValues[j-1])) --j;
       result = m_cdfGrid[j];
@@ -156,7 +156,7 @@ SampledScalarCdf<T>::inverse(double cdfValue) const
       }
     }
   } while (searchPosition);
-  
+
   return result;
 }
 //---------------------------------------------------

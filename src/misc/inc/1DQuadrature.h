@@ -40,40 +40,40 @@ namespace QUESO {
 // Base 1D quadrature class
 //*****************************************************
 /*! \class Base1DQuadrature
-    \brief Base class for one-dimensional quadrature rules (numerical integration of functions). 
-    
-    Base class for numerical integration via quadrature rules of one-dimensional functions. 
+    \brief Base class for one-dimensional quadrature rules (numerical integration of functions).
+
+    Base class for numerical integration via quadrature rules of one-dimensional functions.
 */
 class
 Base1DQuadrature {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
-  //! Default constructor.  
+  //@{
+  //! Default constructor.
   Base1DQuadrature(double minDomainValue,
 			  double maxDomainValue,
 			  unsigned int order);
   //! Virtual destructor.
   virtual ~Base1DQuadrature();
   //@}
-  
+
   //! @name Mathematical  methods
-  //@{ 
+  //@{
   //! Returns the minimum value of the domain of the (one-dimensional) function.
   double                     minDomainValue() const;
-  
-  //! Returns the maximum value of the domain of the (one-dimensional) function.  
+
+  //! Returns the maximum value of the domain of the (one-dimensional) function.
   double                     maxDomainValue() const;
-  
+
   //! Returns the order of the quadrature rule.
   unsigned int               order         () const;
-  
+
   //! Array of the positions for the numerical integration.
   const std::vector<double>& positions     () const;
-  
+
   //! Array of the weights used in the numerical integration.
   const std::vector<double>& weights       () const;
-  
+
   //! A bogus method.
   virtual  void                       dumbRoutine   () const = 0;
   //@}
@@ -90,26 +90,26 @@ protected:
 // Generic 1D quadrature class
 //*****************************************************
 /*! \class Generic1DQuadrature
-    \brief Class for one-dimensional generic quadrature rules (numerical integration of functions). 
-    
-    Class for generic quadrature rules for numerical integration of one-dimensional functions. 
+    \brief Class for one-dimensional generic quadrature rules (numerical integration of functions).
+
+    Class for generic quadrature rules for numerical integration of one-dimensional functions.
 */
 class Generic1DQuadrature : public Base1DQuadrature {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   Generic1DQuadrature(double minDomainValue,
                              double maxDomainValue,
                              const std::vector<double>& positions,
                              const std::vector<double>& weights);
- 
+
   //! Destructor.
   ~Generic1DQuadrature();
  //@}
-  
+
   //! @name Mathematical  methods
-  //@{ 
+  //@{
   //! Bogus routine.
   void dumbRoutine() const;
   //@}
@@ -125,24 +125,24 @@ protected:
 // Uniform/Legendre 1D quadrature class
 //*****************************************************
 /*! \class UniformLegendre1DQuadrature
- *    \brief Class for Legendre-Gauss quadrature rule for one-dimensional functions.     
- * 
- * In a general Gaussian quadrature rule, an definite integral of \f$ f(x)\f$ is first 
+ *    \brief Class for Legendre-Gauss quadrature rule for one-dimensional functions.
+ *
+ * In a general Gaussian quadrature rule, an definite integral of \f$ f(x)\f$ is first
  * approximated over the interval [-1,1] by a polynomial approximable function \f$ g(x)\f$
  * and a known weighting function \f$ W(x)\f$:
  * \f[\int_{-1}^1 f(x) \, dx = \int_{-1}^1 W(x) g(x) \, dx\f]
- * Those are then approximated by a sum of function values at specified points \f$ x_i \f$ 
+ * Those are then approximated by a sum of function values at specified points \f$ x_i \f$
  * multiplied by some weights \f$ w_i \f$:
  * \f[ \int_{-1}^1 W(x) g(x) \, dx \approx \sum_{i=1}^n w_i g(x_i) \f]
- * In the case of Gauss-Legendre quadrature, the weighting function \f$ W(x) = 1 \f$, 
- * so we can approximate an integral of \f$ f(x) \f$ with: 
+ * In the case of Gauss-Legendre quadrature, the weighting function \f$ W(x) = 1 \f$,
+ * so we can approximate an integral of \f$ f(x) \f$ with:
  * \f[ \int_{-1}^1 f(x)\,dx \approx \sum_{i=1}^n w_i f(x_i) \f]
- * The abscissas for quadrature order \f$ n \f$ are given by the roots of the Legendre 
+ * The abscissas for quadrature order \f$ n \f$ are given by the roots of the Legendre
  * polynomials \f$ P_n(x)\f$, which occur symmetrically about 0. The weights are
  *   \f[ w_i = \frac{2}{(1-x_i^2)[P'_n(x_i)]^2}=\frac{2(1-x_i^2)}{(n+1)^2[P_{n+1}(x_i)]^2} \f]
- * 
+ *
  * Several authors give a table of abscissas and weights:
- *  
+ *
 <table border="2">
 <tr>
 <th>\f$ n \f$</th><th>\f$ x_i \f$</th><th>\f$ w_i \f$</th>
@@ -162,13 +162,13 @@ protected:
 class UniformLegendre1DQuadrature : public Base1DQuadrature {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
-  //! Default constructor. 
-  /*! Constructs a Gaussian-Legendre quadrature of order \c order, in the interval 
-   * <c>[minDomainValue,maxDomainValue]</c>. Valid values for the order of the 
-   * quadrature rule are: 1-7, 10-12, 16. This method scales the abscissas (positions) 
-   * of the quadrature from the interval [-1,1] to <c>[minDomainValue,maxDomainValue]</c>, 
-   * and the parameter \c densityIsNormalized determines whether the weights should be 
+  //@{
+  //! Default constructor.
+  /*! Constructs a Gaussian-Legendre quadrature of order \c order, in the interval
+   * <c>[minDomainValue,maxDomainValue]</c>. Valid values for the order of the
+   * quadrature rule are: 1-7, 10-12, 16. This method scales the abscissas (positions)
+   * of the quadrature from the interval [-1,1] to <c>[minDomainValue,maxDomainValue]</c>,
+   * and the parameter \c densityIsNormalized determines whether the weights should be
    * scaled as well. */
   UniformLegendre1DQuadrature(double       minDomainValue,
                                      double       maxDomainValue,
@@ -177,10 +177,10 @@ public:
   //! Destructor.
   ~UniformLegendre1DQuadrature();
   //@}
-  
+
   //! @name Mathematical  methods
-  //@{ 
-  //! A bogus method.    
+  //@{
+  //! A bogus method.
   void dumbRoutine() const;
   //@}
 protected:
@@ -195,15 +195,15 @@ protected:
 // Gaussian/Hermite 1D quadrature class
 //*****************************************************
 /*! \class GaussianHermite1DQuadrature
- *  \brief Class for Hermite-Gauss quadrature rule for one-dimensional functions.     
- * 
- * Hermite-Gauss quadrature, also called Hermite quadrature, is a Gaussian quadrature 
- * over the interval \f$(-\infty,\infty)\f$ with weighting function \f$ W(x)=e^{-x^2}\f$.\n 
- * The abscissas for quadrature order \f$ n \f$ are given by the roots \f$ x_i \f$ of 
+ *  \brief Class for Hermite-Gauss quadrature rule for one-dimensional functions.
+ *
+ * Hermite-Gauss quadrature, also called Hermite quadrature, is a Gaussian quadrature
+ * over the interval \f$(-\infty,\infty)\f$ with weighting function \f$ W(x)=e^{-x^2}\f$.\n
+ * The abscissas for quadrature order \f$ n \f$ are given by the roots \f$ x_i \f$ of
  * the Hermite polynomials \f$ H_n(x)\f$, which occur symmetrically about 0.\n
- * 
+ *
  * The abscissas and weights can be computed analytically for small \f$ n \f$:
- * 
+ *
  * <table border="2">
 <tr>
 <th>\f$ n \f$</th><th>\f$ x_i \f$</th><th>\f$ w_i \f$</th>
@@ -219,8 +219,8 @@ protected:
 class GaussianHermite1DQuadrature : public Base1DQuadrature {
 public:
    //! @name Constructor/Destructor methods
-  //@{ 
-  //! Default constructor. 
+  //@{
+  //! Default constructor.
   /*! Constructs a Gaussian-Hermite quadrature of order \c order.
    * Valid values for the order of the  quadrature rule are: 1-9, 19.
    * \todo: Prepare the code to include both parameters \c mean and \c stddev. */
@@ -230,10 +230,10 @@ public:
   //! Destructor.
   ~GaussianHermite1DQuadrature();
   //@}
-  
+
   //! @name Mathematical  methods
-  //@{ 
-  //! A bogus method.  
+  //@{
+  //! A bogus method.
   void dumbRoutine() const;
   //@}
 protected:
@@ -251,38 +251,38 @@ protected:
 // Wigner/Chebyshev1st 1D quadrature class
 //*****************************************************
 /*! \class WignerInverseChebyshev1st1DQuadrature
- *  \brief Class for first type Chebyshev-Gauss quadrature rule for one-dimensional functions.     
- * 
- * Chebyshev-Gauss quadrature, also called Chebyshev Type 1 quadrature, is a Gaussian 
- * quadrature over the interval [-1,1] with weighting function \f$ W(x)=\frac{1}{\sqrt{1-x^2}}\f$.\n 
- * The abscissas for quadrature order \f$ n \f$ are given by the roots of the Chebyshev 
- * polynomial of the first kind \f$ T_n(x) \f$, which occur symmetrically about 0.\n 
- * 
- * The abscissas are given explicitly by \f$ x_i=\cos[\frac{(2i-1)\pi}{2n}]\f$ and the 
+ *  \brief Class for first type Chebyshev-Gauss quadrature rule for one-dimensional functions.
+ *
+ * Chebyshev-Gauss quadrature, also called Chebyshev Type 1 quadrature, is a Gaussian
+ * quadrature over the interval [-1,1] with weighting function \f$ W(x)=\frac{1}{\sqrt{1-x^2}}\f$.\n
+ * The abscissas for quadrature order \f$ n \f$ are given by the roots of the Chebyshev
+ * polynomial of the first kind \f$ T_n(x) \f$, which occur symmetrically about 0.\n
+ *
+ * The abscissas are given explicitly by \f$ x_i=\cos[\frac{(2i-1)\pi}{2n}]\f$ and the
  * weights are \f$ w_i=\frac{\pi}{n}. \f$
- * 
+ *
  * \see Weisstein, Eric W. "Chebyshev-Gauss Quadrature." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/Chebyshev-GaussQuadrature.html.
  * \see http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature. */
 
 class WignerInverseChebyshev1st1DQuadrature : public Base1DQuadrature {
 public:
    //! @name Constructor/Destructor methods
-  //@{ 
-  //! TODO: Default constructor. 
-  /*! \todo Constructs a Gaussian-Chebyshev quadrature (of first type) of order 
-   * \c order, in the interval <c>[minDomainValue,maxDomainValue]</c>. This method 
+  //@{
+  //! TODO: Default constructor.
+  /*! \todo Constructs a Gaussian-Chebyshev quadrature (of first type) of order
+   * \c order, in the interval <c>[minDomainValue,maxDomainValue]</c>. This method
    * scales the the abscissas (positions) of the quadrature from the interval [-1,1]
-   * to <c>[minDomainValue,maxDomainValue]</c>. */ 
+   * to <c>[minDomainValue,maxDomainValue]</c>. */
   WignerInverseChebyshev1st1DQuadrature(double       minDomainValue,
                                                double       maxDomainValue,
                                                unsigned int order);
   //! Destructor.
   ~WignerInverseChebyshev1st1DQuadrature();
   //@}
-  
+
   //! @name Mathematical  methods
-  //@{ 
-  //! A bogus method.    
+  //@{
+  //! A bogus method.
   void dumbRoutine() const;
   //@}
 protected:
@@ -297,38 +297,38 @@ protected:
 // Wigner/Chebyshev2nd 1D quadrature class
 //*****************************************************
 /*! \class WignerChebyshev2nd1DQuadrature
- *  \brief Class for second type Chebyshev-Gauss quadrature rule for one-dimensional functions.     
- * 
- * Chebyshev-Gauss quadrature, also called Chebyshev Type 2 quadrature, is a Gaussian 
- * quadrature over the interval [-1,1] with weighting function \f$ W(x)=\sqrt{1-x^2}\f$.\n 
- * The abscissas for quadrature order \f$ n \f$ are given by the roots of the Chebyshev 
- * polynomial of the \b second kind \f$ U_n(x) \f$, which occur symmetrically about 0.\n 
- * 
- * The abscissas are given explicitly by \f$ x_i=\cos[\frac{i\pi}{n+1}].\f$ 
+ *  \brief Class for second type Chebyshev-Gauss quadrature rule for one-dimensional functions.
+ *
+ * Chebyshev-Gauss quadrature, also called Chebyshev Type 2 quadrature, is a Gaussian
+ * quadrature over the interval [-1,1] with weighting function \f$ W(x)=\sqrt{1-x^2}\f$.\n
+ * The abscissas for quadrature order \f$ n \f$ are given by the roots of the Chebyshev
+ * polynomial of the \b second kind \f$ U_n(x) \f$, which occur symmetrically about 0.\n
+ *
+ * The abscissas are given explicitly by \f$ x_i=\cos[\frac{i\pi}{n+1}].\f$
  * and all the weights are \f$ w_i=\frac{\pi}{n+1}\sin^2[\frac{i\pi}{n+1}]. \f$
- * 
+ *
  * \see  Weisstein, Eric W. "Gaussian Quadrature." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/GaussianQuadrature.html.
  * \see http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature. */
 
 class WignerChebyshev2nd1DQuadrature : public Base1DQuadrature {
 public:
     //! @name Constructor/Destructor methods
-  //@{ 
-  //! Default constructor. 
+  //@{
+  //! Default constructor.
   /*! Constructs a Gaussian-Chebyshev quadrature (of second type) of order \c order,
-   * in the interval <c>[minDomainValue,maxDomainValue]</c>. This method scales the 
-   * abscissas (positions) of the quadrature from the interval [-1,1] to 
-   * <c>[minDomainValue,maxDomainValue]</c>.*/ 
-    
+   * in the interval <c>[minDomainValue,maxDomainValue]</c>. This method scales the
+   * abscissas (positions) of the quadrature from the interval [-1,1] to
+   * <c>[minDomainValue,maxDomainValue]</c>.*/
+
   WignerChebyshev2nd1DQuadrature(double       minDomainValue,
                                         double       maxDomainValue,
                                         unsigned int order);
   //! Destructor.
   ~WignerChebyshev2nd1DQuadrature();
   //@}
-  
+
   //! @name Mathematical  methods
-  //@{ 
+  //@{
   //! Bogus routine.
   void dumbRoutine() const;
   //@}

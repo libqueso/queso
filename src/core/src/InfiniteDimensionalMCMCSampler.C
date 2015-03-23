@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -16,7 +16,7 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
@@ -123,7 +123,7 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
   this->current_physical_mean->zero();
   this->current_physical_var->zero();
 
-  // LibMeshFunction & p = libmesh_cast_ref<LibMeshFunction &>(*(this->current_physical_state)); 
+  // LibMeshFunction & p = libmesh_cast_ref<LibMeshFunction &>(*(this->current_physical_state));
 
   // Seed the sampler at the truth
   // for (unsigned int ii = 0; ii < 513; ii++) {
@@ -209,7 +209,7 @@ void InfiniteDimensionalMCMCSampler::_update_moments()
 
   // Update running sum-of-squares
   boost::shared_ptr<FunctionBase> temp_ptr(this->_delta->zero_clone());
-  // LibMeshFunction & temp = static_cast<LibMeshFunction &>(*temp_ptr); 
+  // LibMeshFunction & temp = static_cast<LibMeshFunction &>(*temp_ptr);
 
   temp_ptr->pointwise_mult(*(this->_delta), *(this->current_physical_state));
   this->_M2->add(1.0, *temp_ptr);
@@ -231,7 +231,7 @@ void InfiniteDimensionalMCMCSampler::step()
   this->_propose();
   this->_metropolis_hastings();
   this->_update_moments();
-  
+
   // We never save the 0th iteration
   if (this->_iteration % this->m_ov->m_save_freq == 0) {
     this->_write_state();

@@ -35,16 +35,16 @@ namespace QUESO {
 //*****************************************************
 // Gamma class [R-06]
 //*****************************************************
-/*! 
+/*!
  * \class GammaVectorRealizer
  * \brief A class for handling sampling from a Gamma probability density distribution.
  *
- * This class handles sampling from a Gamma probability density distribution, of 
+ * This class handles sampling from a Gamma probability density distribution, of
  * parameters \c a and \c b.*/
 template<class V, class M>
 class GammaVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
@@ -55,17 +55,17 @@ public:
                              const VectorSet<V,M>& unifiedImageSet,
                              const V&                     a,
                              const V&                     b);
-  
+
   //! Destructor
  ~GammaVectorRealizer();
   //@}
- 
+
    //! @name Realization-related methods
   //@{
   //! Draws a realization.
-  /*! This function draws a realization of a Gamma distribution and saves it in \c nextValues. 
-   * It internally checks whether the image set, where the realization should be drawn, belongs 
-   * to the interval (0, infinity) - which is the range where Gamma distribution is defined over. */ 
+  /*! This function draws a realization of a Gamma distribution and saves it in \c nextValues.
+   * It internally checks whether the image set, where the realization should be drawn, belongs
+   * to the interval (0, infinity) - which is the range where Gamma distribution is defined over. */
   void realization(V& nextValues) const;
 
 private:

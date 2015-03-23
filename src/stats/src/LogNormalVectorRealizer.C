@@ -55,7 +55,7 @@ LogNormalVectorRealizer<V,M>::LogNormalVectorRealizer(const char* prefix,
                             << std::endl;
   }
 }
-// Constructor -------------------------------------								  
+// Constructor -------------------------------------
 template<class V, class M>
 LogNormalVectorRealizer<V,M>::LogNormalVectorRealizer(const char* prefix,
                                                                     const VectorSet<V,M>& unifiedImageSet,
@@ -84,7 +84,7 @@ LogNormalVectorRealizer<V,M>::LogNormalVectorRealizer(const char* prefix,
                             << std::endl;
   }
 }
-// Destructor --------------------------------------								  
+// Destructor --------------------------------------
 template<class V, class M>
 LogNormalVectorRealizer<V,M>::~LogNormalVectorRealizer()
 {

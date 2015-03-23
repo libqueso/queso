@@ -36,20 +36,20 @@ namespace QUESO {
 //*****************************************************
 // Sampled marginal density function class
 //*****************************************************
-/*! 
+/*!
  * \class SampledVectorMdf
  * \brief A class for handling sampled vector MDFs.
  *
- * This class implements a sampled vector marginal density function (MDF), given 
+ * This class implements a sampled vector marginal density function (MDF), given
  * the grid points where it will be sampled and it returns its values.*/
 
 template<class V, class M>
 class SampledVectorMdf : public BaseVectorMdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
-  /*! Instantiates an object of the class given a prefix and the grid points 
+  /*! Instantiates an object of the class given a prefix and the grid points
    * where it will be sampled/evaluated.*/
   SampledVectorMdf(const char*                          prefix,
                           const ArrayOfOneDGrids <V,M>& oneDGrids,
@@ -57,16 +57,16 @@ public:
   //! Destructor
   ~SampledVectorMdf();
   //@}
-  
+
   //! @name Mathematical methods
   //@{
-  //! TODO: Returns the values of the vector MDF at each element of \c paramValues. 
+  //! TODO: Returns the values of the vector MDF at each element of \c paramValues.
   /*! \todo: implement me!*/
   void values(const V& paramValues, V& mdfVec) const;
   //@}
-  
+
   //! @name I/O methods
-  //@{ 
+  //@{
   //! Prints the vector MDF (values of the grid points and of the MDF at such grid points).
   void print (std::ostream& os)                const;
   //@}

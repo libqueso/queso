@@ -35,11 +35,11 @@ namespace QUESO {
 //*****************************************************
 // LogNormal class [R-10]
 //*****************************************************
-/*! 
+/*!
  * \class LogNormalVectorRealizer
  * \brief A class for handling sampling from a Log-Normal probability density distribution.
  *
- * This class handles sampling from a Log-Normal probability density distribution, of 
+ * This class handles sampling from a Log-Normal probability density distribution, of
  * mean and variance given.*/
 
 template<class V, class M>
@@ -48,9 +48,9 @@ public:
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor
-  /*! Constructs a new object of the class, given a prefix and the image set, a  vector of 
-   * mean values, \c lawExpVector, and a lower triangular matrix resulting from Cholesky 
-   * decomposition of the covariance matrix, \c lowerCholLawCovMatrix.  */ 
+  /*! Constructs a new object of the class, given a prefix and the image set, a  vector of
+   * mean values, \c lawExpVector, and a lower triangular matrix resulting from Cholesky
+   * decomposition of the covariance matrix, \c lowerCholLawCovMatrix.  */
   LogNormalVectorRealizer(const char*                  prefix,
                                  const VectorSet<V,M>& unifiedImageSet,
                                  const V&                     lawExpVector, // vector of mean values
@@ -58,8 +58,8 @@ public:
 
   //! Constructor
   /*! Constructs a new object of the class, given a prefix and the image set, a vector of
-   * mean values, \c lawExpVector, and a set of two matrices and one vector resulting from the 
-   * Single Value Decomposition of the covariance matrix, \c matU, \c vecSsqrt and \c matVt.*/ 
+   * mean values, \c lawExpVector, and a set of two matrices and one vector resulting from the
+   * Single Value Decomposition of the covariance matrix, \c matU, \c vecSsqrt and \c matVt.*/
   LogNormalVectorRealizer(const char*                  prefix,
                                  const VectorSet<V,M>& unifiedImageSet,
                                  const V&                     lawExpVector, // vector of mean values
@@ -69,20 +69,20 @@ public:
   //! Destructor
   ~LogNormalVectorRealizer();
   //@}
-  
+
   //! @name Realization-related methods
   //@{
-  //! Access to the vector of mean values and private attribute:  m_unifiedLawExpVector. 
+  //! Access to the vector of mean values and private attribute:  m_unifiedLawExpVector.
   const V&   unifiedLawExpVector ()              const;
-  
-  //! Access to the vector of variance values and private attribute:  m_unifiedLawVarVector. 
+
+  //! Access to the vector of variance values and private attribute:  m_unifiedLawVarVector.
   const V&   unifiedLawVarVector ()              const;
-  
+
   //! Draws a realization.
   /*! This function draws a realization of a LogNormal distribution and saves it in \c nextValues.*/
   void realization         (V& nextValues) const;
   //@}
-    
+
 private:
   V* m_unifiedLawExpVector;
   V* m_unifiedLawVarVector;

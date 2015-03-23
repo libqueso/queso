@@ -24,7 +24,7 @@
 
 #include <queso/Environment.h>
 
-int main() 
+int main()
 {
   QUESO::QUESO_version_print(std::cout);
   return 0;

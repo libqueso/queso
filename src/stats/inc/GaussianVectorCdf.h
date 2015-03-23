@@ -37,22 +37,22 @@ namespace QUESO {
 //*****************************************************
 // Gaussian cumulative distribution function class
 //*****************************************************
-/*! 
+/*!
  * \class GaussianVectorCdf
  * \brief TODO: A class for handling Gaussian CDFs.
  *
- * This class \b will implement a Gaussian vector cumulative distribution function (CDF). 
+ * This class \b will implement a Gaussian vector cumulative distribution function (CDF).
  * \todo: Implement me! */
 
 template<class V, class M>
 class GaussianVectorCdf : public BaseVectorCdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! TODO: Constructor.
   /*! \todo: implement me! This method calls commonConstructor() which is not yet implemented.
-   *  Instantiates an object of the class given a prefix, the support of the related-PDF, and 
-   * the domain mean and expected values. 
+   *  Instantiates an object of the class given a prefix, the support of the related-PDF, and
+   * the domain mean and expected values.
    */
   GaussianVectorCdf(const char*                  prefix,
                            const VectorSet<V,M>& pdfSupport,
@@ -60,7 +60,7 @@ public:
                            const V&                     domainVarianceValues);
   //! TODO: Constructor.
   /*! \todo: implement me! This method calls commonConstructor() which is not yet implemented.
-   * Instantiates an object of the class given a prefix, the support of the related-PDF, and 
+   * Instantiates an object of the class given a prefix, the support of the related-PDF, and
    * the domain mean values and covariance matrix.*/
   GaussianVectorCdf(const char*                  prefix,
                            const VectorSet<V,M>& pdfSupport,
@@ -72,14 +72,14 @@ public:
 
   //! @name Mathematical method
   //@{
-  //! TODO: Returns the values of the vector CDF at each element of \c paramValues. 
+  //! TODO: Returns the values of the vector CDF at each element of \c paramValues.
   /*! \todo: implement me!*/
   void values(const V& paramValues, V& cdfVec) const;
   //@}
-  
+
   //! @name I/O method
-  //@{ 
-  //! TODO: Prints the vector CDF. 
+  //@{
+  //! TODO: Prints the vector CDF.
   /*! \todo: implement me!*/
   void print (std::ostream& os) const;
   //@}

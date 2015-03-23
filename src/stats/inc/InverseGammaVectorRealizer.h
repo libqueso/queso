@@ -35,11 +35,11 @@ namespace QUESO {
 //*****************************************************
 // InverseGamma class [R-07]
 //*****************************************************
-/*! 
+/*!
  * \class InverseGammaVectorRealizer
  * \brief A class for handling sampling from an Inverse Gamma probability density distribution.
  *
- * This class handles sampling from an Inverse Gamma probability density distribution, of 
+ * This class handles sampling from an Inverse Gamma probability density distribution, of
  * parameters \c alpha and \c beta.*/
 
 template<class V, class M>
@@ -62,9 +62,9 @@ public:
      //! @name Realization-related methods
   //@{
   //! Draws a realization.
-  /*! This function draws a realization of an Inverse Gamma distribution and saves it in \c nextValues. 
-   * It internally checks whether the image set, where the realization should be drawn, belongs 
-   * to the interval (0, infinity) - which is the range where Gamma distribution is defined over. */ 
+  /*! This function draws a realization of an Inverse Gamma distribution and saves it in \c nextValues.
+   * It internally checks whether the image set, where the realization should be drawn, belongs
+   * to the interval (0, infinity) - which is the range where Gamma distribution is defined over. */
   void realization(V& nextValues) const;
   //@}
 

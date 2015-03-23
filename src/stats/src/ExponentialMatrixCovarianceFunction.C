@@ -34,7 +34,7 @@ ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::ExponentialMatrixCovarianc
   const VectorSet<Q_V,Q_M>& imageSet,
   const Q_M&                       sigmas,
   const Q_M&                       as)
-  : 
+  :
   BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>(prefix,basicDomainSet,imageSet),
   m_sigmas(NULL),
   m_as    (NULL)

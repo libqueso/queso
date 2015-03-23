@@ -159,7 +159,7 @@ SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterSpace() const
 {
   return m_parameterSpace;
 }
- 
+
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const VectorSpace<Q_V,Q_M>&
 SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputSpace() const

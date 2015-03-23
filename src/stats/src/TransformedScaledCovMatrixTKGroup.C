@@ -159,7 +159,7 @@ TransformedScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stag
   V transformedPreComputingPositions(*m_preComputingPositions[stageIds[0]]);
   transformToGaussianSpace(*m_preComputingPositions[stageIds[0]],
       transformedPreComputingPositions);
-  
+
   invlogit_gaussian->updateLawExpVector(transformedPreComputingPositions);
 
   return (*invlogit_gaussian);

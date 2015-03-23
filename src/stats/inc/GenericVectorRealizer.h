@@ -35,13 +35,13 @@ namespace QUESO {
 //*****************************************************
 // Generic class [R-01]
 //*****************************************************
-/*! 
+/*!
  * \class GenericVectorRealizer
  * \brief A class for handling sampling from generic probability density distributions.
  *
- * A realizer is an object that, simply put, contains a realization() operation 
- * that returns a sample of a vector RV, or, particularly, a generic probability 
- * density distribution. This is the class that handles generic sampling, used, 
+ * A realizer is an object that, simply put, contains a realization() operation
+ * that returns a sample of a vector RV, or, particularly, a generic probability
+ * density distribution. This is the class that handles generic sampling, used,
  * for example, to sample, posterior PDFs (the solution of a Bayesian problem).*/
 
 template<class V, class M>
@@ -51,8 +51,8 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
-  /*! Constructs a new object, given a prefix and the image set of the vector realizer, 
-   * the sub period for the realizations and a pointer to a  generic routine. */ 
+  /*! Constructs a new object, given a prefix and the image set of the vector realizer,
+   * the sub period for the realizations and a pointer to a  generic routine. */
   GenericVectorRealizer(const char*                  prefix,
                                const VectorSet<V,M>& unifiedImageSet,
                                unsigned int                 subPeriod,
@@ -61,7 +61,7 @@ public:
  //! Destructor
   ~GenericVectorRealizer();
   //@}
-  
+
   //! @name Realization-related methods
   //! Draws a realization.
   /*! This function draws a realization of \c this considering the generic routine \c m_routinePtr

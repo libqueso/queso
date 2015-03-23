@@ -23,12 +23,12 @@
  *
  *--------------------------------------------------------------------------
  *
- * Brief description of this file: 
- * 
+ * Brief description of this file:
+ *
  * This is an example of how to use the information theoretic measures such as
- * entropy, mutual information and Kullback-Leibler divergenece available in 
- * QUESO. The code itself is in the templated routine 'uqAppl(*env)'. This 
- * routine is called right after the initialization of the MPI environment and 
+ * entropy, mutual information and Kullback-Leibler divergenece available in
+ * QUESO. The code itself is in the templated routine 'uqAppl(*env)'. This
+ * routine is called right after the initialization of the MPI environment and
  * of the QUESO environment and is available in file 'exInfoTheory_appl.h'
  *
  *--------------------------------------------------------------------------

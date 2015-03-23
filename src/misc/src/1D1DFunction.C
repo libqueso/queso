@@ -845,7 +845,7 @@ LagrangePolynomial1D1DFunction::~LagrangePolynomial1D1DFunction()
 {
 }
 
-double                     
+double
 LagrangePolynomial1D1DFunction::value(double domainValue) const
 {
   double value = 0.;
@@ -880,7 +880,7 @@ LagrangePolynomial1D1DFunction::value(double domainValue) const
   return value;
 }
 
-double                     
+double
 LagrangePolynomial1D1DFunction::deriv(double domainValue) const
 {
   double value = 0.;
@@ -928,7 +928,7 @@ LagrangeBasis1D1DFunction::~LagrangeBasis1D1DFunction()
 {
 }
 
-double                     
+double
 LagrangeBasis1D1DFunction::value(double domainValue) const
 {
   double scaleFactor = 1.;
@@ -945,7 +945,7 @@ LagrangeBasis1D1DFunction::value(double domainValue) const
   return scaleFactor;
 }
 
-double                     
+double
 LagrangeBasis1D1DFunction::deriv(double domainValue) const
 {
   double value = 0.;

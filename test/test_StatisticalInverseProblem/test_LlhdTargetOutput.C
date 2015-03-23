@@ -59,7 +59,7 @@ int main(int argc, char ** argv) {
       paramDomain);
 
   Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain);
-  
+
   QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix>
     postRv("post_", paramSpace);
 
@@ -68,13 +68,13 @@ int main(int argc, char ** argv) {
 
   QUESO::GslVector paramInitials(paramSpace.zeroVector());
   paramInitials[0] = 0.0;
-  
+
   QUESO::GslMatrix proposalCovMatrix(paramSpace.zeroVector());
   proposalCovMatrix(0, 0) = 0.1;
-  
+
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 
   MPI_Finalize();
- 
+
   return 0;
 }

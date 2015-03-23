@@ -48,11 +48,11 @@ void BIP_routine(glp_tree *tree, void *info)
 
   switch (reason) {
     case GLP_IROWGEN: // 0x01  /* request for row generation       */
-      sleep(1);  
+      sleep(1);
     break;
 
     case GLP_IBINGO:  // 0x02  /* better integer solution found    */
-      sleep(1);  
+      sleep(1);
     break;
 
     case GLP_IHEUR:   // 0x03  /* request for heuristic solution   */
@@ -769,7 +769,7 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
       }
     }
     auxInitialPosition.mpiBcast(0, m_env.subComm()); // Yes, 'subComm', important // KAUST
-   
+
 #if 0 // For debug only
     for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
       if (r == m_env.subComm().MyPID()) {
@@ -1036,7 +1036,7 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
       }
     }
     auxInitialPosition.mpiBcast(0, m_env.subComm()); // Yes, 'subComm', important // KAUST
-    
+
 #if 0 // For debug only
     for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
       if (r == m_env.subComm().MyPID()) {
@@ -4141,7 +4141,7 @@ MLSampling<P_V,P_M>::generateSequence_Step11_inter0(
   return;
 }
 
-// Default constructor -----------------------------  
+// Default constructor -----------------------------
 template<class P_V,class P_M>
 MLSampling<P_V,P_M>::MLSampling(
   const char*                        prefix,
@@ -4185,8 +4185,8 @@ MLSampling<P_V,P_M>::~MLSampling()
   if (m_targetDomain) delete m_targetDomain;
 }
 // Statistical methods-------------------------------
-/* This operation currently implements the PAMSSA algorithm (S. H. Cheung and E. E. Prudencio. Parallel adaptive multilevel 
- * sampling algorithms for the Bayesian analysis of mathematical models. International Journal 
+/* This operation currently implements the PAMSSA algorithm (S. H. Cheung and E. E. Prudencio. Parallel adaptive multilevel
+ * sampling algorithms for the Bayesian analysis of mathematical models. International Journal
  * for Uncertainty Quantification, 2(3):215237, 2012.)*/
 template <class P_V,class P_M>
 void
@@ -4704,7 +4704,7 @@ MLSampling<P_V,P_M>::generateSequence(
       currLogTargetValues            = prevLogTargetValues;
     }
     } // while (tryExponentEta) // gpmsa1
-    
+
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) { // gpmsa1
       *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
                               << ", level " << m_currLevel+LEVEL_REF_ID

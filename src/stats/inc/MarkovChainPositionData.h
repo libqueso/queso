@@ -35,12 +35,12 @@ namespace QUESO {
  * \class MarkovChainPositionData
  * \brief A templated class that represents a Markov Chain.
  *
- * This class implements a Markov Chain. It contains important information about a position such as 
- * whether or not it is out of the target support and its logarithmic values of the likelihood and 
- * of the target, besides the position location. A Markov chain is collection of random variables 
- * {X_t}, where the index t runs through 0, 1, ..., having the property that, given the present, 
- * the future is conditionally independent of the past. For instance, a Markov chain is passed to 
- * the Metropolis-Hastings algorithm and on it is calculated the acceptance ration 
+ * This class implements a Markov Chain. It contains important information about a position such as
+ * whether or not it is out of the target support and its logarithmic values of the likelihood and
+ * of the target, besides the position location. A Markov chain is collection of random variables
+ * {X_t}, where the index t runs through 0, 1, ..., having the property that, given the present,
+ * the future is conditionally independent of the past. For instance, a Markov chain is passed to
+ * the Metropolis-Hastings algorithm and on it is calculated the acceptance ration
  * MetropolisHastingsSG::alpha(). */
 
 template <class V>
@@ -53,9 +53,9 @@ public:
   /*! It allocates a new Markov chain, given the environment. All the other private attributes are either
    * NULL, false or zero.*/
   MarkovChainPositionData(const BaseEnvironment& env);
-  
+
   //! Constructor 2.
- /*! It allocates a new Markov chain, and the vector \c vecValues, given the environment, the likelihood and 
+ /*! It allocates a new Markov chain, and the vector \c vecValues, given the environment, the likelihood and
   * target values and sets whether or not it is out of target support.*/
   MarkovChainPositionData(const BaseEnvironment& env,
                                  const V& vecValues,
@@ -65,7 +65,7 @@ public:
   //! Constructor 3: copy.
   /*! The new Markov chain is a copy of \c rhs.*/
   MarkovChainPositionData(const MarkovChainPositionData<V>& rhs);
-  
+
   //! Destructor
   ~MarkovChainPositionData();
   //@}
@@ -75,18 +75,18 @@ public:
   //! Assignment operator.
   MarkovChainPositionData<V>& operator= (const MarkovChainPositionData<V>& rhs);
   //@}
-  
+
   //! @name Statistical/Mathematical methods
   //@{
   //! Values of the chain (vector); access to private attribute m_vecValues.
   const V& vecValues         () const;
-  
+
   //! Whether or not a position is out of target support; access to private attribute m_outOfTargetSupport.
   bool     outOfTargetSupport() const;
-  
+
   //! Logarithm of the value of the likelihood; access to private attribute m_logLikelihood.
   double   logLikelihood     () const;
-  
+
   //! Logarithm of the value of the target; access to private attribute m_logTarget.
   double   logTarget         () const;
 
@@ -109,7 +109,7 @@ public:
     return os;
   }
   //@}
-  
+
 private:
   const BaseEnvironment& m_env;
   V*     m_vecValues;

@@ -38,16 +38,16 @@ namespace QUESO {
 /*!
  * \class ConcatenatedVectorRealizer
  * \brief A class for handling sampling from concatenated probability density distributions.
- * 
- * This class allows the user draw samples from concatenated probability density distributions (two 
- * or more distinct probability distributions has(ve) been concatenated into one single vector RV). 
- * This class used, for instance, to draw realization of concatenate priors from two or more RVs, 
+ *
+ * This class allows the user draw samples from concatenated probability density distributions (two
+ * or more distinct probability distributions has(ve) been concatenated into one single vector RV).
+ * This class used, for instance, to draw realization of concatenate priors from two or more RVs,
  * where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 
 template<class V, class M>
 class ConcatenatedVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
@@ -66,7 +66,7 @@ public:
   //! Destructor
   ~ConcatenatedVectorRealizer();
   //@}
-  
+
   //! @name Realization-related methods
   //@{
   void realization(V& nextValues) const;

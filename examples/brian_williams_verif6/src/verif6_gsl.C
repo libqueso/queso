@@ -211,7 +211,7 @@ double likelihoodRoutine(
     // Just to eliminate INTEL compiler warnings
   }
 
-  struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr; 
+  struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr;
   std::vector<double>& as = *(likelihoodData->as);
   uqGslVectorClass bVec(*(likelihoodData->bVec));
   unsigned int p = bVec.sizeLocal();

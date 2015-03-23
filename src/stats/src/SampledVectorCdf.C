@@ -90,7 +90,7 @@ SampledVectorCdf<V,M>::cdf(unsigned int rowId) const
 
   SampledVectorCdf<V,M>* tmp = const_cast<SampledVectorCdf<V,M>*>(this);
   return *(tmp->m_cdfs(rowId,0));
-  
+
 }
 // I/O methods---------------------------------------
 template <class V, class M>

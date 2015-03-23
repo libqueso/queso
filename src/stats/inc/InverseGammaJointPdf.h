@@ -66,11 +66,11 @@ public:
   //! Actual value of the Gamma PDF.
   /*! This routine calls method lnValue() and returns the exponent of the returning value of such method.*/
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! TODO: Logarithm of the value of the Gamma PDF.
   /*! \todo: implement me!*/
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;

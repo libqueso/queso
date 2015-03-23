@@ -109,7 +109,7 @@ int main(int argc, char ** argv) {
   //init env
   MPI_Init(&argc,&argv);
   // Step 1: Set up QUESO environment
-  QUESO::FullEnvironment* env = 
+  QUESO::FullEnvironment* env =
     new QUESO::FullEnvironment(MPI_COMM_WORLD,"test_Regression/jeffreys_input.txt","",NULL);
 
   //compute

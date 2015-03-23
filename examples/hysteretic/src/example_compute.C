@@ -25,8 +25,8 @@
  *
  * $Id$
  *
- * Brief description of this file: 
- * 
+ * Brief description of this file:
+ *
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
@@ -42,12 +42,12 @@
 #include <example_hyst.h>
 
 void compute(const QUESO::FullEnvironment& env) {
-  
+
   struct timeval timevalNow;
   gettimeofday(&timevalNow, NULL);
   std::cout << std::endl << "Beginning run of 'Hysteretic' example at "
             << ctime(&timevalNow.tv_sec);
-	    
+
   //------------------------------------------------------
   // Step 1 of 5: Instantiate the parameter space
   //------------------------------------------------------
@@ -81,9 +81,9 @@ void compute(const QUESO::FullEnvironment& env) {
   //------------------------------------------------------
   // Step 3 of 5: Instantiate the likelihood function object
   //------------------------------------------------------
-  std::cout << "\tInstantiating the Likelihood; calling internally the hysteretic model" 
-	    << std::endl; 
-	    
+  std::cout << "\tInstantiating the Likelihood; calling internally the hysteretic model"
+	    << std::endl;
+
   likelihoodRoutine_DataType likelihoodRoutine_Data;
   likelihoodRoutine_Data.floor.resize(4,NULL);
   unsigned int numTimeSteps = 401;
@@ -107,7 +107,7 @@ void compute(const QUESO::FullEnvironment& env) {
     (*likelihoodRoutine_Data.floor[0])[numObservations]=tmpA;
      numObservations++;
   }
- 
+
   numObservations=0;
   FILE *inp1_2;
   inp1_2=fopen("measured_data1_2.txt","r");
@@ -115,8 +115,8 @@ void compute(const QUESO::FullEnvironment& env) {
     (*likelihoodRoutine_Data.floor[1])[numObservations]=tmpA;
     numObservations++;
   }
- 
-  numObservations=0; 
+
+  numObservations=0;
   FILE *inp1_3;
   inp1_3=fopen("measured_data1_3.txt","r");
   while (fscanf(inp1_3,"%lf",&tmpA) != EOF) {
@@ -142,18 +142,18 @@ void compute(const QUESO::FullEnvironment& env) {
   //------------------------------------------------------
   // Step 4 of 5: Instantiate the inverse problem
   //------------------------------------------------------
-  std::cout << "\tInstantiating the SIP" << std::endl; 
-  
+  std::cout << "\tInstantiating the SIP" << std::endl;
+
   QUESO::UniformVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     priorRvA("priorA_", paramDomainA);
 
   QUESO::GslVector meanVec(paramSpaceB.zeroVector());
   QUESO::GslVector diagVec(paramSpaceB.zeroVector());
-  
+
   diagVec.cwSet(0.6*0.6);
-  
+
   QUESO::GslMatrix covMatrix(diagVec);
-  
+
   QUESO::GaussianVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     priorRvB("priorB_", paramDomainB,meanVec,covMatrix);
 
@@ -162,17 +162,17 @@ void compute(const QUESO::FullEnvironment& env) {
 
   QUESO::GenericVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     postRv("post_", paramSpace);
-    
+
   QUESO::StatisticalInverseProblem<QUESO::GslVector,QUESO::GslMatrix>
     ip("", NULL, priorRv, likelihoodFunctionObj, postRv);
 
   //------------------------------------------------------
   // Step 5 of 5: Solve the inverse problem
   //------------------------------------------------------
-  std::cout << "\tSolving the SIP with Multilevel method" << std::endl;  
-	    
+  std::cout << "\tSolving the SIP with Multilevel method" << std::endl;
+
   ip.solveWithBayesMLSampling();
-  
+
   gettimeofday(&timevalNow, NULL);
   std::cout << "Ending run of 'Hysteretic' example at "
               << ctime(&timevalNow.tv_sec) << std::endl;
@@ -231,7 +231,7 @@ void debug_hyst(const QUESO::FullEnvironment& env) {
   QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> u     (floorSpace,numTimeSteps,""); // absolute displacement
   QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> ud    (floorSpace,numTimeSteps,""); // velocity
   QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> udd   (floorSpace,numTimeSteps,""); // acceleration
-  QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> resfor(floorSpace,numTimeSteps,""); // restoring force 
+  QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> resfor(floorSpace,numTimeSteps,""); // restoring force
   QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> ru    (floorSpace,numTimeSteps,""); // relative displacement
 
   u.setPositionValues     (0,floorSpace.zeroVector());
@@ -257,14 +257,14 @@ void debug_hyst(const QUESO::FullEnvironment& env) {
                   udd,
                   resfor,
                   ru);
-  
+
   std::set<unsigned int> auxSet;
   auxSet.insert(0);
-  
+
   // Writing some data to the file 'outputData/cpp_output.m'
   std::ofstream myFile;
   myFile.open ("outputData/cpp_output.m");
-  
+
   // Write 't_cpp'
   myFile << "t_cpp = zeros(" << 1 << "," << numTimeSteps << ");\n"
           << "t_cpp = [";
@@ -344,6 +344,6 @@ void debug_hyst(const QUESO::FullEnvironment& env) {
   myFile << "];" << std::endl;
 
   myFile.close();
- 
+
   return;
 }

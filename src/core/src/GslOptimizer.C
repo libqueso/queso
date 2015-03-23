@@ -169,7 +169,7 @@ GslOptimizer::GslOptimizer(
 {
   // We initialize the minimizer to GSL_NAN just in case the optimization fails
   m_minimizer->cwSet(GSL_NAN);
-  
+
   // Set to documented default value.
   m_fstep_size.cwSet(0.1);
 }
@@ -226,7 +226,7 @@ GslOptimizer::minimizer() const
 {
   return *(this->m_minimizer);
 }
-  
+
   void GslOptimizer::set_solver_type( SolverType solver )
   {
     m_solver_type = solver;

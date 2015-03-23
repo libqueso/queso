@@ -369,7 +369,7 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
 }
 //--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-const GenericVectorRV<Q_V,Q_M>& 
+const GenericVectorRV<Q_V,Q_M>&
 StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv() const
 {
   return m_qoiRv;
@@ -410,7 +410,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
                       "m_paramChain is NULL");
 
   return *m_paramChain;
- 
+
 }
 // I/O methods--------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>

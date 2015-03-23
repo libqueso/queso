@@ -64,7 +64,7 @@ UniformVectorRealizer<V,M>::realization(V& nextValues) const
                       m_env.worldRank(),
                       "UniformVectorRealizer<V,M>::realization()",
                       "only box images are supported right now");
-  
+
   nextValues.cwSetUniform(imageBox->minValues(),imageBox->maxValues());
   return;
 }

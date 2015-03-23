@@ -66,14 +66,14 @@ public:
   //! Actual value of the Beta PDF.
   /*! This routine calls method lnValue() and returns the exponent of the returning value of such method.*/
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Logarithm of the value of the Beta PDF.
   /*! If the normalization style (m_normalizationStyle) is zero, then this routine calls a environment method
-   * which handles basic PDFs, e.g. basicPdfs()->betaPdfActualValue() and adds the log of the normalization 
-   * factor (m_logOfNormalizationFactor) to it; otherwise the method uses the formula: \f$ lnValue = 
+   * which handles basic PDFs, e.g. basicPdfs()->betaPdfActualValue() and adds the log of the normalization
+   * factor (m_logOfNormalizationFactor) to it; otherwise the method uses the formula: \f$ lnValue =
    * \sum[ (alpha_i-1)*log(domainVector_i) + (beta_i-1)*log(1-domainVector_i)] + m_logOfNormalizationFactor \f$. */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;

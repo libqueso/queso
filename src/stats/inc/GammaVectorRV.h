@@ -43,28 +43,28 @@ namespace QUESO {
 /*!
  * \class GammaVectorRV
  * \brief A class representing a vector RV constructed via Gamma distribution.
- * 
+ *
  * This class allows the user to compute the value of a Gamma PDF and to generate realizations
  * (samples) from it.\n
- * 
- * The gamma probability density function for a given value x and given pair of parameters 
- * \b a and \b b is: 
+ *
+ * The gamma probability density function for a given value x and given pair of parameters
+ * \b a and \b b is:
  *  \f[ y=f(x|a,b)= \frac{1}{b^{a}\Gamma(a)} x^{a-1} e^{\frac{x}{b}}, \f]
  * where \f$ \Gamma(.) \f$ is the Gamma function:
- * \f[  B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}=\frac{(a-1)!(b-1)!}{(a+b-1)!}.\f] 
- * The parameters \b a and \b b must all be positive, and the values \c x  must lie on the 
+ * \f[  B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}=\frac{(a-1)!(b-1)!}{(a+b-1)!}.\f]
+ * The parameters \b a and \b b must all be positive, and the values \c x  must lie on the
  * interval \f$ (0, \infty)\f$. */
-  
+
 template<class V, class M>
 class GammaVectorRV : public BaseVectorRV<V,M> {
 public:
-  
+
       //! @name Constructor/Destructor methods
   //@{
   //! Default Constructor
   /*! Construct a Gamma vector RV with parameters \c a>0  and \c b>0, whose variates live in \c imageSet.
-   * The constructor will check whether or not the data provided via \c imageSet belongs to 
-   * \f$ (0, \infty)\f$, which is a requirement imposed by the Gamma distribution. If this condition 
+   * The constructor will check whether or not the data provided via \c imageSet belongs to
+   * \f$ (0, \infty)\f$, which is a requirement imposed by the Gamma distribution. If this condition
    * is not satisfied, an error  message will be displayed and the program will exit. */
   GammaVectorRV(const char*                  prefix,
                        const VectorSet<V,M>& imageSet,
@@ -73,14 +73,14 @@ public:
   //! Virtual destructor
   virtual ~GammaVectorRV();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.
   /*! \todo: implement me!*/
   void print(std::ostream& os) const;
   //@}
-  
+
 private:
   using BaseVectorRV<V,M>::m_env;
   using BaseVectorRV<V,M>::m_prefix;

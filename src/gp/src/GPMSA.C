@@ -322,7 +322,7 @@ GPMSAFactory<V, M>::parameterSpace() const
 {
   return this->m_parameterSpace;
 }
- 
+
 template <class V, class M>
 const VectorSpace<V, M> &
 GPMSAFactory<V, M>::simulationOutputSpace() const

@@ -44,9 +44,9 @@ namespace QUESO {
  * \brief A templated class for handling generic vector RVs.
  *
  * This class allows the user to compute the value of the PDF of a generic random variable (RV)
- * and to generate realizations (samples) from such PDF.  This is the class used by QUESO to 
+ * and to generate realizations (samples) from such PDF.  This is the class used by QUESO to
  * store the solution of an statistical inverse problem. */
- 
+
 template<class V, class M>
 class GenericVectorRV : public BaseVectorRV<V,M> {
 public:
@@ -56,7 +56,7 @@ public:
   /*! Constructs a new instance, given a prefix and the image set of the vector RV.*/
   GenericVectorRV(const char*                           prefix,
                          const VectorSet         <V,M>& imageSet);
-  
+
   //! Constructor
   /*! Constructs a new instance, given all the attributes that characterize the vector RV: prefix, image set, pdf, etc.*/
   GenericVectorRV(const char*                           prefix,
@@ -69,25 +69,25 @@ public:
   //! Virtual destructor
   virtual ~GenericVectorRV();
   //@}
-  
+
     //! @name Random variable-handling methods
   //@{
-  //! Sets the PDF of \c this vector RV  to \c pdf.  
+  //! Sets the PDF of \c this vector RV  to \c pdf.
   void setPdf       (BaseJointPdf      <V,M>& pdf       );
-  
-  //! Sets the realizer of \c this vector RV  to \c realizer.  
+
+  //! Sets the realizer of \c this vector RV  to \c realizer.
   void setRealizer  (BaseVectorRealizer<V,M>& realizer  );
-  
+
   //! Sets the CDF of the sub-sequence of \c this vector RV  to \c subCdf.
   void setSubCdf    (BaseVectorCdf     <V,M>& subCdf    );
-  
+
   //! Sets the CDF of the unified sequence of \c this vector RV  to \c unifiedCdf.
   void setUnifiedCdf(BaseVectorCdf     <V,M>& unifiedCdf);
-  
+
   //! Sets the MDF of  \c this vector RV  to \c Mdf.
   void setMdf       (BaseVectorMdf     <V,M>& mdf       );
-  //@}  
-   
+  //@}
+
     //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.

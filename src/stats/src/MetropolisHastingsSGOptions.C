@@ -530,7 +530,7 @@ MetropolisHastingsSGOptions::~MetropolisHastingsSGOptions()
   if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptionsObj;
 #endif
   if (m_optionsDesc                      ) delete m_optionsDesc;
-} 
+}
 
 // I/O methods -------------------------------------
 void
@@ -655,7 +655,7 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
 void
 MetropolisHastingsSGOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
-  optionsDesc.add_options()     
+  optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                                                "produce help msg for Bayesian Metropolis-Hastings"          )
     (m_option_dataOutputFileName.c_str(),                         po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                           ), "name of generic output file"                                )
     (m_option_dataOutputAllowAll.c_str(),                         po::value<bool        >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                           ), "allow all subEnvs write to a generic output file"           )

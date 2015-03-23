@@ -50,15 +50,15 @@ namespace QUESO {
   /*! queso_terminate_handler
    *  \brief Function for unhandled exceptions in Queso
    *
-   *  This function deals with unhandled exceptions encountered in Queso. 
-   *  It provides a call to MPI_abort using the global communicator. 
+   *  This function deals with unhandled exceptions encountered in Queso.
+   *  It provides a call to MPI_abort using the global communicator.
    */
   void queso_terminate_handler();
 
 /*! \struct FilePtrSetStruct
  *  \brief Struct for handling data input and output from files.
  *
- *  This struct deals with data input and output from files. 
+ *  This struct deals with data input and output from files.
  *  It encapsulates the input/output stream class std:: fstream.
  */
 

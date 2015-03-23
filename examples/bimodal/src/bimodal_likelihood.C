@@ -41,9 +41,9 @@ double likelihoodRoutine(
       functionDataPtr ||
       gradVector      ||
       hessianMatrix   ||
-      hessianEffect) {}; // just to remove compiler warning  
+      hessianEffect) {}; // just to remove compiler warning
 
-    double returnValue = 0.;  
+    double returnValue = 0.;
     double x = paramValues[0];
     double mean1  = 10.;
     double sigma1 = 1.;
@@ -55,8 +55,8 @@ double likelihoodRoutine(
     double y2 = (x-mean2)*(x-mean2)/(2.*sigma2*sigma2);
     double z2 = (1./sigma2/sqrt(2*M_PI))*exp(-y2);
 
-    double resultValue = -2*log((z1+2.*z2)/3.); 
-    
+    double resultValue = -2*log((z1+2.*z2)/3.);
+
     if (resultValue == INFINITY) {
       //std::cerr << "WARNING In likelihoodRoutine"
       //          << ", fullRank "       << paramValues.env().fullRank()
@@ -72,7 +72,7 @@ double likelihoodRoutine(
     }
 
     returnValue = -.5*resultValue;
-  
+
 
   if (paramValues.env().exceptionalCircumstance()) {
     if ((paramValues.env().subDisplayFile()       ) &&
@@ -84,5 +84,5 @@ double likelihoodRoutine(
     }
   }
 
-  return returnValue;  
+  return returnValue;
 }

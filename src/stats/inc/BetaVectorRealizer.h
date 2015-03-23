@@ -35,17 +35,17 @@ namespace QUESO {
 //*****************************************************
 // Beta class [R-05]
 //*****************************************************
-/*! 
+/*!
  * \class BetaVectorRealizer
  * \brief A class for handling sampling from a Beta probability density distribution.
  *
- * This class handles sampling from a Beta probability density distribution, of 
+ * This class handles sampling from a Beta probability density distribution, of
  * parameters \c alpha and \c beta.*/
 
 template<class V, class M>
 class BetaVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
-  
+
    //! @name Constructor/Destructor methods
   //@{
   //! Constructor
@@ -56,7 +56,7 @@ public:
                             const VectorSet<V,M>& unifiedImageSet,
                             const V&                     alpha,
                             const V&                     beta);
- 
+
   //! Destructor
   ~BetaVectorRealizer();
   //@}
@@ -64,9 +64,9 @@ public:
     //! @name Realization-related methods
   //@{
   //! Draws a realization.
-  /*! This function draws a realization of a Beta distribution and saves it in \c nextValues. 
-   * It internally checks whether the image set, where the realization should be drawn, belongs 
-   * to the interval (0, 1] - which is the range where Beta distribution is defined over. */ 
+  /*! This function draws a realization of a Beta distribution and saves it in \c nextValues.
+   * It internally checks whether the image set, where the realization should be drawn, belongs
+   * to the interval (0, 1] - which is the range where Beta distribution is defined over. */
   void realization(V& nextValues) const;
   //@}
 private:

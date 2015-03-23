@@ -38,7 +38,7 @@ void qoiRoutine(const QUESO::GslVector&                    paramValues,
                       QUESO::DistArray<QUESO::GslVector*>* hessianEffects)
 {
   if (paramDirection  &&
-      functionDataPtr && 
+      functionDataPtr &&
       gradVectors     &&
       hessianMatrices &&
       hessianEffects) {
@@ -52,23 +52,23 @@ void qoiRoutine(const QUESO::GslVector&                    paramValues,
   double criticalTime  = ((qoiRoutine_Data *) functionDataPtr)->m_criticalTime;
 
   double params[]={A,E,beta};
-      	
+
   // integration
   const gsl_odeiv_step_type *T   = gsl_odeiv_step_rkf45; //rkf45; //gear1;
         gsl_odeiv_step      *s   = gsl_odeiv_step_alloc(T,1);
         gsl_odeiv_control   *c   = gsl_odeiv_control_y_new(1e-6,0.0);
         gsl_odeiv_evolve    *e   = gsl_odeiv_evolve_alloc(1);
-        gsl_odeiv_system     sys = {func, NULL, 1, (void *)params}; 
-	
+        gsl_odeiv_system     sys = {func, NULL, 1, (void *)params};
+
   double temperature = 0.1;
   double h = 1e-3;
   double Mass[1];
   Mass[0]=1.;
-  
+
   double temperature_old = 0.;
   double M_old[1];
   M_old[0]=1.;
-	
+
   double crossingTemperature = 0.;
   //unsigned int loopSize = 0;
   while ((temperature < criticalTime*beta) &&
@@ -84,14 +84,14 @@ void qoiRoutine(const QUESO::GslVector&                    paramValues,
     if (Mass[0] <= criticalMass) {
       crossingTemperature = temperature_old + (temperature - temperature_old) * (M_old[0]-criticalMass)/(M_old[0]-Mass[0]);
     }
-		
+
     temperature_old=temperature;
     M_old[0]=Mass[0];
   }
 
   if (criticalMass > 0.) qoiValues[0] = crossingTemperature/beta; // QoI = time to achieve critical mass
   if (criticalTime > 0.) qoiValues[0] = Mass[0];                  // QoI = mass fraction remaining at critical time
-	
+
   //printf("loopSize = %d\n",loopSize);
   if ((paramValues.env().displayVerbosity() >= 3) && (paramValues.env().fullRank() == 0)) {
     printf("In qoiRoutine(), A = %g, E = %g, beta = %.3lf, criticalTime = %.3lf, criticalMass = %.3lf: qoi = %lf.\n",A,E,beta,criticalTime,criticalMass,qoiValues[0]);

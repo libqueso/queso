@@ -164,7 +164,7 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   //****************************************************
-  // Open generic output file      
+  // Open generic output file
   //****************************************************
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
@@ -197,7 +197,7 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   if ((m_numPsNotSubWritten                        >  0                             ) &&
       (m_optionsObj->m_ov.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE)) {
     workingPSeq.subWriteContents(subActualSizeBeforeGeneration - m_numPsNotSubWritten,
-                                 m_numPsNotSubWritten, 
+                                 m_numPsNotSubWritten,
                                  m_optionsObj->m_ov.m_pseqDataOutputFileName,
                                  m_optionsObj->m_ov.m_pseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_pseqDataOutputAllowedSet);
@@ -262,7 +262,7 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   if ((m_numQsNotSubWritten                        >  0                             ) &&
       (m_optionsObj->m_ov.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE)) {
     workingQSeq.subWriteContents(subActualSizeBeforeGeneration - m_numQsNotSubWritten,
-                                 m_numQsNotSubWritten, 
+                                 m_numQsNotSubWritten,
                                  m_optionsObj->m_ov.m_qseqDataOutputFileName,
                                  m_optionsObj->m_ov.m_qseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_qseqDataOutputAllowedSet);
@@ -311,7 +311,7 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 #endif
   //****************************************************
-  // Close generic output file      
+  // Close generic output file
   //****************************************************
   if (genericFilePtrSet.ofsVar) {
     //std::cout << "TODAY 000" << std::endl;
@@ -403,11 +403,11 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
     //if (allQsAreFinite) { // FIXME: this will cause different processors to have sequences of different sizes
       workingPSeq.setPositionValues(i,tmpP);
       m_numPsNotSubWritten++;
-      if ((m_optionsObj->m_ov.m_pseqDataOutputPeriod           >  0  ) && 
+      if ((m_optionsObj->m_ov.m_pseqDataOutputPeriod           >  0  ) &&
           (((i+1) % m_optionsObj->m_ov.m_pseqDataOutputPeriod) == 0  ) &&
           (m_optionsObj->m_ov.m_pseqDataOutputFileName         != ".")) {
         workingPSeq.subWriteContents(i + 1 - m_optionsObj->m_ov.m_pseqDataOutputPeriod,
-                                     m_optionsObj->m_ov.m_pseqDataOutputPeriod, 
+                                     m_optionsObj->m_ov.m_pseqDataOutputPeriod,
                                      m_optionsObj->m_ov.m_pseqDataOutputFileName,
                                      m_optionsObj->m_ov.m_pseqDataOutputFileType,
                                      m_optionsObj->m_ov.m_pseqDataOutputAllowedSet);
@@ -421,11 +421,11 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
       workingQSeq.setPositionValues(i,tmpQ);
       m_numQsNotSubWritten++;
-      if ((m_optionsObj->m_ov.m_qseqDataOutputPeriod           >  0  ) && 
+      if ((m_optionsObj->m_ov.m_qseqDataOutputPeriod           >  0  ) &&
           (((i+1) % m_optionsObj->m_ov.m_qseqDataOutputPeriod) == 0  ) &&
           (m_optionsObj->m_ov.m_qseqDataOutputFileName         != ".")) {
         workingQSeq.subWriteContents(i + 1 - m_optionsObj->m_ov.m_qseqDataOutputPeriod,
-                                     m_optionsObj->m_ov.m_qseqDataOutputPeriod, 
+                                     m_optionsObj->m_ov.m_qseqDataOutputPeriod,
                                      m_optionsObj->m_ov.m_qseqDataOutputFileName,
                                      m_optionsObj->m_ov.m_qseqDataOutputFileType,
                                      m_optionsObj->m_ov.m_qseqDataOutputAllowedSet);
@@ -441,7 +441,7 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
     //}
 
-    if ((m_optionsObj->m_ov.m_qseqDisplayPeriod            > 0) && 
+    if ((m_optionsObj->m_ov.m_qseqDisplayPeriod            > 0) &&
         (((i+1) % m_optionsObj->m_ov.m_qseqDisplayPeriod) == 0)) {
       if (m_env.subDisplayFile()) {
         *m_env.subDisplayFile() << "Finished generating " << i+1

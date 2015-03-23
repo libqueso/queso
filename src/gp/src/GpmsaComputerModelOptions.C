@@ -179,7 +179,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
 GpmsaComputerModelOptions::~GpmsaComputerModelOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
-} 
+}
 
 void
 GpmsaComputerModelOptions::scanOptionsValues()

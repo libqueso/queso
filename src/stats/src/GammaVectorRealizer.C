@@ -67,45 +67,45 @@ GammaVectorRealizer<V,M>::realization(V& nextValues) const
 // begin kemelli 2013-April-22 :
   const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&this->m_unifiedImageSet);
 //  double biggerOfMaxValues = imageBox->maxValues().getMaxValue();
-  double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
+  double smallerOfMaxValues = imageBox->maxValues().getMinValue();
   double smallerOfMinValues = imageBox->minValues().getMinValue();
-  
- // Gamma dist belongs to (0,inf)		
- if( smallerOfMinValues < 0 ) //(biggerOfMinValues < 0) || 
- {		
-   std::cerr << "In GammaVectorRealizer<V,M>::realization()\n" 
+
+ // Gamma dist belongs to (0,inf)
+ if( smallerOfMinValues < 0 ) //(biggerOfMinValues < 0) ||
+ {
+   std::cerr << "In GammaVectorRealizer<V,M>::realization()\n"
        << "Gamma distribution is only defined in (0, infinity).\n"
        << "The data provided is: \n"
-       << *imageBox 
-         << "Sampling will not cover all interval.\n"   
+       << *imageBox
+         << "Sampling will not cover all interval.\n"
          << std::endl;
 
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
                       "GammaVectorRealizer<V,M>::realization()",
-                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");      
-                      
+                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");
+
  //  UQ_FATAL_TEST_MACRO(biggerOfMaxValues < 0,
  //                     m_env.worldRank(),
  //                     "GammaVectorRealizer<V,M>::realization()",
- //                     "invalid input: Gamma distribution is only defined in (0, infinity). ");            
-              
- }	
+ //                     "invalid input: Gamma distribution is only defined in (0, infinity). ");
 
-  // end kemelli 2013-April-22 
-  
-  // begin kemelli 2013-April-18 : 
+ }
+
+  // end kemelli 2013-April-22
+
+  // begin kemelli 2013-April-18 :
   bool outOfSupport = true;
   do {
 
   nextValues.cwSetGamma(m_a,m_b);
   outOfSupport = !(this->m_unifiedImageSet.contains(nextValues));
 
-  } while (outOfSupport); 
+  } while (outOfSupport);
 
   // end kemelli 2013-April-18 :
-  
+
   return;
 }
 

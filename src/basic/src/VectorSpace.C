@@ -69,7 +69,7 @@ VectorSpace<V,M>::VectorSpace(const BaseEnvironment& env, const char* prefix,
                             << "\n  componentsNamesVec         = " << componentsNamesVec
                             << std::endl;
   }
- 
+
   if (m_zeroVector->sizeGlobal() != m_dimGlobal) {
     std::cerr << "In VectorSpace<V,M>::constructor(1)"
               << ", with m_prefix = " << m_prefix
@@ -318,7 +318,7 @@ template<class V, class M>
 void VectorSpace<V,M>::printComponentsNames(std::ostream& os,
     bool printHorizontally) const
 {
-  if (printHorizontally) { 
+  if (printHorizontally) {
     for (unsigned int i = 0; i < this->dimLocal(); ++i) {
       os << "'" << this->localComponentName(i) << "'"
          << " ";

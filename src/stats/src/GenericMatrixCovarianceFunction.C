@@ -35,7 +35,7 @@ GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::GenericMatrixCovarianceFunctio
   const VectorSet<Q_V,Q_M>& imageSet,
   void (*covRoutinePtr)(const P_V& positionVector1, const P_V& positionVector2, const void* routineDataPtr, Q_M& imageMatrix),
   const void*                      routinesDataPtr)
-  : 
+  :
   BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>(prefix,basicDomainSet,imageSet),
   m_covRoutinePtr                                     (covRoutinePtr),
   m_routineDataPtr                                    (routinesDataPtr)

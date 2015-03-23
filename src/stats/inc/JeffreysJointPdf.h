@@ -63,14 +63,14 @@ public:
    */
   double actualValue(const V& domainVector, const V* domainDirection, V*
       gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Logarithm of the value of the jeffreys PDF.
   /*!
    * Analogous to the \c actualValue routine, except that the logarithm of the
    * calculated value is returned.
    */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //TODO: do we want this part?
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/

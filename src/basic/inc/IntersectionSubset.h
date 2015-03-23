@@ -34,15 +34,15 @@ namespace QUESO {
  * \brief A templated class representing the intersection of two vector sets.
  *
  * This class is used to determine if a vector  belongs to the intersection of
- * two vector sets. It is useful for handling a posterior PDF, since its domain 
- * is the intersection of the domain of the prior PDF with the domain of the 
+ * two vector sets. It is useful for handling a posterior PDF, since its domain
+ * is the intersection of the domain of the prior PDF with the domain of the
  * likelihood function.*/
 
 template<class V, class M>
 class IntersectionSubset : public VectorSubset<V,M> {
 public:
   //! @name Constructor/Destructor methods.
-  //@{ 
+  //@{
   //! Default, shaped constructor.
   /*! Creates the class for the intersection of two vector sets, given a vector space, its volume and the
    * sets.*/
@@ -51,33 +51,33 @@ public:
                                   double                   volume,
                             const VectorSet<V,M>&   set1,
                             const VectorSet<V,M>&   set2);
-  
+
   //! Destructor.
  ~IntersectionSubset();
   //@}
- 
+
    //! @name Mathematical methods.
-  //@{ 
+  //@{
  //! Determines whether both sets m_set1 and m_set2 (class' private attributes) contain vector \c vec.
   bool contains(const V& vec)     const;
   //@}
-  
+
   //! @name I/O methods.
-  //@{ 
+  //@{
   //! Prints both subsets (via protected attributes m_set1 and m_set2).
   void print   (std::ostream& os) const;
   //@}
-  
+
 protected:
   using VectorSet   <V,M>::m_env;
   using VectorSet   <V,M>::m_prefix;
   using VectorSet   <V,M>::m_volume;
   using VectorSubset<V,M>::m_vectorSpace;
- 
-  //! Vector set: m_set1. 
+
+  //! Vector set: m_set1.
   /*! We seek the intersection of vectors set m_set1 and m_set2.*/
   const VectorSet<V,M>& m_set1;
-  
+
   //! Vector set: m_set2.
   const VectorSet<V,M>& m_set2;
 };

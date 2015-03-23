@@ -43,13 +43,13 @@ namespace QUESO {
 /*!
  * \class LogNormalVectorRV
  * \brief A class representing a LogNormal vector RV.
- * 
+ *
  * This class allows the user to compute the value of a LogNormal PDF and to generate realizations
  * (samples) from it.\n
- * 
- * The probability density function of a log-normal distribution is: 
+ *
+ * The probability density function of a log-normal distribution is:
  *   \f[ f(x|\mu,\sigma) = \frac{1}{x \sigma \sqrt{2 \pi}}\, e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}, x>0 \f]
- * where  the parameters denoted \f$ \mu \f$ and \f$ \sigma \f$ are, respectively, the mean and standard 
+ * where  the parameters denoted \f$ \mu \f$ and \f$ \sigma \f$ are, respectively, the mean and standard
  * deviation of the  variable's natural logarithm; and \c x>0.  */
 
 template<class V, class M>
@@ -57,18 +57,18 @@ class LogNormalVectorRV : public BaseVectorRV<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
-  //! Constructor  
+  //! Constructor
   /*! Construct a LogNormal vector RV with mean \c lawExpVector and diagonal covariance matrix
    * \c lawVarVector whose variates live in \c imageSet.*/
   LogNormalVectorRV(const char*                  prefix,
                            const VectorSet<V,M>& imageSet,
                            const V&                     lawExpVector,
                            const V&                     lawVarVector);
-  
+
   //! Virtual destructor
   virtual ~LogNormalVectorRV();
   //@}
- 
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.

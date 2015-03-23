@@ -32,13 +32,13 @@ namespace QUESO {
 
 /*!\file ArrayOfOneDTables
  * \brief Class to accommodate arrays of one-dimensional tables.
- * 
+ *
  * \class ArrayOfOneDTables
  * \brief Class to accommodate arrays of one-dimensional tables.
- *  
- * Arrays of one-dimensional tables are necessary in the calculation (storage), for 
- * instance, of CDFs and MDF of vector functions (refer to BaseVectorCdf, 
- * BaseVectorMdf, and derived classes) given the (array of) grid points 
+ *
+ * Arrays of one-dimensional tables are necessary in the calculation (storage), for
+ * instance, of CDFs and MDF of vector functions (refer to BaseVectorCdf,
+ * BaseVectorMdf, and derived classes) given the (array of) grid points
  * (ArrayOfOneDGrids).
  */
 
@@ -47,14 +47,14 @@ class ArrayOfOneDTables
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   ArrayOfOneDTables(const char* prefix, const VectorSpace<V,M>& rowSpace);
 
   //! Destructor.
   ~ArrayOfOneDTables();
   //@}
-  
+
   //! @name Math methods
   //@{
   //! Sets the one-dimensional table.
@@ -64,10 +64,10 @@ public:
   //! Returns the array located at position \c rowId of the one-dimensional table.
   const std::vector<double>& oneDTable   (unsigned int rowId) const;
   //@}
-  
+
   //! @name I/O method
   //@{
-  //! Prints the values in this array of tables.   
+  //! Prints the values in this array of tables.
   /*! It prints the arrays (inner for-loop) in each position of the table (outer for-loop).*/
   void                       print       (std::ostream& os)   const;
   //@}

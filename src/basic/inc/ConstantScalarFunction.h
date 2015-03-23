@@ -36,14 +36,14 @@ namespace QUESO {
 /*!\class ConstantScalarFunction
  * \brief A class for handling scalar functions which image is a constant (real number).
  *
- * This class allows the mathematical definition of a scalar function which image set 
+ * This class allows the mathematical definition of a scalar function which image set
  * is a constant (real number). */
 
 template<class V,class M>
 class ConstantScalarFunction : public BaseScalarFunction<V,M> {
 public:
     //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   /*! Instantiates an object of the class, i.e. a scalar function, given a prefix, its domain and constant-valued image.*/
   ConstantScalarFunction(const char*                  prefix,
@@ -53,10 +53,10 @@ public:
   virtual ~ConstantScalarFunction();
 
   //! @name Mathematical method
-  //@{ 
+  //@{
   //! Calculates the actual value of this scalar function.
   double actualValue      (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Calculates the logarithm of the value of this scalar function (which is zero).
   double lnValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   //@}

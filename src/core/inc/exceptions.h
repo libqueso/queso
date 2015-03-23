@@ -54,7 +54,7 @@ namespace QUESO
     public:
     NotImplemented() : std::logic_error( "Error: not implemented!" ) {}
   };
-  
+
   /*!
    * A class representing a failed attempt by the library to open a
    * file (or construct an fstream, etc), to be thrown by

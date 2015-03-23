@@ -25,8 +25,8 @@
  *
  * $Id$
  *
- * Brief description of this file: 
- * 
+ * Brief description of this file:
+ *
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
@@ -47,9 +47,9 @@ double likelihoodRoutine(
                       "example_likelihood()",
                       "invalid parameter size");
 
-  const std::vector<std::vector<double>* >& 
+  const std::vector<std::vector<double>* >&
     floor = ((likelihoodRoutine_DataType *) functionDataPtr)->floor;
-  const std::vector<double>&    
+  const std::vector<double>&
     accel = ((likelihoodRoutine_DataType *) functionDataPtr)->accel;
 
   unsigned int numFloors    = floor.size();
@@ -102,7 +102,7 @@ double likelihoodRoutine(
   QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> u     (floorSpace,numTimeSteps,""); // absolute displacement
   QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> ud    (floorSpace,numTimeSteps,""); // velocity
   QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> udd   (floorSpace,numTimeSteps,""); // acceleration
-  QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> resfor(floorSpace,numTimeSteps,""); // restoring force 
+  QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> resfor(floorSpace,numTimeSteps,""); // restoring force
   QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix> ru    (floorSpace,numTimeSteps,""); // relative displacement
 
   QUESO::GslVector massVec(floorSpace.zeroVector());
@@ -122,7 +122,7 @@ double likelihoodRoutine(
                   udd,
                   resfor,
                   ru);
- 
+
   QUESO::GslVector auxVec(floorSpace.zeroVector());
 
   double sum = 0.;
@@ -134,5 +134,5 @@ double likelihoodRoutine(
   }
 
   double result = -0.5*((double) numFloors)*((double) numTimeSteps)*log(2.*M_PI*sigmaSq) - 0.5*sum/sigmaSq;
-  return result; 
+  return result;
 }

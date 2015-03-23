@@ -21,9 +21,9 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// Brief description of this file: 
-// 
+//
+// Brief description of this file:
+//
 // This is an example of how to define and use some basic classes and
 // algorithms of QUESO, mainly 'uqGaussianVectorRV',
 // 'uqVectorSequence', realizations and statistical computations.

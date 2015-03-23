@@ -36,8 +36,8 @@ namespace QUESO {
  * \class VectorSpace
  * \brief A class representing a vector space.
  *
- * Template classes \c V and \c M are to represent a vector class and a matrix class 
- * respectively. Currently (as of version 0.46.0) QUESO has matrix and vector classes 
+ * Template classes \c V and \c M are to represent a vector class and a matrix class
+ * respectively. Currently (as of version 0.46.0) QUESO has matrix and vector classes
  * implemented using either GSL or Trilinos-Teuchos libraries. */
 
 template <class V, class M>
@@ -56,7 +56,7 @@ public:
                      const char*                     prefix,
                      unsigned int                    dimGlobalValue,
                      const std::vector<std::string>* componentsNamesVec);
-  
+
   //! Copy constructor.
   VectorSpace(const VectorSpace<V,M>&  aux);
 
@@ -64,19 +64,19 @@ public:
   ~VectorSpace();
   //@}
 
-  
+
   //! @name Attribute methods
   //@{
   //! Environment.
   const BaseEnvironment&  env                     () const;
-  
+
   //! Map.
   const Map&              map                     () const;
-  
+
   //! Returns total number of processes.
   unsigned int                   numOfProcsForStorage    () const;
-  
-  
+
+
   unsigned int                   dimLocal                () const;
   unsigned int                   dimGlobal               () const;
   unsigned int                   globalIdOfFirstComponent() const;
@@ -86,25 +86,25 @@ public:
   //@{
   //! Returns a vector filled with zeros
   const V&                       zeroVector              () const;
-  
+
   //! Creates an empty vector of size given by Map& map. See template specialization.
   V*                             newVector               () const; // See template specialization
-        
+
   //! Creates a vector of size given by Map& map and all values give by \c value. See template specialization
   V*                             newVector               (double value) const; // See template specialization
-        
+
   //! Creates vector as a copy of another.
   V*                             newVector               (const V& v) const;
-	
-  //! Creates an empty matrix of size given by Map& map. See template specialization.	
+
+  //! Creates an empty matrix of size given by Map& map. See template specialization.
   M*                             newMatrix               () const; // See template specialization
-  
+
   //! Creates a diagonal matrix with the elements and size of vector \c v.
   M*                             newDiagMatrix           (const V& v) const;
-  
-  //! Creates a diagonal matrix with the elements \c diagValue and size given by Map& map. See template specialization.	
+
+  //! Creates a diagonal matrix with the elements \c diagValue and size given by Map& map. See template specialization.
   M*                             newDiagMatrix           (double diagValue) const; // See template specialization
-  
+
   //! Creates a diagonal matrix conditionally to values from vector \c varVec, guaranteeing that its values are neither 0, NAN nor INFINITY.
   /*! If varVec[i] is either 0, NAN or INFINITY, then this method tries to assign the value (*auxVec)[i])^2
    * to matrix(i,i). Case (*auxVec)[i])^2 is either NAN or INFINITY, then matrix(i,i)=1.*/
@@ -112,26 +112,26 @@ public:
 
   //! Accessor method to \c this. Vector space to which \c this vector set belongs to.
   /*! It is virtual in the base class 'VectorSet'*/
-  const VectorSpace<V,M>&       vectorSpace             () const; // 
-  
+  const VectorSpace<V,M>&       vectorSpace             () const; //
+
   //! Whether \this vector contains vector \c vec.
   bool                           contains                (const V& vec) const;
 
   //! Access to private attribute m_componentsNamesArray, which is an instance of DistArray.
   const DistArray<std::string>* componentsNamesArray    () const;
-  
+
   //! Access to private attribute m_componentsNamesVec.
   const std::vector<std::string>*      componentsNamesVec      () const;
-  
+
   //! Returns the local component names.
   const std::string&                   localComponentName      (unsigned int localComponentId) const;
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! Prints the local component names.
   void                           printComponentsNames    (std::ostream& os, bool printHorizontally) const;
-  
+
   //! Prints only a message.
   void                           print                   (std::ostream& os) const;
   //@}
@@ -145,23 +145,23 @@ protected:
 
   //! Global dimension.
   unsigned int                   m_dimGlobal;
-  
+
   //! Map.
   const Map*              m_map;
-  
+
   //! Local dimension (number of elements owned by the calling processor.).
   unsigned int                   m_dimLocal;
-  
+
   //! Array of strings of the type DistArray to store the names of the components
   DistArray<std::string>* m_componentsNamesArray;
-  
+
   //! Vector of strings of the type DistArray to store the names of the components
   DistArray<std::string>* m_componentsNamesVec;
-  
+
   //! Empty string for the components names.
   std::string                    m_emptyComponentName;
 
-  //! A vector of all elements equal to zero. 
+  //! A vector of all elements equal to zero.
   V*                             m_zeroVector;
 };
 

@@ -39,13 +39,13 @@ namespace QUESO {
 //*****************************************************
 // Concatenated probability density class [PDF-11]
 //*****************************************************
-/*! 
+/*!
  * \class ConcatenatedJointPdf
  * \brief A class for handling concatenated PDFs.
  *
- * This class allows the user to defines concatenated probability density distributions, 
- * i.e, two or more distinct PDFs can be concatenated into one single PDF. 
- * This class used, for instance, to concatenate priors from two or more RVs, where one 
+ * This class allows the user to defines concatenated probability density distributions,
+ * i.e, two or more distinct PDFs can be concatenated into one single PDF.
+ * This class used, for instance, to concatenate priors from two or more RVs, where one
  * of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 
 template<class V, class M>
@@ -54,43 +54,43 @@ public:
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor
-  /*! Concatenates two PDFs: \c density1 and \c density2 into one vector PDF, given a prefix 
+  /*! Concatenates two PDFs: \c density1 and \c density2 into one vector PDF, given a prefix
    * and the concatenated domain of such PDFs.*/
   ConcatenatedJointPdf(const char*                     prefix,
                               const BaseJointPdf<V,M>& density1,
                               const BaseJointPdf<V,M>& density2,
-                              const VectorSet   <V,M>& concatenatedDomain); 
-  
+                              const VectorSet   <V,M>& concatenatedDomain);
+
   //! Constructor
   /*! Concatenates a sequence of PDFs, given by: <c> std::vector<const BaseJointPdf<V,M>* >& densities </c>
    * into one single PDF, given a prefix and the concatenated domain of such PDFs.*/
   ConcatenatedJointPdf(const char*                                          prefix,
                               const std::vector<const BaseJointPdf<V,M>* >& densities,
-                              const VectorSet<V,M>&                         concatenatedDomain); 
-  
+                              const VectorSet<V,M>&                         concatenatedDomain);
+
   //! Destructor
   ~ConcatenatedJointPdf();
   //@}
 
   //! @name Math methods
-  //@{ 
+  //@{
   //! Calculates the actual values of each density.
   /*! The final actual value is the multiplication of all values calculated.*/
   double actualValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Calculates the logarithm of the values of each density.
   /*! The final logarithm value is the addition of all values calculated.*/
   double lnValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Sets the normalization style of all densities to \c value.
   void   setNormalizationStyle(unsigned int value) const;
-  
+
   //! Computes the logarithm of the normalization factor.
-  /*! This method calls the computeLogOfNormalizationFactor() for each one of the densities that have 
+  /*! This method calls the computeLogOfNormalizationFactor() for each one of the densities that have
    * been concatenated.*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
   //@}
-  
+
 protected:
   using BaseScalarFunction<V,M>::m_env;
   using BaseScalarFunction<V,M>::m_prefix;
