@@ -176,6 +176,18 @@ public:
   /*! The Posterior RV contains the solution of the Bayes problem.*/
   const GenericVectorRV<P_V,P_M>& postRv                    () const;
 
+  //! Returns the MCMC chain; access to private attribute m_chain.
+  /*! Only valid after solve has been called.*/
+  const BaseVectorSequence<P_V,P_M>& chain() const;
+
+  //! Returns log likelihood values; access to private attribute m_logLikelihoodValues.
+  /*! Only valid for MH and only after solve has been called.*/
+  const ScalarSequence<double>& logLikelihoodValues() const;
+
+  //! Returns log target values; access to private attribute m_logTargetValues.
+  /*! Only valid for MH and only after solve has been called.*/
+  const ScalarSequence<double>& logTargetValues() const;
+
   //! Returns the logarithm value of the evidence. Related to ML.
   double                           logEvidence                     () const;
 
