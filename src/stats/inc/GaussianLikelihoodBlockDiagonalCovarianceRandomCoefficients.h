@@ -35,6 +35,9 @@ namespace QUESO {
  *
  * \class GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients
  * \brief A class representing a Gaussian likelihood with block-diagonal covariance matrix
+ *
+ * Each block diagonal matrix has a multiplicative coefficient that is treated
+ * as a hyperparameter to be inferred during the sampling procedure.
  */
 
 template<class V, class M>
@@ -48,6 +51,9 @@ public:
    * vector of observations and a block diagonal covariance matrix.
    * The diagonal covariance matrix is of type \c GslBlockMatrix.  Each block
    * in the block diagonal matrix is an object of type \c GslMatrix.
+   *
+   * Each block diagonal matrix has a multiplicative coefficient that is
+   * treated as a hyperparameter to be inferred during the sampling procedure.
    */
   GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients(const char * prefix,
       const VectorSet<V, M> & domainSet, const V & observations,
