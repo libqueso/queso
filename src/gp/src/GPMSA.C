@@ -266,7 +266,7 @@ GPMSAFactory<V, M>::GPMSAFactory(
     m_experimentOutputs(numExperiments, (V *)NULL),
     m_numSimulationAdds(0),
     m_numExperimentAdds(0),
-    priors(7, (const BaseVectorRV<V, M> *)NULL)
+    priors(7, (const BaseVectorRV<V, M> *)NULL)  // Needed for gcc 4.3.2
 {
   // DM: Not sure if the logic in these 3 if-blocks is correct
   if ((opts == NULL) && (this->m_env.optionsInputFileName() == "")) {
