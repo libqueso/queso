@@ -68,8 +68,8 @@ igot=0
 # Compare outputs from 1 output file.
 
 for file in display_sub0.txt ; do
-    grep "e-[0-9]\|e+[0-9]" $SOLREFS/$file | grep -v sec | grep -v Arch > $SOLDIR/nada0
-    grep "e-[0-9]\|e+[0-9]" $SOLDIR/$file | grep -v sec | grep -v Arch > $SOLDIR/nada1
+    grep "e-[0-9]\|e+[0-9]" $SOLREFS/$file | grep -v sec | grep -v Arch | grep -v "Build Host" > $SOLDIR/nada0
+    grep "e-[0-9]\|e+[0-9]" $SOLDIR/$file | grep -v sec | grep -v Arch | grep -v "Build Host" > $SOLDIR/nada1
     diff $SOLDIR/nada0 $SOLDIR/nada1
     let igot="$igot + $?"
 done
