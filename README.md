@@ -1,5 +1,5 @@
-The `QUESO` Library
-=================
+The `QUESO` Library [![Build Status](https://travis-ci.org/libqueso/queso.svg?branch=dev)](https://travis-ci.org/libqueso/queso)
+===================
 
 `QUESO` stands for Quantification of Uncertainty for Estimation,
 Simulation and Optimization.
