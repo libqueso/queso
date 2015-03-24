@@ -62,10 +62,18 @@ public:
   //! Evaluates the user's model at the point \c domainVector
   /*!
    * This is pure virtual, so the user must implement this when subclassing a
-   * Gaussian likelihood class.  Note that, what is returned is void.  The user
-   * will fill up the \c modelOutput vector with output from the model.
-   * This represents a vector of synthetic observations that will be to compare
-   * to actual observations when computing the likelihood functional.
+   * Gaussian likelihood class.  Note that void is returned.  The user will
+   * fill up the \c modelOutput vector with output from the model.  This
+   * represents a vector of synthetic observations that will be to compare to
+   * actual observations when computing the likelihood functional.
+   *
+   * The first \c n components of \c domainVector are the model parameters.
+   * The rest of \c domainVector contains the hyperparameters, if any.  For
+   * example, in \c GaussianLikelihoodFullCovarainceRandomCoefficient, the last
+   * component of \c domainVector contains the multiplicative coefficient of
+   * the observational covariance matrix.  In this case, the user need not
+   * concern themselves with this parameter as it is handled not in the model
+   * evaluation but by the likelihood evaluation.
    */
   virtual void evaluateModel(const V & domainVector, const V * domainDirection,
       V & modelOutput, V * gradVector, M * hessianMatrix,

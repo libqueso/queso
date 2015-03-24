@@ -110,6 +110,7 @@ BUILT_SOURCES += GaussianLikelihood.h
 BUILT_SOURCES += GaussianLikelihoodBlockDiagonalCovariance.h
 BUILT_SOURCES += GaussianLikelihoodDiagonalCovariance.h
 BUILT_SOURCES += GaussianLikelihoodFullCovariance.h
+BUILT_SOURCES += GaussianLikelihoodFullCovarianceRandomCoefficient.h
 BUILT_SOURCES += GaussianLikelihoodScalarCovariance.h
 BUILT_SOURCES += GaussianVectorCdf.h
 BUILT_SOURCES += GaussianVectorMdf.h
@@ -389,6 +390,8 @@ GaussianLikelihoodBlockDiagonalCovariance.h: $(top_srcdir)/src/stats/inc/Gaussia
 GaussianLikelihoodDiagonalCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodDiagonalCovariance.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianLikelihoodFullCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodFullCovariance.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihoodFullCovarianceRandomCoefficient.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodFullCovarianceRandomCoefficient.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianLikelihoodScalarCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodScalarCovariance.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

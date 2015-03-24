@@ -87,6 +87,7 @@ examples/scalarCovariance
 examples/diagonalCovariance
 examples/fullCovariance
 examples/blockDiagonalCovariance
+examples/fullCovarianceRandomCoefficient
 
 src/core/inc/queso.h
 src/libqueso.la
@@ -179,3 +180,4 @@ test/test_unifiedPositionsOfMaximum
 test/test_VectorPdf_gsl
 test/test_VectorRV_gsl
 test/test_VectorRealizer_gsl
+test/test_fullCovarianceRandomCoefficient
