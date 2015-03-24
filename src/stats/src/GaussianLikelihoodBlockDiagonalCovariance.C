@@ -36,6 +36,7 @@ GaussianLikelihoodBlockDiagonalCovariance<V, M>::GaussianLikelihoodBlockDiagonal
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, const GslBlockMatrix & covariance)
   : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+    m_covarianceCoefficients(covariance.numBlocks(), 1.0),
     m_covariance(covariance)
 {
   unsigned int totalDim = 0;
@@ -52,6 +53,22 @@ GaussianLikelihoodBlockDiagonalCovariance<V, M>::GaussianLikelihoodBlockDiagonal
 template<class V, class M>
 GaussianLikelihoodBlockDiagonalCovariance<V, M>::~GaussianLikelihoodBlockDiagonalCovariance()
 {
+}
+
+template<class V, class M>
+double &
+GaussianLikelihoodBlockDiagonalCovariance<V, M>::blockCoefficient(
+    unsigned int i)
+{
+  return this->m_covarianceCoefficients[i];
+}
+
+template<class V, class M>
+const double &
+GaussianLikelihoodBlockDiagonalCovariance<V, M>::getBlockCoefficient(
+    unsigned int i) const
+{
+  return this->m_covarianceCoefficients[i];
 }
 
 template<class V, class M>
@@ -81,6 +98,20 @@ GaussianLikelihoodBlockDiagonalCovariance<V, M>::lnValue(
 
   // Solve \Sigma u = G(x) - y for u
   this->m_covariance.invertMultiply(modelOutput, weightedMisfit);
+
+  // Deal with the multiplicative coefficients for each of the blocks
+  unsigned int offset = 0;
+
+  // For each block...
+  for (unsigned int i = 0; i < this->m_covariance.numBlocks(); i++) {
+    // ...divide the appropriate parts of the solution by the coefficient
+    unsigned int blockDim = this->m_covariance.getBlock(i).numRowsLocal();
+    for (unsigned int j = 0; j < blockDim; j++) {
+      // coefficient is a variance, so we divide by it
+      modelOutput[offset+j] /= this->m_covarianceCoefficients[i];
+    }
+    offset += blockDim;
+  }
 
   // Compute (G(x) - y)^T \Sigma^{-1} (G(x) - y)
   modelOutput *= weightedMisfit;

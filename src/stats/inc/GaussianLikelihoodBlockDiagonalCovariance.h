@@ -25,6 +25,7 @@
 #ifndef UQ_GAUSSIAN_LIKELIHOOD_BLOCK_DIAG_COV_H
 #define UQ_GAUSSIAN_LIKELIHOOD_BLOCK_DIAG_COV_H
 
+#include <vector>
 #include <queso/GslBlockMatrix.h>
 #include <queso/GaussianLikelihood.h>
 
@@ -48,6 +49,9 @@ public:
    * vector of observations and a block diagonal covariance matrix.
    * The diagonal covariance matrix is of type \c GslBlockMatrix.  Each block
    * in the block diagonal matrix is an object of type \c GslMatrix.
+   *
+   * Furthermore, each block comes with a multiplicative coefficient which
+   * defaults to 1.0.
    */
   GaussianLikelihoodBlockDiagonalCovariance(const char * prefix,
       const VectorSet<V, M> & domainSet, const V & observations,
@@ -56,6 +60,12 @@ public:
   //! Destructor
   virtual ~GaussianLikelihoodBlockDiagonalCovariance();
   //@}
+
+  //! Get (non-const) multiplicative coefficient for block \c i
+  double & blockCoefficient(unsigned int i);
+
+  //! Get (const) multiplicative coefficient for block \c i
+  const double & getBlockCoefficient(unsigned int i) const;
 
   //! Actual value of the scalar function.
   virtual double actualValue(const V & domainVector, const V * domainDirection,
@@ -66,6 +76,7 @@ public:
       V * gradVector, M * hessianMatrix, V * hessianEffect) const;
 
 private:
+  std::vector<double> m_covarianceCoefficients;
   const GslBlockMatrix & m_covariance;
 };
 
