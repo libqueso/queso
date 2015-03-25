@@ -40,9 +40,11 @@ ip_mh_tk_useLocalHessian            = 0
 ip_mh_tk_useNewtonComponent         = 0
 ip_mh_dr_maxNumExtraStages          = 0
 ip_mh_dr_listOfScalesForExtraStages = 5. 10. 20.
-ip_mh_am_initialNonAdaptInterval    = 10
-ip_mh_am_adaptInterval              = 1
+ip_mh_am_initialNonAdaptInterval    = 10000
+ip_mh_am_adaptInterval              = 1000
 ip_mh_am_eta                        = 0.384
 ip_mh_am_epsilon                    = 1.e-5
 
 ip_mh_filteredChain_generate             = 0
+
+ip_mh_doLogitTransform = 1

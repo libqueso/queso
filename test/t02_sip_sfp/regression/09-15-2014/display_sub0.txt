@@ -1,13 +1,13 @@
 --------------------------------------------------------------------------------------------------------------
-QUESO Library: Version = 0.50.1 (5001)
+QUESO Library: Version = 0.51.1 (5101)
 
 Development Build
 
-Build Date   = 2014-11-18 18:08
+Build Date   = 2015-04-07 15:27
 Build Host   = zoidberg.ices.utexas.edu
 Build User   = damon
 Build Arch   = x86_64-unknown-linux-gnu
-Build Rev    = 73f936c
+Build Rev    = 128c60a
 
 C++ Config   = /opt/apps/ossw/libraries/mpich2/mpich2-1.4.1p1/sl6/gcc-4.7/bin/mpicxx -g -O2 -Wall
 
@@ -17,7 +17,7 @@ GRVY DIR     =
 GLPK DIR     = 
 HDF5 DIR     = /opt/apps/ossw/libraries/hdf5/hdf5-1.8.9/sl6/gcc-4.7
 --------------------------------------------------------------------------------------------------------------
-Beginning run at Tue Nov 18 18:26:23 2014
+Beginning run at Tue Apr  7 15:27:58 2015
 
 Entering StatisticalInverseProblem<P_V,P_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = ./example.inp
 In StatisticalInverseProblemOptions::scanOptionsValues(): after reading values of options with prefix 'ip_', state of  object is:
@@ -77,6 +77,7 @@ ip_mh_enableBrooksGelmanConvMonitor = 0
 ip_mh_BrooksGelmanLag = 100
 ip_mh_outputLogLikelihood = 1
 ip_mh_outputLogTarget = 1
+ip_mh_doLogitTransform = 1
 
 Entering MetropolisHastingsSG<P_V,P_M>::constructor(1): prefix = ip_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = ./example.inp, m_initialProposalCovMatrix = 8 4 ; 4 16 
 Entering MetropolisHastingsSG<P_V,P_M>::commonConstructor()
@@ -90,21 +91,21 @@ In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): targetPdf.domaintSet() in
 
 Finished the generation of Markov chain ip_mh_rawChain, with sub 32768 positions
 Some information about this chain:
-  Chain run time       = 0.413144 seconds
+  Chain run time       = 0.910827 seconds
 
  Breaking of the chain run time:
 
-  Candidate run time   = 0.119816 seconds (29.001%)
+  Candidate run time   = 0.170257 seconds (18.6926%)
   Num target calls  = 58468
-  Target d. run time   = 0.055445 seconds (13.4203%)
-  Avg target run time   = 9.48297e-07 seconds
-  Mh alpha run time    = 0.004881 seconds (1.18143%)
-  Dr alpha run time    = 0.137105 seconds (33.1858%)
+  Target d. run time   = 0.057954 seconds (6.36279%)
+  Avg target run time   = 9.91209e-07 seconds
+  Mh alpha run time    = 0.1401 seconds (15.3816%)
+  Dr alpha run time    = 0.446783 seconds (49.0525%)
 ----------------------   --------------
-  Sum                  = 0.317247 seconds (76.7885%)
+  Sum                  = 0.815094 seconds (89.4894%)
 
  Other run times:
-  DR run time          = 0.249725 seconds (60.445%)
+  DR run time          = 0.585539 seconds (64.2865%)
   AM run time          = 0 seconds (0%)
   Number of DRs = 25700(num_DRs/chain_size = 0.784302)
   Out of target support in DR = 0
@@ -185,11 +186,11 @@ In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): m_optionsObj->m_ov.m
 Starting the generation of qoi sequence fp_mc_QoiSeq, with 2048 samples...
 Finished the generation of qoi sequence fp_mc_QoiSeq, with sub 2048 samples
 Some information about this sequence:
-  Sequence run time = 0.001256 seconds
+  Sequence run time = 0.001181 seconds
 
  Breaking of the seq run time:
 
-  QoI function run time   = 0.000192 seconds (15.2866%)
+  QoI function run time   = 0.000254 seconds (21.5072%)
 In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): returned from call to actualGenerateSequence() with subActualSize = 2048
 In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening generic output file (qseq name is fp_mc_QoiSeq) ...
 In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening output files for pseq fp_mc_ParamSeq...
@@ -209,5 +210,5 @@ In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = f
 In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: checking necessity of opening data output file 'outputData/sfpOutput'
 In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: closed data output file 'outputData/sfpOutput'
 
-Ending run at Tue Nov 18 18:26:24 2014
-Total run time = 1 seconds
+Ending run at Tue Apr  7 15:28:00 2015
+Total run time = 2 seconds
