@@ -515,6 +515,8 @@ GslMatrix::chol()
               << ": iRC = " << iRC
               << ", gsl error message = " << gsl_strerror(iRC)
               << std::endl;
+    std::cerr << "Here is the offending matrix: " << std::endl;
+    std::cerr << *this << std::endl;
   }
   gsl_set_error_handler(oldHandler);
   //std::cout << "Returned from gsl_linalg_cholesky_decomp() with iRC = " << iRC << std::endl;
