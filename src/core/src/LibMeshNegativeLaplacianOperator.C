@@ -58,6 +58,10 @@ LibMeshNegativeLaplacianOperator::LibMeshNegativeLaplacianOperator(
     const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
   : LibMeshOperatorBase(builder, m)
 {
+  using libMesh::TOLERANCE;
+  using libMesh::GHEP;
+  using libMesh::SMALLEST_MAGNITUDE;
+
   boost::shared_ptr<libMesh::EquationSystems> es(this->equation_systems);
 
   // Give the system a pointer to the matrix assembly

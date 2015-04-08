@@ -104,8 +104,9 @@ int main(int argc, char **argv) {
   libMesh::LibMeshInit init(argc, argv, libMeshComm);
 
   // Generate the mesh on which the samples live.
-  libMesh::Mesh mesh;
-  libMesh::MeshTools::Generation::build_line(mesh, num_pts, 0.0, 1.0, EDGE2);
+  libMesh::Mesh mesh(init.comm());
+  libMesh::MeshTools::Generation::build_line(mesh, num_pts, 0.0, 1.0,
+                                             libMeshEnums::EDGE2);
 
   // Use a helper object to define some of the properties of our samples
   QUESO::FunctionOperatorBuilder fobuilder;
