@@ -101,11 +101,14 @@ if test "$libmesh_config_found" != "yes";then
    fi
 fi
 
-LIBMESH_CPPFLAGS=`$LIBMESH_CONFIG --cppflags --include`
+LIBMESH_CPPFLAGS=`$LIBMESH_CONFIG --cppflags --include | tr '\n' ' '`
 LIBMESH_INCLUDE=$LIBMESH_CPPFLAGS
 LIBMESH_CXXFLAGS=`$LIBMESH_CONFIG --cxxflags`
-LIBMESH_LDFLAGS=`$LIBMESH_CONFIG --ldflags`
-LIBMESH_LIBS=`$LIBMESH_CONFIG --libs`
+
+# Not all libmesh-config versions support all arguments
+LIBMESH_LDFLAGS=`$LIBMESH_CONFIG --ldflags | grep -v "Unknown argument" | grep -v libmesh-config || $LIBMESH_CONFIG --libs`
+LIBMESH_LIBS=`$LIBMESH_CONFIG --libs | grep -v "Unknown argument" | grep -v libmesh-config || $LIBMESH_CONFIG --ldflags`
+
 LIBMESH_CXX=`$LIBMESH_CONFIG --cxx`
 LIBMESH_CC=`$LIBMESH_CONFIG --cc`
 LIBMESH_FC=`$LIBMESH_CONFIG --fc`
