@@ -77,10 +77,19 @@ public:
   virtual double lnValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const
   {
-    double misfit = domainVector[0] - 5.0;
-    misfit *= misfit;
+    double d1 = domainVector[0] - 1.0;
+    double d2 = domainVector[1] - 1.0;
+
+    // Sigma inverse multiplied by d
+    double r1 = 2.0 * d1 - 0.5 * d2;
+    double r2 = -0.5 * d1 + 0.25 * d2;
+
+    r1 *= d1;
+    r2 *= d2;
+
+    // The square of the 2-norm of the misfit
+    double misfit = r1 + r2;
     misfit /= -2.0;
-    misfit /= 0.1 * 0.1;
     return misfit;
   }
 
@@ -102,7 +111,7 @@ public:
 
     this->paramSpace =
       new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env,
-          "param_", 1, NULL);
+          "param_", 2, NULL);
 
     double min_val = -INFINITY;
     double max_val = INFINITY;
@@ -123,15 +132,19 @@ public:
     // Set up observation space
     this->obsSpace =
       new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env, "obs_",
-          1, NULL);
+          2, NULL);
 
     // Fill up observation vector
     this->observations = new QUESO::GslVector(this->obsSpace->zeroVector());
-    (*(this->observations))[0] = 5.0;
+    (*(this->observations))[0] = 1.0;
+    (*(this->observations))[1] = 1.0;
 
     // Fill up covariance 'matrix'
     this->covariance = new QUESO::GslMatrix(this->obsSpace->zeroVector());
-    (*(this->covariance))(0, 0) = 0.1 * 0.1;
+    (*(this->covariance))(0, 0) = 1.0;
+    (*(this->covariance))(0, 1) = 2.0;
+    (*(this->covariance))(1, 0) = 2.0;
+    (*(this->covariance))(1, 1) = 8.0;
 
     // Construct whatever likelihood we need
 
@@ -160,11 +173,15 @@ public:
           "", NULL, *(this->priorRv), *(this->lhood), *(this->postRv));
 
     this->paramInitials = new QUESO::GslVector(this->paramSpace->zeroVector());
-    (*(this->paramInitials))[0] = 5.0;
+    (*(this->paramInitials))[0] = 1.0;
+    (*(this->paramInitials))[1] = 1.0;
 
     this->proposalCovMatrix = new QUESO::GslMatrix(
         this->paramSpace->zeroVector());
-    (*(this->proposalCovMatrix))(0, 0) = 0.1;
+    (*(this->proposalCovMatrix))(0, 0) = 1.0;
+    (*(this->proposalCovMatrix))(0, 1) = 2.0;
+    (*(this->proposalCovMatrix))(1, 0) = 2.0;
+    (*(this->proposalCovMatrix))(1, 1) = 8.0;
 
     this->ip->solveWithBayesMetropolisHastings(NULL, *(this->paramInitials),
         this->proposalCovMatrix);
