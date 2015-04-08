@@ -183,3 +183,5 @@ test/test_VectorRV_gsl
 test/test_VectorRealizer_gsl
 test/test_fullCovarianceRandomCoefficient
 test/test_blockDiagonalCovarianceRandomCoefficients
+test/test_gaussian_likelihoods/gaussian_consistency_input.txt
+test/test_fullCovarianceChain
