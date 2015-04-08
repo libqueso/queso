@@ -47,9 +47,9 @@ int main(int argc, char **argv)
 {
   libMesh::LibMeshInit init(argc, argv);
 
-  libMesh::Mesh mesh;
+  libMesh::Mesh mesh(init.comm());
   libMesh::MeshTools::Generation::build_square(mesh,
-      20, 20, 0.0, 1.0, 0.0, 1.0, QUAD4);
+      20, 20, 0.0, 1.0, 0.0, 1.0, libMeshEnums::QUAD4);
 
   QUESO::FunctionOperatorBuilder builder;
 
@@ -67,7 +67,8 @@ int main(int argc, char **argv)
   std::vector<double> norms(builder.num_req_eigenpairs, 0);
   for (i = 0; i < builder.num_req_eigenpairs; i++) {
     eig_sys.get_eigenpair(i);
-    norms[i] = eig_sys.calculate_norm(*eig_sys.solution);
+    norms[i] = eig_sys.calculate_norm(*eig_sys.solution,
+                                      libMeshEnums::L2);
     if (abs(norms[i] - 1.0) > TEST_TOL) {
       return 1;
     }
@@ -77,7 +78,7 @@ int main(int argc, char **argv)
   const libMesh::DofMap & dof_map = eig_sys.get_dof_map();
   libMesh::FEType fe_type = dof_map.variable_type(0);
   libMesh::AutoPtr<libMesh::FEBase> fe(libMesh::FEBase::build(dim, fe_type));
-  libMesh::QGauss qrule(dim, FIFTH);
+  libMesh::QGauss qrule(dim, libMeshEnums::FIFTH);
   fe->attach_quadrature_rule(&qrule);
   const std::vector<libMesh::Real> & JxW = fe->get_JxW();
   const std::vector<std::vector<libMesh::Real> >& phi = fe->get_phi();
