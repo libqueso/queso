@@ -130,7 +130,8 @@ double LibMeshFunction::L2_norm() const {
   libMesh::ExplicitSystem & system =
     this->equation_systems->get_system<libMesh::ExplicitSystem>("Function");
 
-  double norm = system.calculate_norm(*system.solution, libMesh::SystemNorm(L2));
+  double norm = system.calculate_norm(*system.solution,
+                                      libMesh::SystemNorm(libMeshEnums::L2));
   return norm;
 }
 
