@@ -53,7 +53,7 @@ LibMeshOperatorBase::LibMeshOperatorBase(
     builder(builder)
 {
 #ifndef LIBMESH_HAVE_SLEPC
-  if (processor_id() == 0)
+  if (m.processor_id() == 0)
     std::cerr << "ERROR: This example requires libMesh to be\n"
               << "compiled with SLEPc eigen solvers support!"
               << std::endl;
@@ -86,15 +86,15 @@ void LibMeshOperatorBase::save_converged_evals(const std::string & filename) con
   unsigned int i;
   std::ofstream evals_file(filename.c_str());
 
-  std::pair<Real, Real> eval;
+  std::pair<libMesh::Real, libMesh::Real> eval;
   for (i = 0; i < this->nconv; i++) {
     eval = this->equation_systems
                ->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
-    if (processor_id() == 0) {
+    if (equation_systems->processor_id() == 0) {
       evals_file << eval.first << " " << eval.second << std::endl;
     }
   }
-  if (processor_id() == 0) {
+  if (this->equation_systems->processor_id() == 0) {
     evals_file.close();
   }
 }
@@ -152,7 +152,7 @@ LibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
   // Make sure all procs in libmesh mpi communicator all have the same xi.  No,
   // I can't set the seed in QUESO.  That would mess with the QUESO
   // communicator.
-  libMesh::CommWorld.broadcast(xi);
+  this->equation_systems->comm().broadcast(xi);
 
   boost::shared_ptr<libMesh::EquationSystems> kl_eq_sys(kl->get_equation_systems());
 

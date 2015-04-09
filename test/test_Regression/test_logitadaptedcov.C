@@ -10,7 +10,7 @@
 #include <queso/InvLogitGaussianJointPdf.h>
 #include <queso/StatisticalInverseProblem.h>
 
-#define TOL 1e-14
+#define TOL 1e-13
 
 template<class V, class M>
 class Likelihood : public QUESO::BaseScalarFunction<V, M>
@@ -109,10 +109,10 @@ int main(int argc, char ** argv) {
 
 
   QUESO::GslMatrix regressionTestMatrix(proposalCovMatrix);
-  regressionTestMatrix(0, 0) = 0.0155346059919622;
-  regressionTestMatrix(0, 1) = 0.00611251379952771;
-  regressionTestMatrix(1, 0) = 0.00611251379952771;
-  regressionTestMatrix(1, 1) = 0.0155897610147395;
+  regressionTestMatrix(0, 0) = 0.0162626079275191;
+  regressionTestMatrix(0, 1) = 0.0065764502233059;
+  regressionTestMatrix(1, 0) = 0.0065764502233059;
+  regressionTestMatrix(1, 1) = 0.0154739306675151;
 
   QUESO::GslMatrix diff(regressionTestMatrix - adaptedCovMatrix);
 

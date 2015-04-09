@@ -108,7 +108,7 @@ AM_CONDITIONAL(TRILINOS_ENABLED,test x$HAVE_TRILINOS = x1)
 AC_CACHE_SAVE
 
 # Check for libmesh (optional)
-AX_PATH_LIBMESH_NEW(0.8.0,no)
+AX_PATH_LIBMESH_NEW(0.9.1,no)
 AC_CACHE_SAVE
 
 # Check for GSL (required)
@@ -212,6 +212,7 @@ AC_CONFIG_FILES([
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
+  test/test_gaussian_likelihoods/gaussian_consistency_input.txt
 ])
 
 AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh

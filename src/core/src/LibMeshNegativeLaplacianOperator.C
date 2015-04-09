@@ -84,16 +84,18 @@ LibMeshNegativeLaplacianOperator::LibMeshNegativeLaplacianOperator(
     this->builder.num_req_eigenpairs * 3;
 
   // Set the solver tolerance and the maximum number of iterations.
-  es->parameters.set<libMesh::Real>("linear solver tolerance") = pow(TOLERANCE, 5./3.);
+  es->parameters.set<libMesh::Real>("linear solver tolerance") =
+    pow(libMesh::TOLERANCE, 5./3.);
   es->parameters.set<unsigned int>("linear solver maximum iterations") = 1000;
 
   // Set the type of the problem, here we deal with
   // a generalized Hermitian problem.
-  eigen_system.set_eigenproblem_type(GHEP);
+  eigen_system.set_eigenproblem_type(libMeshEnums::GHEP);
 
   // Order the eigenvalues "smallest first"
   // This hoses performance?
-  eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
+  eigen_system.eigen_solver->set_position_of_spectrum
+    (libMeshEnums::SMALLEST_MAGNITUDE);
 
   // Set up the boundary (only works if this->m is a square)
   // We'll just the whole boundary to be Dirichlet, because why not
