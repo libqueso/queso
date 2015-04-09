@@ -5,6 +5,7 @@ Simulation, and Optimization.
 
 Version 0.52.0
   * Add canned Gaussian likelihoods
+  * Fix bug in logit transform logic
 
 Version 0.51.0
   * Add canned likelihood for scalar GPMSA use-case a la Higdon et al
