@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -79,10 +79,10 @@
 
 /*!\file uqSequenceStatisticalOptions.h
  * \brief A templated class that stores default statistical options
- * 
+ *
  * \class SsOptionsValues
  * \brief A templated class that stores default statistical options for a sequence of vectors, e.g.
- *    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence. 
+ *    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence.
  */
 
 
@@ -90,64 +90,64 @@ class SsOptionsValues
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
-  //! Default constructor. 
+  //@{
+  //! Default constructor.
   /*! It assigns to the variables the pre-defined options for a sequence of data (scalars; vectors).*/
   SsOptionsValues            ();
-  
-  //! Copy  constructor. 
-  /*! It assigns to \c this' variables, the same values of the variable of \c src.*/  
+
+  //! Copy  constructor.
+  /*! It assigns to \c this' variables, the same values of the variable of \c src.*/
   SsOptionsValues            (const SsOptionsValues& src);
- 
+
   //! Destructor.
   ~SsOptionsValues            ();
   //@}
-  
+
   //! @name Set methods
-  //@{ 
-  //! Assignment operator; it copies \c rhs to \c this.  
+  //@{
+  //! Assignment operator; it copies \c rhs to \c this.
   SsOptionsValues& operator= (const SsOptionsValues& rhs);
   //@}
 
   //! @name Public attributes
-  //@{ 
-  
+  //@{
+
   //! Stores the initial  discarded portion of the chain.
   std::vector<double>       m_initialDiscardedPortions;
-  
+
   //! Whether or not compute autocorrelation via definition.
   bool                      m_autoCorrComputeViaDef;
-  
+
    //! Whether or not compute autocorrelation via FFT.
   bool                      m_autoCorrComputeViaFft;
-  
+
   //! Second lag of the autocorrelation.
   unsigned int              m_autoCorrSecondLag;
-  
+
   //! Lag spacing of the autocorrelation.
   unsigned int              m_autoCorrLagSpacing;
-  
+
   //! Number of lags of the autocorrelation.
   unsigned int              m_autoCorrNumLags;
-  
+
   //! Whether or not display autocorrelation.
   bool                      m_autoCorrDisplay;
-  
+
   //! Whether or not write autocorrelation to file.
   bool                      m_autoCorrWrite;
 
   //! Whether or not compute kernel density estimate (kde).
   bool                      m_kdeCompute;
-  
+
   //! Number of positions to evaluate kde.
   unsigned int              m_kdeNumEvalPositions;
 
   //! Whether or not compute covariance matrix.
   bool                      m_covMatrixCompute;
-  
+
   //! Whether or not compute correlation matrix.
   bool                      m_corrMatrixCompute;
-  
+
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   unsigned int              m_meanMonitorPeriod;
 
@@ -188,7 +188,7 @@ public:
   bool                      m_cdfStaccCompute;
   unsigned int              m_cdfStaccNumEvalPositions;
 #endif
-  //@} 
+  //@}
   // end public attributes
 private:
   //! Copies the option values from \c src to \c this.
@@ -201,7 +201,7 @@ private:
  * \brief  A templated class that stores statistical options (optionally read from an input file)
  *
  *  A templated class that stores statistical options for a sequence of vectors, e.g.
- *    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence. 
+ *    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence.
  */
 
 
@@ -209,13 +209,13 @@ class SequenceStatisticalOptions
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Constructor: reads options from the input file.
-  /*! It assigns to the variables the identifying strings (prefixes) for a sequence of data 
+  /*! It assigns to the variables the identifying strings (prefixes) for a sequence of data
    * (scalars; vectors) which had been read from an input file.*/
   SequenceStatisticalOptions(const BaseEnvironment& env,
                                     const std::string&            prefix);
-  
+
   //! Constructor: with alternative option values.
   /*! In this constructor, the input options are given by \c alternativeOptionsValues, thus, they
    * are not read from an input file.*/
@@ -228,55 +228,55 @@ public:
 
   //! @name Statistical methods
   //@{
-   
+
   //! Finds the initially discarded portion of the chain. Access to private attribute m_initialDiscardedPortions
   const std::vector<double>&       initialDiscardedPortions() const;
-  
+
   //! Compute autocorrelation via definition.    Access to private attribute m_autoCorrComputeViaDef
   bool                       autoCorrComputeViaDef() const;
-  
+
   //! Compute autocorrelation via FFT. Access to private attribute m_autoCorrComputeViaFft
   bool                       autoCorrComputeViaFft() const;
-  
+
   //! Returns the second lag of the autocorrelation. Access to private attribute m_autoCorrSecondLag
   unsigned int               autoCorrSecondLag    () const;
-  
+
   //! Returns the spacing of the autocorrelation. Access to private attribute m_autoCorrLagSpacing
   unsigned int               autoCorrLagSpacing   () const;
-  
+
   //! Returns the number of lags of the autocorrelation. Access to private attribute m_autoCorrNumLags
   unsigned int               autoCorrNumLags      () const;
-  
+
   //! Displays autocorrelation. Access to private attribute m_autoCorrDisplay
   bool                       autoCorrDisplay      () const;
-  
+
   //! Writes autocorrelation. Access to private attribute m_autoCorrWrite
   bool                       autoCorrWrite        () const;
-  
+
   //! Computes KDE. Access to private attribute m_kdeCompute
   bool                       kdeCompute         () const;
-  
+
   //! Returns number of evaluation positions for KDE. Access to private attribute m_kdeNumEvalPositions
   unsigned int               kdeNumEvalPositions() const;
-  
+
   //! Finds the covariance matrix. Access to private attribute m_covMatrixCompute
   bool                       covMatrixCompute () const;
-  
+
   //! Finds the correlation matrix. Access to private attribute m_corrMatrixCompute
   bool                       corrMatrixCompute() const;
   //@}
-  
+
   //! @name I/O method
-  //@{ 
-  //! Prints the initial discarded portion of the chain; and, optionally, other attributes of the chain. 
+  //@{
+  //! Prints the initial discarded portion of the chain; and, optionally, other attributes of the chain.
   void                       print(std::ostream& os) const;
   //@}
-  
+
   //! @name Public attribute
-  //@{ 
+  //@{
   SsOptionsValues     m_ov;
   //@}
-  
+
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
         unsigned int               meanMonitorPeriod() const;
@@ -318,11 +318,11 @@ public:
         bool                       cdfStaccCompute         () const;
         unsigned int               cdfStaccNumEvalPositions() const;
 #endif
-       
+
 private:
   //! Defines the options for the chain
   void   defineMyOptions  (po::options_description& optionsDesc) const;
-  
+
   //! Reads the chain options
   void   getMyOptionValues(po::options_description& optionsDesc);
 
@@ -332,7 +332,7 @@ private:
 
   std::string                   m_option_help;
   std::string                   m_option_initialDiscardedPortions;
-  
+
   std::string                   m_option_autoCorr_computeViaDef;
   std::string                   m_option_autoCorr_computeViaFft;
   std::string                   m_option_autoCorr_secondLag;
@@ -344,7 +344,7 @@ private:
   std::string                   m_option_kde_numEvalPositions;
   std::string                   m_option_covMatrix_compute;
   std::string                   m_option_corrMatrix_compute;
-  
+
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   std::string                   m_option_mean_monitorPeriod;
   std::string                   m_option_bmm_run;
@@ -376,8 +376,8 @@ private:
   std::string                   m_option_hist_numInternalBins;
   std::string                   m_option_cdfStacc_compute;
   std::string                   m_option_cdfStacc_numEvalPositions;
-#endif  
-  
+#endif
+
 };
 
 std::ostream& operator<<(std::ostream& os, const SequenceStatisticalOptions& obj);

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -43,14 +43,14 @@ namespace QUESO {
 /*!
  * \class UniformVectorRV
  * \brief A class representing a uniform vector RV.
- * 
+ *
  * This class allows the user to compute the value of a uniform PDF and to generate realizations
  * (samples) from it. It is used, for instance, to create a uniform prior PDF. */
 
 template<class V, class M>
 class UniformVectorRV : public BaseVectorRV<V,M> {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
@@ -60,7 +60,7 @@ public:
   //! Virtual destructor
   virtual ~UniformVectorRV();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.

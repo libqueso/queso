@@ -25,8 +25,8 @@
  *
  * $Id$
  *
- * Brief description of this file: 
- * 
+ * Brief description of this file:
+ *
  * Usage: ./example_gsl example.inp  <(int) numModes>
  *-------------------------------------------------------------------------- */
 
@@ -36,25 +36,25 @@ int main(int argc, char* argv[])
 {
   // Initialize environment
   MPI_Init(&argc,&argv);
- 
+
   UQ_FATAL_TEST_MACRO(argc != 3,
                       QUESO::UQ_UNAVAILABLE_RANK,
                       "main()",
                       "after executable argv[0], input file must be specified in command line as argv[1], then numModes (1 or 2) must be specified as argv[2]");
-                      
+
   QUESO::FullEnvironment* env =
     new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
-    
+
   // Compute
   unsigned int numModes = (unsigned int) atoi(argv[2]);
-  
+
   compute(*env,numModes);
 
   // Finalize environment
   delete env;
   MPI_Finalize();
 
-  std::cout << std::endl << "FIM!" << std::endl << std::endl; 
-  
+  std::cout << std::endl << "FIM!" << std::endl << std::endl;
+
   return 0;
 }

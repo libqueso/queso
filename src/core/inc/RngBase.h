@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -35,47 +35,47 @@ namespace QUESO {
 */
 
 /*! \class RngBase
-    \brief Class for random number generation (base class for either GSL or Boost RNG). 
-    
-    This class is  a “virtual” class of generic random number generator, in order 
-    to accommodate either GSL or Boost RNG. 
+    \brief Class for random number generation (base class for either GSL or Boost RNG).
+
+    This class is  a “virtual” class of generic random number generator, in order
+    to accommodate either GSL or Boost RNG.
 */
 
 
 class RngBase
 {
 public:
-  
+
     //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default Constructor: it should not be used.
   RngBase();
-  
+
   //! Constructor with seed.
   RngBase(int seed, int worldRank);
-	   
+
   //! Virtual destructor.
   virtual ~RngBase();
   //@}
-  
-  
+
+
     //! @name Sampling methods
-  //@{ 
+  //@{
   //! Sets the seed.
           int    seed          () const;
-	  
+
   //! Resets the seed with value \c newSeed.
   virtual void   resetSeed     (int newSeed);
-  
+
   //! Samples a value from a uniform distribution.
   virtual double uniformSample ()                          const = 0;
-  
+
   //! Samples a value from a Gaussian distribution with standard deviation given by \c stdDev.
   virtual double gaussianSample(double stdDev)             const = 0;
-  
+
   //! Samples a value from a Beta distribution.
   virtual double betaSample    (double alpha, double beta) const = 0;
-  
+
   //! Samples a value from a Gamma distribution.
   virtual double gammaSample   (double a, double b)        const = 0;
 
@@ -83,12 +83,12 @@ public:
 protected:
   //! Seed.
           int m_seed;
-	  
+
   //! Rank of processor.
           int m_worldRank;
 
 private:
-  
+
   //! Reset seed.
           void privateResetSeed();
 };

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -38,20 +38,20 @@ namespace QUESO {
 using std:: cout;
 using std:: endl;
 // ---------------------------------------------------
-// default constructor ------------------------------- 
+// default constructor -------------------------------
 TeuchosMatrix::TeuchosMatrix()
   :
   Matrix()
 {
   //this part is never called.
-  UQ_FATAL_TEST_MACRO(true,		   
+  UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
                       "TeuchosMatrix::constructor(), default",
-                      "should not be used by user");                   
+                      "should not be used by user");
 }
 
 // ---------------------------------------------------
-// shaped constructor (square/rectangular)------------ 
+// shaped constructor (square/rectangular)------------
 TeuchosMatrix::TeuchosMatrix( // can be a rectangular matrix
   const BaseEnvironment& env,
   const Map&             map,
@@ -66,16 +66,16 @@ TeuchosMatrix::TeuchosMatrix( // can be a rectangular matrix
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  v_pivoting     (NULL), 
+  v_pivoting     (NULL),
   m_signum       (0),
   m_isSingular   (false)
 {
   m_mat.shape(map.NumGlobalElements(),nCols);
-  m_LU.shape(0,0);   
+  m_LU.shape(0,0);
 }
 
 // ---------------------------------------------------
-// shaped constructor (square) ----------------------- 
+// shaped constructor (square) -----------------------
 TeuchosMatrix::TeuchosMatrix( // square matrix
   const BaseEnvironment& env,
   const Map&             map,
@@ -90,19 +90,19 @@ TeuchosMatrix::TeuchosMatrix( // square matrix
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  v_pivoting     (NULL),  
+  v_pivoting     (NULL),
   m_signum       (0),
   m_isSingular   (false)
 {
   m_mat.shape    (map.NumGlobalElements(),map.NumGlobalElements());
-  m_LU.shape(0,0); 
+  m_LU.shape(0,0);
 
   for (unsigned int i = 0; i < (unsigned int) m_mat.numRows(); ++i) {
     m_mat(i,i) = diagValue;
   }
 }
 // ---------------------------------------------------
-// shaped constructor (diagonal) --------------------- 
+// shaped constructor (diagonal) ---------------------
 // Kemelli tested on 12/05/12
 TeuchosMatrix::TeuchosMatrix( // square matrix
   const TeuchosVector& v,
@@ -117,13 +117,13 @@ TeuchosMatrix::TeuchosMatrix( // square matrix
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  v_pivoting     (NULL), 
+  v_pivoting     (NULL),
   m_signum       (0),
   m_isSingular   (false)
 {
  m_mat.shape    (v.sizeLocal(),v.sizeLocal());
- m_LU.shape(0,0); 
- 
+ m_LU.shape(0,0);
+
  for (unsigned int i = 0; i < (unsigned int) m_mat.numRows(); ++i) {
     m_mat(i,i) = diagValue;
   }
@@ -148,8 +148,8 @@ TeuchosMatrix::TeuchosMatrix(const TeuchosVector& v) // square matrix
   m_isSingular   (false)
 {
   m_mat.shape    (v.sizeLocal(),v.sizeLocal());
-  m_LU.shape(0,0); 
-  
+  m_LU.shape(0,0);
+
   unsigned int dim =  v.sizeLocal();
 
   for (unsigned int i = 0; i < dim; ++i) {
@@ -157,7 +157,7 @@ TeuchosMatrix::TeuchosMatrix(const TeuchosVector& v) // square matrix
   }
 }
 // ---------------------------------------------------
-// copy constructor----------------------------------- 
+// copy constructor-----------------------------------
 // Kemelli 12/05/12 - tested
 TeuchosMatrix::TeuchosMatrix(const TeuchosMatrix& B) // can be a rectangular matrix
   :
@@ -170,19 +170,19 @@ TeuchosMatrix::TeuchosMatrix(const TeuchosMatrix& B) // can be a rectangular mat
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  v_pivoting     (NULL), 
+  v_pivoting     (NULL),
   m_signum       (0),
   m_isSingular   (false)
 {
   m_mat.shape    (B.numRowsLocal(),B.numCols());
-  m_LU.shape(0,0); 
-   
+  m_LU.shape(0,0);
+
   this->Matrix::copy(B);
   this->copy(B);
 }
 
 // ---------------------------------------------------
-// destructor ---------------------------------------- 
+// destructor ----------------------------------------
 TeuchosMatrix::~TeuchosMatrix()
 {
   this->resetLU();
@@ -229,11 +229,11 @@ TeuchosMatrix& TeuchosMatrix::operator+=(const TeuchosMatrix& rhs)
   this->resetLU();
 
   unsigned int i,j, nrows=rhs.numRowsLocal(), ncols=rhs.numCols();
-  
+
   for(i=0; i< nrows ; i++)
-    for (j = 0; j < ncols; j++) 
+    for (j = 0; j < ncols; j++)
       (*this)(i,j) += rhs(i,j);
-    
+
   return *this;
 }
 // ---------------------------------------------------
@@ -244,11 +244,11 @@ TeuchosMatrix::operator-=(const TeuchosMatrix& rhs)
   this->resetLU();
 
   unsigned int i,j, nrows=rhs.numRowsLocal(), ncols=rhs.numCols();
-  
+
   for(i=0; i< nrows ; i++)
-    for (j = 0; j < ncols; j++) 
+    for (j = 0; j < ncols; j++)
       (*this)(i,j) -= rhs(i,j);
-    
+
   return *this;
 }
 
@@ -296,7 +296,7 @@ const double& TeuchosMatrix::operator()(unsigned int i, unsigned int j) const
 // ---------------------------------------------------
 // Attribute methods ---------------------------------
 
-// Kemelli 12/05/12 - tested 
+// Kemelli 12/05/12 - tested
 unsigned int
 TeuchosMatrix::numRowsLocal() const
 {
@@ -305,7 +305,7 @@ TeuchosMatrix::numRowsLocal() const
 
 // ---------------------------------------------------
 // Kemelli 12/05/12 - tested
-unsigned int 
+unsigned int
 TeuchosMatrix::numRowsGlobal() const
 {
   return (unsigned int) m_mat.numRows();
@@ -313,7 +313,7 @@ TeuchosMatrix::numRowsGlobal() const
 
 // ---------------------------------------------------
 // Kemelli 12/05/12 - tested
-unsigned int 
+unsigned int
 TeuchosMatrix::numCols() const
 {
   return (unsigned int) m_mat.numCols();
@@ -474,8 +474,8 @@ TeuchosMatrix::inverse() const
 double
 TeuchosMatrix::determinant() const
 {
-  if (m_determinant == -INFINITY) 
-  {    
+  if (m_determinant == -INFINITY)
+  {
     if(m_LU.numRows() ==0 && m_LU.numCols() ==0)  //dummy
     {
       TeuchosVector tmpB(m_env,m_map);
@@ -497,17 +497,17 @@ TeuchosMatrix::determinant() const
                               << ": before computing det"
                               << std::endl;
     }
-    
+
     double det   = 1.0;
     double lnDet = 0.0;
     for (int i=0;i<m_LU.numCols();i++) {
       det   *= m_LU(i,i);
       lnDet += std::log(m_LU(i,i));
     }
-  
+
     m_determinant   = det;
     m_lnDeterminant = lnDet;
-        
+
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In TeuchosMatrix::lnDeterminant()"
                               << ": after computing det"
@@ -523,7 +523,7 @@ TeuchosMatrix::determinant() const
 double
 TeuchosMatrix::lnDeterminant() const
 {
-  if (m_lnDeterminant == -INFINITY) 
+  if (m_lnDeterminant == -INFINITY)
   {
     if(m_LU.numRows() ==0 && m_LU.numCols() ==0)  //dummy
     {
@@ -546,7 +546,7 @@ TeuchosMatrix::lnDeterminant() const
                               << ": before computing lnDet"
                               << std::endl;
     }
-    
+
     double det   = 1.0;
     double lnDet = 0.0;
     for (int i=0;i<m_LU.numCols();i++) {
@@ -556,7 +556,7 @@ TeuchosMatrix::lnDeterminant() const
 
     m_determinant   = det;
     m_lnDeterminant = lnDet;
-    
+
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In TeuchosMatrix::lnDeterminant()"
                               << ": after computing lnDet"
@@ -603,29 +603,29 @@ int TeuchosMatrix::chol()
   int return_success =0 ;
 /*  If UPLO = 'L', the leading N-by-N lower triangular part of A contains the lower
  *          triangular part of the matrix A (lets call it L), and the strictly upper
- *          triangular part of A is not referenced. Thus, the upper triangular part 
+ *          triangular part of A is not referenced. Thus, the upper triangular part
  *          of A +++must be manually+++ overwritten with L^T. */
-  
+
   Teuchos::LAPACK<int, double> lapack;
   int info;//= 0:  successful exit
            //< 0:  if INFO = -i, the i-th argument had an illegal value
            //> 0:  if INFO = i, the leading minor of order i is not
            //      positive definite, and the factorization could not be
            //      completed.
-  char UPLO = 'U'; 
+  char UPLO = 'U';
           //= 'U':  Upper triangle of A is stored;
           //= 'L':  Lower triangle of A is stored.
-  
+
   lapack.POTRF (UPLO, m_mat.numRows(), m_mat.values(), m_mat.stride(), &info);
-  
-  // Overwriting the upper triangular part of the input matrix A with  L^T 
+
+  // Overwriting the upper triangular part of the input matrix A with  L^T
   //(the diagonal terms are identical for both L and L^T)
 
   for (int i=0;i<m_mat.numRows();i++){
     for (int j=i+1;j<m_mat.numCols();j++)
-       m_mat(i,j) = m_mat(j,i) ;      
+       m_mat(i,j) = m_mat(j,i) ;
   }
-  
+
   if (info != 0) {
     std::cerr << "In TeuchosMtrix::chol()"
               << ": INFO = " << info
@@ -635,14 +635,14 @@ int TeuchosMatrix::chol()
               << std::endl;
     return_success =1 ;
   }
-  
+
   UQ_RC_MACRO(info, // Yes, *not* a fatal check on RC
               m_env.worldRank(),
               "TeuchosMatrix::chol()",
               "matrix is not positive definite",
               UQ_MATRIX_IS_NOT_POS_DEFINITE_RC);
-     
-  return return_success;  
+
+  return return_success;
 };
 
 // ---------------------------------------------------
@@ -698,11 +698,11 @@ const TeuchosMatrix& TeuchosMatrix::svdMatV() const
 
 //---------------------------------------------------------------
 // checked 2/27/13
-/* An orthogonal matrix M has a norm-preserving property, i.e. 
- * for any vector v, \f[||Mv|| = ||v|| \f] (1). Then: 
+/* An orthogonal matrix M has a norm-preserving property, i.e.
+ * for any vector v, \f[||Mv|| = ||v|| \f] (1). Then:
  * \f[ min(||Ax − b||^2) = min(||Ax − b||) = min(||UDVT x − b||) = (1) min(||DV x − U b||) \f].
- * Substituting \f[ y = VT x \f] and \f[ b' = UT b \f] gives us \f[ Dy = b' \f] 
- * with D a diagonal matrix. Or,  \f[ y = inv(D)*UT*b \f] and we only have to 
+ * Substituting \f[ y = VT x \f] and \f[ b' = UT b \f] gives us \f[ Dy = b' \f]
+ * with D a diagonal matrix. Or,  \f[ y = inv(D)*UT*b \f] and we only have to
  * solve the linear system: \f[ VT x = y \f].
  */
 int
@@ -711,7 +711,7 @@ TeuchosMatrix::svdSolve(const TeuchosVector& rhsVec, TeuchosVector& solVec) cons
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
   unsigned int i;
-  
+
   UQ_FATAL_TEST_MACRO((rhsVec.sizeLocal() != nRows),
                       m_env.worldRank(),
                       "TeuchosMatrix::svdSolve()",
@@ -740,41 +740,41 @@ TeuchosMatrix::svdSolve(const TeuchosVector& rhsVec, TeuchosVector& solVec) cons
 
  if (iRC == 0)
  {
-   TeuchosMatrix  invD = TeuchosMatrix(solVec); 
-   TeuchosMatrix  auxMatrix = TeuchosMatrix(solVec); 
-    
+   TeuchosMatrix  invD = TeuchosMatrix(solVec);
+   TeuchosMatrix  auxMatrix = TeuchosMatrix(solVec);
+
    for (i=0; i<nRows; i++){
-     invD(i,i) = 1./(m_svdSvec->values()[i]); 
+     invD(i,i) = 1./(m_svdSvec->values()[i]);
    }
- 
-  // GESV: For a system Ax=b, on entry, b contains the right-hand side b; 
+
+  // GESV: For a system Ax=b, on entry, b contains the right-hand side b;
   // on exit it contains the solution x.
-  // Thus, intead of doing y = inv(D)*UT*rhsVec = auxMatrix*rhsVec, with 
+  // Thus, intead of doing y = inv(D)*UT*rhsVec = auxMatrix*rhsVec, with
   // auxMatrix = inv(D)*UT; and then assigning solVec=y (requirement for using GESV)
-  // lets do solVec= auxMatrix*rhsVec, and save one step in the calculation 
- 
+  // lets do solVec= auxMatrix*rhsVec, and save one step in the calculation
+
     auxMatrix = invD * svdMatU().transpose();
     solVec = auxMatrix*rhsVec;
 
   // solve the linear system VT * solVec = y
   // GESV changes the values of the matrix, so lets make a copy of it and use it.
-  
+
     TeuchosMatrix* aux_m_svdVTmat  = new TeuchosMatrix(*m_svdVTmat);
-   
+
     int ipiv[0], info;
     Teuchos::LAPACK<int, double> lapack;
-    lapack.GESV(nCols, 1,  aux_m_svdVTmat->values(),  aux_m_svdVTmat->stride(), ipiv, &solVec[0], solVec.sizeLocal(), &info );  
-  
+    lapack.GESV(nCols, 1,  aux_m_svdVTmat->values(),  aux_m_svdVTmat->stride(), ipiv, &solVec[0], solVec.sizeLocal(), &info );
+
   /* GESV output INFO: = 0:  successful exit
    *          < 0:  if INFO = -i, the i-th argument had an illegal value
    *          > 0:  if INFO = i, U(i,i) is exactly zero.  The factorization
    *                has been completed, but the factor U is exactly
    *                singular, so the solution could not be computed.   */
-   
+
     iRC = info;
-    delete aux_m_svdVTmat;    
+    delete aux_m_svdVTmat;
   }
-  return iRC; 
+  return iRC;
 }
 
 // ---------------------------------------------------
@@ -816,7 +816,7 @@ TeuchosMatrix::svdSolve(const TeuchosMatrix& rhsMat, TeuchosMatrix& solMat) cons
 // ---------------------------------------------------
 // implemented/checked 1/8/13
 // multiply this matrix by vector x and store in vector y, which is returned
-// eg: TeuchosVector v1(paramSpace.zeroVector() ); 
+// eg: TeuchosVector v1(paramSpace.zeroVector() );
 //     v1=covMatrix.multiply(meanVector);
 TeuchosVector
 TeuchosMatrix::multiply(const TeuchosVector& x) const
@@ -842,7 +842,7 @@ TeuchosMatrix::invertMultiply(const TeuchosVector& b) const
                       "TeuchosMatrix::invertMultiply(), return vector",
                       "matrix and rhs have incompatible sizes");
   TeuchosVector x(m_env,m_map);
-  
+
   this->invertMultiply(b,x);
 
   return x;
@@ -862,18 +862,18 @@ TeuchosMatrix::invertMultiply(const TeuchosVector& b, TeuchosVector& x) const
                       m_env.worldRank(),
                       "TeuchosMatrix::invertMultiply(), return void",
                       "solution and rhs have incompatible sizes");
- 
-  if (m_LU.numCols() == 0 && m_LU.numRows() == 0)  
-  {						        
+
+  if (m_LU.numCols() == 0 && m_LU.numRows() == 0)
+  {
   UQ_FATAL_TEST_MACRO((v_pivoting != NULL),
                          m_env.worldRank(),
                          "TeuchosMatrix::invertMultiply()",
                          "v_pivoting should be NULL");
-    
+
   //allocate m_LU and v_pivoting
   m_LU = m_mat;
   v_pivoting =(int *) malloc(sizeof(int)*m_LU.numCols() );
-  
+
   UQ_FATAL_TEST_MACRO((m_LU.numCols() == 0 && m_LU.numRows() == 0),
                       m_env.worldRank(),
                       "TeuchosMatrix::invertMultiply()",
@@ -893,31 +893,31 @@ TeuchosMatrix::invertMultiply(const TeuchosVector& b, TeuchosVector& x) const
 		cout << endl;
 	      }
     }
-      
+
   // Perform an LU factorization of matrix m_LU. Checked 12/06/12
   Teuchos::LAPACK<int, double> lapack;
   int info;
-   
-  lapack.GETRF( m_LU.numRows(), m_LU.numCols(), m_LU.values(), m_LU.stride(), v_pivoting, &info ); 
-  
+
+  lapack.GETRF( m_LU.numRows(), m_LU.numCols(), m_LU.values(), m_LU.stride(), v_pivoting, &info );
+
   if (info != 0) {
     std::cerr   << "In TeuchosMatrix::invertMultiply()"
 		<< ", after lapack.GETRF"
                 << ": INFO = " << info
                 << ",\nINFO < 0:  if INFO = -i, the i-th argument had an illegal value.\n"
-                << "INFO > 0:  if INFO = i, U(i,i) is exactly zero. The factorization \n" 
+                << "INFO > 0:  if INFO = i, U(i,i) is exactly zero. The factorization \n"
                 << "has been completed, but the factor U is exactly singular, and division \n"
                 << "by zero will occur if it is used to solve a system of equations."
                 << std::endl;
-  } 
+  }
   UQ_FATAL_RC_MACRO(info,
 		    m_env.worldRank(),
 		    "TeuchosMatrix::invertMultiplyForceLU()",
 		    "GETRF() failed");
-    
-  if (info >  0) 
+
+  if (info >  0)
      m_isSingular = true;
-     
+
   if (m_inDebugMode) {
     std::cout << "In TeuchosMatrix::invertMultiply()"
               << ": after LU decomposition, m_LU = ";
@@ -925,41 +925,41 @@ TeuchosMatrix::invertMultiply(const TeuchosVector& b, TeuchosVector& x) const
 		for (int j=0;j<3;j++)
 		  cout << m_LU(i,j) <<"\t" ;
 		cout << endl;
-	      }      
+	      }
       std::cout << std::endl;
-    }       
+    }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In TeuchosMatrix::invertMultiply()"
                             << ": before 'lapack.GETRS()'"
                             << std::endl;
   }
-  
+
   // Solve the linear system.
   Teuchos::LAPACK<int, double> lapack;
-  int NRHS = 1; // NRHS: number of right hand sides, i.e., the number 
+  int NRHS = 1; // NRHS: number of right hand sides, i.e., the number
 				// of columns of the matrix B. In this case, vector b.
-  char TRANS = 'N';  // 'N':  A * x= B  (No transpose). Specifies the 
+  char TRANS = 'N';  // 'N':  A * x= B  (No transpose). Specifies the
 				     // form of the system of equations.
   int info02;
-  
-  //GETRS expects the matrix to be already factored in LU and uses the 
+
+  //GETRS expects the matrix to be already factored in LU and uses the
   //same ipiv vector, which are the pivot indices of the LU factorization
 
-  x=b;                
+  x=b;
   lapack.GETRS(TRANS, m_LU.numRows(), NRHS, m_LU.values(), m_LU.stride(), v_pivoting, &x[0],x.sizeLocal(), &info02 );
- 
+
   if (info02 != 0) {
       std::cerr << "In TeuchosMatrix::invertMultiply()"
                 << ", after lapack.GETRS - solve LU system"
                 << ": INFO = " << info02
                 << ",\nINFO < 0:  if INFO = -i, the i-th argument had an illegal value.\n"
                 << std::endl;
-  } 
+  }
   UQ_FATAL_RC_MACRO(info02,
 		    m_env.worldRank(),
 		    "TeuchosMatrix::invertMultiplyForceLU()",
-		    "GETRS() failed"); 
+		    "GETRS() failed");
  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In TeuchosMatrix::invertMultiply()"
 			    << ", after lapack.GETRS() - solve LU system."
@@ -986,7 +986,7 @@ TeuchosMatrix::invertMultiply(const TeuchosMatrix& B) const
 
 // ----------------------------------------------
 //checked 12/10/12
-void              
+void
 TeuchosMatrix::invertMultiply(const TeuchosMatrix& B, TeuchosMatrix& X) const
 {
   // Sanity Checks
@@ -994,7 +994,7 @@ TeuchosMatrix::invertMultiply(const TeuchosMatrix& B, TeuchosMatrix& X) const
              m_env.worldRank(),
 		    "TeuchosMatrix::invertMultiply()",
 		    "Matrices B and X are incompatible");
-  
+
   UQ_FATAL_RC_MACRO((this->numRowsLocal() != X.numRowsLocal()),
              m_env.worldRank(),
 		    "TeuchosMatrix::invertMultiply()",
@@ -1003,10 +1003,10 @@ TeuchosMatrix::invertMultiply(const TeuchosMatrix& B, TeuchosMatrix& X) const
   // Some local variables used within the loop.
   TeuchosVector b(m_env, m_map);
   TeuchosVector x(m_env, m_map);
-  
+
   for( unsigned int j = 0; j < B.numCols(); ++j ) {
     b = B.getColumn(j);
-    //invertMultiply will only do the LU factorization once and store it. 
+    //invertMultiply will only do the LU factorization once and store it.
     x = this->invertMultiply(b);
     X.setColumn(j,x);
   }
@@ -1042,17 +1042,17 @@ TeuchosMatrix::invertMultiplyForceLU(const TeuchosVector& b, TeuchosVector& x) c
                       m_env.worldRank(),
                       "TeuchosMatrix::invertMultiply(), return void",
                       "solution and rhs have incompatible sizes");
- 
-  if (m_LU.numCols() == 0 && m_LU.numRows() == 0) {						      
+
+  if (m_LU.numCols() == 0 && m_LU.numRows() == 0) {
     UQ_FATAL_TEST_MACRO((v_pivoting != NULL),
                          m_env.worldRank(),
                          "TeuchosMatrix::invertMultiply()",
-                         "v_pivoting should be NULL");   
+                         "v_pivoting should be NULL");
   }
-  
+
   //allocate m_LU , yes outside the if above
   m_LU = m_mat;
-  
+
   UQ_FATAL_TEST_MACRO((m_LU.numCols() == 0 && m_LU.numRows() == 0),
                       m_env.worldRank(),
                       "TeuchosMatrix::invertMultiply()",
@@ -1066,58 +1066,58 @@ TeuchosMatrix::invertMultiplyForceLU(const TeuchosVector& b, TeuchosVector& x) c
                       m_env.worldRank(),
                       "TeuchosMatrix::invertMultiply()",
                       "malloc() for v_pivoting failed");
-      
+
   // Perform an LU factorization of matrix m_LU. Checked 12/06/12
   Teuchos::LAPACK<int, double> lapack;
   int info;
-   
-  lapack.GETRF( m_LU.numRows(), m_LU.numCols(), m_LU.values(), m_LU.stride(), v_pivoting, &info ); 
-  
+
+  lapack.GETRF( m_LU.numRows(), m_LU.numCols(), m_LU.values(), m_LU.stride(), v_pivoting, &info );
+
   if (info != 0) {
     std::cerr   << "In TeuchosMatrix::invertMultiply()"
 		<< ", after lapack.GETRF"
                 << ": INFO = " << info
                 << ",\nINFO < 0:  if INFO = -i, the i-th argument had an illegal value.\n"
-                << "INFO > 0:  if INFO = i, U(i,i) is exactly zero. The factorization \n" 
+                << "INFO > 0:  if INFO = i, U(i,i) is exactly zero. The factorization \n"
                 << "has been completed, but the factor U is exactly singular, and division \n"
                 << "by zero will occur if it is used to solve a system of equations."
                 << std::endl;
-  } 
-  
+  }
+
   UQ_FATAL_RC_MACRO(info,
 		    m_env.worldRank(),
 		    "TeuchosMatrix::invertMultiplyForceLU()",
 		    "GETRF() failed");
- 
-  if (info >  0) 
+
+  if (info >  0)
      m_isSingular = true;
-  
+
   // Solve the linear system.
-  int NRHS = 1; // NRHS: number of right hand sides, i.e., the number 
+  int NRHS = 1; // NRHS: number of right hand sides, i.e., the number
 				// of columns of the matrix B. In this case, vector b.
-  char TRANS = 'N';  // 'N':  A * x= B  (No transpose). Specifies the 
+  char TRANS = 'N';  // 'N':  A * x= B  (No transpose). Specifies the
 				     // form of the system of equations.
   int info02;
-  
-  //GETRS expects the matrix to be already factored in LU and uses the 
+
+  //GETRS expects the matrix to be already factored in LU and uses the
   //same ipiv vector, which are the pivot indices of the LU factorization
 
-  x=b;                
+  x=b;
   lapack.GETRS(TRANS, m_LU.numRows(), NRHS, m_LU.values(), m_LU.stride(), v_pivoting, &x[0],x.sizeLocal(), &info02 );
- 
+
   if (info02 != 0) {
       std::cerr << "In TeuchosMatrix::invertMultiply()"
                 << ", after lapack.GETRS - solve LU system"
                 << ": INFO = " << info02
                 << ",\nINFO < 0:  if INFO = -i, the i-th argument had an illegal value.\n"
                 << std::endl;
-    }  
-    
+    }
+
     UQ_FATAL_RC_MACRO(info02,
 		    m_env.worldRank(),
 		    "TeuchosMatrix::invertMultiplyForceLU()",
-		    "GETRS() failed"); 
-   
+		    "GETRS() failed");
+
  return;
 }
 // ---------------------------------------------------
@@ -1131,12 +1131,12 @@ TeuchosMatrix::invertMultiplyForceLU(const TeuchosVector& b, TeuchosVector& x) c
 *  UPLO    = 'U':  Upper triangle of A is stored;
 *          = 'L':  Lower triangle of A is stored.
 *  N       The order of the matrix A.  N >= 0.
-*  A       (input/output) DOUBLE PRECISION array, dimension (LDA, N).On entry, the symmetric 
+*  A       (input/output) DOUBLE PRECISION array, dimension (LDA, N).On entry, the symmetric
 *  matrix A.  If UPLO = 'U', the leading N-by-N upper triangular part of A contains the
-*  upper triangular part of the matrix A.  If UPLO = 'L', the leading N-by-N lower triangular 
+*  upper triangular part of the matrix A.  If UPLO = 'L', the leading N-by-N lower triangular
 *  part of A contains the lower triangular part of the matrix A. On exit, if JOBZ = 'V', then
-*  if INFO = 0, A contains the orthonormal eigenvectors of the matrix A. If JOBZ = 'N', then 
-*  on exit the lower triangle (if UPLO='L') or the upper triangle (if UPLO='U') of A, 
+*  if INFO = 0, A contains the orthonormal eigenvectors of the matrix A. If JOBZ = 'N', then
+*  on exit the lower triangle (if UPLO='L') or the upper triangle (if UPLO='U') of A,
 *  including the  diagonal, is destroyed.
 *  LDA     (input) INTEGER - the leading dimension of the array A.  LDA >= max(1,N).
 *  W       (output) DOUBLE PRECISION array, dimension (N)
@@ -1147,7 +1147,7 @@ TeuchosMatrix::invertMultiplyForceLU(const TeuchosVector& b, TeuchosVector& x) c
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal elements of 
+*          > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal elements of
 *                an intermediate tridiagonal form did not converge to zero.*/
 void
 TeuchosMatrix::eigen(TeuchosVector& eigenValues, TeuchosMatrix* eigenVectors) const
@@ -1165,44 +1165,44 @@ TeuchosMatrix::eigen(TeuchosVector& eigenValues, TeuchosMatrix* eigenVectors) co
                         "TeuchosVector::eigen()",
                         "different input vector sizes");
   }
-  
+
   // At the end of execution, Lapack funcion destroys the input matrix
   // So, lets not use m_mat, but instead, a copy of it
   Teuchos::SerialDenseMatrix<int,double> copy_m_mat;
   copy_m_mat = m_mat;
 
   Teuchos::LAPACK<int, double> lapack;
-  int lwork = 3*n -1; 
+  int lwork = 3*n -1;
   int info;
-  char UPLO = 'L'; 
+  char UPLO = 'L';
   double *W, *WORK;
 
   W = new double[n];
   WORK = new double[lwork];
-      
+
   if (eigenVectors == NULL) {
-    char JOBZ = 'N';//eigenvalues only        
-     
+    char JOBZ = 'N';//eigenvalues only
+
     lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
-  
-    for (unsigned int i=0; i< n; i++) 
+
+    for (unsigned int i=0; i< n; i++)
       eigenValues[i] = W[i];
-  
+
     UQ_FATAL_TEST_MACRO((info != 0),
                       env().fullRank(),
                       "TeuchosMatrix::eigen()",
                       "invalid input vector size");
   }
   else {
-  	char JOBZ = 'V';//eigenvalues and eigenvectors          
-    
+  	char JOBZ = 'V';//eigenvalues and eigenvectors
+
     lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
-  
+
   	for (unsigned int i=0; i< n; i++)
     	eigenValues[i] = W[i];
-  
+
   	eigenVectors->m_mat = copy_m_mat;
-  } 
+  }
 
   if (info != 0) {
     std::cerr << "In TeuchosMtrix::eigen()"
@@ -1210,7 +1210,7 @@ TeuchosMatrix::eigen(TeuchosVector& eigenValues, TeuchosMatrix* eigenVectors) co
               << ",\n INFO < 0:  if INFO = -i, the i-th argument had an illegal value."
               << "\n INFO > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal "
 		      << " elements of an intermediate tridiagonal form did not converge to zero."
-              << std::endl;     
+              << std::endl;
   }
 
   return;
@@ -1218,7 +1218,7 @@ TeuchosMatrix::eigen(TeuchosVector& eigenValues, TeuchosMatrix* eigenVectors) co
 // ---------------------------------------------------
 void
 TeuchosMatrix::largestEigen(double& eigenValue, TeuchosVector& eigenVector) const
-{ 
+{
   unsigned int n = eigenVector.sizeLocal();
 
   UQ_FATAL_TEST_MACRO((n == 0),
@@ -1226,46 +1226,46 @@ TeuchosMatrix::largestEigen(double& eigenValue, TeuchosVector& eigenVector) cons
                       "TeuchosMatrix::largestEigen()",
                       "invalid input vector size");
   Teuchos::LAPACK<int, double> lapack;
-  
-  //SYEV destroys the input matrix, so lets operate in a copy  
+
+  //SYEV destroys the input matrix, so lets operate in a copy
   Teuchos::SerialDenseMatrix<int,double> copy_m_mat;
   copy_m_mat = m_mat;
 
-  int lwork = 3*n -1; 
+  int lwork = 3*n -1;
   int info;
-  char UPLO = 'L'; 
-  char JOBZ = 'V'; //eigenvalues and eigenvectors          
+  char UPLO = 'L';
+  char JOBZ = 'V'; //eigenvalues and eigenvectors
   double *W, *WORK;
-  
+
   W = new double[n];
   WORK = new double[lwork];
-      
+
   lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
-   
+
   if (info != 0) {
     std::cerr << "In TeuchosMtrix::largestEigen()"
               << ": INFO = " << info
               << ",\n INFO < 0:  if INFO = -i, the i-th argument had an illegal value."
               << "\n INFO > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal "
 		      << " elements of an intermediate tridiagonal form did not converge to zero."
-              << std::endl;    
+              << std::endl;
   }
-  // If INFO = 0, W contains the eigenvalues in ascending order. 
+  // If INFO = 0, W contains the eigenvalues in ascending order.
   // Thus the largest eigenvalue is in W[n-1].
   eigenValue = W[n-1];
-  
+
   // Eigenvector associated to the largest eigenvalue.
   // Stored in the n-th column of matrix copy_m_mat.
   for (int i=0; i< copy_m_mat.numRows(); i++)
     eigenVector[i] = copy_m_mat(i,n-1);
-   
+
   return;
 }
 
 // ---------------------------------------------------
 void
 TeuchosMatrix::smallestEigen(double& eigenValue, TeuchosVector& eigenVector) const
-{ 
+{
   unsigned int n = eigenVector.sizeLocal();
 
   UQ_FATAL_TEST_MACRO((n == 0),
@@ -1273,40 +1273,40 @@ TeuchosMatrix::smallestEigen(double& eigenValue, TeuchosVector& eigenVector) con
                       "TeuchosMatrix::smallestEigen()",
                       "invalid input vector size");
   Teuchos::LAPACK<int, double> lapack;
-  
-  //SYEV destroys the input matrix, so lets operate in a copy  
+
+  //SYEV destroys the input matrix, so lets operate in a copy
   Teuchos::SerialDenseMatrix<int,double> copy_m_mat;
   copy_m_mat = m_mat;
 
-  int lwork = 3*n -1; 
+  int lwork = 3*n -1;
   int info;
-  char UPLO = 'L'; 
-  char JOBZ = 'V';//eigenvalues and eigenvectors          
+  char UPLO = 'L';
+  char JOBZ = 'V';//eigenvalues and eigenvectors
   double *W, *WORK;
-  
+
   W = new double[n];
   WORK = new double[lwork];
-     
+
   lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
-  
+
   if (info != 0) {
     std::cerr << "In TeuchosMtrix::smallestEigen()"
               << ": INFO = " << info
               << ",\n INFO < 0:  if INFO = -i, the i-th argument had an illegal value."
               << "\n INFO > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal "
 		      << " elements of an intermediate tridiagonal form did not converge to zero."
-              << std::endl;    
+              << std::endl;
   }
-  
-  // If INFO = 0, W contains the eigenvalues in ascending order. 
+
+  // If INFO = 0, W contains the eigenvalues in ascending order.
   // Thus the smallest eigenvalue is in W[0].
   eigenValue = W[0];
-  
+
   // Eigenvector associated to the smallest eigenvalue.
   // Stored in the n-th column of matrix copy_m_mat.
   for (int i=0; i< copy_m_mat.numRows(); i++)
     eigenVector[i] = copy_m_mat(i,0);
-   
+
   return;
 }
 
@@ -1373,14 +1373,14 @@ TeuchosMatrix::getColumn(unsigned int column_num, TeuchosVector& column) const
 
   // Temporary working pointer
   const double* temp_ptr ;
-  
+
   // get the column_num- of matrix m_mat
   temp_ptr = m_mat[column_num];
-  
+
   // Copy column from Teuchos matrix into our TeuchosVector object
   for (unsigned int i=0; i< column.sizeLocal();i++)
     column[i] = temp_ptr[i];
-  
+
   return;
 }
 
@@ -1412,10 +1412,10 @@ TeuchosMatrix::setColumn(unsigned int column_num, const TeuchosVector& column)
                       env().fullRank(),
                       "TeuchosMatrix::setColumn",
                       "column vector not same size as this matrix");
-  
+
   for (unsigned int i =0; i < column.sizeLocal(); i++)
     m_mat(i,column_num) = column[i];
-  
+
   return;
 }
 
@@ -1438,7 +1438,7 @@ TeuchosMatrix::getRow(unsigned int row_num, TeuchosVector& row) const
   // Copy row from Teuchos matrix into our TeuchosVector object
   for (unsigned int i=0; i< row.sizeLocal();i++)
     row[i] = m_mat(row_num,i);
-  
+
   return;
 }
 
@@ -1473,13 +1473,13 @@ TeuchosMatrix::setRow (const unsigned int row_num, const TeuchosVector& row)
   // Copy our TeuchosVector object to our Teuchos Matrix
   for (unsigned int i=0; i< row.sizeLocal();i++)
      m_mat(row_num,i) = row[i] ;
-  
+
   return;
 }
 
 // ---------------------------------------------------
 // Kemelli 12/05/12 - tested
-void         
+void
 TeuchosMatrix::zeroLower(bool includeDiagonal)
 {
   unsigned int nRows = this->numRowsLocal();
@@ -1511,7 +1511,7 @@ TeuchosMatrix::zeroLower(bool includeDiagonal)
 
 // ---------------------------------------------------
 // Kemelli 12/05/12 - tested
-void 
+void
 TeuchosMatrix::zeroUpper(bool includeDiagonal)
 {
   unsigned int nRows = this->numRowsLocal();
@@ -1547,17 +1547,17 @@ TeuchosMatrix::filterSmallValues(double thresholdValue)
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
-  
+
   for (unsigned int i = 0; i < nRows; ++i) {
     for (unsigned int j = 0; j < nCols; ++j) {
       double aux = (*this)(i,j);
       // If 'thresholdValue' is negative, no values will be filtered
       if ((aux < 0. ) && (-thresholdValue < aux)) {
         (*this)(i,j) = 0.;
-      }      
+      }
       if ((aux > 0. ) && (thresholdValue > aux)) {
         (*this)(i,j) = 0.;
-      }      
+      }
     }
   }
   return;
@@ -1569,14 +1569,14 @@ TeuchosMatrix::filterLargeValues(double thresholdValue)
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
-  
+
   for (unsigned int i = 0; i < nRows; ++i) {
     for (unsigned int j = 0; j < nCols; ++j) {
       double aux = (*this)(i,j);
       // If 'thresholdValue' is negative, no values will be filtered
-      if ( (aux < 0. ) && (-thresholdValue > aux)) 
+      if ( (aux < 0. ) && (-thresholdValue > aux))
           (*this)(i,j) = 0.;
-      
+
       if ((aux > 0. ) && (thresholdValue < aux))
         (*this)(i,j) = 0.;
     }
@@ -1675,7 +1675,7 @@ TeuchosMatrix::fillWithBlocksDiagonally(const std::vector<TeuchosMatrix* >& matr
       for (unsigned int colId = 0; colId < nCols; ++colId) {
         (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
-    } 
+    }
     cumulativeRowId += nRows;
     cumulativeColId += nCols;
   }
@@ -1837,7 +1837,7 @@ TeuchosMatrix::fillWithTensorProduct(const TeuchosMatrix& mat1, const TeuchosMat
         }
       }
     }
-  } 
+  }
   return;
 }
 
@@ -1866,7 +1866,7 @@ TeuchosMatrix::fillWithTensorProduct(const TeuchosMatrix& mat1, const TeuchosVec
         }
       }
     }
-  } 
+  }
   return;
 }
 
@@ -1903,7 +1903,7 @@ TeuchosMatrix::mpiSum( const MpiComm& comm, TeuchosMatrix& M_global ) const
 
   for( unsigned int i = 0; i < this->numRowsLocal(); i++ ) {
       for( unsigned int j = 0; j < this->numCols(); j++ ) {
-	  k = i + j*M_global.numCols();	  
+	  k = i + j*M_global.numCols();
 	  M_global(i,j) = global[k];
 	  }
   }
@@ -2198,11 +2198,11 @@ TeuchosMatrix::copy(const TeuchosMatrix& src) //dummy
 {
   this->resetLU();
   unsigned int i,j, nrows=src.numRowsLocal(), ncols=src.numCols();
-  
+
   for(i=0; i< nrows ; i++)
     for (j = 0; j < ncols; j++)
       m_mat(i,j) = src(i,j);
-    
+
   return;
 }
 
@@ -2211,7 +2211,7 @@ void
 TeuchosMatrix::resetLU()
 {
   if (m_LU.numCols() >0 || m_LU.numRows() > 0) {
-    m_LU.reshape(0,0); //Kemelli, 12/06/12, dummy    
+    m_LU.reshape(0,0); //Kemelli, 12/06/12, dummy
   }
   if (m_inverse) {
     delete m_inverse;
@@ -2243,7 +2243,7 @@ TeuchosMatrix::resetLU()
   if (v_pivoting) {  //Kemelli added 12/09/12
     free(v_pivoting);
     v_pivoting = NULL;
-    
+
   }
   m_signum = 0;
   m_isSingular = false;
@@ -2299,30 +2299,30 @@ TeuchosMatrix::internalSvd() const
     m_svdSvec   = new TeuchosVector(m_env,*m_svdColMap);
     m_svdVmat   = new TeuchosMatrix(*m_svdSvec);
     m_svdVTmat  = new TeuchosMatrix(*m_svdSvec);
-    
+
     int minRowsCols, maxRowsCols;
-    
+
     if (nRows>=nCols) { minRowsCols = nCols; maxRowsCols = nRows; } else { minRowsCols = nRows; maxRowsCols = nCols; }
 
     char jobu, jobvt;
     int  lwork, info;
     double  *work, *rwork;
-  
+
     jobu = 'S';
     jobvt = 'S';
-  
+
     lwork = 15*maxRowsCols; // Set up the work array, larger than needed.
     work = new double[lwork];
 
     int aux1= 5*minRowsCols+7, aux2= 2*maxRowsCols+2*minRowsCols+1;
     int aux_dim;
-  
+
     if (aux1>=aux2) { aux_dim = minRowsCols*aux1; } else {aux_dim = minRowsCols*aux2; }
-  
+
     rwork = new double[aux_dim];
-  
+
     Teuchos::LAPACK<int, double> lapack;
-    
+
     lapack.GESVD(jobu,jobvt,m_mat.numRows(),m_mat.numCols(),m_mat.values(),m_mat.stride(),
 	        m_svdSvec->values(),m_svdUmat->values(),m_svdUmat->stride(),m_svdVTmat->values(),
 		m_svdVTmat->stride(),&work[0],lwork,&rwork[0],&info);

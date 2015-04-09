@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -39,7 +39,7 @@ WignerJointPdf<V,M>::WignerJointPdf(
   BaseJointPdf<V,M>(((std::string)(prefix)+"uni").c_str(),
          domainSet),
   m_centerPos(new V(centerPos)),
-  m_radius   (radius)    
+  m_radius   (radius)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering WignerJointPdf<V,M>::constructor()"

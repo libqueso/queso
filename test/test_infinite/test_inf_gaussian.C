@@ -42,9 +42,9 @@ int main(int argc, char **argv)
 {
   libMesh::LibMeshInit init(argc, argv);
 
-  libMesh::Mesh mesh;
+  libMesh::Mesh mesh(init.comm());
   libMesh::MeshTools::Generation::build_square(mesh,
-      20, 20, 0.0, 1.0, 0.0, 1.0, QUAD4);
+      20, 20, 0.0, 1.0, 0.0, 1.0, libMeshEnums::QUAD4);
 
   QUESO::FunctionOperatorBuilder fobuilder;
 
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 
   std::vector<double> vars(num_pairs, 0.0);
   for (j = 0; j < num_pairs; j++) {
-    vars[j] = sumsqs[j] / (num_samples - 1); 
+    vars[j] = sumsqs[j] / (num_samples - 1);
   }
 
   double sigma = beta / std::pow(precision.get_eigenvalue(j), alpha / 2.0);
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
   double mean_max;
 
   for (j = 0; j < num_pairs; j++) {
-    // Mean is N(0, (lambda_j^{- alpha / 2} * beta)^2 / n) 
+    // Mean is N(0, (lambda_j^{- alpha / 2} * beta)^2 / n)
     mean_min = -3.0 * sigma / std::sqrt(num_samples);
     mean_max =  3.0 * sigma / std::sqrt(num_samples);
     if (means[j] < mean_min || means[j] > mean_max) {

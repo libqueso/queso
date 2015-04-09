@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -51,34 +51,34 @@ BetaVectorRV<V,M>::BetaVectorRV(
 
   const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&imageSet);
 
-  double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
-  double biggerOfMaxValues = imageBox->maxValues().getMaxValue();	
+  double smallerOfMaxValues = imageBox->maxValues().getMinValue();
+  double biggerOfMaxValues = imageBox->maxValues().getMaxValue();
   double smallerOfMinValues = imageBox->minValues().getMinValue();
-  double biggerOfMinValues = imageBox->minValues().getMaxValue();	
-  
- // Beta dist is defined only in [0,1]		
- if( (smallerOfMinValues < 0) || ( biggerOfMaxValues > 1 ) ) 
- {		
-   std::cerr << "In BetaVectorRV<V,M>::constructor()\n" 
+  double biggerOfMinValues = imageBox->minValues().getMaxValue();
+
+ // Beta dist is defined only in [0,1]
+ if( (smallerOfMinValues < 0) || ( biggerOfMaxValues > 1 ) )
+ {
+   std::cerr << "In BetaVectorRV<V,M>::constructor()\n"
        << "Beta distribution is defined only in [0, 1].\n"
        << "The data provided is: \n"
-       << *imageBox 
-         << "Sampling will not cover all interval.\n"   
+       << *imageBox
+         << "Sampling will not cover all interval.\n"
          << std::endl;
 
  // if at least one of the min values > 1 then exit
     UQ_FATAL_TEST_MACRO(biggerOfMinValues > 1,
                       m_env.worldRank(),
                       "In BetaVectorRV<V,M>::constructor()",
-                      "invalid input: Beta distribution is only defined in [0, 1], and max(m_minValues)>1");  
- // if at least one of the max values < 0 then exit                      
+                      "invalid input: Beta distribution is only defined in [0, 1], and max(m_minValues)>1");
+ // if at least one of the max values < 0 then exit
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0, //biggerOfMaxValues
                       m_env.worldRank(),
                       "In BetaVectorRV<V,M>::constructor()",
-                      "invalid input: Beta distribution is only defined in [0, 1], and min(m_maxValues)<0");                
- }	
+                      "invalid input: Beta distribution is only defined in [0, 1], and min(m_maxValues)<0");
+ }
   // end kemelli 2013-April-22 --------------------------
-  
+
   m_pdf        = new BetaJointPdf<V,M>(m_prefix.c_str(),
                                               m_imageSet,
                                               alpha,

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -166,13 +166,13 @@ MpiComm::Bcast(void* buffer, int count, RawType_MPI_Datatype datatype, int root,
 //--------------------------------------------------
 void
 MpiComm::Gather(
-  void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, 
-  void* recvbuf, int recvcount, RawType_MPI_Datatype recvtype, 
+  void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype,
+  void* recvbuf, int recvcount, RawType_MPI_Datatype recvtype,
   int root,
   const char* whereMsg, const char* whatMsg) const
 {
-  //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-  //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+  //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype,
+  //                void *recvbuf, int recvcount, MPI_Datatype recvtype,
   //                int root, MPI_Comm comm )
   int mpiRC = MPI_Gather(sendbuf, sendcnt, sendtype,
                          recvbuf, recvcount, recvtype,
@@ -183,16 +183,16 @@ MpiComm::Gather(
                       whatMsg);
   return;
 }
-//-------------------------------------------------- 
+//--------------------------------------------------
 void
 MpiComm::Gatherv(
-  void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, 
-  void* recvbuf, int* recvcnts, int* displs, RawType_MPI_Datatype recvtype, 
+  void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype,
+  void* recvbuf, int* recvcnts, int* displs, RawType_MPI_Datatype recvtype,
   int root,
   const char* whereMsg, const char* whatMsg) const
 {
-  //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
-  //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
+  //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype,
+  //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype,
   //                int root, MPI_Comm comm )
   int mpiRC = MPI_Gatherv(sendbuf, sendcnt, sendtype,
                           recvbuf, recvcnts, displs, recvtype,

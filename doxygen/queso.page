@@ -21,7 +21,7 @@ based/html format.
 
 Bugs in the code and errors or omissions in the documentation can be reported
 to queso-users@googlegroups.com or as a
-<a href="https://github.com/libqueso/queso/issues/new>GitHub ticket</a>.
+<a href="https://github.com/libqueso/queso/issues/new">GitHub ticket</a>.
 Requests and contributions are also welcome using either of the two methods
 mentioned above.
 
@@ -36,11 +36,10 @@ All bug reports should include:
 
 \section bugs Regression Testing
 <ul>
-<li> <a href="http://buildbot.ices.utexas.edu/docs/buildbot/queso-branch/build/docs/html/lcov/build/src/index.html">Build\
-bot Coverage</a>
+<li> <a href="http://buildbot.ices.utexas.edu/docs/buildbot/queso-branch/build/docs/html/lcov/build/src/index.html">Build bot Coverage</a>
 
 \section licence License
-See <a href="https://github.com/libqueso/queso/blob/master/LICENSE>here</a>.
+See <a href="https://github.com/libqueso/queso/blob/master/LICENSE">here</a>.
 
 \section acknowledgements Acknowledgments
 \copydoc Acknowledgments

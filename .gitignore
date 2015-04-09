@@ -14,6 +14,8 @@ queso-*tar.gz
 Makefile.in
 Makefile
 !manual/Makefile
+manual/mixed_effects/*.pdf
+manual/mixed_effects/*.aux
 libtool
 sl6-config
 stamp-h1
@@ -81,6 +83,12 @@ examples/outputData
 examples/template_eg
 examples/template_example/outputData
 examples/template_example/template_example
+examples/scalarCovariance
+examples/diagonalCovariance
+examples/fullCovariance
+examples/blockDiagonalCovariance
+examples/fullCovarianceRandomCoefficient
+examples/blockDiagonalCovarianceRandomCoefficients
 
 src/core/inc/queso.h
 src/libqueso.la
@@ -161,5 +169,22 @@ test/test_Regression/test_jeffreys_samples_diff.sh
 test/test_adaptedcov_output/
 test/test_gpmsa_cobra_output/
 test/test_logitadaptedcov
+test/test_scalarCovariance
+test/test_diagonalCovariance
+test/test_fullCovariance
+test/test_blockDiagonalCovariance
+test/test_output_gaussian_likelihoods
+test/test_gaussian_likelihoods/queso_input.txt
+test/test_GslBlockMatrixInvertMultiply
 test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 test/test_unifiedPositionsOfMaximum
+test/test_VectorPdf_gsl
+test/test_VectorRV_gsl
+test/test_VectorRealizer_gsl
+test/test_fullCovarianceRandomCoefficient
+test/test_blockDiagonalCovarianceRandomCoefficients
+test/test_gaussian_likelihoods/gaussian_consistency_input.txt
+test/test_fullCovarianceChain
+test/test_diagonalCovarianceChain
+test/test_scalarCovarianceChain
+test/test_blockDiagonalCovarianceChain

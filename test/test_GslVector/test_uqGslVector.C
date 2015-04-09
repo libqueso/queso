@@ -164,7 +164,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  // There is a shell 
+  // There is a shell
   std::set<unsigned int> ids;
   ids.insert(0);
   v1.subWriteContents("gslvector", "gslvector_out", UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, ids);

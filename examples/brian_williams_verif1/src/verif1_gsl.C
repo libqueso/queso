@@ -76,7 +76,7 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   unsigned int n = 400;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpace(env, "data_", n, NULL);
 
-  double sigmaTotal = 4229.55;  
+  double sigmaTotal = 4229.55;
 
   std::set<unsigned int> tmpSet;
   tmpSet.insert(env.subId());
@@ -187,7 +187,7 @@ double likelihoodRoutine(
     // Just to eliminate INTEL compiler warnings
   }
 
-  struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr; 
+  struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr;
   uqGslVectorClass aVec(*(likelihoodData->aVec));
   uqGslVectorClass bVec(*(likelihoodData->bVec));
   unsigned int p = aVec.sizeLocal();

@@ -4,5 +4,8 @@ compiler:
   - clang
 before_script:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq libgsl0-dev libmpich2-dev libboost-all-dev
-script: ./bootstrap && ./configure && make && make check
+  - sudo apt-get install -q build-essential
+  - sudo apt-get install -q libgsl0-dev
+  - sudo apt-get install -q openmpi-bin openmpi-dev
+  - sudo apt-get install -q libboost-all-dev
+script: ./bootstrap && CC="mpicc" CXX="mpicxx" ./configure && make -j2 && make check

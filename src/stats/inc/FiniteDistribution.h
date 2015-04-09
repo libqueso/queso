@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -34,10 +34,10 @@ namespace QUESO {
  *
  * \class FiniteDistribution
  * \brief A templated class for a finite distribution.
- * 
- * Unordered, discrete distribution, whose weights must be nonnegative, and are treated as unnormalized 
+ *
+ * Unordered, discrete distribution, whose weights must be nonnegative, and are treated as unnormalized
  * probabilities.\n
- * 
+ *
  * TODO: Describe me better!*/
 
 class FiniteDistribution {
@@ -51,22 +51,22 @@ public:
   //! Virtual destructor
   virtual ~FiniteDistribution();
   //@}
-  
+
   //! @name Misc methods
   //@{
-  //! Environment; access to protected attribute m_env.  
+  //! Environment; access to protected attribute m_env.
   const BaseEnvironment& env    () const;
   //@}
-  
+
   //! @name Statistical methods
   //@{
   //! Weights.
   const std::vector<double>&    weights() const;
-  
+
   //! Samples.
   unsigned int            sample () const;
  //@}
-  
+
 protected:
   const BaseEnvironment& m_env;
         std::string             m_prefix;

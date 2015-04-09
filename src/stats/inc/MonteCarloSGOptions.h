@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -59,7 +59,7 @@ namespace QUESO {
 
 /*! \class McOptionsValues
  *  \brief This class provides options for the  Monte Carlo sequence generator if no input file is available.
- * 
+ *
  *  Monte Carlo sequence generator expects options for its methods. This class provides default
  * values for such options if no input file is available. */
 
@@ -67,8 +67,8 @@ class McOptionsValues
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
-  
+  //@{
+
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   McOptionsValues            (const SsOptionsValues* alternativePSsOptionsValues,
                                      const SsOptionsValues* alternativeQSsOptionsValues);
@@ -80,14 +80,14 @@ public:
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
   McOptionsValues            (const McOptionsValues& src);
-  
+
   //! Destructor
   ~McOptionsValues            ();
   //@}
-  
+
   //! @name Set methods
-  //@{ 
-  //! Assignment operator; it copies \c rhs to \c this. 
+  //@{
+  //! Assignment operator; it copies \c rhs to \c this.
   McOptionsValues& operator= (const McOptionsValues& rhs);
   //@}
 
@@ -132,39 +132,39 @@ private:
 
 /*! \class MonteCarloSGOptions
  *  \brief This class reads the options for the  Monte Carlo sequence generator from  an input file.
- * 
- * Monte Carlo sequence generator expects options for its methods. This class reads the 
- * options for the Monte Carlo sequence generator from an input file provided by the user. 
- * The class expects the prefix '\<prefix\>_mc_'. For instance, if 'prefix' is 'foo_775_fp_', 
+ *
+ * Monte Carlo sequence generator expects options for its methods. This class reads the
+ * options for the Monte Carlo sequence generator from an input file provided by the user.
+ * The class expects the prefix '\<prefix\>_mc_'. For instance, if 'prefix' is 'foo_775_fp_',
  * then the constructor will read all options that begin with 'foo_775_fp_mc_'. */
 
 class MonteCarloSGOptions
 {
 public:
-  
+
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Constructor: reads options from the input file.
   MonteCarloSGOptions(const BaseEnvironment& env, const char* prefix);
-  
+
   //! Constructor: with alternative option values.
   /*! In this constructor, the input options are given by \c alternativeOptionsValues, thus, they
    * are not read from an input file.*/
   MonteCarloSGOptions(const BaseEnvironment& env, const char* prefix, const McOptionsValues& alternativeOptionsValues);
- 
+
   //! Destructor
   ~MonteCarloSGOptions();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! It scans the option values from the options input file.
   void scanOptionsValues();
-  
+
   //!  It prints the option values.
   void print            (std::ostream& os) const;
   //@}
-  
+
   McOptionsValues             m_ov;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   SequenceStatisticalOptions* m_pseqStatisticalOptionsObj;
@@ -175,7 +175,7 @@ public:
 private:
   //! Defines the options for the Monte Carlo sequence generator as the default options.
   void   defineMyOptions  (po::options_description& optionsDesc) const;
-  
+
   //! Gets the sequence options.
   void   getMyOptionValues(po::options_description& optionsDesc);
 

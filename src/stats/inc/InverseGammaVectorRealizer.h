@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -35,11 +35,11 @@ namespace QUESO {
 //*****************************************************
 // InverseGamma class [R-07]
 //*****************************************************
-/*! 
+/*!
  * \class InverseGammaVectorRealizer
  * \brief A class for handling sampling from an Inverse Gamma probability density distribution.
  *
- * This class handles sampling from an Inverse Gamma probability density distribution, of 
+ * This class handles sampling from an Inverse Gamma probability density distribution, of
  * parameters \c alpha and \c beta.*/
 
 template<class V, class M>
@@ -62,9 +62,9 @@ public:
      //! @name Realization-related methods
   //@{
   //! Draws a realization.
-  /*! This function draws a realization of an Inverse Gamma distribution and saves it in \c nextValues. 
-   * It internally checks whether the image set, where the realization should be drawn, belongs 
-   * to the interval (0, infinity) - which is the range where Gamma distribution is defined over. */ 
+  /*! This function draws a realization of an Inverse Gamma distribution and saves it in \c nextValues.
+   * It internally checks whether the image set, where the realization should be drawn, belongs
+   * to the interval (0, infinity) - which is the range where Gamma distribution is defined over. */
   void realization(V& nextValues) const;
   //@}
 

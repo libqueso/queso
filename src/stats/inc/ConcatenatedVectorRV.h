@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -43,9 +43,9 @@ namespace QUESO {
 /*!
  * \class ConcatenatedVectorRV
  * \brief A class representing concatenated vector RVs.
- * 
+ *
  * This class allows the user to concatenate two vector RV of different types and to generate realizations
- * (samples) from this concatenated vector RV. It is used, for instance, to concatenate priors from two or 
+ * (samples) from this concatenated vector RV. It is used, for instance, to concatenate priors from two or
  * more RVs, where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 
 template<class V, class M>
@@ -59,26 +59,26 @@ public:
                               const BaseVectorRV<V,M>& rv1,
                               const BaseVectorRV<V,M>& rv2,
                               const VectorSet<V,M>&    imageSet);
-  
+
   //! Constructor
   /*! Concatenates a sequence of RVs, given by: <c> std::vector<const BaseVectorRV<V,M>* >& rvs </c>
    * into one single vector RV, given a prefix and the image set of the resulting vector RV.*/
   ConcatenatedVectorRV(const char*                                          prefix,
                               const std::vector<const BaseVectorRV<V,M>* >& rvs,
                               const VectorSet<V,M>&                         imageSet);
-  
+
   //! Virtual destructor
   virtual ~ConcatenatedVectorRV();
   //@}
-  
+
     //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.
   /*! \todo: implement me!*/
   void print(std::ostream& os) const;
   //@}
-  
-  
+
+
 private:
   using BaseVectorRV<V,M>::m_env;
   using BaseVectorRV<V,M>::m_prefix;

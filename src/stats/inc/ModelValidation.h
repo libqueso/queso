@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -33,8 +33,8 @@ namespace QUESO {
  * \brief A templated class for model validation of the example validationPyramid.
  *
  * \class ModelValidation
- * \brief A templated class for model validation of the example validationPyramid. 
- * 
+ * \brief A templated class for model validation of the example validationPyramid.
+ *
  * Its derived class exPhysics1Validation enables comparison between the calibration
  * and validate stages. */
 
@@ -47,11 +47,11 @@ public:
   //! Constructor.
   ModelValidation(const BaseEnvironment& env,
                          const char*                   prefix);
-  
+
   //! Virtual destructor.
   virtual ~ModelValidation();
   //@}
-  
+
   //! @name Misc methods
   //@{
   //! Runs calibration, validation and comparison stages. See template specialization.
@@ -59,11 +59,11 @@ public:
 
   //! Access to the environment variable (m_env).
   const BaseEnvironment&                  env  () const;
-  
+
   //! Access to the cycle (m_cycle).
   const ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle() const;
   //@}
-  
+
 protected:
   const BaseEnvironment& m_env;
         std::string             m_prefix;

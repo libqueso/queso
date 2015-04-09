@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -209,7 +209,7 @@ private:
                                                                                    const P_V&                      rho_w_vec,
                                                                                          D_M&                      Rmat,
                                                                                          unsigned int              outerCounter);
- 
+
         // This routine is called by formSigma_z()
         // This routine is called by formSigma_w_hat()
         void                             fillR_formula1_for_Sigma_w               (const std::vector<const S_V* >& xVecs, // ppp: does multiple Gs affect this routine?

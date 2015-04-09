@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -26,7 +26,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/VectorRV.h>
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
   int return_flag = 0;
 
@@ -93,7 +93,7 @@ int actualChecking(const QUESO::FullEnvironment* env)
     {
       return_flag = 1;
     }
-  
+
   Matrix->setColumn( 1, row );
   column = Matrix->getColumn(1);
   if( column[0] != (*Matrix)(0,1) || column[1] != (*Matrix)(1,1) )

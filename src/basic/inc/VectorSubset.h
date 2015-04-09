@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -31,7 +31,7 @@ namespace QUESO {
 
 /*! \file uqVectorSubset.h
  * \brief A templated class for handling subsets.
- * 
+ *
  * \class VectorSubset
  * \brief A templated class for handling subsets.
  *
@@ -45,33 +45,33 @@ class VectorSubset : public VectorSet<V,M>
 {
 public:
   //! @name Constructor/Destructor methods.
-  //@{ 
+  //@{
   //! Default Constructor
   /*! It should not be used by the user.*/
   VectorSubset();
-  
+
   //! Shaped constructor (with volume).
   VectorSubset(const char* prefix, const VectorSpace<V,M>& vectorSpace, double volume);
-  
+
   //! Destructor.
   virtual ~VectorSubset();
   //@}
-  
+
     //! @name Mathematical methods.
   //@{
   //!  Vector space to which \c this set belongs to. See template specialization.
   const VectorSpace<V,M>& vectorSpace()                 const;
-  
+
   //! Returns whether \c this contains vector \c vec. See template specialization.
   virtual        bool                     contains   (const V& vec)     const = 0;
   //@}
-  
+
   //! @name I/O methods.
   //@{
   //! Prints nothing.
   virtual        void                     print      (std::ostream& os) const;
   //@}
-  
+
 protected:
   using VectorSet<V,M>::m_env;
   using VectorSet<V,M>::m_prefix;

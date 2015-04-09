@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -35,33 +35,33 @@ namespace QUESO {
 //*****************************************************
 // Sequential class [R-nn]
 //*****************************************************
-/*! 
+/*!
  * \class SequentialVectorRealizer
  * \brief A class for handling sequential draws (sampling) from probability density distributions.
  *
- * This class handles sequential sampling (it returns the next value of the chain) from a 
+ * This class handles sequential sampling (it returns the next value of the chain) from a
  * probability density distribution.*/
 
 template<class V, class M>
 class SequentialVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
-  
+
   //!@name Constructor/Destructor methods
   //! Default constructor.
   SequentialVectorRealizer(const char*                           prefix,
                                   const BaseVectorSequence<V,M>& chain);
-  
+
   //! Destructor.
   ~SequentialVectorRealizer();
   //@}
- 
+
   //!@name Sampling-related methods
   //! Returns the unified mean vector; access to private attribute m_unifiedSampleExpVector.
   const V&   unifiedSampleExpVector()              const;
-  
+
   //! Returns the unified variance vector; access to private attribute m_unifiedSampleVarVector.
   const V&   unifiedSampleVarVector()              const;
-  
+
   //! Draws the next value from this chain (\c m_chain) and saves it in \c nextValues
   void realization           (V& nextValues) const;
   //@}

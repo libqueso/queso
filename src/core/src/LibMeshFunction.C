@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -64,8 +64,8 @@ namespace QUESO {
 LibMeshFunction::LibMeshFunction(
     const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
   : FunctionBase(),
-    equation_systems(new libMesh::EquationSystems(m)),
-    builder(builder)
+    builder(builder),
+    equation_systems(new libMesh::EquationSystems(m))
 {
   this->equation_systems->add_system<libMesh::ExplicitSystem>("Function");
   this->equation_systems->get_system("Function").add_variable("u",
@@ -130,7 +130,8 @@ double LibMeshFunction::L2_norm() const {
   libMesh::ExplicitSystem & system =
     this->equation_systems->get_system<libMesh::ExplicitSystem>("Function");
 
-  double norm = system.calculate_norm(*system.solution, libMesh::SystemNorm(L2));
+  double norm = system.calculate_norm(*system.solution,
+                                      libMesh::SystemNorm(libMeshEnums::L2));
   return norm;
 }
 

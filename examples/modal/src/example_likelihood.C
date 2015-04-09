@@ -25,8 +25,8 @@
  *
  * $Id$
  *
- * Brief description of this file: 
- * 
+ * Brief description of this file:
+ *
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
@@ -55,7 +55,7 @@ double likelihoodRoutine(
   double sum1 = 0.;
   double sum2 = 0.;
 
-  double aux = (w1 - 72.0470); 
+  double aux = (w1 - 72.0470);
   sum1 += aux*aux;
   aux = (w1 - 71.8995);
   sum1 += aux*aux;
@@ -70,7 +70,7 @@ double likelihoodRoutine(
     // Ok, do nothing
   }
   else if (numModes == 2) {
-    aux = (w2 - 28.0292); 
+    aux = (w2 - 28.0292);
     sum2 += aux*aux;
     aux = (w2 - 27.3726);
     sum2 += aux*aux;
@@ -87,7 +87,7 @@ double likelihoodRoutine(
                         "example_likelihood()",
                         "invalid 'numModes'");
   }
- 
+
   double result = -0.5*((double) numModes)*5.*log(2.*M_PI*sigmaSq) - 0.5*(sum1+sum2)/sigmaSq;
 
 

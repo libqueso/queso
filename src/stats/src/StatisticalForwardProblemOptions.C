@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -109,7 +109,7 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
 }
 
 StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
-  const BaseEnvironment& env, 
+  const BaseEnvironment& env,
   const char*                   prefix,
   const SfpOptionsValues& alternativeOptionsValues)
   :
@@ -144,7 +144,7 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
 StatisticalForwardProblemOptions::~StatisticalForwardProblemOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
-} 
+}
 
 // I/O methods -------------------------------------
 void
@@ -193,7 +193,7 @@ StatisticalForwardProblemOptions::print(std::ostream& os) const
 void
 StatisticalForwardProblemOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
-  optionsDesc.add_options()     
+  optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                              "produce help message for statistical forward problem")
     (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SFP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
     (m_option_computeCovariances.c_str(),   po::value<bool       >()->default_value(UQ_SFP_COMPUTE_COVARIANCES_ODV    ), "compute pq covariances"                              )

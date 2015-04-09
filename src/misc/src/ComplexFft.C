@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -30,7 +30,7 @@ namespace QUESO {
 template <>
 void
 Fft<std::complex<double> >::forward(
-  const std::vector<std::complex<double> >& data, 
+  const std::vector<std::complex<double> >& data,
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& forwardResult)
 {
@@ -95,7 +95,7 @@ Fft<std::complex<double> >::forward(
 template <>
 void
 Fft<std::complex<double> >::inverse(
-  const std::vector<std::complex<double> >& data, 
+  const std::vector<std::complex<double> >& data,
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& inverseResult)
 {

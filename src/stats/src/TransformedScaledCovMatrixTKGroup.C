@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -159,7 +159,7 @@ TransformedScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stag
   V transformedPreComputingPositions(*m_preComputingPositions[stageIds[0]]);
   transformToGaussianSpace(*m_preComputingPositions[stageIds[0]],
       transformedPreComputingPositions);
-  
+
   invlogit_gaussian->updateLawExpVector(transformedPreComputingPositions);
 
   return (*invlogit_gaussian);

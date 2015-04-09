@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -44,9 +44,9 @@ class GenericScalarFunction : public BaseScalarFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor. 
-  /*! Instantiates an object of \c this class given its prefix, domain set and a pointer to a routine. 
-   This routine plays the role of a scalar math function, and it is useful, for instance, to calculate 
+  //! Default constructor.
+  /*! Instantiates an object of \c this class given its prefix, domain set and a pointer to a routine.
+   This routine plays the role of a scalar math function, and it is useful, for instance, to calculate
    the likelihood (and its image set).*/
   GenericScalarFunction(const char*                  prefix,
                                const VectorSet<V,M>& domainSet,
@@ -57,10 +57,10 @@ public:
   virtual ~GenericScalarFunction();
 
   //! @name Mathematical method
-  //@{ 
+  //@{
   //! Calculates the actual value of this scalar function.
   double actualValue      (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Calculates the logarithm of value of this scalar function.
   /*! It is used in routines that calculate the likelihood and expect the logarithm of value.*/
   double lnValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
@@ -72,8 +72,8 @@ protected:
 
    //! Routine defining a scalar function.
    /*! The presence of the parameters \c gradVectors, \c hessianMatrices and \c hessianEffects
-   * allows the user to calculate gradient vectors, Hessian matrices and Hessian effects; which 
-   * can hold important information about her/his statistical application. Used, for instance to 
+   * allows the user to calculate gradient vectors, Hessian matrices and Hessian effects; which
+   * can hold important information about her/his statistical application. Used, for instance to
    * define the likelihood.  */
   double (*m_valueRoutinePtr)(const V& domainVector, const V* domainDirection, const void* routinesDataPtr, V* gradVector, M* hessianMatrix, V* hessianEffect);
   const void* m_routinesDataPtr;

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -257,7 +257,7 @@ GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfo(
                               << ", etaVec_transformed.sizeLocal() = "      << etaVec_transformed.sizeLocal()
                               << std::endl;
     }
-    m_Zvec_tilde_hat_w = m_Ktildet_Ktilde_inv * (Ktildet * etaVec_transformed); 
+    m_Zvec_tilde_hat_w = m_Ktildet_Ktilde_inv * (Ktildet * etaVec_transformed);
     Q_V tmpVec1(etaVec_transformed - (m_Kmat_tilde * m_Zvec_tilde_hat_w));
     m_b_eta_modifier_tilde = scalarProduct(etaVec_transformed,tmpVec1) / 2.;
 

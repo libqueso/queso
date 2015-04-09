@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -266,7 +266,7 @@ GPMSAFactory<V, M>::GPMSAFactory(
     m_experimentOutputs(numExperiments, (V *)NULL),
     m_numSimulationAdds(0),
     m_numExperimentAdds(0),
-    priors(7, NULL)
+    priors(7, (const BaseVectorRV<V, M> *)NULL)  // Needed for gcc 4.3.2
 {
   // DM: Not sure if the logic in these 3 if-blocks is correct
   if ((opts == NULL) && (this->m_env.optionsInputFileName() == "")) {
@@ -322,7 +322,7 @@ GPMSAFactory<V, M>::parameterSpace() const
 {
   return this->m_parameterSpace;
 }
- 
+
 template <class V, class M>
 const VectorSpace<V, M> &
 GPMSAFactory<V, M>::simulationOutputSpace() const

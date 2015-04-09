@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -35,24 +35,24 @@ namespace QUESO {
 //*****************************************************
 // Generic class
 //*****************************************************
-/*! 
+/*!
  * \class GenericScalarCovarianceFunction
  * \brief A class for generic covariances.
- *  
+ *
  * This class implements a generic covariance functions, by calling a routine (via pointer).*/
 
 template<class V,class M>
 class GenericScalarCovarianceFunction : public BaseScalarCovarianceFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the domain set, the pointer to the routine. */
   GenericScalarCovarianceFunction(const char*                  prefix,
            const VectorSet<V,M>& domainSet,
            double (*covRoutinePtr)(const V& positionVector1, const V& positionVector2, const void* routineDataPtr),
            const void*                  routinesDataPtr);
-  
+
   //! Virtual destructor
   virtual ~GenericScalarCovarianceFunction();
   //@}

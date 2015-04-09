@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -60,23 +60,23 @@ void compute(const QUESO::FullEnvironment& env) {
                    (void *) &qoiRoutine_Data);
 
   // Step 5 of 6: Instantiate the forward problem
-  // Parameters are Gaussian RV 
-  QUESO::GslVector meanVector( paramSpace.zeroVector() ); 
+  // Parameters are Gaussian RV
+  QUESO::GslVector meanVector( paramSpace.zeroVector() );
   meanVector[0] = -1;
   meanVector[1] = 2;
-   
-  QUESO::GslMatrix covMatrix = QUESO::GslMatrix(paramSpace.zeroVector());  
-  covMatrix(0,0) = 4.; 
-  covMatrix(0,1) = 0.; 
-  covMatrix(1,0) = 0.; 
-  covMatrix(1,1) = 1.; 
-  
-  QUESO::GaussianVectorRV<QUESO::GslVector,QUESO::GslMatrix> 
+
+  QUESO::GslMatrix covMatrix = QUESO::GslMatrix(paramSpace.zeroVector());
+  covMatrix(0,0) = 4.;
+  covMatrix(0,1) = 0.;
+  covMatrix(1,0) = 0.;
+  covMatrix(1,1) = 1.;
+
+  QUESO::GaussianVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     paramRv("param_",paramDomain,meanVector,covMatrix);
-      
+
   QUESO::GenericVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     qoiRv("qoi_", qoiSpace);
-    
+
   QUESO::StatisticalForwardProblem<QUESO::GslVector,QUESO::GslMatrix,
                                    QUESO::GslVector,QUESO::GslMatrix>
     fp("", NULL, paramRv, qoiFunctionObj, qoiRv);

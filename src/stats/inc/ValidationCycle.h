@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -33,18 +33,18 @@
 namespace QUESO {
 
 /*! \file ValidationCycle.h
- * \brief A templated class for validation cycle of the examples validationCycle and validationCycle2. 
+ * \brief A templated class for validation cycle of the examples validationCycle and validationCycle2.
  *
  * \class ValidationCycle
- * \brief A templated class for validation cycle of the examples validationCycle and validationCycle2. 
- * 
- * It has two stages: calibration and validation. First, in the calibration stage, the inverse problem 
- * solution (posterior RV) is the input parameter vector RV for the forward problem. Then, in the 
- * Validation stage, the posterior vector RV from calibration stage (solution of the forward problem of 
+ * \brief A templated class for validation cycle of the examples validationCycle and validationCycle2.
+ *
+ * It has two stages: calibration and validation. First, in the calibration stage, the inverse problem
+ * solution (posterior RV) is the input parameter vector RV for the forward problem. Then, in the
+ * Validation stage, the posterior vector RV from calibration stage (solution of the forward problem of
  * the calibration stage) is the prior vector RV for an inverse problem. Then, the solution of this
  * inverse problem is once more the input parameter vector RV for the (validation) forward problem.\n
- * 
- * The examples validationCycle and validationCycle2 use the present class to solve the same TGA problem, 
+ *
+ * The examples validationCycle and validationCycle2 use the present class to solve the same TGA problem,
  * and they only differ in implementation styles. */
 
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -58,17 +58,17 @@ public:
                          const char*                        prefix,
                          const VectorSpace<P_V,P_M>& paramSpace,
                          const VectorSpace<P_V,P_M>& qoiSpace);
- 
+
   //! Destructor.
   ~ValidationCycle();
   //@}
-  
+
   //! @name Misc methods
   //@{
   //! Access to the environment variable (m_env).
   const BaseEnvironment& env() const;
   //@}
-  
+
   //! @name Statistical methods
   //@{
   //! Instantiate an inverse problem for the calibration stage.
@@ -78,8 +78,8 @@ public:
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity);
-  
-  //! Instantiate a forward problem for the calibration stage.  
+
+  //! Instantiate a forward problem for the calibration stage.
   void instantiateCalFP(SfpOptionsValues* optionsValues,
                         void (*qoiRoutinePtr)(const P_V&                    domainVector,
                                               const P_V*                    domainDirection,
@@ -90,19 +90,19 @@ public:
                                                     DistArray<P_V*>* hessianEffects),
                         const void* qoiRoutineDataPtr);
 
-  //! Inverse problem of the calibration stage (const) . 
+  //! Inverse problem of the calibration stage (const) .
   /*! It is an instance of class StatisticalInverseProblem<>.*/
   const StatisticalInverseProblem<P_V,P_M>& calIP() const;
-  
-  //! Inverse problem of the calibration stage (non-const) . 
+
+  //! Inverse problem of the calibration stage (non-const) .
   /*! It is an instance of class StatisticalInverseProblem<>.*/
   StatisticalInverseProblem<P_V,P_M>& calIP();
 
-  //! Forward problem of the calibration stage (const) . 
+  //! Forward problem of the calibration stage (const) .
   /*! It is an instance of class StatisticalForwardProblem<>.*/
   const StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>& calFP() const;
-  
-  //! Forward problem of the calibration stage (non-const) . 
+
+  //! Forward problem of the calibration stage (non-const) .
   /*! It is an instance of class StatisticalForwardProblem<>.*/
   StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>& calFP();
 
@@ -124,19 +124,19 @@ public:
                                                     DistArray<P_V*>* hessianEffects),
                         const void* qoiRoutineDataPtr);
 
-  //! Inverse problem of the validation stage (const) . 
+  //! Inverse problem of the validation stage (const) .
   /*! It is an instance of class StatisticalInverseProblem<>.*/
   const StatisticalInverseProblem<P_V,P_M>& valIP() const;
-  
-  //! Inverse problem of the validation stage (non-const) . 
+
+  //! Inverse problem of the validation stage (non-const) .
   /*! It is an instance of class StatisticalInverseProblem<>.*/
   StatisticalInverseProblem<P_V,P_M>& valIP();
 
-   //! Forward problem of the validation stage (const) . 
+   //! Forward problem of the validation stage (const) .
   /*! It is an instance of class StatisticalForwardProblem<>.*/
   const StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>& valFP() const;
-  
-    //! Forward problem of the validation stage (non-const) . 
+
+    //! Forward problem of the validation stage (non-const) .
   /*! It is an instance of class StatisticalForwardProblem<>.*/
   StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>& valFP();
   //@}

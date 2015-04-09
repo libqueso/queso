@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -43,18 +43,18 @@ namespace QUESO {
 /*!
  * \class WignerVectorRV
  * \brief A class representing a vector RV constructed via Wigner distribution.
- * 
+ *
  * This class allows the user to compute the value of a Wigner PDF and to generate realizations
  * (samples) from it.\n
- * 
- * \todo: WignerVectorRealizer.realization() is not yet available, thus this class does 
+ *
+ * \todo: WignerVectorRealizer.realization() is not yet available, thus this class does
  * nothing. */
- 
+
 template<class V, class M>
 class WignerVectorRV : public BaseVectorRV<V,M> {
 public:
-  
-    
+
+
   //! @name Constructor/Destructor methods
   //@{
   //! Default Constructor
@@ -65,14 +65,14 @@ public:
   //! Virtual destructor
   virtual ~WignerVectorRV();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.
   /*! \todo: implement me!*/
   void print(std::ostream& os) const;
   //@}
-  
+
 private:
   using BaseVectorRV<V,M>::m_env;
   using BaseVectorRV<V,M>::m_prefix;

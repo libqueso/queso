@@ -406,7 +406,7 @@ void compute(const uqFullEnvironmentClass& env, bool useExperiments, bool useML)
         DobsMats[i]->setColumn(colId,DobsCol);
       }
     }
-  
+
     //***********************************************************************
     // Normalize 'DsimMat' and all 'DobsMats'
     //***********************************************************************
@@ -451,7 +451,7 @@ void compute(const uqFullEnvironmentClass& env, bool useExperiments, bool useML)
     for (unsigned int i = 0; i < paper_n; ++i) {
       Kmats_interp_spaces[i] = new uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>(env,"Kmats_interp_spaces_",experimentStoragePtr->n_ys_transformed()[i],NULL);
       Kmats_interp       [i] = new uqGslMatrixClass(env,Kmats_interp_spaces[i]->map(),paper_p_eta);
-      Kmats_interp       [i]->matlabLinearInterpExtrap(extraSimulationGridVec,simulationModel.Kmat_eta(),*(extraExperimentGridVecs[i])); // Important matrix (K_eta on paper) 
+      Kmats_interp       [i]->matlabLinearInterpExtrap(extraSimulationGridVec,simulationModel.Kmat_eta(),*(extraExperimentGridVecs[i])); // Important matrix (K_eta on paper)
       Kmats_interp[i]->setPrintHorizontally(false);
       if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
         *env.subDisplayFile() << "In compute()"
@@ -546,7 +546,7 @@ void compute(const uqFullEnvironmentClass& env, bool useExperiments, bool useML)
     diagVec[ 5] = 0.01;  // rho_w_2_1  =
     diagVec[ 6] = 0.01;  // rho_w_2_2  =
     diagVec[ 7] = 2500.; // lambda_s_1 = lamWs
-    diagVec[ 8] = 2500;  // lambda_s_2 = 
+    diagVec[ 8] = 2500;  // lambda_s_2 =
     diagVec[ 9] = 2500;  // lambda_y   = lamOs
     diagVec[10] = 2500;  // lambda_v_1 = lamVz
     diagVec[11] = 0.01;  // rho_v_1_1  = betaV
@@ -574,7 +574,7 @@ void compute(const uqFullEnvironmentClass& env, bool useExperiments, bool useML)
     diagVec[ 5] = 0.01;  // rho_w_2_1  =
     diagVec[ 6] = 0.01;  // rho_w_2_2  =
     diagVec[ 7] = 2500.; // lambda_s_1 = lamWs
-    diagVec[ 8] = 2500;  // lambda_s_2 = 
+    diagVec[ 8] = 2500;  // lambda_s_2 =
   }
 
   uqGslMatrixClass totalInitialProposalCovMatrix(diagVec); // todo_r
@@ -605,7 +605,7 @@ void compute(const uqFullEnvironmentClass& env, bool useExperiments, bool useML)
   for (unsigned int i = 0; i < dim1; ++i) {
     predictionGrid1Vec[i] = ((double) i)/((double) (dim1-1));
   }
-  
+
   unsigned int dim2 = 16;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> predictionGrid2Space(env, "predictionGrid2_", dim2, NULL);
   uqGslVectorClass predictionGrid2Vec(predictionGrid2Space.zeroVector());

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -40,9 +40,9 @@ namespace QUESO {
 
 /*! \class Map
     \brief A class for partitioning vectors and matrices.
-    
-    It is often the case that multiple matrix and vector objects have an identical distribution 
-    of elements on a parallel machine. The Map keeps information that describes this 
+
+    It is often the case that multiple matrix and vector objects have an identical distribution
+    of elements on a parallel machine. The Map keeps information that describes this
     distribution for matrices and vectors. Inspired by Trilinos Epetra_Map class.
 */
 
@@ -54,12 +54,12 @@ public:
 
   //! Default constructor. Do not call this directly.
   Map();
-  
-  //! Constructor for a uniform linear distribution of elements. 
+
+  //! Constructor for a uniform linear distribution of elements.
   Map(int                   numGlobalElements,
              int                   indexBase,
              const MpiComm& comm);
-  
+
   //! Copy constructor.
   Map(const Map& src);
 
@@ -69,32 +69,32 @@ public:
 
  //! @name Set methods
   //@{
-  //! Assignment operator. 
+  //! Assignment operator.
   Map& operator= (const Map& rhs);
   //@}
 
-  
+
   //! @name Size, dimension and local ID accessor methods
   //@{
   //! Returns the total number of elements across all processors.
   int                   NumGlobalElements() const;
-  
-  //! Returns the base integer value for indexed array references. 
+
+  //! Returns the base integer value for indexed array references.
   //! The first position in the global processor in my processors.
   int                   IndexBase        () const;//1st position in the global processor in my processors
-  
+
   //! Returns the number of elements owned by the calling processor.
   int                   NumMyElements    () const;
 
   //!The minimum global index value on the calling processor.
   int                   MinMyGID         () const;
-  //@}  
-  
+  //@}
+
   //! @name Miscellaneous  methods
   //@{
-  //! Access function for MpiComm communicator. 
+  //! Access function for MpiComm communicator.
   const MpiComm& Comm             () const;
-  
+
 #ifdef QUESO_HAS_TRILINOS
   //! Trilinos Epetra_Map: A class for partitioning vectors and matrices.
   const Epetra_Map&     epetraMap        () const;
@@ -105,19 +105,19 @@ private:
   //! Copies the map.
   void                  copy             (const Map& src);
 
-  //! This communicator can be queried for processor rank and size information. 
+  //! This communicator can be queried for processor rank and size information.
   MpiComm m_MpiComm;
-  
+
 #ifdef QUESO_HAS_TRILINOS
   //! Epetra_Map
   Epetra_Map*    m_epetraMap;
 #else
   //! Total number of elements across all processors.
   int            m_numGlobalElements;
-  
-  //!  Base integer value for indexed array references. 
+
+  //!  Base integer value for indexed array references.
   int            m_indexBase;
-  
+
   //! Number of elements owned by the calling processor.
   int            m_numMyElements;
 #endif

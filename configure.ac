@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.51.1], [queso-users@googlegroups.com])
+AC_INIT([queso], [0.52.0], [queso-users@googlegroups.com])
 PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
 AC_SUBST([PACKAGE_DESCRIPTION])
 PACKAGE_URL="https://github.com/libqueso/queso"
@@ -108,7 +108,7 @@ AM_CONDITIONAL(TRILINOS_ENABLED,test x$HAVE_TRILINOS = x1)
 AC_CACHE_SAVE
 
 # Check for libmesh (optional)
-AX_PATH_LIBMESH_NEW(0.8.0,no)
+AX_PATH_LIBMESH_NEW(0.9.1,no)
 AC_CACHE_SAVE
 
 # Check for GSL (required)
@@ -198,26 +198,40 @@ AC_CONFIG_FILES([
   test/test_infinite/inf_options
   test/test_Regression/GaussianMean1DRegression_options
   test/test_Regression/gpmsa_cobra_input.txt
-  test/test_Regression/test_cobra_samples_diff.sh
   test/test_Regression/test_gpmsa_cobra_samples.m
   test/test_Regression/ctf_dat.txt
   test/test_Regression/dakota_pstudy.dat
-  test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
   test/test_StatisticalInverseProblem/both_input.txt
   test/test_StatisticalInverseProblem/llhdout_input.txt
   test/test_StatisticalInverseProblem/neither_input.txt
   test/test_StatisticalInverseProblem/targetout_input.txt
   test/test_Regression/jeffreys_input.txt
-  test/test_Regression/test_jeffreys_samples_diff.sh
   test/test_Regression/test_jeffreys_samples.m
   test/test_Regression/adaptedcov_input.txt
+  test/test_gaussian_likelihoods/queso_input.txt
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
+  test/test_gaussian_likelihoods/gaussian_consistency_input.txt
+])
+
+AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh
 ],
 [
   chmod +x test/test_Regression/test_cobra_samples_diff.sh
+])
+
+AC_CONFIG_FILES([
+  test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+],
+[
   chmod +x test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+])
+
+AC_CONFIG_FILES([
+  test/test_Regression/test_jeffreys_samples_diff.sh
+],
+[
   chmod +x test/test_Regression/test_jeffreys_samples_diff.sh
 ])
 

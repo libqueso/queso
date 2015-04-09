@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -66,15 +66,15 @@ public:
   //! Actual value of the Gamma PDF.
   /*! This routine calls method lnValue() and returns the exponent of the returning value of such method.*/
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Logarithm of the value of the Gamma PDF.
   /*! If the normalization style (m_normalizationStyle) is zero, then this routine calls a environment method
-   * which handles basic PDFs, e.g. basicPdfs()->gammaPdfActualValue() and adds the log of the normalization 
-   * factor (m_logOfNormalizationFactor) to it; otherwise the method uses the formula: \f$ lnValue = 
+   * which handles basic PDFs, e.g. basicPdfs()->gammaPdfActualValue() and adds the log of the normalization
+   * factor (m_logOfNormalizationFactor) to it; otherwise the method uses the formula: \f$ lnValue =
    * \sum[ (a_i-1)*log(domainVector_i) -domainVector_i/b_i + m_logOfNormalizationFactor \f$, where a and b
    * are the parameters of the Gamma PDF. */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;

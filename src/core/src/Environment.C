@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -35,7 +35,7 @@
 #include <grvy.h>
 #endif
 
-// queso error handling 
+// queso error handling
 #include <queso/asserts.h>
 
 //-----------------------------
@@ -51,15 +51,15 @@ namespace QUESO {
       os << "--------------------" << std::endl;
       os << "QUESO Library: Version = " << QUESO_LIB_VERSION;
       os << " (" << QUESO_get_numeric_version() << ")" << std::endl << std::endl;
-      
+
       os << QUESO_LIB_RELEASE << std::endl << std::endl;
-      
+
       os << "Build Date   = " << QUESO_BUILD_DATE     << std::endl;
       os << "Build Host   = " << QUESO_BUILD_HOST     << std::endl;
       os << "Build User   = " << QUESO_BUILD_USER     << std::endl;
       os << "Build Arch   = " << QUESO_BUILD_ARCH     << std::endl;
       os << "Build Rev    = " << QUESO_BUILD_VERSION  << std::endl     << std::endl;
-      
+
       os << "C++ Config   = " << QUESO_CXX << " " << QUESO_CXXFLAGS    << std::endl;
       os << std::endl;
       os << "Trilinos DIR = " << QUESO_TRILINOS_DIR << std::endl;
@@ -70,39 +70,39 @@ namespace QUESO {
       os << "------------------------------------------------------------------------------------------" ;
       os << "--------------------" << std::endl;
     }
-    
+
     return;
   }
-  
+
   int QUESO_get_numeric_version()
   {
     // Note: return format follows the versioning convention xx.yy.z where
     //
-    // xx = major version number 
-    // yy = minor version number 
+    // xx = major version number
+    // yy = minor version number
     // zz = micro version number
     //
     // For example:
     // v.    0.23  -> 002300 = 2300
     // v.   0.23.1 -> 002301 = 2301
     // v.  10.23.2 -> 102302
-    
+
     int major_version = 0;
     int minor_version = 0;
     int micro_version = 0;
-    
+
 #ifdef QUESO_MAJOR_VERSION
     major_version = QUESO_MAJOR_VERSION;
 #endif
-    
+
 #ifdef QUESO_MINOR_VERSION
     minor_version = QUESO_MINOR_VERSION;
 #endif
-    
+
 #ifdef QUESO_MICRO_VERSION
     micro_version = QUESO_MICRO_VERSION;
 #endif
-    
+
     return(major_version*10000 + minor_version*100 + micro_version);
   }
 
@@ -116,11 +116,11 @@ FilePtrSetStruct::FilePtrSetStruct()
 FilePtrSetStruct::~FilePtrSetStruct()
 {
 }
-  
+
   //
-  // queso terminate handler will be invoked for unhandled exceptions 
-  // needs to be invoked in FullEnvironment constructor  
-  // 
+  // queso terminate handler will be invoked for unhandled exceptions
+  // needs to be invoked in FullEnvironment constructor
+  //
   std::terminate_handler old_terminate_handler;
 
 //*****************************************************
@@ -224,7 +224,7 @@ BaseEnvironment::operator= (const BaseEnvironment& rhs)
                       "code should not execute through here");
   return *this;
 }
-// Environment, Communicator and Options Input File methods 
+// Environment, Communicator and Options Input File methods
 bool
 BaseEnvironment::fullEnvIsReady() const
 {
@@ -592,7 +592,7 @@ BaseEnvironment::openOutputFile(
                                 << ", trying to open output file with base name '" << baseFileName << "." << fileType
                                 << "'"
                                 << ", writeOver = " << writeOver
-                                << ": calling CheckFilePath()..." 
+                                << ": calling CheckFilePath()..."
                                 << std::endl;
       }
       int irtrn = CheckFilePath((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
@@ -615,7 +615,7 @@ BaseEnvironment::openOutputFile(
         // Write over an eventual pre-existing file
         //////////////////////////////////////////////////////////////
         if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-          filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+          filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                 std::ofstream::out | std::ofstream::trunc);
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
@@ -646,14 +646,14 @@ BaseEnvironment::openOutputFile(
         //////////////////////////////////////////////////////////////
         if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
 #if 0
-          filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+          filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                 std::ofstream::in);
           std::cout << "filePtrSet.ofsVar(1) = " << filePtrSet.ofsVar << std::endl;
           if (filePtrSet.ofsVar) std::cout << "filePtrSet.ofsVar(1)->is_open() = " << filePtrSet.ofsVar->is_open() << std::endl;
           if (filePtrSet.ofsVar) delete filePtrSet.ofsVar;
 #endif
           // 'm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
-          filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+          filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                 std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
@@ -685,7 +685,7 @@ BaseEnvironment::openOutputFile(
               (filePtrSet.ofsVar->is_open() == false)) {
             //std::cout << "Retrying 1..." << std::endl;
             delete filePtrSet.ofsVar;
-            filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
+            filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                   std::ofstream::out | std::ofstream::trunc);
             if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
               *this->subDisplayFile() << "In BaseEnvironment::openOutputFile()"
@@ -1273,11 +1273,11 @@ FullEnvironment::FullEnvironment(
     //////////////////////////////////////////////////
     /*int iRC = 0;*/
     /*iRC = */gettimeofday(&m_timevalBegin, NULL);
-      
+
     if (m_fullRank == 0) {
       QUESO_version_print(std::cout);
     }
-      
+
     if (m_fullRank == 0) {
       std::cout << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
                 << std::endl;
@@ -1383,7 +1383,7 @@ FullEnvironment::FullEnvironment(
   ////////////////////////////////////////////////////////////////////
   // Ensure that rank 0 has created path, if necessary, before other tasks use it
   ////////////////////////////////////////////////////////////////////
-  m_fullComm->Barrier(); 
+  m_fullComm->Barrier();
 
   if (openFile) {
     //////////////////////////////////////////////////////////////////
@@ -1491,7 +1491,7 @@ void queso_terminate_handler()
 {
   int mpi_initialized;
   MPI_Initialized (&mpi_initialized);
-    
+
   if (mpi_initialized)
     {
       //MPI_Abort(m_fullComm->Comm(), 1);

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -151,7 +151,7 @@ GaussianVectorRealizer<V,M>::updateLawExpVector(const V& newLawExpVector)
   delete m_unifiedLawExpVector;
 
   m_unifiedLawExpVector = new V(newLawExpVector);
- 
+
   return;
 }
 //--------------------------------------------------

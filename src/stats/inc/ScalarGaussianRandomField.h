@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -31,15 +31,15 @@
 
 namespace QUESO {
 
-/*! 
+/*!
  * \file ScalarGaussianRandomField.h
  * \brief A class for handling Gaussian random fields (GRF).
- * 
+ *
  * \class ScalarGaussianRandomField
  * \brief A class for handling scalar Gaussian random fields (GRF).
  *
- * This class implements a scalar Gaussian random field (GRF); i.e. a random field involving 
- * Gaussian probability density functions (PDFs) of the variables. A one-dimensional GRF is 
+ * This class implements a scalar Gaussian random field (GRF); i.e. a random field involving
+ * Gaussian probability density functions (PDFs) of the variables. A one-dimensional GRF is
  * also called a Gaussian process.*/
 
 template <class V, class M>
@@ -49,21 +49,21 @@ class ScalarGaussianRandomField
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor.
-  /*! Constructs a new object, given a prefix, an index set, and both a mean and a 
-   * covariance function. This method deletes the previous saved positions. */ 
+  /*! Constructs a new object, given a prefix, an index set, and both a mean and a
+   * covariance function. This method deletes the previous saved positions. */
   ScalarGaussianRandomField(const char*                                     prefix,
                                    const VectorSet<V,M>&                    indexSet,
-                                   const BaseScalarFunction<V,M>&           meanFunction, 
+                                   const BaseScalarFunction<V,M>&           meanFunction,
                                    const BaseScalarCovarianceFunction<V,M>& covarianceFunction);
-  
+
   //! TODO: Copy constructor.
   /*! \todo: implement me!*/
   ScalarGaussianRandomField(const ScalarGaussianRandomField&         obj);
-  
-  //! Destructor. 
+
+  //! Destructor.
   ~ScalarGaussianRandomField();
   //@}
-  
+
   //! @name Set methods
   //@{
   //! TODO: Assignment operator; it copies \c rhs to \c this.
@@ -75,51 +75,51 @@ class ScalarGaussianRandomField
   //@{
   //! Index set; access to protected attribute m_indexSet.
   const VectorSet<V,M>&           indexSet          () const;
-  
+
   //! Mean function; access to protected attribute m_meanFunction.
   const BaseScalarFunction<V,M>&  meanFunction      () const;
-  
+
   //! Covariance function; access to protected attribute m_covarianceFunction.
   const BaseScalarCovarianceFunction<V,M>& covarianceFunction() const;
-  
+
   //! Function that samples from a Gaussian PDF.
   /*! Given the field positions, this method performs a number of tests, calculates the mean vector,
-   * the covariance matrix and then it samples from a Gaussian random vector as 
+   * the covariance matrix and then it samples from a Gaussian random vector as
    * many positions as required.*/
   void                                  sampleFunction(const std::vector<V*>& fieldPositions, V& sampleValues);
   //@}
-  
+
 protected:
   //! Copy method.
   void                                  copy          (const ScalarGaussianRandomField& src);
 
   //! Environment.
   const BaseEnvironment&         m_env;
-  
+
   //! Prefix.
   std::string                           m_prefix;
-	
-  //! Index set.	
+
+  //! Index set.
   const VectorSet<V,M>&          m_indexSet;
-  
+
   //! Mean function.
   const BaseScalarFunction<V,M>& m_meanFunction;
-  
+
   //! Covariance function.
   const BaseScalarCovarianceFunction<V,M>& m_covarianceFunction;
 
   //! Saved positions.
   std::vector<V*>                       m_savedPositions;
-  
+
   //! Image set of the RV.
   VectorSpace<V,M>*              m_savedRvImageSpace;
-  
+
   //! Vector of the mean value of the RV.
   V*                                    m_savedRvLawExpVector;
-  
+
   //! Covariance matrix of the RV.
   M*                                    m_savedRvLawCovMatrix;
-  
+
   //! My RV.
   GaussianVectorRV<V,M>*         m_savedRv;
 };

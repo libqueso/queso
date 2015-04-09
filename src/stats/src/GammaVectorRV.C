@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -46,30 +46,30 @@ GammaVectorRV<V,M>::GammaVectorRV(
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
- 
-// begin kemelli 2013-April-22 -------------------------- 
-// better to check for the parameter values in the constructor, 
+
+// begin kemelli 2013-April-22 --------------------------
+// better to check for the parameter values in the constructor,
 // rather than in GammaVectorRealizer<V,M>::realization
 
   const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&imageSet);
-  double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
+  double smallerOfMaxValues = imageBox->maxValues().getMinValue();
   double smallerOfMinValues = imageBox->minValues().getMinValue();
-  
- // Gamma dist is defined only in (0,inf)		
- if( smallerOfMinValues < 0 ) 
- {		
-   std::cerr << "In GammaVectorRV<V,M>::constructor()\n" 
+
+ // Gamma dist is defined only in (0,inf)
+ if( smallerOfMinValues < 0 )
+ {
+   std::cerr << "In GammaVectorRV<V,M>::constructor()\n"
        << "Gamma distribution is only defined in (0, infinity).\n"
        << "The data provided is: \n"
-       << *imageBox 
-         << "Sampling will not cover all interval.\n"   
+       << *imageBox
+         << "Sampling will not cover all interval.\n"
          << std::endl;
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
                       "GammaVectorRealizer<V,M>::constructor()",
-                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0");      
- }	
+                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0");
+ }
 // end kemelli 2013-April-22 --------------------------
 
   m_pdf        = new GammaJointPdf<V,M>(m_prefix.c_str(),

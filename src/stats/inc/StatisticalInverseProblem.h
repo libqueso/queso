@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -134,7 +134,7 @@ public:
    * </list>
    *
    * If the requirements are satisfied, this methods checks the member flag
-   * 'm_computeSolution' (one of the options read from the input file during 
+   * 'm_computeSolution' (one of the options read from the input file during
    * construction). If the flag is 'false', the operation returns immediately,
    * computing nothing; otherwise, the operation sets the member variable
    * 'm_postRv' accordingly. The operation:
@@ -175,6 +175,18 @@ public:
   //! Returns the Posterior RV; access to private attribute m_postrRv.
   /*! The Posterior RV contains the solution of the Bayes problem.*/
   const GenericVectorRV<P_V,P_M>& postRv                    () const;
+
+  //! Returns the MCMC chain; access to private attribute m_chain.
+  /*! Only valid after solve has been called.*/
+  const BaseVectorSequence<P_V,P_M>& chain() const;
+
+  //! Returns log likelihood values; access to private attribute m_logLikelihoodValues.
+  /*! Only valid for MH and only after solve has been called.*/
+  const ScalarSequence<double>& logLikelihoodValues() const;
+
+  //! Returns log target values; access to private attribute m_logTargetValues.
+  /*! Only valid for MH and only after solve has been called.*/
+  const ScalarSequence<double>& logTargetValues() const;
 
   //! Returns the logarithm value of the evidence. Related to ML.
   double                           logEvidence                     () const;

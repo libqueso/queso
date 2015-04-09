@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -63,14 +63,14 @@ public:
    */
   double actualValue(const V& domainVector, const V* domainDirection, V*
       gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Logarithm of the value of the jeffreys PDF.
   /*!
    * Analogous to the \c actualValue routine, except that the logarithm of the
    * calculated value is returned.
    */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //TODO: do we want this part?
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/

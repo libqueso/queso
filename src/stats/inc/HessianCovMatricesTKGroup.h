@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -41,39 +41,39 @@ template<class V, class M>
 class HessianCovMatricesTKGroup : public BaseTKGroup<V,M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   HessianCovMatricesTKGroup(const char*                                   prefix,
                                    const VectorSpace<V,M>&                vectorSpace,
                                    const std::vector<double>&                    scales,
                                    const ScalarFunctionSynchronizer<V,M>& targetPdfSynchronizer);
- 
+
    //! Destructor.
   ~HessianCovMatricesTKGroup();
   //@}
-  
+
   //! @name Statistical/Mathematical methods
   //@{
   //! Whether or not the matrix is symmetric. Always 'false'.
   /*! \todo: It only returns 'false', thus a test for its symmetricity must be included.*/
   bool                          symmetric                 () const;
-  
+
   //! Gaussian increment property to construct a transition kernel.
   const GaussianVectorRV<V,M>& rv                        (unsigned int                     stageId ) const;
-  
+
   //! Gaussian increment property to construct a transition kernel.
   const GaussianVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds);
    //@}
-  
+
   //! @name Misc methods
   //@{
   //! Sets the pre-computing positions \c m_preComputingPositions[stageId] with a new vector of size \c position.
   bool                          setPreComputingPosition   (const V& position, unsigned int  stageId );
-  
+
   //! Clears the pre-computing positions \c m_preComputingPositions[stageId]
   void                          clearPreComputingPositions();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the transition kernel.

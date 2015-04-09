@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -51,7 +51,7 @@ public:
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor
-  /*! Constructs a new object of the class, given a prefix, the domain set and the exponent of 
+  /*! Constructs a new object of the class, given a prefix, the domain set and the exponent of
    * the powered PDF.  */
   PoweredJointPdf(const char*                     prefix,
                          const BaseJointPdf<V,M>& srcDensity,
@@ -63,25 +63,25 @@ public:
   //! @name Math methods
   //@{
   //! Actual value of the powered PDF.
-  /*! Finds the actual value using BaseJointPdf::actualValue() and apply it to the power of 
-   * \c this PDF, which given by \c exponent, and multiplies it by the normalization factor, which is 
+  /*! Finds the actual value using BaseJointPdf::actualValue() and apply it to the power of
+   * \c this PDF, which given by \c exponent, and multiplies it by the normalization factor, which is
    * given by exp(m_logOfNormalizationFactor).*/
   double actualValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Logarithm of the value of the powered PDF.
-    /*! Finds the logarithm of actual value using BaseJointPdf::lnValue() and multiplies by the power of 
-   * \c this PDF, which given by \c exponent, and then adds the normalization factor, which is 
+    /*! Finds the logarithm of actual value using BaseJointPdf::lnValue() and multiplies by the power of
+   * \c this PDF, which given by \c exponent, and then adds the normalization factor, which is
    * given by m_logOfNormalizationFactor.*/
   double lnValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Sets a value to be used in the normalization style of the powered PDF (ie, protected attribute m_srcDensity).
   void   setNormalizationStyle(unsigned int value) const;
-  
+
   //! TODO: Computes the logarithm of the normalization factor.
   /*! \todo: implement me!*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
   //@}
-  
+
 protected:
   using BaseScalarFunction<V,M>::m_env;
   using BaseScalarFunction<V,M>::m_prefix;

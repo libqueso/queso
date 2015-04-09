@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -83,17 +83,19 @@ LibMeshNegativeLaplacianOperator::LibMeshNegativeLaplacianOperator(
   es->parameters.set<unsigned int>("basis vectors") =
     this->builder.num_req_eigenpairs * 3;
 
-  // Set the solver tolerance and the maximum number of iterations. 
-  es->parameters.set<libMesh::Real>("linear solver tolerance") = pow(TOLERANCE, 5./3.);
+  // Set the solver tolerance and the maximum number of iterations.
+  es->parameters.set<libMesh::Real>("linear solver tolerance") =
+    pow(libMesh::TOLERANCE, 5./3.);
   es->parameters.set<unsigned int>("linear solver maximum iterations") = 1000;
 
   // Set the type of the problem, here we deal with
   // a generalized Hermitian problem.
-  eigen_system.set_eigenproblem_type(GHEP);
+  eigen_system.set_eigenproblem_type(libMeshEnums::GHEP);
 
   // Order the eigenvalues "smallest first"
   // This hoses performance?
-  eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
+  eigen_system.eigen_solver->set_position_of_spectrum
+    (libMeshEnums::SMALLEST_MAGNITUDE);
 
   // Set up the boundary (only works if this->m is a square)
   // We'll just the whole boundary to be Dirichlet, because why not
@@ -173,7 +175,7 @@ void LibMeshNegativeLaplacianOperator::assemble()
   // Tell the finite element object to use our quadrature rule.
   fe->attach_quadrature_rule (&qrule);
 
-  // The element Jacobian * quadrature weight at each integration point.   
+  // The element Jacobian * quadrature weight at each integration point.
   const std::vector<libMesh::Real>& JxW = fe->get_JxW();
 
   // The element shape functions evaluated at the quadrature points.
@@ -203,7 +205,7 @@ void LibMeshNegativeLaplacianOperator::assemble()
   libMesh::MeshBase::const_element_iterator el = mesh.active_local_elements_begin();
   const libMesh::MeshBase::const_element_iterator end_el =
     mesh.active_local_elements_end();
- 
+
   for ( ; el != end_el; ++el) {
       // Store a pointer to the element we are currently
       // working on.  This allows for nicer syntax later.
@@ -232,7 +234,7 @@ void LibMeshNegativeLaplacianOperator::assemble()
 
       // Now loop over the quadrature points.  This handles
       // the numeric integration.
-      // 
+      //
       // We will build the element matrix.  This involves
       // a double loop to integrate the test funcions (i) against
       // the trial functions (j).

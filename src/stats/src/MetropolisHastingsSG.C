@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -2549,14 +2549,8 @@ MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
                   << std::endl;
       }
 
-      // The mean is the midpoint
-      double midpoint = (max_val + min_val) / 2.0;
-      double derivative = (1.0 / (midpoint - min_val)) +
-                          (1.0 / (max_val - midpoint));
-
-      // User specified the covariance matrix on a bounded domain, so we
-      // need to *divide* by the derivative of the transform
-      double transformJacobian = 1.0 / derivative;
+      // The jacobian at the midpoint of the domain
+      double transformJacobian = 4.0 / (max_val - min_val);
 
       // Just do the multiplication by hand for now.  There's no method in
       // Gsl(Vector|Matrix) to do this for me.

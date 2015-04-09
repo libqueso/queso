@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -65,7 +65,7 @@ double likelihoodRoutine(
   double y2     = (x-mean2)*(x-mean2)/(2.*sigma2*sigma2);
 //double z2     = (1./sigma2/sqrt(2*M_PI))*exp(-y2);
   double ln_z2  = log(1./sigma2/M_PI/sqrt(2*M_PI)) - y2;
- 
+
 
 //double resultValue = log((z1+2.*z2)/3.);
   double ln_zMin     = std::min(log(1./3.)+ln_z1, log(2./3.)+ln_z2);

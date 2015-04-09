@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -74,7 +74,7 @@ struct ExchangeInfoStruct
 template <class P_V>
 struct BalancedLinkedChainControlStruct
 {
-  P_V*         initialPosition; 
+  P_V*         initialPosition;
   double       initialLogPrior;
   double       initialLogLikelihood;
   unsigned int numberOfPositions;
@@ -105,17 +105,17 @@ struct UnbalancedLinkedChainsPerNodeStruct
  /*! \file MLSampling.h
  * \class MLSampling
  * \brief A templated class that represents a Multilevel generator of samples.
- * 
+ *
  * A templated class that represents a Multilevel sampler.  Options reading is handled by class
- * 'MLSamplingOptions'. 
- * It implements the method: S. H. Cheung and E. E. Prudencio. Parallel adaptive multilevel sampling 
- * algorithms for the Bayesian analysis of mathematical models. International Journal for Uncertainty 
+ * 'MLSamplingOptions'.
+ * It implements the method: S. H. Cheung and E. E. Prudencio. Parallel adaptive multilevel sampling
+ * algorithms for the Bayesian analysis of mathematical models. International Journal for Uncertainty
  * Quantification, 2(3):215237, 2012.  */
  /* If options request data to be written in the output file (MATLAB .m format
- * only, for now), the user can check which MATLAB variables are defined and set by running 
- * 'grep zeros <OUTPUT FILE NAME>' after the solution procedures ends. 
+ * only, for now), the user can check which MATLAB variables are defined and set by running
+ * 'grep zeros <OUTPUT FILE NAME>' after the solution procedures ends.
  * The names of the variables are chosen to be self explanatory. */
- 
+
 template <class P_V,class P_M>
 class MLSampling
 {
@@ -135,12 +135,12 @@ public:
  //@}
    //! @name Statistical methods
  //@{
- //! Method to generate the chain. 
+ //! Method to generate the chain.
  /*! Requirement: the vector space 'm_vectorSpace' should have dimension equal to the size of a
- * vector in 'workingChain'. If the requirement is satisfied, this operation sets the size and 
+ * vector in 'workingChain'. If the requirement is satisfied, this operation sets the size and
  * the contents of 'workingChain' using the algorithm options set in the constructor. If not NULL,
- * 'workingLogLikelihoodValues' and 'workingLogTargetValues' are set accordingly. This operation 
- * currently implements the  The Parallel Adaptive Multilevel Stochastic Simulation Algorithm 
+ * 'workingLogLikelihoodValues' and 'workingLogTargetValues' are set accordingly. This operation
+ * currently implements the  The Parallel Adaptive Multilevel Stochastic Simulation Algorithm
  * (PAMSSA).\n
  * It consists of 11 steps:
  <list type=number>
@@ -158,49 +158,49 @@ public:
  </list>
  * At the end, the method computes information gain:
  * \f$ ln( \pi(D|M) ) = E[ln( \pi(D|\theta,M) )] - E[ln( \pi(\theta|D,M) / \pi(\theta|M) )] \f$
- * 
- * \see S. H. Cheung and E. E. Prudencio. Parallel adaptive multilevel sampling algorithms for the Bayesian analysis of mathematical models. International Journal for Uncertainty Quantification, 2(3):215237, 2012.  */  
+ *
+ * \see S. H. Cheung and E. E. Prudencio. Parallel adaptive multilevel sampling algorithms for the Bayesian analysis of mathematical models. International Journal for Uncertainty Quantification, 2(3):215237, 2012.  */
   void   generateSequence (BaseVectorSequence<P_V,P_M>& workingChain,
                            ScalarSequence<double>*      workingLogLikelihoodValues,
                            ScalarSequence<double>*      workingLogTargetValues);
-  
+
   //! Method to calculate the logarithm of the evidence.
   /*! Access to the private member: \c m_logEvidence.*/
   double logEvidence      () const;
-  
+
   //! Method to calculate the mean of the logarithm of the likelihood.
   /*! Access to the private member: \c m_meanLogLikelihood. */
   double meanLogLikelihood() const;
-  
+
   //! Calculates the expected information gain value, EIG.
-  /*! The expected information gain is defined as the expected log ratio between the posterior and 
+  /*! The expected information gain is defined as the expected log ratio between the posterior and
    prior distribution for the parameters in the statistical model. Recalling the Bayes formula:
    \f[
-   \pi (\theta|D, M_j) = \frac{f(D|\theta, M_j) \cdot \pi (\theta | M_j)}{\pi(D, M_j)} 
+   \pi (\theta|D, M_j) = \frac{f(D|\theta, M_j) \cdot \pi (\theta | M_j)}{\pi(D, M_j)}
    \f]
-   where \f$ \pi (\theta|D, M_j) \f$ is the posterior PDF, \f$ \pi (\theta | M_j) \f$ is the prior, 
-   \f$ f(D|\theta, M_j)\f$ is the likelihood function and \f$ \pi(D, M_j) \f$ is the evidence for a 
-   given set of parameters \f$ \theta \f$, data \f$ D \f$  and model class \f$ M_j \f$. Then the EIG 
+   where \f$ \pi (\theta|D, M_j) \f$ is the posterior PDF, \f$ \pi (\theta | M_j) \f$ is the prior,
+   \f$ f(D|\theta, M_j)\f$ is the likelihood function and \f$ \pi(D, M_j) \f$ is the evidence for a
+   given set of parameters \f$ \theta \f$, data \f$ D \f$  and model class \f$ M_j \f$. Then the EIG
    can be calculated as:
    \f[
-   EIG = log \left(\frac{ \pi (\theta|D, M_j)}{\pi (\theta | M_j) } \right) 
-       = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right) 
-       = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right) 
+   EIG = log \left(\frac{ \pi (\theta|D, M_j)}{\pi (\theta | M_j) } \right)
+       = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right)
+       = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right)
        = log \left(f(D|\theta, M_j)\right) - log\left(f(D|\theta, M_j) \right)
    \f]
-    
+
    \see Long, Quan and Scavino, Marco and Tempone, Raul and Wang, Suojin, Fast estimation of expected information gains for Bayesian experimental designs based on Laplace approximations. Computer Methods In Applied Mechanics And Engineering, 259:24-39,2013. DOI = 10.1016/j.cma.2013.02.017.   */
   double eig              () const;
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the sequence.
   /*! \todo: implement me!*/
   void   print           (std::ostream& os) const;
   //@}
-  
-  
+
+
   friend std::ostream& operator<<(std::ostream& os,
       const MLSampling<P_V,P_M>& obj) {
     obj.print(os);
@@ -229,7 +229,7 @@ private:
 
  //! Generates the sequence at the level 0.
  /*! @param[in]  currOptions
-  @param[out] unifiedRequestedNumSamples, currChain, currLogLikelihoodValues, currLogTargetValues*/ 
+  @param[out] unifiedRequestedNumSamples, currChain, currLogLikelihoodValues, currLogTargetValues*/
   void   generateSequence_Level0_all   (const MLSamplingLevelOptions&            currOptions,                        // input
                                         unsigned int&                                   unifiedRequestedNumSamples,         // output
                                         SequenceOfVectors<P_V,P_M>&              currChain,                          // output
@@ -287,7 +287,7 @@ private:
                                         std::vector<double>&                            unifiedWeightStdVectorAtProc0Only); // output
 
   //! Decides on wheter or not to use balanced chains (Step 06 from ML algorithm).
-  /*! This method is responsible for the Step 06 in the ML algorithm implemented/described in the method MLSampling<P_V,P_M>::generateSequence.*/ 
+  /*! This method is responsible for the Step 06 in the ML algorithm implemented/described in the method MLSampling<P_V,P_M>::generateSequence.*/
   /*! @param[in] currOptions, indexOfFirstWeight, indexOfLastWeight, unifiedIndexCountersAtProc0Only
       @param[out] useBalancedChains, exchangeStdVec*/
   void   generateSequence_Step06_all   (const MLSamplingLevelOptions*            currOptions,                        // input
@@ -298,7 +298,7 @@ private:
                                         std::vector<ExchangeInfoStruct>&              exchangeStdVec);                    // output
 
   //! Plans for number of linked chains for each node so that all nodes generate the closest possible to the same number of positions (Step 07 from ML algorithm).
-  /*! This method is responsible for the Step 07 in the ML algorithm implemented/described in the method MLSampling<P_V,P_M>::generateSequence.*/ 
+  /*! This method is responsible for the Step 07 in the ML algorithm implemented/described in the method MLSampling<P_V,P_M>::generateSequence.*/
   /*! @param[in] useBalancedChains,indexOfFirstWeight,indexOfLastWeight, unifiedIndexCountersAtProc0Only,currOptions,prevChain,prevExponent,currExponent,prevLogLikelihoodValues,prevLogTargetValues
       @param[in,out] exchangeStdVec
       @param[out] unbalancedLinkControl, balancedLinkControl*/
@@ -325,8 +325,8 @@ private:
 
   //! Scales the unified covariance matrix until min <= rejection rate <= max (Step 09 from ML algorithm).
   /*! This method is responsible for the Step 09 in the ML algorithm implemented/described in the method MLSampling<P_V,P_M>::generateSequence.*/
-  /*! @param[in] prevChain, indexOfFirstWeight, indexOfLastWeight, unifiedWeightStdVectorAtProc0Only, weightSequence, prevEta,currRv, currOptions, 
-     @param[in,out]  unifiedCovMatrix 
+  /*! @param[in] prevChain, indexOfFirstWeight, indexOfLastWeight, unifiedWeightStdVectorAtProc0Only, weightSequence, prevEta,currRv, currOptions,
+     @param[in,out]  unifiedCovMatrix
      @param[out] currEta */
   void   generateSequence_Step09_all   (const SequenceOfVectors<P_V,P_M>&        prevChain,                          // input
                                         double                                   prevExponent,                       // input
@@ -366,8 +366,8 @@ private:
                                         ScalarSequence         <double>*         currLogTargetValues);               // output
 
   //! Filters chain (Step 11 from ML algorithm).
-  /*! This method is responsible for the Step 11 in the ML algorithm implemented/described in the method MLSampling<P_V,P_M>::generateSequence.*/ 
-  /*! @param[in] currOptions, unifiedRequestedNumSamples, cumulativeRawChainRejections, 
+  /*! This method is responsible for the Step 11 in the ML algorithm implemented/described in the method MLSampling<P_V,P_M>::generateSequence.*/
+  /*! @param[in] currOptions, unifiedRequestedNumSamples, cumulativeRawChainRejections,
       @param[in,out] currChain, currLogLikelihoodValues, currLogTargetValues
       @param[out]  unifiedNumberOfRejections */
   void   generateSequence_Step11_inter0(const MLSamplingLevelOptions*            currOptions,                        // input
@@ -410,7 +410,7 @@ private:
                                         const std::vector<unsigned int>&                unifiedIndexCountersAtProc0Only,    // input
                                         UnbalancedLinkedChainsPerNodeStruct&          unbalancedLinkControl);             // output
 
-   /*! @param[in] inputOptions, unifiedCovMatrix, rv, balancedLinkControl, 
+   /*! @param[in] inputOptions, unifiedCovMatrix, rv, balancedLinkControl,
     *  @param[out] workingChain, cumulativeRunTime, cumulativeRejections, currLogLikelihoodValues, currLogTargetValues*/
    void   generateBalLinkedChains_all   (MLSamplingLevelOptions&                  inputOptions,                       // input, only m_rawChainSize changes
                                         const P_M&                                      unifiedCovMatrix,                   // input
@@ -442,17 +442,17 @@ private:
 
 #ifdef QUESO_HAS_GLPK
   /*! @param[in] exchangeStdVec
-   *  @param[out] exchangeStdVec*/ 
+   *  @param[out] exchangeStdVec*/
   void   solveBIP_proc0                (std::vector<ExchangeInfoStruct>&              exchangeStdVec);                    // input/output
 #endif
 
   /*! @param[in] currOptions, exchangeStdVec
-   *  @param[out] exchangeStdVec*/ 
+   *  @param[out] exchangeStdVec*/
   void   justBalance_proc0             (const MLSamplingLevelOptions*            currOptions,                        // input
                                         std::vector<ExchangeInfoStruct>&              exchangeStdVec);                    // input/output
 
   /*! @param[in] prevChain, exchangeStdVec, finalNumChainsPerNode, finalNumPositionsPerNode
-   *  @param[out] balancedLinkControl*/ 
+   *  @param[out] balancedLinkControl*/
   void   mpiExchangePositions_inter0   (const SequenceOfVectors<P_V,P_M>&        prevChain,                          // input
                                         double                                   prevExponent,                       // input
                                         double                                   currExponent,                       // input
@@ -464,23 +464,23 @@ private:
                                         BalancedLinkedChainsPerNodeStruct<P_V>&       balancedLinkControl);               // output
 
   // Private variables
-  //! Queso enviroment. 
+  //! Queso enviroment.
   const BaseEnvironment&             m_env;
-   
+
   //!  Prior RV.
   const BaseVectorRV      <P_V,P_M>& m_priorRv;
-  
+
   //! Likelihood function.
   const BaseScalarFunction<P_V,P_M>& m_likelihoodFunction;
-  
+
   //! Vector space.
   const VectorSpace       <P_V,P_M>& m_vectorSpace;
-  
+
    //! Domain of the target PDF: intersection of the domains of the prior PDf and likelihood function.
   VectorSet         <P_V,P_M>* m_targetDomain;
-  
+
   unsigned int                        m_numDisabledParameters; // gpmsa2
-  
+
   std::vector<bool>                   m_parameterEnabledStatus; // gpmsa2
 
    //! Options for the ML algorithm.
@@ -488,10 +488,10 @@ private:
 
    //! Current level.
    unsigned int                        m_currLevel;          // restart
-   
+
    //! Curret step.
    unsigned int                        m_currStep;
-  
+
    //! Exponent for debugging.
    double                              m_debugExponent;
 	std::vector<double>                 m_logEvidenceFactors; // restart

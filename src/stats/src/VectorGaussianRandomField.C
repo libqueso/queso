@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -32,7 +32,7 @@ VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::VectorGaussianRandomField(
   const char*                                                 prefix,
   const VectorSet<P_V,P_M>&                            indexSet,
   const VectorSet<Q_V,Q_M>&                            imageSetPerIndex,
-  const BaseVectorFunction<P_V,P_M,Q_V,Q_M>&           meanFunction, 
+  const BaseVectorFunction<P_V,P_M,Q_V,Q_M>&           meanFunction,
   const BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>& covarianceFunction)
   :
   m_env                (indexSet.env()),
@@ -90,7 +90,7 @@ VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V
                       "input data is not multiple of each other");
 
   unsigned int numberOfImageValuesPerIndex = sampleValues.sizeLocal()/fieldPositions.size();
-  
+
   UQ_FATAL_TEST_MACRO(numberOfImageValuesPerIndex != m_imageSetPerIndex.vectorSpace().dimLocal(),
                       m_env.fullRank(),
                       "VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction()",

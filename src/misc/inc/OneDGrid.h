@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -35,7 +35,7 @@ namespace QUESO {
 //*****************************************************
 /*!\file OneDGrid.h
  * \brief Classes to accommodate a one dimensional grid.
- * 
+ *
  * \class BaseOneDGrid
  * \brief Base class for accommodating one-dimensional grids.*/
 
@@ -46,7 +46,7 @@ template<class T>
 class BaseOneDGrid {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   BaseOneDGrid(const BaseEnvironment& env,
 		      const char* prefix);
@@ -60,15 +60,15 @@ public:
   //@}
   //! @name Mathematical methods
   //@{
-  //! Grid size; the amount of points which defines the grid. See template specialization. 
+  //! Grid size; the amount of points which defines the grid. See template specialization.
   virtual unsigned int size          ()                     const = 0;
-  
+
   //! Finds the ID of an interval. See template specialization.
-  virtual unsigned int findIntervalId(const T& paramValue)  const = 0; 
+  virtual unsigned int findIntervalId(const T& paramValue)  const = 0;
   //@}
   //! @name I/O methods
   //@{
-  //! Prints the values of the grid points.  
+  //! Prints the values of the grid points.
   void         print         (std::ostream& ofsvar) const;
   friend std::ostream& operator<< (std::ostream& os,
       const BaseOneDGrid<T>& obj)

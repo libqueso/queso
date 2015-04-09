@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -43,8 +43,8 @@ public:
   //! @name Constructor/Destructor methods
   //@{
 
-  //! Shaped, default constructor. 
-  /*! Construct a subspace of \c vectorSpace, with min and max values given by the vectors \c minValues 
+  //! Shaped, default constructor.
+  /*! Construct a subspace of \c vectorSpace, with min and max values given by the vectors \c minValues
    * and \c maxValues, respectively. It checks for possible inconsistencies between the values stored in
    * \c minValues and \c maxValues, and calculates the volume of the box subset, assigning it to m_volume. */
   BoxSubset(const char*                    prefix,
@@ -57,19 +57,19 @@ public:
   //@}
 
   //! @name Mathematical methods.
-  //@{  
-  //! Checks whether this box subset contains vector \c vec. 
-  /*! It checks if both statements are true: 1) all components in \c vec are larger than 
+  //@{
+  //! Checks whether this box subset contains vector \c vec.
+  /*! It checks if both statements are true: 1) all components in \c vec are larger than
    * m_minValues, and 2) all all components in \c vec are smaller than m_maxValues. */
   bool contains (const V& vec)     const;
-  
-  //! Vector of the minimum values of the box subset. 
+
+  //! Vector of the minimum values of the box subset.
   const V&   minValues()                 const;
-  
-  //! Vector of the maximum values of the box subset. 
+
+  //! Vector of the maximum values of the box subset.
   const V&   maxValues()                 const;
   //@}
-  
+
   //! Prints the volume, the minimum and the maximum values of \c this.
   void print    (std::ostream& os) const;
 
@@ -78,10 +78,10 @@ protected:
   using VectorSet   <V,M>::m_prefix;
   using VectorSet   <V,M>::m_volume;
   using VectorSubset<V,M>::m_vectorSpace;
- 
+
   //! Vector of templated type \c V to store the minimum values of the box subset class.
   V m_minValues;
-  
+
   //! Vector of templated type \c V to store the maximum values of the box subset class.
   V m_maxValues;
 };

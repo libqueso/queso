@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -488,7 +488,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     // lam=diag(S).^2/sum(diag(S).^2);
     // lam=cumsum(lam);
     // pu=sum(lam<pcpct)+1;
-    // Ksim=U(:,1:pu)*S(1:pu,1:pu)./sqrt(m);   
+    // Ksim=U(:,1:pu)*S(1:pu,1:pu)./sqrt(m);
     //***********************************************************************
     m_paper_p_eta = computePEta(svdS_vec);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
@@ -579,7 +579,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     // lam=diag(S).^2/sum(diag(S).^2);
     // lam=cumsum(lam);
     // pu=sum(lam<pcpct)+1;
-    // Ksim=U(:,1:pu)*S(1:pu,1:pu)./sqrt(m);   
+    // Ksim=U(:,1:pu)*S(1:pu,1:pu)./sqrt(m);
     //***********************************************************************
     m_paper_p_eta = computePEta(svdS_vec);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
@@ -620,7 +620,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
 
     (*m_Kmat_eta) = matV_tmp * matS_tmp;
 
-    if (m_env.identifyingString() == "towerExampleToMatchGPMSA") { 
+    if (m_env.identifyingString() == "towerExampleToMatchGPMSA") {
       // IMPORTANT: temporary, just to match with tower example of the Matlab version of GPMSA
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
         *m_env.subDisplayFile() << "IMPORTANT In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"

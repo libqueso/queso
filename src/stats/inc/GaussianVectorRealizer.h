@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -35,7 +35,7 @@ namespace QUESO {
 //*****************************************************
 // Gaussian class [R-03]
 //*****************************************************
-/*! 
+/*!
  * \class GaussianVectorRealizer
  * \brief A class for handling sampling from Gaussian probability density distributions.
  *
@@ -44,13 +44,13 @@ namespace QUESO {
 template<class V, class M>
 class GaussianVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Constructs a new object, given a prefix and the image set of the vector realizer, a
-   * vector of mean values, \c lawExpVector, and a lower triangular matrix resulting from 
-   * Cholesky decomposition of the covariance matrix, \c lowerCholLawCovMatrix.  */ 
+   * vector of mean values, \c lawExpVector, and a lower triangular matrix resulting from
+   * Cholesky decomposition of the covariance matrix, \c lowerCholLawCovMatrix.  */
   GaussianVectorRealizer(const char*                  prefix,
                                 const VectorSet<V,M>& unifiedImageSet,
                                 const V&                     lawExpVector, // vector of mean values
@@ -58,9 +58,9 @@ public:
 
   //! Constructor
   /*! Constructs a new object, given a prefix and the image set of the vector realizer, a
-   * vector of mean values, \c lawExpVector, and a set of two matrices and one vector 
-   * resulting from the Single Value Decomposition of the covariance matrix, \c matU, 
-   * \c vecSsqrt and \c matVt.  */ 
+   * vector of mean values, \c lawExpVector, and a set of two matrices and one vector
+   * resulting from the Single Value Decomposition of the covariance matrix, \c matU,
+   * \c vecSsqrt and \c matVt.  */
   GaussianVectorRealizer(const char*                  prefix,
                                 const VectorSet<V,M>& unifiedImageSet,
                                 const V&                     lawExpVector, // vector of mean values
@@ -73,35 +73,35 @@ public:
 
   //! @name Realization-related methods
   //@{
-  //! Access to the vector of mean values and private attribute:  m_unifiedLawExpVector. 
+  //! Access to the vector of mean values and private attribute:  m_unifiedLawExpVector.
   const V&   unifiedLawExpVector        ()              const;
-  
-  //! Access to the vector of variance values and private attribute:  m_unifiedLawVarVector. 
+
+  //! Access to the vector of variance values and private attribute:  m_unifiedLawVarVector.
   const V&   unifiedLawVarVector        ()              const;
-     
+
   //! Draws a realization.
-  /*! This function draws a realization of a Gaussian distribution of mean \c m_unifiedLawExpVector 
+  /*! This function draws a realization of a Gaussian distribution of mean \c m_unifiedLawExpVector
    * and variance \c m_unifiedLawVarVector and saves it in \c nextValues.*/
   void realization                (V& nextValues) const;
-  
-  //! Updates the mean with the new value \c newLawExpVector.  
+
+  //! Updates the mean with the new value \c newLawExpVector.
   void updateLawExpVector         (const V& newLawExpVector);
-  
+
   //! Updates the lower triangular matrix from Cholesky decomposition of the covariance matrix to the new value \c newLowerCholLawCovMatrix.
-  /*! The lower triangular matrix results resulting from a Cholesky decomposition of the 
+  /*! The lower triangular matrix results resulting from a Cholesky decomposition of the
    * covariance matrix. This routine deletes old expected values: m_lowerCholLawCovMatrix;
    *   m_matU, m_vecSsqrt, m_matVt.*/
   void updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix);
-  
+
   //! Updates the SVD matrices from SVD decomposition of the covariance matrix to the new values: \c matU, \c vecSsqrt, and \c matVt.
-  /*! The lower triangular matrix results resulting from a Cholesky decomposition of the 
+  /*! The lower triangular matrix results resulting from a Cholesky decomposition of the
    * covariance matrix. This routine deletes old expected values: m_lowerCholLawCovMatrix;
    *   m_matU, m_vecSsqrt, m_matVt. */
     void updateLowerCholLawCovMatrix(const M& matU,
            const V& vecSsqrt,
            const M& matVt);
   //@}
-  
+
 private:
   V* m_unifiedLawExpVector;
   V* m_unifiedLawVarVector;

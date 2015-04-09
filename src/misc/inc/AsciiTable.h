@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -34,7 +34,7 @@ namespace QUESO {
 
 /*!\file AsciiTable.h
  * \brief Class to read ASCII values from a table.
- * 
+ *
  * \class AsciiTable
  * \brief Class for reading ASCII values from a table in a file.*/
 
@@ -43,7 +43,7 @@ class AsciiTable
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   /*! This constructor reads the data from file \c fileName, checking whether the data in each
    * column of the file is or not a string, and whether the data in each row is or not valid.*/
@@ -55,25 +55,25 @@ public:
   //! Destructor.
   ~AsciiTable();
   //@}
-  
+
   //! @name Property methods
   //@{
   //! Returns the number of rows in the table.
   unsigned int                         numRows     ()                 const;
-  
+
   //! Returns the number of columns in the table.
   unsigned int                         numCols     ()                 const;
-  
+
   //! Returns the string stored in column \c j.
   const DistArray<std::string>& stringColumn(unsigned int j)   const;
-  
+
   //! Returns the value (double) stored in column \c j.
   const V&                             doubleColumn(unsigned int j)   const;
   //@}
-  
+
   //! @name I/O methods
   //@{
-  //! Prints the table.  
+  //! Prints the table.
   void                                 print       (std::ostream& os) const;
   //@}
 private:

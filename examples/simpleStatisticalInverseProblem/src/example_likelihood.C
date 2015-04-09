@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -49,14 +49,14 @@ double likelihoodRoutine(
 
   // Actual code
   //
-  // This code exemplifies multiple Metropolis-Hastings solvers, each calling this likelihood 
-  // routine. In this simple example, only node 0 in each subenvironment does the job even 
-  // though there might be more than one node per sub-environment. In a more realistic 
-  // situation, if the user is asking for multiple nodes per subenvironment, then the model 
-  // code in the likelihood routines might really demand more than one node. Here we use 
+  // This code exemplifies multiple Metropolis-Hastings solvers, each calling this likelihood
+  // routine. In this simple example, only node 0 in each subenvironment does the job even
+  // though there might be more than one node per sub-environment. In a more realistic
+  // situation, if the user is asking for multiple nodes per subenvironment, then the model
+  // code in the likelihood routines might really demand more than one node. Here we use
   // 'env.subRank()' only. A realistic application might want to use either 'env.subComm()'
   // or 'env.subComm().Comm()'.
-  
+
   double result = 0.;
   const QUESO::BaseEnvironment& env = paramValues.env();
   if (env.subRank() == 0) {

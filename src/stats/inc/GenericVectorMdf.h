@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -43,10 +43,10 @@ template<class V, class M>
 class GenericVectorMdf : public BaseVectorMdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Constructor.
-  /*! Instantiates an object of the class given a prefix, the domain set, and a routine 
-   * (acting as a math function). */  
+  /*! Instantiates an object of the class given a prefix, the domain set, and a routine
+   * (acting as a math function). */
   GenericVectorMdf(const char*                    prefix,
                           const VectorSet<V,M>& domainSet,
                           double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec),
@@ -60,10 +60,10 @@ public:
   //! Finds the values of the vector MDF at each element of \c paramValues, by calling \c m_routinePtr, and saves it at \c mdfValues.
   void values(const V& paramValues, V& mdfVec) const;
   //@}
-  
+
   //! @name I/O method
-  //@{ 
-  //! TODO: Prints the vector MDF. 
+  //@{
+  //! TODO: Prints the vector MDF.
   /*! \todo: implement me!*/
   void print (std::ostream& os)                const;
   //@}

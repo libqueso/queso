@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -90,7 +90,7 @@ UniformOneDGrid<T>::findIntervalId(const T& paramValue) const
 
   T ratio = (paramValue - m_minPosition)/(m_maxPosition - m_minPosition);
   unsigned int i = (unsigned int) (ratio*(m_size-1.));
-  if ((i > 0                  ) && 
+  if ((i > 0                  ) &&
       ((*this)[i] > paramValue)) {
     i--;
   }

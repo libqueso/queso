@@ -36,6 +36,7 @@ BUILT_SOURCES += Environment.h
 BUILT_SOURCES += EnvironmentOptions.h
 BUILT_SOURCES += FunctionBase.h
 BUILT_SOURCES += FunctionOperatorBuilder.h
+BUILT_SOURCES += GslBlockMatrix.h
 BUILT_SOURCES += GslMatrix.h
 BUILT_SOURCES += GslOptimizer.h
 BUILT_SOURCES += GslVector.h
@@ -105,6 +106,13 @@ BUILT_SOURCES += GammaJointPdf.h
 BUILT_SOURCES += GammaVectorRV.h
 BUILT_SOURCES += GammaVectorRealizer.h
 BUILT_SOURCES += GaussianJointPdf.h
+BUILT_SOURCES += GaussianLikelihood.h
+BUILT_SOURCES += GaussianLikelihoodBlockDiagonalCovariance.h
+BUILT_SOURCES += GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
+BUILT_SOURCES += GaussianLikelihoodDiagonalCovariance.h
+BUILT_SOURCES += GaussianLikelihoodFullCovariance.h
+BUILT_SOURCES += GaussianLikelihoodFullCovarianceRandomCoefficient.h
+BUILT_SOURCES += GaussianLikelihoodScalarCovariance.h
 BUILT_SOURCES += GaussianVectorCdf.h
 BUILT_SOURCES += GaussianVectorMdf.h
 BUILT_SOURCES += GaussianVectorRV.h
@@ -235,6 +243,8 @@ EnvironmentOptions.h: $(top_srcdir)/src/core/inc/EnvironmentOptions.h
 FunctionBase.h: $(top_srcdir)/src/core/inc/FunctionBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FunctionOperatorBuilder.h: $(top_srcdir)/src/core/inc/FunctionOperatorBuilder.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GslBlockMatrix.h: $(top_srcdir)/src/core/inc/GslBlockMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GslMatrix.h: $(top_srcdir)/src/core/inc/GslMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -373,6 +383,20 @@ GammaVectorRV.h: $(top_srcdir)/src/stats/inc/GammaVectorRV.h
 GammaVectorRealizer.h: $(top_srcdir)/src/stats/inc/GammaVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianJointPdf.h: $(top_srcdir)/src/stats/inc/GaussianJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihood.h: $(top_srcdir)/src/stats/inc/GaussianLikelihood.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihoodBlockDiagonalCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodBlockDiagonalCovariance.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihoodDiagonalCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodDiagonalCovariance.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihoodFullCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodFullCovariance.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihoodFullCovarianceRandomCoefficient.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodFullCovarianceRandomCoefficient.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihoodScalarCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodScalarCovariance.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianVectorCdf.h: $(top_srcdir)/src/stats/inc/GaussianVectorCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

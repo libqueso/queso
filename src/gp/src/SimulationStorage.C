@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -159,7 +159,7 @@ SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterSpace() const
 {
   return m_parameterSpace;
 }
- 
+
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const VectorSpace<Q_V,Q_M>&
 SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputSpace() const

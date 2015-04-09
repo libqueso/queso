@@ -1,56 +1,59 @@
-/*------------------------------------------------------------------------
+//-----------------------------------------------------------------------bl-
+//--------------------------------------------------------------------------
+//
+// QUESO - a library to support the Quantification of Uncertainty
+// for Estimation, Simulation and Optimization
+//
+// Copyright (C) 2008-2015 The PECOS Development Team
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the Version 2.1 GNU Lesser General
+// Public License as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
+// Boston, MA  02110-1301  USA
+//
+//-----------------------------------------------------------------------el-
+
+/*
+ * Brief description of this file:
  *
- * Copyright (C) 2012 The PECOS Development Team
- *
- * Please see http://pecos.ices.utexas.edu for more information.
- *
- * This file is part of the QUESO Library (Quantification of Uncertainty
- * for Estimation, Simulation and Optimization).
- *
- * QUESO is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * QUESO is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
- *
- *------------------------------------------------------------------------
- *
+ * This is the header file from gravity_qoi.C.
  */
- /*------------------------------------------------------------------
- * Brief description of this file: 
- *
- * This is the header file from gravity_qoi.C. 
- *-----------------------------------------------------------------*/
 
-#ifndef __GRAVITY_QOI_H__
-#define __GRAVITY_QOI_H__
+#ifndef QUESO_EXAMPLE_GRAVITY_QOI_H
+#define QUESO_EXAMPLE_GRAVITY_QOI_H
 
-#include <queso/GslMatrix.h>
+#include <queso/VectorFunction.h>
 #include <queso/DistArray.h>
 
-struct
-qoiRoutine_Data
+template<class P_V, class P_M, class Q_V, class Q_M>
+class Qoi : public QUESO::BaseVectorFunction<P_V, P_M, Q_V, Q_M>
 {
+public:
+  Qoi(const char * prefix, const QUESO::VectorSet<P_V, P_M> & domainSet,
+      const QUESO::VectorSet<Q_V, Q_M> & imageSet);
+  virtual ~Qoi();
+  virtual void compute(const P_V & domainVector, const P_V * domainDirection,
+      Q_V & imageVector, QUESO::DistArray<P_V *> * gradVectors,
+      QUESO::DistArray<P_M *> * hessianMatrices,
+      QUESO::DistArray<P_V *> * hessianEffects) const;
+
+  void setAngle(double angle);
+  void setInitialVelocity(double velocity);
+  void setInitialHeight(double height);
+
+private:
   double m_angle;
   double m_initialVelocity;
   double m_initialHeight;
 };
-
-void
-qoiRoutine(
-  const QUESO::GslVector&                     paramValues,
-  const QUESO::GslVector*                     paramDirection,
-  const void*                                 functionDataPtr,
-        QUESO::GslVector&                     qoiValues,
-        QUESO::DistArray<QUESO::GslVector* >* gradVectors,
-        QUESO::DistArray<QUESO::GslMatrix* >* hessianMatrices,
-        QUESO::DistArray<QUESO::GslVector* >* hessianEffects);
 
 #endif

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -52,7 +52,7 @@ public:
   //@{
   //! Constructor
   /*! Constructs a new object of the class, given a prefix, the domain set of the PDF, the
-   * center position \c centerPos, and a radius \c radius.*/  
+   * center position \c centerPos, and a radius \c radius.*/
   WignerJointPdf(const char*                  prefix,
                         const VectorSet<V,M>& domainSet,
                         const V&                     centerPos,
@@ -60,17 +60,17 @@ public:
   //! Destructor
  ~WignerJointPdf();
   //@}
- 
+
     //! @name Math methods
   //@{
   //! Actual value of the PDF (scalar function).
   /*! It depends on the distance of the center position to the domain and on the radius.*/
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  
+
   //! Computes the logarithm of the value of the function.
   /*! This method calls actualValue() and applies the logarithm to its result.*/
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
- 
+
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;

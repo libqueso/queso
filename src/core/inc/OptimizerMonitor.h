@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -56,10 +56,10 @@ namespace QUESO
      * handful of dimensions over which you are optimizing.
      */
     void set_display_output( bool enable_output, bool print_xmin );
-    
+
     //! Add current value of minimizer, objective, and error norm
     void append( std::vector<double>& x_min, double objective, double norm );
-    
+
     //! Clears internal datastructures and resets display variables to false.
     void reset();
 
@@ -73,7 +73,7 @@ namespace QUESO
   private:
 
     const BaseEnvironment& m_env;
-    
+
     bool m_display_conv;
     bool m_print_xmin;
 

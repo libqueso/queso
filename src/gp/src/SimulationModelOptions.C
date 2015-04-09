@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -155,7 +155,7 @@ SimulationModelOptions::SimulationModelOptions(
 SimulationModelOptions::~SimulationModelOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
-} 
+}
 
 void
 SimulationModelOptions::scanOptionsValues()
@@ -187,7 +187,7 @@ SimulationModelOptions::scanOptionsValues()
 void
 SimulationModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
-  optionsDesc.add_options()     
+  optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                      "produce help message for simulation model options")
     (m_option_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV       ), "name of data output file"                         )
     (m_option_dataOutputAllowAll.c_str(),        po::value<bool        >()->default_value(UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV       ), "allow all or not"                                 )

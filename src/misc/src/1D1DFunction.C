@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -845,7 +845,7 @@ LagrangePolynomial1D1DFunction::~LagrangePolynomial1D1DFunction()
 {
 }
 
-double                     
+double
 LagrangePolynomial1D1DFunction::value(double domainValue) const
 {
   double value = 0.;
@@ -880,7 +880,7 @@ LagrangePolynomial1D1DFunction::value(double domainValue) const
   return value;
 }
 
-double                     
+double
 LagrangePolynomial1D1DFunction::deriv(double domainValue) const
 {
   double value = 0.;
@@ -928,7 +928,7 @@ LagrangeBasis1D1DFunction::~LagrangeBasis1D1DFunction()
 {
 }
 
-double                     
+double
 LagrangeBasis1D1DFunction::value(double domainValue) const
 {
   double scaleFactor = 1.;
@@ -945,7 +945,7 @@ LagrangeBasis1D1DFunction::value(double domainValue) const
   return scaleFactor;
 }
 
-double                     
+double
 LagrangeBasis1D1DFunction::deriv(double domainValue) const
 {
   double value = 0.;

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -96,7 +96,7 @@ const int UQ_MATRIX_SVD_FAILED_RC          = -11;
 
 /*! \class EnvOptionsValues
  *  \brief This class provides a suite options one can pass to a QUESO environment.
- * 
+ *
  *  QUESO expects the user to provide an input file with environment options for the library variables.
  *  If no input file, a collection of default values is assigned to some of the variables. The class
  *  EnvOptionsValues is responsible for this task.
@@ -106,19 +106,19 @@ class EnvOptionsValues
 {
 public:
     //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor
   EnvOptionsValues            ();
-  
+
   //! Copy constructor
   EnvOptionsValues            (const EnvOptionsValues& src);
- 
+
   //! Destructor
   ~EnvOptionsValues            ();
   //@}
-  
+
    //! @name Set methods
-  //@{    
+  //@{
   //! Operator for copying the options of an environment.
   EnvOptionsValues& operator= (const EnvOptionsValues& rhs);
  //@}
@@ -126,49 +126,49 @@ public:
   //! @name Attributes
  //! Number of sub-environments.
   unsigned int           m_numSubEnvironments;
-  
+
   //! Output filename for sub-screen writing.
   std::string            m_subDisplayFileName;
-  
+
   //! Allows (or not) all sub-environments to write to output file.
   bool                   m_subDisplayAllowAll;
-  
+
   //! Allows (or not) all inter0 nodes to write to output file
   bool                   m_subDisplayAllowInter0;
-  
+
   //! Sub-environments that will write to output.
   std::set<unsigned int> m_subDisplayAllowedSet;
-  
+
   //! Verbosity.
   unsigned int           m_displayVerbosity;
-  
+
   //! Synchronized verbosity.
   unsigned int           m_syncVerbosity;
-  
+
   //! Checking level
   unsigned int           m_checkingLevel;
 
   //! Type of the random number generator.
   std::string            m_rngType;
-  
+
   //! Seed of the random number generator.
   /*! If env_seed = -z, with z>=1, then each processor sets the seed to value MPI_RANK + z.
    It is crucial that \verb+env_seed+ takes a \underline{negative} value, otherwise all chain samples are going to be the same.*/
   int                    m_seed;
-  
+
   //! Platform name.
   std::string            m_platformName;
-  
+
   //! Identifying string.
   std::string            m_identifyingString;
-  
+
   //! Number of debug parameters.
   unsigned int           m_numDebugParams;
-  
+
   //! Debug parameters
   std::vector<double>    m_debugParams;
   //@}
-  
+
 private:
   //! Makes an exact copy of an existing EnvOptionsValues instance.
   void copy(const EnvOptionsValues& src);

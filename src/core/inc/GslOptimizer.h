@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -72,7 +72,7 @@ public:
                     POLAK_RIBIERE_CG,
                     BFGS,
                     BFGS2,
-                    STEEPEST_DECENT,
+                    STEEPEST_DESCENT,
                     NELDER_MEAD,
                     NELDER_MEAD2,
                     NELDER_MEAD2_RAND };
@@ -86,7 +86,7 @@ public:
    * optimization failed
    */
   const GslVector & minimizer() const;
-  
+
   void set_solver_type( SolverType solver );
 
   void set_solver_type( std::string& solver );
@@ -118,7 +118,7 @@ public:
 
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
-  
+
   GslVector * m_initialPoint;
   GslVector * m_minimizer;
 

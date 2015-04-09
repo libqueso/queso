@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -40,11 +40,11 @@ namespace QUESO {
 //*****************************************************
 /*! \file VectorRealizer.h
  * \brief A templated class for sampling from vector RVs (holding probability density distributions).
- * 
+ *
  * \class BaseVectorRealizer
  * \brief A templated (base) class for handling sampling from vector RVs.
  *
- * A realizer is an object that, simply put, contains a realization() operation 
+ * A realizer is an object that, simply put, contains a realization() operation
  * that returns a sample of a vector RV. This is the base class. QUESO also support
  * uniform, Gaussian, Beta, Gamma, Inverse Gamma and LogNormal realizers, as described
  * and implemented in the derived classes. */
@@ -52,7 +52,7 @@ namespace QUESO {
 template<class V, class M>
 class BaseVectorRealizer {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
@@ -64,19 +64,19 @@ public:
   //! Virtual destructor
   virtual ~BaseVectorRealizer();
   //@}
-  
+
   //! @name Realization-related methods
   //@{
   //! Image set where the realizations lie.  Access to protected attribute m_unifiedImageSet.
   const   VectorSet<V,M>& unifiedImageSet()              const;
-  
+
   //! Sub-period of the realization. Access to protected attribute m_subPeriod.
   unsigned int           subPeriod      ()              const;
-  
+
   //! Performs a realization (sample) from a probability density function. See template specialization.
   virtual void                   realization    (V& nextValues) const = 0;
   //@}
-  
+
 protected:
   const BaseEnvironment& m_env;
         std::string             m_prefix;

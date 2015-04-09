@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -34,18 +34,18 @@ using std:: cout;
 using std:: endl;
 
 // ---------------------------------------------------
-// default constructor ------------------------------- 
+// default constructor -------------------------------
 TeuchosVector::TeuchosVector()  :
   Vector()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
                       "TeuchosVector::constructor(), default",
-                      "should not be used by user");  
+                      "should not be used by user");
 };
 
 
-// constructor with dimension ----------------------- 
+// constructor with dimension -----------------------
 TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map)
   :
   Vector(env,map)
@@ -86,7 +86,7 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map, double 
 {
   m_vec.size(map.NumGlobalElements());
   m_vec = value;
-    
+
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
                       "TeuchosVector::constructor(2)",
@@ -147,7 +147,7 @@ TeuchosVector::TeuchosVector(const TeuchosVector& v, double d1, double d2)
   Vector(v.env(),v.map())
 {
   m_vec.size(v.sizeLocal());
-  
+
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
                       "TeuchosVector::constructor(4), linspace",
@@ -180,7 +180,7 @@ TeuchosVector::TeuchosVector(const TeuchosVector& v)  // mox
   Vector(v.env(),v.map())
  {
    m_vec.size(v.sizeLocal());
-   
+
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
                       "TeuchosVector::constructor(5), copy",
@@ -204,7 +204,7 @@ TeuchosVector::TeuchosVector(const TeuchosVector& v)  // mox
 }
 
 
-// destructor -------------------------------------- 
+// destructor --------------------------------------
 TeuchosVector::~TeuchosVector()
 {
 };
@@ -223,15 +223,15 @@ TeuchosVector& TeuchosVector::operator=(const TeuchosVector& rhs)
 {
   unsigned int size1 = m_vec.length();
   unsigned int size2 = rhs.sizeLocal();
-  
+
   UQ_FATAL_TEST_MACRO(size1 != size2, // mox
                       m_env.worldRank(),
                       "TeuchosVector::operator=()",
                       "the vectors do NOT have the same size.\n");
-               
+
   if (size1==size2){
     for (unsigned int i=0;i<size1;i++){
-    m_vec[i]=rhs[i];  
+    m_vec[i]=rhs[i];
     }
   }
 
@@ -241,7 +241,7 @@ TeuchosVector& TeuchosVector::operator=(const TeuchosVector& rhs)
 //-------------------------------------------------
 TeuchosVector& TeuchosVector::operator*=(double a)
 {
-  m_vec.scale(a); 	//Scale this vector by a; *this = a*this. 
+  m_vec.scale(a); 	//Scale this vector by a; *this = a*this.
   return *this;
 }
 
@@ -274,7 +274,7 @@ TeuchosVector& TeuchosVector::operator/=(const TeuchosVector& rhs)
 {
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
-  
+
   UQ_FATAL_TEST_MACRO((size1 != size2),
                       m_env.worldRank(),
                       "TeuchosVector::operator/=()",
@@ -297,7 +297,7 @@ TeuchosVector& TeuchosVector::operator+=(const TeuchosVector& rhs)
                       m_env.worldRank(),
                       "TeuchosVector::operator+=()",
                       "the vectors do NOT have the same size.\n");
-  
+
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
       (*this)[i] += rhs[i];
@@ -316,13 +316,13 @@ TeuchosVector& TeuchosVector::operator-=(const TeuchosVector& rhs)
                       m_env.worldRank(),
                       "TeuchosVector::operator-=()",
                       "the vectors do NOT have the same size.\n");
-  
+
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
       (*this)[i] -= rhs[i];
     }
   }
-  
+
   return *this;
 }
 
@@ -348,7 +348,7 @@ unsigned int TeuchosVector::sizeLocal() const
                        m_env.worldRank(),
                        "TeuchosVector::sizeLocal()",
                        "incompatible vec size");
-  
+
   return m_vec.length();
 }
 
@@ -376,26 +376,26 @@ double TeuchosVector::getMaxValue( ) const  //dummy
 {
   const unsigned int size = this->sizeLocal();
   std::vector<double> aux;
-    
+
   for (unsigned int i=0; i<size; i++ ) {
     aux.push_back((*this)[i]) ;
   }
- 
+
   return *max_element (aux.begin(),aux.end());
 }
 
 // Min ------------------------------------------
 double TeuchosVector::getMinValue( ) const //dummy
-{  
+{
    const unsigned int size = this->sizeLocal();
    std::vector<double> aux;
-  
+
   for (unsigned int i=0; i<size; i++ ) {
     aux.push_back((*this)[i]) ;
     }
-  
+
  return *min_element (aux.begin(),aux.end());
-  
+
 }
 
 // Max index -----------------------------------
@@ -403,7 +403,7 @@ int TeuchosVector::getMaxValueIndex( ) const   //dummy
 {
   const unsigned int size = this->sizeLocal();
   std::vector<double> vect;
-    
+
   for (unsigned int i=0; i<size; i++ ) {
     vect.push_back((*this)[i]) ;
   }
@@ -416,10 +416,10 @@ int TeuchosVector::getMinValueIndex( ) const //dummy
 {
   const unsigned int size = this->sizeLocal();
   std::vector<double> vect;
-    
+
   for (unsigned int i=0; i<size; i++ ) {
     vect.push_back((*this)[i]) ;
-  }  
+  }
   std::vector<double>::iterator iter_min = min_element(vect.begin(), vect.end());
   return distance(vect.begin(), iter_min);
 }
@@ -429,12 +429,12 @@ void TeuchosVector::getMaxValueAndIndex( double& max_value, int& max_value_index
 {
   const unsigned int size = this->sizeLocal();
   std::vector<double> vect;
-    
+
   for (unsigned int i=0; i<size; i++ ) {
     vect.push_back((*this)[i]) ;
   }
   std::vector<double>::iterator iter_max = max_element(vect.begin(), vect.end());
-  
+
   max_value = *iter_max;
   max_value_index =  distance(vect.begin(), iter_max);
 
@@ -446,12 +446,12 @@ void TeuchosVector::getMinValueAndIndex( double& min_value, int& min_value_index
 {
   const unsigned int size = this->sizeLocal();
   std::vector<double> vect;
-    
+
   for (unsigned int i=0; i<size; i++ ) {
     vect.push_back((*this)[i]) ;
-  }  
+  }
   std::vector<double>::iterator iter_min = min_element(vect.begin(), vect.end());
-  
+
   min_value = *iter_min;
   min_value_index = distance(vect.begin(), iter_min);
 
@@ -461,8 +461,8 @@ void TeuchosVector::getMinValueAndIndex( double& min_value, int& min_value_index
 // Norm methods ------------------------------------
 // -------------------------------------------------
 double TeuchosVector::norm2Sq() const
-{  
- return (m_vec).dot(m_vec );  
+{
+ return (m_vec).dot(m_vec );
 }
 
 //-------------------------------------------------
@@ -586,7 +586,7 @@ TeuchosVector::atLeastOneComponentBiggerOrEqualThan(const TeuchosVector& rhs) co
 void TeuchosVector::cwSet(double value)
 {
   (*this)=value;
-  
+
   return;
 }
 
@@ -597,12 +597,12 @@ void TeuchosVector::cwSet(unsigned int initialPos, const TeuchosVector& vec)
                        m_env.worldRank(),
                        "TeuchosVector::cwSet()",
                        "invalid initialPos");
- 
+
    UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
                        m_env.worldRank(),
                        "TeuchosVector::cwSet()",
                        "invalid vec.sizeLocal()");
-  
+
   for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
     (*this)[initialPos+i] = vec[i];
   }
@@ -619,12 +619,12 @@ void TeuchosVector::cwExtract(unsigned int initialPos, TeuchosVector& vec) const
                        m_env.worldRank(),
                        "TeuchosVector::cwExtract()",
                        "invalid initialPos");
- 
+
    UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
                        m_env.worldRank(),
                        "TeuchosVector::cwExtract()",
                        "invalid vec.sizeLocal()");
- 
+
   for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
     vec[i] = (*this)[initialPos+i];
   }
@@ -665,12 +665,12 @@ TeuchosVector::cwSetConcatenated(const TeuchosVector& v1, const TeuchosVector& v
 
 //  if ( this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal() ) {
 //    std::cout << "ERROR in TeuchosVector:: cwSetConcatenated  ---> the vectors' sizes are not compatible.\n";
-//    cout << "      in TeuchosVector:: cwSetConcatenated  ---> resizing resulting vector... new size = " 
+//    cout << "      in TeuchosVector:: cwSetConcatenated  ---> resizing resulting vector... new size = "
 //         << v1.sizeLocal()+v1.sizeLocal() <<endl;
-//    
+//
 //    m_vec.resize(v1.sizeLocal()+v1.sizeLocal());
 //  }
-   
+
   for (unsigned int i = 0; i < v1.sizeLocal(); ++i) {
     (*this)[i] = v1[i];
   }
@@ -698,7 +698,7 @@ void TeuchosVector::cwSetGaussian(const TeuchosVector& meanVec, const TeuchosVec
 {
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
     (*this)[i] = meanVec[i] + m_env.rngObject()->gaussianSample(stdDevVec[i]);
-  }  
+  }
   return;
 };
 
@@ -729,11 +729,11 @@ void TeuchosVector::cwSetBeta(const TeuchosVector& alpha, const TeuchosVector& b
                       "TeuchosVector::cwSetBeta()",
                       "incompatible beta size");
 
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i)
   {
     (*this)[i] = m_env.rngObject()->betaSample(alpha[i],beta[i]);
-    
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) 
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99))
     {
       *m_env.subDisplayFile() << "In TeuchosVector::cwSetBeta()"
                               << ": fullRank "   << m_env.fullRank()
@@ -815,10 +815,10 @@ TeuchosVector::copy_to_std_vector(std::vector<double>& vec)
 {
   unsigned int size = this->sizeLocal();
   vec.resize(size);
-  
-  for (unsigned int i = 0; i < size; ++i) 
+
+  for (unsigned int i = 0; i < size; ++i)
   	vec[i] = m_vec[i];
-    
+
   return;
 }
 
@@ -827,15 +827,15 @@ void
 TeuchosVector::copy_from_std_vector(const std::vector<double> vec)
 {
   unsigned int size1 = vec.size(), size2= this->sizeLocal();
- 
+
   UQ_FATAL_TEST_MACRO((size1 != size2),
                        m_env.worldRank(),
                        "In TeuchosVector::copy_from_std_vector()",
 					   "vectors have different sizes");
- 
-  for (unsigned int i = 0; i < size1; ++i) 
+
+  for (unsigned int i = 0; i < size1; ++i)
       m_vec[i] = vec[i];
-  
+
   return;
 }
 
@@ -843,13 +843,13 @@ TeuchosVector::copy_from_std_vector(const std::vector<double> vec)
 void TeuchosVector::sort()
 {
   std::vector<double> vec;
-  
-  (*this).copy_to_std_vector(vec);  
-  
+
+  (*this).copy_to_std_vector(vec);
+
   // using default comparison (operator <):
-  std::sort (vec.begin(), vec.end()); 
-  
-  (*this).copy_from_std_vector(vec); 
+  std::sort (vec.begin(), vec.end());
+
+  (*this).copy_from_std_vector(vec);
 };
 
 // -------------------------------------------------
@@ -891,7 +891,7 @@ TeuchosVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
 
   // Check that all participant nodes have the same vector size
   double localVectorSize  = this->sizeLocal();
-  double sumOfVectorSizes = 0.; 
+  double sumOfVectorSizes = 0.;
   bcastComm.Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
                       "TeuchosVector::mpiBcast()",
                       "failed MPI.Allreduce() for vectorSize");
@@ -1364,14 +1364,14 @@ TeuchosVector::subWriteContents(
 void
 TeuchosVector::copy(const TeuchosVector& rhs)
 {
-  this->Vector::copy(rhs); 
-  
+  this->Vector::copy(rhs);
+
   unsigned int size1 = m_vec.length();
   unsigned int size2 = rhs.sizeLocal();
- 
+
   if (size1==size2){
     for (unsigned int i=0;i<size1;i++){
-    m_vec[i]=rhs[i];  
+    m_vec[i]=rhs[i];
     }
   }
   return;

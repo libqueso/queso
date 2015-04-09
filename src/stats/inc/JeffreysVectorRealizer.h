@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -32,7 +32,7 @@
 
 namespace QUESO {
 
-/*! 
+/*!
  * \class JeffreysVectorRealizer
  * \brief A class for handling sampling from a jeffreys probability density
  * distribution.
@@ -42,7 +42,7 @@ namespace QUESO {
 template<class V, class M>
 class JeffreysVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
-  
+
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor
@@ -52,16 +52,16 @@ public:
   //! Destructor
   ~JeffreysVectorRealizer();
   //@}
-  
+
   //! @name Realization-related methods
   //@{
   //! Draws a realization.
-  /*! This function draws a realization of a jeffreys distribution and saves it in \c nextValues. It 
+  /*! This function draws a realization of a jeffreys distribution and saves it in \c nextValues. It
    * internally finds the minimum and the maximum values of the distribution.
-   */  
+   */
   void realization(V& nextValues) const;
   //@}
-  
+
 private:
   using BaseVectorRealizer<V,M>::m_env;
   using BaseVectorRealizer<V,M>::m_prefix;

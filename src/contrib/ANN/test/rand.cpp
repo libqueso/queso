@@ -6,12 +6,12 @@
 //----------------------------------------------------------------------
 // Copyright (c) 1997-2005 University of Maryland and Sunil Arya and
 // David Mount.  All Rights Reserved.
-// 
+//
 // This software and related documentation is part of the Approximate
 // Nearest Neighbor Library (ANN).  This software is provided under
 // the provisions of the Lesser GNU Public License (LGPL).  See the
 // file ../ReadMe.txt for further information.
-// 
+//
 // The University of Maryland (U.M.) and the authors make no
 // representations about the suitability or fitness of this software for
 // any purpose.  It is provided "as is" without express or implied
@@ -48,7 +48,7 @@ int		annIdum = 0;					// used for random number generation
 //	William Press, Brian Flannery, Saul Teukolsky, and William
 //	Vetterling. The task of the code is to do an additional randomizing
 //	shuffle on the system-supplied random number generator to make it
-//	safer to use. 
+//	safer to use.
 //
 //	Returns a uniform deviate between 0.0 and 1.0 using the
 //	system-supplied routine random() or rand(). Set the global
@@ -74,7 +74,7 @@ double annRan0()
 	// first call, even if "annIdum" is not set negative. Determine
 	// "maxran", the next integer after the largest representable value
 	// of type int. We assume this is a factor of 2 smaller than the
-	// corresponding value of type unsigned int. 
+	// corresponding value of type unsigned int.
 	//--------------------------------------------------------------------
 
 	if (annIdum < 0 || iff == 0) {		// initialize
@@ -146,7 +146,7 @@ static double annRanGauss()
 			//------------------------------------------------------------
 			// Pick two uniform numbers in the square extending from -1 to
 			// +1 in each direction, see if they are in the circle of radius
-			// 1.  If not, try again 
+			// 1.  If not, try again
 			//------------------------------------------------------------
 			v1 = annRanUnif(-1, 1);
 			v2 = annRanUnif(-1, 1);
@@ -170,15 +170,15 @@ static double annRanGauss()
 //------------------------------------------------------------------------
 //	annRanLaplace - Laplacian random number generator
 //		Returns a Laplacian distributed deviate with zero mean and
-//		unit variance, using annRan0() as the source of uniform deviates. 
+//		unit variance, using annRan0() as the source of uniform deviates.
 //
 //				prob(x) = b/2 * exp(-b * |x|).
 //
 //		b is chosen to be sqrt(2.0) so that the variance of the Laplacian
-//		distribution [2/(b^2)] becomes 1. 
+//		distribution [2/(b^2)] becomes 1.
 //------------------------------------------------------------------------
 
-static double annRanLaplace() 
+static double annRanLaplace()
 {
 	const double b = 1.4142136;
 
@@ -260,7 +260,7 @@ void annCoGaussPts(				// correlated-Gaussian distribution
 		for (int d = 1; d < dim; d++) {
 			previous = correlation*previous + std_dev_w*annRanGauss();
 			pa[i][d] = (ANNcoord) previous;
-		} 
+		}
 	}
 }
 
@@ -290,7 +290,7 @@ void annCoLaplacePts(			// correlated-Laplacian distribution
 				wn = annRanLaplace();
 			previous = correlation * previous + wn;
 			pa[i][d] = (ANNcoord) previous;
-		} 
+		}
 	}
 }
 
@@ -354,14 +354,14 @@ void annClusGaussPts(			// clustered-Gaussian distribution
 //
 //		This is done as follows.  Each cluster is defined by a d-element
 //		control vector whose components are either:
-//		
+//
 //				CO_FLAG indicating that this component is to be generated
 //						uniformly in [-1,1],
 //				x		a value other than CO_FLAG in the range [-1,1],
 //						which indicates that this coordinate is to be
 //						generated as x plus a Gaussian random deviation
 //						with the given standard deviation.
-//						
+//
 //		The number of zero components is the dimension of the flat, which
 //		is a random integer in the range from 1 to max_dim.  The points
 //		are disributed between clusters in nearly equal sized groups.

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -36,7 +36,7 @@ namespace QUESO {
 //*****************************************************
 // Gaussian marginal density function class
 //*****************************************************
-/*! 
+/*!
  * \class GaussianVectorMdf
  * \brief TODO: A class for handling Gaussian MDFs.
  *
@@ -47,10 +47,10 @@ template<class V, class M>
 class GaussianVectorMdf : public BaseVectorMdf<V,M> {
 public:
     //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! TODO: Constructor.
   /*! \todo: implement me! This method calls commonConstructor() which is not yet implemented.
-   * Instantiates an object of the class given a prefix, the domain set, and the domain mean 
+   * Instantiates an object of the class given a prefix, the domain set, and the domain mean
    * and expected values. */
   GaussianVectorMdf(const char*                    prefix,
                            const VectorSet<V,M>& domainSet,
@@ -58,7 +58,7 @@ public:
                            const V&                       domainVarianceValues);
   //! TODO: Constructor.
   /*! \todo: implement me! This method calls commonConstructor() which is not yet implemented.
-   * Instantiates an object of the class given a prefix, the domain set, and the domain mean 
+   * Instantiates an object of the class given a prefix, the domain set, and the domain mean
    * and covariance matrix. */
   GaussianVectorMdf(const char*                    prefix,
                            const VectorSet<V,M>& domainSet,
@@ -70,14 +70,14 @@ public:
 
   //! @name Mathematical method
   //@{
-  //! TODO: Returns the values of the vector CDF at each element of \c paramValues. 
+  //! TODO: Returns the values of the vector CDF at each element of \c paramValues.
   /*! \todo: implement me!*/
   void values(const V& paramValues, V& mdfVec) const;
   //@}
-  
+
   //! @name I/O method
-  //@{ 
-  //! TODO: Prints the vector CDF. 
+  //@{
+  //! TODO: Prints the vector CDF.
   /*! \todo: implement me!*/
   void print (std::ostream& os)                const;
   //@}

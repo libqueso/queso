@@ -12,6 +12,9 @@ check_PROGRAMS += test_uqEnvironmentOptionsPrint
 check_PROGRAMS += test_uqGslVectorConstructorFatal
 check_PROGRAMS += test_uqGslVector
 check_PROGRAMS += test_uqGaussianVectorRVClass
+check_PROGRAMS += test_VectorPdf_gsl
+check_PROGRAMS += test_VectorRV_gsl
+check_PROGRAMS += test_VectorRealizer_gsl
 check_PROGRAMS += test_uqGslMatrixConstructorFatal
 check_PROGRAMS += test_uqGslMatrix
 check_PROGRAMS += test_uqTeuchosVector
@@ -35,7 +38,18 @@ check_PROGRAMS += test_gsloptimizer
 check_PROGRAMS += test_seedwithmap
 check_PROGRAMS += test_seedwithmap_fd
 check_PROGRAMS += test_logitadaptedcov
+check_PROGRAMS += test_scalarCovariance
+check_PROGRAMS += test_diagonalCovariance
+check_PROGRAMS += test_fullCovariance
+check_PROGRAMS += test_blockDiagonalCovariance
+check_PROGRAMS += test_GslBlockMatrixInvertMultiply
 check_PROGRAMS += test_unifiedPositionsOfMaximum
+check_PROGRAMS += test_fullCovarianceRandomCoefficient
+check_PROGRAMS += test_blockDiagonalCovarianceRandomCoefficients
+check_PROGRAMS += test_fullCovarianceChain
+check_PROGRAMS += test_diagonalCovarianceChain
+check_PROGRAMS += test_scalarCovarianceChain
+check_PROGRAMS += test_blockDiagonalCovarianceChain
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -72,6 +86,9 @@ test_uqEnvironmentOptionsPrint_SOURCES = test_uqEnvironmentOptions/test_uqEnviro
 test_uqGslVectorConstructorFatal_SOURCES = test_GslVector/test_uqGslVectorConstructorFatal.C
 test_uqGslVector_SOURCES = test_GslVector/test_uqGslVector.C
 test_uqGaussianVectorRVClass_SOURCES = test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
+test_VectorPdf_gsl_SOURCES = test_GaussianVectorRVClass/test_VectorPdf_gsl.C
+test_VectorRV_gsl_SOURCES = test_GaussianVectorRVClass/test_VectorRV_gsl.C
+test_VectorRealizer_gsl_SOURCES = test_GaussianVectorRVClass/test_VectorRealizer_gsl.C
 test_uqGslMatrixConstructorFatal_SOURCES = test_GslMatrix/test_uqGslMatrixConstructorFatal.C
 test_uqGslMatrix_SOURCES = test_GslMatrix/test_uqGslMatrix.C
 test_uqTeuchosVector_SOURCES = test_TeuchosVector/test_uqTeuchosVector.C
@@ -96,7 +113,18 @@ test_gsloptimizer_SOURCES = test_optimizer/test_gsloptimizer.C
 test_seedwithmap_SOURCES = test_optimizer/test_seedwithmap.C
 test_seedwithmap_fd_SOURCES = test_optimizer/test_seedwithmap_fd.C
 test_logitadaptedcov_SOURCES = test_Regression/test_logitadaptedcov.C
+test_scalarCovariance_SOURCES = test_gaussian_likelihoods/test_scalarCovariance.C
+test_diagonalCovariance_SOURCES = test_gaussian_likelihoods/test_diagonalCovariance.C
+test_fullCovariance_SOURCES = test_gaussian_likelihoods/test_fullCovariance.C
+test_blockDiagonalCovariance_SOURCES = test_gaussian_likelihoods/test_blockDiagonalCovariance.C
+test_GslBlockMatrixInvertMultiply_SOURCES = test_GslBlockMatrix/test_GslBlockMatrixInvertMultiply.C
 test_unifiedPositionsOfMaximum_SOURCES = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.C
+test_fullCovarianceRandomCoefficient_SOURCES = test_gaussian_likelihoods/test_fullCovarianceRandomCoefficient.C
+test_blockDiagonalCovarianceRandomCoefficients_SOURCES = test_gaussian_likelihoods/test_blockDiagonalCovarianceRandomCoefficients.C
+test_fullCovarianceChain_SOURCES = test_gaussian_likelihoods/test_fullCovarianceChain.C
+test_diagonalCovarianceChain_SOURCES = test_gaussian_likelihoods/test_diagonalCovarianceChain.C
+test_scalarCovarianceChain_SOURCES = test_gaussian_likelihoods/test_scalarCovarianceChain.C
+test_blockDiagonalCovarianceChain_SOURCES = test_gaussian_likelihoods/test_blockDiagonalCovarianceChain.C
 
 # Files to freedom stamp
 srcstamp =
@@ -107,6 +135,9 @@ srcstamp += $(test_uqEnvironmentOptionsPrint_SOURCES)
 srcstamp += $(test_uqGslVectorConstructorFatal_SOURCES)
 srcstamp += $(test_uqGslVector_SOURCES)
 srcstamp += $(test_uqGaussianVectorRVClass_SOURCES)
+srcstamp += $(test_VectorPdf_gsl_SOURCES)
+srcstamp += $(test_VectorRV_gsl_SOURCES)
+srcstamp += $(test_VectorRealizer_gsl_SOURCES)
 srcstamp += $(test_uqGslMatrixConstructorFatal_SOURCES)
 srcstamp += $(test_uqGslMatrix_SOURCES)
 srcstamp += $(test_uqTeuchosVector_SOURCES)
@@ -129,7 +160,14 @@ srcstamp += $(test_gsloptimizer_SOURCES)
 srcstamp += $(test_seedwithmap_SOURCES)
 srcstamp += $(test_seedwithmap_fd_SOURCES)
 srcstamp += $(test_logitadaptedcov_SOURCES)
+srcstamp += $(test_scalarCovariance_SOURCES)
+srcstamp += $(test_diagonalCovariance_SOURCES)
+srcstamp += $(test_fullCovariance_SOURCES)
+srcstamp += $(test_blockDiagonalCovariance_SOURCES)
+srcstamp += $(test_GslBlockMatrixInvertMultiply_SOURCES)
 srcstamp += $(test_unifiedPositionsOfMaximum_SOURCES)
+srcstamp += $(test_fullCovarianceRandomCoefficient_SOURCES)
+srcstamp += $(test_blockDiagonalCovarianceRandomCoefficients_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -139,6 +177,9 @@ TESTS += $(top_builddir)/test/test_uqEnvironmentOptionsPrint
 TESTS += $(top_builddir)/test/test_uqGslVectorConstructorFatal
 TESTS += $(top_builddir)/test/test_uqGslVector
 TESTS += $(top_builddir)/test/test_uqGaussianVectorRVClass
+TESTS += $(top_builddir)/test/test_VectorPdf_gsl
+TESTS += $(top_builddir)/test/test_VectorRV_gsl
+TESTS += $(top_builddir)/test/test_VectorRealizer_gsl
 TESTS += $(top_builddir)/test/test_uqGslMatrixConstructorFatal
 TESTS += $(top_builddir)/test/test_uqGslMatrix
 TESTS += $(top_builddir)/test/test_uqTeuchosVector
@@ -162,7 +203,18 @@ TESTS += $(top_builddir)/test/test_gsloptimizer
 TESTS += $(top_builddir)/test/test_seedwithmap
 TESTS += $(top_builddir)/test/test_seedwithmap_fd
 TESTS += $(top_builddir)/test/test_logitadaptedcov
+TESTS += $(top_builddir)/test/test_scalarCovariance
+TESTS += $(top_builddir)/test/test_diagonalCovariance
+TESTS += $(top_builddir)/test/test_fullCovariance
+TESTS += $(top_builddir)/test/test_blockDiagonalCovariance
+TESTS += $(top_builddir)/test/test_GslBlockMatrixInvertMultiply
 TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+TESTS += $(top_builddir)/test/test_fullCovarianceRandomCoefficient
+TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceRandomCoefficients
+TESTS += $(top_builddir)/test/test_fullCovarianceChain
+TESTS += $(top_builddir)/test/test_diagonalCovarianceChain
+TESTS += $(top_builddir)/test/test_scalarCovarianceChain
+TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceChain
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -187,25 +239,19 @@ EXTRA_DIST += test_Regression/jeffreys_input.txt.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples.m.in
 EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
+EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt.in
 EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
 
-DISTCLEANFILES =
-DISTCLEANFILES += test_gpmsa_cobra_output/display_sub0.txt
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_loglikelihood.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_loglikelihood_sub0.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_logtarget.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_logtarget_sub0.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_sub0.m
-DISTCLEANFILES += test_gpmsa_cobra_output/sipOutput_sub0.m
-
 CLEANFILES =
-CLEANFILES += $(top_srcdir)/test/test_Environment/debug_output_sub0.txt
-CLEANFILES += $(top_srcdir)/test/gslvector_out_sub0.m
+CLEANFILES += test_Environment/debug_output_sub0.txt
+CLEANFILES += gslvector_out_sub0.m
 
 clean-local:
 	rm -rf $(top_builddir)/test/chain0
 	rm -rf $(top_builddir)/test/outputData
+	rm -rf $(top_builddir)/test/test_output_gaussian_likelihoods
+	rm -rf $(top_builddir)/test/test_gpmsa_cobra_output
+	rm -rf $(top_builddir)/test/test_adaptedcov_output
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno

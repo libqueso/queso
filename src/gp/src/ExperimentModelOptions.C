@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -127,7 +127,7 @@ ExperimentModelOptions::ExperimentModelOptions(
 ExperimentModelOptions::~ExperimentModelOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
-} 
+}
 
 void
 ExperimentModelOptions::scanOptionsValues()
@@ -155,7 +155,7 @@ ExperimentModelOptions::scanOptionsValues()
 void
 ExperimentModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
-  optionsDesc.add_options()     
+  optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                "produce help message for experiment model options")
     (m_option_Gvalues.c_str(), po::value<std::string >()->default_value(UQ_EXPERIMENT_MODEL_G_VALUES_ODV), "G values"                                         )
     (m_option_a_v.c_str(),     po::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_V_ODV     ), "a_v"                                              )

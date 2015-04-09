@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -169,7 +169,7 @@ GslOptimizer::GslOptimizer(
 {
   // We initialize the minimizer to GSL_NAN just in case the optimization fails
   m_minimizer->cwSet(GSL_NAN);
-  
+
   // Set to documented default value.
   m_fstep_size.cwSet(0.1);
 }
@@ -226,7 +226,7 @@ GslOptimizer::minimizer() const
 {
   return *(this->m_minimizer);
 }
-  
+
   void GslOptimizer::set_solver_type( SolverType solver )
   {
     m_solver_type = solver;
@@ -242,7 +242,7 @@ GslOptimizer::minimizer() const
       case(POLAK_RIBIERE_CG):
       case(BFGS):
       case(BFGS2):
-      case(STEEPEST_DECENT):
+      case(STEEPEST_DESCENT):
         {
           gradient_needed = true;
           break;
@@ -288,7 +288,7 @@ GslOptimizer::minimizer() const
       case(BFGS2):
         type = gsl_multimin_fdfminimizer_vector_bfgs2;
         break;
-      case(STEEPEST_DECENT):
+      case(STEEPEST_DESCENT):
         type = gsl_multimin_fdfminimizer_steepest_descent;
         break;
       case(NELDER_MEAD):
@@ -386,7 +386,7 @@ GslOptimizer::minimizer() const
       case(POLAK_RIBIERE_CG):
       case(BFGS):
       case(BFGS2):
-      case(STEEPEST_DECENT):
+      case(STEEPEST_DESCENT):
       default:
         // Wat?!
         queso_error();
@@ -485,7 +485,7 @@ GslOptimizer::minimizer() const
     else if( solver == std::string("bfgs2") )
       solver_type = BFGS2;
     else if( solver == std::string("steepest_decent") )
-      solver_type = STEEPEST_DECENT;
+      solver_type = STEEPEST_DESCENT;
     else if( solver == std::string("nelder_mead") )
       solver_type = NELDER_MEAD;
     else if( solver == std::string("nelder_mead2") )

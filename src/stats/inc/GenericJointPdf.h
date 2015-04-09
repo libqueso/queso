@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -48,12 +48,12 @@ namespace QUESO {
 template<class V, class M>
 class GenericJointPdf : public BaseJointPdf<V,M> {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor. 
+  //! Default constructor.
   /*! Instantiates an object of this class given a prefix and a scalar function.
-   * The domain of the scalar function is assigned to the protected attribute m_domainSet, 
+   * The domain of the scalar function is assigned to the protected attribute m_domainSet,
    * and the scalar function is also itself copied to the protected attribute m_scalarFunction.*/
   GenericJointPdf(const char*                           prefix,
                          const BaseScalarFunction<V,M>& scalarFunction);

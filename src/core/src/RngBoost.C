@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -58,7 +58,7 @@ RngBoost::~RngBoost()
   //this function does nothing
 }
 
-// Sampling methods ---------------------------------  
+// Sampling methods ---------------------------------
 void
 RngBoost::resetSeed(int newSeed)
 {
@@ -82,15 +82,15 @@ RngBoost::gaussianSample(double stdDev) const
   double mean = 0.; //it will be added conveniently later
   static boost::uniform_01<boost::mt19937> zeroone(m_rng);
   boost::math::normal_distribution<double>  gaussian_dist(mean, stdDev);
-  return quantile(gaussian_dist, zeroone());  
+  return quantile(gaussian_dist, zeroone());
 }
 
 // --------------------------------------------------
 double
 RngBoost::betaSample(double alpha, double beta) const
 {
-  static boost::uniform_01<boost::mt19937> zeroone(m_rng); 
-  boost::math::beta_distribution<double> beta_dist(alpha, beta); 
+  static boost::uniform_01<boost::mt19937> zeroone(m_rng);
+  boost::math::beta_distribution<double> beta_dist(alpha, beta);
   return quantile(beta_dist, zeroone());
 }
 

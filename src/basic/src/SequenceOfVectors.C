@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -1485,7 +1485,7 @@ void
 SequenceOfVectors<V,M>::unifiedWriteContents(
   const std::string& fileName,
   const std::string& inputFileType) const
-{ 
+{
   std::string fileType(inputFileType);
 #ifdef QUESO_HAS_HDF5
   // Do nothing
@@ -1616,7 +1616,7 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
                                          dataspace,
                                          H5P_DEFAULT,  // Link creation property list
                                          H5P_DEFAULT,  // Dataset creation property list
-                                         H5P_DEFAULT); // Dataset access property list 
+                                         H5P_DEFAULT); // Dataset access property list
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data set created" << std::endl;
 
               struct timeval timevalBegin;
@@ -1939,7 +1939,7 @@ SequenceOfVectors<V,M>::unifiedReadContents(
             if (r == 0) {
               hid_t dataset = H5Dopen2(unifiedFilePtrSet.h5Var,
                                        "seq_of_vectors",
-                                       H5P_DEFAULT); // Dataset access property list 
+                                       H5P_DEFAULT); // Dataset access property list
               hid_t datatype  = H5Dget_type(dataset);
               H5T_class_t t_class = H5Tget_class(datatype);
               UQ_FATAL_TEST_MACRO(t_class != H5T_FLOAT,
@@ -2137,8 +2137,8 @@ SequenceOfVectors<V,M>::estimateConvBrooksGelman(
   if( m_env.inter0Rank() >= 0 )
     {
       // Sanity Checks
-      
-      // REMEMBER: \psi is a *vector* of parameters    
+
+      // REMEMBER: \psi is a *vector* of parameters
       // Get quantities we will use several times
       V psi_j_dot = m_vectorSpace.zeroVector();
       V psi_dot_dot = m_vectorSpace.zeroVector();
@@ -2148,7 +2148,7 @@ SequenceOfVectors<V,M>::estimateConvBrooksGelman(
       // n = number of steps for which we are computing the metric
       int m = m_env.numSubEnvironments();
       int n = numPos;
-  
+
       this->subMeanExtra    ( initialPos, numPos, psi_j_dot   );
       this->unifiedMeanExtra( initialPos, numPos, psi_dot_dot );
 
@@ -2157,7 +2157,7 @@ SequenceOfVectors<V,M>::estimateConvBrooksGelman(
       std::cout << "psi_dot_dot = " << psi_dot_dot << std::endl;
 #endif
 
-      /* W = \frac{1}{m*(n-1)}*\sum_{j=1}^m \sum{t=1}^n 
+      /* W = \frac{1}{m*(n-1)}*\sum_{j=1}^m \sum{t=1}^n
    (\psi_{jt} - \overline{\psi_{j\cdot}})*(\psi_{jt} - \overline{\psi_{j\cdot}})^T
    This corresponds to the "within-sequence" covariance matrix. */
       M* W_local = m_vectorSpace.newDiagMatrix( m_vectorSpace.zeroVector() );
@@ -2204,12 +2204,12 @@ SequenceOfVectors<V,M>::estimateConvBrooksGelman(
       // Need to delete pointers to temporary covariance matrices
       delete B_over_n_local;
 
-      (*B_over_n) = 1.0/(double(m)-1.0) * (*B_over_n); 
+      (*B_over_n) = 1.0/(double(m)-1.0) * (*B_over_n);
 
 #if 0
       std::cout << "B_over_n = " << *B_over_n << std::endl;
 #endif
-      
+
 
       /* R_p = (n-1)/n + (m+1)/m * \lambda
    \lambda = largest eigenvalue of W^{-1}*B/n */
@@ -2226,7 +2226,7 @@ SequenceOfVectors<V,M>::estimateConvBrooksGelman(
       delete B_over_n;
 
       double eigenValue;
-      V eigenVector = m_vectorSpace.zeroVector(); 
+      V eigenVector = m_vectorSpace.zeroVector();
 
       A->largestEigen( eigenValue, eigenVector );
 
@@ -2730,7 +2730,7 @@ SequenceOfVectors<V,M>::subCdfStacc(
   unsigned int     initialPos,
   std::vector<V*>& cdfStaccVecs,
   std::vector<V*>& cdfStaccVecsUp,
-  std::vector<V*>& cdfStaccVecsLow,  
+  std::vector<V*>& cdfStaccVecsLow,
   std::vector<V*>& sortedDataVecs) const
 {
   bool bRC = (initialPos < this->subSequenceSize());

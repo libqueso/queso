@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -32,12 +32,12 @@ namespace QUESO {
 
 /*!\file ArrayOfOneDGrids.h
  * \brief Class to accommodate arrays of one-dimensional grid.
- * 
+ *
  * \class ArrayOfOneDGrids
  * \brief Class to accommodate arrays of one-dimensional grid.
- * 
+ *
  * Arrays of one-dimensional grids are necessary in the calculation, for instance, of CDFs
- * and MDF of vector functions (refer to BaseVectorCdf, BaseVectorMdf, and 
+ * and MDF of vector functions (refer to BaseVectorCdf, BaseVectorMdf, and
  * derived classes).
  */
 template <class V, class M>
@@ -45,34 +45,34 @@ class ArrayOfOneDGrids
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   ArrayOfOneDGrids(const char* prefix, const VectorSpace<V,M>& rowSpace);
-  
+
   //! Destructor.
   ~ArrayOfOneDGrids();
   //@}
-  
+
   //! @name Property methods
   //@{
   //! Returns the (vector) space to which the row belongs to.
   const VectorSpace<V,M>&     rowSpace       () const;
-  
+
   //! Returns an array with the sizes of the grids.
   const V&  sizes          () const;
-  
+
   //! Returns an array with the minimum position of each grid.
   const V&  minPositions   () const;
-  
+
   //! Returns an array with the maximum position of each grid.
   const V&  maxPositions   () const;
   //@}
-  
+
   //! @name Math methods
   //@{
 //  void      setGrid        (unsigned int                 rowId,
 //			    BaseOneDGrid<double>& oneDGrid);
-  
+
   //! Sets an array of uniform grids.
   void      setUniformGrids(const V& sizesVec,
 			    const V& minPositionsVec,
@@ -81,13 +81,13 @@ public:
 
   //! @name Accessor methods
   //@{
-  //! Returns the grid stored in the <c>rowId</c>-th position of the array of grids. 
+  //! Returns the grid stored in the <c>rowId</c>-th position of the array of grids.
   const BaseOneDGrid<double>& grid           (unsigned int rowId) const;
   //@}
-  
+
   //! @name I/O methods
   //@{
-  //! Prints the values of the array of grids (points). 
+  //! Prints the values of the array of grids (points).
   void      print          (std::ostream& os) const;
   friend std::ostream& operator<< (std::ostream& os,
       const ArrayOfOneDGrids<V,M>& obj)
@@ -96,7 +96,7 @@ public:
     return os;
   }
   //@}
-  
+
 private:
   const BaseEnvironment&                  m_env;
         std::string                              m_prefix;

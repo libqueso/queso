@@ -10,17 +10,17 @@ QUESO_CPPFLAGS += $(ANN_CFLAGS)
 LIBS += $(GSL_LIBS)
 
 if TRILINOS_ENABLED
-  QUESO_CPPFLAGS += -I$(TRILINOS_INCLUDE) 
+  QUESO_CPPFLAGS += -I$(TRILINOS_INCLUDE)
   LIBS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
 
-if GLPK_ENABLED	
+if GLPK_ENABLED
   QUESO_CPPFLAGS += $(GLPK_CFLAGS)
   LIBS += $(GLPK_LIBS)
 endif
 
-if HDF5_ENABLED	
-  QUESO_CPPFLAGS += $(HDF5_CFLAGS) 
+if HDF5_ENABLED
+  QUESO_CPPFLAGS += $(HDF5_CFLAGS)
   LIBS += $(HDF5_LIBS)
 endif
 
@@ -98,11 +98,11 @@ exSimpleStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 exSimpleStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalInverseProblem/src $(QUESO_CPPFLAGS)
 
 # Make sure everything relevant gets added when doing 'make dist'
-dist_exSimpleStatisticalInverseProblem_gsl_DATA =	
+dist_exSimpleStatisticalInverseProblem_gsl_DATA =
 dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_DATA}
 dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_HEADERS}
 dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_SOURCES}
-		
+
 ###################################
 # simpleStatisticalForwardProblem #
 ###################################
@@ -127,9 +127,9 @@ exSimpleStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simple
 dist_exSimpleStatisticalForwardProblem_gsl_DATA = ${exSimpleStatisticalForwardProblem_gsl_DATA}
 dist_exSimpleStatisticalForwardProblem_gsl_DATA += ${exSimpleStatisticalForwardProblem_gsl_HEADERS}
 dist_exSimpleStatisticalForwardProblem_gsl_DATA += ${exSimpleStatisticalForwardProblem_gsl_SOURCES}
-																						
+
 ####################################
-# statisticalForwardProblemExample # 
+# statisticalForwardProblemExample #
 ####################################
 # Kemelli, 8/26/13: removing this example from the distro
 # exStatisticalForwardProblem_gsldir = $(prefix)/examples/statisticalForwardProblem
@@ -293,7 +293,7 @@ dist_gravity_gsl_DATA =
 dist_gravity_gsl_DATA += $(gravity_gsl_DATA)
 dist_gravity_gsl_DATA += ${gravity_gsl_HEADERS}
 dist_gravity_gsl_DATA += ${gravity_gsl_SOURCES}
-					
+
 ####################
 # bimodal          #
 ####################
@@ -366,6 +366,45 @@ gpmsa_scalar_PROGRAMS = gpmsa_scalar
 gpmsa_scalar_SOURCES = gp/scalar/gpmsa_scalar.C
 gpmsa_scalar_LDADD = $(top_builddir)/src/libqueso.la
 gpmsa_scalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar $(QUESO_CPPFLAGS)
+
+#######################################
+# Canned Gaussian likelihood examples #
+#######################################
+scalarCovariancedir = $(prefix)/examples/gaussian_likelihoods
+scalarCovariance_PROGRAMS = scalarCovariance
+scalarCovariance_SOURCES = gaussian_likelihoods/scalarCovariance.C
+scalarCovariance_LDADD = $(top_builddir)/src/libqueso.la
+scalarCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/scalarCovariance $(QUESO_CPPFLAGS)
+
+diagonalCovariancedir = $(prefix)/examples/gaussian_likelihoods
+diagonalCovariance_PROGRAMS = diagonalCovariance
+diagonalCovariance_SOURCES = gaussian_likelihoods/diagonalCovariance.C
+diagonalCovariance_LDADD = $(top_builddir)/src/libqueso.la
+diagonalCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/diagonalCovariance $(QUESO_CPPFLAGS)
+
+fullCovariancedir = $(prefix)/examples/gaussian_likelihoods
+fullCovariance_PROGRAMS = fullCovariance
+fullCovariance_SOURCES = gaussian_likelihoods/fullCovariance.C
+fullCovariance_LDADD = $(top_builddir)/src/libqueso.la
+fullCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/fullCovariance $(QUESO_CPPFLAGS)
+
+blockDiagonalCovariancedir = $(prefix)/examples/gaussian_likelihoods
+blockDiagonalCovariance_PROGRAMS = blockDiagonalCovariance
+blockDiagonalCovariance_SOURCES = gaussian_likelihoods/blockDiagonalCovariance.C
+blockDiagonalCovariance_LDADD = $(top_builddir)/src/libqueso.la
+blockDiagonalCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovariance $(QUESO_CPPFLAGS)
+
+fullCovarianceRandomCoefficientdir = $(prefix)/examples/gaussian_likelihoods
+fullCovarianceRandomCoefficient_PROGRAMS = fullCovarianceRandomCoefficient
+fullCovarianceRandomCoefficient_SOURCES = gaussian_likelihoods/fullCovarianceRandomCoefficient.C
+fullCovarianceRandomCoefficient_LDADD = $(top_builddir)/src/libqueso.la
+fullCovarianceRandomCoefficient_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/fullCovarianceRandomCoefficient $(QUESO_CPPFLAGS)
+
+blockDiagonalCovarianceRandomCoefficientsdir = $(prefix)/examples/gaussian_likelihoods
+blockDiagonalCovarianceRandomCoefficients_PROGRAMS = blockDiagonalCovarianceRandomCoefficients
+blockDiagonalCovarianceRandomCoefficients_SOURCES = gaussian_likelihoods/blockDiagonalCovarianceRandomCoefficients.C
+blockDiagonalCovarianceRandomCoefficients_LDADD = $(top_builddir)/src/libqueso.la
+blockDiagonalCovarianceRandomCoefficients_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovarianceRandomCoefficients $(QUESO_CPPFLAGS)
 
 dist_gpmsa_scalar_DATA =
 dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}

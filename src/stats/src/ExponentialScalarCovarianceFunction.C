@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+// Copyright (C) 2008-2015 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -33,7 +33,7 @@ ExponentialScalarCovarianceFunction<V,M>::ExponentialScalarCovarianceFunction(
   const VectorSet<V,M>& basicDomainSet,
   double                       sigma,
   double                       a)
-  : 
+  :
   BaseScalarCovarianceFunction<V,M>(prefix,basicDomainSet),
   m_sigma(sigma),
   m_a    (a)
