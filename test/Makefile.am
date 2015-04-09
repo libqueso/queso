@@ -46,6 +46,10 @@ check_PROGRAMS += test_GslBlockMatrixInvertMultiply
 check_PROGRAMS += test_unifiedPositionsOfMaximum
 check_PROGRAMS += test_fullCovarianceRandomCoefficient
 check_PROGRAMS += test_blockDiagonalCovarianceRandomCoefficients
+check_PROGRAMS += test_fullCovarianceChain
+check_PROGRAMS += test_diagonalCovarianceChain
+check_PROGRAMS += test_scalarCovarianceChain
+check_PROGRAMS += test_blockDiagonalCovarianceChain
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -117,6 +121,10 @@ test_GslBlockMatrixInvertMultiply_SOURCES = test_GslBlockMatrix/test_GslBlockMat
 test_unifiedPositionsOfMaximum_SOURCES = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.C
 test_fullCovarianceRandomCoefficient_SOURCES = test_gaussian_likelihoods/test_fullCovarianceRandomCoefficient.C
 test_blockDiagonalCovarianceRandomCoefficients_SOURCES = test_gaussian_likelihoods/test_blockDiagonalCovarianceRandomCoefficients.C
+test_fullCovarianceChain_SOURCES = test_gaussian_likelihoods/test_fullCovarianceChain.C
+test_diagonalCovarianceChain_SOURCES = test_gaussian_likelihoods/test_diagonalCovarianceChain.C
+test_scalarCovarianceChain_SOURCES = test_gaussian_likelihoods/test_scalarCovarianceChain.C
+test_blockDiagonalCovarianceChain_SOURCES = test_gaussian_likelihoods/test_blockDiagonalCovarianceChain.C
 
 # Files to freedom stamp
 srcstamp =
@@ -203,6 +211,10 @@ TESTS += $(top_builddir)/test/test_GslBlockMatrixInvertMultiply
 TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 TESTS += $(top_builddir)/test/test_fullCovarianceRandomCoefficient
 TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceRandomCoefficients
+TESTS += $(top_builddir)/test/test_fullCovarianceChain
+TESTS += $(top_builddir)/test/test_diagonalCovarianceChain
+TESTS += $(top_builddir)/test/test_scalarCovarianceChain
+TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceChain
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
