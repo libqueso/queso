@@ -2549,14 +2549,8 @@ MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
                   << std::endl;
       }
 
-      // The mean is the midpoint
-      double midpoint = (max_val + min_val) / 2.0;
-      double derivative = (1.0 / (midpoint - min_val)) +
-                          (1.0 / (max_val - midpoint));
-
-      // User specified the covariance matrix on a bounded domain, so we
-      // need to *divide* by the derivative of the transform
-      double transformJacobian = 1.0 / derivative;
+      // The jacobian at the midpoint of the domain
+      double transformJacobian = 4.0 / (max_val - min_val);
 
       // Just do the multiplication by hand for now.  There's no method in
       // Gsl(Vector|Matrix) to do this for me.
