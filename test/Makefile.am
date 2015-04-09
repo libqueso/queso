@@ -48,6 +48,7 @@ check_PROGRAMS += test_fullCovarianceRandomCoefficient
 check_PROGRAMS += test_blockDiagonalCovarianceRandomCoefficients
 check_PROGRAMS += test_fullCovarianceChain
 check_PROGRAMS += test_diagonalCovarianceChain
+check_PROGRAMS += test_scalarCovarianceChain
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -121,6 +122,7 @@ test_fullCovarianceRandomCoefficient_SOURCES = test_gaussian_likelihoods/test_fu
 test_blockDiagonalCovarianceRandomCoefficients_SOURCES = test_gaussian_likelihoods/test_blockDiagonalCovarianceRandomCoefficients.C
 test_fullCovarianceChain_SOURCES = test_gaussian_likelihoods/test_fullCovarianceChain.C
 test_diagonalCovarianceChain_SOURCES = test_gaussian_likelihoods/test_diagonalCovarianceChain.C
+test_scalarCovarianceChain_SOURCES = test_gaussian_likelihoods/test_scalarCovarianceChain.C
 
 # Files to freedom stamp
 srcstamp =
@@ -209,6 +211,7 @@ TESTS += $(top_builddir)/test/test_fullCovarianceRandomCoefficient
 TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceRandomCoefficients
 TESTS += $(top_builddir)/test/test_fullCovarianceChain
 TESTS += $(top_builddir)/test/test_diagonalCovarianceChain
+TESTS += $(top_builddir)/test/test_scalarCovarianceChain
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
