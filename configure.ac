@@ -108,7 +108,7 @@ AM_CONDITIONAL(TRILINOS_ENABLED,test x$HAVE_TRILINOS = x1)
 AC_CACHE_SAVE
 
 # Check for libmesh (optional)
-AX_PATH_LIBMESH_NEW(0.8.0,no)
+AX_PATH_LIBMESH_NEW(0.9.1,no)
 AC_CACHE_SAVE
 
 # Check for GSL (required)
