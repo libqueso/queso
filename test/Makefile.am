@@ -251,6 +251,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/outputData
 	rm -rf $(top_builddir)/test/test_output_gaussian_likelihoods
 	rm -rf $(top_builddir)/test/test_gpmsa_cobra_output
+	rm -rf $(top_builddir)/test/test_adaptedcov_output
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
