@@ -34,7 +34,7 @@ libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GSL_LIBS)
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 libqueso_la_LDFLAGS += $(ANN_LIBS)
-libqueso_la_LDFLAGS += $(HDF5_LIBS) $(HDF5_CXXLIBS)
+libqueso_la_LDFLAGS += $(HDF5_LIBS)
 
 if GRVY_ENABLED
   libqueso_la_LDFLAGS += $(GRVY_LIBS)
