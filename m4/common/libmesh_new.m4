@@ -95,122 +95,123 @@ if test "$libmesh_config_found" != "yes";then
 fi
   
 if test "$libmesh_config_found" != "yes";then
-   if test "$is_package_required" = "yes";then
-      AC_MSG_ERROR([Cannot find libmesh-config! Please use --with-libmesh to specify
-                  the location of a valid libmesh installation.])
-   fi
-fi
+  if test "$is_package_required" = "yes";then
+     AC_MSG_ERROR([Cannot find libmesh-config! Please use --with-libmesh to specify
+                 the location of a valid libmesh installation.])
+  fi
+  found_header=no
+else
 
-LIBMESH_CPPFLAGS=`$LIBMESH_CONFIG --cppflags --include | tr '\n' ' '`
-LIBMESH_INCLUDE=$LIBMESH_CPPFLAGS
-LIBMESH_CXXFLAGS=`$LIBMESH_CONFIG --cxxflags`
+  LIBMESH_CPPFLAGS=`$LIBMESH_CONFIG --cppflags --include | tr '\n' ' '`
+  LIBMESH_INCLUDE=$LIBMESH_CPPFLAGS
+  LIBMESH_CXXFLAGS=`$LIBMESH_CONFIG --cxxflags`
 
-# Not all libmesh-config versions support all arguments
-LIBMESH_LDFLAGS=`$LIBMESH_CONFIG --ldflags | grep -v "Unknown argument" | grep -v libmesh-config || $LIBMESH_CONFIG --libs`
-LIBMESH_LIBS=`$LIBMESH_CONFIG --libs | grep -v "Unknown argument" | grep -v libmesh-config || $LIBMESH_CONFIG --ldflags`
+  # Not all libmesh-config versions support all arguments
+  LIBMESH_LDFLAGS=`$LIBMESH_CONFIG --ldflags | grep -v "Unknown argument" | grep -v libmesh-config || $LIBMESH_CONFIG --libs`
+  LIBMESH_LIBS=`$LIBMESH_CONFIG --libs | grep -v "Unknown argument" | grep -v libmesh-config || $LIBMESH_CONFIG --ldflags`
 
-LIBMESH_CXX=`$LIBMESH_CONFIG --cxx`
-LIBMESH_CC=`$LIBMESH_CONFIG --cc`
-LIBMESH_FC=`$LIBMESH_CONFIG --fc`
+  LIBMESH_CXX=`$LIBMESH_CONFIG --cxx`
+  LIBMESH_CC=`$LIBMESH_CONFIG --cc`
+  LIBMESH_FC=`$LIBMESH_CONFIG --fc`
 
-ac_LIBMESH_save_CPPFLAGS="$CPPFLAGS"
-ac_LIBMESH_save_LDFLAGS="$LDFLAGS"
-ac_LIBMESH_save_LIBS="$LIBS"
+  ac_LIBMESH_save_CPPFLAGS="$CPPFLAGS"
+  ac_LIBMESH_save_LDFLAGS="$LDFLAGS"
+  ac_LIBMESH_save_LIBS="$LIBS"
 
-CPPFLAGS="${LIBMESH_CPPFLAGS} ${CPPFLAGS}"
-LDFLAGS="${LIBMESH_LDFLAGS} ${LDFLAGS}"
-LIBS="${LIBMESH_LIBS} ${LIBS}"
+  CPPFLAGS="${LIBMESH_CPPFLAGS} ${CPPFLAGS}"
+  LDFLAGS="${LIBMESH_LDFLAGS} ${LDFLAGS}"
+  LIBS="${LIBMESH_LIBS} ${LIBS}"
 
-#--------------------------------------------------------------
-# Now check for the libmesh_version.h header
-#--------------------------------------------------------------
-AC_LANG_PUSH([C++])
-AC_CHECK_HEADER([libmesh/libmesh_version.h],[found_header=yes],[found_header=no])
-AC_LANG_POP([C++])
-
-
-#--------------------------------------------------------------
-# Minimum version check: looking for major.minor.micro style 
-#                        versioning
-#--------------------------------------------------------------
-min_libmesh_version=ifelse([$1], ,0.8.0, $1)
+  #--------------------------------------------------------------
+  # Now check for the libmesh_version.h header
+  #--------------------------------------------------------------
+  AC_LANG_PUSH([C++])
+  AC_CHECK_HEADER([libmesh/libmesh_version.h],[found_header=yes],[found_header=no])
+  AC_LANG_POP([C++])
 
 
-MAJOR_VER=`echo $min_libmesh_version | sed 's/^\([[0-9]]*\).*/\1/'`
-if test "x${MAJOR_VER}" = "x" ; then
-   MAJOR_VER=0
-fi
+  #--------------------------------------------------------------
+  # Minimum version check: looking for major.minor.micro style 
+  #                        versioning
+  #--------------------------------------------------------------
+  min_libmesh_version=ifelse([$1], ,0.8.0, $1)
 
-MINOR_VER=`echo $min_libmesh_version | sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\2/'`
-if test "x${MINOR_VER}" = "x" ; then
-   MINOR_VER=0
-fi
 
-MICRO_VER=`echo $min_libmesh_version | sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\3/'`
-if test "x${MICRO_VER}" = "x" ; then
-   MICRO_VER=0
-fi
+  MAJOR_VER=`echo $min_libmesh_version | sed 's/^\([[0-9]]*\).*/\1/'`
+  if test "x${MAJOR_VER}" = "x" ; then
+     MAJOR_VER=0
+  fi
 
-if test "x${found_header}" = "xyes" ; then
+  MINOR_VER=`echo $min_libmesh_version | sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\2/'`
+  if test "x${MINOR_VER}" = "x" ; then
+     MINOR_VER=0
+  fi
 
-   AC_MSG_CHECKING(for libMesh version >= $min_libmesh_version)
-   version_succeeded=no
+  MICRO_VER=`echo $min_libmesh_version | sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\3/'`
+  if test "x${MICRO_VER}" = "x" ; then
+     MICRO_VER=0
+  fi
 
-   AC_LANG_PUSH([C++])
-   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-               @%:@include "libmesh/libmesh_version.h"
-               ]], [[
-               #if LIBMESH_MAJOR_VERSION > $MAJOR_VER
-               /* Sweet nibblets */
-               #elif (LIBMESH_MAJOR_VERSION >= $MAJOR_VER) && (LIBMESH_MINOR_VERSION > $MINOR_VER)
-               /* Winner winner, chicken dinner */
-               #elif (LIBMESH_MAJOR_VERSION >= $MAJOR_VER) && (LIBMESH_MINOR_VERSION >= $MINOR_VER) && (LIBMESH_MICRO_VERSION >= $MICRO_VER)
-               /* I feel like chicken tonight, like chicken tonight? */
-               #else
-               #  error version is too old
-               #endif
-               ]])],[
-                     AC_MSG_RESULT(yes)
-                     version_succeeded=yes
-                    ],[
-                       AC_MSG_RESULT(no)
-                      ])
-   AC_LANG_POP([C++])
+  if test "x${found_header}" = "xyes" ; then
 
-   if test "$version_succeeded" != "yes";then
+    AC_MSG_CHECKING(for libMesh version >= $min_libmesh_version)
+    version_succeeded=no
+
+    AC_LANG_PUSH([C++])
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+                @%:@include "libmesh/libmesh_version.h"
+                ]], [[
+                #if LIBMESH_MAJOR_VERSION > $MAJOR_VER
+                /* Sweet nibblets */
+                #elif (LIBMESH_MAJOR_VERSION >= $MAJOR_VER) && (LIBMESH_MINOR_VERSION > $MINOR_VER)
+                /* Winner winner, chicken dinner */
+                #elif (LIBMESH_MAJOR_VERSION >= $MAJOR_VER) && (LIBMESH_MINOR_VERSION >= $MINOR_VER) && (LIBMESH_MICRO_VERSION >= $MICRO_VER)
+                /* I feel like chicken tonight, like chicken tonight? */
+                #else
+                #  error version is too old
+                #endif
+                ]])],[
+                      AC_MSG_RESULT(yes)
+                      version_succeeded=yes
+                     ],[
+                        AC_MSG_RESULT(no)
+                       ])
+    AC_LANG_POP([C++])
+
+    if test "$version_succeeded" != "yes";then
       if test "$is_package_required" = yes; then
-         AC_MSG_ERROR([Your LIBMESH version does not meet the minimum versioning
-                       requirements ($min_libmesh_version). Please use 
-                       --with-libmesh to specify the location of an updated 
-                       installation or consider upgrading the system version. ])
+        AC_MSG_ERROR([Your LIBMESH version does not meet the minimum versioning
+                      requirements ($min_libmesh_version). Please use 
+                      --with-libmesh to specify the location of an updated 
+                      installation or consider upgrading the system version. ])
       fi
-   fi
+    fi
 
 
-   #--------------------------------------------------------------
-   # Check for libMesh library linking
-   #--------------------------------------------------------------
-   AC_MSG_CHECKING([for libMesh linkage])
+    #--------------------------------------------------------------
+    # Check for libMesh library linking
+    #--------------------------------------------------------------
+    AC_MSG_CHECKING([for libMesh linkage])
 
-   AC_LANG_PUSH([C++])
-   AC_LINK_IFELSE( [AC_LANG_PROGRAM([#include "libmesh/libmesh_version.h"],
-                                    [libMesh::get_libmesh_version()])],
-                                    [AC_MSG_RESULT(yes)
-                                     found_library=yes],
-                                    [AC_MSG_RESULT(no) 
-                                     found_library=no] )
-   AC_LANG_POP([C++])
-
-fi   dnl end test if header if available
+    AC_LANG_PUSH([C++])
+    AC_LINK_IFELSE( [AC_LANG_PROGRAM([#include "libmesh/libmesh_version.h"],
+                                     [libMesh::get_libmesh_version()])],
+                                     [AC_MSG_RESULT(yes)
+                                      found_library=yes],
+                                     [AC_MSG_RESULT(no) 
+                                      found_library=no] )
+    AC_LANG_POP([C++])
+  fi   dnl end test if header available
+fi   dnl end test if libmesh-config available
 
 CPPFLAGS="$ac_LIBMESH_save_CPPFLAGS"
 LDFLAGS="$ac_LIBMESH_save_LDFLAGS"
 LIBS="$ac_LIBMESH_save_LIBS"
 
 succeeded=no
-if test "$found_header" = yes; then
-   if test "$version_succeeded" = yes; then
-      if test "$found_library" = yes; then
+if test "x$found_header" = xyes; then
+   if test "x$version_succeeded" = xyes; then
+      if test "x$found_library" = xyes; then
          succeeded=yes
       fi
    fi
