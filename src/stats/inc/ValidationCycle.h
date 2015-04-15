@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file ValidationCycle.h
  * \brief A templated class for validation cycle of the examples validationCycle and validationCycle2.
  *
@@ -47,7 +50,7 @@ namespace QUESO {
  * The examples validationCycle and validationCycle2 use the present class to solve the same TGA problem,
  * and they only differ in implementation styles. */
 
-template <class P_V,class P_M,class Q_V,class Q_M>
+template <class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class ValidationCycle
 {
 public:

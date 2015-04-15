@@ -50,7 +50,7 @@ namespace QUESO {
  * as operations that can be carried over them, e.g., calculation of means,
  * correlation  and covariance matrices. */
 
-template <class T>
+template <class T = double>
 class ScalarSequence
 {
 public:

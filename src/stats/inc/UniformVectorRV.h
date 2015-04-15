@@ -37,9 +37,9 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Uniform class [RV-04]
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class UniformVectorRV
  * \brief A class representing a uniform vector RV.
@@ -47,7 +47,7 @@ namespace QUESO {
  * This class allows the user to compute the value of a uniform PDF and to generate realizations
  * (samples) from it. It is used, for instance, to create a uniform prior PDF. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class UniformVectorRV : public BaseVectorRV<V,M> {
 public:
 

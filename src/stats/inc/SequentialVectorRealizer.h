@@ -32,9 +32,9 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Sequential class [R-nn]
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class SequentialVectorRealizer
  * \brief A class for handling sequential draws (sampling) from probability density distributions.
@@ -42,7 +42,7 @@ namespace QUESO {
  * This class handles sequential sampling (it returns the next value of the chain) from a
  * probability density distribution.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class SequentialVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 

@@ -36,16 +36,16 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Wigner probability density class [PDF-09]
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class WignerJointPdf
  * \brief A class for handling Wigner joint PDFs.
  *
  * This class allows the mathematical definition of a Wigner Joint PDF.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class WignerJointPdf : public BaseJointPdf<V,M> {
 public:
   //! @name Constructor/Destructor methods

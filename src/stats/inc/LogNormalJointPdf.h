@@ -36,6 +36,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // LogNormal probability density class [PDF-10]
 //*****************************************************
@@ -45,7 +48,7 @@ namespace QUESO {
  *
  * This class allows the mathematical definition of a Log-Normal Joint PDF.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class LogNormalJointPdf : public BaseJointPdf<V,M> {
 public:
 

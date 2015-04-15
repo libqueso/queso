@@ -31,9 +31,9 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Base class
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*! \file TKGroup.h
  *  \brief Class to set up a Transition Kernel.
  *
@@ -45,7 +45,8 @@ namespace QUESO {
  * a Borel set over \f$ R^n \f$. Since it is a distribution function, \f$ P(x,R^n)=1 \f$, where it
  * is permitted that the chain can make a transition from the point \f$ x \f$ to \f$ x \f$, that is
  * \f$ P(x, {x}) \f$ is not necessarily zero. */
-template<class V, class M>
+
+template <class V = GslVector, class M = GslMatrix>
 class BaseTKGroup {
 public:
   //! @name Constructor/Destructor methods

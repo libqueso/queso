@@ -34,6 +34,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file StatisticalForwardProblem.h
     \brief Class to solve a Statistical Forward Problem
 */
@@ -73,7 +76,7 @@ namespace QUESO {
        instance of the class 'BaseVectorRealizer<Q_V,Q_M>'.
 </list>*/
 
-template <class P_V,class P_M,class Q_V,class Q_M>
+template <class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class StatisticalForwardProblem
 {
 public:

@@ -29,6 +29,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \file GaussianLikelihoodFullCovarianceRandomCoefficient.h
  *
@@ -36,7 +39,7 @@ namespace QUESO {
  * \brief A class that represents a Gaussian likelihood with full covariance and random coefficient
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GaussianLikelihoodFullCovarianceRandomCoefficient : public BaseGaussianLikelihood<V, M> {
 public:
   //! @name Constructor/Destructor methods.

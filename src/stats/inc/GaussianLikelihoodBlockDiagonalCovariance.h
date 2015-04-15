@@ -31,6 +31,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \file GaussianLikelihoodBlockDiagonalCovariance.h
  *
@@ -38,7 +41,7 @@ namespace QUESO {
  * \brief A class representing a Gaussian likelihood with block-diagonal covariance matrix
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GaussianLikelihoodBlockDiagonalCovariance : public BaseGaussianLikelihood<V, M> {
 public:
   //! @name Constructor/Destructor methods.

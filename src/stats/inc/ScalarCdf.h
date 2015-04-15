@@ -31,13 +31,6 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Classes to accommodate a cumulative distribution function
-//*****************************************************
-
-//*****************************************************
-// Base class
-//*****************************************************
 /*! \file ScalarCdf.h
  * \brief Classes to accommodate a cumulative distribution function.
  *
@@ -52,7 +45,7 @@ namespace QUESO {
  * value less than or equal to x. In the case of a continuous distribution, it gives the area
  * under the probability density function (PDF) from minus infinity to x.*/
 
-template<class T>
+template <class T>
 class BaseScalarCdf {
 public:
   //! @name Constructor/Destructor methods

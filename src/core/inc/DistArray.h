@@ -52,7 +52,7 @@ namespace QUESO {
     each node. RowSize is constant for all elements.
 */
 
-template<typename T>
+template <typename T>
 class DistArray
 {
 public:

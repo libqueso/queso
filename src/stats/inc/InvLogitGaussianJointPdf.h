@@ -31,6 +31,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class InvLogitGaussianJointPdf
  * \brief A class for handling hybrid (transformed) Gaussians with bounds
@@ -51,7 +54,7 @@ namespace QUESO {
  * \f]
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class InvLogitGaussianJointPdf : public BaseJointPdf<V,M> {
 public:
   //! @name Constructor/Destructor methods

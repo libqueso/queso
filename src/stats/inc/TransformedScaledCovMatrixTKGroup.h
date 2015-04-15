@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class TransformedScaledCovMatrixTKGroup
  * \brief This class represents a transition kernel with a scaled covariance matrix on hybrid bounded/unbounded state spaces.
@@ -41,7 +44,7 @@ namespace QUESO {
  * no realizations are generated outside of the state space.
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class TransformedScaledCovMatrixTKGroup : public BaseTKGroup<V, M> {
 public:
   //! @name Constructor/Destructor methods

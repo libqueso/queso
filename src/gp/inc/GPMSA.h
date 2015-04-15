@@ -39,7 +39,10 @@
 
 namespace QUESO {
 
-template <class V, class M>
+class GslVector;
+class GslMatrix;
+
+template <class V = GslVector, class M = GslMatrix>
 class GPMSAEmulator : public BaseScalarFunction<V, M>
 {
 public:
@@ -92,7 +95,7 @@ public:
   const ConcatenatedVectorRV<V, M> & m_totalPrior;
 };
 
-template <class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GPMSAFactory
 {
 public:

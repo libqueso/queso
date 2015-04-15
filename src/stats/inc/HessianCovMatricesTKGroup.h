@@ -31,13 +31,16 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // TK with Hessians
 //*****************************************************
 /*! \class HessianCovMatricesTKGroup
  *  \brief This class allows the representation of a transition kernel with Hessians. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class HessianCovMatricesTKGroup : public BaseTKGroup<V,M> {
 public:
   //! @name Constructor/Destructor methods

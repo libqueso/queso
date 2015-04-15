@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Exponential class
 //*****************************************************
@@ -43,7 +46,7 @@ namespace QUESO {
  * \f[ cov = a \exp{(-d^2/\sigma^2)}\f], where \f$ d=d(x,y) \f$ is the distance between two vectors,
  * \f$ \sigma^2 \f$ is the variance matrix and \f$ a \f$ is the length scale ().*/
 
-template<class P_V, class P_M, class Q_V, class Q_M>
+template <class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class ExponentialMatrixCovarianceFunction : public BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods

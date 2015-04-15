@@ -33,7 +33,10 @@
 
 namespace QUESO {
 
-template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
+class GslVector;
+class GslMatrix;
+
+template <class S_V = GslVector, class S_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class GcmSimulationTildeInfo
 {
 public:

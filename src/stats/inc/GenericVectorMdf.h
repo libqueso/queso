@@ -33,13 +33,16 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Generic marginal density function
 //*****************************************************
 /*!\class GenericVectorMdf
  * \brief A class for handling generic MDFs of vector functions. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GenericVectorMdf : public BaseVectorMdf<V,M> {
 public:
   //! @name Constructor/Destructor methods

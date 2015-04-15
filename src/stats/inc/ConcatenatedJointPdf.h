@@ -36,6 +36,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Concatenated probability density class [PDF-11]
 //*****************************************************
@@ -48,7 +51,7 @@ namespace QUESO {
  * This class used, for instance, to concatenate priors from two or more RVs, where one
  * of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class ConcatenatedJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods

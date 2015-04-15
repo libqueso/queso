@@ -37,6 +37,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file StatisticalInverseProblem.h
     \brief Class to solve a Statistical Inverse Problem
 */
@@ -77,7 +80,7 @@ namespace QUESO {
  * value the routine is actually computing, so that the 'scalar function' class can properly
  * implements both class operations 'actualValue()' and 'minus2LnValue()'*/
 
-template <class P_V,class P_M>
+template <class P_V = GslVector, class P_M = GslMatrix>
 class StatisticalInverseProblem
 {
 public:

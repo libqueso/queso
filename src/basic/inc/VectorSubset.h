@@ -29,6 +29,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file uqVectorSubset.h
  * \brief A templated class for handling subsets.
  *
@@ -39,8 +42,7 @@ namespace QUESO {
  * present, for instance, in the definition of a scalar function: \f$ \pi: B \subset R^n \rightarrow R \f$.
  * \f$ B \f$ is a subset of the set \f$ R^n \f$, which is also a vector space. */
 
-
-template <class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class VectorSubset : public VectorSet<V,M>
 {
 public:

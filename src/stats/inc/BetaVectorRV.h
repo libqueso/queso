@@ -37,6 +37,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Beta class [RV-05]
 //*****************************************************
@@ -57,7 +60,7 @@ namespace QUESO {
  */
 
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BetaVectorRV : public BaseVectorRV<V,M> {
 public:
     //! @name Constructor/Destructor methods

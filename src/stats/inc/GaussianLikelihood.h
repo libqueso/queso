@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \file BaseGaussianLikelihood.h
  *
@@ -41,7 +44,7 @@ namespace QUESO {
  * the user will implement to interact with the forward code.
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BaseGaussianLikelihood : public BaseScalarFunction<V, M> {
 public:
   //! @name Constructor/Destructor methods.

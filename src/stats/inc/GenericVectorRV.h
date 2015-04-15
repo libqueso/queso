@@ -37,6 +37,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Generic class [RV-01]
 //*****************************************************
@@ -47,7 +50,7 @@ namespace QUESO {
  * and to generate realizations (samples) from such PDF.  This is the class used by QUESO to
  * store the solution of an statistical inverse problem. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GenericVectorRV : public BaseVectorRV<V,M> {
 public:
     //! @name Constructor/Destructor methods

@@ -31,13 +31,9 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Classes to accommodate a probability density routine.
-//*****************************************************
+class GslVector;
+class GslMatrix;
 
-//*****************************************************
-// Base class [R-00]
-//*****************************************************
 /*! \file VectorRealizer.h
  * \brief A templated class for sampling from vector RVs (holding probability density distributions).
  *
@@ -49,7 +45,7 @@ namespace QUESO {
  * uniform, Gaussian, Beta, Gamma, Inverse Gamma and LogNormal realizers, as described
  * and implemented in the derived classes. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BaseVectorRealizer {
 public:
 

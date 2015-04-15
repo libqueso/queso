@@ -35,13 +35,9 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Classes to accommodate a probability density.
-//*****************************************************
+class GslVector;
+class GslMatrix;
 
-//*****************************************************
-// Base class [PDF-00]
-//*****************************************************
 /*! \file JointPdf.h
  * \brief Classes to accommodate a probability density.
  *
@@ -56,7 +52,7 @@ namespace QUESO {
  * UniformJointPdf, GaussianJointPdf, and BayesianJointPdf,
  * respectively. The posterior PDF may be represented within QUESO by GenericJointPdf. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BaseJointPdf : public BaseScalarFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods

@@ -36,6 +36,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // InverseGamma probability density class [PDF-07]
 //*****************************************************
@@ -45,7 +48,7 @@ namespace QUESO {
  *
  * This class allows the mathematical definition of an Inverse Gamma Joint PDF.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class InverseGammaJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods

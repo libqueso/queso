@@ -37,6 +37,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Gaussian class [RV-03]
 //*****************************************************
@@ -56,7 +59,7 @@ namespace QUESO {
  * its median and mode). The parameter \f$ \sigma \f$  is its standard deviation; its variance is therefore
  * \f$ \sigma^2 \f$ . */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GaussianVectorRV : public BaseVectorRV<V,M> {
 public:
   //! @name Constructor/Destructor methods
@@ -113,7 +116,7 @@ private:
 //---------------------------------------------------
 // Method declared outside class definition ---------
 //---------------------------------------------------
-template<class V, class M>
+template <class V, class M>
 void
 ComputeConditionalGaussianVectorRV(
   const V& muVec1,

@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \class IntersectionSubset
  * \brief A templated class representing the intersection of two vector sets.
  *
@@ -38,7 +41,7 @@ namespace QUESO {
  * is the intersection of the domain of the prior PDF with the domain of the
  * likelihood function.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class IntersectionSubset : public VectorSubset<V,M> {
 public:
   //! @name Constructor/Destructor methods.

@@ -34,9 +34,9 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Classes to accommodate a cumulative distribution function
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*! \file VectorCdf.h
  * \brief Classes to accommodate a cumulative distribution function of a vector RV.
  *
@@ -49,10 +49,7 @@ namespace QUESO {
  * RV, the joint cumulative distribution function must also be defined. This class handles
  * the CDFs of vector RV, which are referred to as  multivariate/vector/joint CDFs.*/
 
-//*****************************************************
-// Base class
-//*****************************************************
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BaseVectorCdf {
 public:
   //! @name Constructor/Destructor methods

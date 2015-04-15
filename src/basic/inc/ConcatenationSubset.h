@@ -30,13 +30,16 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \class ConcatenationSubset
  * \brief A templated class representing the concatenation of two vector subsets.
  *
  * This class is used to represent the concatenation of two subsets. It allows concatenation
  * of both two subsets as well as a collection of subsets into one.
  */
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class ConcatenationSubset : public VectorSubset<V,M> {
 public:
    //! @name Constructor/Destructor methods.
