@@ -174,7 +174,32 @@ private:
   void copy(const EnvOptionsValues& src);
 };
 
-//! Macros
+// Macros
+
+// The following code is a copy-pasta from libmesh.  The same licence applies,
+// so we're good here.
+//
+// The queso_do_once macro helps us avoid redundant repeated
+// repetitions of the same warning messages
+#undef queso_do_once
+#define queso_do_once(do_this)             \
+  do {                                     \
+    static bool did_this_already = false;  \
+    if (!did_this_already) {               \
+      did_this_already = true;             \
+      do_this;                             \
+    } } while (0)
+
+// The queso_warning macro outputs a file/line/time stamped warning
+// message, if warnings are enabled.
+#define queso_warning(message)         \
+  queso_do_once(std::cerr << message  \
+                << __FILE__ << ", line " << __LINE__ << ", compiled " << __DATE__ << " at " << __TIME__ << " ***" << std::endl;)
+
+// The queso_deprecated macro warns that you are using obsoleted code
+#define queso_deprecated()  \
+  queso_warning("*** Warning:  This code is deprecated and likely to be removed in future library versions.");
+
 #define UQ_RC_MACRO(macroIRc,givenRank,where,what,retValue) \
   if (macroIRc) {                                           \
     int macroRank = givenRank;                              \
