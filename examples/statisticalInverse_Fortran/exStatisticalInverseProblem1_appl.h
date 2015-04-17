@@ -1,42 +1,43 @@
-/*--------------------------------------------------------------------------
- *--------------------------------------------------------------------------
- *
- * Copyright (C) 2008 The PECOS Development Team
- *
- * Please see http://pecos.ices.utexas.edu for more information.
- *
- * This file is part of the QUESO Library (Quantification of Uncertainty
- * for Estimation, Simulation and Optimization).
- *
- * QUESO is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * QUESO is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
- *
- *--------------------------------------------------------------------------
- *-------------------------------------------------------------------------- */
+//-----------------------------------------------------------------------bl-
+//--------------------------------------------------------------------------
+//
+// QUESO - a library to support the Quantification of Uncertainty
+// for Estimation, Simulation and Optimization
+//
+// Copyright (C) 2008-2015 The PECOS Development Team
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the Version 2.1 GNU Lesser General
+// Public License as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
+// Boston, MA  02110-1301  USA
+//
+//-----------------------------------------------------------------------el-
+//--------------------------------------------------------------------------
 
 #ifndef EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H
 #define EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H
 
 #include <exStatisticalInverseProblem1_likelihood.h>
-#include <uqStatisticalInverseProblem.h>
-#include <uqCovCond.h>
+
+#include <queso/GenericScalarFunction.h>
+#include <queso/StatisticalInverseProblem.h>
+#include <queso/CovCond.h>
 
 //********************************************************
 // The driving routine: called by main()
 //********************************************************
 template<class P_V,class P_M>
-void 
-uqAppl(const uqBaseEnvironment& env)
+void
+uqAppl(const QUESO::BaseEnvironment& env)
 {
   if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'exStatisticalInverseProblem1_example'\n"
@@ -52,7 +53,7 @@ uqAppl(const uqBaseEnvironment& env)
               << std::endl;
   }
 
-  uqVectorSpace<P_V,P_M> paramSpace(env,"param_",4,NULL);
+  QUESO::VectorSpace<P_V,P_M> paramSpace(env,"param_",4,NULL);
 
   //******************************************************
   // Step 2 of 5: Instantiate the parameter domain
@@ -66,7 +67,7 @@ uqAppl(const uqBaseEnvironment& env)
   paramMins.cwSet(-INFINITY);
   P_V paramMaxs(paramSpace.zeroVector());
   paramMaxs.cwSet( INFINITY);
-  uqBoxSubset<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
+  QUESO::BoxSubset<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   //******************************************************
   // Step 3 of 5: Instantiate the likelihood function object (data + routine), to be used by QUESO.
@@ -83,14 +84,14 @@ uqAppl(const uqBaseEnvironment& env)
   direction.cwSet(1.);
   P_M* covMatrixInverse = paramSpace.newMatrix();
   P_M* covMatrix        = paramSpace.newMatrix();
-  uqCovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
+  QUESO::CovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
 
   likelihoodRoutine_DataType<P_V,P_M> likelihoodRoutine_Data;
   likelihoodRoutine_Data.paramMeans        = &paramMeans;
   likelihoodRoutine_Data.matrix            = covMatrixInverse;
   likelihoodRoutine_Data.applyMatrixInvert = false;
 
-  uqGenericScalarFunction<P_V,P_M> likelihoodFunctionObj("like_",
+  QUESO::GenericScalarFunction<P_V,P_M> likelihoodFunctionObj("like_",
                                                               paramDomain,
                                                               likelihoodRoutine<P_V,P_M>,
                                                               (void *) &likelihoodRoutine_Data,
@@ -104,13 +105,13 @@ uqAppl(const uqBaseEnvironment& env)
               << std::endl;
   }
 
-  uqUniformVectorRV<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
+  QUESO::UniformVectorRV<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
                                           paramDomain);
 
-  uqGenericVectorRV<P_V,P_M> postRv("post_", // Extra prefix before the default "rv_" prefix
+  QUESO::GenericVectorRV<P_V,P_M> postRv("post_", // Extra prefix before the default "rv_" prefix
                                          paramSpace);
 
-  uqStatisticalInverseProblem<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
+  QUESO::StatisticalInverseProblem<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
                                                NULL,
                                                priorRv,
                                                likelihoodFunctionObj,
@@ -163,19 +164,13 @@ uqAppl(const uqBaseEnvironment& env)
                                      "outputData/appl_output",
                                      UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT,
                                      auxSet);
-  //std::cout << "covMatrix = [" << *covMatrix
-  //          << "];"
-  //          << "\n"
-  //          << "covMatrixInverse = [" << *covMatrixInverse
-  //          << "];"
-  //          << std::endl;
 
   //******************************************************
   // Write weighted squared norm to disk, to be used by 'sip_plot.m' afterwards
   //******************************************************
   // Define auxVec
-  const uqBaseVectorRealizer<P_V,P_M>& postRealizer = postRv.realizer();
-  uqVectorSpace<P_V,P_M> auxSpace(env,"",postRealizer.subPeriod(),NULL);
+  const QUESO::BaseVectorRealizer<P_V,P_M>& postRealizer = postRv.realizer();
+  QUESO::VectorSpace<P_V,P_M> auxSpace(env,"",postRealizer.subPeriod(),NULL);
   P_V auxVec(auxSpace.zeroVector());
 
   // Populate auxVec

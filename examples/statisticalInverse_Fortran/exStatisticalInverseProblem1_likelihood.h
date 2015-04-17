@@ -1,4 +1,3 @@
-// -*-c++-*-
 //-----------------------------------------------------------------------bl-
 //--------------------------------------------------------------------------
 //
@@ -26,17 +25,17 @@
 #ifndef EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H
 #define EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H
 
-#include<cstdio>
-#include<stdlib.h>
-#include<iostream>
-#include<uqEnvironment.h>
+#include <cstdio>
+#include <stdlib.h>
+#include <iostream>
+#include <queso/Environment.h>
 
 #define FORTRAN_WRAPPER_VERSION
 
 // Prototype C function for passing likelihood function to Fortran
 
-extern "C" double f_likelihood(int num_params, const double *parameter_values, 
-			       const double *parameter_means, const double *matrix, int subid, 
+extern "C" double f_likelihood(int num_params, const double *parameter_values,
+			       const double *parameter_means, const double *matrix, int subid,
 			       MPI_Fint subcomm);
 
 //-------------------------------------------------------------
@@ -86,21 +85,21 @@ likelihoodRoutine(
     {
       matrix_to_fortran = (double *)calloc(matrix.numRowsGlobal()*matrix.numCols(),sizeof(double));
 
-      for(int row=0;row<matrix.numRowsGlobal();row++)
-	for(int col=0;col<matrix.numCols();col++)
+      for(unsigned int row=0;row<matrix.numRowsGlobal();row++)
+	for(unsigned int col=0;col<matrix.numCols();col++)
 	  {
 	    matrix_to_fortran[col+row*matrix.numCols()] = matrix(row,col);
 	  }
 
       // determine local MPI environment info
 
-      const uqBaseEnvironment &env = paramMeans.env();
+      const QUESO::BaseEnvironment &env = paramMeans.env();
       subId                             = (int)env.subId();
       Local_MPI_Comm                    = env.subComm().Comm();
       int num_global_procs;
 
       MPI_Comm_size (Local_MPI_Comm, &num_procs);
-      MPI_Comm_rank (Local_MPI_Comm, &num_local);      
+      MPI_Comm_rank (Local_MPI_Comm, &num_local);
 
       if(paramMeans.env().worldRank() == 0)
 	{
@@ -116,13 +115,10 @@ likelihoodRoutine(
 
   // Transfer program to Fortran likelihood function - note that rank 0
   // for each subcommunicator is responsible for computing the final
-  // likelihood value. 
+  // likelihood value.
 
   double result = f_likelihood(paramValues.sizeGlobal(),params,param_means,matrix_to_fortran,subId,
 			       MPI_Comm_c2f(Local_MPI_Comm));
-
-  //  MPI_Finalize();
-  //  exit(1);
 
   return(result);
 
