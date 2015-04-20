@@ -27,6 +27,7 @@ BUILT_SOURCES += VectorSequence.h
 BUILT_SOURCES += VectorSet.h
 BUILT_SOURCES += VectorSpace.h
 BUILT_SOURCES += VectorSubset.h
+BUILT_SOURCES += BaseInputOptions.h
 BUILT_SOURCES += BasicPdfsBase.h
 BUILT_SOURCES += BasicPdfsBoost.h
 BUILT_SOURCES += BasicPdfsGsl.h
@@ -225,6 +226,8 @@ VectorSet.h: $(top_srcdir)/src/basic/inc/VectorSet.h
 VectorSpace.h: $(top_srcdir)/src/basic/inc/VectorSpace.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 VectorSubset.h: $(top_srcdir)/src/basic/inc/VectorSubset.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BaseInputOptions.h: $(top_srcdir)/src/core/inc/BaseInputOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsBase.h: $(top_srcdir)/src/core/inc/BasicPdfsBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

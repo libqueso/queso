@@ -78,6 +78,7 @@ libqueso_la_SOURCES += core/src/DistArray.C
 libqueso_la_SOURCES += core/src/Optimizer.C
 libqueso_la_SOURCES += core/src/GslOptimizer.C
 libqueso_la_SOURCES += core/src/OptimizerMonitor.C
+libqueso_la_SOURCES += core/src/BaseInputOptions.C
 
 
 # Sources that need libmesh
@@ -293,6 +294,7 @@ libqueso_include_HEADERS += core/inc/Vector.h
 libqueso_include_HEADERS += core/inc/Optimizer.h
 libqueso_include_HEADERS += core/inc/GslOptimizer.h
 libqueso_include_HEADERS += core/inc/OptimizerMonitor.h
+libqueso_include_HEADERS += core/inc/BaseInputOptions.h
 
 # Headers that need libmesh
 libqueso_include_HEADERS += core/inc/FunctionBase.h
