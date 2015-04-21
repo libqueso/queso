@@ -25,6 +25,14 @@
 #ifndef UQ_BASE_INPUT_OPTIONS_H
 #define UQ_BASE_INPUT_OPTIONS_H
 
+namespace boost
+{
+  namespace program_options
+  {
+    class options_description;
+  }
+}
+
 namespace QUESO {
 
 class BaseEnvironment;
