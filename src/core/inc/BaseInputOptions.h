@@ -49,10 +49,11 @@ public:
 private:
   const BaseEnvironment * m_env;
 
-  const boost::program_options::options_description * m_optionsDescription;
-
   virtual void defineOptions() = 0;
   virtual void getOptionValues() = 0;
+
+protected:
+  boost::program_options::options_description * m_optionsDescription;
 };
 
 }  // End namespace QUESO

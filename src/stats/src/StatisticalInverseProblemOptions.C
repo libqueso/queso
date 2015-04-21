@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Defines.h>
 #include <queso/StatisticalInverseProblemOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -95,7 +96,7 @@ SipOptionsValues::copy(const SipOptionsValues& src)
 StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   const BaseEnvironment& env,
   const char*                   prefix)
-  :
+:
   m_ov                         (),
   m_prefix                     ((std::string)(prefix) + "ip_"),
   m_env                        (env),
@@ -108,6 +109,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_option_solver              (m_prefix + "solver"              )
 #endif
 {
+  queso_deprecated();
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
                       "StatisticalInverseProblemOptions::constructor(1)",
@@ -119,7 +121,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   const BaseEnvironment&  env,
   const char*                    prefix,
   const SipOptionsValues& alternativeOptionsValues)
-  :
+:
   m_ov                         (alternativeOptionsValues),
   m_prefix                     ((std::string)(prefix) + "ip_"),
   m_env                        (env),
@@ -132,6 +134,8 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_option_solver              (m_prefix + "solver"              )
 #endif
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
                       "StatisticalInverseProblemOptions::constructor(2)",
@@ -148,6 +152,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
 // Destructor --------------------------------------
 StatisticalInverseProblemOptions::~StatisticalInverseProblemOptions()
 {
+  queso_deprecated();
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
@@ -178,10 +183,13 @@ StatisticalInverseProblemOptions::scanOptionsValues()
 
   return;
 }
+
 // --------------------------------------------------
 void
 StatisticalInverseProblemOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os << "\n" << m_option_computeSolution      << " = " << m_ov.m_computeSolution
      << "\n" << m_option_dataOutputFileName   << " = " << m_ov.m_dataOutputFileName;
   os << "\n" << m_option_dataOutputAllowedSet << " = ";
@@ -199,6 +207,8 @@ StatisticalInverseProblemOptions::print(std::ostream& os) const
 void
 StatisticalInverseProblemOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                              "produce help message for statistical inverse problem")
     (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
@@ -215,6 +225,8 @@ StatisticalInverseProblemOptions::defineMyOptions(po::options_description& optio
 void
 StatisticalInverseProblemOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -258,6 +270,7 @@ StatisticalInverseProblemOptions::getMyOptionValues(po::options_description& opt
 
 std::ostream& operator<<(std::ostream& os, const StatisticalInverseProblemOptions& obj)
 {
+  queso_deprecated();
   obj.print(os);
 
   return os;
