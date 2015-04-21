@@ -22,11 +22,11 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/BaseInputOptions.h>
+#include <queso/Environment.h>
+
 #ifndef UQ_SIP_OPTIONS_H
 #define UQ_SIP_OPTIONS_H
-
-#include <queso/Environment.h>
-//#include <queso/MetropolisHastingsSGOptions.h>
 
 #undef UQ_SIP_READS_SOLVER_OPTION
 
@@ -56,7 +56,7 @@ namespace QUESO {
  * values for such options if no input file is available.
  */
 
-class SipOptionsValues
+class SipOptionsValues : public BaseInputOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -70,7 +70,7 @@ public:
   SipOptionsValues            (const SipOptionsValues& src);
 
   //! Destructor
-  ~SipOptionsValues            ();
+  virtual ~SipOptionsValues            ();
   //@}
 
   //! @name Set methods
@@ -89,6 +89,11 @@ public:
   //MhOptionsValues m_mhOptionsValues;
 
 private:
+  // We have these two because of we don't want to break backwards
+  // compatibility
+  virtual void defineOptions();
+  virtual void getOptionValues();
+
   //! Copies the option values from \c src to \c this.
   void copy(const SipOptionsValues& src);
 };

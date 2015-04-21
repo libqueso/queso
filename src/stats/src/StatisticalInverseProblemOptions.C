@@ -34,6 +34,7 @@ namespace QUESO {
 // Default constructor -----------------------------
 SipOptionsValues::SipOptionsValues()
   :
+    BaseInputOptions(),
   m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
   m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV)
 //m_dataOutputAllowedSet(),
@@ -60,6 +61,18 @@ SipOptionsValues::operator=(const SipOptionsValues& rhs)
   return *this;
 }
 // Private methods-----------------------------------
+void
+SipOptionsValues::defineOptions()
+{
+  queso_not_implemented();
+}
+
+void
+SipOptionsValues::getOptionValues()
+{
+  queso_not_implemented();
+}
+
 void
 SipOptionsValues::copy(const SipOptionsValues& src)
 {

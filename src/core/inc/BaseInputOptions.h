@@ -42,7 +42,7 @@ class BaseInputOptions
 public:
   BaseInputOptions(const BaseEnvironment * env);
   BaseInputOptions();
-  ~BaseInputOptions();
+  virtual ~BaseInputOptions();
 
   void scanOptionsValues();
 
