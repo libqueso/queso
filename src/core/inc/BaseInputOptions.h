@@ -40,13 +40,14 @@ class BaseEnvironment;
 class BaseInputOptions
 {
 public:
-  BaseInputOptions(const BaseEnvironment & env);
+  BaseInputOptions(const BaseEnvironment * env);
+  BaseInputOptions();
   ~BaseInputOptions();
 
   void scanOptionsValues();
 
 private:
-  const BaseEnvironment & m_env;
+  const BaseEnvironment * m_env;
 
   const boost::program_options::options_description * m_optionsDescription;
 

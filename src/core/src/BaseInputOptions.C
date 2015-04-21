@@ -27,9 +27,16 @@
 
 namespace QUESO {
 
-BaseInputOptions::BaseInputOptions(const BaseEnvironment & env)
+BaseInputOptions::BaseInputOptions(const BaseEnvironment * env)
   :
     m_env(env),
+    m_optionsDescription(new po::options_description("Input options"))
+{
+}
+
+BaseInputOptions::BaseInputOptions()
+  :
+    m_env(NULL),
     m_optionsDescription(new po::options_description("Input options"))
 {
 }
@@ -45,13 +52,16 @@ void
 BaseInputOptions::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDescription == NULL,
-                      m_env.worldRank(),
+                      (*m_env).worldRank(),
                       "BaseInputOptions::scanOptionsValues()",
                       "m_optionsDescription variable is NULL");
 
-  defineOptions();
-  m_env.scanInputFileForMyOptions(*m_optionsDescription);
-  getOptionValues();
+  // If it's NULL then the defaults are used
+  if (m_env != NULL) {
+    defineOptions();
+    (*m_env).scanInputFileForMyOptions(*m_optionsDescription);
+    getOptionValues();
+  }
 
   // if (m_env.subDisplayFile() != NULL) {
   //   *m_env.subDisplayFile() << "In BaseInputOptions::scanOptionsValues()"
