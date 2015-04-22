@@ -87,8 +87,18 @@ public:
 #endif
 
   //MhOptionsValues m_mhOptionsValues;
+  std::string m_prefix;
 
 private:
+  // The input options as strings so we can parse the input file later
+  std::string                   m_option_help;
+  std::string                   m_option_computeSolution;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowedSet;
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  std::string                   m_option_solver;
+#endif
+
   // We have these two because of we don't want to break backwards
   // compatibility
   virtual void defineOptions();
