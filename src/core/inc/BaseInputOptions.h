@@ -47,12 +47,11 @@ public:
   void scanOptionsValues();
 
 private:
-  const BaseEnvironment * m_env;
-
   virtual void defineOptions() = 0;
   virtual void getOptionValues() = 0;
 
 protected:
+  const BaseEnvironment * m_env;
   boost::program_options::options_description * m_optionsDescription;
 };
 
