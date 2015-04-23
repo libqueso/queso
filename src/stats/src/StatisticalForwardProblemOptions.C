@@ -199,6 +199,8 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
   m_option_solver              (m_prefix + "solver"              )
 #endif
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
                       "StatisticalForwardProblemOptions::constructor(1)",
@@ -224,6 +226,8 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
   m_option_solver              (m_prefix + "solver"              )
 #endif
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
                       "StatisticalForwardProblemOptions::constructor(2)",
@@ -240,6 +244,8 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
 // Destructor --------------------------------------
 StatisticalForwardProblemOptions::~StatisticalForwardProblemOptions()
 {
+  queso_deprecated();
+
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
@@ -247,6 +253,8 @@ StatisticalForwardProblemOptions::~StatisticalForwardProblemOptions()
 void
 StatisticalForwardProblemOptions::scanOptionsValues()
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
                       "StatisticalForwardProblemOptions::scanOptionsValues()",
@@ -270,6 +278,8 @@ StatisticalForwardProblemOptions::scanOptionsValues()
 void
 StatisticalForwardProblemOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os <<         m_option_computeSolution      << " = " << m_ov.m_computeSolution
      << "\n" << m_option_computeCovariances   << " = " << m_ov.m_computeCovariances
      << "\n" << m_option_computeCorrelations  << " = " << m_ov.m_computeCorrelations
@@ -290,6 +300,8 @@ StatisticalForwardProblemOptions::print(std::ostream& os) const
 void
 StatisticalForwardProblemOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                              "produce help message for statistical forward problem")
     (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SFP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
@@ -308,6 +320,8 @@ StatisticalForwardProblemOptions::defineMyOptions(po::options_description& optio
 void
 StatisticalForwardProblemOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -359,6 +373,8 @@ StatisticalForwardProblemOptions::getMyOptionValues(po::options_description& opt
 
 std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblemOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
