@@ -22,11 +22,11 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/BaseInputOptions.h>
+#include <queso/Environment.h>
+
 #ifndef UQ_SIP_OPTIONS_H
 #define UQ_SIP_OPTIONS_H
-
-#include <queso/Environment.h>
-//#include <queso/MetropolisHastingsSGOptions.h>
 
 #undef UQ_SIP_READS_SOLVER_OPTION
 
@@ -56,7 +56,7 @@ namespace QUESO {
  * values for such options if no input file is available.
  */
 
-class SipOptionsValues
+class SipOptionsValues : public BaseInputOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -64,13 +64,14 @@ public:
   //! Default constructor.
   /*! Assigns the default suite of options to the Statistical Inverse Problem.*/
   SipOptionsValues            ();
+  SipOptionsValues(const BaseEnvironment * env, const char * prefix);
 
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
   SipOptionsValues            (const SipOptionsValues& src);
 
   //! Destructor
-  ~SipOptionsValues            ();
+  virtual ~SipOptionsValues            ();
   //@}
 
   //! @name Set methods
@@ -78,6 +79,8 @@ public:
   //! Assignment operator; it copies \c rhs to \c this.
   SipOptionsValues& operator= (const SipOptionsValues& rhs);
   //@}
+
+  std::string m_prefix;
 
   bool                   m_computeSolution;
   std::string            m_dataOutputFileName;
@@ -89,6 +92,20 @@ public:
   //MhOptionsValues m_mhOptionsValues;
 
 private:
+  // The input options as strings so we can parse the input file later
+  std::string                   m_option_help;
+  std::string                   m_option_computeSolution;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowedSet;
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  std::string                   m_option_solver;
+#endif
+
+  // We have these two because of we don't want to break backwards
+  // compatibility
+  virtual void defineOptions();
+  virtual void getOptionValues();
+
   //! Copies the option values from \c src to \c this.
   void copy(const SipOptionsValues& src);
 };

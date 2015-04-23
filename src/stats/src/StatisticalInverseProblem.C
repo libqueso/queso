@@ -53,8 +53,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL),
+  m_optionsObj              (alternativeOptionsValues),
   m_seedWithMAPEstimator    (false)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
@@ -68,13 +67,19 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
                             << std::endl;
   }
 
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix,m_alternativeOptionsValues);
-  }
-  else {
-    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
+
+    // If there's an input file, we grab the options from there.  Otherwise the
+    // defaults are used
+    if (m_env.optionsInputFileName() != "") {
+      tempOptions->scanOptionsValues();
+    }
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
   }
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In Sip, finished scanning options" << std::endl;
@@ -120,8 +125,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL),
+  m_optionsObj              (alternativeOptionsValues),
   m_seedWithMAPEstimator    (false)
 {
   if (m_env.subDisplayFile()) {
@@ -132,13 +136,19 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
                             << std::endl;
   }
 
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix,m_alternativeOptionsValues);
-  }
-  else {
-    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
+
+    // If there's an input file, we grab the options from there.  Otherwise the
+    // defaults are used
+    if (m_env.optionsInputFileName() != "") {
+      tempOptions->scanOptionsValues();
+    }
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
   }
 
   UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != m_likelihoodFunction.domainSet().vectorSpace().dimLocal(),
@@ -199,7 +209,7 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   //std::cout << "proc " << m_env.fullRank() << ", HERE sip 001" << std::endl;
   m_env.fullComm().syncPrintDebugMsg("Entering StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000);
 
-  if (m_optionsObj->m_ov.m_computeSolution == false) {
+  if (m_optionsObj->m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()"
                               << ": avoiding solution, as requested by user"
@@ -307,23 +317,23 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
                                                           *m_subMdfValues);
   m_postRv.setMdf(*m_subSolutionMdf);
 
-  if ((m_optionsObj->m_ov.m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE                    ) &&
-      (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end())) {
+  if ((m_optionsObj->m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE                    ) &&
+      (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end())) {
     if (m_env.subRank() == 0) {
       // Write data output file
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "Opening data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
+        *m_env.subDisplayFile() << "Opening data output file '" << m_optionsObj->m_dataOutputFileName
                                 << "' for calibration problem with problem with prefix = " << m_optionsObj->m_prefix
                                 << std::endl;
       }
 
       // Open file
       // Always write at the end of an eventual pre-existing file
-      std::ofstream* ofsvar = new std::ofstream((m_optionsObj->m_ov.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      std::ofstream* ofsvar = new std::ofstream((m_optionsObj->m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
       if ((ofsvar            == NULL ) ||
           (ofsvar->is_open() == false)) {
         delete ofsvar;
-        ofsvar = new std::ofstream((m_optionsObj->m_ov.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((m_optionsObj->m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
       UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
                           m_env.worldRank(),
@@ -336,7 +346,7 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
       //ofsvar->close();
       delete ofsvar;
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "Closed data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
+        *m_env.subDisplayFile() << "Closed data output file '" << m_optionsObj->m_dataOutputFileName
                                 << "' for calibration problem with problem with prefix = " << m_optionsObj->m_prefix
                                 << std::endl;
       }
@@ -367,7 +377,7 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
   m_env.fullComm().Barrier();
   m_env.fullComm().syncPrintDebugMsg("Entering StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()",1,3000000);
 
-  if (m_optionsObj->m_ov.m_computeSolution == false) {
+  if (m_optionsObj->m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()"
                               << ": avoiding solution, as requested by user"
