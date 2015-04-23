@@ -228,8 +228,7 @@ private:
         ScalarSequence      <double>*    m_logLikelihoodValues;
         ScalarSequence      <double>*    m_logTargetValues;
 
-        SipOptionsValues                  m_alternativeOptionsValues;
-        StatisticalInverseProblemOptions* m_optionsObj;
+        const SipOptionsValues * m_optionsObj;
 
         bool                              m_seedWithMAPEstimator;
 
