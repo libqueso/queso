@@ -64,6 +64,7 @@ public:
   //! Default constructor.
   /*! Assigns the default suite of options to the Statistical Inverse Problem.*/
   SipOptionsValues            ();
+  SipOptionsValues(const BaseEnvironment * env, const char * prefix);
 
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
@@ -79,6 +80,8 @@ public:
   SipOptionsValues& operator= (const SipOptionsValues& rhs);
   //@}
 
+  std::string m_prefix;
+
   bool                   m_computeSolution;
   std::string            m_dataOutputFileName;
   std::set<unsigned int> m_dataOutputAllowedSet;
@@ -87,7 +90,6 @@ public:
 #endif
 
   //MhOptionsValues m_mhOptionsValues;
-  std::string m_prefix;
 
 private:
   // The input options as strings so we can parse the input file later

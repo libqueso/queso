@@ -36,6 +36,26 @@ namespace QUESO {
 SipOptionsValues::SipOptionsValues()
   :
     BaseInputOptions(),
+  m_prefix("ip_"),
+  m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
+  m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),
+//m_dataOutputAllowedSet(),
+  m_option_help                (m_prefix + "help"                ),
+  m_option_computeSolution     (m_prefix + "computeSolution"     ),
+  m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  m_option_solver              (m_prefix + "solver"              ),
+  m_solverString        (UQ_SIP_SOLVER_ODV)
+#endif
+{
+}
+
+SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
+    prefix)
+  :
+    BaseInputOptions(env),
+  m_prefix((std::string)(prefix) + "ip_"),
   m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
   m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet(),
