@@ -40,14 +40,36 @@ class BaseEnvironment;
 class BaseInputOptions
 {
 public:
+  //! Constructor that sets the internal environment
   BaseInputOptions(const BaseEnvironment * env);
+
+  //! Default constructor that sets m_env to NULL
+  /*!
+   * The use-case for m_env being NULL is that options are *not* read in from
+   * a file but are instead wholly provided by the user.
+   */
   BaseInputOptions();
+
+  //! Destructor
+  /*!
+   * Deletes m_optionsDescription, but not m_env
+   */
   virtual ~BaseInputOptions();
 
+  //! Calls the relevant QUESO BaseEnvironment methods to scan the input file
   void scanOptionsValues();
 
 private:
+  //! Subclasses implement this to *define* input options
+  /*!
+   * This will act on the boost-specific m_optionsDescription
+   */
   virtual void defineOptions() = 0;
+
+  //! Subclasses implement this to *set* input options from an input string
+  /*!
+   * This will act on the boost-specific m_optionsDescription
+   */
   virtual void getOptionValues() = 0;
 
 protected:
