@@ -300,6 +300,7 @@ EnvironmentOptions::EnvironmentOptions(
   m_option_platformName         (m_prefix + "platformName"         ),
   m_option_identifyingString    (m_prefix + "identifyingString"    )
 {
+  queso_deprecated();
   queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
 }
 // Constructor with alternative values --------------
@@ -326,6 +327,7 @@ EnvironmentOptions::EnvironmentOptions(
   m_option_platformName         (m_prefix + "platformName"         ),
   m_option_identifyingString    (m_prefix + "identifyingString"    )
 {
+  queso_deprecated();
   queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
@@ -339,6 +341,8 @@ EnvironmentOptions::EnvironmentOptions(
 // Destructor ---------------------------------------
 EnvironmentOptions::~EnvironmentOptions()
 {
+  queso_deprecated();
+
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
@@ -346,7 +350,9 @@ EnvironmentOptions::~EnvironmentOptions()
 void
 EnvironmentOptions::scanOptionsValues()
 {
+  queso_deprecated();
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
+
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
@@ -368,6 +374,8 @@ EnvironmentOptions::scanOptionsValues()
 void
 EnvironmentOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os <<         m_option_numSubEnvironments    << " = " << m_ov.m_numSubEnvironments
      << "\n" << m_option_subDisplayFileName    << " = " << m_ov.m_subDisplayFileName
      << "\n" << m_option_subDisplayAllowAll    << " = " << m_ov.m_subDisplayAllowAll
@@ -392,6 +400,8 @@ EnvironmentOptions::print(std::ostream& os) const
 void
 EnvironmentOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In EnvOptions::defineMyOptions(), before add_options()" << std::endl;
 #endif
@@ -421,6 +431,8 @@ EnvironmentOptions::defineMyOptions(po::options_description& optionsDesc) const
 void
 EnvironmentOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering EnvOptions::getMyOptionsValues()" << std::endl;
 #endif
@@ -523,6 +535,8 @@ EnvironmentOptions::getMyOptionValues(po::options_description& optionsDesc)
 // Operator outside class definition ----------------
 std::ostream& operator<<(std::ostream& os, const EnvironmentOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
