@@ -18,15 +18,18 @@ uniprocessor or multiprocessor environments.
 Installation
 ------------
 
+You can obtain `QUESO` tarballs
+[here](https://github.com/libqueso/queso/releases).
+
 If you do not have a `configure` script in the top level directory,
-run `bootstrap` to generate a configure script using autotools.
+run `bootstrap` to generate a configure script using `autotools`.
 
 Before compiling, you must run the `configure` script.  To run, type
 `./configure`.  Additional options may be provided if desired.  Run
 `./configure --help` for details.
 
 After successfully running `configure`, type `make` to build the
-`QUESO` library
+`QUESO` library.
 
 Then type `make install` to install it in the directory previously
 specified by the `--prefix` option of the `configure` script.
@@ -69,7 +72,8 @@ capabilities of `QUESO`, then you also need the following dependencies:
 License
 -------
 
-See `LICENSE` file distributed with `QUESO` for more information.
+See [`LICENSE`](https://github.com/libqueso/queso/blob/dev/LICENSE) file
+distributed with `QUESO` for more information.
 
 Contributing
 ------------
