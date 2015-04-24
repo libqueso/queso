@@ -41,6 +41,7 @@ namespace po = boost::program_options;
 #include <iostream>
 #include <fstream>
 
+#include <queso/EnvironmentOptions.h>
 #include <queso/RngBase.h>
 #include <queso/BasicPdfsBase.h>
 

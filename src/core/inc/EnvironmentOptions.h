@@ -22,10 +22,11 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/BaseInputOptions.h>
+#include <queso/Environment.h>
+
 #ifndef UQ_ENVIRONMENT_OPTIONS_H
 #define UQ_ENVIRONMENT_OPTIONS_H
-
-#include <queso/Environment.h>
 
 #define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
 #define UQ_ENV_FILENAME_FOR_NO_INPUT_FILE  "."
@@ -51,6 +52,142 @@ namespace QUESO {
 /*! \file EnvironmentOptions.h
     \brief Class to allow options to be passed to a QUESO environment.
 */
+
+/*! \class EnvOptionsValues
+ *  \brief This class provides a suite options one can pass to a QUESO environment.
+ *
+ *  QUESO expects the user to provide an input file with environment options for the library variables.
+ *  If no input file, a collection of default values is assigned to some of the variables. The class
+ *  EnvOptionsValues is responsible for this task.
+ */
+
+class EnvOptionsValues : public BaseInputOptions
+{
+public:
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Default constructor
+  EnvOptionsValues();
+  EnvOptionsValues(const BaseEnvironment * env, const char * prefix);
+
+  //! Copy constructor
+  EnvOptionsValues(const EnvOptionsValues& src);
+
+  //! Destructor
+  virtual ~EnvOptionsValues();
+  //@}
+
+  //! @name Set methods
+  //@{
+  //! Operator for copying the options of an environment.
+  EnvOptionsValues & operator=(const EnvOptionsValues& rhs);
+  //@}
+
+  std::string m_prefix;
+
+  //! @name Attributes
+  //! Number of sub-environments.
+  unsigned int m_numSubEnvironments;
+
+  //! Output filename for sub-screen writing.
+  std::string m_subDisplayFileName;
+
+  //! Allows (or not) all sub-environments to write to output file.
+  bool m_subDisplayAllowAll;
+
+  //! Allows (or not) all inter0 nodes to write to output file
+  bool m_subDisplayAllowInter0;
+
+  //! Sub-environments that will write to output.
+  std::set<unsigned int> m_subDisplayAllowedSet;
+
+  //! Verbosity.
+  unsigned int m_displayVerbosity;
+
+  //! Synchronized verbosity.
+  unsigned int m_syncVerbosity;
+
+  //! Checking level
+  unsigned int m_checkingLevel;
+
+  //! Type of the random number generator.
+  std::string m_rngType;
+
+  //! Seed of the random number generator.
+  //
+
+  /*!
+   * If env_seed = -z, with z>=1, then each processor sets the seed to value
+   * MPI_RANK + z.  It is crucial that \verb+env_seed+ takes a
+   * \underline{negative} value, otherwise all chain samples are going to be
+   * the same.
+   */
+  int m_seed;
+
+  //! Platform name.
+  std::string m_platformName;
+
+  //! Identifying string.
+  std::string m_identifyingString;
+
+  //! Number of debug parameters.
+  unsigned int m_numDebugParams;
+
+  //! Debug parameters
+  std::vector<double> m_debugParams;
+  //@}
+
+private:
+  std::string m_option_help;
+
+  //! My number of sub-environments.
+  std::string m_option_numSubEnvironments;
+
+  //! My output filename for sub-screen writing.
+  std::string m_option_subDisplayFileName;
+
+  //! Allows (or not) all sub-environments to write to output file.
+  std::string m_option_subDisplayAllowAll;
+
+  //! Allows (or not) all inter0 nodes to write to output file
+  std::string m_option_subDisplayAllowInter0;
+
+  //! Sub-environments that will write to output.
+  std::string m_option_subDisplayAllowedSet;
+
+  //! Verbosity.
+  std::string m_option_displayVerbosity;
+
+  //! Synchronized verbosity.
+  std::string m_option_syncVerbosity;
+
+  //! Checking level
+  std::string m_option_checkingLevel;
+
+  //! Type of the random number generator.
+  std::string m_option_rngType;
+
+  //! Seed of the random number generator.
+  /*!
+   * If env_seed = -z, with z>=1, then each processor sets the seed to value
+   * MPI_RANK + z.  It is crucial that \verb+env_seed+ takes a
+   * \underline{negative} value, otherwise all chain samples are going to be
+   * the same.
+   */
+  std::string m_option_seed;
+
+  //! Platform name.
+  std::string m_option_platformName;
+
+  //! Identifying string.
+  std::string m_option_identifyingString;
+
+  virtual void defineOptions();
+  virtual void getOptionValues();
+
+  //! Makes an exact copy of an existing EnvOptionsValues instance.
+  void copy(const EnvOptionsValues& src);
+};
 
 /*! \class EnvironmentOptions
  *  \brief This class reads options one can pass to a QUESO environment through an input file.
