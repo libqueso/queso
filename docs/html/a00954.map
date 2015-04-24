@@ -1,8 +1,0 @@
-<map id="QUESO::ScalarFunctionSynchronizer&lt; V, M &gt;" name="QUESO::ScalarFunctionSynchronizer&lt; V, M &gt;">
-<area shape="rect" id="node4" href="$a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,223,648,252"/>
-<area shape="rect" id="node10" href="$a00051.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="828,297,1047,327"/>
-<area shape="rect" id="node16" href="$a00124.html" title="The QUESO MPI Communicator Class. " alt="" coords="864,152,1011,181"/>
-<area shape="rect" id="node6" href="$a00033.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,229,195,259"/>
-<area shape="rect" id="node8" href="$a00131.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,176,175,205"/>
-<area shape="rect" id="node13" href="$a00052.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,299,205,328"/>
-</map>

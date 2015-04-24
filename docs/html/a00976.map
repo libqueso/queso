@@ -1,9 +1,0 @@
-<map id="QUESO::VectorSubset&lt; V, M &gt;" name="QUESO::VectorSubset&lt; V, M &gt;">
-<area shape="rect" id="node2" href="$a00168.html" title="A templated class for handling sets. " alt="" coords="811,13,1019,43"/>
-<area shape="rect" id="node4" href="$a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,168,648,197"/>
-<area shape="rect" id="node10" href="$a00051.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,257,1024,287"/>
-<area shape="rect" id="node16" href="$a00124.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,137,988,167"/>
-<area shape="rect" id="node6" href="$a00033.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,120,195,149"/>
-<area shape="rect" id="node8" href="$a00131.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,173,175,203"/>
-<area shape="rect" id="node13" href="$a00052.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,283,205,312"/>
-</map>
