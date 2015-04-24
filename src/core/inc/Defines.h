@@ -198,9 +198,10 @@ private:
 
 // The queso_deprecated macro warns that you are using obsoleted code
 #define queso_deprecated()  \
-  queso_warning("*** Warning:  This code is deprecated and likely to be removed in future library versions.");
+  queso_warning("*** Warning, this code is deprecated and likely to be removed in future library versions:  ");
 
 #define UQ_RC_MACRO(macroIRc,givenRank,where,what,retValue) \
+  queso_deprecated();                                       \
   if (macroIRc) {                                           \
     int macroRank = givenRank;                              \
     if (macroRank < 0) {                                    \
@@ -216,6 +217,7 @@ private:
   }
 
 #define UQ_TEST_MACRO(test,givenRank,where,what,retValue) \
+  queso_deprecated();                                     \
   if (test) {                                             \
     int macroRank = givenRank;                            \
     if (macroRank < 0) {                                  \
@@ -230,6 +232,7 @@ private:
   }
 
 #define UQ_FATAL_RC_MACRO(macroIRc,givenRank,where,what) \
+  queso_deprecated();                                    \
   if (macroIRc) {                                        \
     int macroRank = givenRank;                           \
     if (macroRank < 0) {                                 \
@@ -246,6 +249,7 @@ private:
   }
 
 #define UQ_FATAL_TEST_MACRO(test,givenRank,where,what)  \
+  queso_deprecated();                                   \
   if (test) {                                           \
     int macroRank = givenRank;                          \
     if (macroRank < 0) {                                \
