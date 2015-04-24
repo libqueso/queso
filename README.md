@@ -37,11 +37,11 @@ Documentation
 `QUESO` documentation is available
 [here](http://libqueso.github.io/queso/html/).
 
-Documentation for older versions;
+Documentation for older versions:
 
-1.  [v0.50.1](http://libqueso.github.io/queso/v.0.50.1/html/).
-2.  [v0.51.1](http://libqueso.github.io/queso/v.0.51.1/html/).
-3.  [v0.52.0](http://libqueso.github.io/queso/v.0.52.0/html/).
+-  [v0.50.1](http://libqueso.github.io/queso/v.0.50.1/html/)
+-  [v0.51.1](http://libqueso.github.io/queso/v.0.51.1/html/)
+-  [v0.52.0](http://libqueso.github.io/queso/v.0.52.0/html/)
 
 Dependencies
 ------------
