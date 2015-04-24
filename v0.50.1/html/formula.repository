@@ -1,0 +1,159 @@
+\form#0:\[f(x) = y_1 + m (x - x_1), \]
+\form#1:$ m $
+\form#2:$(x_1,y_1)$
+\form#3:\[ f(x)=ax^2+bx+c,\quad a \ne 0.\]
+\form#4:$ f(x) = y $
+\form#5:$ P(x) $
+\form#6:$ \leq n-1 $
+\form#7:$ n $
+\form#8:$ (x_1,y_1=f(x_1)), (x_2,y_2=f(x_2)), ..., (x_n,y_n=f(x_n))$
+\form#9:\[ P(x)=\sum_{j=1}^n \prod_{k=1; k\not=j}^n \frac{x-x_k}{x_j-x_k}.\]
+\form#10:\[ P(x)=\frac{(x-x_2)(x-x_3)...(x-x_n)}{(x_1-x_2)(x_1-x_3)...(x_1-x_n)}y_1+ \frac{(x-x_1)(x-x_3)...(x-x_n)}{(x_2-x_1)(x_2-x_3)...(x_2-x_n)}y_2+...+ \frac{(x-x_1)(x-x_2)...(x-x_(n-1))}{(x_n-x_1)(x_n-x_2)...(x_n-x_(n-1))}y_n.\]
+\form#11:$ x_1, x_2, ... x_n $
+\form#12:$ y_1, y_2, ... y_n $
+\form#13:$ k+1 $
+\form#14:$(x_0, y_0),\ldots,(x_j, y_j),\ldots,(x_k, y_k)$
+\form#15:$ x_j $
+\form#16:\[ L(x) = \sum_{j=0}^{k} y_j \ell_j(x) \]
+\form#17:\[ \ell_j(x) = \prod_{0\le m\le k;\, m\neq j} \frac{x-x_m}{x_j-x_m} = \frac{(x-x_0)}{(x_j-x_0)} \cdots \frac{(x-x_{j-1})}{(x_j-x_{j-1})} \frac{(x-x_{j+1})}{(x_j-x_{j+1})} \cdots \frac{(x-x_k)}{(x_j-x_k)},\]
+\form#18:$ 0\le j\le k $
+\form#19:$ \ell_j(x) $
+\form#20:$ j $
+\form#21:$ x_1 $
+\form#22:$ f(x) = y_1 + m (x - x_1)$
+\form#23:$ y_1 $
+\form#24:$ m$
+\form#25:$f(x) = y_1 + m (x - x_1)$
+\form#26:$ x_1i $
+\form#27:$ f_i(x) = y_{1i} + m_i (x - x_{1i})$
+\form#28:$ i $
+\form#29:$ y_{1i} $
+\form#30:$ m_i $
+\form#31:$ f(x)=ax^2+bx+c $
+\form#32:$ f(x)$
+\form#33:$ g(x)$
+\form#34:$ W(x)$
+\form#35:\[\int_{-1}^1 f(x) \, dx = \int_{-1}^1 W(x) g(x) \, dx\]
+\form#36:$ x_i $
+\form#37:$ w_i $
+\form#38:\[ \int_{-1}^1 W(x) g(x) \, dx \approx \sum_{i=1}^n w_i g(x_i) \]
+\form#39:$ W(x) = 1 $
+\form#40:$ f(x) $
+\form#41:\[ \int_{-1}^1 f(x)\,dx \approx \sum_{i=1}^n w_i f(x_i) \]
+\form#42:$ P_n(x)$
+\form#43:\[ w_i = \frac{2}{(1-x_i^2)[P'_n(x_i)]^2}=\frac{2(1-x_i^2)}{(n+1)^2[P_{n+1}(x_i)]^2} \]
+\form#44:$ \pm \frac{1}{3}\sqrt{3} $
+\form#45:$ 1 $
+\form#46:$ 0 $
+\form#47:$ \frac{8}{9} $
+\form#48:$ \pm \frac{1}{5} \sqrt{15} $
+\form#49:$ \frac{5}{9} $
+\form#50:$ \pm \frac{1}{35}\sqrt{525-70\sqrt{30}} $
+\form#51:$ \frac{1}{36}(18+\sqrt{30})$
+\form#52:$ \pm \frac{1}{35}\sqrt{525+70\sqrt{30}} $
+\form#53:$ \frac{1}{36}(18-\sqrt{30})$
+\form#54:$ \frac{128}{225}$
+\form#55:$ \pm \frac{1}{21}\sqrt{245-14\sqrt{70}} $
+\form#56:$ \frac{1}{900}(322+13\sqrt{70})$
+\form#57:$ \pm \frac{1}{21}\sqrt{245+14\sqrt{70}} $
+\form#58:$ \frac{1}{900}(322-13\sqrt{70})$
+\form#59:$(-\infty,\infty)$
+\form#60:$ W(x)=e^{-x^2}$
+\form#61:$ H_n(x)$
+\form#62:$\pm \frac{1}{2}\sqrt{2} $
+\form#63:$ \frac{1}{2}\sqrt{\pi} $
+\form#64:$ \frac{2}{3}\sqrt{\pi} $
+\form#65:$\pm \frac{1}{2}\sqrt{6} $
+\form#66:$ \frac{1}{6}\sqrt{\pi} $
+\form#67:$\pm \sqrt{\frac{3-\sqrt{6}}{2}} $
+\form#68:$ \frac{\sqrt{\pi}}{4(3-\sqrt{6})} $
+\form#69:$ \frac{\sqrt{\pi}}{4(3+\sqrt{6})} $
+\form#70:$ W(x)=\frac{1}{\sqrt{1-x^2}}$
+\form#71:$ T_n(x) $
+\form#72:$ x_i=\cos[\frac{(2i-1)\pi}{2n}]$
+\form#73:$ w_i=\frac{\pi}{n}. $
+\form#74:$ W(x)=\sqrt{1-x^2}$
+\form#75:$ U_n(x) $
+\form#76:$ x_i=\cos[\frac{i\pi}{n+1}].$
+\form#77:$ w_i=\frac{\pi}{n+1}\sin^2[\frac{i\pi}{n+1}]. $
+\form#78:\[ x_j = \sum_{k=0}^{N-1} z_k \exp(-2\pi i j k / N) \]
+\form#79:$ Ab $
+\form#80:$ O(N^2)$
+\form#81:$ N $
+\form#82:$ A $
+\form#83:$ f_1 f_2 ... f_n $
+\form#84:$ O(N \sum f_i) $
+\form#85:$ O(N \log_2 N)$
+\form#86:$ O(\c fftSize ^2) $
+\form#87:$ x = FFT(z) $
+\form#88:\[ x_j = \sum_{k=0}^{N-1} z_k \exp(-2\pi i j k / N). \]
+\form#89:$ O(fftSize^2) $
+\form#90:$ x = IFFT(z)$
+\form#91:\[ z_j = {1 \over N} \sum_{k=0}^{N-1} x_k \exp(2\pi i j k / N).\]
+\form#92:$ 1/N $
+\form#93:\[ \hat{f}(x) = \frac{1}{nh} \sum_{j=1}^n K\Big(\frac{x-x_j}{h}\Big),\]
+\form#94:$ K $
+\form#95:$ R $
+\form#96:$ R^2 $
+\form#97:$ f: B \subset R \rightarrow R $
+\form#98:$ \mathbf{q}: B \subset R^n \rightarrow R^m $
+\form#99:$ \sigma_y^2 $
+\form#100:$ \sigma_y^2 = \frac{1}{n} \sum_{i=1}^n \left(y_i - \mu \right)^2 $
+\form#101:$ \mu $
+\form#102:$ \sigma^2 $
+\form#103:$ \sigma^2 = \frac{1}{n-1} \sum_{i=1}^n \left(y_i - \mu \right)^2 $
+\form#104:$ B $
+\form#105:$ R^n $
+\form#106:$ R^m $
+\form#107:$ \pi: B \subset R^n \rightarrow R $
+\form#108:$ lnValue = \sum[ (alpha_i-1)*log(domainVector_i) + (beta_i-1)*log(1-domainVector_i)] + m_logOfNormalizationFactor $
+\form#109:\[ y=f(x|a,b)= \frac{1}{B(a,b)} x^{a-1}(1-x)^{b-1}, \]
+\form#110:\[ B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}=\frac{(a-1)!(b-1)!}{(a+b-1)!}.\]
+\form#111:\[ cov = a \exp{(-d^2/\sigma^2)}\]
+\form#112:$ d=d(x,y) $
+\form#113:$ a $
+\form#114:$ cov= a exp (-d^2/sigma)$
+\form#115:$ d= \sqrt{(domainVector1 - domainVector1)^2} $
+\form#116:$ lnValue = \sum[ (a_i-1)*log(domainVector_i) -domainVector_i/b_i + m_logOfNormalizationFactor $
+\form#117:\[ y=f(x|a,b)= \frac{1}{b^{a}\Gamma(a)} x^{a-1} e^{\frac{x}{b}}, \]
+\form#118:$ \Gamma(.) $
+\form#119:$ (0, \infty)$
+\form#120:\[ lnValue =- \sum_i \frac{1}{\sqrt{|covMatrix|} \sqrt{2 \pi}} exp(-\frac{(domainVector_i - lawExpVector_i)* covMatrix^{-1}* (domainVector_i - lawExpVector_i) }{2}, \]
+\form#121:$ covMatrix $
+\form#122:\[ f(x| \mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} e^{ -\frac{(x-\mu)^2}{2\sigma^2} }. \]
+\form#123:$ \sigma $
+\form#124:\[ y=f(x| a,b)= \frac{b^a}{\Gamma(a)} x^{-a - 1}\exp\left(-\frac{b}{x}\right)\]
+\form#125:\[ lnValue =- \sum_i \frac{1}{domainVector_i * \sqrt{2 \pi * lawVarVector_i}} exp(-\frac{(\ln( domainVector_i) - lawExpVector_i)^2}{2 lawVarVector_i}) \]
+\form#126:$ domainVector_i > 0 $
+\form#127:\[ f(x|\mu,\sigma) = \frac{1}{x \sigma \sqrt{2 \pi}}\, e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}, x>0 \]
+\form#128:$ ln( \pi(D|M) ) = E[ln( \pi(D|\theta,M) )] - E[ln( \pi(\theta|D,M) / \pi(\theta|M) )] $
+\form#129:\[ \pi (\theta|D, M_j) = \frac{f(D|\theta, M_j) \cdot \pi (\theta | M_j)}{\pi(D, M_j)} \]
+\form#130:$ \pi (\theta|D, M_j) $
+\form#131:$ \pi (\theta | M_j) $
+\form#132:$ f(D|\theta, M_j)$
+\form#133:$ \pi(D, M_j) $
+\form#134:$ \theta $
+\form#135:$ D $
+\form#136:$ M_j $
+\form#137:\[ EIG = log \left(\frac{ \pi (\theta|D, M_j)}{\pi (\theta | M_j) } \right) = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right) = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right) = log \left(f(D|\theta, M_j)\right) - log\left(f(D|\theta, M_j) \right) \]
+\form#138:$ f: B \subset R \rightarrow C \subset R $
+\form#139:$ C = [0,1]$
+\form#140:$ X $
+\form#141:$ Y $
+\form#142:$ cov (X,Y) = <(X-\mu_X)(Y-\mu_Y)> = < X Y > - \mu_X \mu_Y $
+\form#143:$ \mu_X $
+\form#144:$ \mu_Y $
+\form#145:\[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\]
+\form#146:$ 1/scales^2 $
+\form#147:$ q() $
+\form#148:$ x $
+\form#149:$ q(x) $
+\form#150:$ \pi()$
+\form#151:$ \pi(x) $
+\form#152:$ \ln[\pi(x)] $
+\form#153:$ x \in R^n $
+\form#154:$ A \in B $
+\form#155:$ P(x,R^n)=1 $
+\form#156:$ P(x, {x}) $
+\form#157:$ X_1, X_2, ..., X_n $
+\form#158:$ X_i $
