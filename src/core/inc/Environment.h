@@ -190,7 +190,7 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor.
-  BaseEnvironment(const char* passedOptionsInputFileName, const EnvOptionsValues* alternativeOptionsValues);
+  BaseEnvironment(const char* passedOptionsInputFileName, EnvOptionsValues* alternativeOptionsValues);
 
   //! Destructor
   /*! It deallocates memory and does other cleanup for the class object and its class members when
@@ -298,7 +298,7 @@ public:
   std::string identifyingString () const;
 
   //! Reset private attribute m_identifyingString with the value \c newString.
-  void    resetIdentifyingString(const std::string& newString) const; // Yes, const
+  void    resetIdentifyingString(const std::string& newString);
 
   //! //TODO Not implemented? it is called in examples/validationCycle/tests_old/results_5_25/uqTgaEx4.h.
   bool    isThereInputFile      () const;
@@ -375,8 +375,7 @@ protected:
   struct timeval             m_timevalBegin;
   mutable bool       	     m_exceptionalCircumstance;
 
-  EnvOptionsValues    m_alternativeOptionsValues;
-  EnvironmentOptions* m_optionsObj;
+  EnvOptionsValues * m_optionsObj;
 };
 
 //*****************************************************
@@ -416,7 +415,7 @@ public:
   //! Default constructor.
   /*! It initializes the full communicator, reads the options, deals with multiple sub-environments,
    * e.g. dealing with sub/self/inter0-communicators, handles path for output files. */
-  FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const EnvOptionsValues* alternativeOptionsValues);
+  FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* alternativeOptionsValues);
 
   //! Destructor
  ~FullEnvironment();
