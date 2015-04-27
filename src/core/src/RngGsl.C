@@ -28,17 +28,6 @@
 
 namespace QUESO {
 
-// Default constructor ------------------------------
-RngGsl::RngGsl()
-  :
-  RngBase()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "RngGsl::constructor(), default",
-                      "should not be used by user");
-}
-
 //! Constructor with seed ---------------------------
 RngGsl::RngGsl(int seed, int worldRank)
   :

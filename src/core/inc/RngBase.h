@@ -46,11 +46,8 @@ class RngBase
 {
 public:
 
-    //! @name Constructor/Destructor methods
+  //! @name Constructor/Destructor methods
   //@{
-  //! Default Constructor: it should not be used.
-  RngBase();
-
   //! Constructor with seed.
   RngBase(int seed, int worldRank);
 
@@ -88,9 +85,11 @@ protected:
           int m_worldRank;
 
 private:
+  //! Default Constructor: it should not be used.
+  RngBase();
 
   //! Reset seed.
-          void privateResetSeed();
+  void privateResetSeed();
 };
 
 }  // End namespace QUESO

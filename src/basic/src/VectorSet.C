@@ -37,10 +37,6 @@ template <class V, class M>
 VectorSet<V,M>::VectorSet()
   : m_env(*(new EmptyEnvironment()))
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "VectorSet<V,M>::constructor(), default",
-                      "should not be used by user");
 }
 
 // Shaped constructor

@@ -47,9 +47,6 @@ public:
   //! @name Constructor/Destructor methods
   //@{
 
-  //! Default constructor
-  VectorSpace();
-
   //! Shaped constructor.
   /*! Construct a vector space with QUESO environment \c env and of dimension \c dimGlobalValue.*/
   VectorSpace(const BaseEnvironment&   env,
@@ -163,6 +160,10 @@ protected:
 
   //! A vector of all elements equal to zero.
   V*                             m_zeroVector;
+
+private:
+  //! Default constructor
+  VectorSpace();
 };
 
 }  // End namespace QUESO

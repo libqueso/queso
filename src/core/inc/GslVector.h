@@ -52,10 +52,6 @@ public:
   //! @name Constructor/Destructor methods.
   //@{
 
-  //! Default Constructor
-  /*! Creates an empty vector of no length.*/
-  GslVector();
-
   GslVector(const BaseEnvironment& env, const Map& map);
   GslVector(const BaseEnvironment& env, const Map& map, double value);
   GslVector(const BaseEnvironment& env, double d1, double d2, const Map& map); // MATLAB linspace
@@ -237,6 +233,9 @@ public:
   GslVector abs() const;
  //@}
 private:
+  //! Default Constructor
+  /*! Creates an empty vector of no length.*/
+  GslVector();
 
   //! This function copies the elements of the vector src into \c this.
   void         copy             (const GslVector& src);

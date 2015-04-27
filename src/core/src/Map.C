@@ -30,17 +30,6 @@ namespace QUESO {
 // --------------------------------------------------
 // Constructor/Destructor methods -------------------
 
-// Default constructor ------------------------------
-Map::Map()
-  :
-  m_MpiComm() // *(new MpiComm()) )
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "Map::constructor()",
-                      "should not be called");
-}
-
 // Usable constructor ------------------------------
 Map::Map(
   int                   numGlobalElements,

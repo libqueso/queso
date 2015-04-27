@@ -27,17 +27,6 @@
 
 namespace QUESO {
 
-// Default constructor ------------------------------
-BasicPdfsBoost::BasicPdfsBoost()
-  :
-  BasicPdfsBase()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "BasicPdfsBoost::constructor(), default",
-                      "should not be used by user");
-}
-
 //! Constructor ---------------------------
 BasicPdfsBoost::BasicPdfsBoost(int worldRank)
   :
@@ -55,22 +44,14 @@ BasicPdfsBoost::~BasicPdfsBoost()
 double
 BasicPdfsBoost::betaPdfActualValue(double x, double alpha, double beta) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "BasicPdfsBoost::betaPdfActualValue()",
-                      "code incomplete yet");
-  return 0.;
+  queso_not_implemented();
 }
 
 // --------------------------------------------------
 double
 BasicPdfsBoost::gammaPdfActualValue(double x, double a, double b) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "BasicPdfsBoost::gammaPdfActualValue()",
-                      "code incomplete yet");
-  return 0.;
+  queso_not_implemented();
 }
 
 }  // End namespace QUESO

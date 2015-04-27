@@ -32,17 +32,6 @@
 
 namespace QUESO {
 
-// Default constructor -------------------------------------------------
-GslMatrix::GslMatrix()
-  :
-  Matrix()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "GslMatrix::constructor(), default",
-                      "should not be used by user");
-}
-
 GslMatrix::GslMatrix( // can be a rectangular matrix
   const BaseEnvironment& env,
   const Map&             map,

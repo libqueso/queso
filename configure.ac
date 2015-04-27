@@ -195,7 +195,6 @@ AC_CONFIG_FILES([
   test/t04_bimodal/Makefile
   test/gsl_tests/Makefile
   test/gsl_tests/input
-  test/test_Environment/copy_env
   test/test_infinite/inf_options
   test/test_Regression/GaussianMean1DRegression_options
   test/test_Regression/gpmsa_cobra_input.txt

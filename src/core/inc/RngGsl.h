@@ -52,9 +52,6 @@ public:
 
   //! @name Constructor/Destructor methods
   //@{
-  //! Default Constructor: it should not be used.
-  RngGsl();
-
   //! Constructor with seed.
   /* Uses GSL with the generator of type: gsl_rng_ranlxd2. This is the second, of a total of three
    luxury random numbers, all an extension of a second-generation version of the ranlux algorithm of
@@ -106,6 +103,9 @@ public:
   const gsl_rng* rng           () const;
 
 protected:
+  //! Default Constructor: it should not be used.
+  RngGsl();
+
   //! GSL random number generator.
   /*! It is chosen, in the constructor, to be of type gsl_rng_ranlxd2. */
   gsl_rng* m_rng;

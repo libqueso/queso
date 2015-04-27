@@ -48,32 +48,11 @@ class Matrix
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor.
-  Matrix();
-
   //! Shaped constructor.
   Matrix(const BaseEnvironment& env, const Map& map);
 
-  //! Copy constructor.
-  Matrix(const Matrix& rhs);
-
   //! Virtual Destructor
   virtual ~Matrix();
-  //@}
-
-  //! @name Set methods
-  //@{
-  //! Operator for copying a matrix.
-  Matrix& operator= (const Matrix& rhs);
-
-  //! Operator for multiplication of the matrix by a scalar.
-  Matrix& operator*=(double a);
-
-  //! Operator for addition (element-wise) of two matrices.
-  Matrix& operator+=(const Matrix& rhs);
-
-  //! Operator for subtraction (element-wise) of two matrices.
-  Matrix& operator-=(const Matrix& rhs);
   //@}
 
   //! @name Environment and Map methods
@@ -153,6 +132,10 @@ protected:
 
   //! Flag for either or not QUESO is in debug mode.
   mutable bool                    m_inDebugMode;
+
+private:
+  //! Default constructor.
+  Matrix();
 };
 
 }  // End namespace QUESO

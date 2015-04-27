@@ -27,16 +27,6 @@
 
 namespace QUESO {
 
-// Default constructor ------------------------------
-MpiComm::MpiComm()
-  :
-  m_env( *(new EmptyEnvironment()) )
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "MpiComm::constructor()",
-                      "should not be called");
-}
 // QUESO MpiComm MPI Constructor ------------------
 MpiComm::MpiComm(const BaseEnvironment& env, RawType_MPI_Comm inputRawComm)
   :

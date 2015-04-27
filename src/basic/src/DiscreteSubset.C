@@ -38,10 +38,7 @@ DiscreteSubset<V,M>::DiscreteSubset(const char* prefix,
   queso_deprecated();
 
   m_volume = 0.;
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "DiscreteSubset<V,M>::contains()",
-                      "incomplete code");
+  queso_not_implemented();
 }
 
 // Destructor
@@ -56,13 +53,7 @@ template<class V, class M>
 bool DiscreteSubset<V,M>::contains(const V& vec) const
 {
   queso_deprecated();
-
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "DiscreteSubset<V,M>::contains()",
-                      "incomplete code");
-
-  return false;
+  queso_not_implemented();
 }
 
 // I/O methods

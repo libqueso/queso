@@ -49,9 +49,6 @@ class RngBoost : public RngBase
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default Constructor: it should not be used.
-  RngBoost();
-
   //! Constructor with seed.
   RngBoost(int seed, int worldRank);
 
@@ -101,6 +98,9 @@ public:
   double   gammaSample   (double a, double b)        const;
 
 private:
+  //! Default Constructor: it should not be used.
+  RngBoost();
+
   //! Random number generator from class boost::mt19937.
   /*! mt19937 are models for a pseudo-random number generator. Here it is cannot be static,
    *  as it has not been initialized yet. mt19937 has length cycle of 2^(19937)-1, requires

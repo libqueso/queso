@@ -191,20 +191,11 @@ public:
   //! Default constructor.
   BaseEnvironment(const char* passedOptionsInputFileName, const EnvOptionsValues* alternativeOptionsValues);
 
-  //! Copy constructor. It should not be used be the user.
-  BaseEnvironment(const BaseEnvironment& obj);
-
   //! Destructor
   /*! It deallocates memory and does other cleanup for the class object and its class members when
    * the object is destroyed. It displays the total run time of the combo QUESO + application using
      the function gettimeofday() from a struct timeval (as specified in <sys/time.h>). */
   virtual ~BaseEnvironment();
-  //@}
-
-  //! @name Set methods
-  //@{
-  //! Assignment operator. It should not be used be the user.
-  BaseEnvironment& operator= (const BaseEnvironment& rhs);
   //@}
 
   //! @name Environment, Communicator and Options Input File methods

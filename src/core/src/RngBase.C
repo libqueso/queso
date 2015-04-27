@@ -27,17 +27,6 @@
 
 namespace QUESO {
 
-RngBase::RngBase()
-  :
-  m_seed     (0),
-  m_worldRank(UQ_UNAVAILABLE_RANK)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "RngBase::constructor(), default",
-                      "should not be used by user");
-}
-
 RngBase::RngBase(int seed, int worldRank)
   :
   m_seed     (seed),

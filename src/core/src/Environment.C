@@ -157,14 +157,6 @@ BaseEnvironment::BaseEnvironment(
   if (passedOptionsInputFileName) m_optionsInputFileName     = passedOptionsInputFileName;
   if (alternativeOptionsValues  ) m_alternativeOptionsValues = *alternativeOptionsValues;
 }
-// Copy constructor -------------------------------------
-BaseEnvironment::BaseEnvironment(const BaseEnvironment& obj)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      obj.worldRank(),
-                      "BaseEnvironment::constructor(), copy",
-                      "code should not execute through here");
-}
 // Destructor -------------------------------------------
 BaseEnvironment::~BaseEnvironment()
 {
@@ -213,16 +205,6 @@ BaseEnvironment::~BaseEnvironment()
   if (m_selfComm      ) delete m_selfComm;
   if (m_subComm       ) delete m_subComm;
   if (m_fullComm      ) delete m_fullComm;
-}
-// Set methods ------------------------------------------
-BaseEnvironment&
-BaseEnvironment::operator= (const BaseEnvironment& rhs)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.worldRank(),
-                      "BaseEnvironment::operator=()",
-                      "code should not execute through here");
-  return *this;
 }
 // Environment, Communicator and Options Input File methods
 bool

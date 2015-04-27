@@ -59,10 +59,6 @@ public:
   //! @name Constructor/Destructor methods.
   //@{
 
-  //! Default Constructor
-  /*! Creates an empty vector of no length.*/
-  TeuchosVector();
-
   //! Shaped constructor: creates an empty vector of size given by Map& map.
   TeuchosVector(const BaseEnvironment& env, const Map& map);
 
@@ -280,6 +276,9 @@ public:
 
 
 private:
+  //! Default Constructor
+  /*! Creates an empty vector of no length.*/
+  TeuchosVector();
 
   //! Teuchos vector.
   Teuchos::SerialDenseVector<int,double> m_vec;

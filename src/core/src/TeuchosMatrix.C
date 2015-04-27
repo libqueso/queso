@@ -37,18 +37,6 @@ namespace QUESO {
 
 using std:: cout;
 using std:: endl;
-// ---------------------------------------------------
-// default constructor -------------------------------
-TeuchosMatrix::TeuchosMatrix()
-  :
-  Matrix()
-{
-  //this part is never called.
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::constructor(), default",
-                      "should not be used by user");
-}
 
 // ---------------------------------------------------
 // shaped constructor (square/rectangular)------------

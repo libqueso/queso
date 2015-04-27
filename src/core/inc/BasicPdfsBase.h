@@ -46,9 +46,6 @@ class BasicPdfsBase
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor.
-  BasicPdfsBase();
-
   //! Constructor.
   BasicPdfsBase(int worldRank);
 
@@ -66,6 +63,10 @@ public:
   //@}
 protected:
   int m_worldRank;
+
+private:
+  //! Default constructor.
+  BasicPdfsBase();
 };
 
 }  // End namespace QUESO

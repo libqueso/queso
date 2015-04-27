@@ -52,9 +52,6 @@ public:
   //! @name Constructor/Destructor methods
   //@{
 
-  //! Default constructor. Do not call this directly.
-  Map();
-
   //! Constructor for a uniform linear distribution of elements.
   Map(int                   numGlobalElements,
              int                   indexBase,
@@ -102,6 +99,9 @@ public:
 
   //@}
 private:
+  //! Default constructor. Do not call this directly.
+  Map();
+
   //! Copies the map.
   void                  copy             (const Map& src);
 

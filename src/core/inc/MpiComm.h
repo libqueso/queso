@@ -78,10 +78,6 @@ public:
    //! @name Constructor/Destructor methods
   //@{
 
-  //! Default Constructor
-  /*! It should not be used by user.*/
-  MpiComm();
-
   //! QUESO MpiComm MPI Constructor.
   /*! This constructs an MpiComm that uses the given "raw" MPI communicator underneath.
    * The MPI_Comm must be valid for the lifetime of this MpiComm.*/
@@ -199,6 +195,10 @@ public:
 
  //@}
 private:
+  //! Default Constructor
+  /*! It should not be used by user.*/
+  MpiComm();
+
   //! Copies from an existing MpiComm instance.
   void               copy          (const MpiComm& src);
 
