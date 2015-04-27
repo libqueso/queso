@@ -17,6 +17,7 @@ AX_PREFIX_CONFIG_H(config_queso.h,QUESO,config_queso.h.tmp)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CANONICAL_TARGET()
 AM_INIT_AUTOMAKE([color-tests subdir-objects])
+AM_SILENT_RULES(yes)  # use silent rules where available - automake 1.11
 
 # Release versioning
 
