@@ -40,9 +40,12 @@ namespace QUESO
   {
   public:
 
-    InterpolationSurrogateBase(const VectorSet<V,M> & domain )
-      : SurrogateBase<V,M>(domain)
-    {};
+    //! Constructor
+    /*! n_points should be a vector with dimension matching the dimension of
+        the parameter space and contain the number of points in each coordinate
+        direction for the interpolant. */
+    InterpolationSurrogateBase(const VectorSet<V,M> & domain,
+                               const std::vector<unsigned int>& n_points );
 
     virtual ~InterpolationSurrogateBase(){};
 
@@ -57,6 +60,12 @@ namespace QUESO
                                 const std::vector<unsigned int>& n_points ) const;
 
   protected:
+
+    //! vector to store number of points in each coordinate direction
+    /*! We assume that the spacing in each coordinate direction is constant
+        so we only need to know the number of points. Then we can use the coordToGlobal
+        function to map coordinate indices to global index for access m_values. */
+    std::vector<unsigned int> m_n_points;
 
     //! vector to store values to be interpolated
     /*! These will be stored in a particular ordering. Subclasses

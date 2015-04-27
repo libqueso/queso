@@ -33,6 +33,14 @@
 namespace QUESO
 {
   template<class V, class M>
+  InterpolationSurrogateBase<V,M>::InterpolationSurrogateBase(const VectorSet<V,M> & domain,
+                                                              const std::vector<unsigned int>& n_points )
+      : SurrogateBase<V,M>(domain),
+        m_n_points(n_points)
+    {
+    }
+
+  template<class V, class M>
   unsigned int InterpolationSurrogateBase<V,M>::coordToGlobal( const std::vector<unsigned int>& coord_indices,
                                                                const std::vector<unsigned int>& n_points ) const
   {
