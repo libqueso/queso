@@ -79,6 +79,9 @@ namespace QUESO
 
     InterpolationSurrogateBase();
 
+    //! Helper function for constructor
+    void check_dim_consistency() const;
+
   };
 
 } // end namespace QUESO

@@ -30,6 +30,9 @@
 #include <queso/GslMatrix.h>
 #include <queso/VectorSpace.h>
 
+// C++
+#include <sstream>
+
 namespace QUESO
 {
   template<class V, class M>
@@ -38,6 +41,8 @@ namespace QUESO
       : SurrogateBase<V,M>(domain),
         m_n_points(n_points)
     {
+      // This checks that the dimension of n_points and the domain are consistent
+      this->check_dim_consistency();
     }
 
   template<class V, class M>
@@ -73,6 +78,26 @@ namespace QUESO
 
     return global_index;
   }
+
+  template<class V, class M>
+  void InterpolationSurrogateBase<V,M>::check_dim_consistency() const
+  {
+    if( this->m_domain.vectorSpace().dimGlobal() != this->m_n_points.size() )
+      {
+        std::stringstream vspace_dim;
+        vspace_dim << this->m_domain.vectorSpace().dimGlobal();
+
+        std::stringstream n_points_dim;
+        n_points_dim << this->m_n_points.size();
+
+        std::string error = "ERROR: Mismatch between dimension of parameter space and number of points\n.";
+        error += "        domain dimension = " + vspace_dim.str() + "\n";
+        error += "        points dimension = " + n_points_dim.str() + "\n";
+
+        queso_error_msg(error);
+      }
+  }
+
 } // end namespace QUESO
 
 // Instantiate
