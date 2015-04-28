@@ -71,7 +71,6 @@ namespace QUESO
         for( int local_d = d-1; local_d >=0; local_d -= 1)
           {
             idx *= n_points[local_d];
-            local_d -= 1;
           }
 
         global_index += idx;
