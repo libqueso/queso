@@ -26,7 +26,7 @@
 #define UQ_INTERPOLATION_SURROGATE_BUILDER_H
 
 #include <queso/SurrogateBuilderBase.h>
-#include <queso/BoxSubset.h>
+#include <queso/InterpolationSurrogateData.h>
 
 namespace QUESO
 {
@@ -41,35 +41,19 @@ namespace QUESO
   {
   public:
 
-    InterpolationSurrogateBuilder( const BoxSubset<V,M> & domain,
-                                   const std::vector<unsigned int>& n_points );
+    //! Constructor
+    /*! We do not take a const& to the data because we want to compute and
+        set the values directly. */
+    InterpolationSurrogateBuilder( InterpolationSurrogateData<V,M>& data );
 
     virtual ~InterpolationSurrogateBuilder(){};
 
-    const BoxSubset<V,M>& paramDomain() const
-    { return this->m_domain; };
-
-    const std::vector<unsigned int>& n_points() const
-    { return this->m_n_points; };
-
-    const std::vector<double>& values() const
-    { return this->m_values; };
+    //! Execute the user's model and populate m_values for the given n_points
+    void build_values();
 
   protected:
 
-    //! Parameter domain over which we use surrogate
-    const BoxSubset<V,M>& m_domain;
-
-    //! vector to store number of points in each coordinate direction
-    /*! We assume that the spacing in each coordinate direction is constant
-        so we only need to know the number of points. Then we can use the coordToGlobal
-        function to map coordinate indices to global index for access m_values. */
-    const std::vector<unsigned int>& m_n_points;
-
-    //! vector to store values to be interpolated
-    std::vector<double> m_values;
-
-    void init_values( const std::vector<unsigned int>& n_points );
+    InterpolationSurrogateData<V,M>& m_data;
 
   private:
 

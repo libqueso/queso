@@ -32,9 +32,8 @@ template<class V, class M>
 class MyInterpolationBuilder : public QUESO::InterpolationSurrogateBuilder<V,M>
 {
 public:
-  MyInterpolationBuilder( const QUESO::BoxSubset<V,M> & domain,
-                          const std::vector<unsigned int>& n_points )
-    : QUESO::InterpolationSurrogateBuilder<V,M>(domain,n_points)
+  MyInterpolationBuilder( QUESO::InterpolationSurrogateData<V,M>& data )
+    : QUESO::InterpolationSurrogateBuilder<V,M>(data)
   {};
 
   virtual ~MyInterpolationBuilder(){};
@@ -71,7 +70,7 @@ int main(int argc, char ** argv)
     data(paramDomain,n_points);
 
   MyInterpolationBuilder<QUESO::GslVector,QUESO::GslMatrix>
-    builder( paramDomain, n_points );
+    builder( data );
 
   QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
     one_d_surrogate( data );

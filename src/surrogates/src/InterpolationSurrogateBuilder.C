@@ -32,27 +32,10 @@
 namespace QUESO
 {
   template<class V, class M>
-  InterpolationSurrogateBuilder<V,M>::InterpolationSurrogateBuilder( const BoxSubset<V,M> & domain,
-                                                                     const std::vector<unsigned int>& n_points )
+  InterpolationSurrogateBuilder<V,M>::InterpolationSurrogateBuilder( InterpolationSurrogateData<V,M>& data )
     : SurrogateBuilderBase<V>(),
-    m_domain(domain),
-    m_n_points(n_points)
-  {
-    this->init_values(this->m_n_points);
-  }
-
-  template<class V, class M>
-  void InterpolationSurrogateBuilder<V,M>::init_values( const std::vector<unsigned int>& n_points )
-  {
-    unsigned int n_total_points = 0;
-    for( std::vector<unsigned int>::const_iterator it = n_points.begin();
-         it != n_points.end(); ++it )
-      {
-        n_total_points += *it;
-      }
-
-    this->m_values.resize(n_total_points);
-  }
+    m_data(data)
+  {}
 
 } // end namespace QUESO
 
