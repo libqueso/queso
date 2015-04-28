@@ -28,7 +28,7 @@
 #include <queso/SurrogateBase.h>
 #include <queso/BoxSubset.h>
 #include <queso/VectorSpace.h>
-#include <queso/InterpolationSurrogateBuilder.h>
+#include <queso/InterpolationSurrogateData.h>
 
 namespace QUESO
 {
@@ -50,14 +50,7 @@ namespace QUESO
     /*! n_points should be a vector with dimension matching the dimension of
         the parameter space and contain the number of points in each coordinate
         direction for the interpolant. */
-    InterpolationSurrogateBase(const BoxSubset<V,M> & domain,
-                               const std::vector<unsigned int>& n_points,
-                               const std::vector<double>& values);
-
-    //! Constructor
-    /*! We extract data from the SurrogateBuilder. Note that the builder
-        MUST live as long as this object since we only extract const&. */
-    InterpolationSurrogateBase( const InterpolationSurrogateBuilder<V,M>& builder );
+    InterpolationSurrogateBase(const InterpolationSurrogateData<V,M>& data);
 
     virtual ~InterpolationSurrogateBase(){};
 
@@ -71,45 +64,13 @@ namespace QUESO
     unsigned int coordToGlobal( const std::vector<unsigned int>& coord_indices,
                                 const std::vector<unsigned int>& n_points ) const;
 
-    unsigned int dim() const
-    { return this->m_domain.vectorSpace().dimGlobal(); };
-
-    //! Lower bound of domain along dimension dim
-    double x_min( unsigned int dim ) const
-    { return this->m_domain.minValues()[dim]; };
-
-    //! Upper bound of domain along dimension dim
-    double x_max( unsigned int dim ) const
-    { return this->m_domain.maxValues()[dim]; };
-
-    //! Spacing between points along dimension dim
-    double spacing( unsigned int dim ) const;
-
   protected:
 
-    //! Parameter domain over which we use surrogate
-    const BoxSubset<V,M>& m_domain;
-
-    //! vector to store number of points in each coordinate direction
-    /*! We assume that the spacing in each coordinate direction is constant
-        so we only need to know the number of points. Then we can use the coordToGlobal
-        function to map coordinate indices to global index for access m_values. */
-    const std::vector<unsigned int>& m_n_points;
-
-    //! vector to store values to be interpolated
-    /*! These will be stored in a particular ordering. Subclasses
-        will provide a helper function to give the index into this
-        vector.
-        \todo We currently store all values reside on all processes. Generalization would
-              be to partition values across processes allocated for the subenvironment. */
-    const std::vector<double>& m_values;
+    const InterpolationSurrogateData<V,M>& m_data;
 
   private:
 
     InterpolationSurrogateBase();
-
-    //! Helper function for constructor
-    void check_dim_consistency() const;
 
   };
 

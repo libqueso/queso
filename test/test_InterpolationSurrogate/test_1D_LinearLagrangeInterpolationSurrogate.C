@@ -51,6 +51,10 @@ int main(int argc, char ** argv)
     paramDomain("param_", paramSpace, paramMins, paramMaxs);
 
   std::vector<unsigned int> n_points(1, 101);
+
+  QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
+    data(paramDomain,n_points);
+
   std::vector<double> values(n_points[0]);
 
   double spacing = (max_val - min_val)/(n_points[0]-1);
@@ -61,8 +65,10 @@ int main(int argc, char ** argv)
       values[i] = one_d_fn(x);
     }
 
+  data.set_values( values );
+
   QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
-    one_d_surrogate( paramDomain, n_points, values );
+    one_d_surrogate( data );
 
   QUESO::GslVector domainVector(paramSpace.zeroVector());
   domainVector.cwSet(1.221);

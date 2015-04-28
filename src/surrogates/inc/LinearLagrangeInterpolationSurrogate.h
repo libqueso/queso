@@ -34,11 +34,7 @@ namespace QUESO
   {
   public:
 
-    LinearLagrangeInterpolationSurrogate(const BoxSubset<V,M> & domain,
-                                         const std::vector<unsigned int>& n_points,
-                                         const std::vector<double>& values);
-
-    LinearLagrangeInterpolationSurrogate( const InterpolationSurrogateBuilder<V,M>& builder );
+    LinearLagrangeInterpolationSurrogate(const InterpolationSurrogateData<V,M>& data);
 
     virtual ~LinearLagrangeInterpolationSurrogate(){};
 
@@ -47,7 +43,7 @@ namespace QUESO
 
     //! The number of coeffs for interpolating
     unsigned int n_coeffs() const
-    { return std::pow( 2, this->dim() ); };
+    { return std::pow( 2, this->m_data.dim() ); };
 
   protected:
 

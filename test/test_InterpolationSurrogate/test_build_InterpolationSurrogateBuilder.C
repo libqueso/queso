@@ -67,11 +67,14 @@ int main(int argc, char ** argv)
 
   std::vector<unsigned int> n_points(1, 101);
 
+  QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
+    data(paramDomain,n_points);
+
   MyInterpolationBuilder<QUESO::GslVector,QUESO::GslMatrix>
     builder( paramDomain, n_points );
 
   QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
-    one_d_surrogate( builder );
+    one_d_surrogate( data );
 
   return return_flag;
 }

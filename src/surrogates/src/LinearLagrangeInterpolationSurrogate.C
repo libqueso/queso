@@ -32,15 +32,8 @@
 namespace QUESO
 {
   template<class V, class M>
-  LinearLagrangeInterpolationSurrogate<V,M>::LinearLagrangeInterpolationSurrogate(const BoxSubset<V,M> & domain,
-                                                                                  const std::vector<unsigned int>& n_points,
-                                                                                  const std::vector<double>& values)
-    : InterpolationSurrogateBase<V,M>(domain,n_points,values)
-  {}
-
-  template<class V, class M>
-  LinearLagrangeInterpolationSurrogate<V,M>::LinearLagrangeInterpolationSurrogate( const InterpolationSurrogateBuilder<V,M>& builder )
-    : InterpolationSurrogateBase<V,M>(builder)
+  LinearLagrangeInterpolationSurrogate<V,M>::LinearLagrangeInterpolationSurrogate(const InterpolationSurrogateData<V,M>& data)
+    : InterpolationSurrogateBase<V,M>(data)
   {}
 
   template<class V, class M>
@@ -48,14 +41,14 @@ namespace QUESO
   {
     /* Populate indices. These are the lower bound global indices for the
        "element" containing the domainVector */
-    std::vector<unsigned int> indices(this->dim());
+    std::vector<unsigned int> indices(this->m_data.dim());
     this->compute_interval_indices(domainVector, indices);
 
     // lower bound coordinates
-    std::vector<double> x_min(this->dim());
+    std::vector<double> x_min(this->m_data.dim());
 
     // upper bound coordinates
-    std::vector<double> x_max(this->dim());
+    std::vector<double> x_max(this->m_data.dim());
 
     // Function value at each of the "nodes" for the "element"
     std::vector<double> values(this->n_coeffs());
@@ -71,16 +64,16 @@ namespace QUESO
   void LinearLagrangeInterpolationSurrogate<V,M>::compute_interval_indices(const V & domainVector,
                                                                            std::vector<unsigned int>& indices) const
   {
-    queso_assert_equal_to( domainVector.sizeGlobal(), this->dim() );
-    queso_assert_equal_to( indices.size(), this->dim() );
+    queso_assert_equal_to( domainVector.sizeGlobal(), this->m_data.dim() );
+    queso_assert_equal_to( indices.size(), this->m_data.dim() );
 
-    for( unsigned int d = 0; d < this->dim(); d++ )
+    for( unsigned int d = 0; d < this->m_data.dim(); d++ )
       {
-        double spacing = this->spacing(d);
-        indices[d] = std::floor( (domainVector[d] - this->x_min(d))/spacing );
+        double spacing = this->m_data.spacing(d);
+        indices[d] = std::floor( (domainVector[d] - this->m_data.x_min(d))/spacing );
 
         // Index should be less than the number of point along this dimension
-        queso_assert_less( indices[d], this->m_n_points[d] );
+        queso_assert_less( indices[d], this->m_data.get_n_points()[d] );
       }
   }
 
@@ -90,20 +83,20 @@ namespace QUESO
                                                                            std::vector<double>& x_max,
                                                                            std::vector<double>& values ) const
   {
-    queso_assert_equal_to( x_min.size(), this->dim() );
-    queso_assert_equal_to( x_max.size(), this->dim() );
+    queso_assert_equal_to( x_min.size(), this->m_data.dim() );
+    queso_assert_equal_to( x_max.size(), this->m_data.dim() );
     queso_assert_equal_to( values.size(), this->n_coeffs() );
-    queso_assert_equal_to( indices.size(), this->dim() );
+    queso_assert_equal_to( indices.size(), this->m_data.dim() );
 
     // First, use the lower bound (global) indices to populate x_min, x_max
-    for( unsigned int d = 0; d < this->dim(); d++ )
+    for( unsigned int d = 0; d < this->m_data.dim(); d++ )
       {
         this->compute_x0_x1( d, indices[d], x_min[d], x_max[d] );
       }
 
     // Now populate the values.
-    std::vector<unsigned int> local_indices(this->dim());
-    std::vector<unsigned int> global_indices(this->dim());
+    std::vector<unsigned int> local_indices(this->m_data.dim());
+    std::vector<unsigned int> global_indices(this->m_data.dim());
     for( unsigned int n = 0 ; n < this->n_coeffs(); n++ )
       {
         // Figure out local indices (each coordinate is 0 or 1)
@@ -118,7 +111,7 @@ namespace QUESO
            Then, global_indices = [ indices[0], indices[1] ];
            The upper right corner will have local_indices = [1,1];
            Then, global_indices = [ indices[0]+1, indices[1]+1 ]; */
-        for( unsigned int d = 0; d < this->dim(); d++ )
+        for( unsigned int d = 0; d < this->m_data.dim(); d++ )
           {
             if( local_indices[d] == 0 )
               global_indices[d] = indices[d];
@@ -134,8 +127,8 @@ namespace QUESO
         /* Now that we have the global indices for each coordinate,
            we get the "global" index. This is the index into the global
            values array */
-        unsigned int global = this->coordToGlobal( global_indices, this->m_n_points );
-        values[n] = this->m_values[global];
+        unsigned int global = this->coordToGlobal( global_indices, this->m_data.get_n_points() );
+        values[n] = this->m_data.get_value(global);
       }
   }
 
@@ -145,14 +138,14 @@ namespace QUESO
                                                                       const std::vector<double>& values,
                                                                       const V & domainVector ) const
   {
-    queso_assert_equal_to( x_min.size(), this->dim() );
-    queso_assert_equal_to( x_max.size(), this->dim() );
+    queso_assert_equal_to( x_min.size(), this->m_data.dim() );
+    queso_assert_equal_to( x_max.size(), this->m_data.dim() );
     queso_assert_equal_to( values.size(), this->n_coeffs() );
-    queso_assert_equal_to( domainVector.sizeGlobal(), this->dim() );
+    queso_assert_equal_to( domainVector.sizeGlobal(), this->m_data.dim() );
 
     double interp_value = 0.0;
 
-    std::vector<unsigned int> indices( this->dim() );
+    std::vector<unsigned int> indices( this->m_data.dim() );
 
     for( unsigned int n = 0; n < this->n_coeffs(); n++ )
       {
@@ -170,7 +163,7 @@ namespace QUESO
   unsigned int LinearLagrangeInterpolationSurrogate<V,M>::coordsToSingle( const std::vector<unsigned int>& indices ) const
   {
     unsigned int local_dim = 2;
-    std::vector<unsigned int> n_points( this->dim(), local_dim );
+    std::vector<unsigned int> n_points( this->m_data.dim(), local_dim );
 
     /* We're abusing this function as it does what we need to with local_dim = 2
        for all entries of n_points. */
@@ -186,7 +179,7 @@ namespace QUESO
        so we use integer arithmetic and work backwards. */
     unsigned int tmp = global;
 
-    for( int d = this->dim()-1; d > 0; d -= 1 )
+    for( int d = this->m_data.dim()-1; d > 0; d -= 1 )
       {
         unsigned int dp = std::pow(local_dim, d);
         indices[d] = tmp/dp;
@@ -206,14 +199,14 @@ namespace QUESO
                                                                              const std::vector<unsigned int>& indices,
                                                                              const V & domainVector ) const
   {
-    queso_assert_equal_to( x_min.size(), this->dim() );
-    queso_assert_equal_to( x_max.size(), this->dim() );
-    queso_assert_equal_to( indices.size(), this->dim() );
-    queso_assert_equal_to( domainVector.sizeGlobal(), this->dim() );
+    queso_assert_equal_to( x_min.size(), this->m_data.dim() );
+    queso_assert_equal_to( x_max.size(), this->m_data.dim() );
+    queso_assert_equal_to( indices.size(), this->m_data.dim() );
+    queso_assert_equal_to( domainVector.sizeGlobal(), this->m_data.dim() );
 
     double value = 1.0;
 
-    for( unsigned int d = 0; d < this->dim(); d++ )
+    for( unsigned int d = 0; d < this->m_data.dim(); d++ )
       {
         value *= this->lagrange_poly( x_min[d], x_max[d], domainVector[d], indices[d] );
       }
@@ -245,9 +238,9 @@ namespace QUESO
   void LinearLagrangeInterpolationSurrogate<V,M>::compute_x0_x1( unsigned int dim, unsigned int index,
                                                                  double& x0, double& x1 ) const
   {
-    double x_min = this->x_min(dim);
+    double x_min = this->m_data.x_min(dim);
 
-    double spacing = this->spacing(dim);
+    double spacing = this->m_data.spacing(dim);
 
     x0 = x_min + spacing*index;
     x1 = x0 + spacing;
