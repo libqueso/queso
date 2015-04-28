@@ -249,6 +249,7 @@ libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovarianceRandom
 # Sources from surrogates/src
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateData.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBase.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateHelper.C
 libqueso_la_SOURCES += surrogates/src/LinearLagrangeInterpolationSurrogate.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBuilder.C
 
@@ -447,6 +448,7 @@ libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovarianceR
 libqueso_include_HEADERS += surrogates/inc/SurrogateBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateData.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBase.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateHelper.h
 libqueso_include_HEADERS += surrogates/inc/LinearLagrangeInterpolationSurrogate.h
 libqueso_include_HEADERS += surrogates/inc/SurrogateBuilderBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBuilder.h
