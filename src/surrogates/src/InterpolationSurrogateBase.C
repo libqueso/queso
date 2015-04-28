@@ -28,7 +28,6 @@
 // QUESO
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
-#include <queso/VectorSpace.h>
 
 // C++
 #include <sstream>
@@ -53,19 +52,17 @@ namespace QUESO
                                                                const std::vector<unsigned int>& n_points ) const
   {
     // Make sure dimension is consistent between inputs
-    queso_assert_equal_to( coord_indices.size(), n_points.size() );
+    queso_assert_equal_to( coord_indices.size(), this->dim() );
 
     // Make sure dimension is consisent with parameter space
-    queso_assert_equal_to( coord_indices.size(), this->m_domain.vectorSpace().dimGlobal() );
-
-    unsigned int dim = this->m_domain.vectorSpace().dimGlobal();
+    queso_assert_equal_to( coord_indices.size(), this->dim() );
 
     /* Mapping is: i + j*n_i + k*n_i*n_j + l*n_i*n_j*n_k + ...
        Initialize global_index to "i".
        Then loop and build up each term.*/
     unsigned int global_index = coord_indices[0];
 
-    for( unsigned int d = 1; d < dim; d++ )
+    for( unsigned int d = 1; d < this->dim(); d++ )
       {
         // Accumulate the current term
         unsigned int idx = coord_indices[d];
@@ -85,7 +82,7 @@ namespace QUESO
   template<class V, class M>
   void InterpolationSurrogateBase<V,M>::check_dim_consistency() const
   {
-    if( this->m_domain.vectorSpace().dimGlobal() != this->m_n_points.size() )
+    if( this->dim() != this->m_n_points.size() )
       {
         std::stringstream vspace_dim;
         vspace_dim << this->m_domain.vectorSpace().dimGlobal();
