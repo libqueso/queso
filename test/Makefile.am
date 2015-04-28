@@ -48,6 +48,7 @@ check_PROGRAMS += test_1D_LinearLagrangeInterpolationSurrogate
 check_PROGRAMS += test_2D_LinearLagrangeInterpolationSurrogate
 check_PROGRAMS += test_3D_LinearLagrangeInterpolationSurrogate
 check_PROGRAMS += test_4D_LinearLagrangeInterpolationSurrogate
+check_PROGRAMS += test_build_InterpolationSurrogateBuilder
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -121,6 +122,7 @@ test_1D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurroga
 test_2D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurrogate/test_2D_LinearLagrangeInterpolationSurrogate.C
 test_3D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurrogate/test_3D_LinearLagrangeInterpolationSurrogate.C
 test_4D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurrogate/test_4D_LinearLagrangeInterpolationSurrogate.C
+test_build_InterpolationSurrogateBuilder_SOURCES = test_InterpolationSurrogate/test_build_InterpolationSurrogateBuilder.C
 
 # Files to freedom stamp
 srcstamp =
@@ -165,6 +167,7 @@ srcstamp += $(test_1D_LinearLagrangeInterpolationSurrogate_SOURCES)
 srcstamp += $(test_2D_LinearLagrangeInterpolationSurrogate_SOURCES)
 srcstamp += $(test_3D_LinearLagrangeInterpolationSurrogate_SOURCES)
 srcstamp += $(test_4D_LinearLagrangeInterpolationSurrogate_SOURCES)
+srcstamp += $(test_build_InterpolationSurrogateBuilder_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -210,6 +213,7 @@ TESTS += $(top_builddir)/test/test_1D_LinearLagrangeInterpolationSurrogate
 TESTS += $(top_builddir)/test/test_2D_LinearLagrangeInterpolationSurrogate
 TESTS += $(top_builddir)/test/test_3D_LinearLagrangeInterpolationSurrogate
 TESTS += $(top_builddir)/test/test_4D_LinearLagrangeInterpolationSurrogate
+TESTS += $(top_builddir)/test/test_build_InterpolationSurrogateBuilder
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
