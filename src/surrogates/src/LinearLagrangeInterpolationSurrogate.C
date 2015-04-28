@@ -181,7 +181,7 @@ namespace QUESO
        so we use integer arithmetic and work backwards. */
     unsigned int tmp = global;
 
-    for( unsigned int d = this->dim()-1; d > 0; d -= 1 )
+    for( int d = this->dim()-1; d > 0; d -= 1 )
       {
         unsigned int dp = std::pow(local_dim, d);
         indices[d] = tmp/dp;

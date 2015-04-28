@@ -66,12 +66,12 @@ namespace QUESO
       {
         // Accumulate the current term
         unsigned int idx = coord_indices[d];
-        unsigned int local_d = d-1;
-        do
+
+        for( int local_d = d-1; local_d >=0; local_d -= 1)
           {
             idx *= n_points[local_d];
             local_d -= 1;
-          } while( local_d >= 0 );
+          }
 
         global_index += idx;
       }
