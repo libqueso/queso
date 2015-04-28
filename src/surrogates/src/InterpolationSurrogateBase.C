@@ -51,19 +51,20 @@ namespace QUESO
   unsigned int InterpolationSurrogateBase<V,M>::coordToGlobal( const std::vector<unsigned int>& coord_indices,
                                                                const std::vector<unsigned int>& n_points ) const
   {
-    // Make sure dimension is consistent between inputs
     queso_assert_equal_to( coord_indices.size(), this->dim() );
-
-    // Make sure dimension is consisent with parameter space
-    queso_assert_equal_to( coord_indices.size(), this->dim() );
+    queso_assert_equal_to( n_points.size(), this->dim() );
 
     /* Mapping is: i + j*n_i + k*n_i*n_j + l*n_i*n_j*n_k + ...
        Initialize global_index to "i".
        Then loop and build up each term.*/
+    queso_assert_less( coord_indices[0], n_points[0] );
+
     unsigned int global_index = coord_indices[0];
 
     for( unsigned int d = 1; d < this->dim(); d++ )
       {
+        queso_assert_less( coord_indices[d], n_points[d] );
+
         // Accumulate the current term
         unsigned int idx = coord_indices[d];
 
