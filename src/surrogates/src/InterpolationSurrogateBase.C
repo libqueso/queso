@@ -101,6 +101,16 @@ namespace QUESO
       }
   }
 
+  template<class V, class M>
+  double InterpolationSurrogateBase<V,M>::spacing( unsigned int dim ) const
+  {
+    unsigned int n_intervals = this->m_n_points[dim]-1;
+    double x_min = this->x_min(dim);
+    double x_max = this->x_max(dim);
+
+    return (x_max-x_min)/n_intervals;
+  }
+
 } // end namespace QUESO
 
 // Instantiate
