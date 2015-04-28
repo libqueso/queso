@@ -39,14 +39,18 @@ namespace QUESO
 
     ~InterpolationSurrogateData();
 
-    const BoxSubset<V,M>& paramDomain() const
+    const BoxSubset<V,M>& get_paramDomain() const
     { return this->m_domain; };
 
-    const std::vector<unsigned int>& n_points() const
+    const std::vector<unsigned int>& get_n_points() const
     { return this->m_n_points; };
 
-    const std::vector<double>& values() const
+    const std::vector<double>& get_values() const
     { return this->m_values; };
+
+    double get_value( unsigned int n ) const
+    { queso_assert_less(n,this->m_values.size());
+      return this->m_values[n]; };
 
     void set_values( std::vector<double>& values );
 
