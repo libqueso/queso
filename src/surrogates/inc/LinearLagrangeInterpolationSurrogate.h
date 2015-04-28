@@ -38,6 +38,8 @@ namespace QUESO
                                          const std::vector<unsigned int>& n_points,
                                          const std::vector<double>& values);
 
+    LinearLagrangeInterpolationSurrogate( const InterpolationSurrogateBuilder<V,M>& builder );
+
     virtual ~LinearLagrangeInterpolationSurrogate(){};
 
     //! Evaluates value of the interpolant for the given domainVector

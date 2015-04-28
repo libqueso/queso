@@ -28,6 +28,7 @@
 #include <queso/SurrogateBase.h>
 #include <queso/BoxSubset.h>
 #include <queso/VectorSpace.h>
+#include <queso/InterpolationSurrogateBuilder.h>
 
 namespace QUESO
 {
@@ -52,6 +53,11 @@ namespace QUESO
     InterpolationSurrogateBase(const BoxSubset<V,M> & domain,
                                const std::vector<unsigned int>& n_points,
                                const std::vector<double>& values);
+
+    //! Constructor
+    /*! We extract data from the SurrogateBuilder. Note that the builder
+        MUST live as long as this object since we only extract const&. */
+    InterpolationSurrogateBase( const InterpolationSurrogateBuilder<V,M>& builder );
 
     virtual ~InterpolationSurrogateBase(){};
 

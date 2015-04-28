@@ -48,6 +48,17 @@ namespace QUESO
     }
 
   template<class V, class M>
+  InterpolationSurrogateBase<V,M>::InterpolationSurrogateBase(const InterpolationSurrogateBuilder<V,M>& builder )
+    : SurrogateBase<V>(),
+    m_domain(builder.paramDomain()),
+    m_n_points(builder.n_points()),
+    m_values(builder.values())
+    {
+      // This checks that the dimension of n_points and the domain are consistent
+      this->check_dim_consistency();
+    }
+
+  template<class V, class M>
   unsigned int InterpolationSurrogateBase<V,M>::coordToGlobal( const std::vector<unsigned int>& coord_indices,
                                                                const std::vector<unsigned int>& n_points ) const
   {

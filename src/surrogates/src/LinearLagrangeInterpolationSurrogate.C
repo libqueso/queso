@@ -39,6 +39,11 @@ namespace QUESO
   {}
 
   template<class V, class M>
+  LinearLagrangeInterpolationSurrogate<V,M>::LinearLagrangeInterpolationSurrogate( const InterpolationSurrogateBuilder<V,M>& builder )
+    : InterpolationSurrogateBase<V,M>(builder)
+  {}
+
+  template<class V, class M>
   double LinearLagrangeInterpolationSurrogate<V,M>::evaluate(const V & domainVector) const
   {
     /* Populate indices. These are the lower bound global indices for the
