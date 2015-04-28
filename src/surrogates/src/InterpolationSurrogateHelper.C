@@ -65,4 +65,44 @@ namespace QUESO
     return global_index;
   }
 
+  void InterpolationSurrogateHelper::globalToCoord( unsigned int global,
+                                                    const std::vector<unsigned int>& n_points,
+                                                    std::vector<unsigned int>& coord_indices )
+  {
+    // The input object implicitly carry's the dimension
+    unsigned int dim = n_points.size();
+
+    coord_indices.resize(dim);
+
+    /* coordToGlobal computes: i + j*n_points[0] + k*n_points[0]*n_points[1] + ...
+       so we use integer arithmetic and work backwards. */
+    unsigned int tmp = global;
+
+    for( int d = dim-1; d > 0; d -= 1 )
+      {
+        unsigned int np = compute_npoints_factor( n_points, d );
+        coord_indices[d] = tmp/np;
+        tmp -= coord_indices[d]*np;
+      }
+
+    // What's left should be our starting index
+    coord_indices[0] = tmp;
+
+    // Sanity check: the indices we determined should map back to the global
+    queso_assert_equal_to( global, coordToGlobal(coord_indices,n_points) );
+  }
+
+  unsigned int InterpolationSurrogateHelper::compute_npoints_factor( const std::vector<unsigned int>& n_points,
+                                                                     unsigned int term )
+  {
+    unsigned int value = 1;
+
+    for( unsigned int d = 0; d < term; d++ )
+      {
+        value *= n_points[d];
+      }
+
+    return value;
+  }
+
 } // end namespace QUESO

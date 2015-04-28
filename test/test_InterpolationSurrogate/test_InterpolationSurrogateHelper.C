@@ -64,5 +64,35 @@ int main()
       return_flag = 1;
     }
 
+  std::vector<unsigned int> indices_test;
+  QUESO::InterpolationSurrogateHelper::globalToCoord( global, n_points, indices_test );
+
+  unsigned int test_indices = 0;
+  for( unsigned int d = 0; d < 5; d++ )
+    {
+      if( indices[d] != indices_test[d] )
+        test_indices = 1;
+    }
+
+  if( test_indices == 1 )
+    {
+      std::cerr << "ERROR: mismatch in InterpolationSurrogateHelper::globalToCoord test." << std::endl
+                << "       test  = ";
+      for( unsigned int d = 0; d < 5; d++ )
+        {
+           std::cerr << indices_test[d] << " ";
+        }
+      std::cerr << std::endl;
+
+      std::cerr << "       exact = ";
+      for( unsigned int d = 0; d < 5; d++ )
+        {
+          std::cerr << indices[d] << " ";
+        }
+      std::cerr << std::endl;
+
+      return_flag = 1;
+    }
+
   return return_flag;
 }
