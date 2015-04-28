@@ -38,7 +38,6 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
   : BaseInputOptions(&env),
     m_prefix((std::string)(prefix) + "infmcmc_"),
     m_env(env),
-    m_optionsDesc(new po::options_description("Infinite Dimensional MCMC Sampler options")),
     m_option_help(m_prefix + "help"),
     m_option_dataOutputDirName(m_prefix + "dataOutputDirName"),
     m_option_dataOutputFileName(m_prefix + "dataOutputFileName"),
@@ -54,9 +53,6 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
 
 InfiniteDimensionalMCMCSamplerOptions::~InfiniteDimensionalMCMCSamplerOptions()
 {
-  if (m_optionsDesc) {
-    delete m_optionsDesc;
-  }
 }
 
 void InfiniteDimensionalMCMCSamplerOptions::defineOptions()

@@ -83,7 +83,6 @@ private:
 
   const BaseEnvironment& m_env;
 
-  po::options_description* m_optionsDesc;
   std::string m_option_help;
   std::string m_option_dataOutputDirName;
   std::string m_option_dataOutputFileName;
