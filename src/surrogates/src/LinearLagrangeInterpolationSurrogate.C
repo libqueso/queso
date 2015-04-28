@@ -28,6 +28,7 @@
 // QUESO
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/InterpolationSurrogateHelper.h>
 
 namespace QUESO
 {
@@ -128,7 +129,7 @@ namespace QUESO
         /* Now that we have the global indices for each coordinate,
            we get the "global" index. This is the index into the global
            values array */
-        unsigned int global = this->coordToGlobal( global_indices, this->m_data.get_n_points() );
+        unsigned int global = InterpolationSurrogateHelper::coordToGlobal( global_indices, this->m_data.get_n_points() );
         values[n] = this->m_data.get_value(global);
       }
   }
@@ -168,30 +169,18 @@ namespace QUESO
 
     /* We're abusing this function as it does what we need to with local_dim = 2
        for all entries of n_points. */
-    return this->coordToGlobal( indices, n_points );
+    return InterpolationSurrogateHelper::coordToGlobal( indices, n_points );
   }
 
   template<class V, class M>
   void LinearLagrangeInterpolationSurrogate<V,M>::singleToCoords( unsigned int global, std::vector<unsigned int>& indices ) const
   {
     unsigned int local_dim = 2;
+    std::vector<unsigned int> n_points( this->m_data.dim(), local_dim );
 
-    /* coordsToSingle computes: i + j*local_dim + k*local_dim*local_dim + ...
-       so we use integer arithmetic and work backwards. */
-    unsigned int tmp = global;
-
-    for( int d = this->m_data.dim()-1; d > 0; d -= 1 )
-      {
-        unsigned int dp = std::pow(local_dim, d);
-        indices[d] = tmp/dp;
-        tmp -= indices[d]*dp;
-      }
-
-    // What's left should be our starting index
-    indices[0] = tmp;
-
-    // Sanity check: the indices we determined should map back to the global
-    queso_assert_equal_to( global, this->coordsToSingle(indices) );
+    /* We're abusing this function as it does what we need to with local_dim = 2
+       for all entries of n_points. */
+    return InterpolationSurrogateHelper::globalToCoord( global, n_points, indices );
   }
 
   template<class V, class M>

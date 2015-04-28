@@ -54,16 +54,6 @@ namespace QUESO
 
     virtual ~InterpolationSurrogateBase(){};
 
-    //! Map coordinate indices to a singal global index.
-    /*! e.g. in 3-D, you pass in i,j,k and the n_points in each of the 3 directions.
-        This function will return the corresponding global index to which the value
-        at i,j,k can be indexed. Ordering must be consistent between coord_indices
-        and n_points. Must be ordered in increasing dimension. e.g. x,y,z,...
-        The user shouldn't need to call this method, this is public mainly to
-        facilitate testing. */
-    unsigned int coordToGlobal( const std::vector<unsigned int>& coord_indices,
-                                const std::vector<unsigned int>& n_points ) const;
-
   protected:
 
     const InterpolationSurrogateData<V,M>& m_data;

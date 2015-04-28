@@ -40,38 +40,6 @@ namespace QUESO
     m_data(data)
     {}
 
-  template<class V, class M>
-  unsigned int InterpolationSurrogateBase<V,M>::coordToGlobal( const std::vector<unsigned int>& coord_indices,
-                                                               const std::vector<unsigned int>& n_points ) const
-  {
-    queso_assert_equal_to( coord_indices.size(), this->m_data.dim() );
-    queso_assert_equal_to( n_points.size(), this->m_data.dim() );
-
-    /* Mapping is: i + j*n_i + k*n_i*n_j + l*n_i*n_j*n_k + ...
-       Initialize global_index to "i".
-       Then loop and build up each term.*/
-    queso_assert_less( coord_indices[0], n_points[0] );
-
-    unsigned int global_index = coord_indices[0];
-
-    for( unsigned int d = 1; d < this->m_data.dim(); d++ )
-      {
-        queso_assert_less( coord_indices[d], n_points[d] );
-
-        // Accumulate the current term
-        unsigned int idx = coord_indices[d];
-
-        for( int local_d = d-1; local_d >=0; local_d -= 1)
-          {
-            idx *= n_points[local_d];
-          }
-
-        global_index += idx;
-      }
-
-    return global_index;
-  }
-
 } // end namespace QUESO
 
 // Instantiate
