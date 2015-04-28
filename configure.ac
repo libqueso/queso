@@ -209,6 +209,7 @@ AC_CONFIG_FILES([
   test/test_Regression/test_jeffreys_samples.m
   test/test_Regression/adaptedcov_input.txt
   test/test_gaussian_likelihoods/queso_input.txt
+  test/test_InterpolationSurrogate/queso_input.txt
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page

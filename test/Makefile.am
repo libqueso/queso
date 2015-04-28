@@ -44,6 +44,7 @@ check_PROGRAMS += test_fullCovarianceChain
 check_PROGRAMS += test_diagonalCovarianceChain
 check_PROGRAMS += test_scalarCovarianceChain
 check_PROGRAMS += test_blockDiagonalCovarianceChain
+check_PROGRAMS += test_1D_LinearLagrangeInterpolationSurrogate
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -113,6 +114,7 @@ test_fullCovarianceChain_SOURCES = test_gaussian_likelihoods/test_fullCovariance
 test_diagonalCovarianceChain_SOURCES = test_gaussian_likelihoods/test_diagonalCovarianceChain.C
 test_scalarCovarianceChain_SOURCES = test_gaussian_likelihoods/test_scalarCovarianceChain.C
 test_blockDiagonalCovarianceChain_SOURCES = test_gaussian_likelihoods/test_blockDiagonalCovarianceChain.C
+test_1D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurrogate/test_1D_LinearLagrangeInterpolationSurrogate.C
 
 # Files to freedom stamp
 srcstamp =
@@ -153,6 +155,7 @@ srcstamp += $(test_GslBlockMatrixInvertMultiply_SOURCES)
 srcstamp += $(test_unifiedPositionsOfMaximum_SOURCES)
 srcstamp += $(test_fullCovarianceRandomCoefficient_SOURCES)
 srcstamp += $(test_blockDiagonalCovarianceRandomCoefficients_SOURCES)
+srcstamp += $(test_1D_LinearLagrangeInterpolationSurrogate_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -194,6 +197,7 @@ TESTS += $(top_builddir)/test/test_fullCovarianceChain
 TESTS += $(top_builddir)/test/test_diagonalCovarianceChain
 TESTS += $(top_builddir)/test/test_scalarCovarianceChain
 TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceChain
+TESTS += $(top_builddir)/test/test_1D_LinearLagrangeInterpolationSurrogate
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -218,6 +222,7 @@ EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples.m.in
 EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
 EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt.in
+EXTRA_DIST += test_InterpolationSurrogate/queso_input.txt.in
 EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
 
 CLEANFILES =
