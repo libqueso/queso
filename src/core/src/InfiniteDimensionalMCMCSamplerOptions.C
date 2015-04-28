@@ -35,7 +35,8 @@ namespace QUESO {
 InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     const BaseEnvironment& env,
     const char * prefix)
-  : m_prefix((std::string)(prefix) + "infmcmc_"),
+  : BaseInputOptions(&env),
+    m_prefix((std::string)(prefix) + "infmcmc_"),
     m_env(env),
     m_optionsDesc(new po::options_description("Infinite Dimensional MCMC Sampler options")),
     m_option_help(m_prefix + "help"),
@@ -58,31 +59,9 @@ InfiniteDimensionalMCMCSamplerOptions::~InfiniteDimensionalMCMCSamplerOptions()
   }
 }
 
-void InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()
+void InfiniteDimensionalMCMCSamplerOptions::defineOptions()
 {
-  UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
-                      m_env.worldRank(),
-                      "InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()",
-                      "m_optionsDesc variable is NULL");
-
-  this->defineMyOptions(*m_optionsDesc);
-  m_env.scanInputFileForMyOptions(*m_optionsDesc);
-  this->getMyOptionValues(*m_optionsDesc);
-
-  if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()"
-                            << ": after reading values of options with prefix '" << m_prefix
-                            << "', state of  object is:"
-                            << "\n" << *this
-                            << std::endl;
-  }
-  return;
-}
-
-void InfiniteDimensionalMCMCSamplerOptions::defineMyOptions(
-    po::options_description & optionsDesc) const
-{
-  optionsDesc.add_options()
+  (*m_optionsDescription).add_options()
     (m_option_help.c_str(), "produce help message for infinite dimensional sampler")
     (m_option_dataOutputDirName.c_str(), po::value<std::string>()->default_value(UQ_INF_DATA_OUTPUT_DIR_NAME_ODV), "name of data output dir")
     (m_option_dataOutputFileName.c_str(), po::value<std::string>()->default_value(UQ_INF_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file (HDF5)")
@@ -92,12 +71,11 @@ void InfiniteDimensionalMCMCSamplerOptions::defineMyOptions(
   return;
 }
 
-void InfiniteDimensionalMCMCSamplerOptions::getMyOptionValues(
-    po::options_description & optionsDesc)
+void InfiniteDimensionalMCMCSamplerOptions::getOptionValues()
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << optionsDesc
+      *m_env.subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
     }
   }
