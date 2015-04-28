@@ -72,6 +72,9 @@ namespace QUESO
     //! Helper function for constructor
     void check_dim_consistency() const;
 
+    //! Helper function for sizing m_values
+    void init_values( const std::vector<unsigned int>& n_points );
+
     //! Parameter domain over which we use surrogate
     const BoxSubset<V,M>& m_domain;
 
