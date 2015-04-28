@@ -55,6 +55,12 @@ namespace QUESO
 
     InterpolationSurrogateData<V,M>& m_data;
 
+    void set_work_bounds( unsigned int& n_begin, unsigned int& n_end ) const;
+
+    void set_value( unsigned int n, double value );
+
+    void set_domain_vector( unsigned int n, V& domain_vector ) const;
+
   private:
 
     InterpolationSurrogateBuilder();

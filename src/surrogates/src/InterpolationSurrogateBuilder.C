@@ -28,6 +28,7 @@
 // QUESO
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/InterpolationSurrogateHelper.h>
 
 namespace QUESO
 {
@@ -36,6 +37,52 @@ namespace QUESO
     : SurrogateBuilderBase<V>(),
     m_data(data)
   {}
+
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::build_values()
+  {
+    // vector to store current domain value
+    V* domain_vector = this->m_data.get_paramDomain().vectorSpace().newVector();
+
+    unsigned int n_begin, n_end;
+    this->set_work_bounds( n_begin, n_end );
+
+    for( unsigned int n = n_begin; n < n_end; n++ )
+      {
+        this->set_domain_vector( n, *domain_vector );
+
+        double value = this->evaluate_model( *domain_vector );
+
+        this->set_value( n, value );
+      }
+  }
+
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::set_work_bounds( unsigned int& n_begin, unsigned int& n_end ) const
+  {
+    n_begin = 0;
+    n_end = this->m_data.n_values();
+  }
+
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::set_value( unsigned int n, double value )
+  {
+    this->m_data.set_value(n, value);
+  }
+
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::set_domain_vector( unsigned int n, V& domain_vector ) const
+  {
+    // Convert global index n to local coordinates in each dimension
+    std::vector<unsigned int> indices(this->m_data.dim());
+    InterpolationSurrogateHelper::globalToCoord( n, this->m_data.get_n_points(), indices );
+
+    // Use indices to get x coordinates and populate domain_vector
+    for( unsigned int d = 0; d < this->m_data.dim(); d++ )
+      {
+        domain_vector[d] = this->m_data.get_x( d, indices[d] );
+      }
+  }
 
 } // end namespace QUESO
 
