@@ -38,7 +38,7 @@ namespace QUESO
   InterpolationSurrogateBase<V,M>::InterpolationSurrogateBase(const BoxSubset<V,M> & domain,
                                                               const std::vector<unsigned int>& n_points,
                                                               const std::vector<double>& values)
-    : SurrogateBase<V,M>(),
+    : SurrogateBase<V>(),
     m_domain(domain),
     m_n_points(n_points),
     m_values(values)

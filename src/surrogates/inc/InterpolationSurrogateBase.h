@@ -41,7 +41,7 @@ namespace QUESO
       index coordinates (i,j,k,...), where i runs from (0, n_points[0]-1),
       j run from (0,n_points[1]-1), etc. We use this indexing to build maps. */
   template<class V, class M>
-  class InterpolationSurrogateBase : public SurrogateBase<V,M>
+  class InterpolationSurrogateBase : public SurrogateBase<V>
   {
   public:
 

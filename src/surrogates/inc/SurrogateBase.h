@@ -33,7 +33,7 @@ namespace QUESO
       it can be used in the likelihood classes. Subclasses will define the
       particular surrogate model. Other classes will be used to build up the
       surrogate from the user's model. */
-  template<class V, class M>
+  template<class V>
   class SurrogateBase
   {
   public:
