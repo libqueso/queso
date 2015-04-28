@@ -88,7 +88,7 @@ namespace QUESO
     /*! We assume that the spacing in each coordinate direction is constant
         so we only need to know the number of points. Then we can use the coordToGlobal
         function to map coordinate indices to global index for access m_values. */
-    std::vector<unsigned int> m_n_points;
+    const std::vector<unsigned int>& m_n_points;
 
     //! vector to store values to be interpolated
     /*! These will be stored in a particular ordering. Subclasses
@@ -96,7 +96,7 @@ namespace QUESO
         vector.
         \todo We currently store all values reside on all processes. Generalization would
               be to partition values across processes allocated for the subenvironment. */
-    std::vector<double> m_values;
+    const std::vector<double>& m_values;
 
   private:
 
