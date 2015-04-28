@@ -80,6 +80,22 @@ namespace QUESO
   }
 
   template<class V, class M>
+  void InterpolationSurrogateData<V,M>::set_values( std::vector<double>& values )
+  {
+    queso_assert_equal_to( values.size(), m_values.size() );
+
+    this->m_values = values;
+  }
+
+  template<class V, class M>
+  void InterpolationSurrogateData<V,M>::set_value( unsigned int n, double value )
+  {
+    queso_assert_less( n, m_values.size() );
+
+    this->m_values[n] = value;
+  }
+
+  template<class V, class M>
   double InterpolationSurrogateData<V,M>::spacing( unsigned int dim ) const
   {
     unsigned int n_intervals = this->m_n_points[dim]-1;
