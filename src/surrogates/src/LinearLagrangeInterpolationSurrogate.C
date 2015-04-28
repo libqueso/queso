@@ -72,7 +72,7 @@ namespace QUESO
     for( unsigned int d = 0; d < this->dim(); d++ )
       {
         double spacing = this->spacing(d);
-        indices[d] = std::floor( domainVector[d]/spacing );
+        indices[d] = std::floor( (domainVector[d] - this->x_min(d))/spacing );
 
         // Index should be less than the number of point along this dimension
         queso_assert_less( indices[d], this->m_n_points[d] );
