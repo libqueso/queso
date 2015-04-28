@@ -179,6 +179,7 @@ BUILT_SOURCES += WignerJointPdf.h
 BUILT_SOURCES += WignerVectorRV.h
 BUILT_SOURCES += WignerVectorRealizer.h
 BUILT_SOURCES += InterpolationSurrogateBase.h
+BUILT_SOURCES += LinearLagrangeInterpolationSurrogate.h
 BUILT_SOURCES += SurrogateBase.h
 BUILT_SOURCES += config_queso.h
 BUILT_SOURCES += queso.h
@@ -532,6 +533,8 @@ WignerVectorRV.h: $(top_srcdir)/src/stats/inc/WignerVectorRV.h
 WignerVectorRealizer.h: $(top_srcdir)/src/stats/inc/WignerVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InterpolationSurrogateBase.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+LinearLagrangeInterpolationSurrogate.h: $(top_srcdir)/src/surrogates/inc/LinearLagrangeInterpolationSurrogate.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SurrogateBase.h: $(top_srcdir)/src/surrogates/inc/SurrogateBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

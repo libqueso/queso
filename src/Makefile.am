@@ -248,6 +248,7 @@ libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovarianceRandom
 
 # Sources from surrogates/src
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBase.C
+libqueso_la_SOURCES += surrogates/src/LinearLagrangeInterpolationSurrogate.C
 
 # Sources from gp/src
 
@@ -443,6 +444,7 @@ libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovarianceR
 # Headers to install from surrogates/inc
 libqueso_include_HEADERS += surrogates/inc/SurrogateBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBase.h
+libqueso_include_HEADERS += surrogates/inc/LinearLagrangeInterpolationSurrogate.h
 
 # Headers to install from gp/inc
 
