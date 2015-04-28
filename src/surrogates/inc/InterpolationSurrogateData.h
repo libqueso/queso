@@ -37,7 +37,7 @@ namespace QUESO
     InterpolationSurrogateData( const BoxSubset<V,M>& domain,
                                 const std::vector<unsigned int>& n_points );
 
-    ~InterpolationSurrogateData();
+    ~InterpolationSurrogateData(){};
 
     const BoxSubset<V,M>& get_paramDomain() const
     { return this->m_domain; };
