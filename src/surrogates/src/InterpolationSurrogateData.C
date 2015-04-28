@@ -105,6 +105,15 @@ namespace QUESO
     return (x_max-x_min)/n_intervals;
   }
 
+  template<class V, class M>
+  double InterpolationSurrogateData<V,M>::get_x( unsigned int dim, unsigned int index ) const
+  {
+    double x_min = this->x_min(dim);
+    double spacing = this->spacing(dim);
+
+    return x_min + spacing*index;
+  }
+
 } // end namespace QUESO
 
 // Instantiate

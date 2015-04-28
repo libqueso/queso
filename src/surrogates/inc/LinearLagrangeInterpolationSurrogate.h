@@ -94,10 +94,6 @@ namespace QUESO
       index must be 0 or 1. */
     double lagrange_poly( double x0, double x1, double x, unsigned int index ) const;
 
-    //! Compute x0 and x1 given the dimension and the point index along dim
-    void compute_x0_x1( unsigned int dim, unsigned int index,
-                        double& x0, double& x1 ) const;
-
   private:
 
     LinearLagrangeInterpolationSurrogate();

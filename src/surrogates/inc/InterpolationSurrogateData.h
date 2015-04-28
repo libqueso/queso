@@ -77,6 +77,9 @@ namespace QUESO
     //! Spacing between points along dimension dim
     double spacing( unsigned int dim ) const;
 
+    //! Get spatial coordinate value at the node index along coordinate direction dim
+    double get_x( unsigned int dim, unsigned int index ) const;
+
   private:
 
     InterpolationSurrogateData();

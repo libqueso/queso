@@ -91,7 +91,8 @@ namespace QUESO
     // First, use the lower bound (global) indices to populate x_min, x_max
     for( unsigned int d = 0; d < this->m_data.dim(); d++ )
       {
-        this->compute_x0_x1( d, indices[d], x_min[d], x_max[d] );
+        x_min[d] = this->m_data.get_x( d, indices[d] );
+        x_max[d] = x_min[d] + this->m_data.spacing( d );
       }
 
     // Now populate the values.
@@ -232,18 +233,6 @@ namespace QUESO
       value = (x-x0)/(x1-x0);
 
     return value;
-  }
-
-  template<class V, class M>
-  void LinearLagrangeInterpolationSurrogate<V,M>::compute_x0_x1( unsigned int dim, unsigned int index,
-                                                                 double& x0, double& x1 ) const
-  {
-    double x_min = this->m_data.x_min(dim);
-
-    double spacing = this->m_data.spacing(dim);
-
-    x0 = x_min + spacing*index;
-    x1 = x0 + spacing;
   }
 
 } // end namespace QUESO
