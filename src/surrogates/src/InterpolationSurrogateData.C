@@ -69,11 +69,11 @@ namespace QUESO
   template<class V, class M>
   void InterpolationSurrogateData<V,M>::init_values( const std::vector<unsigned int>& n_points )
   {
-    unsigned int n_total_points = 0;
+    unsigned int n_total_points = 1.0;
     for( std::vector<unsigned int>::const_iterator it = n_points.begin();
          it != n_points.end(); ++it )
       {
-        n_total_points += *it;
+        n_total_points *= *it;
       }
 
     this->m_values.resize(n_total_points);
