@@ -30,13 +30,52 @@
 #include <queso/GslMatrix.h>
 #include <queso/InterpolationSurrogateHelper.h>
 
+// C++
+#include <numeric>
+
 namespace QUESO
 {
   template<class V, class M>
   InterpolationSurrogateBuilder<V,M>::InterpolationSurrogateBuilder( InterpolationSurrogateData<V,M>& data )
     : SurrogateBuilderBase<V>(),
-    m_data(data)
-  {}
+    m_data(data),
+    m_njobs(data.get_paramDomain().env().numSubEnvironments(), 0)
+  {
+    this->partition_work();
+  }
+
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::partition_work()
+  {
+    // Convenience
+    unsigned int n_values = this->m_data.n_values();
+    unsigned int n_workers = this->m_data.get_paramDomain().env().numSubEnvironments();
+
+    unsigned int n_jobs = n_values/n_workers;
+    unsigned int n_leftover = this->m_data.n_values() % n_workers;
+
+    /* If the number of values is evenly divisible over all workers,
+       then everyone gets the same amount work */
+    if( n_leftover  == 0 )
+      {
+        for(unsigned int n = 0; n < n_workers; n++)
+          this->m_njobs[n] = n_jobs;
+      }
+    /* Otherwise, some workers get more work than others*/
+    else
+      {
+        for(unsigned int n = 0; n < n_workers; n++)
+          {
+            if( n < n_leftover )
+              this->m_njobs[n] = n_jobs+1;
+            else
+              this->m_njobs[n] = n_jobs;
+          }
+      }
+
+    // Sanity check
+    queso_assert_equal_to( n_values, std::accumulate( m_njobs.begin(), m_njobs.end(), 0 ) );
+  }
 
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::build_values()

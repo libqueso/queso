@@ -55,6 +55,11 @@ namespace QUESO
 
     InterpolationSurrogateData<V,M>& m_data;
 
+    //! Cache the amount of work for each subenvironment
+    std::vector<unsigned int> m_njobs;
+
+    void partition_work();
+
     void set_work_bounds( unsigned int& n_begin, unsigned int& n_end ) const;
 
     void set_value( unsigned int n, double value );
