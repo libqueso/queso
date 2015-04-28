@@ -36,10 +36,13 @@
 namespace QUESO
 {
   template<class V, class M>
-  InterpolationSurrogateBase<V,M>::InterpolationSurrogateBase(const VectorSet<V,M> & domain,
-                                                              const std::vector<unsigned int>& n_points )
-      : SurrogateBase<V,M>(domain),
-        m_n_points(n_points)
+  InterpolationSurrogateBase<V,M>::InterpolationSurrogateBase(const BoxSubset<V,M> & domain,
+                                                              const std::vector<unsigned int>& n_points,
+                                                              const std::vector<double>& values)
+    : SurrogateBase<V,M>(),
+    m_domain(domain),
+    m_n_points(n_points),
+    m_values(values)
     {
       // This checks that the dimension of n_points and the domain are consistent
       this->check_dim_consistency();

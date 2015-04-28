@@ -26,6 +26,8 @@
 #define UQ_INTERPOLATION_SURROGATE_BASE_H
 
 #include <queso/SurrogateBase.h>
+#include <queso/BoxSubset.h>
+#include <queso/VectorSpace.h>
 
 namespace QUESO
 {
@@ -47,8 +49,9 @@ namespace QUESO
     /*! n_points should be a vector with dimension matching the dimension of
         the parameter space and contain the number of points in each coordinate
         direction for the interpolant. */
-    InterpolationSurrogateBase(const VectorSet<V,M> & domain,
-                               const std::vector<unsigned int>& n_points );
+    InterpolationSurrogateBase(const BoxSubset<V,M> & domain,
+                               const std::vector<unsigned int>& n_points,
+                               const std::vector<double>& values);
 
     virtual ~InterpolationSurrogateBase(){};
 
@@ -63,6 +66,9 @@ namespace QUESO
                                 const std::vector<unsigned int>& n_points ) const;
 
   protected:
+
+    //! Parameter domain over which we use surrogate
+    const BoxSubset<V,M>& m_domain;
 
     //! vector to store number of points in each coordinate direction
     /*! We assume that the spacing in each coordinate direction is constant

@@ -25,8 +25,6 @@
 #ifndef UQ_SURROGATE_BASE_H
 #define UQ_SURROGATE_BASE_H
 
-#include <queso/VectorSet.h>
-
 namespace QUESO
 {
   //! Base class for surrogates of models
@@ -40,23 +38,12 @@ namespace QUESO
   {
   public:
 
-    SurrogateBase(const VectorSet<V,M>& domain)
-      : m_domain(domain)
-    {};
+    SurrogateBase(){};
 
     virtual ~SurrogateBase(){};
 
     //! Method to return value given the parameter vector
     virtual double evaluate(const V & domainVector) const =0;
-
-  protected:
-
-    //! Parameter domain over which we use surrogate
-    const VectorSet<V,M>& m_domain;
-
-  private:
-
-    SurrogateBase();
 
   };
 
