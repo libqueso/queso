@@ -52,6 +52,9 @@ namespace QUESO
     { queso_assert_less(n,this->m_values.size());
       return this->m_values[n]; };
 
+    unsigned int n_values() const
+    { return this->m_values.size(); };
+
     //! Set all values. Dimension must be consistent with internal m_values.
     /*! This does a full copy of the values vector. This is mainly for testing,
         users are encouraged to use the InterpolationSurrogateBuilder. */
