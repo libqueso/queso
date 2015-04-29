@@ -35,8 +35,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
   const SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulStorage)
   :
   m_env                     (simulStorage.env()),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL),
+  m_optionsObj              (alternativeOptionsValues),
   m_paper_p_x               (simulStorage.scenarioSpace().dimLocal()),
   m_paper_p_t               (simulStorage.parameterSpace().dimLocal()),
   m_paper_m                 (simulStorage.numSimulations()),
@@ -99,14 +98,24 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
                             << std::endl;
   }
 
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new SimulationModelOptions(m_env,prefix,m_alternativeOptionsValues);
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    SmOptionsValues * tempOptions = new SmOptionsValues(&m_env, prefix);
+
+    // If there's an input file, we grab the options from there.  Otherwise the
+    // defaults are used
+    if (m_env.optionsInputFileName() != "") {
+      tempOptions->scanOptionsValues();
+    }
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
   }
-  else {
-    m_optionsObj = new SimulationModelOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
-  }
+
+  // We'll need to remove this later
+  m_simulationModelOptions = new SimulationModelOptions(m_env, prefix);
+
 
   UQ_FATAL_TEST_MACRO(m_paper_p_eta > m_paper_m,
                       m_env.worldRank(),
@@ -493,8 +502,8 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     m_paper_p_eta = computePEta(svdS_vec);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
-                              << ", m_optionsObj->m_ov.m_cdfThresholdForPEta = "       << m_optionsObj->m_ov.m_cdfThresholdForPEta
-                              << ", m_optionsObj->m_ov.m_zeroRelativeSingularValue = " << m_optionsObj->m_ov.m_zeroRelativeSingularValue
+                              << ", m_optionsObj->m_cdfThresholdForPEta = "       << m_optionsObj->m_cdfThresholdForPEta
+                              << ", m_optionsObj->m_zeroRelativeSingularValue = " << m_optionsObj->m_zeroRelativeSingularValue
                               << ": m_paper_p_eta(1) = "                               << m_paper_p_eta
                               << std::endl;
     }
@@ -584,8 +593,8 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     m_paper_p_eta = computePEta(svdS_vec);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
-                              << ", m_optionsObj->m_ov.m_cdfThresholdForPEta = "       << m_optionsObj->m_ov.m_cdfThresholdForPEta
-                              << ", m_optionsObj->m_ov.m_zeroRelativeSingularValue = " << m_optionsObj->m_ov.m_zeroRelativeSingularValue
+                              << ", m_optionsObj->m_cdfThresholdForPEta = "       << m_optionsObj->m_cdfThresholdForPEta
+                              << ", m_optionsObj->m_zeroRelativeSingularValue = " << m_optionsObj->m_zeroRelativeSingularValue
                               << ": m_paper_p_eta(2) = "                               << m_paper_p_eta
                               << std::endl;
     }
@@ -644,7 +653,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
 
   std::set<unsigned int> tmpSet;
   tmpSet.insert(m_env.subId());
-  if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+  if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
     m_Kmat_eta->subWriteContents("Kmat_eta",
                                  "mat_K_eta",
                                  "m",
@@ -754,12 +763,12 @@ unsigned int
 SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::computePEta(const Q_V& svdS_vec)
 {
   unsigned int result = 0;
-  if (m_optionsObj->m_ov.m_cdfThresholdForPEta <= 0.) {
-    result = m_optionsObj->m_ov.m_p_eta;
+  if (m_optionsObj->m_cdfThresholdForPEta <= 0.) {
+    result = m_optionsObj->m_p_eta;
   }
-  else if (m_optionsObj->m_ov.m_cdfThresholdForPEta >= 1.) {
+  else if (m_optionsObj->m_cdfThresholdForPEta >= 1.) {
     for (unsigned int i = 0; i < svdS_vec.sizeLocal(); ++i) {
-      if ((svdS_vec[i]/svdS_vec[0]) > m_optionsObj->m_ov.m_zeroRelativeSingularValue) {
+      if ((svdS_vec[i]/svdS_vec[0]) > m_optionsObj->m_zeroRelativeSingularValue) {
         result++;
       }
     }
@@ -781,7 +790,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::computePEta(const Q_V& svdS_vec)
       auxCumSum[i] = auxCumSum[i-1] + auxVec[i];
     }
     for (unsigned int i = 0; i < auxVec.sizeLocal(); ++i) {
-      if (auxCumSum[i] < m_optionsObj->m_ov.m_cdfThresholdForPEta) {
+      if (auxCumSum[i] < m_optionsObj->m_cdfThresholdForPEta) {
         result++;
       }
     }
@@ -892,7 +901,10 @@ template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const SimulationModelOptions&
 SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::optionsObj() const
 {
-  return *m_optionsObj;
+  // This method returns the old SimulationModelOptions object.  We're using
+  // the new SmOptionsValues so this method is deprecated.
+  queso_deprecated();
+  return *m_simulationModelOptions;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
