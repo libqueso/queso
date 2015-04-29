@@ -62,7 +62,8 @@ namespace QUESO
 
     void set_work_bounds( unsigned int& n_begin, unsigned int& n_end ) const;
 
-    void set_value( unsigned int n, double value );
+    void sync_data( std::vector<unsigned int>& local_n,
+                    std::vector<double>& local_values );
 
     void set_domain_vector( unsigned int n, V& domain_vector ) const;
 

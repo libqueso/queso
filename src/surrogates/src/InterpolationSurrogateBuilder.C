@@ -80,20 +80,31 @@ namespace QUESO
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::build_values()
   {
-    // vector to store current domain value
-    V* domain_vector = this->m_data.get_paramDomain().vectorSpace().newVector();
-
     unsigned int n_begin, n_end;
     this->set_work_bounds( n_begin, n_end );
 
+    // Cache each processors work, then we only need to do 1 Allgather
+    std::vector<unsigned int> local_n(n_end-n_begin);
+    std::vector<double> local_values(n_end-n_begin);
+    unsigned int count = 0;
+
+    // vector to store current domain value
+    V domain_vector(this->m_data.get_paramDomain().vectorSpace().zeroVector());
+
     for( unsigned int n = n_begin; n < n_end; n++ )
       {
-        this->set_domain_vector( n, *domain_vector );
+        this->set_domain_vector( n, domain_vector );
 
-        double value = this->evaluate_model( *domain_vector );
+        double value = this->evaluate_model( domain_vector );
 
-        this->set_value( n, value );
+        local_n[count] = n;
+        local_values[count] = value;
+        count += 1;
       }
+
+    /* Sync all the locally computed values between the subenvironments
+       so all processes have all the computed values. */
+    this->sync_data( local_n, local_values );
   }
 
   template<class V, class M>
@@ -110,9 +121,48 @@ namespace QUESO
   }
 
   template<class V, class M>
-  void InterpolationSurrogateBuilder<V,M>::set_value( unsigned int n, double value )
+  void InterpolationSurrogateBuilder<V,M>::sync_data( std::vector<unsigned int>& local_n,
+                                                      std::vector<double>& local_values  )
   {
-    this->m_data.set_value(n, value);
+    // Scope this so we can be rid of all_indices/all_values when we're done.
+    {
+      std::vector<unsigned int> all_indices(this->m_data.n_values());
+      std::vector<double> all_values(this->m_data.n_values());
+
+      MPI_Comm comm = this->m_data.get_paramDomain().env().inter0Comm().Comm();
+
+      int ierr = MPI_Allgather(&local_n[0], local_n.size(), MPI_UNSIGNED, &all_indices[0], all_indices.size(), MPI_UNSIGNED, comm );
+      if( ierr != 0 )
+        queso_error_msg("ERROR: Something bad happened in the MPI_Allgather");
+
+      ierr = MPI_Allgather(&local_values[0], local_values.size(), MPI_DOUBLE, &all_values[0], all_values.size(), MPI_DOUBLE, comm );
+      if( ierr != 0 )
+        queso_error_msg("ERROR: Something bad happened in the MPI_Allgather");
+
+      // Now set the values.
+      /* PB: Although we are guaranteed per-rank ordering of the data we gathered,
+         I'm not sure we can assume the same continuity of the inter0 ranks, i.e.
+         I'm not sure how QUESO ordered the inter0 ranks. So, we go ahead and
+         manually set the values. */
+      if( this->m_data.get_paramDomain().env().subRank() == 0 )
+        {
+          for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
+            this->m_data.set_value( all_indices[n], all_values[n] );
+        }
+    }
+
+    /* Now all rank 0 of each subEnvironment has the data. Now need to broadcast
+       to remainder of subEnvironment processes (if the subenvironment size > 1). */
+    /*! \todo PB: I'm not sure this is actually needed, but doing it just to be sure. */
+    if( this->m_data.get_paramDomain().env().subComm().NumProc() > 1 )
+      {
+        std::vector<double>& values = this->m_data.get_values();
+        MPI_Comm comm = this->m_data.get_paramDomain().env().subComm().Comm();
+
+        int ierr = MPI_Bcast( &values[0], values.size(), MPI_DOUBLE, 0, comm );
+        if( ierr != 0 )
+          queso_error_msg("ERROR: Something bad happened in the MPI_Bcast");
+      }
   }
 
   template<class V, class M>
