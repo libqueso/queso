@@ -30,6 +30,7 @@ namespace QUESO {
 EmOptionsValues::EmOptionsValues()
   :
     BaseInputOptions(),
+    m_prefix("em_"),
     m_Gvalues(0),
     m_a_v(UQ_EXPERIMENT_MODEL_A_V_ODV),
     m_b_v(UQ_EXPERIMENT_MODEL_B_V_ODV),
@@ -52,6 +53,7 @@ EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
     BaseInputOptions(env),
+    m_prefix((std::string)(prefix) + "em_"),
     m_Gvalues(0),
     m_a_v(UQ_EXPERIMENT_MODEL_A_V_ODV),
     m_b_v(UQ_EXPERIMENT_MODEL_B_V_ODV),
