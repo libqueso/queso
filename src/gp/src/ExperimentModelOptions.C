@@ -30,13 +30,21 @@ namespace QUESO {
 EmOptionsValues::EmOptionsValues()
   :
     BaseInputOptions(),
-  m_Gvalues(0),
-  m_a_v    (UQ_EXPERIMENT_MODEL_A_V_ODV    ),
-  m_b_v    (UQ_EXPERIMENT_MODEL_B_V_ODV    ),
-  m_a_rho_v(UQ_EXPERIMENT_MODEL_A_RHO_V_ODV),
-  m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
-  m_a_y    (UQ_EXPERIMENT_MODEL_A_Y_ODV    ),
-  m_b_y    (UQ_EXPERIMENT_MODEL_B_Y_ODV    )
+    m_Gvalues(0),
+    m_a_v(UQ_EXPERIMENT_MODEL_A_V_ODV),
+    m_b_v(UQ_EXPERIMENT_MODEL_B_V_ODV),
+    m_a_rho_v(UQ_EXPERIMENT_MODEL_A_RHO_V_ODV),
+    m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
+    m_a_y(UQ_EXPERIMENT_MODEL_A_Y_ODV),
+    m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV),
+    m_option_help(m_prefix + "help"),
+    m_option_Gvalues(m_prefix + "Gvalues"),
+    m_option_a_v(m_prefix + "a_v"),
+    m_option_b_v(m_prefix + "b_v"),
+    m_option_a_rho_v(m_prefix + "a_rho_v"),
+    m_option_b_rho_v(m_prefix + "b_rho_v"),
+    m_option_a_y(m_prefix + "a_y"),
+    m_option_b_y(m_prefix + "b_y")
 {
 }
 
@@ -50,7 +58,15 @@ EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
     m_a_rho_v(UQ_EXPERIMENT_MODEL_A_RHO_V_ODV),
     m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
     m_a_y(UQ_EXPERIMENT_MODEL_A_Y_ODV),
-    m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV)
+    m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV),
+    m_option_help(m_prefix + "help"),
+    m_option_Gvalues(m_prefix + "Gvalues"),
+    m_option_a_v(m_prefix + "a_v"),
+    m_option_b_v(m_prefix + "b_v"),
+    m_option_a_rho_v(m_prefix + "a_rho_v"),
+    m_option_b_rho_v(m_prefix + "b_rho_v"),
+    m_option_a_y(m_prefix + "a_y"),
+    m_option_b_y(m_prefix + "b_y")
 {
 }
 
