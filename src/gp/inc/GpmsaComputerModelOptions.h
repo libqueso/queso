@@ -60,6 +60,7 @@ class GcmOptionsValues : public BaseInputOptions
 {
 public:
   GcmOptionsValues            ();
+  GcmOptionsValues(const BaseEnvironment * env, const char * prefix);
   GcmOptionsValues            (const GcmOptionsValues& src);
   GcmOptionsValues& operator= (const GcmOptionsValues& rhs);
   virtual ~GcmOptionsValues            ();
