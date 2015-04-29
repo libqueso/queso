@@ -367,6 +367,12 @@ gpmsa_scalar_SOURCES = gp/scalar/gpmsa_scalar.C
 gpmsa_scalar_LDADD = $(top_builddir)/src/libqueso.la
 gpmsa_scalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar $(QUESO_CPPFLAGS)
 
+dist_gpmsa_scalar_DATA =
+dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}
+dist_gpmsa_scalar_DATA += gp/scalar/dakota_pstudy.dat
+dist_gpmsa_scalar_DATA += gp/scalar/gpmsa_input.txt
+dist_gpmsa_scalar_DATA += gp/scalar/ctf_dat.txt
+
 #######################################
 # Canned Gaussian likelihood examples #
 #######################################
@@ -405,9 +411,6 @@ blockDiagonalCovarianceRandomCoefficients_PROGRAMS = blockDiagonalCovarianceRand
 blockDiagonalCovarianceRandomCoefficients_SOURCES = gaussian_likelihoods/blockDiagonalCovarianceRandomCoefficients.C
 blockDiagonalCovarianceRandomCoefficients_LDADD = $(top_builddir)/src/libqueso.la
 blockDiagonalCovarianceRandomCoefficients_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovarianceRandomCoefficients $(QUESO_CPPFLAGS)
-
-dist_gpmsa_scalar_DATA =
-dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
