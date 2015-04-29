@@ -131,11 +131,14 @@ namespace QUESO
 
       MPI_Comm comm = this->m_data.get_paramDomain().env().inter0Comm().Comm();
 
-      int ierr = MPI_Allgather(&local_n[0], local_n.size(), MPI_UNSIGNED, &all_indices[0], all_indices.size(), MPI_UNSIGNED, comm );
+      // Gather the local data all together on each subrank 0 processor.
+      int ierr = MPI_Allgather(&local_n[0], local_n.size(), MPI_UNSIGNED,
+                               &all_indices[0], local_n.size(), MPI_UNSIGNED, comm );
       if( ierr != 0 )
         queso_error_msg("ERROR: Something bad happened in the MPI_Allgather");
 
-      ierr = MPI_Allgather(&local_values[0], local_values.size(), MPI_DOUBLE, &all_values[0], all_values.size(), MPI_DOUBLE, comm );
+      ierr = MPI_Allgather(&local_values[0], local_values.size(), MPI_DOUBLE,
+                           &all_values[0], local_values.size(), MPI_DOUBLE, comm );
       if( ierr != 0 )
         queso_error_msg("ERROR: Something bad happened in the MPI_Allgather");
 
