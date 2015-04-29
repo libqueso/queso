@@ -21,10 +21,11 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Environment.h>
+#include <queso/BaseInputOptions.h>
+
 #ifndef UQ_GPMSA_OPTIONS_H
 #define UQ_GPMSA_OPTIONS_H
-
-#include <queso/Environment.h>
 
 namespace QUESO {
 
@@ -36,7 +37,7 @@ namespace QUESO {
  * \brief This class defines the options that specify the behaviour of the Gaussian process emulator
  */
 
-class GPMSAOptions
+class GPMSAOptions : public BaseInputOptions
 {
 public:
   //! Given prefix, read the input file for parameters named prefix_*
@@ -44,9 +45,6 @@ public:
 
   //! Destructor
  ~GPMSAOptions();
-
-  //! Scans the input file for options prefixed with \c prefix
-  void scanOptionsValues();
 
   //! Prints \c this to \c os
   void print(std::ostream& os) const;
@@ -94,12 +92,11 @@ public:
   }
 
 private:
-  void defineMyOptions(po::options_description& optionsDesc) const;
-  void getMyOptionValues(po::options_description& optionsDesc);
+  void defineOptions();
+  void getOptionValues();
 
   const BaseEnvironment& m_env;
 
-  po::options_description* m_optionsDesc;
   std::string m_option_help;
   std::string m_option_emulatorPrecisionShape;
   std::string m_option_emulatorPrecisionScale;
