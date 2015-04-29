@@ -37,6 +37,11 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     const char * prefix)
   : BaseInputOptions(&env),
     m_prefix((std::string)(prefix) + "infmcmc_"),
+    m_dataOutputDirName(UQ_INF_DATA_OUTPUT_DIR_NAME_ODV),
+    m_dataOutputFileName(UQ_INF_DATA_OUTPUT_FILE_NAME_ODV),
+    m_num_iters(UQ_INF_NUM_ITERS_ODV),
+    m_save_freq(UQ_INF_SAVE_FREQ_ODV),
+    m_rwmh_step(UQ_INF_RWMH_STEP_ODV),
     m_env(env),
     m_option_help(m_prefix + "help"),
     m_option_dataOutputDirName(m_prefix + "dataOutputDirName"),
@@ -64,7 +69,6 @@ void InfiniteDimensionalMCMCSamplerOptions::defineOptions()
     (m_option_num_iters.c_str(), po::value<int>()->default_value(UQ_INF_NUM_ITERS_ODV), "number of mcmc iterations to do")
     (m_option_save_freq.c_str(), po::value<int>()->default_value(UQ_INF_SAVE_FREQ_ODV), "the frequency at which to save the chain state")
     (m_option_rwmh_step.c_str(), po::value<double>()->default_value(UQ_INF_RWMH_STEP_ODV), "the step-size in the random-walk Metropolis proposal");
-  return;
 }
 
 void InfiniteDimensionalMCMCSamplerOptions::getOptionValues()
