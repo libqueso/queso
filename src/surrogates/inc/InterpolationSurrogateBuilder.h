@@ -58,13 +58,20 @@ namespace QUESO
     //! Cache the amount of work for each subenvironment
     std::vector<unsigned int> m_njobs;
 
+    //! Partition the workload of model evaluations across the subenvironments
     void partition_work();
 
+    //! Set the starting and ending global indices for the current subenvironment
+    /*! This environment will evaluate the model for indices [n_begin,n_end) */
     void set_work_bounds( unsigned int& n_begin, unsigned int& n_end ) const;
 
+    //! Take the local values computed from each process and communicate
+    /*! The end result will be that all processes have all the data.
+        I.e. m_values will be completely populated on all processes. */
     void sync_data( std::vector<unsigned int>& local_n,
                     std::vector<double>& local_values );
 
+    //! Provide the spatial coordinates for the global index n
     void set_domain_vector( unsigned int n, V& domain_vector ) const;
 
   private:
