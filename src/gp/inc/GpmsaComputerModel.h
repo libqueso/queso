@@ -240,8 +240,7 @@ private:
                                                                                          unsigned int              outerCounter);
 
   const BaseEnvironment&                                         m_env;
-        GcmOptionsValues                                         m_alternativeOptionsValues;
-        GpmsaComputerModelOptions*                               m_optionsObj;
+  const GcmOptionsValues*                                        m_optionsObj;
         FilePtrSetStruct                                              m_dataOutputFilePtrSet;
 
         GcmSimulationInfo     <S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_s;

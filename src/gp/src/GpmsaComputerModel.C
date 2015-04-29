@@ -42,8 +42,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   // Handle case of no experiments, that is, experiment pointers == NULL? (todo)
   :
   m_env                     (simulationStorage.env()),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL),
+  m_optionsObj              (alternativeOptionsValues),
   m_s                       (NULL),
   m_e                       (NULL),
   m_j                       (NULL),
@@ -103,17 +102,22 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   //********************************************************************************
   // Handle options
   //********************************************************************************
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new GpmsaComputerModelOptions(m_env,prefix,m_alternativeOptionsValues);
-  }
-  else {
-    //std::cout << "In GpmsaComputerModel constructor: scanning options from file..." << std::endl;
-    m_optionsObj = new GpmsaComputerModelOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    GcmOptionsValues * tempOptions = new GcmOptionsValues(&m_env, prefix);
+
+    // If there's an input file, we grab the options from there.  Otherwise the
+    // defaults are used
+    if (m_env.optionsInputFileName() != "") {
+      tempOptions->scanOptionsValues();
+    }
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
   }
 
-  m_formCMatrix = m_formCMatrix && m_optionsObj->m_ov.m_formCMatrix;
+  m_formCMatrix = m_formCMatrix && m_optionsObj->m_formCMatrix;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
@@ -125,11 +129,11 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   //********************************************************************************
   // Open output file // todo_r: is this necessary???
   //********************************************************************************
-  if ((m_optionsObj->m_ov.m_dataOutputFileName                       != "."                                            ) &&
-      (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end())) {
-    m_env.openOutputFile(m_optionsObj->m_ov.m_dataOutputFileName,
+  if ((m_optionsObj->m_dataOutputFileName                       != "."                                            ) &&
+      (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end())) {
+    m_env.openOutputFile(m_optionsObj->m_dataOutputFileName,
                          UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
-                         m_optionsObj->m_ov.m_dataOutputAllowedSet,
+                         m_optionsObj->m_dataOutputAllowedSet,
                          false,
                          m_dataOutputFilePtrSet);
     queso_require_msg(m_dataOutputFilePtrSet.ofsVar, "data output file could not be created");
@@ -169,7 +173,12 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   // --> \Sigma_u,w_i = (1/\lambda_w_i).R(...) is n x m, i = 1,...,p_eta
   // --> \Sigma_u,w is (n.p_eta) x (m.p_eta)
   //********************************************************************************
-  m_s = new GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
+
+  // These old options are deprecated.  We do this to preserve backwards
+  // compatibility.
+  GpmsaComputerModelOptions * gpmsaComputerModelOptions =
+    new GpmsaComputerModelOptions(m_env, prefix, *m_optionsObj);
+  m_s = new GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,
                                                               m_allOutputsAreScalar, // csri (new GcmSimulationInfo)
                                                               simulationStorage,
                                                               simulationModel);
@@ -191,7 +200,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
                               << std::endl;
     }
 
-    m_e = new GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>(*m_optionsObj,
+    m_e = new GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>(*gpmsaComputerModelOptions,
                                                                 m_allOutputsAreScalar, // csri (new GcmExperimentInfo)
                                                                 *experimentStorage,
                                                                 *experimentModel,
@@ -202,7 +211,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
                               << std::endl;
     }
 
-    m_j = new GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
+    m_j = new GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,
                                                                    m_allOutputsAreScalar, // csri
                                                                    *m_s,
                                                                    *m_e);
@@ -289,7 +298,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
       //**********************************************************************************
       // 'm_Cmat' is rank difficient
       //**********************************************************************************
-      if (m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC) {
+      if (m_optionsObj->m_useTildeLogicForRankDefficientC) {
         //********************************************************************************
         // Use tilde logic
         //********************************************************************************
@@ -299,19 +308,19 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
           // Tilde situation: form 'm_vu_tilde_space'
           // Tilde situation: form 'm_Lbmat'
           //******************************************************************************
-          m_jt = new GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_e,*m_j);
+          m_jt = new GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,*m_e,*m_j);
 
           //******************************************************************************
           // Tilde situation: form 'm_Kmat_tilde'
           // Tilde situation: form 'm_w_tilde_space'
           // Tilde situation: form 'm_Lkmat'
           //******************************************************************************
-           m_st = new GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_s);
+           m_st = new GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,*m_s);
 
           //******************************************************************************
           // Tilde situation: form 'm_Cmat_tilde'
           //******************************************************************************
-          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_j,*m_z,*m_st,*m_jt);
+          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,*m_j,*m_z,*m_st,*m_jt);
         }
         else {
           queso_error_msg("incomplete code for the situation 'm_useTildeLogicForRankDefficientC == true' and 'm_thereIsExperimentalData == false'");
@@ -325,7 +334,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
           //******************************************************************************
           // Naive formation of 'm_Cmat_tilde'
           //******************************************************************************
-          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_j,*m_z);
+          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,*m_j,*m_z);
         }
         else {
           queso_error_msg("incomplete code for the situation 'm_useTildeLogicForRankDefficientC == false' and 'm_thereIsExperimentalData == false'");
@@ -366,7 +375,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   //********************************************************************************
   // Generate prior sequence
   //********************************************************************************
-  if (m_optionsObj->m_ov.m_priorSeqNumSamples > 0) {
+  if (m_optionsObj->m_priorSeqNumSamples > 0) {
     this->generatePriorSeq();
   }
 
@@ -395,6 +404,9 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   }
 
   this->memoryCheck(3);
+
+  // Done with the old options now, so deallocate
+  delete gpmsaComputerModelOptions;
 
   //********************************************************************************
   // Leave constructor
@@ -774,15 +786,15 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
 
   queso_require_equal_to_msg(uCovMatrix.numCols(), m_s->m_paper_p_eta, "invalid 'uCovMatrix.numCols()'");
 
-  if (m_optionsObj->m_ov.m_predVUsBySamplingRVs) {
+  if (m_optionsObj->m_predVUsBySamplingRVs) {
   }
 
-  if (m_optionsObj->m_ov.m_predVUsBySummingRVs) {
-    unsigned int numSamples = (unsigned int) ((double) m_t->m_totalPostRv.realizer().subPeriod())/((double) m_optionsObj->m_ov.m_predLag);
+  if (m_optionsObj->m_predVUsBySummingRVs) {
+    unsigned int numSamples = (unsigned int) ((double) m_t->m_totalPostRv.realizer().subPeriod())/((double) m_optionsObj->m_predLag);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
                               << ": m_t->m_totalPostRv.realizer().subPeriod() = " << m_t->m_totalPostRv.realizer().subPeriod()
-                              << ", m_optionsObj->m_ov.m_predLag = "              << m_optionsObj->m_ov.m_predLag
+                              << ", m_optionsObj->m_predLag = "              << m_optionsObj->m_predLag
                               << std::endl;
     }
 
@@ -810,7 +822,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       m_j->m_predVU_counter++;
 
       if (sampleId > 0) {
-        for (unsigned int i = 1; i < m_optionsObj->m_ov.m_predLag; ++i) { // Yes, '1'
+        for (unsigned int i = 1; i < m_optionsObj->m_predLag; ++i) { // Yes, '1'
           m_t->m_totalPostRv.realizer().realization(totalSample);
         }
       }
@@ -1039,7 +1051,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
     mean_of_unique_vu_covMatrices *= (1./(double) numSamples);
   }
 
-  if (m_optionsObj->m_ov.m_predVUsAtKeyPoints) {
+  if (m_optionsObj->m_predVUsAtKeyPoints) {
   }
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
@@ -1085,18 +1097,18 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
 
   queso_require_equal_to_msg(wCovMatrix.numCols(), m_s->m_paper_p_eta, "invalid 'wCovMatrix.numCols()'");
 
-  if (m_optionsObj->m_ov.m_predWsBySamplingRVs) {
+  if (m_optionsObj->m_predWsBySamplingRVs) {
   }
 
-  if (m_optionsObj->m_ov.m_predWsBySummingRVs) {
-    unsigned int numSamples = (unsigned int) ((double) m_t->m_totalPostRv.realizer().subPeriod())/((double) m_optionsObj->m_ov.m_predLag);
+  if (m_optionsObj->m_predWsBySummingRVs) {
+    unsigned int numSamples = (unsigned int) ((double) m_t->m_totalPostRv.realizer().subPeriod())/((double) m_optionsObj->m_predLag);
     if (forcingSampleVecForDebug) {
       numSamples = 1;
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                               << ": m_t->m_totalPostRv.realizer().subPeriod() = " << m_t->m_totalPostRv.realizer().subPeriod()
-                              << ", m_optionsObj->m_ov.m_predLag = "              << m_optionsObj->m_ov.m_predLag
+                              << ", m_optionsObj->m_predLag = "              << m_optionsObj->m_predLag
                               << ", numSamples = "                                << numSamples
                               << std::endl;
     }
@@ -1114,7 +1126,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
       m_s->m_predW_counter++;
 
       if (sampleId > 0) {
-        for (unsigned int i = 1; i < m_optionsObj->m_ov.m_predLag; ++i) { // Yes, '1'
+        for (unsigned int i = 1; i < m_optionsObj->m_predLag; ++i) { // Yes, '1'
           m_t->m_totalPostRv.realizer().realization(totalSample);
         }
       }
@@ -1288,7 +1300,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
     }
   }
 
-  if (m_optionsObj->m_ov.m_predWsAtKeyPoints) {
+  if (m_optionsObj->m_predWsAtKeyPoints) {
   }
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
@@ -1493,18 +1505,18 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()..."
                             << ": m_optionsObj->m_prefix.c_str() = "          << m_optionsObj->m_prefix.c_str()
-                            << ", m_optionsObj->m_ov.m_priorSeqNumSamples = " << m_optionsObj->m_ov.m_priorSeqNumSamples
+                            << ", m_optionsObj->m_priorSeqNumSamples = " << m_optionsObj->m_priorSeqNumSamples
                             << std::endl;
   }
 
-  SequenceOfVectors<P_V,P_M> priorSeq(m_t->m_totalSpace,m_optionsObj->m_ov.m_priorSeqNumSamples,m_optionsObj->m_prefix+"priorSeq");
+  SequenceOfVectors<P_V,P_M> priorSeq(m_t->m_totalSpace,m_optionsObj->m_priorSeqNumSamples,m_optionsObj->m_prefix+"priorSeq");
   P_V totalSample(m_t->m_totalSpace.zeroVector());
-  for (unsigned int sampleId = 0; sampleId < m_optionsObj->m_ov.m_priorSeqNumSamples; ++sampleId) {
+  for (unsigned int sampleId = 0; sampleId < m_optionsObj->m_priorSeqNumSamples; ++sampleId) {
     m_t->m_totalPriorRv.realizer().realization(totalSample);
     priorSeq.setPositionValues(sampleId,totalSample);
   }
-  priorSeq.unifiedWriteContents(m_optionsObj->m_ov.m_priorSeqDataOutputFileName,
-                                m_optionsObj->m_ov.m_priorSeqDataOutputFileType);
+  priorSeq.unifiedWriteContents(m_optionsObj->m_priorSeqDataOutputFileName,
+                                m_optionsObj->m_priorSeqDataOutputFileType);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()..."
@@ -1643,7 +1655,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
   bool here_6_repeats = false;
   bool here_7_repeats = false;
   bool here_8_repeats = false;
-  if ((m_optionsObj->m_ov.m_checkAgainstPreviousSample) &&
+  if ((m_optionsObj->m_checkAgainstPreviousSample) &&
       (m_like_counter == 1                            )) {
     here_1_repeats = (m_s->m_like_previous1 == m_s->m_tmp_1lambdaEtaVec);
     here_2_repeats = (m_s->m_like_previous2 == m_s->m_tmp_2lambdaWVec);
@@ -1694,7 +1706,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
 
     this->memoryCheck(57);
 
-    if (m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC) {
+    if (m_optionsObj->m_useTildeLogicForRankDefficientC) {
       //********************************************************************************
       // Compute '\Sigma_z_tilde_hat' matrix
       //********************************************************************************
@@ -1778,7 +1790,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
 
       this->memoryCheck(62);
     }
-    else { // if (m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC)
+    else { // if (m_optionsObj->m_useTildeLogicForRankDefficientC)
       queso_error_msg("incomplete code for situation 'm_useTildeLogicForRankDefficientC == false'");
     }
   }
@@ -1999,13 +2011,13 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
                             << ", outerCounter = " << outerCounter
                             << ": m_formCMatrix = "                                        << m_formCMatrix
-                            << ", m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC
+                            << ", m_optionsObj->m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_useTildeLogicForRankDefficientC
                             << ", m_Cmat = "                                               << m_z->m_Cmat
                             << ", m_cMatIsRankDefficient = "                               << m_cMatIsRankDefficient
                             << std::endl;
   }
 
-  queso_require_msg(!m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC,
+  queso_require_msg(!m_optionsObj->m_useTildeLogicForRankDefficientC,
                     "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
@@ -2050,7 +2062,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   std::set<unsigned int> tmpSet;
   tmpSet.insert(m_env.subId());
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_z->m_tmp_Smat_z.subWriteContents("Sigma_z",
           "mat_Sigma_z",
           "m",
@@ -2099,7 +2111,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_z->m_tmp_Smat_extra.subWriteContents("Sigma_extra",
           "mat_Sigma_extra",
           "m",
@@ -2129,7 +2141,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_z->m_tmp_Smat_z_hat.subWriteContents("Sigma_z_hat",
           "mat_Sigma_z_hat",
           "m",
@@ -2160,13 +2172,13 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
                             << ", outerCounter = " << outerCounter
                             << ": m_formCMatrix = "                                        << m_formCMatrix
-                            << ", m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC
+                            << ", m_optionsObj->m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_useTildeLogicForRankDefficientC
                             << ", m_Cmat = "                                               << m_z->m_Cmat
                             << ", m_cMatIsRankDefficient = "                               << m_cMatIsRankDefficient
                             << std::endl;
   }
 
-  queso_require_msg(!m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC,
+  queso_require_msg(!m_optionsObj->m_useTildeLogicForRankDefficientC,
                     "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
@@ -2293,7 +2305,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
     *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                             << ", outerCounter = " << outerCounter
                             << ": m_formCMatrix = "                                        << m_formCMatrix
-                            << ", m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC
+                            << ", m_optionsObj->m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_useTildeLogicForRankDefficientC
                             << ", m_Cmat = "                                               << m_z->m_Cmat
                             << ", m_cMatIsRankDefficient = "                               << m_cMatIsRankDefficient
                             << std::endl;
@@ -2305,7 +2317,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
 
   queso_require_msg(m_cMatIsRankDefficient, "'m_Cmat' should be rank defficient");
 
-  queso_require_msg(m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC, "'m_useTildeLogicForRankDefficientC' should be 'true'");
+  queso_require_msg(m_optionsObj->m_useTildeLogicForRankDefficientC, "'m_useTildeLogicForRankDefficientC' should be 'true'");
 
   //********************************************************************************
   // Form '\Sigma_z' matrix
@@ -2505,7 +2517,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_e->m_Smat_v.subWriteContents("Sigma_v",
                                      "mat_Sigma_v",
                                      "m",
@@ -2542,7 +2554,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_j->m_Smat_u.subWriteContents("Sigma_u",
                                      "mat_Sigma_u",
                                      "m",
@@ -2618,7 +2630,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_s->m_Smat_w.subWriteContents("Sigma_w",
                                      "mat_Sigma_w",
                                      "m",
@@ -2654,7 +2666,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_j->m_Smat_uw.subWriteContents("Sigma_uw",
                                       "mat_Sigma_uw",
                                       "m",
@@ -2781,7 +2793,7 @@ void
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_e->m_Smat_v.subWriteContents("Sigma_v",
                                      "mat_Sigma_v",
                                      "m",
@@ -2817,7 +2829,7 @@ void
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_j->m_Smat_u.subWriteContents("Sigma_u",
                                      "mat_Sigma_u",
                                      "m",
@@ -2854,7 +2866,7 @@ void
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_s->m_Smat_w.subWriteContents("Sigma_w",
                                      "mat_Sigma_w",
                                      "m",
@@ -2890,7 +2902,7 @@ void
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_j->m_Smat_uw.subWriteContents("Sigma_uw",
                                       "mat_Sigma_uw",
                                       "m",
