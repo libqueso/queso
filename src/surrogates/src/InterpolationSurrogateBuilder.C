@@ -99,8 +99,14 @@ namespace QUESO
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::set_work_bounds( unsigned int& n_begin, unsigned int& n_end ) const
   {
+    unsigned int my_subid = this->m_data.get_paramDomain().env().subId();
+
+    /* Starting index will be the sum of the all the previous num jobs */
     n_begin = 0;
-    n_end = this->m_data.n_values();
+    for( unsigned int n = 0; n < my_subid; n++ )
+      n_begin += m_njobs[n];
+
+    n_end = n_begin + m_njobs[my_subid];
   }
 
   template<class V, class M>
