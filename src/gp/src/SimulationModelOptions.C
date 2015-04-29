@@ -293,6 +293,8 @@ SimulationModelOptions::SimulationModelOptions(
   m_option_a_s                      (m_prefix + "a_s"                      ),
   m_option_b_s                      (m_prefix + "b_s"                      )
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
                       "SimulationModelOptions::constructor(2)",
@@ -309,12 +311,16 @@ SimulationModelOptions::SimulationModelOptions(
 
 SimulationModelOptions::~SimulationModelOptions()
 {
+  queso_deprecated();
+
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
 void
 SimulationModelOptions::scanOptionsValues()
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
                       "SimulationModelOptions::scanOptionsValues()",
@@ -342,6 +348,8 @@ SimulationModelOptions::scanOptionsValues()
 void
 SimulationModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                      "produce help message for simulation model options")
     (m_option_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV       ), "name of data output file"                         )
@@ -447,6 +455,8 @@ SimulationModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 void
 SimulationModelOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os << "\n" << m_option_dataOutputFileName        << " = " << m_ov.m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowAll        << " = " << m_ov.m_dataOutputAllowAll
      << "\n" << m_option_dataOutputAllowedSet      << " = ";
@@ -471,6 +481,8 @@ SimulationModelOptions::print(std::ostream& os) const
 
 std::ostream& operator<<(std::ostream& os, const SimulationModelOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
