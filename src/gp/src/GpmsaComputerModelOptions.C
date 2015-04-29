@@ -343,6 +343,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_option_predWsBySummingRVs             (m_prefix + "predWsBySummingRVs"             ),
   m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
+  queso_deprecated();
   queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
 }
 
@@ -377,6 +378,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_option_predWsBySummingRVs             (m_prefix + "predWsBySummingRVs"             ),
   m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
+  queso_deprecated();
   queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
@@ -390,12 +392,15 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
 
 GpmsaComputerModelOptions::~GpmsaComputerModelOptions()
 {
+  queso_deprecated();
+
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
 void
 GpmsaComputerModelOptions::scanOptionsValues()
 {
+  queso_deprecated();
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -420,6 +425,8 @@ GpmsaComputerModelOptions::scanOptionsValues()
 void
 GpmsaComputerModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                        "produce help message for mixed inverse problem")
     (m_option_checkAgainstPreviousSample.c_str(),      po::value<bool        >()->default_value(UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ), "check against previous sample"                 )
@@ -450,6 +457,8 @@ GpmsaComputerModelOptions::defineMyOptions(po::options_description& optionsDesc)
 void
 GpmsaComputerModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -570,6 +579,8 @@ GpmsaComputerModelOptions::getMyOptionValues(po::options_description& optionsDes
 void
 GpmsaComputerModelOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os << "\n" << m_option_checkAgainstPreviousSample << " = " << m_ov.m_checkAgainstPreviousSample
      << "\n" << m_option_dataOutputFileName         << " = " << m_ov.m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowAll         << " = " << m_ov.m_dataOutputAllowAll
@@ -603,6 +614,8 @@ GpmsaComputerModelOptions::print(std::ostream& os) const
 
 std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
