@@ -48,6 +48,9 @@ namespace QUESO
     const std::vector<double>& get_values() const
     { return this->m_values; };
 
+    std::vector<double>& get_values()
+    { return this->m_values; };
+
     double get_value( unsigned int n ) const
     { queso_assert_less(n,this->m_values.size());
       return this->m_values[n]; };
