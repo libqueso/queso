@@ -188,6 +188,8 @@ ExperimentModelOptions::ExperimentModelOptions(
   m_option_a_y    (m_prefix + "a_y"    ),
   m_option_b_y    (m_prefix + "b_y"    )
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
                       "ExperimentModelOptions::constructor(1)",
@@ -212,6 +214,8 @@ ExperimentModelOptions::ExperimentModelOptions(
   m_option_a_y    (m_prefix + "a_y"    ),
   m_option_b_y    (m_prefix + "b_y"    )
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
                       "ExperimentModelOptions::constructor(2)",
@@ -228,12 +232,16 @@ ExperimentModelOptions::ExperimentModelOptions(
 
 ExperimentModelOptions::~ExperimentModelOptions()
 {
+  queso_deprecated();
+
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
 void
 ExperimentModelOptions::scanOptionsValues()
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
                       "ExperimentModelOptions::scanOptionsValues()",
@@ -257,6 +265,8 @@ ExperimentModelOptions::scanOptionsValues()
 void
 ExperimentModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                "produce help message for experiment model options")
     (m_option_Gvalues.c_str(), po::value<std::string >()->default_value(UQ_EXPERIMENT_MODEL_G_VALUES_ODV), "G values"                                         )
@@ -274,6 +284,8 @@ ExperimentModelOptions::defineMyOptions(po::options_description& optionsDesc) co
 void
 ExperimentModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -330,6 +342,8 @@ ExperimentModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 void
 ExperimentModelOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os << "\n" << m_option_Gvalues << " = ";
   for (unsigned int i = 0; i < m_ov.m_Gvalues.size(); ++i) {
     os << m_ov.m_Gvalues[i] << " ";
@@ -347,6 +361,8 @@ ExperimentModelOptions::print(std::ostream& os) const
 
 std::ostream& operator<<(std::ostream& os, const ExperimentModelOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
