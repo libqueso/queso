@@ -37,8 +37,7 @@ ExperimentModel<S_V,S_M,D_V,D_M>::ExperimentModel(
   const std::vector<D_M* >&                        Kmats_interp)
   :
   m_env                     (Dmats[0]->env()),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL),
+  m_optionsObj              (alternativeOptionsValues),
   m_paper_p_x               (experimentStorage.scenarioSpace().dimLocal()),
   m_paper_n                 (Dmats.size()),
   m_paper_p_delta           (Dmats[0]->numCols()),
@@ -60,16 +59,25 @@ ExperimentModel<S_V,S_M,D_V,D_M>::ExperimentModel(
                             << std::endl;
   }
 
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new ExperimentModelOptions(m_env,prefix,m_alternativeOptionsValues);
-  }
-  else {
-    m_optionsObj = new ExperimentModelOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    EmOptionsValues * tempOptions = new EmOptionsValues(&m_env, prefix);
+
+    // If there's an input file, we grab the options from there.  Otherwise the
+    // defaults are used
+    if (m_env.optionsInputFileName() != "") {
+      tempOptions->scanOptionsValues();
+    }
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
   }
 
-  UQ_FATAL_TEST_MACRO(m_optionsObj->m_ov.m_Gvalues.size() < 1,
+  // We'll need to remove this later
+  m_experimentModelOptions = new ExperimentModelOptions(m_env, prefix);
+
+  UQ_FATAL_TEST_MACRO(m_optionsObj->m_Gvalues.size() < 1,
                       m_env.worldRank(),
                       "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
                       "invalid m_Gs");
@@ -80,8 +88,8 @@ ExperimentModel<S_V,S_M,D_V,D_M>::ExperimentModel(
                       "invalid m_paper_n");
 
   unsigned int sumGs = 0;
-  for (unsigned int i = 0; i < m_optionsObj->m_ov.m_Gvalues.size(); ++i) {
-    sumGs += m_optionsObj->m_ov.m_Gvalues[i];
+  for (unsigned int i = 0; i < m_optionsObj->m_Gvalues.size(); ++i) {
+    sumGs += m_optionsObj->m_Gvalues[i];
   }
   UQ_FATAL_TEST_MACRO(m_paper_p_delta != sumGs,
                       m_env.worldRank(),
@@ -118,7 +126,7 @@ ExperimentModel<S_V,S_M,D_V,D_M>::ExperimentModel(
 
   std::set<unsigned int> tmpSet;
   tmpSet.insert(m_env.subId());
-  if (false) { //gcmOptionsObj.m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != gcmOptionsObj.m_ov.m_dataOutputAllowedSet.end()) {
+  if (false) { //gcmOptionsObj.m_dataOutputAllowedSet.find(m_env.subId()) != gcmOptionsObj.m_dataOutputAllowedSet.end()) {
     m_Dmat_BlockDiag->subWriteContents("Dmat_BlockDiag",
                                        "Dmat_BlockDiag",
                                        "m",
@@ -148,6 +156,10 @@ ExperimentModel<S_V,S_M,D_V,D_M>::~ExperimentModel()
     *m_env.subDisplayFile() << "Leaving ExperimentModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()"
                             << std::endl;
   }
+
+  if (m_experimentModelOptions) {
+    delete m_experimentModelOptions;
+  }
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
@@ -161,14 +173,14 @@ template<class S_V,class S_M,class D_V,class D_M>
 unsigned int
 ExperimentModel<S_V,S_M,D_V,D_M>::numBasisGroups() const
 {
-  return m_optionsObj->m_ov.m_Gvalues.size();
+  return m_optionsObj->m_Gvalues.size();
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 const std::vector<unsigned int>&
 ExperimentModel<S_V,S_M,D_V,D_M>::Gs() const
 {
-  return m_optionsObj->m_ov.m_Gvalues;
+  return m_optionsObj->m_Gvalues;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
@@ -197,7 +209,10 @@ template<class S_V,class S_M,class D_V,class D_M>
 const ExperimentModelOptions&
 ExperimentModel<S_V,S_M,D_V,D_M>::optionsObj() const
 {
-  return *m_optionsObj;
+  // This methods returns the old ExperimentModelOptions object.  We're using
+  // the new EmOptionsValues so this method is deprecated.
+  queso_deprecated();
+  return *m_experimentModelOptions;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>

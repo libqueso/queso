@@ -26,8 +26,7 @@
 #define UQ_EXPERIMENT_MODEL_OPTIONS_H
 
 #include <queso/Environment.h>
-
-////////////////////////////////////////////////////////////////////////////////////////////
+#include <queso/BaseInputOptions.h>
 
 // _ODV = option default value
 #define UQ_EXPERIMENT_MODEL_G_VALUES_ODV ""
@@ -38,31 +37,42 @@
 #define UQ_EXPERIMENT_MODEL_A_Y_ODV      0.
 #define UQ_EXPERIMENT_MODEL_B_Y_ODV      0.
 
-////////////////////////////////////////////////////////////////////////////////////////////
-
 namespace QUESO {
 
-class EmOptionsValues
+class EmOptionsValues : public BaseInputOptions
 {
 public:
-  EmOptionsValues            ();
-  EmOptionsValues            (const EmOptionsValues& src);
-  EmOptionsValues& operator= (const EmOptionsValues& rhs);
- ~EmOptionsValues            ();
+  EmOptionsValues();
+  EmOptionsValues(const BaseEnvironment * env, const char * prefix);
+  EmOptionsValues(const EmOptionsValues& src);
+  EmOptionsValues& operator=(const EmOptionsValues& rhs);
+  virtual ~EmOptionsValues();
+
+  std::string m_prefix;
 
   std::vector<unsigned int> m_Gvalues;
-  double                    m_a_v;
-  double                    m_b_v;
-  double                    m_a_rho_v;
-  double                    m_b_rho_v;
-  double                    m_a_y;
-  double                    m_b_y;
+  double m_a_v;
+  double m_b_v;
+  double m_a_rho_v;
+  double m_b_rho_v;
+  double m_a_y;
+  double m_b_y;
 
 private:
+  std::string m_option_help;
+  std::string m_option_Gvalues;
+  std::string m_option_a_v;
+  std::string m_option_b_v;
+  std::string m_option_a_rho_v;
+  std::string m_option_b_rho_v;
+  std::string m_option_a_y;
+  std::string m_option_b_y;
+
+  virtual void defineOptions();
+  virtual void getOptionValues();
+
   void copy(const EmOptionsValues& src);
 };
-
-////////////////////////////////////////////////////////////////////////////////////////////
 
 class ExperimentModelOptions
 {

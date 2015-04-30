@@ -29,13 +29,46 @@ namespace QUESO {
 
 EmOptionsValues::EmOptionsValues()
   :
-  m_Gvalues(0),
-  m_a_v    (UQ_EXPERIMENT_MODEL_A_V_ODV    ),
-  m_b_v    (UQ_EXPERIMENT_MODEL_B_V_ODV    ),
-  m_a_rho_v(UQ_EXPERIMENT_MODEL_A_RHO_V_ODV),
-  m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
-  m_a_y    (UQ_EXPERIMENT_MODEL_A_Y_ODV    ),
-  m_b_y    (UQ_EXPERIMENT_MODEL_B_Y_ODV    )
+    BaseInputOptions(),
+    m_prefix("em_"),
+    m_Gvalues(0),
+    m_a_v(UQ_EXPERIMENT_MODEL_A_V_ODV),
+    m_b_v(UQ_EXPERIMENT_MODEL_B_V_ODV),
+    m_a_rho_v(UQ_EXPERIMENT_MODEL_A_RHO_V_ODV),
+    m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
+    m_a_y(UQ_EXPERIMENT_MODEL_A_Y_ODV),
+    m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV),
+    m_option_help(m_prefix + "help"),
+    m_option_Gvalues(m_prefix + "Gvalues"),
+    m_option_a_v(m_prefix + "a_v"),
+    m_option_b_v(m_prefix + "b_v"),
+    m_option_a_rho_v(m_prefix + "a_rho_v"),
+    m_option_b_rho_v(m_prefix + "b_rho_v"),
+    m_option_a_y(m_prefix + "a_y"),
+    m_option_b_y(m_prefix + "b_y")
+{
+}
+
+EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
+    prefix)
+  :
+    BaseInputOptions(env),
+    m_prefix((std::string)(prefix) + "em_"),
+    m_Gvalues(0),
+    m_a_v(UQ_EXPERIMENT_MODEL_A_V_ODV),
+    m_b_v(UQ_EXPERIMENT_MODEL_B_V_ODV),
+    m_a_rho_v(UQ_EXPERIMENT_MODEL_A_RHO_V_ODV),
+    m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
+    m_a_y(UQ_EXPERIMENT_MODEL_A_Y_ODV),
+    m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV),
+    m_option_help(m_prefix + "help"),
+    m_option_Gvalues(m_prefix + "Gvalues"),
+    m_option_a_v(m_prefix + "a_v"),
+    m_option_b_v(m_prefix + "b_v"),
+    m_option_a_rho_v(m_prefix + "a_rho_v"),
+    m_option_b_rho_v(m_prefix + "b_rho_v"),
+    m_option_a_y(m_prefix + "a_y"),
+    m_option_b_y(m_prefix + "b_y")
 {
 }
 
@@ -53,6 +86,75 @@ EmOptionsValues::operator=(const EmOptionsValues& rhs)
 {
   this->copy(rhs);
   return *this;
+}
+
+void
+EmOptionsValues::defineOptions()
+{
+  (*m_optionsDescription).add_options()
+    (m_option_help.c_str(),                                                                                "produce help message for experiment model options")
+    (m_option_Gvalues.c_str(), po::value<std::string >()->default_value(UQ_EXPERIMENT_MODEL_G_VALUES_ODV), "G values"                                         )
+    (m_option_a_v.c_str(),     po::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_V_ODV     ), "a_v"                                              )
+    (m_option_b_v.c_str(),     po::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_B_V_ODV     ), "b_v"                                              )
+    (m_option_a_rho_v.c_str(), po::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_RHO_V_ODV ), "a_rho_v"                                          )
+    (m_option_b_rho_v.c_str(), po::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV ), "b_rho_v"                                          )
+    (m_option_a_y.c_str(),     po::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_Y_ODV     ), "a_y"                                              )
+    (m_option_b_y.c_str(),     po::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_B_Y_ODV     ), "b_y"                                              )
+  ;
+}
+
+void
+EmOptionsValues::getOptionValues()
+{
+  if (m_env->allOptionsMap().count(m_option_help)) {
+    if (m_env->subDisplayFile()) {
+      *m_env->subDisplayFile() << *m_optionsDescription
+                              << std::endl;
+    }
+  }
+
+  std::vector<double> tmpValues(0,0.);
+  if (m_env->allOptionsMap().count(m_option_Gvalues)) {
+    std::string inputString = ((const po::variable_value&) m_env->allOptionsMap()[m_option_Gvalues]).as<std::string>();
+    MiscReadDoublesFromString(inputString,tmpValues);
+    //if (m_env->subDisplayFile()) {
+    //  *m_env->subDisplayFile() << "In ExperimentModelOptions::getMyOptionValues(): tmpValues =";
+    //  for (unsigned int i = 0; i < tmpValues.size(); ++i) {
+    //    *m_env->subDisplayFile() << " " << tmpValues[i];
+    //  }
+    //  *m_env->subDisplayFile() << std::endl;
+    //}
+    unsigned int tmpSize = tmpValues.size();
+    m_Gvalues.clear();
+    m_Gvalues.resize(tmpSize,0);
+    for (unsigned int i = 0; i < tmpSize; ++i) {
+      m_Gvalues[i] = (unsigned int) tmpValues[i];
+    }
+  }
+
+  if (m_env->allOptionsMap().count(m_option_a_v)) {
+    m_a_v = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_v]).as<double>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_b_v)) {
+    m_b_v = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_v]).as<double>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_a_rho_v)) {
+    m_a_rho_v = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_rho_v]).as<double>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_b_rho_v)) {
+    m_b_rho_v = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_rho_v]).as<double>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_a_y)) {
+    m_a_y = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_y]).as<double>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_b_y)) {
+    m_b_y = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_y]).as<double>();
+  }
 }
 
 void
@@ -86,6 +188,8 @@ ExperimentModelOptions::ExperimentModelOptions(
   m_option_a_y    (m_prefix + "a_y"    ),
   m_option_b_y    (m_prefix + "b_y"    )
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
                       "ExperimentModelOptions::constructor(1)",
@@ -110,6 +214,8 @@ ExperimentModelOptions::ExperimentModelOptions(
   m_option_a_y    (m_prefix + "a_y"    ),
   m_option_b_y    (m_prefix + "b_y"    )
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
                       "ExperimentModelOptions::constructor(2)",
@@ -126,12 +232,16 @@ ExperimentModelOptions::ExperimentModelOptions(
 
 ExperimentModelOptions::~ExperimentModelOptions()
 {
+  queso_deprecated();
+
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
 void
 ExperimentModelOptions::scanOptionsValues()
 {
+  queso_deprecated();
+
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
                       "ExperimentModelOptions::scanOptionsValues()",
@@ -155,6 +265,8 @@ ExperimentModelOptions::scanOptionsValues()
 void
 ExperimentModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                "produce help message for experiment model options")
     (m_option_Gvalues.c_str(), po::value<std::string >()->default_value(UQ_EXPERIMENT_MODEL_G_VALUES_ODV), "G values"                                         )
@@ -172,6 +284,8 @@ ExperimentModelOptions::defineMyOptions(po::options_description& optionsDesc) co
 void
 ExperimentModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -228,6 +342,8 @@ ExperimentModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 void
 ExperimentModelOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os << "\n" << m_option_Gvalues << " = ";
   for (unsigned int i = 0; i < m_ov.m_Gvalues.size(); ++i) {
     os << m_ov.m_Gvalues[i] << " ";
@@ -245,6 +361,8 @@ ExperimentModelOptions::print(std::ostream& os) const
 
 std::ostream& operator<<(std::ostream& os, const ExperimentModelOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
