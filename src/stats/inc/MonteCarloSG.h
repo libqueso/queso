@@ -130,8 +130,7 @@ private:
   unsigned int                                              m_numPsNotSubWritten;
   unsigned int                                              m_numQsNotSubWritten;
 
-  McOptionsValues                                    m_alternativeOptionsValues;
-  MonteCarloSGOptions*                               m_optionsObj;
+  const McOptionsValues *                            m_optionsObj;
 };
 
 }  // End namespace QUESO
