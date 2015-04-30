@@ -53,7 +53,7 @@
 
 namespace QUESO {
 
-/*! \file uqMonteCarloSGOptions.h
+/*! \file MonteCarloSGOptions.h
     \brief Classes to allow options to be passed to a Monte Carlo sequence generator.
 */
 
