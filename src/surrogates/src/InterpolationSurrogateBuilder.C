@@ -147,48 +147,55 @@ namespace QUESO
   void InterpolationSurrogateBuilder<V,M>::sync_data( std::vector<unsigned int>& local_n,
                                                       std::vector<double>& local_values  )
   {
-    // Scope this so we can be rid of all_indices/all_values when we're done.
-    {
-      std::vector<unsigned int> all_indices(this->m_data.n_values());
-      std::vector<double> all_values(this->m_data.n_values());
+    // Only members of the inter0comm will do the communication of the local values
+    unsigned int my_subrank = this->m_data.get_paramDomain().env().subRank();
 
-      MPI_Comm comm = this->m_data.get_paramDomain().env().inter0Comm().Comm();
-
-      // Gather the local data all together on each subrank 0 processor.
-      int ierr = MPI_Allgather(&local_n[0], local_n.size(), MPI_UNSIGNED,
-                               &all_indices[0], local_n.size(), MPI_UNSIGNED, comm );
-      if( ierr != 0 )
-        queso_error_msg("ERROR: Something bad happened in the MPI_Allgather");
-
-      ierr = MPI_Allgather(&local_values[0], local_values.size(), MPI_DOUBLE,
-                           &all_values[0], local_values.size(), MPI_DOUBLE, comm );
-      if( ierr != 0 )
-        queso_error_msg("ERROR: Something bad happened in the MPI_Allgather");
-
-      // Now set the values.
-      /* PB: Although we are guaranteed per-rank ordering of the data we gathered,
-         I'm not sure we can assume the same continuity of the inter0 ranks, i.e.
-         I'm not sure how QUESO ordered the inter0 ranks. So, we go ahead and
-         manually set the values. */
-      if( this->m_data.get_paramDomain().env().subRank() == 0 )
-        {
-          for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
-            this->m_data.set_value( all_indices[n], all_values[n] );
-        }
-    }
-
-    /* Now all rank 0 of each subEnvironment has the data. Now need to broadcast
-       to remainder of subEnvironment processes (if the subenvironment size > 1). */
-    /*! \todo PB: I'm not sure this is actually needed, but doing it just to be sure. */
-    if( this->m_data.get_paramDomain().env().subComm().NumProc() > 1 )
+    if( my_subrank == 0 )
       {
-        std::vector<double>& values = this->m_data.get_values();
-        MPI_Comm comm = this->m_data.get_paramDomain().env().subComm().Comm();
+        std::vector<double> all_values(this->m_data.n_values());
 
-        int ierr = MPI_Bcast( &values[0], values.size(), MPI_DOUBLE, 0, comm );
-        if( ierr != 0 )
-          queso_error_msg("ERROR: Something bad happened in the MPI_Bcast");
+        std::vector<unsigned int> all_indices(this->m_data.n_values());
+
+        std::vector<int> strides;
+        this->compute_strides( strides );
+
+        const MpiComm& inter0comm = this->m_data.get_paramDomain().env().inter0Comm();
+
+        /*! \todo Would be more efficient to pack local_n and local_values
+            togethers and go Gatherv only once. */
+        inter0comm.Gatherv( &local_n[0], local_n.size(), MPI_UNSIGNED,
+                            &all_indices[0], &m_njobs[0], &strides[0], MPI_UNSIGNED,
+                            0 /*root*/,
+                            "InterpolationSurrogateBuilder::sync_data()",
+                            "MpiComm::gatherv() failed!" );
+
+        inter0comm.Gatherv( &local_values[0], local_values.size(), MPI_DOUBLE,
+                            &all_values[0], &m_njobs[0], &strides[0], MPI_DOUBLE,
+                            0 /*root*/,
+                            "InterpolationSurrogateBuilder::sync_data()",
+                            "MpiComm::gatherv() failed!" );
+
+        // Now set the values.
+        /* PB: Although we are guaranteed per-rank ordering of the data we gathered,
+           I'm not sure we can assume the same continuity of the inter0 ranks, i.e.
+           I'm not sure how QUESO ordered the inter0 ranks. So, we go ahead and
+           manually set the values. */
+        if( this->m_data.get_paramDomain().env().subRank() == 0 )
+          {
+            for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
+              this->m_data.set_value( all_indices[n], all_values[n] );
+          }
       }
+
+    // Now broadcast the values data to all other processes
+    const MpiComm& fullcomm = this->m_data.get_paramDomain().env().fullComm();
+    fullcomm.Barrier();
+
+    std::vector<double>& values = this->m_data.get_values();
+    fullcomm.Bcast( &values[0], values.size(), MPI_DOUBLE,
+                    0 /*root*/,
+                    "InterpolationSurrogateBuilder::sync_data()",
+                    "MpiComm::Bcast() failed!" );
   }
 
   template<class V, class M>
@@ -215,7 +222,7 @@ namespace QUESO
     // Don't stride the first entry
     strides[0] = 0;
 
-    long int stride = 0;
+    int stride = 0;
     for( unsigned int n = 1; n < n_subenvs; n++ )
       {
         // The stride is measured agaisnt the beginning of the buffer
