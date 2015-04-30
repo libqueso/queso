@@ -27,6 +27,7 @@
 
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
+#include <queso/BaseInputOptions.h>
 
 #define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE "."
 
@@ -64,7 +65,7 @@ namespace QUESO {
  *  Multilevel sequence generator expects options for its methods. This class provides default
  *  values for such options if no input file is available. */
 
-class MLSamplingOptions
+class MLSamplingOptions : public BaseInputOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -79,9 +80,6 @@ public:
 
   //! @name I/O methods
   //@{
-  //! It scans the option values from the options input file.
-  void scanOptionsValues();
-
   //!  It prints the option values.
   void print            (std::ostream& os) const;
   //@}
@@ -122,14 +120,10 @@ public:
   std::set<unsigned int> m_dataOutputAllowedSet;
 
 private:
-  //! Defines the options for the Multilevel generator of samples as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
-
-  //! Gets the sequence options defined to the Multilevel algorithm.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  virtual void defineOptions();
+  virtual void getOptionValues();
 
   const BaseEnvironment& m_env;
-  po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
