@@ -80,6 +80,9 @@ namespace QUESO
     //! Provide the spatial coordinates for the global index n
     void set_domain_vector( unsigned int n, V& domain_vector ) const;
 
+    //! Helper function to compute strides needed for MPI_Gatherv
+    void compute_strides( std::vector<int>& strides ) const;
+
   private:
 
     InterpolationSurrogateBuilder();

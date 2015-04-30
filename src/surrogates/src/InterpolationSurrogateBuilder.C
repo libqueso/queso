@@ -205,6 +205,27 @@ namespace QUESO
       }
   }
 
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::compute_strides( std::vector<int>& strides ) const
+  {
+    unsigned int n_subenvs = this->m_data.get_paramDomain().env().numSubEnvironments();
+
+    strides.resize(n_subenvs);
+
+    // Don't stride the first entry
+    strides[0] = 0;
+
+    long int stride = 0;
+    for( unsigned int n = 1; n < n_subenvs; n++ )
+      {
+        // The stride is measured agaisnt the beginning of the buffer
+        // We want things packed tightly together so just stride
+        // by the number of entries from the previous group.
+        stride += this->m_njobs[n-1];
+        strides[n] = stride;
+      }
+  }
+
 } // end namespace QUESO
 
 // Instantiate
