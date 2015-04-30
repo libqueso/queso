@@ -22,11 +22,11 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/BaseInputOptions.h>
+#include <queso/Environment.h>
+
 #ifndef UQ_SFP_OPTIONS_H
 #define UQ_SFP_OPTIONS_H
-
-#include <queso/Environment.h>
-//#include <queso/MonteCarloSGOptions.h>
 
 #undef UQ_SFP_READS_SOLVER_OPTION
 
@@ -54,7 +54,7 @@ namespace QUESO {
  * In order to solve a Statistical Forward Problem (SFP), QUESO expects some options for its methods to be
  * fully defined. This class provides default values for such options if no input file is available. */
 
-class SfpOptionsValues
+class SfpOptionsValues : public BaseInputOptions
 {
 public:
   //! Constructor/Destructor methods
@@ -62,13 +62,14 @@ public:
   //! Default constructor.
   /*! Assigns the default suite of options to the Statistical Forward Problem.*/
   SfpOptionsValues            ();
+  SfpOptionsValues(const BaseEnvironment * env, const char * prefix);
 
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
   SfpOptionsValues            (const SfpOptionsValues& src);
 
   //! Destructor
-  ~SfpOptionsValues            ();
+  virtual ~SfpOptionsValues            ();
   //@}
 
   //! @name Set methods
@@ -76,6 +77,8 @@ public:
   //! Assignment operator; it copies \c rhs to \c this.
   SfpOptionsValues& operator= (const SfpOptionsValues& rhs);
   //@}
+
+  std::string                   m_prefix;
 
   bool                   m_computeSolution;
   bool                   m_computeCovariances;
@@ -89,6 +92,20 @@ public:
   //McOptionsValues m_mcOptionsValues;
 
 private:
+  // The input options as strings so we can parse the input file later
+  std::string                   m_option_help;
+  std::string                   m_option_computeSolution;
+  std::string                   m_option_computeCovariances;
+  std::string                   m_option_computeCorrelations;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowedSet;
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+  std::string                   m_option_solver;
+#endif
+
+  virtual void defineOptions();
+  virtual void getOptionValues();
+
   //! Copies the option values from \c src to \c this.
   void copy(const SfpOptionsValues& src);
 };

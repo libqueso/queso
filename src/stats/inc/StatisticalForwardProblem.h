@@ -164,8 +164,7 @@ private:
 
         BaseJointPdf      <Q_V,Q_M>*         m_solutionPdf;
 
-        SfpOptionsValues                     m_alternativeOptionsValues;
-        StatisticalForwardProblemOptions*    m_optionsObj;
+        const SfpOptionsValues * m_optionsObj;
 
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         ArrayOfOneDGrids  <Q_V,Q_M>*         m_subMdfGrids;
