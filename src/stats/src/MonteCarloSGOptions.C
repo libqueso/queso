@@ -39,29 +39,53 @@ McOptionsValues::McOptionsValues(
 #endif
   )
   :
-  m_dataOutputFileName         (UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV     ),
-//m_dataOutputAllowedSet       (),
-  m_pseqDataOutputPeriod       (UQ_MOC_SG_PSEQ_DATA_OUTPUT_PERIOD_ODV   ),
-  m_pseqDataOutputFileName     (UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV),
-  m_pseqDataOutputFileType     (UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV),
-//m_pseqDataOutputAllowedSet   (),
+    BaseInputOptions(),
+    m_prefix                          ("mc_"),
+    m_dataOutputFileName         (UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV     ),
+  //m_dataOutputAllowedSet       (),
+    m_pseqDataOutputPeriod       (UQ_MOC_SG_PSEQ_DATA_OUTPUT_PERIOD_ODV   ),
+    m_pseqDataOutputFileName     (UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV),
+    m_pseqDataOutputFileType     (UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV),
+  //m_pseqDataOutputAllowedSet   (),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  m_pseqComputeStats           (UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV        ),
+    m_pseqComputeStats           (UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV        ),
 #endif
-  m_qseqDataInputFileName      (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV ),
-  m_qseqDataInputFileType      (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV ),
-  m_qseqSize                   (UQ_MOC_SG_QSEQ_SIZE_ODV                 ),
-  m_qseqDisplayPeriod          (UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV       ),
-  m_qseqMeasureRunTimes        (UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV    ),
-  m_qseqDataOutputPeriod       (UQ_MOC_SG_QSEQ_DATA_OUTPUT_PERIOD_ODV   ),
-  m_qseqDataOutputFileName     (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV),
-  m_qseqDataOutputFileType     (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV)
-//m_qseqDataOutputAllowedSet   (),
+    m_qseqDataInputFileName      (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV ),
+    m_qseqDataInputFileType      (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV ),
+    m_qseqSize                   (UQ_MOC_SG_QSEQ_SIZE_ODV                 ),
+    m_qseqDisplayPeriod          (UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV       ),
+    m_qseqMeasureRunTimes        (UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV    ),
+    m_qseqDataOutputPeriod       (UQ_MOC_SG_QSEQ_DATA_OUTPUT_PERIOD_ODV   ),
+    m_qseqDataOutputFileName     (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV),
+    m_qseqDataOutputFileType     (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV),
+  //m_qseqDataOutputAllowedSet   (),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  ,
-  m_qseqComputeStats           (UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV        ),
-  m_alternativePSsOptionsValues(),
-  m_alternativeQSsOptionsValues()
+    m_qseqComputeStats           (UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV        ),
+    m_alternativePSsOptionsValues(),
+    m_alternativeQSsOptionsValues(),
+#endif
+    m_option_help                     (m_prefix + "help"                       ),
+    m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"         ),
+    m_option_dataOutputAllowedSet     (m_prefix + "dataOutputAllowedSet"       ),
+    m_option_pseq_dataOutputPeriod    (m_prefix + "pseq_dataOutputPeriod"      ),
+    m_option_pseq_dataOutputFileName  (m_prefix + "pseq_dataOutputFileName"    ),
+    m_option_pseq_dataOutputFileType  (m_prefix + "pseq_dataOutputFileType"    ),
+    m_option_pseq_dataOutputAllowedSet(m_prefix + "pseq_dataOutputAllowedSet"  ),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    m_option_pseq_computeStats        (m_prefix + "pseq_computeStats"          ),
+#endif
+    m_option_qseq_dataInputFileName   (m_prefix + "qseq_dataInputFileName"     ),
+    m_option_qseq_dataInputFileType   (m_prefix + "qseq_dataInputFileType"     ),
+    m_option_qseq_size                (m_prefix + "qseq_size"                  ),
+    m_option_qseq_displayPeriod       (m_prefix + "qseq_displayPeriod"         ),
+    m_option_qseq_measureRunTimes     (m_prefix + "qseq_measureRunTimes"       ),
+    m_option_qseq_dataOutputPeriod    (m_prefix + "qseq_dataOutputPeriod"      ),
+    m_option_qseq_dataOutputFileName  (m_prefix + "qseq_dataOutputFileName"    ),
+    m_option_qseq_dataOutputFileType  (m_prefix + "qseq_dataOutputFileType"    ),
+    m_option_qseq_dataOutputAllowedSet(m_prefix + "qseq_dataOutputAllowedSet"  )
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    ,
+    m_option_qseq_computeStats        (m_prefix + "qseq_computeStats"          )
 #endif
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -69,6 +93,70 @@ McOptionsValues::McOptionsValues(
   if (alternativeQSsOptionsValues) m_alternativeQSsOptionsValues = *alternativeQSsOptionsValues;
 #endif
 }
+
+McOptionsValues::McOptionsValues(
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  const SsOptionsValues* alternativePSsOptionsValues,
+  const SsOptionsValues* alternativeQSsOptionsValues,
+#endif
+  const BaseEnvironment * env, const char * prefix
+  )
+  :
+    BaseInputOptions(env),
+    m_prefix                          ((std::string)(prefix) + "mc_"),
+    m_dataOutputFileName         (UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV     ),
+  //m_dataOutputAllowedSet       (),
+    m_pseqDataOutputPeriod       (UQ_MOC_SG_PSEQ_DATA_OUTPUT_PERIOD_ODV   ),
+    m_pseqDataOutputFileName     (UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV),
+    m_pseqDataOutputFileType     (UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV),
+  //m_pseqDataOutputAllowedSet   (),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    m_pseqComputeStats           (UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV        ),
+#endif
+    m_qseqDataInputFileName      (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV ),
+    m_qseqDataInputFileType      (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV ),
+    m_qseqSize                   (UQ_MOC_SG_QSEQ_SIZE_ODV                 ),
+    m_qseqDisplayPeriod          (UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV       ),
+    m_qseqMeasureRunTimes        (UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV    ),
+    m_qseqDataOutputPeriod       (UQ_MOC_SG_QSEQ_DATA_OUTPUT_PERIOD_ODV   ),
+    m_qseqDataOutputFileName     (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV),
+    m_qseqDataOutputFileType     (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV),
+  //m_qseqDataOutputAllowedSet   (),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    m_qseqComputeStats           (UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV        ),
+    m_alternativePSsOptionsValues(),
+    m_alternativeQSsOptionsValues(),
+#endif
+    m_option_help                     (m_prefix + "help"                       ),
+    m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"         ),
+    m_option_dataOutputAllowedSet     (m_prefix + "dataOutputAllowedSet"       ),
+    m_option_pseq_dataOutputPeriod    (m_prefix + "pseq_dataOutputPeriod"      ),
+    m_option_pseq_dataOutputFileName  (m_prefix + "pseq_dataOutputFileName"    ),
+    m_option_pseq_dataOutputFileType  (m_prefix + "pseq_dataOutputFileType"    ),
+    m_option_pseq_dataOutputAllowedSet(m_prefix + "pseq_dataOutputAllowedSet"  ),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    m_option_pseq_computeStats        (m_prefix + "pseq_computeStats"          ),
+#endif
+    m_option_qseq_dataInputFileName   (m_prefix + "qseq_dataInputFileName"     ),
+    m_option_qseq_dataInputFileType   (m_prefix + "qseq_dataInputFileType"     ),
+    m_option_qseq_size                (m_prefix + "qseq_size"                  ),
+    m_option_qseq_displayPeriod       (m_prefix + "qseq_displayPeriod"         ),
+    m_option_qseq_measureRunTimes     (m_prefix + "qseq_measureRunTimes"       ),
+    m_option_qseq_dataOutputPeriod    (m_prefix + "qseq_dataOutputPeriod"      ),
+    m_option_qseq_dataOutputFileName  (m_prefix + "qseq_dataOutputFileName"    ),
+    m_option_qseq_dataOutputFileType  (m_prefix + "qseq_dataOutputFileType"    ),
+    m_option_qseq_dataOutputAllowedSet(m_prefix + "qseq_dataOutputAllowedSet"  )
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    ,
+    m_option_qseq_computeStats        (m_prefix + "qseq_computeStats"          )
+#endif
+{
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  if (alternativePSsOptionsValues) m_alternativePSsOptionsValues = *alternativePSsOptionsValues;
+  if (alternativeQSsOptionsValues) m_alternativeQSsOptionsValues = *alternativeQSsOptionsValues;
+#endif
+}
+
 // Copy constructor --------------------------------
 McOptionsValues::McOptionsValues(const McOptionsValues& src)
 {
@@ -86,6 +174,144 @@ McOptionsValues::operator=(const McOptionsValues& rhs)
   return *this;
 }
 // Private methods-----------------------------------
+void
+McOptionsValues::defineOptions()
+{
+  (*m_optionsDescription).add_options()
+    (m_option_help.c_str(),                                                                                                            "produce help message for Monte Carlo distribution calculator")
+    (m_option_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV       ), "name of generic data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write to generic data output file"         )
+    (m_option_pseq_dataOutputPeriod.c_str(),     po::value<unsigned int>()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during param sequence generation"  )
+    (m_option_pseq_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for parameters"                     )
+    (m_option_pseq_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for parameters"                     )
+    (m_option_pseq_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for parameters"  )
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    (m_option_pseq_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of parameter"                 )
+#endif
+    (m_option_qseq_dataInputFileName.c_str(),    po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV   ), "name of data input file for qois"                            )
+    (m_option_qseq_dataInputFileType.c_str(),    po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV   ), "type of data input file for qois"                            )
+    (m_option_qseq_size.c_str(),                 po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_SIZE_ODV                   ), "size of qoi sequence"                                        )
+    (m_option_qseq_displayPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV         ), "period of message display during qoi sequence generation"    )
+    (m_option_qseq_measureRunTimes.c_str(),      po::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV      ), "measure run times"                                           )
+    (m_option_qseq_dataOutputPeriod.c_str(),     po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during qoi sequence generation"    )
+    (m_option_qseq_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for qois"                           )
+    (m_option_qseq_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for qois"                           )
+    (m_option_qseq_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for qois"        )
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    (m_option_qseq_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of qoi"                       )
+#endif
+   ;
+}
+
+void
+McOptionsValues::getOptionValues()
+{
+  if (m_env->allOptionsMap().count(m_option_help)) {
+    if (m_env->subDisplayFile()) {
+      *m_env->subDisplayFile() << (*m_optionsDescription)
+                              << std::endl;
+    }
+  }
+
+  if (m_env->allOptionsMap().count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_dataOutputAllowedSet)) {
+    m_dataOutputAllowedSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env->allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
+    MiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+
+  if (m_env->allOptionsMap().count(m_option_pseq_dataOutputPeriod)) {
+    m_pseqDataOutputPeriod = ((const po::variable_value&) m_env->allOptionsMap()[m_option_pseq_dataOutputPeriod]).as<unsigned int>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_pseq_dataOutputFileName)) {
+    m_pseqDataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_pseq_dataOutputFileName]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_pseq_dataOutputFileType)) {
+    m_pseqDataOutputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_pseq_dataOutputFileType]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_pseq_dataOutputAllowedSet)) {
+    m_pseqDataOutputAllowedSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env->allOptionsMap()[m_option_pseq_dataOutputAllowedSet].as<std::string>();
+    MiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_pseqDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  if (m_env->allOptionsMap().count(m_option_pseq_computeStats)) {
+    m_pseqComputeStats = ((const po::variable_value&) m_env->allOptionsMap()[m_option_pseq_computeStats]).as<bool>();
+  }
+#endif
+  if (m_env->allOptionsMap().count(m_option_qseq_dataInputFileName)) {
+    m_qseqDataInputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataInputFileName]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_qseq_dataInputFileType)) {
+    m_qseqDataInputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataInputFileType]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_qseq_size)) {
+    m_qseqSize = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_size]).as<unsigned int>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_qseq_displayPeriod)) {
+    m_qseqDisplayPeriod = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_displayPeriod]).as<unsigned int>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_qseq_measureRunTimes)) {
+    m_qseqMeasureRunTimes = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_measureRunTimes]).as<bool>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_qseq_dataOutputPeriod)) {
+    m_qseqDataOutputPeriod = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataOutputPeriod]).as<unsigned int>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_qseq_dataOutputFileName)) {
+    m_qseqDataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataOutputFileName]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_qseq_dataOutputFileType)) {
+    m_qseqDataOutputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataOutputFileType]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_qseq_dataOutputAllowedSet)) {
+    m_qseqDataOutputAllowedSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env->allOptionsMap()[m_option_qseq_dataOutputAllowedSet].as<std::string>();
+    MiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_qseqDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  if (m_env->allOptionsMap().count(m_option_qseq_computeStats)) {
+    m_qseqComputeStats = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_computeStats]).as<bool>();
+  }
+#endif
+}
+
 void
 McOptionsValues::copy(const McOptionsValues& src)
 {
