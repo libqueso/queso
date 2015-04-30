@@ -69,8 +69,8 @@ private:
         unsigned int                   computePEta          (const Q_V& svdS_vec);
   // Private variables
   const BaseEnvironment&           m_env;
-        SmOptionsValues            m_alternativeOptionsValues;
-        SimulationModelOptions*    m_optionsObj;
+  const SmOptionsValues *          m_optionsObj;
+        SimulationModelOptions *   m_simulationModelOptions;
 
         unsigned int                      m_paper_p_x;
         unsigned int                      m_paper_p_t;
