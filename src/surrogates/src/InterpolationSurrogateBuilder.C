@@ -189,7 +189,6 @@ namespace QUESO
 
     // Now broadcast the values data to all other processes
     const MpiComm& fullcomm = this->m_data.get_paramDomain().env().fullComm();
-    fullcomm.Barrier();
 
     std::vector<double>& values = this->m_data.get_values();
     fullcomm.Bcast( &values[0], values.size(), MPI_DOUBLE,
