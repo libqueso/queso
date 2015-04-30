@@ -56,7 +56,7 @@ namespace QUESO
     InterpolationSurrogateData<V,M>& m_data;
 
     //! Cache the amount of work for each subenvironment
-    std::vector<unsigned int> m_njobs;
+    std::vector<int> m_njobs;
 
     //! Ensure that if fullComm() size > 1, then n_subenvironments > 1
     /*! If not, this is a strange configuration and breaks things like inter0Comm
