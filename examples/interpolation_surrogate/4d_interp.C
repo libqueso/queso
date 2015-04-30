@@ -60,8 +60,6 @@ int main(int argc, char ** argv)
   MPI_Init(&argc, &argv);
   QUESO::FullEnvironment env(MPI_COMM_WORLD, filename.c_str(), "", NULL);
 
-  int return_flag = 0;
-
   // Define the parameter space. It's 4-dimensional in this example.
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>
     paramSpace(env,"param_", 4, NULL);
@@ -125,15 +123,24 @@ int main(int argc, char ** argv)
   // should be exact.
   double value = four_d_surrogate.evaluate(domainVector);
 
-  std::cout << "======================================" << std::endl
-            << "Interpolated value: " << value << std::endl
-            << "Exact value: " << four_d_fn( domainVector[0],domainVector[1],domainVector[2],domainVector[3])
-            << std::endl
-            << "======================================" << std::endl;
+  for( int r = 0; r < env.fullComm().NumProc(); r++ )
+    {
+      if( env.fullRank() == r )
+        {
+          std::cout << "======================================" << std::endl
+                    << "Processor: " << env.fullRank() << std::endl
+                    << "Interpolated value: " << value << std::endl
+                    << "Exact value: " << four_d_fn( domainVector[0],domainVector[1],domainVector[2],domainVector[3])
+                    << std::endl
+                    << "======================================" << std::endl;
+        }
+
+      MPI_Barrier(MPI_COMM_WORLD);
+    }
 
   MPI_Finalize();
 
-  return return_flag;
+  return 0;
 }
 
 double four_d_fn( double x, double y, double z, double a )
