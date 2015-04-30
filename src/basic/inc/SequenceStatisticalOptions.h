@@ -30,6 +30,7 @@
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
 #include <queso/Environment.h>
+#include <queso/BaseInputOptions.h>
 
 #define UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV   "0."
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -77,7 +78,7 @@
 #define UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV          0
 
 
-/*!\file uqSequenceStatisticalOptions.h
+/*!\file SequenceStatisticalOptions.h
  * \brief A templated class that stores default statistical options
  *
  * \class SsOptionsValues
@@ -86,7 +87,7 @@
  */
 
 
-class SsOptionsValues
+class SsOptionsValues : public BaseInputOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -95,12 +96,16 @@ public:
   /*! It assigns to the variables the pre-defined options for a sequence of data (scalars; vectors).*/
   SsOptionsValues            ();
 
+  //! Prefix constructor.
+  /*! Uses the prefix to read options from an input file. */
+  SsOptionsValues(const BaseEnvironment * env, const char * prefix);
+
   //! Copy  constructor.
   /*! It assigns to \c this' variables, the same values of the variable of \c src.*/
   SsOptionsValues            (const SsOptionsValues& src);
 
   //! Destructor.
-  ~SsOptionsValues            ();
+  virtual ~SsOptionsValues            ();
   //@}
 
   //! @name Set methods
@@ -111,6 +116,8 @@ public:
 
   //! @name Public attributes
   //@{
+
+  std::string               m_prefix;
 
   //! Stores the initial  discarded portion of the chain.
   std::vector<double>       m_initialDiscardedPortions;
@@ -191,6 +198,57 @@ public:
   //@}
   // end public attributes
 private:
+  std::string                   m_option_help;
+  std::string                   m_option_initialDiscardedPortions;
+
+  std::string                   m_option_autoCorr_computeViaDef;
+  std::string                   m_option_autoCorr_computeViaFft;
+  std::string                   m_option_autoCorr_secondLag;
+  std::string                   m_option_autoCorr_lagSpacing;
+  std::string                   m_option_autoCorr_numLags;
+  std::string                   m_option_autoCorr_display;
+  std::string                   m_option_autoCorr_write;
+  std::string                   m_option_kde_compute;
+  std::string                   m_option_kde_numEvalPositions;
+  std::string                   m_option_covMatrix_compute;
+  std::string                   m_option_corrMatrix_compute;
+
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  std::string                   m_option_mean_monitorPeriod;
+  std::string                   m_option_bmm_run;
+  std::string                   m_option_bmm_lengths;
+  std::string                   m_option_bmm_display;
+  std::string                   m_option_bmm_write;
+  std::string                   m_option_fft_compute;
+  std::string                   m_option_fft_paramId;
+  std::string                   m_option_fft_size;
+  std::string                   m_option_fft_testInversion;
+  std::string                   m_option_fft_write;
+  std::string                   m_option_psd_compute;
+  std::string                   m_option_psd_numBlocks;
+  std::string                   m_option_psd_hopSizeRatio;
+  std::string                   m_option_psd_paramId;
+  std::string                   m_option_psd_write;
+  std::string                   m_option_psdAtZero_compute;
+  std::string                   m_option_psdAtZero_numBlocks;
+  std::string                   m_option_psdAtZero_hopSizeRatio;
+  std::string                   m_option_psdAtZero_display;
+  std::string                   m_option_psdAtZero_write;
+  std::string                   m_option_geweke_compute;
+  std::string                   m_option_geweke_naRatio;
+  std::string                   m_option_geweke_nbRatio;
+  std::string                   m_option_geweke_display;
+  std::string                   m_option_geweke_write;
+  std::string                   m_option_meanStacc_compute;
+  std::string                   m_option_hist_compute;
+  std::string                   m_option_hist_numInternalBins;
+  std::string                   m_option_cdfStacc_compute;
+  std::string                   m_option_cdfStacc_numEvalPositions;
+#endif
+
+  virtual void defineOptions();
+  virtual void getOptionValues();
+
   //! Copies the option values from \c src to \c this.
   void copy(const SsOptionsValues& src);
 };
