@@ -297,8 +297,9 @@ private:
 
   MHRawChainInfoStruct m_rawChainInfo;
 
-  MhOptionsValues m_alternativeOptionsValues;
-  MetropolisHastingsSGOptions * m_optionsObj;
+  const MhOptionsValues * m_optionsObj;
+  MetropolisHastingsSGOptions * m_oldOptions;
+
 	bool m_computeInitialPriorAndLikelihoodValues;
 	double m_initialLogPriorValue;
 	double m_initialLogLikelihoodValue;
