@@ -89,7 +89,7 @@ public:
   McOptionsValues            (const McOptionsValues& src);
 
   //! Destructor
-  ~McOptionsValues            ();
+  virtual ~McOptionsValues            ();
   //@}
 
   //! @name Set methods
