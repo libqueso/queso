@@ -672,6 +672,16 @@ BaseVectorSequence<V,M>::computeStatistics(
   const SequenceStatisticalOptions& statisticalOptions,
   std::ofstream*                           passedOfs)
 {
+  queso_deprecated();
+  computeStatistics(statisticalOptions.m_ov, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeStatistics(
+  const SsOptionsValues& statisticalOptions,
+  std::ofstream*                           passedOfs)
+{
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
                             << "\n-----------------------------------------------------"
@@ -876,6 +886,21 @@ BaseVectorSequence<V,M>::computeMeanVars(
   V*                                       subSampleVarPtr,
   V*                                       subPopulVarPtr)
 {
+  queso_deprecated();
+  computeMeanVars(statisticalOptions.m_ov, passedOfs, subMeanPtr, subMedianPtr,
+      subSampleVarPtr, subPopulVarPtr);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeMeanVars(
+  const SsOptionsValues& statisticalOptions,
+  std::ofstream*                           passedOfs,
+  V*                                       subMeanPtr,
+  V*                                       subMedianPtr,
+  V*                                       subSampleVarPtr,
+  V*                                       subPopulVarPtr)
+{
   int iRC = UQ_OK_RC;
   struct timeval timevalTmp;
   iRC = gettimeofday(&timevalTmp, NULL);
@@ -1070,6 +1095,19 @@ BaseVectorSequence<V,M>::computeAutoCorrViaDef(
   const std::vector<unsigned int>&      lagsForCorrs,
   std::ofstream*                        passedOfs)
 {
+  queso_deprecated();
+  computeAutoCorrViaDef(statisticalOptions.m_ov, initialPosForStatistics,
+      lagsForCorrs, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeAutoCorrViaDef(
+  const SsOptionsValues& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  const std::vector<unsigned int>&      lagsForCorrs,
+  std::ofstream*                        passedOfs)
+{
   int iRC = UQ_OK_RC;
   struct timeval timevalTmp;
   iRC = gettimeofday(&timevalTmp, NULL);
@@ -1188,6 +1226,19 @@ template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeAutoCorrViaFFT(
   const SequenceStatisticalOptions& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  const std::vector<unsigned int>&      lagsForCorrs,
+  std::ofstream*                        passedOfs)
+{
+  queso_deprecated();
+  computeAutoCorrViaFFT(statisticalOptions.m_ov, initialPosForStatistics,
+      lagsForCorrs, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeAutoCorrViaFFT(
+  const SsOptionsValues& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
   std::ofstream*                        passedOfs)
@@ -1360,6 +1411,16 @@ template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
   const SequenceStatisticalOptions& statisticalOptions,
+  std::ofstream*                           passedOfs)
+{
+  queso_deprecated();
+  computeHistCdfstaccKde(statisticalOptions.m_ov, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
+  const SsOptionsValues& statisticalOptions,
   std::ofstream*                           passedOfs)
 {
   if (m_env.subDisplayFile()) {
@@ -1931,11 +1992,22 @@ BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
   return;
 }
+
 // --------------------------------------------------
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeCovCorrMatrices( // Use the whole chain
   const SequenceStatisticalOptions& statisticalOptions,
+  std::ofstream*                           passedOfs)
+{
+  queso_deprecated();
+  computeCovCorrMatrices(statisticalOptions.m_ov, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeCovCorrMatrices( // Use the whole chain
+  const SsOptionsValues& statisticalOptions,
   std::ofstream*                           passedOfs)
 {
   if (m_env.subDisplayFile()) {
@@ -2006,6 +2078,16 @@ template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeMeanEvolution(
   const SequenceStatisticalOptions& statisticalOptions,
+  std::ofstream*                           passedOfs)
+{
+  queso_deprecated();
+  computeMeanEvolution(statisticalOptions.m_ov, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeMeanEvolution(
+  const SsOptionsValues& statisticalOptions,
   std::ofstream*                           passedOfs)
 {
   int iRC = UQ_OK_RC;
@@ -2122,6 +2204,17 @@ BaseVectorSequence<V,M>::computeBMM(
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
+  queso_deprecated();
+  computeMeanStacc(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeMeanStacc(
+  const SsOptionsValues& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
   int iRC = UQ_OK_RC;
   struct timeval timevalTmp;
   iRC = gettimeofday(&timevalTmp, NULL);
@@ -2208,6 +2301,17 @@ BaseVectorSequence<V,M>::computeFFT(
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
+  queso_deprecated();
+  computeBMM(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeBMM(
+  const SsOptionsValues& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
   int iRC = UQ_OK_RC;
   struct timeval timevalTmp;
   iRC = gettimeofday(&timevalTmp, NULL);
@@ -2284,6 +2388,17 @@ BaseVectorSequence<V,M>::computePSD(
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
+  queso_deprecated();
+  computeFFT(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeFFT(
+  const SsOptionsValues& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
   int iRC = UQ_OK_RC;
   struct timeval timevalTmp;
   iRC = gettimeofday(&timevalTmp, NULL);
@@ -2334,6 +2449,17 @@ template<class V, class M>
 void
 BaseVectorSequence<V,M>::computePSDAtZero(
   const SequenceStatisticalOptions& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
+  queso_deprecated();
+  computePSD(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computePSD(
+  const SsOptionsValues& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
@@ -2486,6 +2612,17 @@ BaseVectorSequence<V,M>::computeGeweke(
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {
+  queso_deprecated();
+  computePSDAtZero(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computePSDAtZero(
+  const SsOptionsValues& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
   int iRC = UQ_OK_RC;
   struct timeval timevalTmp;
   iRC = gettimeofday(&timevalTmp, NULL);
@@ -2552,6 +2689,17 @@ template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeMeanStacc(
   const SequenceStatisticalOptions& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
+  queso_deprecated();
+  computeGeweke(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
+}
+
+template<class V, class M>
+void
+BaseVectorSequence<V,M>::computeGeweke(
+  const SsOptionsValues& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   std::ofstream*                        passedOfs)
 {

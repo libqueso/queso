@@ -400,6 +400,12 @@ public:
 
   void                    computeStatistics           (const SequenceStatisticalOptions& statisticalOptions,
 						       std::ofstream*                           passedOfs);
+
+  void                    computeHistCdfstaccKde      (const SsOptionsValues& statisticalOptions,
+                   std::ofstream*                           passedOfs);
+
+  void                    computeStatistics           (const SsOptionsValues& statisticalOptions,
+                   std::ofstream*                           passedOfs);
 #endif //QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
@@ -485,6 +491,9 @@ protected:
 
            void           computeMeanEvolution        (const SequenceStatisticalOptions& statisticalOptions,
 						       std::ofstream*                           passedOfs);
+
+          void           computeMeanEvolution        (const SsOptionsValues& statisticalOptions,
+                  std::ofstream*                           passedOfs);
 #endif
 
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -506,6 +515,25 @@ protected:
            void           computeMeanStacc            (const SequenceStatisticalOptions& statisticalOptions,
                                                        const std::vector<unsigned int>&         initialPosForStatistics,
                                                        std::ofstream*                           passedOfs);
+
+          void           computeBMM                  (const SsOptionsValues& statisticalOptions,
+                                                      const std::vector<unsigned int>&         initialPosForStatistics,
+                                                      std::ofstream*                           passedOfs);
+          void           computeFFT                  (const SsOptionsValues& statisticalOptions,
+                                                      const std::vector<unsigned int>&         initialPosForStatistics,
+                                                      std::ofstream*                           passedOfs);
+          void           computePSD                  (const SsOptionsValues& statisticalOptions,
+                                                      const std::vector<unsigned int>&         initialPosForStatistics,
+                                                      std::ofstream*                           passedOfs);
+          void           computePSDAtZero            (const SsOptionsValues& statisticalOptions,
+                                                      const std::vector<unsigned int>&         initialPosForStatistics,
+                                                      std::ofstream*                           passedOfs);
+          void           computeGeweke               (const SsOptionsValues& statisticalOptions,
+                                                      const std::vector<unsigned int>&         initialPosForStatistics,
+                                                      std::ofstream*                           passedOfs);
+          void           computeMeanStacc            (const SsOptionsValues& statisticalOptions,
+                                                      const std::vector<unsigned int>&         initialPosForStatistics,
+                                                      std::ofstream*                           passedOfs);
 #endif
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -525,6 +553,22 @@ protected:
                                                        std::ofstream*                           passedOfs);
            void           computeCovCorrMatrices      (const SequenceStatisticalOptions& statisticalOptions,
                                                        std::ofstream*                           passedOfs);
+          void           computeMeanVars             (const SsOptionsValues& statisticalOptions,
+                                                      std::ofstream*                           passedOfs,
+                                                      V*                                       subMeanPtr,
+                                                      V*                                       subMedianPtr,
+                                                      V*                                       subSampleVarPtr,
+                                                      V*                                       subPopulVarPtr);
+          void           computeAutoCorrViaDef       (const SsOptionsValues& statisticalOptions,
+                                                      const std::vector<unsigned int>&         initialPosForStatistics,
+                                                      const std::vector<unsigned int>&         lagsForCorrs,
+                                                      std::ofstream*                           passedOfs);
+          void           computeAutoCorrViaFFT       (const SsOptionsValues& statisticalOptions,
+                                                      const std::vector<unsigned int>&         initialPosForStatistics,
+                                                      const std::vector<unsigned int>&         lagsForCorrs,
+                                                      std::ofstream*                           passedOfs);
+          void           computeCovCorrMatrices      (const SsOptionsValues& statisticalOptions,
+                                                      std::ofstream*                           passedOfs);
 #endif
 
 };
