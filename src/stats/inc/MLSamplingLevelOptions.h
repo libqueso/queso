@@ -29,6 +29,7 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
+#include <queso/BaseInputOptions.h>
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
@@ -112,7 +113,7 @@ namespace QUESO {
  * of the sequece generated. This class provides default values for such options if no
  * input file is available. */
 
-class MLSamplingLevelOptions
+class MLSamplingLevelOptions : public BaseInputOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -123,7 +124,7 @@ public:
   //MLSamplingLevelOptions(const MLSamplingLevelOptions& inputOptions);
 
   //! Destructor
- ~MLSamplingLevelOptions();
+  virtual ~MLSamplingLevelOptions();
   //@}
 
  //! @name Misc method
@@ -136,10 +137,10 @@ public:
 
   //! @name I/O methods
   //@{
+  //!  It prints the option values.
   //! It scans the option values from the options input file.
   void scanOptionsValues(const MLSamplingLevelOptions* defaultOptions);
 
-  //!  It prints the option values.
   void print            (std::ostream& os) const;
   //@}
   std::string                        m_prefix;
@@ -347,14 +348,10 @@ private:
   //! Copies the option values from \c srcOptions to \c this.
   void   copyOptionsValues(const MLSamplingLevelOptions& srcOptions);
 
-  //! Defines the options for the Multilevel generator of samples as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
-
-  //! Gets the sequence options defined to the Multilevel algorithm.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  virtual void defineOptions();
+  virtual void getOptionValues();
 
   const BaseEnvironment&        m_env;
-  po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
 
