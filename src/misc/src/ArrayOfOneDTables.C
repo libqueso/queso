@@ -58,10 +58,7 @@ template <class V, class M>
 void
 ArrayOfOneDTables<V,M>::setOneDTable(unsigned int rowId, const std::vector<double>& values)
 {
-  UQ_FATAL_TEST_MACRO(rowId >= (unsigned int) m_oneDTables.MyLength(),
-                      m_env.worldRank(),
-                      "ArrayOfOneDTables<T>::setOneDTable()",
-                      "rowId is out of range");
+  queso_require_less_msg(rowId, (unsigned int) m_oneDTables.MyLength(), "rowId is out of range");
 
   if (m_oneDTables(rowId,0) == NULL) m_oneDTables(rowId,0) = new std::vector<double>(0);
   else                               m_oneDTables(rowId,0)->clear();
@@ -79,17 +76,11 @@ template <class V, class M>
 const std::vector<double>&
 ArrayOfOneDTables<V,M>::oneDTable(unsigned int rowId) const
 {
-  UQ_FATAL_TEST_MACRO(rowId >= (unsigned int) m_oneDTables.MyLength(),
-                      m_env.worldRank(),
-                      "ArrayOfOneDTables<T>::oneDTable()",
-                      "rowId is out of range");
+  queso_require_less_msg(rowId, (unsigned int) m_oneDTables.MyLength(), "rowId is out of range");
 
   ArrayOfOneDTables<V,M>* tmp = const_cast<ArrayOfOneDTables<V,M>*>(this);
 
-  UQ_FATAL_TEST_MACRO(tmp->m_oneDTables(rowId,0) == NULL,
-                      m_env.worldRank(),
-                      "ArrayOfOneDTables<T>::oneDTable()",
-                      "requested row is still NULL");
+  queso_require_msg(tmp->m_oneDTables(rowId,0), "requested row is still NULL");
 
   return *(tmp->m_oneDTables(rowId,0));
 }

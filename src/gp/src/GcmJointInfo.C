@@ -685,10 +685,7 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
                             << ": finished instantiating the m_Smat_u_i spaces"
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(sumDims != m_u_size,
-                      m_env.worldRank(),
-                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumDims' and 'm_u_size' should be equal");
+  queso_require_equal_to_msg(sumDims, m_u_size, "'sumDims' and 'm_u_size' should be equal");
 
   unsigned int sumNumRows = 0;
   unsigned int sumNumCols = 0;
@@ -703,14 +700,8 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
                             << ": finished instantiating the m_Smat_uw_i matrices"
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(sumNumRows != m_u_size,
-                      m_env.worldRank(),
-                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumNumRows' and 'm_u_size' should be equal");
-  UQ_FATAL_TEST_MACRO(sumNumCols != s.m_w_size,
-                      m_env.worldRank(),
-                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumNumCols' and 'm_w_size' should be equal");
+  queso_require_equal_to_msg(sumNumRows, m_u_size, "'sumNumRows' and 'm_u_size' should be equal");
+  queso_require_equal_to_msg(sumNumCols, s.m_w_size, "'sumNumCols' and 'm_w_size' should be equal");
 
   //********************************************************************************
   // Instantiate 'u_hat_u_asterisk' matrices
@@ -728,14 +719,8 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
                             << ": finished instantiating the m_Smat_u_hat_u_asterisk_i matrices"
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(sumNumRows != m_u_size,
-                      m_env.worldRank(),
-                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumNumRows' and 'm_u_size' should be equal");
-  UQ_FATAL_TEST_MACRO(sumNumCols != s.m_paper_p_eta,
-                      m_env.worldRank(),
-                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumNumCols (1)' and 'm_paper_p_eta' should be equal");
+  queso_require_equal_to_msg(sumNumRows, m_u_size, "'sumNumRows' and 'm_u_size' should be equal");
+  queso_require_equal_to_msg(sumNumCols, s.m_paper_p_eta, "'sumNumCols (1)' and 'm_paper_p_eta' should be equal");
 
   //********************************************************************************
   // Instantiate 'w_hat_u_asterisk' matrices
@@ -753,14 +738,8 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
                             << ": finished instantiating the m_Smat_w_hat_u_asterisk_i matrices"
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(sumNumRows != s.m_w_size,
-                      m_env.worldRank(),
-                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumNumRows' and 'm_w_size' should be equal");
-  UQ_FATAL_TEST_MACRO(sumNumCols != s.m_paper_p_eta,
-                      m_env.worldRank(),
-                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumNumCols (2)' and 'm_paper_p_eta' should be equal");
+  queso_require_equal_to_msg(sumNumRows, s.m_w_size, "'sumNumRows' and 'm_w_size' should be equal");
+  queso_require_equal_to_msg(sumNumCols, s.m_paper_p_eta, "'sumNumCols (2)' and 'm_paper_p_eta' should be equal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Leaving GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"

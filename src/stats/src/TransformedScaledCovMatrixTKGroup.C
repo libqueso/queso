@@ -78,25 +78,13 @@ template<class V, class M>
 const InvLogitGaussianVectorRV<V,M>&
 TransformedScaledCovMatrixTKGroup<V,M>::rv(unsigned int stageId) const
 {
-  UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::rv1()",
-                      "m_rvs.size() = 0");
+  queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
 
-  UQ_FATAL_TEST_MACRO(m_rvs[0] == NULL, // Yes, '0', because that is the id used below
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::rv1()",
-                      "m_rvs[0] == NULL");
+  queso_require_msg(m_rvs[0], "m_rvs[0] == NULL");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::rv1()",
-                      "m_preComputingPositions.size() <= stageId");
+  queso_require_greater_msg(m_preComputingPositions.size(), stageId, "m_preComputingPositions.size() <= stageId");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::rv1()",
-                      "m_preComputingPositions[stageId] == NULL");
+  queso_require_msg(m_preComputingPositions[stageId], "m_preComputingPositions[stageId] == NULL");
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
@@ -123,25 +111,13 @@ template<class V, class M>
 const InvLogitGaussianVectorRV<V,M>&
 TransformedScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
-  UQ_FATAL_TEST_MACRO(m_rvs.size() < stageIds.size(),
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::rv2()",
-                      "m_rvs.size() < stageIds.size()");
+  queso_require_greater_equal_msg(m_rvs.size(), stageIds.size(), "m_rvs.size() < stageIds.size()");
 
-  UQ_FATAL_TEST_MACRO(m_rvs[stageIds.size()-1] == NULL,
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::rv2()",
-                      "m_rvs[stageIds.size()-1] == NULL");
+  queso_require_msg(m_rvs[stageIds.size()-1], "m_rvs[stageIds.size()-1] == NULL");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::rv2()",
-                      "m_preComputingPositions.size() <= stageIds[0]");
+  queso_require_greater_msg(m_preComputingPositions.size(), stageIds[0], "m_preComputingPositions.size() <= stageIds[0]");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::rv2()",
-                      "m_preComputingPositions[stageIds[0]] == NULL");
+  queso_require_msg(m_preComputingPositions[stageIds[0]], "m_preComputingPositions[stageIds[0]] == NULL");
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
@@ -246,22 +222,13 @@ template<class V, class M>
 void
 TransformedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()
 {
-  UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
-                      "m_rvs.size() = 0");
+  queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
 
-  UQ_FATAL_TEST_MACRO(m_rvs.size() != m_scales.size(),
-                      m_env.worldRank(),
-                      "TransformedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
-                      "m_rvs.size() != m_scales.size()");
+  queso_require_equal_to_msg(m_rvs.size(), m_scales.size(), "m_rvs.size() != m_scales.size()");
 
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
-    UQ_FATAL_TEST_MACRO(m_rvs[i] != NULL,
-                        m_env.worldRank(),
-                        "TransformedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
-                        "m_rvs[i] != NULL");
+    queso_require_msg(!(m_rvs[i]), "m_rvs[i] != NULL");
     m_rvs[i] = new InvLogitGaussianVectorRV<V,M>(m_prefix.c_str(),
         m_boxSubset, m_vectorSpace->zeroVector(),
         factor*m_originalCovMatrix);

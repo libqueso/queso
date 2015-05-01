@@ -46,10 +46,7 @@ GaussianVectorRV<V,M>::GaussianVectorRV(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((lawVarVector.getMinValue() <= 0.0),
-                      m_env.worldRank(),
-                      "GaussianVectorRV<V,M>::constructor() [1]",
-                      "Covariance matrix is not symmetric positive definite.");
+  queso_require_greater_msg(lawVarVector.getMinValue(), 0.0, "Covariance matrix is not symmetric positive definite.");
 
   m_pdf = new GaussianJointPdf<V,M>(m_prefix.c_str(),
                                             m_imageSet,
@@ -111,10 +108,7 @@ GaussianVectorRV<V,M>::GaussianVectorRV(
     M matVt(m_imageSet.vectorSpace().zeroVector());
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = lawCovMatrix.svd(matU,vecS,matVt);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.worldRank(),
-                        "GaussianVectorRV<V,M>::constructor() [2]",
-            "Cholesky decomposition of covariance matrix failed.");
+    queso_require_msg(!(iRC), "Cholesky decomposition of covariance matrix failed.");
 
     vecS.cwSqrt();
     m_realizer = new GaussianVectorRealizer<V,M>(m_prefix.c_str(),
@@ -183,10 +177,7 @@ GaussianVectorRV<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
     M matVt(m_imageSet.vectorSpace().zeroVector());
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = newLawCovMatrix.svd(matU,vecS,matVt);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.worldRank(),
-                        "GaussianVectorRV<V,M>::updateLawCovMatrix()",
-                        "Cholesky decomposition of covariance matrix failed.");
+    queso_require_msg(!(iRC), "Cholesky decomposition of covariance matrix failed.");
 
     vecS.cwSqrt();
     ( dynamic_cast< GaussianVectorRealizer<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(matU,
@@ -228,25 +219,13 @@ ComputeConditionalGaussianVectorRV(
   unsigned int dim1 = muVec1.sizeLocal();
   unsigned int dim2 = muVec2.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((sigmaMat11.numRowsLocal() != dim1) || (sigmaMat11.numCols() != dim1),
-                      env.worldRank(),
-                      "ComputeConditionalGaussianVectorRV()",
-                      "invalid sigmaMat11");
+  queso_require_msg(!((sigmaMat11.numRowsLocal() != dim1) || (sigmaMat11.numCols() != dim1)), "invalid sigmaMat11");
 
-  UQ_FATAL_TEST_MACRO((sigmaMat12.numRowsLocal() != dim1) || (sigmaMat12.numCols() != dim2),
-                      env.worldRank(),
-                      "ComputeConditionalGaussianVectorRV()",
-                      "invalid sigmaMat12");
+  queso_require_msg(!((sigmaMat12.numRowsLocal() != dim1) || (sigmaMat12.numCols() != dim2)), "invalid sigmaMat12");
 
-  UQ_FATAL_TEST_MACRO((sigmaMat21.numRowsLocal() != dim2) || (sigmaMat21.numCols() != dim1),
-                      env.worldRank(),
-                      "ComputeConditionalGaussianVectorRV()",
-                      "invalid sigmaMat21");
+  queso_require_msg(!((sigmaMat21.numRowsLocal() != dim2) || (sigmaMat21.numCols() != dim1)), "invalid sigmaMat21");
 
-  UQ_FATAL_TEST_MACRO((sigmaMat22.numRowsLocal() != dim2) || (sigmaMat22.numCols() != dim2),
-                      env.worldRank(),
-                      "ComputeConditionalGaussianVectorRV()",
-                      "invalid sigmaMat22");
+  queso_require_msg(!((sigmaMat22.numRowsLocal() != dim2) || (sigmaMat22.numCols() != dim2)), "invalid sigmaMat22");
 
   // Check transpose operation
   M mat_tt(sigmaMat12);
@@ -260,25 +239,13 @@ ComputeConditionalGaussianVectorRV(
                             << std::endl;
     }
   }
-  UQ_FATAL_TEST_MACRO(auxNorm >= 1.e-12,
-                      env.worldRank(),
-                      "ComputeConditionalGaussianVectorRV()",
-                      "sigmaMat12 and sigmaMat21 are not transpose of each other");
+  queso_require_less_msg(auxNorm, 1.e-12, "sigmaMat12 and sigmaMat21 are not transpose of each other");
 
-  UQ_FATAL_TEST_MACRO((sampleVec2.sizeLocal() != dim2),
-                      env.worldRank(),
-                      "ComputeConditionalGaussianVectorRV()",
-                      "invalid sampleVec2");
+  queso_require_equal_to_msg(sampleVec2.sizeLocal(), dim2, "invalid sampleVec2");
 
-  UQ_FATAL_TEST_MACRO((muVec1_cond_on_2.sizeLocal() != dim1),
-                      env.worldRank(),
-                      "ComputeConditionalGaussianVectorRV()",
-                      "invalid muVec1_cond_on_2");
+  queso_require_equal_to_msg(muVec1_cond_on_2.sizeLocal(), dim1, "invalid muVec1_cond_on_2");
 
-  UQ_FATAL_TEST_MACRO((sigmaMat11_cond_on_2.numRowsLocal() != dim1) || (sigmaMat11_cond_on_2.numCols() != dim1),
-                      env.worldRank(),
-                      "ComputeConditionalGaussianVectorRV()",
-                      "invalid sigmaMat11_cond_on_2");
+  queso_require_msg(!((sigmaMat11_cond_on_2.numRowsLocal() != dim1) || (sigmaMat11_cond_on_2.numCols() != dim1)), "invalid sigmaMat11_cond_on_2");
 
   muVec1_cond_on_2     = muVec1     + sigmaMat12 * sigmaMat22.invertMultiply(sampleVec2 - muVec2);
   sigmaMat11_cond_on_2 = sigmaMat11 - sigmaMat12 * sigmaMat22.invertMultiply(sigmaMat21);

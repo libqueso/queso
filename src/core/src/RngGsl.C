@@ -36,10 +36,7 @@ RngGsl::RngGsl(int seed, int worldRank)
 {
   gsl_rng_default_seed = (unsigned long int) m_seed;
   m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
-  UQ_FATAL_TEST_MACRO((m_rng == NULL),
-                      m_worldRank,
-                      "RngGsl::constructor()",
-                      "null m_rng");
+  queso_require_msg(m_rng, "null m_rng");
 
 //gsl_rng_set(m_rng, gsl_rng_default_seed);
 #if 0
@@ -69,10 +66,7 @@ RngGsl::resetSeed(int newSeed)
 
   gsl_rng_default_seed = (unsigned long int) m_seed;
   m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
-  UQ_FATAL_TEST_MACRO((m_rng == NULL),
-                      m_worldRank,
-                      "RngGsl::resetSeed()",
-                      "null m_rng");
+  queso_require_msg(m_rng, "null m_rng");
   return;
 }
 

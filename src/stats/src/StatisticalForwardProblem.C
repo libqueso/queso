@@ -85,15 +85,9 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblem(
     m_optionsObj = tempOptions;
   }
 
-  UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "StatisticalForwardProblem<P_V,P_M>::constructor()",
-                      "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
+  queso_require_equal_to_msg(paramRv.imageSet().vectorSpace().dimLocal(), qoiFunction.domainSet().vectorSpace().dimLocal(), "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
 
-  UQ_FATAL_TEST_MACRO(qoiFunction.imageSet().vectorSpace().dimLocal() != qoiRv.imageSet().vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "StatisticalForwardProblem<P_V,P_M>::constructor()",
-                      "'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions");
+  queso_require_equal_to_msg(qoiFunction.imageSet().vectorSpace().dimLocal(), qoiRv.imageSet().vectorSpace().dimLocal(), "'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions");
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor()"
@@ -343,10 +337,7 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
         }
       }
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.worldRank(),
-                            "StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
-                            "unified cdf writing, parallel vectors not supported yet");
+        queso_error_msg("unified cdf writing, parallel vectors not supported yet");
       }
     }
 #endif
@@ -394,7 +385,7 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
     return m_qoiRv.subCdf();
   }
 
-  //UQ_FATAL_TEST_MACRO(m_unifiedSolutionCdf == NULL,
+
   //                    m_env.worldRank(),
   //                    "StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf()",
   //                    "variable is NULL");
@@ -409,10 +400,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 
   // Make sure this runs after the forward propagation
   // only then we obtain the actual realizations of the parameters
-  UQ_FATAL_TEST_MACRO(m_paramChain == NULL,
-                      m_env.worldRank(),
-                      (std::string)("StatisticalForwardProblem<V,M,V,M>::getParamChain()"),
-                      "m_paramChain is NULL");
+  queso_require_msg(m_paramChain, "m_paramChain is NULL");
 
   return *m_paramChain;
 

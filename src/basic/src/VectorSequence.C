@@ -86,10 +86,7 @@ BaseVectorSequence<V,M>::unifiedSequenceSize() const
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                        m_env.worldRank(),
-                        "BaseVectorSequence<V,M>::unifiedSequenceSize()",
-                        "parallel vectors not supported yet");
+    queso_require_msg(useOnlyInter0Comm, "parallel vectors not supported yet");
   }
 
   return unifiedNumSamples;
@@ -359,15 +356,9 @@ BaseVectorSequence<V,M>::append(
   unsigned int                          initialPos,
   unsigned int                          numPos)
 {
-  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+1)),
-                      m_env.worldRank(),
-                      "BaseVectorSequence<V,M>::append()",
-                      "initialPos is too big");
+  queso_require_greater_equal_msg(src.subSequenceSize(), (initialPos+1), "initialPos is too big");
 
-  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+numPos)),
-                      m_env.worldRank(),
-                      "BaseVectorSequence<V,M>::append()",
-                      "numPos is too big");
+  queso_require_greater_equal_msg(src.subSequenceSize(), (initialPos+numPos), "numPos is too big");
 
   this->deleteStoredVectors();
   unsigned int currentSize = this->subSequenceSize();
@@ -394,10 +385,7 @@ BaseVectorSequence<V,M>::subPositionsOfMaximum(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.subSequenceSize() != this->subSequenceSize(),
-                      m_env.worldRank(),
-                      "BaseVectorSequence<V,M>::subPositionsOfMaximum()",
-                      "invalid input");
+  queso_require_equal_to_msg(subCorrespondingScalarValues.subSequenceSize(), this->subSequenceSize(), "invalid input");
 
   double subMaxValue = subCorrespondingScalarValues.subMaxPlain();
   unsigned int iMax = subCorrespondingScalarValues.subSequenceSize();
@@ -441,10 +429,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.subSequenceSize() != this->subSequenceSize(),
-                      m_env.worldRank(),
-                      "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
-                      "invalid input");
+  queso_require_equal_to_msg(subCorrespondingScalarValues.subSequenceSize(), this->subSequenceSize(), "invalid input");
 
   // Compute the max on each process
   double subMaxValue = subCorrespondingScalarValues.subMaxPlain();
@@ -507,10 +492,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
                             "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                             "failed MPI.Gatherv()");
   if (m_env.inter0Rank() == 0) {
-    UQ_FATAL_TEST_MACRO(recvcntsPos[0] != (int) subNumPos,
-                        m_env.worldRank(),
-                        "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
-                        "failed MPI.Gather() result at proc 0 (recvcntsPos[0])");
+    queso_require_equal_to_msg(recvcntsPos[0], (int) subNumPos, "failed MPI.Gather() result at proc 0 (recvcntsPos[0])");
   }
 
   // Construct offset indices based on number of maxima
@@ -519,10 +501,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
     displsPos[nodeId] = displsPos[nodeId-1] + recvcntsPos[nodeId-1];
   }
   if (m_env.inter0Rank() == 0) {
-    UQ_FATAL_TEST_MACRO(unifiedNumPos != (displsPos[Np - 1] + recvcntsPos[Np - 1]),
-                        m_env.worldRank(),
-                        "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
-                        "failed MPI.Gather() result at proc 0 (unifiedNumPos)");
+    queso_require_equal_to_msg(unifiedNumPos, (displsPos[Np - 1] + recvcntsPos[Np - 1]), "failed MPI.Gather() result at proc 0 (unifiedNumPos)");
   }
 
   //******************************************************************
@@ -540,10 +519,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
                             "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                             "failed MPI.Gatherv()");
   if (m_env.inter0Rank() == 0) {
-    UQ_FATAL_TEST_MACRO(recvcntsDbs[0] != (int) subNumDbs,
-                        m_env.worldRank(),
-                        "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
-                        "failed MPI.Gather() result at proc 0 (recvcntsDbs[0])");
+    queso_require_equal_to_msg(recvcntsDbs[0], (int) subNumDbs, "failed MPI.Gather() result at proc 0 (recvcntsDbs[0])");
   }
 
   // Now gather up the offsets based on the number of states (mulitplied by the
@@ -553,10 +529,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
     displsDbs[nodeId] = displsDbs[nodeId-1] + recvcntsDbs[nodeId-1];
   }
   if (m_env.inter0Rank() == 0) {
-    UQ_FATAL_TEST_MACRO(((int) (unifiedNumPos*dimSize)) != (displsDbs[Np - 1] + recvcntsDbs[Np - 1]),
-                        m_env.worldRank(),
-                        "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
-                        "failed MPI.Gather() result at proc 0 (unifiedNumPos*dimSize)");
+    queso_require_equal_to_msg(((int) (unifiedNumPos*dimSize)), (displsDbs[Np - 1] + recvcntsDbs[Np - 1]), "failed MPI.Gather() result at proc 0 (unifiedNumPos*dimSize)");
   }
 
   //******************************************************************
@@ -654,10 +627,7 @@ BaseVectorSequence<V,M>::computeFilterParams(
 
   bool okSituation = ((passedOfs == NULL                            ) ||
                       ((passedOfs != NULL) && (m_env.subRank() >= 0)));
-  UQ_FATAL_TEST_MACRO(!okSituation,
-                      m_env.worldRank(),
-                      "BaseVectorSequence<V,M>::computeFilterParams()",
-                      "unexpected combination of file pointer and subRank");
+  queso_require_msg(!(!okSituation), "unexpected combination of file pointer and subRank");
 
   //initialPos = 0;
   spacing    = 1;
@@ -682,10 +652,7 @@ BaseVectorSequence<V,M>::copy(const BaseVectorSequence<V,M>& src)
 {
   // FIX ME: should check environments as well ???
 
-  UQ_FATAL_TEST_MACRO(m_vectorSpace.dimLocal() != src.m_vectorSpace.dimLocal(),
-                      m_env.worldRank(),
-                      "SequenceOfVectors<V,M>::copy()",
-                      "incompatible vector space dimensions");
+  queso_require_equal_to_msg(m_vectorSpace.dimLocal(), src.m_vectorSpace.dimLocal(), "incompatible vector space dimensions");
 
   m_name = src.m_name;
   this->deleteStoredVectors();
@@ -716,10 +683,7 @@ BaseVectorSequence<V,M>::computeStatistics(
 
   bool okSituation = ((passedOfs == NULL                            ) ||
                       ((passedOfs != NULL) && (m_env.subRank() >= 0)));
-  UQ_FATAL_TEST_MACRO(!okSituation,
-                      m_env.worldRank(),
-                      "BaseVectorSequence<V,M>::computeStatistics()",
-                      "unexpected combination of file pointer and subRank");
+  queso_require_msg(!(!okSituation), "unexpected combination of file pointer and subRank");
 
   int iRC = UQ_OK_RC;
   struct timeval timevalTmp;
@@ -1085,10 +1049,7 @@ BaseVectorSequence<V,M>::computeMeanVars(
       }
     }
     else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "BaseVectorSequence<V,M>::computeMeanVars()",
-                          "unified min-max writing, parallel vectors not supported yet");
+      queso_error_msg("unified min-max writing, parallel vectors not supported yet");
     }
   } // if numSubEnvs > 1
 
@@ -1506,10 +1467,7 @@ BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
         }
       }
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.worldRank(),
-                            "BaseVectorSequence<V,M>::computeHistCdfstaccKde()",
-                            "unified min-max writing, parallel vectors not supported yet");
+        queso_error_msg("unified min-max writing, parallel vectors not supported yet");
       }
     } // if subDisplayFile
   } // if numSubEnvs > 1
@@ -1641,10 +1599,7 @@ BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
           }
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.worldRank(),
-                              "BaseVectorSequence<V,M>::computeHistCdfstaccKde()",
-                              "unified histogram writing, parallel vectors not supported yet");
+          queso_error_msg("unified histogram writing, parallel vectors not supported yet");
         }
       } // if passedOfs
 
@@ -1884,10 +1839,7 @@ BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
           }
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.worldRank(),
-                              "BaseVectorSequence<V,M>::computeHistCdfstaccKde()",
-                              "unified iqr writing, parallel vectors not supported yet");
+          queso_error_msg("unified iqr writing, parallel vectors not supported yet");
         }
       }
 
@@ -1948,10 +1900,7 @@ BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
           }
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.worldRank(),
-                              "BaseVectorSequence<V,M>::computeHistCdfstaccKde()",
-                              "unified Kde writing, parallel vectors not supported yet");
+          queso_error_msg("unified Kde writing, parallel vectors not supported yet");
         }
       }
 
@@ -2029,10 +1978,7 @@ BaseVectorSequence<V,M>::computeCovCorrMatrices( // Use the whole chain
       }
     }
     else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "BaseVectorSequence<V,M>::computeCovCorrMatrices()",
-                          "parallel vectors not supported yet");
+      queso_error_msg("parallel vectors not supported yet");
     }
   }
 
@@ -2689,28 +2635,16 @@ ComputeCovCorrMatricesBetweenVectorSequences(
   bool useOnlyInter0Comm = (subPSeq.vectorSpace().numOfProcsForStorage() == 1) &&
                            (subQSeq.vectorSpace().numOfProcsForStorage() == 1);
 
-  UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                      env.worldRank(),
-                      "ComputeCovCorrMatricesBetweenVectorSequences()",
-                      "parallel vectors not supported yet");
+  queso_require_msg(useOnlyInter0Comm, "parallel vectors not supported yet");
 
   unsigned int numRowsLocal = subPSeq.vectorSpace().dimLocal();
   unsigned int numCols = subQSeq.vectorSpace().dimGlobal();
 
-  UQ_FATAL_TEST_MACRO((numRowsLocal != pqCovMatrix.numRowsLocal()) || (numCols != pqCovMatrix.numCols()),
-                      env.worldRank(),
-                      "ComputeCovCorrMatricesBetweenVectorSequences()",
-                      "inconsistent dimensions for covariance matrix");
+  queso_require_msg(!((numRowsLocal != pqCovMatrix.numRowsLocal()) || (numCols != pqCovMatrix.numCols())), "inconsistent dimensions for covariance matrix");
 
-  UQ_FATAL_TEST_MACRO((numRowsLocal != pqCorrMatrix.numRowsLocal()) || (numCols != pqCorrMatrix.numCols()),
-                      env.worldRank(),
-                      "ComputeCorrelationBetweenVectorSequences()",
-                      "inconsistent dimensions for correlation matrix");
+  queso_require_msg(!((numRowsLocal != pqCorrMatrix.numRowsLocal()) || (numCols != pqCorrMatrix.numCols())), "inconsistent dimensions for correlation matrix");
 
-  UQ_FATAL_TEST_MACRO((subNumSamples > subPSeq.subSequenceSize()) || (subNumSamples > subQSeq.subSequenceSize()),
-                      env.worldRank(),
-                      "ComputeCovCorrMatricesBetweenVectorSequences()",
-                      "subNumSamples is too large");
+  queso_require_msg(!((subNumSamples > subPSeq.subSequenceSize()) || (subNumSamples > subQSeq.subSequenceSize())), "subNumSamples is too large");
 
   // For both P and Q vector sequences: fill them
   P_V tmpP(subPSeq.vectorSpace().zeroVector());
@@ -2804,10 +2738,7 @@ ComputeCovCorrMatricesBetweenVectorSequences(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                        env.worldRank(),
-                        "ComputeCovCorrMatricesBetweenVectorSequences()",
-                        "parallel vectors not supported yet (2)");
+    queso_require_msg(useOnlyInter0Comm, "parallel vectors not supported yet (2)");
   }
 
   return;

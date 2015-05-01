@@ -67,15 +67,9 @@ BetaJointPdf<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "BetaJointPdf<V,M>::actualValue()",
-                      "invalid input");
+  queso_require_equal_to_msg(domainVector.sizeLocal(), this->m_domainSet.vectorSpace().dimLocal(), "invalid input");
 
-  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.worldRank(),
-                      "BetaJointPdf<V,M>::actualValue()",
-                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   // No need to multiply by exp(m_logOfNormalizationFactor) because 'lnValue()' is called [PDF-05]
   return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
@@ -90,10 +84,7 @@ BetaJointPdf<V,M>::lnValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.worldRank(),
-                      "BetaJointPdf<V,M>::lnValue()",
-                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double aux = 0.;
   double result = 0.;

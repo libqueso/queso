@@ -68,10 +68,7 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::MonteCarloSG(
     m_optionsObj->scanOptionsValues();
   }
 
-  UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "MonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
+  queso_require_equal_to_msg(paramRv.imageSet().vectorSpace().dimLocal(), qoiFunction.domainSet().vectorSpace().dimLocal(), "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving MonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor()"
@@ -92,15 +89,9 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::generateSequence(
   BaseVectorSequence<P_V,P_M>& workingPSeq,
   BaseVectorSequence<Q_V,Q_M>& workingQSeq)
 {
-  UQ_FATAL_TEST_MACRO(m_qoiFunction.domainSet().vectorSpace().dimLocal() != workingPSeq.vectorSizeLocal(),
-                      m_env.worldRank(),
-                      "MonteCarloSG<P_V,P_M,Q_V,Q_M>::generateSequence()",
-                      "'m_qoiFunction.domainSet' and 'workingPSeq' are related to vector spaces of different dimensions");
+  queso_require_equal_to_msg(m_qoiFunction.domainSet().vectorSpace().dimLocal(), workingPSeq.vectorSizeLocal(), "'m_qoiFunction.domainSet' and 'workingPSeq' are related to vector spaces of different dimensions");
 
-  UQ_FATAL_TEST_MACRO(m_qoiFunction.imageSet().vectorSpace().dimLocal() != workingQSeq.vectorSizeLocal(),
-                      m_env.worldRank(),
-                      "MonteCarloSG<P_V,P_M,Q_V,Q_M>::generateSequence()",
-                      "'m_qoiFunction.imageSet' and 'workingQSeq' are related to vector spaces of different dimensions");
+  queso_require_equal_to_msg(m_qoiFunction.imageSet().vectorSpace().dimLocal(), workingQSeq.vectorSizeLocal(), "'m_qoiFunction.imageSet' and 'workingQSeq' are related to vector spaces of different dimensions");
 
   MiscCheckTheParallelEnvironment<P_V,Q_V>(m_paramRv.imageSet().vectorSpace().zeroVector(),
                                              m_qoiFunction.imageSet().vectorSpace().zeroVector());
@@ -152,10 +143,7 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                        subActualSizeBeforeGeneration);
   }
   unsigned int subActualSizeAfterGeneration = workingPSeq.subSequenceSize();
-  UQ_FATAL_TEST_MACRO(subActualSizeAfterGeneration != workingQSeq.subSequenceSize(),
-                      m_env.worldRank(),
-                      "MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
-                      "P and Q sequences should have the same size!");
+  queso_require_equal_to_msg(subActualSizeAfterGeneration, workingQSeq.subSequenceSize(), "P and Q sequences should have the same size!");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"

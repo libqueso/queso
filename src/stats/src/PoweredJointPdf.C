@@ -86,17 +86,11 @@ PoweredJointPdf<V,M>::actualValue(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "PoweredJointPdf<V,M>::actualValue()",
-                      "invalid input");
+  queso_require_equal_to_msg(domainVector.sizeLocal(), this->m_domainSet.vectorSpace().dimLocal(), "invalid input");
 
   double value = m_srcDensity.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 
-  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.worldRank(),
-                      "PoweredJointPdf<V,M>::actualValue()",
-                      "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = pow(value,m_exponent);
   returnValue *= exp(m_logOfNormalizationFactor); // [PDF-08] ???
@@ -128,10 +122,7 @@ PoweredJointPdf<V,M>::lnValue(
 
   double value = m_srcDensity.lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 
-  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.worldRank(),
-                      "PoweredJointPdf<V,M>::lnValue()",
-                      "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = m_exponent*value;
   returnValue += m_logOfNormalizationFactor; // [PDF-08] ???
@@ -160,10 +151,7 @@ PoweredJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, b
     // Do nothing
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "PoweredJointPdf<V,M>::lnValue()",
-                        "incomplete code for computeLogOfNormalizationFactor()");
+    queso_error_msg("incomplete code for computeLogOfNormalizationFactor()");
   }
 
   return value;

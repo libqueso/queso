@@ -74,10 +74,7 @@ template <class V, class M>
 const V&
 ArrayOfOneDGrids<V,M>::sizes() const
 {
-  UQ_FATAL_TEST_MACRO(m_sizes == NULL,
-                      m_env.worldRank(),
-                      "ArrayOfOneDGrids<T>::sizes()",
-                      "sizes is still NULL");
+  queso_require_msg(m_sizes, "sizes is still NULL");
 
   return *m_sizes;
 }
@@ -86,10 +83,7 @@ template <class V, class M>
 const V&
 ArrayOfOneDGrids<V,M>::minPositions() const
 {
-  UQ_FATAL_TEST_MACRO(m_minPositions == NULL,
-                      m_env.worldRank(),
-                      "ArrayOfOneDGrids<T>::minPositions()",
-                      "minPositions is still NULL");
+  queso_require_msg(m_minPositions, "minPositions is still NULL");
 
   return *m_minPositions;
 }
@@ -98,10 +92,7 @@ template <class V, class M>
 const V&
 ArrayOfOneDGrids<V,M>::maxPositions() const
 {
-  UQ_FATAL_TEST_MACRO(m_maxPositions == NULL,
-                      m_env.worldRank(),
-                      "ArrayOfOneDGrids<T>::maxPositions()",
-                      "maxPositions is still NULL");
+  queso_require_msg(m_maxPositions, "maxPositions is still NULL");
 
   return *m_maxPositions;
 }
@@ -139,10 +130,7 @@ template <class V, class M>
 const BaseOneDGrid<double>&
 ArrayOfOneDGrids<V,M>::grid(unsigned int rowId) const
 {
-  UQ_FATAL_TEST_MACRO(rowId >= m_rowSpace.dimLocal(),
-                      m_env.worldRank(),
-                      "ArrayOfOneDUnformGrids<T>::grid()",
-                      "rowId is out of range");
+  queso_require_less_msg(rowId, m_rowSpace.dimLocal(), "rowId is out of range");
 
   ArrayOfOneDGrids<V,M>* tmp = const_cast<ArrayOfOneDGrids<V,M>*>(this);
   return *(tmp->m_oneDGrids(rowId,0));

@@ -46,10 +46,7 @@ InvLogitGaussianVectorRV<V,M>::InvLogitGaussianVectorRV(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((lawVarVector.getMinValue() <= 0.0),
-                      m_env.worldRank(),
-                      "InvLogitGaussianVectorRV<V,M>::constructor() [1]",
-                      "Covariance matrix is not symmetric positive definite.");
+  queso_require_greater_msg(lawVarVector.getMinValue(), 0.0, "Covariance matrix is not symmetric positive definite.");
 
   m_pdf = new InvLogitGaussianJointPdf<V,M>(m_prefix.c_str(),
       dynamic_cast<const BoxSubset<V, M> & >(m_imageSet), lawExpVector,
@@ -108,10 +105,7 @@ InvLogitGaussianVectorRV<V, M>::InvLogitGaussianVectorRV(
     M matVt(m_imageSet.vectorSpace().zeroVector());
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = lawCovMatrix.svd(matU,vecS,matVt);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.worldRank(),
-                        "InvLogitGaussianVectorRV<V,M>::constructor() [2]",
-            "Cholesky decomposition of covariance matrix failed.");
+    queso_require_msg(!(iRC), "Cholesky decomposition of covariance matrix failed.");
 
     vecS.cwSqrt();
     m_realizer = new InvLogitGaussianVectorRealizer<V,M>(m_prefix.c_str(),
@@ -180,10 +174,7 @@ InvLogitGaussianVectorRV<V, M>::updateLawCovMatrix(const M & newLawCovMatrix)
     M matVt(m_imageSet.vectorSpace().zeroVector());
     V vecS (m_imageSet.vectorSpace().zeroVector());
     iRC = newLawCovMatrix.svd(matU,vecS,matVt);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.worldRank(),
-                        "InvLogitGaussianVectorRV<V,M>::updateLawCovMatrix()",
-                        "Cholesky decomposition of covariance matrix failed.");
+    queso_require_msg(!(iRC), "Cholesky decomposition of covariance matrix failed.");
 
     vecS.cwSqrt();
     (dynamic_cast<InvLogitGaussianVectorRealizer<V, M> * >(m_realizer))->

@@ -46,10 +46,7 @@ WignerVectorRealizer<V,M>::WignerVectorRealizer(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_radius <= 0.,
-                      m_env.worldRank(),
-                      "WignerVectorRealizer<V,M>::constructor()",
-                      "invalid radius");
+  queso_require_greater_msg(m_radius, 0., "invalid radius");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving WignerVectorRealizer<V,M>::constructor()"
@@ -69,10 +66,7 @@ template<class V, class M>
 void
 WignerVectorRealizer<V,M>::realization(V& nextValues) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "WignerVectorRealizer<V,M>::realization()",
-                      "not implemented yet");
+  queso_not_implemented();
 
   nextValues.cwSet(0.);
   return;

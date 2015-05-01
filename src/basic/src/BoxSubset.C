@@ -39,19 +39,10 @@ BoxSubset<V,M>::BoxSubset(const char* prefix,
     m_minValues(minValues),
     m_maxValues(maxValues)
 {
-  UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != maxValues.sizeLocal(),
-                      m_env.worldRank(),
-                      "BoxSubset<V,M>::BoxSubset()",
-                      "vectors 'minValues' and 'maxValues' should have the same size");
-  UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != vectorSpace.dimLocal(),
-                      m_env.worldRank(),
-                      "BoxSubset<V,M>::BoxSubset()",
-                      "sizes of vectors 'minValues' and 'maxValues' should be equal to dimension of the vector space");
+  queso_require_equal_to_msg(minValues.sizeLocal(), maxValues.sizeLocal(), "vectors 'minValues' and 'maxValues' should have the same size");
+  queso_require_equal_to_msg(minValues.sizeLocal(), vectorSpace.dimLocal(), "sizes of vectors 'minValues' and 'maxValues' should be equal to dimension of the vector space");
   for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
-    UQ_FATAL_TEST_MACRO(minValues[i] > maxValues[i],
-                        m_env.worldRank(),
-                        "BoxSubset<V,M>::BoxSubset()",
-                        "it should happen minValue <= maxValue for all dimensions");
+    queso_require_less_equal_msg(minValues[i], maxValues[i], "it should happen minValue <= maxValue for all dimensions");
   }
 
   m_volume = 1.;

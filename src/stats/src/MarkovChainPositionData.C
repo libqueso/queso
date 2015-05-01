@@ -90,10 +90,7 @@ template <class V>
 const V&
 MarkovChainPositionData<V>::vecValues() const
 {
-  UQ_FATAL_TEST_MACRO((m_vecValues == NULL),
-                      m_env.worldRank(),
-                      "MarkovChainPositionData<V>::vecValues()",
-                      "m_vecValues is NULL");
+  queso_require_msg(m_vecValues, "m_vecValues is NULL");
   return *m_vecValues;
 }
 

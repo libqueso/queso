@@ -77,33 +77,21 @@ ExperimentModel<S_V,S_M,D_V,D_M>::ExperimentModel(
   // We'll need to remove this later
   m_experimentModelOptions = new ExperimentModelOptions(m_env, prefix);
 
-  UQ_FATAL_TEST_MACRO(m_optionsObj->m_Gvalues.size() < 1,
-                      m_env.worldRank(),
-                      "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
-                      "invalid m_Gs");
+  queso_require_greater_equal_msg(m_optionsObj->m_Gvalues.size(), 1, "invalid m_Gs");
 
-  UQ_FATAL_TEST_MACRO(m_paper_n != experimentStorage.xs_standard().size(),
-                      m_env.worldRank(),
-                      "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
-                      "invalid m_paper_n");
+  queso_require_equal_to_msg(m_paper_n, experimentStorage.xs_standard().size(), "invalid m_paper_n");
 
   unsigned int sumGs = 0;
   for (unsigned int i = 0; i < m_optionsObj->m_Gvalues.size(); ++i) {
     sumGs += m_optionsObj->m_Gvalues[i];
   }
-  UQ_FATAL_TEST_MACRO(m_paper_p_delta != sumGs,
-                      m_env.worldRank(),
-                      "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
-                      "inconsistent input");
+  queso_require_equal_to_msg(m_paper_p_delta, sumGs, "inconsistent input");
 
   //***********************************************************************
   // Form 'Dmat_BlockDiag' matrix
   //***********************************************************************
   for (unsigned int i = 0; i < m_Dmats.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(m_Dmats[i]->numCols() != m_paper_p_delta,
-                        m_env.worldRank(),
-                        "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
-                        "inconsistent m_Dmats");
+    queso_require_equal_to_msg(m_Dmats[i]->numCols(), m_paper_p_delta, "inconsistent m_Dmats");
     m_paper_n_y += m_Dmats[i]->numRowsLocal();
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {

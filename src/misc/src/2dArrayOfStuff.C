@@ -67,10 +67,7 @@ unsigned int TwoDArray<T>::numCols() const
 template <class T>
 void TwoDArray<T>::setLocation(unsigned int i, unsigned int j, T* info)
 {
-  UQ_FATAL_TEST_MACRO((i >= m_numRows) || (j >= m_numCols) || (m_data[i] == NULL),
-                      UQ_UNAVAILABLE_RANK,
-                      "TwoDArray<T>::setLocation()",
-                      "invalid situation");
+  queso_require_msg(!((i >= m_numRows) || (j >= m_numCols) || (m_data[i] == NULL)), "invalid situation");
   (*(m_data[i]))[j] = info;
   return;
 }

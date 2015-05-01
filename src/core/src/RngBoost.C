@@ -35,7 +35,7 @@ RngBoost::RngBoost(int seed, int worldRank)
 {
   resetSeed(seed);
 //TODO Find a suitable test for here; Kemelli todo
-//   UQ_FATAL_TEST_MACRO(true,
+
 //                       m_worldRank,
 //                       "RngBoos::constructor()",
 //                       "Kemelli todo: boost rng");

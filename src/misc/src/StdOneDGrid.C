@@ -64,10 +64,7 @@ template<class T>
 T
 StdOneDGrid<T>::operator[](unsigned int i) const
 {
-  UQ_FATAL_TEST_MACRO(i >= m_points.size(),
-                      m_env.worldRank(),
-                      "StdOneDGrid<V,M>::operator[]",
-                      "too large i");
+  queso_require_less_msg(i, m_points.size(), "too large i");
 
   return m_points[i];
 }
@@ -76,10 +73,7 @@ template<class T>
 unsigned int
 StdOneDGrid<T>::findIntervalId(const T& paramValue) const
 {
-  UQ_FATAL_TEST_MACRO((paramValue < m_points[0]) || (m_points[m_points.size()-1] < paramValue),
-                      m_env.worldRank(),
-                      "StdOneDGrid<V,M>::findIntervalId[]",
-                      "paramValue is out of domain");
+  queso_require_msg(!((paramValue < m_points[0]) || (m_points[m_points.size()-1] < paramValue)), "paramValue is out of domain");
 
   unsigned int iMax = m_points.size();
   unsigned int i = 1; // Yes, '1'

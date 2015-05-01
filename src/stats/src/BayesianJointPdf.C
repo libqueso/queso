@@ -92,10 +92,7 @@ BayesianJointPdf<V,M>::actualValue(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "BayesianJointPdf<V,M>::actualValue()",
-                      "invalid input");
+  queso_require_equal_to_msg(domainVector.sizeLocal(), this->m_domainSet.vectorSpace().dimLocal(), "invalid input");
 
   V* gradVLike = NULL;
   if (gradVector) gradVLike = &m_tmpVector1;
@@ -112,10 +109,7 @@ BayesianJointPdf<V,M>::actualValue(
     value2 = m_likelihoodFunction.actualValue(domainVector,domainDirection,gradVLike ,hessianMLike ,hessianELike );
   }
 
-  UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
-                      m_env.worldRank(),
-                      "BayesianJointPdf<V,M>::actualValue()",
-                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = value1;
   if (m_likelihoodExponent == 0.) {
@@ -275,10 +269,7 @@ BayesianJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, 
     // Do nothing
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "BayesianJointPdf<V,M>::lnValue()",
-                        "incomplete code for computeLogOfNormalizationFactor()");
+    queso_error_msg("incomplete code for computeLogOfNormalizationFactor()");
   }
 
   return value;

@@ -51,10 +51,7 @@ BaseInputOptions::~BaseInputOptions()
 void
 BaseInputOptions::scanOptionsValues()
 {
-  UQ_FATAL_TEST_MACRO(m_optionsDescription == NULL,
-                      (*m_env).worldRank(),
-                      "BaseInputOptions::scanOptionsValues()",
-                      "m_optionsDescription variable is NULL");
+  queso_require_msg(m_optionsDescription, "m_optionsDescription variable is NULL");
 
   // If it's NULL then the defaults are used
   if (m_env != NULL) {

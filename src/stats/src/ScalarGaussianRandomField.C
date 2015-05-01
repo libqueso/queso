@@ -83,10 +83,7 @@ ScalarGaussianRandomField<V,M>::sampleFunction(const std::vector<V*>& fieldPosit
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(fieldPositions.size() != sampleValues.sizeLocal(),
-                      m_env.fullRank(),
-                      "ScalarGaussianRandomField<V,M>::sampleFunction()",
-                      "invalid input data");
+  queso_require_equal_to_msg(fieldPositions.size(), sampleValues.sizeLocal(), "invalid input data");
 
   if ((m_savedPositions.size() == 0   ) &&
       (m_savedRvImageSpace     == NULL) &&
@@ -103,10 +100,7 @@ ScalarGaussianRandomField<V,M>::sampleFunction(const std::vector<V*>& fieldPosit
     // Ok
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.fullRank(),
-                        "ScalarGaussianRandomField<V,M>::sampleFunction()",
-                        "invalid combination of pointer values");
+    queso_error_msg("invalid combination of pointer values");
   }
 
   unsigned int numberOfPositions = fieldPositions.size();
@@ -114,10 +108,7 @@ ScalarGaussianRandomField<V,M>::sampleFunction(const std::vector<V*>& fieldPosit
   if (m_savedPositions.size() == numberOfPositions) {
     bool allPositionsAreEqual = true;
     for (unsigned int i = 0; i < numberOfPositions; ++i) {
-      UQ_FATAL_TEST_MACRO(m_savedPositions[i] == NULL,
-                          m_env.fullRank(),
-                          "ScalarGaussianRandomField<V,M>::sampleFunction()",
-                          "m_savedPositions[i] should not be NULL");
+      queso_require_msg(m_savedPositions[i], "m_savedPositions[i] should not be NULL");
       if ((m_savedPositions[i]->sizeLocal() == fieldPositions[i]->sizeLocal()) &&
           (*(m_savedPositions[i])           == *(fieldPositions[i])          )) {
         // Ok

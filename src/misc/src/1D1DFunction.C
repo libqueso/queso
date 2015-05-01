@@ -37,10 +37,7 @@ Base1D1DFunction::Base1D1DFunction(
   m_minDomainValue(minDomainValue),
   m_maxDomainValue(maxDomainValue)
 {
-  UQ_FATAL_TEST_MACRO(m_minDomainValue >= m_maxDomainValue,
-                      UQ_UNAVAILABLE_RANK,
-                      "Base1D1DFunction::constructor()",
-                      "min >= max");
+  queso_require_less_msg(m_minDomainValue, m_maxDomainValue, "min >= max");
 }
 
 Base1D1DFunction::~Base1D1DFunction()
@@ -64,10 +61,7 @@ Base1D1DFunction::multiplyAndIntegrate(const Base1D1DFunction& func, unsigned in
 {
   double value = 0.;
 
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "Base1D1DFunction::multiplyAndIntegrate()",
-                      "not implemented yet");
+  queso_not_implemented();
 
   if (resultWithMultiplicationByTAsWell) { // Just to eliminate INTEL compiler warnings
     func.value((double) quadratureOrder);
@@ -109,10 +103,7 @@ Generic1D1DFunction::value(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Generic1D1DFunction::value()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   return (*m_valueRoutinePtr)(domainValue,m_routinesDataPtr);
 }
@@ -129,10 +120,7 @@ Generic1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Generic1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   return (*m_derivRoutinePtr)(domainValue,m_routinesDataPtr);
 }
@@ -166,10 +154,7 @@ Constant1D1DFunction::value(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Constant1D1DFunction::value()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   return m_constantValue;
 }
@@ -186,10 +171,7 @@ Constant1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Constant1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   return 0.;
 }
@@ -227,10 +209,7 @@ Linear1D1DFunction::value(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Linear1D1DFunction::value()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   double imageValue = m_referenceImageValue + m_rateValue*(domainValue - m_referenceDomainValue);
 
@@ -249,10 +228,7 @@ Linear1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Linear1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   return m_rateValue;
 }
@@ -272,21 +248,12 @@ PiecewiseLinear1D1DFunction::PiecewiseLinear1D1DFunction(
   m_referenceDomainValues(referenceDomainValues),
   m_rateValues           (rateValues)
 {
-  UQ_FATAL_TEST_MACRO(m_numRefValues == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "PiecewiseLinear1D1DFunction::constructor()",
-                      "num ref values = 0");
+  queso_require_not_equal_to_msg(m_numRefValues, 0, "num ref values = 0");
 
-  UQ_FATAL_TEST_MACRO(m_numRefValues != rateValues.size(),
-                      UQ_UNAVAILABLE_RANK,
-                      "PiecewiseLinear1D1DFunction::constructor()",
-                      "num rate values is inconsistent");
+  queso_require_equal_to_msg(m_numRefValues, rateValues.size(), "num rate values is inconsistent");
 
   for (unsigned int i = 1; i < m_numRefValues; ++i) { // Yes, from '1'
-    UQ_FATAL_TEST_MACRO(m_referenceDomainValues[i] <= m_referenceDomainValues[i-1],
-                        UQ_UNAVAILABLE_RANK,
-                        "PiecewiseLinear1D1DFunction::constructor()",
-                        "reference domain values are inconsistent");
+    queso_require_greater_msg(m_referenceDomainValues[i], m_referenceDomainValues[i-1], "reference domain values are inconsistent");
   }
 
   m_referenceImageValues.clear();
@@ -328,10 +295,7 @@ PiecewiseLinear1D1DFunction::value(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "PiecewiseLinear1D1DFunction::value()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   unsigned int i = 0;
   if (m_numRefValues == 1) {
@@ -378,10 +342,7 @@ PiecewiseLinear1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "PiecewiseLinear1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   unsigned int i = 0;
   if (m_numRefValues == 1) {
@@ -395,10 +356,7 @@ PiecewiseLinear1D1DFunction::deriv(double domainValue) const
       }
       else {
         ++i;
-        UQ_FATAL_TEST_MACRO(i > m_numRefValues,
-                            UQ_UNAVAILABLE_RANK,
-                           "PiecewiseLinear1D1DFunction::deriv()",
-                           "too big 'i'");
+        queso_require_less_equal_msg(i, m_numRefValues, "too big 'i'");
       }
     }
   }
@@ -439,10 +397,7 @@ Quadratic1D1DFunction::value(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Quadratic1D1DFunction::value()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   double imageValue = m_a*domainValue*domainValue + m_b*domainValue + m_c;
 
@@ -461,10 +416,7 @@ Quadratic1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Quadratic1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   return 2.*m_a*domainValue + m_b;
 }
@@ -476,7 +428,7 @@ Sampled1D1DFunction::Sampled1D1DFunction()
   :
   Base1D1DFunction(-INFINITY,INFINITY)
 {
-  //UQ_FATAL_TEST_MACRO(true,
+
   //                    UQ_UNAVAILABLE_RANK,
   //                    "SampledD1DFunction::deriv()",
   //                    "invalid constructor");
@@ -513,10 +465,7 @@ Sampled1D1DFunction::value(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Sampled1D1DFunction::value()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
   double returnValue = 0.;
 
@@ -528,20 +477,11 @@ Sampled1D1DFunction::value(double domainValue) const
   //          << ", m_domainValues[max] = " << m_domainValues[tmpSize-1]
   //          << std::endl;
 
-  UQ_FATAL_TEST_MACRO(tmpSize == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "Sampled1D1DFunction::value()",
-                      "m_domainValues.size() = 0");
+  queso_require_not_equal_to_msg(tmpSize, 0, "m_domainValues.size() = 0");
 
-  UQ_FATAL_TEST_MACRO(domainValue < m_domainValues[0],
-                      UQ_UNAVAILABLE_RANK,
-                      "Sampled1D1DFunction::value()",
-                      "domainValue < m_domainValues[0]");
+  queso_require_greater_equal_msg(domainValue, m_domainValues[0], "domainValue < m_domainValues[0]");
 
-  UQ_FATAL_TEST_MACRO(m_domainValues[tmpSize-1] < domainValue,
-                      UQ_UNAVAILABLE_RANK,
-                      "Sampled1D1DFunction::value()",
-                      "m_domainValues[max] < domainValue");
+  queso_require_greater_equal_msg(m_domainValues[tmpSize-1], domainValue, "m_domainValues[max] < domainValue");
 
   unsigned int i = 0;
   for (i = 0; i < tmpSize; ++i) {
@@ -573,15 +513,9 @@ Sampled1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "Sampled1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "Sampled1d1DFunction::deriv()",
-                      "this function makes no sense for this class");
+  queso_error_msg("this function makes no sense for this class");
   return 0.;
 }
 
@@ -700,15 +634,9 @@ ScalarTimesFunc1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "ScalarTimes1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "ScalarTimesFunc1D1DFunction::deriv()",
-                      "not implemented yet");
+  queso_not_implemented();
 
   return value;
 }
@@ -754,15 +682,9 @@ FuncTimesFunc1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "FuncTimes1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "FuncTimesFunc1D1DFunction::deriv()",
-                      "not implemented yet");
+  queso_not_implemented();
 
   return value;
 }
@@ -808,15 +730,9 @@ FuncPlusFunc1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "FuncPlus1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "FuncPlusFunc1D1DFunction::deriv()",
-                      "not implemented yet");
+  queso_not_implemented();
 
   return value;
 }
@@ -833,10 +749,7 @@ LagrangePolynomial1D1DFunction::LagrangePolynomial1D1DFunction(
   m_functionValues(positionValues.size(),1.)
 {
   if (functionValues) {
-    UQ_FATAL_TEST_MACRO(m_positionValues.size() != functionValues->size(),
-                        UQ_UNAVAILABLE_RANK,
-                        "LagrangePolynomial1D1DFunction::constructor()",
-                        "invalid input");
+    queso_require_equal_to_msg(m_positionValues.size(), functionValues->size(), "invalid input");
     m_functionValues = *functionValues;
   }
 }
@@ -894,15 +807,9 @@ LagrangePolynomial1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "LagrangePolynomial1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "LagrangePolynomial1D1DFunction::deriv()",
-                      "not implemented yet");
+  queso_not_implemented();
 
   return value;
 }
@@ -918,10 +825,7 @@ LagrangeBasis1D1DFunction::LagrangeBasis1D1DFunction(
   m_positionValues(positionValues),
   m_basisIndex    (basisIndex)
 {
-  UQ_FATAL_TEST_MACRO(m_basisIndex >= m_positionValues.size(),
-                      UQ_UNAVAILABLE_RANK,
-                      "LagrangeBasis1D1DFunction::constructor()",
-                      "invalid input");
+  queso_require_less_msg(m_basisIndex, m_positionValues.size(), "invalid input");
 }
 
 LagrangeBasis1D1DFunction::~LagrangeBasis1D1DFunction()
@@ -959,15 +863,9 @@ LagrangeBasis1D1DFunction::deriv(double domainValue) const
               << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "LagrangeBasis1D1DFunction::deriv()",
-                      "x out of range");
+  queso_require_msg(!((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)), "x out of range");
 
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "LagrangeBasis1D1DFunction::deriv()",
-                      "not implemented yet");
+  queso_not_implemented();
 
   return value;
 }
@@ -985,22 +883,13 @@ SubF1F2Gaussian2dKdeIntegral(const ScalarSequence<T>& scalarSeq1,
 {
   double resultValue = 0.;
 
-  UQ_FATAL_TEST_MACRO(initialPos != 0,
-                      scalarSeq1.env().worldRank(),
-                      "SubF1F2Gaussian2dKdeIntegral()",
-                      "not implemented yet for initialPos != 0");
-  UQ_FATAL_TEST_MACRO(scalarSeq1.subSequenceSize() != scalarSeq2.subSequenceSize(),
-                      scalarSeq1.env().worldRank(),
-                      "SubF1F2Gaussian2dKdeIntegral()",
-                      "different sizes");
+  queso_require_equal_to_msg(initialPos, 0, "not implemented yet for initialPos != 0");
+  queso_require_equal_to_msg(scalarSeq1.subSequenceSize(), scalarSeq2.subSequenceSize(), "different sizes");
 
   GaussianHermite1DQuadrature quadObj(0.,1.,quadratureOrder);
   const std::vector<double>& quadPositions = quadObj.positions();
   const std::vector<double>& quadWeights   = quadObj.weights  ();
-  UQ_FATAL_TEST_MACRO(quadPositions.size() != quadWeights.size(),
-                      UQ_UNAVAILABLE_RANK,
-                      "SubF1F2Gaussian2dKdeIntegral()",
-                      "quadObj has invalid state");
+  queso_require_equal_to_msg(quadPositions.size(), quadWeights.size(), "quadObj has invalid state");
 
   unsigned int numQuadraturePositions = quadPositions.size();
   unsigned int dataSize = scalarSeq1.subSequenceSize();

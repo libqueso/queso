@@ -191,20 +191,11 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(sourceRv.imageSet().vectorSpace().dimLocal() != initialPosition.sizeLocal(),
-                      m_env.worldRank(),
-                      "MetropolisHastingsSG<P_V,P_M>::constructor(1)",
-                      "'sourceRv' and 'initialPosition' should have equal dimensions");
+  queso_require_equal_to_msg(sourceRv.imageSet().vectorSpace().dimLocal(), initialPosition.sizeLocal(), "'sourceRv' and 'initialPosition' should have equal dimensions");
 
   if (inputProposalCovMatrix) {
-    UQ_FATAL_TEST_MACRO(sourceRv.imageSet().vectorSpace().dimLocal() != inputProposalCovMatrix->numRowsLocal(),
-                        m_env.worldRank(),
-                        "MetropolisHastingsSG<P_V,P_M>::constructor(1)",
-                        "'sourceRv' and 'inputProposalCovMatrix' should have equal dimensions");
-    UQ_FATAL_TEST_MACRO(inputProposalCovMatrix->numCols() != inputProposalCovMatrix->numRowsGlobal(),
-                        m_env.worldRank(),
-                        "MetropolisHastingsSG<P_V,P_M>::constructor(1)",
-                        "'inputProposalCovMatrix' should be a square matrix");
+    queso_require_equal_to_msg(sourceRv.imageSet().vectorSpace().dimLocal(), inputProposalCovMatrix->numRowsLocal(), "'sourceRv' and 'inputProposalCovMatrix' should have equal dimensions");
+    queso_require_equal_to_msg(inputProposalCovMatrix->numCols(), inputProposalCovMatrix->numRowsGlobal(), "'inputProposalCovMatrix' should be a square matrix");
   }
 
   commonConstructor();
@@ -276,20 +267,11 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(sourceRv.imageSet().vectorSpace().dimLocal() != initialPosition.sizeLocal(),
-                      m_env.worldRank(),
-                      "MetropolisHastingsSG<P_V,P_M>::constructor(2)",
-                      "'sourceRv' and 'initialPosition' should have equal dimensions");
+  queso_require_equal_to_msg(sourceRv.imageSet().vectorSpace().dimLocal(), initialPosition.sizeLocal(), "'sourceRv' and 'initialPosition' should have equal dimensions");
 
   if (inputProposalCovMatrix) {
-    UQ_FATAL_TEST_MACRO(sourceRv.imageSet().vectorSpace().dimLocal() != inputProposalCovMatrix->numRowsLocal(),
-                        m_env.worldRank(),
-                        "MetropolisHastingsSG<P_V,P_M>::constructor(2)",
-                        "'sourceRv' and 'inputProposalCovMatrix' should have equal dimensions");
-    UQ_FATAL_TEST_MACRO(inputProposalCovMatrix->numCols() != inputProposalCovMatrix->numRowsGlobal(),
-                        m_env.worldRank(),
-                        "MetropolisHastingsSG<P_V,P_M>::constructor(2)",
-                        "'inputProposalCovMatrix' should be a square matrix");
+    queso_require_equal_to_msg(sourceRv.imageSet().vectorSpace().dimLocal(), inputProposalCovMatrix->numRowsLocal(), "'sourceRv' and 'inputProposalCovMatrix' should have equal dimensions");
+    queso_require_equal_to_msg(inputProposalCovMatrix->numCols(), inputProposalCovMatrix->numRowsGlobal(), "'inputProposalCovMatrix' should be a square matrix");
   }
 
   commonConstructor();
@@ -520,10 +502,7 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
       }
     }
     else {
-      UQ_FATAL_TEST_MACRO(m_nullInputProposalCovMatrix,
-                          m_env.worldRank(),
-                          "MetropolisHastingsSG<P_V,P_M>::commonConstructor()",
-                          "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
+      queso_require_msg(!(m_nullInputProposalCovMatrix), "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
     }
 
     // Decide whether or not to do logit transform
@@ -699,10 +678,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                            << ", inputSize = " << inputSize
                            << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((inputSize < 2),
-                      m_env.worldRank(),
-                      "MetropolisHastingsSG<P_V,P_M>::alpha(vec)",
-                      "inputPositionsData has size < 2");
+  queso_require_greater_equal_msg(inputSize, 2, "inputPositionsData has size < 2");
 
   // If necessary, return 0. right away
   if (inputPositionsData[0          ]->outOfTargetSupport()) return 0.;
@@ -1131,10 +1107,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
       SequenceOfVectors<P_V,P_M> rawSubMLEpositions(m_vectorSpace,0,m_optionsObj->m_prefix+"rawSubMLEseq");
       double rawSubMLEvalue = workingChain.subPositionsOfMaximum(*workingLogLikelihoodValues,
                                                                  rawSubMLEpositions);
-      UQ_FATAL_TEST_MACRO(rawSubMLEpositions.subSequenceSize() == 0,
-                          m_env.worldRank(),
-                          "MetropolisHastingsSG<P_V,P_M>::generateSequence()",
-                          "rawSubMLEpositions.subSequenceSize() = 0");
+      queso_require_not_equal_to_msg(rawSubMLEpositions.subSequenceSize(), 0, "rawSubMLEpositions.subSequenceSize() = 0");
 
       if ((m_env.subDisplayFile()                   ) &&
           (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -1154,10 +1127,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
       SequenceOfVectors<P_V,P_M> rawSubMAPpositions(m_vectorSpace,0,m_optionsObj->m_prefix+"rawSubMAPseq");
       double rawSubMAPvalue = workingChain.subPositionsOfMaximum(*workingLogTargetValues,
                                                                  rawSubMAPpositions);
-      UQ_FATAL_TEST_MACRO(rawSubMAPpositions.subSequenceSize() == 0,
-                          m_env.worldRank(),
-                          "MetropolisHastingsSG<P_V,P_M>::generateSequence()",
-                          "rawSubMAPpositions.subSequenceSize() = 0");
+      queso_require_not_equal_to_msg(rawSubMAPpositions.subSequenceSize(), 0, "rawSubMAPpositions.subSequenceSize() = 0");
 
       if ((m_env.subDisplayFile()                   ) &&
           (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -1275,10 +1245,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
     // Write likelihoodValues and alphaValues, if they were requested by user
     iRC = writeInfo(workingChain,
                     *genericFilePtrSet.ofsVar);
-    UQ_FATAL_RC_MACRO(iRC,
-                      m_env.worldRank(),
-                      "MetropolisHastingsSG<P_V,P_M>::generateSequence()",
-                      "improper writeInfo() return");
+    queso_require_msg(!(iRC), "improper writeInfo() return");
   }
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -1529,10 +1496,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                             << m_targetPdf.domainSet();
     *m_env.subDisplayFile() << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(outOfTargetSupport,
-                      m_env.worldRank(),
-                      "MetropolisHastingsSG<P_V,P_M>::generateFullChain()",
-                      "initial position should not be out of target pdf support");
+  queso_require_msg(!(outOfTargetSupport), "initial position should not be out of target pdf support");
 
   double logPrior      = 0.;
   double logLikelihood = 0.;
@@ -1715,10 +1679,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                               << ", valid = "  << validPreComputingPosition
                               << std::endl;
     }
-    UQ_FATAL_TEST_MACRO(validPreComputingPosition == false,
-                        m_env.worldRank(),
-                        "MetropolisHastingsSG<P_V,P_M>::generateFullChain()",
-                        "initial position should not be an invalid pre computing position");
+    queso_require_msg(validPreComputingPosition, "initial position should not be an invalid pre computing position");
 
     //****************************************************
     // Point 2/6 of logic for new position
@@ -2234,10 +2195,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 #endif
 
         if (iRC) {
-          UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
-                              m_env.worldRank(),
-                              "MetropolisHastingsSG<P_V,P_M>::generateFullChain()",
-                              "invalid iRC returned from first chol()");
+          queso_require_equal_to_msg(iRC, UQ_MATRIX_IS_NOT_POS_DEFINITE_RC, "invalid iRC returned from first chol()");
           // Matrix is not positive definite
           P_M* tmpDiag = m_vectorSpace.newDiagMatrix(m_optionsObj->m_ov.m_amEpsilon);
           if (m_numDisabledParameters > 0) { // gpmsa2
@@ -2283,10 +2241,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
             }
           }
           if (iRC) {
-            UQ_FATAL_TEST_MACRO(iRC != UQ_MATRIX_IS_NOT_POS_DEFINITE_RC,
-                                m_env.worldRank(),
-                                "MetropolisHastingsSG<P_V,P_M>::generateFullChain()",
-                                "invalid iRC returned from second chol()");
+            queso_require_equal_to_msg(iRC, UQ_MATRIX_IS_NOT_POS_DEFINITE_RC, "invalid iRC returned from second chol()");
             // Do nothing
           }
           else {
@@ -2321,10 +2276,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
           }
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
-          UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
-                            m_env.worldRank(),
-                            "MetropolisHastingsSG<P_V,P_M>::generateFullChain()",
-                            "need to code the update of m_upperCholProposalPrecMatrices");
+          queso_require_msg(!(UQ_INCOMPLETE_IMPLEMENTATION_RC), "need to code the update of m_upperCholProposalPrecMatrices");
 #endif
         }
 
@@ -2459,10 +2411,7 @@ MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix(
 {
   double doubleSubChainSize = (double) partialChain.subSequenceSize();
   if (lastChainSize == 0) {
-    UQ_FATAL_TEST_MACRO(partialChain.subSequenceSize() < 2,
-                        m_env.worldRank(),
-                        "MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix()",
-                        "'partialChain.subSequenceSize()' should be >= 2");
+    queso_require_greater_equal_msg(partialChain.subSequenceSize(), 2, "'partialChain.subSequenceSize()' should be >= 2");
 
 #if 1 // prudenci-2012-07-06
     lastMean = partialChain.subMeanPlain();
@@ -2479,15 +2428,9 @@ MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix(
     lastAdaptedCovMatrix /= (doubleSubChainSize - 1.); // That is why partialChain size must be >= 2
   }
   else {
-    UQ_FATAL_TEST_MACRO(partialChain.subSequenceSize() < 1,
-                        m_env.worldRank(),
-                        "MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix()",
-                        "'partialChain.subSequenceSize()' should be >= 1");
+    queso_require_greater_equal_msg(partialChain.subSequenceSize(), 1, "'partialChain.subSequenceSize()' should be >= 1");
 
-    UQ_FATAL_TEST_MACRO(idOfFirstPositionInSubChain < 1,
-                        m_env.worldRank(),
-                        "MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix()",
-                        "'idOfFirstPositionInSubChain' should be >= 1");
+    queso_require_greater_equal_msg(idOfFirstPositionInSubChain, 1, "'idOfFirstPositionInSubChain' should be >= 1");
 
     P_V tmpVec (m_vectorSpace.zeroVector());
     P_V diffVec(m_vectorSpace.zeroVector());

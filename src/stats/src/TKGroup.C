@@ -84,15 +84,9 @@ template<class V, class M>
 const V&
 BaseTKGroup<V,M>::preComputingPosition(unsigned int stageId) const
 {
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.worldRank(),
-                      "BaseTKGroup<V,M>::preComputingPosition()",
-                      "m_preComputingPositions.size() <= stageId");
+  queso_require_greater_msg(m_preComputingPositions.size(), stageId, "m_preComputingPositions.size() <= stageId");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
-                      m_env.worldRank(),
-                      "BaseTKGroup<V,M>::preComputingPosition()",
-                      "m_preComputingPositions[stageId] == NULL");
+  queso_require_msg(m_preComputingPositions[stageId], "m_preComputingPositions[stageId] == NULL");
 
   return *m_preComputingPositions[stageId];
 }
@@ -101,15 +95,9 @@ template<class V, class M>
 bool
 BaseTKGroup<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.worldRank(),
-                      "BaseTKGroup<V,M>::setPreComputingPosition()",
-                      "m_preComputingPositions.size() <= stageId");
+  queso_require_greater_msg(m_preComputingPositions.size(), stageId, "m_preComputingPositions.size() <= stageId");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] != NULL,
-                      m_env.worldRank(),
-                      "BaseTKGroup<V,M>::setPreComputingPosition()",
-                      "m_preComputingPositions[stageId] != NULL");
+  queso_require_msg(!(m_preComputingPositions[stageId]), "m_preComputingPositions[stageId] != NULL");
 
   m_preComputingPositions[stageId] = new V(position);
 

@@ -80,25 +80,13 @@ template<class V, class M>
 const GaussianVectorRV<V,M>&
 HessianCovMatricesTKGroup<V,M>::rv(unsigned int stageId) const
 {
-  UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageId,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::rv1()",
-                      "m_rvs.size() <= stageId");
+  queso_require_greater_msg(m_rvs.size(), stageId, "m_rvs.size() <= stageId");
 
-  UQ_FATAL_TEST_MACRO(m_rvs[stageId] == NULL,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::rv1()",
-                      "m_rvs[stageId] == NULL");
+  queso_require_msg(m_rvs[stageId], "m_rvs[stageId] == NULL");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::rv1()",
-                      "m_preComputingPositions.size() <= stageId");
+  queso_require_greater_msg(m_preComputingPositions.size(), stageId, "m_preComputingPositions.size() <= stageId");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::rv1()",
-                      "m_preComputingPositions[stageId] == NULL");
+  queso_require_msg(m_preComputingPositions[stageId], "m_preComputingPositions[stageId] == NULL");
 
   GaussianVectorRV<V, M> * gaussian_rv =
     dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[stageId]);
@@ -123,25 +111,13 @@ template<class V, class M>
 const GaussianVectorRV<V,M>&
 HessianCovMatricesTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
-  UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageIds[0],
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::rv2()",
-                      "m_rvs.size() <= stageIds[0]");
+  queso_require_greater_msg(m_rvs.size(), stageIds[0], "m_rvs.size() <= stageIds[0]");
 
-  UQ_FATAL_TEST_MACRO(m_rvs[stageIds[0]] == NULL,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::rv2()",
-                      "m_rvs[stageIds[0]] == NULL");
+  queso_require_msg(m_rvs[stageIds[0]], "m_rvs[stageIds[0]] == NULL");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::rv2()",
-                      "m_preComputingPositions.size() <= stageIds[0]");
+  queso_require_greater_msg(m_preComputingPositions.size(), stageIds[0], "m_preComputingPositions.size() <= stageIds[0]");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::rv2()",
-                      "m_preComputingPositions[stageIds[0]] == NULL");
+  queso_require_msg(m_preComputingPositions[stageIds[0]], "m_preComputingPositions[stageIds[0]] == NULL");
 
   double factor = 1./m_scales[stageIds.size()-1]/m_scales[stageIds.size()-1];
 
@@ -179,46 +155,22 @@ HessianCovMatricesTKGroup<V,M>::setPreComputingPosition(const V& position, unsig
   bool validPreComputingPosition = true;
 
   // Verify consistency of sizes
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",
-                      "m_preComputingPositions.size() <= stageId");
+  queso_require_greater_msg(m_preComputingPositions.size(), stageId, "m_preComputingPositions.size() <= stageId");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_rvs.size(),
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",
-                      "m_preComputingPositions.size() != m_rvs.size()");
+  queso_require_equal_to_msg(m_preComputingPositions.size(), m_rvs.size(), "m_preComputingPositions.size() != m_rvs.size()");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalNewtonSteps.size(),
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",
-                      "m_preComputingPositions.size() != m_originalNewtonSteps.size()");
+  queso_require_equal_to_msg(m_preComputingPositions.size(), m_originalNewtonSteps.size(), "m_preComputingPositions.size() != m_originalNewtonSteps.size()");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalCovMatrices.size(),
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",
-                      "m_preComputingPositions.size() != m_originalCovMatrices.size()");
+  queso_require_equal_to_msg(m_preComputingPositions.size(), m_originalCovMatrices.size(), "m_preComputingPositions.size() != m_originalCovMatrices.size()");
 
   // Verify data is not null
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] != NULL,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",
-                      "m_preComputingPositions[stageId] != NULL");
+  queso_require_msg(!(m_preComputingPositions[stageId]), "m_preComputingPositions[stageId] != NULL");
 
-  UQ_FATAL_TEST_MACRO(m_rvs[stageId] != NULL,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",
-                      "m_rvs[stageId] != NULL");
+  queso_require_msg(!(m_rvs[stageId]), "m_rvs[stageId] != NULL");
 
-  UQ_FATAL_TEST_MACRO(m_originalNewtonSteps[stageId] != NULL,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",
-                      "m_originalNewtonSteps[stageId] != NULL");
+  queso_require_msg(!(m_originalNewtonSteps[stageId]), "m_originalNewtonSteps[stageId] != NULL");
 
-  UQ_FATAL_TEST_MACRO(m_originalCovMatrices[stageId] != NULL,
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",
-                      "m_originalCovMatrices[stageId] != NULL");
+  queso_require_msg(!(m_originalCovMatrices[stageId]), "m_originalCovMatrices[stageId] != NULL");
 
   BaseTKGroup<V,M>::setPreComputingPosition(position,stageId);
 
@@ -302,7 +254,7 @@ HessianCovMatricesTKGroup<V,M>::setPreComputingPosition(const V& position, unsig
     bool covIsPositiveDefinite = !iRC;
 
     if (covIsPositiveDefinite) {
-      //UQ_FATAL_TEST_MACRO(stageId >= m_scales.size(),
+
       //                    m_env.worldRank(),
       //                    "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",
       //                    "stageId is too large for m_scales");
@@ -369,15 +321,9 @@ template<class V, class M>
 void
 HessianCovMatricesTKGroup<V,M>::clearPreComputingPositions()
 {
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalNewtonSteps.size(),
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::clearPreComputingPositions()",
-                      "m_preComputingPositions.size() != m_originalNewtonSteps.size()");
+  queso_require_equal_to_msg(m_preComputingPositions.size(), m_originalNewtonSteps.size(), "m_preComputingPositions.size() != m_originalNewtonSteps.size()");
 
-  UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalCovMatrices.size(),
-                      m_env.worldRank(),
-                      "HessianCovMatricesTKGroup<V,M>::clearPreComputingPositions()",
-                      "m_preComputingPositions.size() != m_originalCovMatrices.size()");
+  queso_require_equal_to_msg(m_preComputingPositions.size(), m_originalCovMatrices.size(), "m_preComputingPositions.size() != m_originalCovMatrices.size()");
 
   BaseTKGroup<V,M>::clearPreComputingPositions();
 
