@@ -42,57 +42,71 @@
 #define queso_here()     do { std::cerr << __FILE__ << ", line " << __LINE__ << ", compiled " << __DATE__ << " at " << __TIME__ << std::endl; } while (0)
 
 // The queso_assert() macro acts like C's assert(), but throws a
-// queso_error() (including stack trace, etc) instead of just exiting
+// queso_error() (including stack trace, etc) instead of just exiting.
 
-// When not debugging, we don't test any asserts
-#ifdef NDEBUG
-#define queso_assert(asserted)  ((void) 0)
-#define queso_assert_equal_to(expr1,expr2)  ((void) 0)
-#define queso_assert_not_equal_to(expr1,expr2)  ((void) 0)
-#define queso_assert_less(expr1,expr2)  ((void) 0)
-#define queso_assert_greater(expr1,expr2)  ((void) 0)
-#define queso_assert_less_equal(expr1,expr2)  ((void) 0)
-#define queso_assert_greater_equal(expr1,expr2)  ((void) 0)
+// The queso_require() macro does the same, but remains active even
+// when NDEBUG is not defined
 
-#define queso_assert_msg(asserted, msg)  ((void) 0)
-#define queso_assert_equal_to_msg(expr1,expr2, msg)  ((void) 0)
-#define queso_assert_not_equal_to_msg(expr1,expr2, msg)  ((void) 0)
-#define queso_assert_less_msg(expr1,expr2, msg)  ((void) 0)
-#define queso_assert_greater_msg(expr1,expr2, msg)  ((void) 0)
-#define queso_assert_less_equal_msg(expr1,expr2, msg)  ((void) 0)
-#define queso_assert_greater_equal_msg(expr1,expr2, msg)  ((void) 0)
+#define queso_require_msg(asserted, msg)  do { if (!(asserted)) { std::cerr << "Assertion `" #asserted "' failed.\n" << msg << std::endl; queso_error(); } } while(0)
 
-#else
-
-#define queso_assert_msg(asserted, msg)  do { if (!(asserted)) { std::cerr << "Assertion `" #asserted "' failed.\n" << msg << std::endl; queso_error(); } } while(0)
-
-#define queso_assert(asserted) \
-  queso_assert_msg(asserted, "")
+#define queso_require(asserted) \
+  queso_require_msg(asserted, "")
 
 // When using C++11, we can test asserts comparing two different types
 // robustly
 // #if __cplusplus > 199711L // http://gcc.gnu.org/bugzilla/show_bug.cgi?id=1773
 #ifdef QUESO_HAVE_CXX11
-#define queso_assert_equal_to_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((expr1 == static_cast<type1>(expr2)) && static_cast<type2>(expr1) == expr2)) { std::cerr << "Assertion `" #expr1 " == " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
-#define queso_assert_not_equal_to_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((expr1 != static_cast<type1>(expr2)) && (static_cast<type2>(expr1) != expr2))) { std::cerr << "Assertion `" #expr1 " != " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
-#define queso_assert_less_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((static_cast<type2>(expr1) < expr2) && (expr1 < static_cast<type1>(expr2)))) { std::cerr << "Assertion `" #expr1 " < " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
-#define queso_assert_greater_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((static_cast<type2>(expr1) > expr2) && (expr1 > static_cast<type1>(expr2)))) { std::cerr << "Assertion `" #expr1 " > " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
-#define queso_assert_less_equal_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((static_cast<type2>(expr1) <= expr2) && (expr1 <= static_cast<type1>(expr2)))) { std::cerr << "Assertion `" #expr1 " <= " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
-#define queso_assert_greater_equal_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((static_cast<type2>(expr1) >= expr2) && (expr1 >= static_cast<type1>(expr2)))) { std::cerr << "Assertion `" #expr1 " >= " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
+#define queso_require_equal_to_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((expr1 == static_cast<type1>(expr2)) && static_cast<type2>(expr1) == expr2)) { std::cerr << "Assertion `" #expr1 " == " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
+#define queso_require_not_equal_to_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((expr1 != static_cast<type1>(expr2)) && (static_cast<type2>(expr1) != expr2))) { std::cerr << "Assertion `" #expr1 " != " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
+#define queso_require_less_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((static_cast<type2>(expr1) < expr2) && (expr1 < static_cast<type1>(expr2)))) { std::cerr << "Assertion `" #expr1 " < " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
+#define queso_require_greater_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((static_cast<type2>(expr1) > expr2) && (expr1 > static_cast<type1>(expr2)))) { std::cerr << "Assertion `" #expr1 " > " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
+#define queso_require_less_equal_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((static_cast<type2>(expr1) <= expr2) && (expr1 <= static_cast<type1>(expr2)))) { std::cerr << "Assertion `" #expr1 " <= " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
+#define queso_require_greater_equal_msg(expr1,expr2,msg)  do { typedef decltype(expr1) type1; typedef decltype(expr2) type2; if (!((static_cast<type2>(expr1) >= expr2) && (expr1 >= static_cast<type1>(expr2)))) { std::cerr << "Assertion `" #expr1 " >= " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << std::endl; queso_error(); } } while(0)
 
 // When using C++98, we let the compiler pick the type conversion and
 // hope for the best.
 #else
-#define queso_assert_equal_to_msg(expr1,expr2,msg)  do { if (!(expr1 == expr2)) { std::cerr << "Assertion `" #expr1 " == " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
-#define queso_assert_not_equal_to_msg(expr1,expr2,msg)  do { if (!(expr1 != expr2)) { std::cerr << "Assertion `" #expr1 " != " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
-#define queso_assert_less_msg(expr1,expr2,msg)  do { if (!(expr1 < expr2)) { std::cerr << "Assertion `" #expr1 " < " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
-#define queso_assert_greater_msg(expr1,expr2,msg)  do { if (!(expr1 > expr2)) { std::cerr << "Assertion `" #expr1 " > " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
-#define queso_assert_less_equal_msg(expr1,expr2,msg)  do { if (!(expr1 <= expr2)) { std::cerr << "Assertion `" #expr1 " <= " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
-#define queso_assert_greater_equal_msg(expr1,expr2,msg)  do { if (!(expr1 >= expr2)) { std::cerr << "Assertion `" #expr1 " >= " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
+#define queso_require_equal_to_msg(expr1,expr2,msg)  do { if (!(expr1 == expr2)) { std::cerr << "Assertion `" #expr1 " == " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
+#define queso_require_not_equal_to_msg(expr1,expr2,msg)  do { if (!(expr1 != expr2)) { std::cerr << "Assertion `" #expr1 " != " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
+#define queso_require_less_msg(expr1,expr2,msg)  do { if (!(expr1 < expr2)) { std::cerr << "Assertion `" #expr1 " < " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
+#define queso_require_greater_msg(expr1,expr2,msg)  do { if (!(expr1 > expr2)) { std::cerr << "Assertion `" #expr1 " > " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
+#define queso_require_less_equal_msg(expr1,expr2,msg)  do { if (!(expr1 <= expr2)) { std::cerr << "Assertion `" #expr1 " <= " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
+#define queso_require_greater_equal_msg(expr1,expr2,msg)  do { if (!(expr1 >= expr2)) { std::cerr << "Assertion `" #expr1 " >= " #expr2 "' failed.\n" #expr1 " = " << (expr1) << "\n" #expr2 " = " << (expr2) << '\n' << msg << std::endl; queso_error(); } } while(0)
 
 #endif // C++11
 
+// When not debugging, we don't test any asserts
+#ifdef NDEBUG
+
+#define queso_assert_msg(asserted,msg)  ((void) 0)
+#define queso_assert_equal_to_msg(expr1,expr2,msg)  ((void) 0)
+#define queso_assert_not_equal_to_msg(expr1,expr2,msg)  ((void) 0)
+#define queso_assert_less_msg(expr1,expr2,msg)  ((void) 0)
+#define queso_assert_greater_msg(expr1,expr2,msg)  ((void) 0)
+#define queso_assert_less_equal_msg(expr1,expr2,msg)  ((void) 0)
+#define queso_assert_greater_equal_msg(expr1,expr2,msg)  ((void) 0)
+
+#else
+
+#define queso_assert_msg(asserted,msg) \
+  queso_require(asserted,msg)
+#define queso_assert_equal_to_msg(expr1,expr2,msg) \
+  queso_require_equal_to_msg(expr1,expr2,msg)
+#define queso_assert_not_equal_to_msg(expr1,expr2,msg) \
+  queso_require_not_equal_to_msg(expr1,expr2,msg)
+#define queso_assert_less_msg(expr1,expr2,msg) \
+  queso_require_less_msg(expr1,expr2,msg)
+#define queso_assert_greater_msg(expr1,expr2,msg) \
+  queso_require_greater_msg(expr1,expr2,msg)
+#define queso_assert_less_equal_msg(expr1,expr2,msg) \
+  queso_require_less_equal_msg(expr1,expr2,msg)
+#define queso_assert_greater_equal_msg(expr1,expr2,msg) \
+  queso_require_greater_equal_msg(expr1,expr2,msg)
+
 #endif // NDEBUG
+
+#define queso_assert(asserted) \
+  queso_assert_msg(asserted, "")
 
 #define queso_assert_equal_to(expr1,expr2) \
   queso_assert_equal_to_msg(expr1,expr2,"")
