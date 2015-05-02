@@ -29,6 +29,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/InterpolationSurrogateHelper.h>
+#include <queso/StreamUtilities.h>
 
 // C++
 #include <numeric>
@@ -229,6 +230,25 @@ namespace QUESO
         // by the number of entries from the previous group.
         stride += this->m_njobs[n-1];
         strides[n] = stride;
+      }
+  }
+
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::check_parsed_dim( unsigned int parsed_dim,
+                                                             unsigned int param_dim )
+  {
+    if( parsed_dim != param_dim )
+      {
+        std::stringstream dim_str;
+        dim_str << parsed_dim;
+
+        std::stringstream param_dim_str;
+        param_dim_str << param_dim;
+
+        std::string error = "ERROR: Mismatch in parameter dimension and parsed dimension.\n";
+        error += " parsed dimension   = "+dim_str.str()+"\n";
+        error += " paramter dimension = "+param_dim_str.str()+"\n";
+        queso_error_msg(error);
       }
   }
 

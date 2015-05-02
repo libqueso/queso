@@ -86,6 +86,8 @@ namespace QUESO
     //! Helper function to compute strides needed for MPI_Gatherv
     void compute_strides( std::vector<int>& strides ) const;
 
+    void check_parsed_dim( unsigned int parsed_dim, unsigned int param_dim );
+
   private:
 
     InterpolationSurrogateBuilder();
