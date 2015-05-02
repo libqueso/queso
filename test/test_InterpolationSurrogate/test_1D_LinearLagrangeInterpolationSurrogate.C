@@ -26,6 +26,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/BoxSubset.h>
 #include <queso/LinearLagrangeInterpolationSurrogate.h>
+#include <queso/InterpolationSurrogateData.h>
 
 double one_d_fn( double x );
 

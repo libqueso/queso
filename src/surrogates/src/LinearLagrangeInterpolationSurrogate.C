@@ -29,6 +29,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/InterpolationSurrogateHelper.h>
+#include <queso/InterpolationSurrogateData.h>
 
 namespace QUESO
 {

@@ -26,12 +26,13 @@
 #define UQ_INTERPOLATION_SURROGATE_BASE_H
 
 #include <queso/SurrogateBase.h>
-#include <queso/BoxSubset.h>
-#include <queso/VectorSpace.h>
-#include <queso/InterpolationSurrogateData.h>
 
 namespace QUESO
 {
+  // Forward declarations
+  template<typename V, typename M>
+  class InterpolationSurrogateData;
+
   //! Base class for interpolation-based surrogates
   /*! This class is used for surrogoate approximations of a model using interpolation.
       These surrogates map an \f$ n\f$ dimensional parameter space to the reals.

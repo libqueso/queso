@@ -27,6 +27,7 @@
 #include <queso/BoxSubset.h>
 #include <queso/LinearLagrangeInterpolationSurrogate.h>
 #include <queso/InterpolationSurrogateBuilder.h>
+#include <queso/InterpolationSurrogateData.h>
 
 double four_d_fn( double x, double y, double z, double a );
 

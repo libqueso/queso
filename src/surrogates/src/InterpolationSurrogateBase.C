@@ -28,6 +28,7 @@
 // QUESO
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/InterpolationSurrogateData.h>
 
 // C++
 #include <sstream>

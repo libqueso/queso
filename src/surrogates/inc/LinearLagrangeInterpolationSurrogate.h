@@ -25,7 +25,12 @@
 #ifndef UQ_LINEAR_LAGRANGE_INTERPOLATION_SURROGATE_H
 #define UQ_LINEAR_LAGRANGE_INTERPOLATION_SURROGATE_H
 
+// QUESO
 #include <queso/InterpolationSurrogateBase.h>
+
+// C++
+#include <vector>
+#include <cmath>
 
 namespace QUESO
 {
