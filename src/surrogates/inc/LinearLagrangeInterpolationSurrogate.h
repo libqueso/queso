@@ -34,11 +34,18 @@
 
 namespace QUESO
 {
+  //! Linear Lagrange interpolation surrogate
+  /*! Aribritary dimension linear Lagrange interpolant. Uses a structured
+      grid to interpolate values given by data passed to the constructor. */
   template<class V, class M>
   class LinearLagrangeInterpolationSurrogate : public InterpolationSurrogateBase<V,M>
   {
   public:
 
+    //! Constructor
+    /*! The data object should be already fully populated when constructing
+        this object. The user can directly set values or use the
+        InterpolationSurrogateBuilder object to populate the data. */
     LinearLagrangeInterpolationSurrogate(const InterpolationSurrogateData<V,M>& data);
 
     virtual ~LinearLagrangeInterpolationSurrogate(){};
@@ -59,7 +66,7 @@ namespace QUESO
     void compute_interval_indices(const V & domainVector,
                                   std::vector<unsigned int>& indices) const;
 
-    //! Helper function to populate bounding values for the intervales in each dimension
+    //! Helper function to populate bounding values for the intervals in each dimension
     /*! By convention, it is assumed that the indices vector contains the lower
         bound index. See compute_interval_indices. */
     void compute_interval_values( const std::vector<unsigned int>& indices,
@@ -74,7 +81,7 @@ namespace QUESO
                              const std::vector<double>& values,
                              const V & domainVector ) const;
 
-    //! Covert local indices to single "global" index
+    //! Convert local indices to single "global" index
     /*! This is for handling the local ordering of an arbitrary dimensional
         linear Lagrange elements. The function will look like
         \f$ \sum_{ijkl...} f_{ijkl...} N_{ijkl...} \f$ so we want a

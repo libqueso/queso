@@ -52,9 +52,9 @@ namespace QUESO
   public:
 
     //! Constructor
-    /*! n_points should be a vector with dimension matching the dimension of
-        the parameter space and contain the number of points in each coordinate
-        direction for the interpolant. */
+    /*! The data object should be already fully populated when constructing
+        this object. The user can directly set values or use the
+        InterpolationSurrogateBuilder object to populate the data. */
     InterpolationSurrogateBase(const InterpolationSurrogateData<V,M>& data);
 
     virtual ~InterpolationSurrogateBase(){};
