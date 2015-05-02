@@ -412,6 +412,20 @@ blockDiagonalCovarianceRandomCoefficients_SOURCES = gaussian_likelihoods/blockDi
 blockDiagonalCovarianceRandomCoefficients_LDADD = $(top_builddir)/src/libqueso.la
 blockDiagonalCovarianceRandomCoefficients_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovarianceRandomCoefficients $(QUESO_CPPFLAGS)
 
+####################################
+# Interpolation Surrogate examples #
+####################################
+interpsurrgdir = $(prefix)/examples/interpolation_surrogate
+
+interpsurrg_PROGRAMS = 4d_interp
+4d_interp_SOURCES = interpolation_surrogate/4d_interp.C
+4d_interp_LDADD = $(top_builddir)/src/libqueso.la
+4d_interp_CPPFLAGS = $(QUESO_CPPFLAGS)
+
+dist_interpsurrg_DATA =
+dist_interpsurrg_DATA += ${4d_interp_SOURCES}
+dist_interpsurrg_DATA += interpolation_surrogate/input.in
+
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif
