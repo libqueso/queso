@@ -34,6 +34,8 @@ namespace QUESO
 {
   //! Base class for interpolation-based surrogates
   /*! This class is used for surrogoate approximations of a model using interpolation.
+      These surrogates map an \f$ n\f$ dimensional parameter space to the reals.
+      That is \f$ f: \mathbb{R}^n \rightarrow \mathbb{R} \f$.
       Subclasses will define behavior of interpolant, but common assumptions
       are:
            -# Bounded domain; future work may extend behavior to unbounded domains.
