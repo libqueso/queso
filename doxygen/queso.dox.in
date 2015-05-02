@@ -570,10 +570,7 @@ INPUT  = @abs_top_srcdir@/doxygen/queso.page \
          @abs_top_srcdir@/doxygen/txt_common/acknowledgment.page \
          @abs_top_srcdir@/doxygen/txt_common/lgpl.page \
          @abs_top_srcdir@/doxygen/txt_common/noop.page \
-      	 @abs_top_srcdir@/src/core \
-      	 @abs_top_srcdir@/src/misc \
-      	 @abs_top_srcdir@/src/basic \
-      	 @abs_top_srcdir@/src/stats
+         @abs_top_srcdir@/src
 
 #      	 @abs_top_srcdir@/src/interface #C/Fortran interface that hasn't been touched since at least Revision 14611.
 #      	 @abs_top_srcdir@/examples/statisticalInverseProblem1/src \
