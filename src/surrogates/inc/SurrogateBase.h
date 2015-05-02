@@ -28,7 +28,9 @@
 namespace QUESO
 {
   //! Base class for surrogates of models
-  /*! Defines basic interface for using surrogates of models. The idea
+  /*! Defines basic interface for using surrogates of models. These surrogates
+      map an \f$ n\f$ dimensional parameter space to the reals. That is
+      \f$ f: \mathbb{R}^n \rightarrow \mathbb{R} \f$. The idea
       is that we have some surrogate of the parameter-to-data map so that
       it can be used in the likelihood classes. Subclasses will define the
       particular surrogate model. Other classes will be used to build up the

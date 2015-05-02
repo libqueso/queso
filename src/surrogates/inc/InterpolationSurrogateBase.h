@@ -35,9 +35,11 @@ namespace QUESO
   //! Base class for interpolation-based surrogates
   /*! This class is used for surrogoate approximations of a model using interpolation.
       Subclasses will define behavior of interpolant, but common assumptions
-      are: 1. Bounded domain; future work may extend behavior to unbounded domains.
-           2. Structured grids on the parameter domain. Subclasses will determine behavior
+      are:
+           -# Bounded domain; future work may extend behavior to unbounded domains.
+           -# Structured grids on the parameter domain. Subclasses will determine behavior
               of spacing (uniform vs. directionally-uniform, etc.).
+
       For the structured grid, we think of referencing each "node" in the box by its
       index coordinates (i,j,k,...), where i runs from (0, n_points[0]-1),
       j run from (0,n_points[1]-1), etc. We use this indexing to build maps. */
