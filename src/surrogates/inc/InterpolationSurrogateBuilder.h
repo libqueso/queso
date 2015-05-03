@@ -56,6 +56,8 @@ namespace QUESO
 
     void read( std::istream& input );
 
+    void write( std::ostream& output ) const;
+
   protected:
 
     InterpolationSurrogateData<V,M>& m_data;

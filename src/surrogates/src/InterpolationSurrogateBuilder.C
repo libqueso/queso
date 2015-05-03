@@ -414,6 +414,46 @@ namespace QUESO
 
   }
 
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::write( std::ostream& output ) const
+  {
+    // Write simpler header comments
+    std::string header = "# Data for interpolation surrogate\n";
+    header += "# Format is as follows:\n";
+    header += "# dimension (unsigned int)\n";
+    header += "# n_points in each dimension\n";
+    header += "# x_min, x_max pairs for each dimension\n";
+    header += "# values for each point in parameter space\n";
+    header += "# values musted ordered in structured format.\n";
+    output << header;
+
+    // Write dimension
+    unsigned int dim = this->m_data.get_paramDomain().vectorSpace().dimGlobal();
+    output << dim << std::endl;
+
+    // Write n_points
+    output << "# n_points" << std::endl;
+    for( unsigned int d = 0; d < dim; d++ )
+      {
+        output << this->m_data.get_n_points()[d] << std::endl;
+      }
+
+    // Write domain bounds
+    output << "# domain bounds" << std::endl;
+    for( unsigned int d = 0; d < dim; d++ )
+      {
+        output << this->m_data.x_min(d) << " "
+               << this->m_data.x_max(d) << std::endl;
+      }
+
+    // Write values
+    output << "# values" << std::endl;
+    for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
+      {
+        output << this->m_data.get_value(n) << std::endl;
+      }
+  }
+
 } // end namespace QUESO
 
 // Instantiate
