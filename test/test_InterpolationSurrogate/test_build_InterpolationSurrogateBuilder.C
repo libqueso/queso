@@ -77,42 +77,92 @@ int main(int argc, char ** argv)
   n_points[2] = 31;
   n_points[3] = 41;
 
-  QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
-    data(paramDomain,n_points);
 
-  MyInterpolationBuilder<QUESO::GslVector,QUESO::GslMatrix>
-    builder( data );
-
-  builder.build_values();
-
-  QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
-    four_d_surrogate( data );
-
+  // Point at which we will test the surrogate evaluation
   QUESO::GslVector domainVector(paramSpace.zeroVector());
   domainVector[0] = -0.4;
   domainVector[1] = 3.0;
   domainVector[2] = 1.5;
   domainVector[3] = 1.65;
 
-  double test_val = four_d_surrogate.evaluate(domainVector);
+  // Filename for writing/reading surrogate data
+  std::string filename = "test_write_InterpolationSurrogateBuilder.dat";
 
   double exact_val = four_d_fn(domainVector[0],domainVector[1],domainVector[2],domainVector[3]);
 
   double tol = 2.0*std::numeric_limits<double>::epsilon();
 
-  double rel_error = (test_val - exact_val)/exact_val;
+  // First test surrogate build directly from the computed values
+  {
+    QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
+      data(paramDomain,n_points);
 
-  if( std::fabs(rel_error) > tol )
-    {
-      std::cerr << "ERROR: Tolerance exceeded for 4D Lagrange interpolation test."
-                << std::endl
-                << " test_val  = " << test_val << std::endl
-                << " exact_val = " << exact_val << std::endl
-                << " rel_error = " << rel_error << std::endl
-                << " tol       = " << tol << std::endl;
+    MyInterpolationBuilder<QUESO::GslVector,QUESO::GslMatrix>
+      builder( data );
 
-      return_flag = 1;
-    }
+    builder.build_values();
+
+    QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
+      four_d_surrogate( data );
+
+    double test_val = four_d_surrogate.evaluate(domainVector);
+
+    double rel_error = (test_val - exact_val)/exact_val;
+
+    if( std::fabs(rel_error) > tol )
+      {
+        std::cerr << "ERROR: Tolerance exceeded for 4D Lagrange interpolation test."
+                  << std::endl
+                  << " test_val  = " << test_val << std::endl
+                  << " exact_val = " << exact_val << std::endl
+                  << " rel_error = " << rel_error << std::endl
+                  << " tol       = " << tol << std::endl;
+
+        return_flag = 1;
+      }
+
+    // Write the output to test reading next
+
+    std::ofstream output( filename.c_str() );
+
+    builder.write( output );
+
+    output.close();
+  }
+
+  // Now write, then read the data and test
+  {
+    QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
+      data(paramDomain,n_points);
+
+    MyInterpolationBuilder<QUESO::GslVector,QUESO::GslMatrix>
+      builder( data );
+
+    // Now read back in and test
+    std::ifstream input( filename.c_str() );
+
+    builder.read( input );
+
+    // Build a new surrogate
+    QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
+      four_d_surrogate( data );
+
+    double test_val = four_d_surrogate.evaluate(domainVector);
+
+    double rel_error = (test_val - exact_val)/exact_val;
+
+    if( std::fabs(rel_error) > tol )
+      {
+        std::cerr << "ERROR: Tolerance exceeded for read/write interpolation test."
+                  << std::endl
+                  << " test_val  = " << test_val << std::endl
+                  << " exact_val = " << exact_val << std::endl
+                  << " rel_error = " << rel_error << std::endl
+                  << " tol       = " << tol << std::endl;
+
+        return_flag = 1;
+      }
+  }
 
   return return_flag;
 }
