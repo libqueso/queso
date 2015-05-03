@@ -54,10 +54,6 @@ namespace QUESO
     //! Execute the user's model and populate m_values for the given n_points
     void build_values();
 
-    void read( std::istream& input );
-
-    void write( std::ostream& output ) const;
-
   protected:
 
     InterpolationSurrogateData<V,M>& m_data;
@@ -89,19 +85,6 @@ namespace QUESO
 
     //! Helper function to compute strides needed for MPI_Gatherv
     void compute_strides( std::vector<int>& strides ) const;
-
-    //! Helper function for checking read input, writing error message
-    void check_parsed_dim( unsigned int parsed_dim, unsigned int param_dim );
-
-    //! Helper function for checking read input, writing error message
-    void check_parsed_points( const std::vector<unsigned int>& parsed_points,
-                              const std::vector<unsigned int>& param_points );
-
-    //! Helper function for checking read input, writing error message
-    void check_parsed_bounds( const std::vector<double>& parsed_xmin,
-                              const std::vector<double>& parsed_xmax,
-                              const std::vector<double>& param_xmin,
-                              const std::vector<double>& param_xmax );
 
   private:
 
