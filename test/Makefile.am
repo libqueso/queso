@@ -248,6 +248,7 @@ EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
 CLEANFILES += gslvector_out_sub0.m
+CLEANFILES += test_write_InterpolationSurrogateBuilder.dat
 
 clean-local:
 	rm -rf $(top_builddir)/test/chain0
