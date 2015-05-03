@@ -57,6 +57,8 @@ namespace QUESO
 
   protected:
 
+    typename ScopedPtr<VectorSpace<V,M> >::Type m_vector_space;
+
     typename ScopedPtr<BoxSubset<V,M> >::Type m_domain;
 
     std::vector<unsigned int> m_n_points;
