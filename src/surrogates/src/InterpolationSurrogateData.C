@@ -114,6 +114,18 @@ namespace QUESO
     return x_min + spacing*index;
   }
 
+  template<class V, class M>
+  void InterpolationSurrogateData<V,M>::sync_values( unsigned int root )
+  {
+    MpiComm full_comm = this->m_domain.env().fullComm();
+
+    full_comm.Bcast( &this->m_values[0], this->n_values(),
+                     MPI_DOUBLE, root,
+                     "InterpolationSurrogateData::sync_values()",
+                     "MpiComm::Bcast() failed!" );
+  }
+
+
 } // end namespace QUESO
 
 // Instantiate
