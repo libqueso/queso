@@ -184,6 +184,7 @@ BUILT_SOURCES += InterpolationSurrogateBase.h
 BUILT_SOURCES += InterpolationSurrogateBuilder.h
 BUILT_SOURCES += InterpolationSurrogateData.h
 BUILT_SOURCES += InterpolationSurrogateHelper.h
+BUILT_SOURCES += InterpolationSurrogateIOBase.h
 BUILT_SOURCES += LinearLagrangeInterpolationSurrogate.h
 BUILT_SOURCES += SurrogateBase.h
 BUILT_SOURCES += SurrogateBuilderBase.h
@@ -549,6 +550,8 @@ InterpolationSurrogateBuilder.h: $(top_srcdir)/src/surrogates/inc/InterpolationS
 InterpolationSurrogateData.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateData.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InterpolationSurrogateHelper.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateHelper.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateIOBase.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateIOBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 LinearLagrangeInterpolationSurrogate.h: $(top_srcdir)/src/surrogates/inc/LinearLagrangeInterpolationSurrogate.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
