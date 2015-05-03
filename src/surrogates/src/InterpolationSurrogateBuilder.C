@@ -230,76 +230,88 @@ namespace QUESO
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::read( std::istream& input )
   {
-    // skip the header
-    StreamUtilities::skip_comment_lines(input, '#');
+    // Root processor
+    unsigned int root = 0;
 
-    // Read in dimension and confirm it matches with m_data
-    unsigned int dim;
-    input >> dim;
-
-    this->check_parsed_dim( dim, this->m_data.get_paramDomain().vectorSpace().dimGlobal() );
-
-
-    // Read in n_points in each dimension and confirm it matches with m_data
-    {
-      std::vector<unsigned int> n_points(dim);
-      for( unsigned int d = 0; d < dim; d++ )
-        {
-          // Skip any comments
-          StreamUtilities::skip_comment_lines(input, '#');
-
-          // Make sure file is still good
-          if( !input.good() )
-            queso_error_msg("ERROR: Found unexpected end-of-file");
-
-          input >> n_points[d];
-        }
-
-      this->check_parsed_points(n_points, this->m_data.get_n_points() );
-    }
-
-    // Read in bounds for each dimension and confirm it matches with m_data
-    {
-      // Cache
-      std::vector<double> x_min(dim);
-      std::vector<double> x_max(dim);
-      std::vector<double> param_xmin(dim);
-      std::vector<double> param_xmax(dim);
-
-      for( unsigned int d = 0; d < dim; d++ )
-        {
-          // Instead of adding new API for the vectors, we just cache them here
-          param_xmin[d] = this->m_data.x_min(d);
-          param_xmax[d] = this->m_data.x_max(d);
-
-          // Skip any comments
-          StreamUtilities::skip_comment_lines(input, '#');
-
-          // Make sure file is still good
-          if( !input.good() )
-            queso_error_msg("ERROR: Found unexpected end-of-file");
-
-          input >> x_min[d] >> x_max[d];
-        }
-
-      this->check_parsed_bounds( x_min, x_max, param_xmin, param_xmax );
-    }
-
-    // Now read in values and set them in the data
-    for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
+    // Only processor 0 does the reading.
+    // We'll broadcast the values when we're done.
+    if( this->m_data.get_paramDomain().env().fullRank() == root )
       {
-        // Skip any comments
-          StreamUtilities::skip_comment_lines(input, '#');
+        // skip the header
+        StreamUtilities::skip_comment_lines(input, '#');
 
-          // Make sure file is still good
-          if( !input.good() )
-            queso_error_msg("ERROR: Found unexpected end-of-file");
+        // Read in dimension and confirm it matches with m_data
+        unsigned int dim;
+        input >> dim;
 
-          double value;
-          input >> value;
+        this->check_parsed_dim( dim, this->m_data.get_paramDomain().vectorSpace().dimGlobal() );
 
-          this->m_data.set_value( n, value );
-      }
+
+        // Read in n_points in each dimension and confirm it matches with m_data
+        {
+          std::vector<unsigned int> n_points(dim);
+          for( unsigned int d = 0; d < dim; d++ )
+            {
+              // Skip any comments
+              StreamUtilities::skip_comment_lines(input, '#');
+
+              // Make sure file is still good
+              if( !input.good() )
+                queso_error_msg("ERROR: Found unexpected end-of-file");
+
+              input >> n_points[d];
+            }
+
+          this->check_parsed_points(n_points, this->m_data.get_n_points() );
+        }
+
+        // Read in bounds for each dimension and confirm it matches with m_data
+        {
+          // Cache
+          std::vector<double> x_min(dim);
+          std::vector<double> x_max(dim);
+          std::vector<double> param_xmin(dim);
+          std::vector<double> param_xmax(dim);
+
+          for( unsigned int d = 0; d < dim; d++ )
+            {
+              // Instead of adding new API for the vectors, we just cache them here
+              param_xmin[d] = this->m_data.x_min(d);
+              param_xmax[d] = this->m_data.x_max(d);
+
+              // Skip any comments
+              StreamUtilities::skip_comment_lines(input, '#');
+
+              // Make sure file is still good
+              if( !input.good() )
+                queso_error_msg("ERROR: Found unexpected end-of-file");
+
+              input >> x_min[d] >> x_max[d];
+            }
+
+          this->check_parsed_bounds( x_min, x_max, param_xmin, param_xmax );
+        }
+
+        // Now read in values and set them in the data
+        for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
+          {
+            // Skip any comments
+            StreamUtilities::skip_comment_lines(input, '#');
+
+            // Make sure file is still good
+            if( !input.good() )
+              queso_error_msg("ERROR: Found unexpected end-of-file");
+
+            double value;
+            input >> value;
+
+            this->m_data.set_value( n, value );
+          }
+
+      } //if( this->m_data.get_paramDomain().env().fullRank() == root )
+
+    // Now processor root is done reading. Now we broadcast the values.
+    this->m_data.sync_values( root );
   }
 
   template<class V, class M>
@@ -411,44 +423,49 @@ namespace QUESO
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::write( std::ostream& output ) const
   {
-    // Write simpler header comments
-    std::string header = "# Data for interpolation surrogate\n";
-    header += "# Format is as follows:\n";
-    header += "# dimension (unsigned int)\n";
-    header += "# n_points in each dimension\n";
-    header += "# x_min, x_max pairs for each dimension\n";
-    header += "# values for each point in parameter space\n";
-    header += "# values musted ordered in structured format.\n";
-    output << header;
-
-    // Write dimension
-    unsigned int dim = this->m_data.get_paramDomain().vectorSpace().dimGlobal();
-    output << dim << std::endl;
-
-    // Write n_points
-    output << "# n_points" << std::endl;
-    for( unsigned int d = 0; d < dim; d++ )
+    // Only processor 0 does the writing
+    if( this->m_data.get_paramDomain().env().fullRank() == 0 )
       {
-        output << this->m_data.get_n_points()[d] << std::endl;
-      }
+        // Write simpler header comments
+        std::string header = "# Data for interpolation surrogate\n";
+        header += "# Format is as follows:\n";
+        header += "# dimension (unsigned int)\n";
+        header += "# n_points in each dimension\n";
+        header += "# x_min, x_max pairs for each dimension\n";
+        header += "# values for each point in parameter space\n";
+        header += "# values musted ordered in structured format.\n";
+        output << header;
 
-    // Set precision for double output
-    output << std::scientific << std::setprecision(16);
+        // Write dimension
+        unsigned int dim = this->m_data.get_paramDomain().vectorSpace().dimGlobal();
+        output << dim << std::endl;
 
-    // Write domain bounds
-    output << "# domain bounds" << std::endl;
-    for( unsigned int d = 0; d < dim; d++ )
-      {
-        output << this->m_data.x_min(d) << " "
-               << this->m_data.x_max(d) << std::endl;
-      }
+        // Write n_points
+        output << "# n_points" << std::endl;
+        for( unsigned int d = 0; d < dim; d++ )
+          {
+            output << this->m_data.get_n_points()[d] << std::endl;
+          }
 
-    // Write values
-    output << "# values" << std::endl;
-    for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
-      {
-        output << this->m_data.get_value(n) << std::endl;
-      }
+        // Set precision for double output
+        output << std::scientific << std::setprecision(16);
+
+        // Write domain bounds
+        output << "# domain bounds" << std::endl;
+        for( unsigned int d = 0; d < dim; d++ )
+          {
+            output << this->m_data.x_min(d) << " "
+                   << this->m_data.x_max(d) << std::endl;
+          }
+
+        // Write values
+        output << "# values" << std::endl;
+        for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
+          {
+            output << this->m_data.get_value(n) << std::endl;
+          }
+
+      } // if( this->m_data.get_paramDomain().env().fullRank() == 0 )
   }
 
 } // end namespace QUESO
