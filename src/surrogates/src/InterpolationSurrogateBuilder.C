@@ -252,6 +252,39 @@ namespace QUESO
       }
   }
 
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::check_parsed_points( const std::vector<unsigned int>& parsed_points,
+                                                                const std::vector<unsigned int>& param_points )
+  {
+    queso_assert_equal_to( parsed_points.size(), param_points.size() );
+
+    bool mismatch = false;
+
+    for( unsigned int d = 0; d < parsed_points.size(); d++ )
+      {
+        if( parsed_points[d] != param_points[d] )
+          mismatch = true;
+      }
+
+    if( mismatch )
+      {
+        std::string error = "ERROR: Mismatch in parameter n_points and parsed n_points.\n";
+        error += "parsed n_points    param n_points\n";
+        for( unsigned int d = 0; d < parsed_points.size(); d++ )
+          {
+            std::stringstream parsed_str;
+            parsed_str << parsed_points[d];
+
+            std::stringstream param_str;
+            param_str << param_points[d];
+
+            error += parsed_str.str()+"    "+param_str.str()+"\n";
+          }
+
+        queso_error_msg(error);
+      }
+  }
+
 } // end namespace QUESO
 
 // Instantiate

@@ -86,7 +86,12 @@ namespace QUESO
     //! Helper function to compute strides needed for MPI_Gatherv
     void compute_strides( std::vector<int>& strides ) const;
 
+    //! Helper function for checking read input, writing error message
     void check_parsed_dim( unsigned int parsed_dim, unsigned int param_dim );
+
+    //! Helper function for checking read input, writing error message
+    void check_parsed_points( const std::vector<unsigned int>& parsed_points,
+                              const std::vector<unsigned int>& param_points );
 
   private:
 
