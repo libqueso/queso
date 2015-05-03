@@ -316,6 +316,7 @@ libqueso_include_HEADERS += core/inc/InfiniteDimensionalMCMCSamplerOptions.h
 libqueso_include_HEADERS += core/inc/InfiniteDimensionalLikelihoodBase.h
 libqueso_include_HEADERS += core/inc/FunctionOperatorBuilder.h
 libqueso_include_HEADERS += core/inc/GslBlockMatrix.h
+libqueso_include_HEADERS += core/inc/ScopedPtr.h
 
 # Headers to install from misc/inc
 
