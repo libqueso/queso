@@ -29,10 +29,6 @@
 #include <queso/ScopedPtr.h>
 #include <queso/InterpolationSurrogateData.h>
 
-// C++
-#include <istream>
-#include <ostream>
-
 namespace QUESO
 {
   template<class V, class M>
@@ -44,9 +40,12 @@ namespace QUESO
 
     virtual ~InterpolationSurrogateIOBase(){};
 
-    virtual void read( std::istream& input ) =0;
+    virtual void read( const std::string& filename,
+                       const FullEnvironment& env,
+                       const std::string& vector_space_prefix ) =0;
 
-    virtual void write( std::ostream& output ) const =0;
+    virtual void write( const std::string& filename,
+                        const InterpolationSurrogateData<V,M>& data ) const =0;
 
     //! Reference to data object
     /*! If we read the data, then use this method to grab
