@@ -54,6 +54,8 @@ namespace QUESO
     //! Execute the user's model and populate m_values for the given n_points
     void build_values();
 
+    void read( std::istream& input );
+
   protected:
 
     InterpolationSurrogateData<V,M>& m_data;

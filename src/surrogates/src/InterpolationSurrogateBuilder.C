@@ -234,6 +234,81 @@ namespace QUESO
   }
 
   template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::read( std::istream& input )
+  {
+    // skip the header
+    StreamUtilities::skip_comment_lines(input, '#');
+
+    // Read in dimension and confirm it matches with m_data
+    unsigned int dim;
+    input >> dim;
+
+    this->check_parsed_dim( dim, this->m_data.get_paramDomain().vectorSpace().dimGlobal() );
+
+
+    // Read in n_points in each dimension and confirm it matches with m_data
+    {
+      std::vector<unsigned int> n_points(dim);
+      for( unsigned int d = 0; d < dim; d++ )
+        {
+          // Skip any comments
+          StreamUtilities::skip_comment_lines(input, '#');
+
+          // Make sure file is still good
+          if( !input.good() )
+            queso_error_msg("ERROR: Found unexpected end-of-file");
+
+          input >> n_points[d];
+        }
+
+      this->check_parsed_points(n_points, this->m_data.get_n_points() );
+    }
+
+    // Read in bounds for each dimension and confirm it matches with m_data
+    {
+      // Cache
+      std::vector<double> x_min(dim);
+      std::vector<double> x_max(dim);
+      std::vector<double> param_xmin(dim);
+      std::vector<double> param_xmax(dim);
+
+      for( unsigned int d = 0; d < dim; d++ )
+        {
+          // Instead of adding new API for the vectors, we just cache them here
+          param_xmin[d] = this->m_data.x_min(d);
+          param_xmax[d] = this->m_data.x_max(d);
+
+          // Skip any comments
+          StreamUtilities::skip_comment_lines(input, '#');
+
+          // Make sure file is still good
+          if( !input.good() )
+            queso_error_msg("ERROR: Found unexpected end-of-file");
+
+          input >> x_min[d] >> x_max[d];
+        }
+
+      this->check_parsed_bounds( x_min, x_max, param_xmin, param_xmax );
+    }
+
+    // Now read in values and set them in the data
+    for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
+      {
+        // Skip any comments
+          StreamUtilities::skip_comment_lines(input, '#');
+
+          // Make sure file is still good
+          if( !input.good() )
+            queso_error_msg("ERROR: Found unexpected end-of-file");
+
+          double value;
+          input >> value;
+
+          this->m_data.set_value( n, value );
+      }
+  }
+
+  template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::check_parsed_dim( unsigned int parsed_dim,
                                                              unsigned int param_dim )
   {
