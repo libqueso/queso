@@ -438,6 +438,9 @@ namespace QUESO
         output << this->m_data.get_n_points()[d] << std::endl;
       }
 
+    // Set precision for double output
+    output << std::scientific << std::setprecision(16);
+
     // Write domain bounds
     output << "# domain bounds" << std::endl;
     for( unsigned int d = 0; d < dim; d++ )
