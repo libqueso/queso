@@ -123,6 +123,7 @@ AC_CACHE_SAVE
 AC_LANG([C++])
 BOOST_REQUIRE([1.35])
 BOOST_PROGRAM_OPTIONS
+BOOST_FIND_HEADER([boost/scoped_ptr.hpp])
 AC_CACHE_SAVE
 
 # Check for GLPK (optional)
