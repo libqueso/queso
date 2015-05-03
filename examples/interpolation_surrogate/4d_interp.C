@@ -27,6 +27,7 @@
 #include <queso/BoxSubset.h>
 #include <queso/LinearLagrangeInterpolationSurrogate.h>
 #include <queso/InterpolationSurrogateBuilder.h>
+#include <queso/InterpolationSurrogateIOASCII.h>
 
 double four_d_fn( double x, double y, double z, double a );
 
@@ -103,6 +104,12 @@ int main(int argc, char ** argv)
   // The expensive part. The builder will now evaluate the model for all the
   // desired points in parameter space.
   builder.build_values();
+
+  // Now that we've built the data, we write it out so we can reuse it later
+  QUESO::InterpolationSurrogateIOASCII<QUESO::GslVector, QUESO::GslMatrix>
+    data_writer;
+
+  data_writer.write( "4d_interp_data.dat", data );
 
   // The builder put the model values into the data, so now we can give the data
   // to the interpolation surrogate. This object can now be used in a likelihood
