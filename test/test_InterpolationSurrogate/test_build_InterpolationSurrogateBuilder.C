@@ -72,7 +72,7 @@ int main(int argc, char ** argv)
     paramDomain("param_", paramSpace, paramMins, paramMaxs);
 
   std::vector<unsigned int> n_points(4);
-  n_points[0] = 101;
+  n_points[0] = 11;
   n_points[1] = 51;
   n_points[2] = 31;
   n_points[3] = 41;
