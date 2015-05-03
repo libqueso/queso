@@ -254,6 +254,7 @@ libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateHelper.C
 libqueso_la_SOURCES += surrogates/src/LinearLagrangeInterpolationSurrogate.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBuilder.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOBase.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOASCII.C
 
 # Sources from gp/src
 
@@ -457,6 +458,7 @@ libqueso_include_HEADERS += surrogates/inc/LinearLagrangeInterpolationSurrogate.
 libqueso_include_HEADERS += surrogates/inc/SurrogateBuilderBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBuilder.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOBase.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOASCII.h
 
 # Headers to install from gp/inc
 
