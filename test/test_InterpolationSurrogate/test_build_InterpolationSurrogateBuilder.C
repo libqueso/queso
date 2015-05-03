@@ -28,6 +28,7 @@
 #include <queso/LinearLagrangeInterpolationSurrogate.h>
 #include <queso/InterpolationSurrogateBuilder.h>
 #include <queso/InterpolationSurrogateData.h>
+#include <queso/InterpolationSurrogateIOASCII.h>
 
 double four_d_fn( double x, double y, double z, double a );
 
@@ -53,30 +54,13 @@ int main(int argc, char ** argv)
 
   int return_flag = 0;
 
+  std::string vs_prefix = "param_";
+
+  // Filename for writing/reading surrogate data
+  std::string filename = "test_write_InterpolationSurrogateBuilder.dat";
+
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>
-    paramSpace(env,"param_", 4, NULL);
-
-  QUESO::GslVector paramMins(paramSpace.zeroVector());
-  paramMins[0] = -1;
-  paramMins[1] = -0.5;
-  paramMins[2] = 1.1;
-  paramMins[3] = -2.1;
-
-  QUESO::GslVector paramMaxs(paramSpace.zeroVector());
-  paramMaxs[0] = 0.9;
-  paramMaxs[1] = 3.14;
-  paramMaxs[2] = 2.1;
-  paramMaxs[3] = 4.1;
-
-  QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix>
-    paramDomain("param_", paramSpace, paramMins, paramMaxs);
-
-  std::vector<unsigned int> n_points(4);
-  n_points[0] = 11;
-  n_points[1] = 51;
-  n_points[2] = 31;
-  n_points[3] = 41;
-
+      paramSpace(env,vs_prefix.c_str(), 4, NULL);
 
   // Point at which we will test the surrogate evaluation
   QUESO::GslVector domainVector(paramSpace.zeroVector());
@@ -85,15 +69,33 @@ int main(int argc, char ** argv)
   domainVector[2] = 1.5;
   domainVector[3] = 1.65;
 
-  // Filename for writing/reading surrogate data
-  std::string filename = "test_write_InterpolationSurrogateBuilder.dat";
-
   double exact_val = four_d_fn(domainVector[0],domainVector[1],domainVector[2],domainVector[3]);
 
   double tol = 2.0*std::numeric_limits<double>::epsilon();
 
   // First test surrogate build directly from the computed values
   {
+    QUESO::GslVector paramMins(paramSpace.zeroVector());
+    paramMins[0] = -1;
+    paramMins[1] = -0.5;
+    paramMins[2] = 1.1;
+    paramMins[3] = -2.1;
+
+    QUESO::GslVector paramMaxs(paramSpace.zeroVector());
+    paramMaxs[0] = 0.9;
+    paramMaxs[1] = 3.14;
+    paramMaxs[2] = 2.1;
+    paramMaxs[3] = 4.1;
+
+    QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix>
+      paramDomain("param_", paramSpace, paramMins, paramMaxs);
+
+    std::vector<unsigned int> n_points(4);
+    n_points[0] = 11;
+    n_points[1] = 51;
+    n_points[2] = 31;
+    n_points[3] = 41;
+
     QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
       data(paramDomain,n_points);
 
@@ -122,30 +124,22 @@ int main(int argc, char ** argv)
       }
 
     // Write the output to test reading next
+    QUESO::InterpolationSurrogateIOASCII<QUESO::GslVector,QUESO::GslMatrix>
+      data_writer;
 
-    std::ofstream output( filename.c_str() );
-
-    builder.write( output );
-
-    output.close();
+    data_writer.write( filename, data );
   }
 
-  // Now write, then read the data and test
+  // Now read the data and test
   {
-    QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
-      data(paramDomain,n_points);
+    QUESO::InterpolationSurrogateIOASCII<QUESO::GslVector,QUESO::GslMatrix>
+      data_reader;
 
-    MyInterpolationBuilder<QUESO::GslVector,QUESO::GslMatrix>
-      builder( data );
-
-    // Now read back in and test
-    std::ifstream input( filename.c_str() );
-
-    builder.read( input );
+    data_reader.read( filename, env, vs_prefix.c_str() );
 
     // Build a new surrogate
     QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
-      four_d_surrogate( data );
+      four_d_surrogate( data_reader.data() );
 
     double test_val = four_d_surrogate.evaluate(domainVector);
 
