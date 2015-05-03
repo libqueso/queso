@@ -285,6 +285,60 @@ namespace QUESO
       }
   }
 
+  template<class V, class M>
+  void InterpolationSurrogateBuilder<V,M>::check_parsed_bounds( const std::vector<double>& parsed_xmin,
+                                                                const std::vector<double>& parsed_xmax,
+                                                                const std::vector<double>& param_xmin,
+                                                                const std::vector<double>& param_xmax )
+  {
+    queso_assert_equal_to( parsed_xmin.size(), parsed_xmax.size() );
+    queso_assert_equal_to( parsed_xmin.size(), param_xmin.size() );
+    queso_assert_equal_to( parsed_xmax.size(), param_xmax.size() );
+
+    bool mismatch = false;
+
+    for( unsigned int d = 0; d < parsed_xmin.size(); d++ )
+      {
+        double tol = std::numeric_limits<double>::epsilon();
+
+        if( ( std::abs(parsed_xmin[d]-param_xmin[d]) > tol ) ||
+            ( std::abs(parsed_xmin[d]-param_xmin[d]) > tol ) )
+          mismatch = true;
+      }
+
+    if( mismatch )
+      {
+        std::string error = "ERROR: Mismatch in parameter bounds and parsed bounds.\n";
+        error += "params bounds\n";
+        for( unsigned int d = 0; d < parsed_xmin.size(); d++ )
+          {
+            std::stringstream xmin_str;
+            xmin_str << param_xmin[d];
+
+            std::stringstream xmax_str;
+            xmax_str << param_xmax[d];
+
+            error += xmin_str.str()+" "+xmax_str.str()+"\n";
+          }
+        error += "\n";
+
+        error += "parsed bounds\n";
+        for( unsigned int d = 0; d < parsed_xmin.size(); d++ )
+          {
+            std::stringstream xmin_str;
+            xmin_str << parsed_xmin[d];
+
+            std::stringstream xmax_str;
+            xmax_str << parsed_xmax[d];
+
+            error += xmin_str.str()+" "+xmax_str.str()+"\n";
+          }
+
+        queso_error_msg(error);
+      }
+
+  }
+
 } // end namespace QUESO
 
 // Instantiate

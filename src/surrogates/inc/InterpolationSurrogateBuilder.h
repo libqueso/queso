@@ -93,6 +93,12 @@ namespace QUESO
     void check_parsed_points( const std::vector<unsigned int>& parsed_points,
                               const std::vector<unsigned int>& param_points );
 
+    //! Helper function for checking read input, writing error message
+    void check_parsed_bounds( const std::vector<double>& parsed_xmin,
+                              const std::vector<double>& parsed_xmax,
+                              const std::vector<double>& param_xmin,
+                              const std::vector<double>& param_xmax );
+
   private:
 
     InterpolationSurrogateBuilder();
