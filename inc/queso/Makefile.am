@@ -58,6 +58,7 @@ BUILT_SOURCES += OptimizerMonitor.h
 BUILT_SOURCES += RngBase.h
 BUILT_SOURCES += RngBoost.h
 BUILT_SOURCES += RngGsl.h
+BUILT_SOURCES += ScopedPtr.h
 BUILT_SOURCES += TeuchosMatrix.h
 BUILT_SOURCES += TeuchosVector.h
 BUILT_SOURCES += Vector.h
@@ -295,6 +296,8 @@ RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 RngBoost.h: $(top_srcdir)/src/core/inc/RngBoost.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngGsl.h: $(top_srcdir)/src/core/inc/RngGsl.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ScopedPtr.h: $(top_srcdir)/src/core/inc/ScopedPtr.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TeuchosMatrix.h: $(top_srcdir)/src/core/inc/TeuchosMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
