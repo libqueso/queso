@@ -41,8 +41,27 @@
 
 #define queso_here()     do { std::cerr << __FILE__ << ", line " << __LINE__ << ", compiled " << __DATE__ << " at " << __TIME__ << std::endl; } while (0)
 
+// queso_error and kin throw exceptions to indicate various possible
+// errors
+
+#define queso_error_msg(msg) do { queso_here(); std::cerr << msg << std::endl; QUESO_THROW(QUESO::LogicError()); } while(0)
+
+#define queso_not_implemented_msg(msg) do { queso_here(); std::cerr << msg << std::endl; QUESO_THROW(QUESO::NotImplemented()); } while(0)
+
+#define queso_file_error_msg(filename, msg) do { queso_here(); std::cerr << msg << std::endl; QUESO_THROW(QUESO::FileError(filename)); } while(0)
+
+#define queso_error() \
+  queso_error_msg("")
+
+#define queso_not_implemented() \
+  queso_not_implemented_msg("")
+
+#define queso_file_error(filename) \
+  queso_file_error_msg(filename, "")
+
 // The queso_assert() macro acts like C's assert(), but throws a
-// queso_error() (including stack trace, etc) instead of just exiting.
+// queso_error() (enabling exception handling, stack trace, etc)
+// instead of just exiting.
 
 // The queso_require() macro does the same, but remains active even
 // when NDEBUG is not defined
@@ -126,22 +145,6 @@
 #define queso_assert_greater_equal(expr1,expr2) \
   queso_assert_greater_equal_msg(expr1,expr2,"")
 
-
-
-#define queso_error_msg(msg) do { queso_here(); std::cerr << msg << std::endl; QUESO_THROW(QUESO::LogicError()); } while(0)
-
-#define queso_not_implemented_msg(msg) do { queso_here(); std::cerr << msg << std::endl; QUESO_THROW(QUESO::NotImplemented()); } while(0)
-
-#define queso_file_error_msg(filename, msg) do { queso_here(); std::cerr << msg << std::endl; QUESO_THROW(QUESO::FileError(filename)); } while(0)
-
-#define queso_error() \
-  queso_error_msg("")
-
-#define queso_not_implemented() \
-  queso_not_implemented_msg("")
-
-#define queso_file_error(filename) \
-  queso_file_error_msg(filename, "")
 
 
 #endif // QUESO_ASSERTS_H
