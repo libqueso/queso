@@ -29,26 +29,98 @@ namespace QUESO {
 
 GcmOptionsValues::GcmOptionsValues()
   :
-  m_checkAgainstPreviousSample     (UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ),
-  m_dataOutputFileName             (UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ),
-  m_dataOutputAllowAll             (UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV                ),
-//m_dataOutputAllowedSet           (),
-  m_priorSeqNumSamples             (UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV                ),
-  m_priorSeqDataOutputFileName     (UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV      ),
-  m_priorSeqDataOutputFileType     (UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV      ),
-  m_priorSeqDataOutputAllowAll     (UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV      ),
-//m_priorSeqDataOutputAllowedSet   (),
-  m_nuggetValueForBtWyB            (UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV             ),
-  m_nuggetValueForBtWyBInv         (UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV         ),
-  m_formCMatrix                    (UQ_GCM_FORM_C_MATRIX_ODV                        ),
-  m_useTildeLogicForRankDefficientC(UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV),
-  m_predLag                        (UQ_GCM_PRED_LAG_ODV                             ),
-  m_predVUsBySamplingRVs           (UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV             ),
-  m_predVUsBySummingRVs            (UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV              ),
-  m_predVUsAtKeyPoints             (UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV               ),
-  m_predWsBySamplingRVs            (UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ),
-  m_predWsBySummingRVs             (UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ),
-  m_predWsAtKeyPoints              (UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                )
+    BaseInputOptions(),
+    m_prefix                                ("gcm_"),
+    m_checkAgainstPreviousSample     (UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ),
+    m_dataOutputFileName             (UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ),
+    m_dataOutputAllowAll             (UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV                ),
+    //m_dataOutputAllowedSet           (),
+    m_priorSeqNumSamples             (UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV                ),
+    m_priorSeqDataOutputFileName     (UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV      ),
+    m_priorSeqDataOutputFileType     (UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV      ),
+    m_priorSeqDataOutputAllowAll     (UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV      ),
+    //m_priorSeqDataOutputAllowedSet   (),
+    m_nuggetValueForBtWyB            (UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV             ),
+    m_nuggetValueForBtWyBInv         (UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV         ),
+    m_formCMatrix                    (UQ_GCM_FORM_C_MATRIX_ODV                        ),
+    m_useTildeLogicForRankDefficientC(UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV),
+    m_predLag                        (UQ_GCM_PRED_LAG_ODV                             ),
+    m_predVUsBySamplingRVs           (UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV             ),
+    m_predVUsBySummingRVs            (UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV              ),
+    m_predVUsAtKeyPoints             (UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV               ),
+    m_predWsBySamplingRVs            (UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ),
+    m_predWsBySummingRVs             (UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ),
+    m_predWsAtKeyPoints              (UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ),
+    m_option_help                           (m_prefix + "help"                           ),
+    m_option_checkAgainstPreviousSample     (m_prefix + "checkAgainstPreviousSample"     ),
+    m_option_dataOutputFileName             (m_prefix + "dataOutputFileName"             ),
+    m_option_dataOutputAllowAll             (m_prefix + "dataOutputAllowAll"             ),
+    m_option_dataOutputAllowedSet           (m_prefix + "dataOutputAllowedSet"           ),
+    m_option_priorSeqNumSamples             (m_prefix + "priorSeqNumSamples"             ),
+    m_option_priorSeqDataOutputFileName     (m_prefix + "priorSeqDataOutputFileName"     ),
+    m_option_priorSeqDataOutputFileType     (m_prefix + "priorSeqDataOutputFileType"     ),
+    m_option_priorSeqDataOutputAllowAll     (m_prefix + "priorSeqDataOutputAllowAll"     ),
+    m_option_priorSeqDataOutputAllowedSet   (m_prefix + "priorSeqDataOutputAllowedSet"   ),
+    m_option_nuggetValueForBtWyB            (m_prefix + "nuggetValueForBtWyB"            ),
+    m_option_nuggetValueForBtWyBInv         (m_prefix + "nuggetValueForBtWyBInv"         ),
+    m_option_formCMatrix                    (m_prefix + "formCMatrix"                    ),
+    m_option_useTildeLogicForRankDefficientC(m_prefix + "useTildeLogicForRankDefficientC"),
+    m_option_predLag                        (m_prefix + "predLag"                        ),
+    m_option_predVUsBySamplingRVs           (m_prefix + "predVUsBySamplingRVs"           ),
+    m_option_predVUsBySummingRVs            (m_prefix + "predVUsBySummingRVs"            ),
+    m_option_predVUsAtKeyPoints             (m_prefix + "predVUsAtKeyPoints"             ),
+    m_option_predWsBySamplingRVs            (m_prefix + "predWsBySamplingRVs"            ),
+    m_option_predWsBySummingRVs             (m_prefix + "predWsBySummingRVs"             ),
+    m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
+{
+}
+
+GcmOptionsValues::GcmOptionsValues(const BaseEnvironment * env, const char *
+    prefix)
+  :
+    BaseInputOptions(env),
+    m_prefix                                ((std::string)(prefix) + "gcm_"),
+    m_checkAgainstPreviousSample     (UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ),
+    m_dataOutputFileName             (UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ),
+    m_dataOutputAllowAll             (UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV                ),
+    //m_dataOutputAllowedSet           (),
+    m_priorSeqNumSamples             (UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV                ),
+    m_priorSeqDataOutputFileName     (UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV      ),
+    m_priorSeqDataOutputFileType     (UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV      ),
+    m_priorSeqDataOutputAllowAll     (UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV      ),
+    //m_priorSeqDataOutputAllowedSet   (),
+    m_nuggetValueForBtWyB            (UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV             ),
+    m_nuggetValueForBtWyBInv         (UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV         ),
+    m_formCMatrix                    (UQ_GCM_FORM_C_MATRIX_ODV                        ),
+    m_useTildeLogicForRankDefficientC(UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV),
+    m_predLag                        (UQ_GCM_PRED_LAG_ODV                             ),
+    m_predVUsBySamplingRVs           (UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV             ),
+    m_predVUsBySummingRVs            (UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV              ),
+    m_predVUsAtKeyPoints             (UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV               ),
+    m_predWsBySamplingRVs            (UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ),
+    m_predWsBySummingRVs             (UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ),
+    m_predWsAtKeyPoints              (UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ),
+    m_option_help                           (m_prefix + "help"                           ),
+    m_option_checkAgainstPreviousSample     (m_prefix + "checkAgainstPreviousSample"     ),
+    m_option_dataOutputFileName             (m_prefix + "dataOutputFileName"             ),
+    m_option_dataOutputAllowAll             (m_prefix + "dataOutputAllowAll"             ),
+    m_option_dataOutputAllowedSet           (m_prefix + "dataOutputAllowedSet"           ),
+    m_option_priorSeqNumSamples             (m_prefix + "priorSeqNumSamples"             ),
+    m_option_priorSeqDataOutputFileName     (m_prefix + "priorSeqDataOutputFileName"     ),
+    m_option_priorSeqDataOutputFileType     (m_prefix + "priorSeqDataOutputFileType"     ),
+    m_option_priorSeqDataOutputAllowAll     (m_prefix + "priorSeqDataOutputAllowAll"     ),
+    m_option_priorSeqDataOutputAllowedSet   (m_prefix + "priorSeqDataOutputAllowedSet"   ),
+    m_option_nuggetValueForBtWyB            (m_prefix + "nuggetValueForBtWyB"            ),
+    m_option_nuggetValueForBtWyBInv         (m_prefix + "nuggetValueForBtWyBInv"         ),
+    m_option_formCMatrix                    (m_prefix + "formCMatrix"                    ),
+    m_option_useTildeLogicForRankDefficientC(m_prefix + "useTildeLogicForRankDefficientC"),
+    m_option_predLag                        (m_prefix + "predLag"                        ),
+    m_option_predVUsBySamplingRVs           (m_prefix + "predVUsBySamplingRVs"           ),
+    m_option_predVUsBySummingRVs            (m_prefix + "predVUsBySummingRVs"            ),
+    m_option_predVUsAtKeyPoints             (m_prefix + "predVUsAtKeyPoints"             ),
+    m_option_predWsBySamplingRVs            (m_prefix + "predWsBySamplingRVs"            ),
+    m_option_predWsBySummingRVs             (m_prefix + "predWsBySummingRVs"             ),
+    m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
 }
 
@@ -66,6 +138,152 @@ GcmOptionsValues::operator=(const GcmOptionsValues& rhs)
 {
   this->copy(rhs);
   return *this;
+}
+
+void
+GcmOptionsValues::defineOptions()
+{
+  (*m_optionsDescription).add_options()
+    (m_option_help.c_str(),                                                                                                                        "produce help message for mixed inverse problem")
+    (m_option_checkAgainstPreviousSample.c_str(),      po::value<bool        >()->default_value(UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ), "check against previous sample"                 )
+    (m_option_dataOutputFileName.c_str(),              po::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ), "name of data output file"                      )
+    (m_option_dataOutputAllowAll.c_str(),              po::value<bool        >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV                ), "allow all or not"                              )
+    (m_option_dataOutputAllowedSet.c_str(),            po::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOWED_SET_ODV              ), "subEnvs that will write to data output file"   )
+    (m_option_priorSeqNumSamples.c_str(),              po::value<unsigned int>()->default_value(UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV                ), "prior sequence size"                           )
+    (m_option_priorSeqDataOutputFileName.c_str(),      po::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV      ), "prior sequence data output filename"           )
+    (m_option_priorSeqDataOutputFileType.c_str(),      po::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV      ), "prior sequence data output filetype"           )
+    (m_option_priorSeqDataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV      ), "allow all or not"                              )
+    (m_option_priorSeqDataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOWED_SET_ODV    ), "subEnvs that will write to data output file"   )
+    (m_option_nuggetValueForBtWyB.c_str(),             po::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV             ), "nugget value for Bt_Wy_W matrix"               )
+    (m_option_nuggetValueForBtWyBInv.c_str(),          po::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV         ), "nugget value for Bt_Wy_W inverse matrix"       )
+    (m_option_formCMatrix.c_str(),                     po::value<double      >()->default_value(UQ_GCM_FORM_C_MATRIX_ODV                        ), "form C matrix"                                 )
+    (m_option_useTildeLogicForRankDefficientC.c_str(), po::value<bool        >()->default_value(UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV), "use tilde logic for rank defficient C"         )
+    (m_option_predLag.c_str(),                         po::value<unsigned int>()->default_value(UQ_GCM_PRED_LAG_ODV                             ), "predLag"                                       )
+    (m_option_predVUsBySamplingRVs.c_str(),            po::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV             ), "predVUsBySamplingRVs"                          )
+    (m_option_predVUsBySummingRVs.c_str(),             po::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV              ), "predVUsBySummingRVs"                           )
+    (m_option_predVUsAtKeyPoints.c_str(),              po::value<bool        >()->default_value(UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV               ), "predVUsAtKeyPoints"                            )
+    (m_option_predWsBySamplingRVs.c_str(),             po::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ), "predWsBySamplingRVs"                           )
+    (m_option_predWsBySummingRVs.c_str(),              po::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ), "predWsBySummingRVs"                            )
+    (m_option_predWsAtKeyPoints.c_str(),               po::value<bool        >()->default_value(UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ), "predWsAtKeyPoints"                             )
+  ;
+}
+
+void
+GcmOptionsValues::getOptionValues()
+{
+  if (m_env->allOptionsMap().count(m_option_help)) {
+    if (m_env->subDisplayFile()) {
+      *m_env->subDisplayFile() << (*m_optionsDescription)
+                              << std::endl;
+    }
+  }
+
+  if (m_env->allOptionsMap().count(m_option_checkAgainstPreviousSample)) {
+    m_checkAgainstPreviousSample = ((const po::variable_value&) m_env->allOptionsMap()[m_option_checkAgainstPreviousSample]).as<bool>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_dataOutputAllowAll)) {
+    m_dataOutputAllowAll = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputAllowAll]).as<bool>();
+  }
+
+  if (m_dataOutputAllowAll) {
+    m_dataOutputAllowedSet.insert(m_env->subId());
+  }
+  else if (m_env->allOptionsMap().count(m_option_dataOutputAllowedSet)) {
+    m_dataOutputAllowedSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env->allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
+    MiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+
+  //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), m_option_priorSeqNumSamples = " << m_option_priorSeqNumSamples << "___" << std::endl;
+  if (m_env->allOptionsMap().count(m_option_priorSeqNumSamples)) {
+    //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), going to read m_option_priorSeqNumSamples..." << std::endl;
+    m_priorSeqNumSamples = ((const po::variable_value&) m_env->allOptionsMap()[m_option_priorSeqNumSamples]).as<unsigned int>();
+    //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), just read m_option_priorSeqNumSamples = " << m_priorSeqNumSamples << std::endl;
+  }
+
+  if (m_env->allOptionsMap().count(m_option_priorSeqDataOutputFileName)) {
+    m_priorSeqDataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_priorSeqDataOutputFileName]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_priorSeqDataOutputFileType)) {
+    m_priorSeqDataOutputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_priorSeqDataOutputFileType]).as<std::string>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_priorSeqDataOutputAllowAll)) {
+    m_priorSeqDataOutputAllowAll = ((const po::variable_value&) m_env->allOptionsMap()[m_option_priorSeqDataOutputAllowAll]).as<bool>();
+  }
+
+  if (m_priorSeqDataOutputAllowAll) {
+    m_priorSeqDataOutputAllowedSet.insert(m_env->subId());
+  }
+  else if (m_env->allOptionsMap().count(m_option_priorSeqDataOutputAllowedSet)) {
+    m_priorSeqDataOutputAllowedSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env->allOptionsMap()[m_option_priorSeqDataOutputAllowedSet].as<std::string>();
+    MiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_priorSeqDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+
+  if (m_env->allOptionsMap().count(m_option_nuggetValueForBtWyB)) {
+    m_nuggetValueForBtWyB = ((const po::variable_value&) m_env->allOptionsMap()[m_option_nuggetValueForBtWyB]).as<double>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_nuggetValueForBtWyBInv)) {
+    m_nuggetValueForBtWyBInv = ((const po::variable_value&) m_env->allOptionsMap()[m_option_nuggetValueForBtWyBInv]).as<double>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_formCMatrix)) {
+    m_formCMatrix = ((const po::variable_value&) m_env->allOptionsMap()[m_option_formCMatrix]).as<double>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_useTildeLogicForRankDefficientC)) {
+    m_useTildeLogicForRankDefficientC = ((const po::variable_value&) m_env->allOptionsMap()[m_option_useTildeLogicForRankDefficientC]).as<bool>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_predLag)) {
+    m_predLag = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predLag]).as<unsigned int>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_predVUsBySamplingRVs)) {
+    m_predVUsBySamplingRVs = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predVUsBySamplingRVs]).as<bool>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_predVUsBySummingRVs)) {
+    m_predVUsBySummingRVs = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predVUsBySummingRVs]).as<bool>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_predVUsAtKeyPoints)) {
+    m_predVUsAtKeyPoints = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predVUsAtKeyPoints]).as<bool>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_predWsBySamplingRVs)) {
+    m_predWsBySamplingRVs = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predWsBySamplingRVs]).as<bool>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_predWsBySummingRVs)) {
+    m_predWsBySummingRVs = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predWsBySummingRVs]).as<bool>();
+  }
+
+  if (m_env->allOptionsMap().count(m_option_predWsAtKeyPoints)) {
+    m_predWsAtKeyPoints = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predWsAtKeyPoints]).as<bool>();
+  }
 }
 
 void
@@ -125,6 +343,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_option_predWsBySummingRVs             (m_prefix + "predWsBySummingRVs"             ),
   m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
+  queso_deprecated();
   queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
 }
 
@@ -159,6 +378,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_option_predWsBySummingRVs             (m_prefix + "predWsBySummingRVs"             ),
   m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
+  queso_deprecated();
   queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
@@ -172,12 +392,15 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
 
 GpmsaComputerModelOptions::~GpmsaComputerModelOptions()
 {
+  queso_deprecated();
+
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
 void
 GpmsaComputerModelOptions::scanOptionsValues()
 {
+  queso_deprecated();
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -202,6 +425,8 @@ GpmsaComputerModelOptions::scanOptionsValues()
 void
 GpmsaComputerModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                        "produce help message for mixed inverse problem")
     (m_option_checkAgainstPreviousSample.c_str(),      po::value<bool        >()->default_value(UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ), "check against previous sample"                 )
@@ -232,6 +457,8 @@ GpmsaComputerModelOptions::defineMyOptions(po::options_description& optionsDesc)
 void
 GpmsaComputerModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -352,6 +579,8 @@ GpmsaComputerModelOptions::getMyOptionValues(po::options_description& optionsDes
 void
 GpmsaComputerModelOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os << "\n" << m_option_checkAgainstPreviousSample << " = " << m_ov.m_checkAgainstPreviousSample
      << "\n" << m_option_dataOutputFileName         << " = " << m_ov.m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowAll         << " = " << m_ov.m_dataOutputAllowAll
@@ -385,6 +614,8 @@ GpmsaComputerModelOptions::print(std::ostream& os) const
 
 std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
