@@ -1332,16 +1332,13 @@ GslMatrix::invertMultiply(const GslMatrix& B) const
 void
 GslMatrix::invertMultiply(const GslMatrix& B, GslMatrix& X) const
 {
-
   // Sanity Checks
-  UQ_FATAL_RC_MACRO(((B.numRowsLocal() != X.numRowsLocal()) ||
-		     (B.numCols()      != X.numCols()     )),
-                    m_env.worldRank(),
-		    "GslMatrix::invertMultiply()",
-		    "Matrices B and X are incompatible");
-
-
-  queso_require_equal_to_msg(this->numRowsLocal(), X.numRowsLocal(), "This and X matrices are incompatible");
+  queso_require_equal_to_msg(B.numRowsLocal(), X.numRowsLocal(),
+		             "Matrices B and X are incompatible");
+  queso_require_equal_to_msg(B.numCols(),      X.numCols(),
+		             "Matrices B and X are incompatible");
+  queso_require_equal_to_msg(this->numRowsLocal(), X.numRowsLocal(),
+                             "This and X matrices are incompatible");
 
   // Some local variables used within the loop.
   GslVector b(m_env, m_map);

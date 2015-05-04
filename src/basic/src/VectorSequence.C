@@ -2725,11 +2725,12 @@ ComputeCovCorrMatricesBetweenVectorSequences(
             }
             env.inter0Comm().Barrier();
           }
-          UQ_FATAL_TEST_MACRO(((pqCorrMatrix(i,j) + 1.) < -1.e-8) ||
-                              ((pqCorrMatrix(i,j) - 1.) >  1.e-8),
-                               env.worldRank(),
-                               "ComputeCovCorrMatricesBetweenVectorSequences()",
-                               "computed correlation is out of range");
+          queso_require_greater_equal_msg
+            (pqCorrMatrix(i,j), -1. - 1.e-8,
+             "computed correlation is out of range");
+          queso_require_less_equal_msg
+            (pqCorrMatrix(i,j), 1. + 1.e-8,
+             "computed correlation is out of range");
         }
       }
     }

@@ -566,11 +566,10 @@ MiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
 
   if (env.numSubEnvironments() == (unsigned int) env.fullComm().NumProc()) {
     queso_require_equal_to_msg(env.subRank(), 0, "there should exist only one processor per sub environment");
-    UQ_FATAL_TEST_MACRO((vec1.numOfProcsForStorage() != 1) ||
-                        (vec2.numOfProcsForStorage() != 1),
-                        env.worldRank(),
-                        "MiscCheckTheParallelEnvironment<V1,V2>()",
-                        "only 1 processor (per sub environment) should be necessary for the storage of a parameter vector");
+    queso_require_equal_to_msg(vec1.numOfProcsForStorage(), 1,
+      "only 1 processor (per sub environment) should be necessary for the storage of a parameter vector");
+    queso_require_equal_to_msg(vec2.numOfProcsForStorage(), 1,
+      "only 1 processor (per sub environment) should be necessary for the storage of a parameter vector");
   }
   else if (env.numSubEnvironments() < (unsigned int) env.fullComm().NumProc()) {
     queso_require_equal_to_msg(env.fullComm().NumProc()%env.numSubEnvironments(), 0, "total number of processors should be a multiple of the number of sub environments");

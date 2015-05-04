@@ -76,26 +76,24 @@ void TwoDArray<T>::setLocation(unsigned int i, unsigned int j, T* info)
 template <class T>
 T& TwoDArray<T>::operator()(unsigned int i, unsigned int j)
 {
-  UQ_FATAL_TEST_MACRO((i >= m_numRows) ||
-                      (j >= m_numCols) ||
-                      (m_data[i] == NULL) ||
-                      ((*m_data[i])[j] == NULL),
-                      UQ_UNAVAILABLE_RANK,
-                      "TwoDArray<T>::operator(1)",
-                      "invalid situation");
+  // FIXME - Should this really be active in optimized codes? - RHS
+  queso_require_less(i, m_numRows);
+  queso_require_less(j, m_numCols);
+  queso_require(m_data[i]);
+  queso_require((*m_data[i])[j]);
+
   return *(*(m_data[i]))[j];
 }
 
 template <class T>
 const T& TwoDArray<T>::operator()(unsigned int i, unsigned int j) const
 {
-  UQ_FATAL_TEST_MACRO((i >= m_numRows) ||
-                      (j >= m_numCols) ||
-                      (m_data[i] == NULL) ||
-                      ((*m_data[i])[j] == NULL),
-                      UQ_UNAVAILABLE_RANK,
-                      "TwoDArray<T>::operator(2)",
-                      "invalid situation");
+  // FIXME - Should this really be active in optimized codes? - RHS
+  queso_require_less(i, m_numRows);
+  queso_require_less(j, m_numCols);
+  queso_require(m_data[i]);
+  queso_require((*m_data[i])[j]);
+
   return *(*(m_data[i]))[j];
 }
 
