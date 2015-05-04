@@ -67,13 +67,12 @@ double GenericScalarFunction<V,M>::actualValue(const V& domainVector,
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
   if (m_routineIsForLn) {
     value = std::exp(value);
-    UQ_FATAL_TEST_MACRO((domainDirection != NULL) ||
-                        (gradVector      != NULL) ||
-                        (hessianMatrix   != NULL) ||
-                        (hessianEffect   != NULL),
-                        m_env.worldRank(),
-                        "GenericScalarFunction<V,M>::gradOfActual()",
-                        "INCOMPLETE CODE");
+
+    if ((domainDirection != NULL) ||
+        (gradVector      != NULL) ||
+        (hessianMatrix   != NULL) ||
+        (hessianEffect   != NULL))
+      queso_not_implemented();
   }
   return value;
 }
@@ -91,13 +90,12 @@ double GenericScalarFunction<V,M>::lnValue(const V& domainVector,
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
   if (m_routineIsForLn == false) {
     value = log(value);
-    UQ_FATAL_TEST_MACRO((domainDirection != NULL) ||
-                        (gradVector      != NULL) ||
-                        (hessianMatrix   != NULL) ||
-                        (hessianEffect   != NULL),
-                        m_env.worldRank(),
-                        "GenericScalarFunction<V,M>::gradOfLn()",
-                        "INCOMPLETE CODE");
+
+    if ((domainDirection != NULL) ||
+        (gradVector      != NULL) ||
+        (hessianMatrix   != NULL) ||
+        (hessianEffect   != NULL))
+      queso_not_implemented();
   }
   return value;
 }

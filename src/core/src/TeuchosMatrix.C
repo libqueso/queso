@@ -1653,11 +1653,12 @@ void
 TeuchosMatrix::mpiSum( const MpiComm& comm, TeuchosMatrix& M_global ) const
 {
   // Sanity Checks
-  UQ_FATAL_RC_MACRO(((this->numRowsLocal() != M_global.numRowsLocal()) ||
-                     (this->numCols()      != M_global.numCols()     )),
-		    env().fullRank(),
-		    "TeuchosMatrix::mpiSum()",
-		    "local and global matrices incompatible");
+  queso_require_equal_to_msg(this->numRowsLocal(),
+                             M_global.numRowsLocal(),
+		             "local and global matrices incompatible");
+  queso_require_equal_to_msg(this->numCols(),
+                             M_global.numCols(),
+		             "local and global matrices incompatible");
 
   /* TODO: Probably a better way to handle this unpacking/packing of data */
   int size = M_global.numRowsLocal()*M_global.numCols();

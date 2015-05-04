@@ -1572,20 +1572,23 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
   //********************************************************************************
   // Total values = (\lambda_eta[1],\lambda_w[p_eta],\rho_w[(p_x+p_t).p_eta],\lambda_y[1],\lambda_v[F],\rho_v[F.p_x],\theta)
   //********************************************************************************
-  UQ_FATAL_TEST_MACRO((m_s->m_1lambdaEtaSpace.dimLocal() != 1                                                       ) ||
-                      (m_s->m_2lambdaWSpace.dimLocal()   != m_s->m_paper_p_eta                                      ) ||
-                      (m_s->m_3rhoWSpace.dimLocal()      != (m_s->m_paper_p_eta*(m_s->m_paper_p_x+m_s->m_paper_p_t))) ||
-                      (m_s->m_4lambdaSSpace.dimLocal()   != m_s->m_paper_p_eta                                      ),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
-                      "inconsistent 'm_s' space dimensions");
+  queso_require_equal_to(m_s->m_1lambdaEtaSpace.dimLocal(), 1);
+
+  queso_require_equal_to(m_s->m_2lambdaWSpace.dimLocal(),
+                         m_s->m_paper_p_eta);
+
+  queso_require_equal_to(m_s->m_3rhoWSpace.dimLocal(),
+                         (m_s->m_paper_p_eta*(m_s->m_paper_p_x+m_s->m_paper_p_t)));
+  queso_require_equal_to(m_s->m_4lambdaSSpace.dimLocal(), m_s->m_paper_p_eta);
+
   if (m_thereIsExperimentalData) {
-    UQ_FATAL_TEST_MACRO((m_e->m_5lambdaYSpace.dimLocal() != 1                                ) ||
-                        (m_e->m_6lambdaVSpace.dimLocal() != m_e->m_paper_F                   ) ||
-                        (m_e->m_7rhoVSpace.dimLocal()    != (m_e->m_paper_F*m_s->m_paper_p_x)),
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
-                        "inconsistent 'm_e' space dimensions");
+    queso_require_equal_to(m_e->m_5lambdaYSpace.dimLocal(), 1);
+
+    queso_require_equal_to(m_e->m_6lambdaVSpace.dimLocal(),
+                           m_e->m_paper_F);
+
+    queso_require_equal_to(m_e->m_7rhoVSpace.dimLocal(),
+                           m_e->m_paper_F*m_s->m_paper_p_x);
   }
 
   this->memoryCheck(50);
@@ -2002,7 +2005,8 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
                             << std::endl;
   }
 
-  queso_error_msg("'m_useTildeLogicForRankDefficientC' should be 'false'");
+  queso_require_msg(!m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC,
+                    "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
   // Form '\Sigma_z' matrix
@@ -2162,7 +2166,8 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
                             << std::endl;
   }
 
-  queso_error_msg("'m_useTildeLogicForRankDefficientC' should be 'false'");
+  queso_require_msg(!m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC,
+                    "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
   // Form '\Sigma_z' matrix

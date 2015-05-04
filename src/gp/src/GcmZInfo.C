@@ -92,7 +92,7 @@ GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmZInfo(
                             << std::endl;
   }
 
-  queso_error_msg("'allOutputsAreScalar' should be false");
+  queso_require_msg(!allOutputsAreScalar, "'allOutputsAreScalar' should be false");
 
   m_Zvec_hat.cwSetConcatenated(jj.m_Zvec_hat_vu,s.m_Zvec_hat_w);
 
