@@ -27,6 +27,8 @@
 
 namespace QUESO
 {
+  class GslVector;
+
   //! Base class for surrogates of models
   /*! Defines basic interface for using surrogates of models. These surrogates
       map an \f$ n\f$ dimensional parameter space to the reals. That is
@@ -35,7 +37,7 @@ namespace QUESO
       it can be used in the likelihood classes. Subclasses will define the
       particular surrogate model. Other classes will be used to build up the
       surrogate from the user's model. */
-  template<class V>
+  template<class V = GslVector>
   class SurrogateBase
   {
   public:

@@ -34,10 +34,13 @@
 
 namespace QUESO
 {
+  class GslVector;
+  class GslMatrix;
+
   //! Linear Lagrange interpolation surrogate
   /*! Aribritary dimension linear Lagrange interpolant. Uses a structured
       grid to interpolate values given by data passed to the constructor. */
-  template<class V, class M>
+  template<class V = GslVector, class M = GslMatrix>
   class LinearLagrangeInterpolationSurrogate : public InterpolationSurrogateBase<V,M>
   {
   public:

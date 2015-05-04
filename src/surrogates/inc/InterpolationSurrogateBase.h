@@ -32,6 +32,8 @@ namespace QUESO
   // Forward declarations
   template<typename V, typename M>
   class InterpolationSurrogateData;
+  class GslVector;
+  class GslMatrix;
 
   //! Base class for interpolation-based surrogates
   /*! This class is used for surrogoate approximations of a model using interpolation.
@@ -46,7 +48,7 @@ namespace QUESO
       For the structured grid, we think of referencing each "node" in the box by its
       index coordinates (i,j,k,...), where i runs from (0, n_points[0]-1),
       j run from (0,n_points[1]-1), etc. We use this indexing to build maps. */
-  template<class V, class M>
+  template<class V = GslVector, class M = GslMatrix>
   class InterpolationSurrogateBase : public SurrogateBase<V>
   {
   public:

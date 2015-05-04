@@ -27,10 +27,12 @@
 
 namespace QUESO
 {
+  class GslVector;
+
   //! Base class for builders of surrogates
   /*! This class provides the interface to the user's model for which
       we are constructing a surrogate. */
-  template<class V>
+  template<class V = GslVector>
   class SurrogateBuilderBase
   {
   public:

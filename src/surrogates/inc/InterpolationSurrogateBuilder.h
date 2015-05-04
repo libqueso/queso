@@ -30,13 +30,16 @@
 
 namespace QUESO
 {
+  class GslVector;
+  class GslMatrix;
+
   //! Build interpolation-based surrogate
   /*! Interpolation surrogates assume a structured grid. So, given the domain
       and the number of equally space points desired in each dimension, this
       class will handle calling the user's model to populate the values needed
       by the surrogate objects. User should subclass this object and implement
       the evaluate_model method. */
-  template<class V, class M>
+  template<class V = GslVector, class M = GslMatrix>
   class InterpolationSurrogateBuilder : public SurrogateBuilderBase<V>
   {
   public:
