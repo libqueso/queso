@@ -89,7 +89,7 @@
 #else
 
 #define queso_assert_msg(asserted,msg) \
-  queso_require(asserted,msg)
+  queso_require_msg(asserted,msg)
 #define queso_assert_equal_to_msg(expr1,expr2,msg) \
   queso_require_equal_to_msg(expr1,expr2,msg)
 #define queso_assert_not_equal_to_msg(expr1,expr2,msg) \
