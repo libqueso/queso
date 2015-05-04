@@ -42,9 +42,19 @@ GPMSAOptions::GPMSAOptions(
   const BaseEnvironment & env,
   const char * prefix)
   :
+  BaseInputOptions(&env),
   m_prefix((std::string)(prefix) + "gpmsa_"),
+  m_emulatorPrecisionShape(UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV),
+  m_emulatorPrecisionScale(UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV),
+  m_emulatorCorrelationStrengthAlpha(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV),
+  m_emulatorCorrelationStrengthBeta(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV),
+  m_discrepancyPrecisionShape(UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV),
+  m_discrepancyPrecisionScale(UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV),
+  m_discrepancyCorrelationStrengthAlpha(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV),
+  m_discrepancyCorrelationStrengthBeta(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV),
+  m_emulatorDataPrecisionShape(UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV),
+  m_emulatorDataPrecisionScale(UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV),
   m_env(env),
-  m_optionsDesc(new po::options_description("Gaussian process emulator options")),
   m_option_help(m_prefix + "help"),
   m_option_emulatorPrecisionShape(m_prefix + "emulator_precision_shape"),
   m_option_emulatorPrecisionScale(m_prefix + "emulator_precision_scale"),
@@ -64,35 +74,12 @@ GPMSAOptions::GPMSAOptions(
 
 GPMSAOptions::~GPMSAOptions()
 {
-  if (m_optionsDesc) {
-    delete m_optionsDesc;
-  }
 }
 
 void
-GPMSAOptions::scanOptionsValues()
+GPMSAOptions::defineOptions()
 {
-  if (m_optionsDesc == NULL) {
-    queso_error_msg("m_optionsDesc variable is NULL");
-  }
-
-  defineMyOptions(*m_optionsDesc);
-  m_env.scanInputFileForMyOptions(*m_optionsDesc);
-  getMyOptionValues(*m_optionsDesc);
-
-  if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In GPMSAOptions::scanOptionsValues()"
-                            << ": after reading values of options with prefix '" << m_prefix
-                            << "', state of  object is:"
-                            << "\n" << *this
-                            << std::endl;
-  }
-}
-
-void
-GPMSAOptions::defineMyOptions(po::options_description& optionsDesc) const
-{
-  optionsDesc.add_options()
+  (*m_optionsDescription).add_options()
     (m_option_help.c_str(), "produce help message Gaussian process emulator")
     (m_option_emulatorPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator precision")
     (m_option_emulatorPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator precision")
@@ -107,11 +94,11 @@ GPMSAOptions::defineMyOptions(po::options_description& optionsDesc) const
 }
 
 void
-GPMSAOptions::getMyOptionValues(po::options_description& optionsDesc)
+GPMSAOptions::getOptionValues()
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << optionsDesc
+      *m_env.subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
     }
   }
