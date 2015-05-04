@@ -44,7 +44,7 @@ public:
   GPMSAOptions(const BaseEnvironment& env, const char* prefix);
 
   //! Destructor
- ~GPMSAOptions();
+  virtual ~GPMSAOptions();
 
   //! Prints \c this to \c os
   void print(std::ostream& os) const;
