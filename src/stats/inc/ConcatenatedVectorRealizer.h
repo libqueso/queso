@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Concatenated class [R-11]
 //*****************************************************
@@ -44,7 +47,7 @@ namespace QUESO {
  * This class used, for instance, to draw realization of concatenate priors from two or more RVs,
  * where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class ConcatenatedVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 

@@ -36,6 +36,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Powered probability density class [PDF-08]
 //*****************************************************
@@ -45,7 +48,7 @@ namespace QUESO {
  *
  * This class allows the mathematical definition of a Powered Joint PDF.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class PoweredJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods

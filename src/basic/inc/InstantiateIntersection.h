@@ -29,6 +29,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!\file InstantiateIntersection.h
  * \brief A templated method to calculate intersection of two domains (vector spaces).
  */
@@ -36,7 +39,7 @@ namespace QUESO {
 //! This method calculates the intersection of \c domain1 and \c domain2.
 /*! It is used, for instance, to calculate the domain of the Posterior PDF, which is
  * the intersection of the domain of the Prior PDF and of the likelihood function.*/
-template<class V, class M>
+template <class V, class M>
 VectorSet<V,M>* InstantiateIntersection(const VectorSet<V,M>& domain1,
     const VectorSet<V,M>& domain2);
 

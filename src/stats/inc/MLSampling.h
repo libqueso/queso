@@ -49,7 +49,9 @@
 
 namespace QUESO {
 
-// aqui 1
+class GslVector;
+class GslMatrix;
+
 #ifdef QUESO_HAS_GLPK
 struct BIP_routine_struct {
   const BaseEnvironment* env;
@@ -71,7 +73,7 @@ struct ExchangeInfoStruct
 
 //---------------------------------------------------------
 
-template <class P_V>
+template <class P_V = GslVector>
 struct BalancedLinkedChainControlStruct
 {
   P_V*         initialPosition;
@@ -80,7 +82,7 @@ struct BalancedLinkedChainControlStruct
   unsigned int numberOfPositions;
 };
 
-template <class P_V>
+template <class P_V = GslVector>
 struct BalancedLinkedChainsPerNodeStruct
 {
   std::vector<BalancedLinkedChainControlStruct<P_V> > balLinkedChains;
@@ -116,7 +118,7 @@ struct UnbalancedLinkedChainsPerNodeStruct
  * 'grep zeros <OUTPUT FILE NAME>' after the solution procedures ends.
  * The names of the variables are chosen to be self explanatory. */
 
-template <class P_V,class P_M>
+template <class P_V = GslVector, class P_M = GslMatrix>
 class MLSampling
 {
 public:

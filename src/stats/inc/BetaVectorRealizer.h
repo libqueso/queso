@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Beta class [R-05]
 //*****************************************************
@@ -42,7 +45,7 @@ namespace QUESO {
  * This class handles sampling from a Beta probability density distribution, of
  * parameters \c alpha and \c beta.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BetaVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 

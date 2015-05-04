@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Generic class
 //*****************************************************
@@ -41,7 +44,7 @@ namespace QUESO {
  *
  * This class implements a generic covariance functions, by calling a routine (via pointer).*/
 
-template<class V,class M>
+template <class V = GslVector, class M = GslMatrix>
 class GenericScalarCovarianceFunction : public BaseScalarCovarianceFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods

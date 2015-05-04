@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \class DiscreteSubset
  * \brief A templated class representing the discrete vector subsets.
  *
@@ -38,7 +41,7 @@ namespace QUESO {
  * elements (vectors) that belongs to the subset.
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class DiscreteSubset : public VectorSubset<V,M> {
 public:
   //! @name Constructor/Destructor methods.

@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!\file ArrayOfOneDTables
  * \brief Class to accommodate arrays of one-dimensional tables.
  *
@@ -42,7 +45,7 @@ namespace QUESO {
  * (ArrayOfOneDGrids).
  */
 
-template <class V, class M>
+template<class V = GslVector, class M = GslMatrix>
 class ArrayOfOneDTables
 {
 public:

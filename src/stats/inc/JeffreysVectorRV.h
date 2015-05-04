@@ -35,6 +35,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class JeffreysVectorRV
  * \brief A class representing a jeffreys vector RV.
@@ -42,7 +45,7 @@ namespace QUESO {
  * This class allows the user to compute the value of a jeffreys PDF and to generate realizations
  * (samples) from it. It is used, for instance, to create a jeffreys prior PDF. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class JeffreysVectorRV : public BaseVectorRV<V,M> {
 public:
 

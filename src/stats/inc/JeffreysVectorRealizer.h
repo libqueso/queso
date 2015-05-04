@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class JeffreysVectorRealizer
  * \brief A class for handling sampling from a jeffreys probability density
@@ -39,7 +42,7 @@ namespace QUESO {
  *
  * This class handles sampling from a jeffreys probability density distribution.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class JeffreysVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 

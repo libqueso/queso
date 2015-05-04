@@ -31,6 +31,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file MatrixCovarianceFunction.h
  * \brief Classes to accommodate covariance matrix of random vector functions.
  *
@@ -50,7 +53,7 @@ namespace QUESO {
  * where \f$ \mu_X \f$ and \f$ \mu_Y \f$ are the respective means, which can be written out
  * explicitly as \f[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\f] */
 
-template<class P_V, class P_M, class Q_V, class Q_M>
+template <class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class BaseMatrixCovarianceFunction {
 public:
     //! @name Constructor/Destructor methods

@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \file GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
  *
@@ -40,7 +43,7 @@ namespace QUESO {
  * as a hyperparameter to be inferred during the sampling procedure.
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients : public BaseGaussianLikelihood<V, M> {
 public:
   //! @name Constructor/Destructor methods.

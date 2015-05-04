@@ -29,6 +29,8 @@
 
 namespace QUESO {
 
+class GslVector;
+
 /*! \file MarkovChainPositionData.h
  * \brief A templated class that represents a Markov Chain.
  *
@@ -43,7 +45,7 @@ namespace QUESO {
  * the Metropolis-Hastings algorithm and on it is calculated the acceptance ration
  * MetropolisHastingsSG::alpha(). */
 
-template <class V>
+template <class V = GslVector>
 class MarkovChainPositionData
 {
 public:

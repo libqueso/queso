@@ -34,6 +34,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Sampled cumulative distribution function class
 //*****************************************************
@@ -44,7 +47,7 @@ namespace QUESO {
  * This class implements a sampled vector cumulative distribution function (CDF), given
  * the grid points where it will be sampled and it returns its values.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class SampledVectorCdf : public BaseVectorCdf<V,M> {
 public:
   //! @name Constructor/Destructor methods

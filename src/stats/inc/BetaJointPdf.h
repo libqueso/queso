@@ -36,16 +36,16 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Beta probability density class [PDF-05]
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class BetaJointPdf
  * \brief A class for handling Beta joint PDFs.
  *
  * This class allows the mathematical definition of a Beta Joint PDF.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BetaJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods

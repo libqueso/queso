@@ -39,6 +39,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file VectorSequence.h
  * \brief A templated class for handling vector and arrays samples
  *
@@ -49,8 +52,7 @@ namespace QUESO {
  * as operations that can be carried over them, e.g., calculation of means, correlation
  * and covariance matrices. */
 
-
-template <class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BaseVectorSequence
 {
 public:

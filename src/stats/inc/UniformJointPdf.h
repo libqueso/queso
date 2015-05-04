@@ -36,16 +36,16 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Uniform probability density class [PDF-04]
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class UniformJointPdf
  * \brief A class for handling uniform joint PDFs.
  *
  * This class allows the mathematical definition of a Uniform Joint PDF.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class UniformJointPdf : public BaseJointPdf<V,M> {
 public:
   //! @name Constructor/Destructor methods

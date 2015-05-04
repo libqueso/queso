@@ -39,6 +39,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //--------------------------------------------------
 // MHRawChainInfoStruct --------------------------
 //--------------------------------------------------
@@ -116,7 +119,7 @@ struct MHRawChainInfoStruct
  * are defined and set by running 'grep zeros <OUTPUT FILE NAME>' after the solution procedures ends.
  * The names of the variables are self explanatory. */
 
-template <class P_V,class P_M>
+template <class P_V = GslVector, class P_M = GslMatrix>
 class MetropolisHastingsSG
 {
 public:

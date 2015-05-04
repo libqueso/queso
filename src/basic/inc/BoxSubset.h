@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class BoxSubset
  * \brief Class representing a subset of a vector space shaped like a hypercube
@@ -37,7 +40,7 @@ namespace QUESO {
  * This class is determined by a collection of upper and lower limits of the hypercube.
  * (line segment in \f$ R \f$, rectangle in \f$ R^2 \f$, and so on). */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BoxSubset : public VectorSubset<V,M> {
 public:
   //! @name Constructor/Destructor methods

@@ -33,13 +33,16 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!\class GenericScalarFunction
  * \brief A class for handling generic scalar functions.
  *
  * This class allows the mathematical definition of a scalar function such as:
  * \f$ f: B \subset R \rightarrow R \f$. It is derived from BaseScalarFunction. */
 
-template<class V,class M>
+template <class V = GslVector, class M = GslMatrix>
 class GenericScalarFunction : public BaseScalarFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods

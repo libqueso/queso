@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file ScalarFunctionSynchronizer.h
  * \brief Class for synchronizing the calls of scalar functions
  *
@@ -40,7 +43,7 @@ namespace QUESO {
  * This means that all processes must reach a point in their code before they can all begin
  * executing again. */
 
-template <class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class ScalarFunctionSynchronizer
 {
 public:

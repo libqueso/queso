@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class InvLogitGaussianVectorRV
  * \brief A class representing a (transformed) Gaussian vector RV with bounds
@@ -38,7 +41,7 @@ namespace QUESO {
  * PDF and to generate realizations (samples) from it.
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class InvLogitGaussianVectorRV : public BaseVectorRV<V, M> {
 public:
   //! @name Constructor/Destructor methods

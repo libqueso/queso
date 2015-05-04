@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Exponential class
 //*****************************************************
@@ -45,7 +48,7 @@ namespace QUESO {
  * This is a stationary covariance function with smooth sample paths. Exponential covariance
  * functions are largely employed in Gaussian processes.  */
 
-template<class V,class M>
+template <class V = GslVector, class M = GslMatrix>
 class ExponentialScalarCovarianceFunction : public BaseScalarCovarianceFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods

@@ -36,6 +36,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Generic probability density class [PDF-01]
 //*****************************************************
@@ -45,7 +48,7 @@ namespace QUESO {
  *
  * This class allows the mathematical definition of a generic Joint PDF, such as the posterior PDF.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GenericJointPdf : public BaseJointPdf<V,M> {
 public:
 

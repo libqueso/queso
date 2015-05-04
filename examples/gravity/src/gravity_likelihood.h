@@ -28,7 +28,7 @@
 #include <queso/ScalarFunction.h>
 #include <queso/GslMatrix.h>
 
-template<class V, class M>
+template<class V = QUESO::GslVector, class M = QUESO::GslMatrix>
 class Likelihood : public QUESO::BaseScalarFunction<V, M>
 {
 public:

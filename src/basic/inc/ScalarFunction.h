@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file ScalarFunction.h
  * \brief Set of classes for handling vector functions.
  *
@@ -44,7 +47,7 @@ namespace QUESO {
  * of scalar functions.
  */
 
-template<class V,class M>
+template <class V = GslVector, class M = GslMatrix>
 class BaseScalarFunction {
 public:
   //! @name Constructor/Destructor methods.

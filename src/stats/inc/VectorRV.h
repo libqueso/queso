@@ -37,6 +37,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file VectorRV.h
  * \brief A templated class for handling vector random variables (RV).
  *
@@ -47,7 +50,7 @@ namespace QUESO {
  * PDF of a random variable (RV) at a point and to generate realizations (samples) from such PDF.
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BaseVectorRV {
 public:
   //! @name Constructor/Destructor methods

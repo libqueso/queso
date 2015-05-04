@@ -29,6 +29,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class InvLogitGaussianVectorRealizer
  * \brief A class for handling sampling from (transformed) Gaussian probability density distributions with bounds
@@ -44,7 +47,7 @@ namespace QUESO {
  * This will produce a sample in the closed interval [a, b].
  */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class InvLogitGaussianVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 

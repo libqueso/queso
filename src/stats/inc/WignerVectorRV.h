@@ -37,9 +37,9 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Wigner class [RV-09]
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class WignerVectorRV
  * \brief A class representing a vector RV constructed via Wigner distribution.
@@ -50,7 +50,7 @@ namespace QUESO {
  * \todo: WignerVectorRealizer.realization() is not yet available, thus this class does
  * nothing. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class WignerVectorRV : public BaseVectorRV<V,M> {
 public:
 

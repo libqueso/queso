@@ -31,11 +31,10 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Base class
-//*****************************************************
+class GslVector;
+class GslMatrix;
 
-/*! \file uqVectorFunction.h
+/*! \file VectorFunction.h
  * \brief Set of classes for handling vector functions.
  *
  * \class BaseVectorFunction
@@ -47,7 +46,7 @@ namespace QUESO {
  * (and have already been introduced by the class VectorSet) and  of the
  * image set \f$ R^m \f$.*/
 
-template<class P_V,class P_M,class Q_V,class Q_M>
+template <class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class BaseVectorFunction {
 public:
   //! @name Constructor/Destructor methods.

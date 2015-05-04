@@ -31,6 +31,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \file ScalarGaussianRandomField.h
  * \brief A class for handling Gaussian random fields (GRF).
@@ -42,7 +45,7 @@ namespace QUESO {
  * Gaussian probability density functions (PDFs) of the variables. A one-dimensional GRF is
  * also called a Gaussian process.*/
 
-template <class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class ScalarGaussianRandomField
 {
  public:

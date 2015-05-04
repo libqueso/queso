@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class JeffreysJointPdf
  * \brief A class for handling jeffreys joint PDFs.
@@ -39,7 +42,7 @@ namespace QUESO {
  * This class allows the mathematical definition of a Jeffreys Joint PDF.
 */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class JeffreysJointPdf : public BaseJointPdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
