@@ -34,7 +34,8 @@
 #include <queso/VectorFunction.h>
 #include <queso/DistArray.h>
 
-template<class P_V, class P_M, class Q_V, class Q_M>
+template<class P_V = QUESO::GslVector, class P_M = QUESO::GslMatrix,
+         class Q_V = QUESO::GslVector, class Q_M = QUESO::GslMatrix>
 class Qoi : public QUESO::BaseVectorFunction<P_V, P_M, Q_V, Q_M>
 {
 public:
