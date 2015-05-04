@@ -68,9 +68,6 @@
 
 #define queso_require_msg(asserted, msg)  do { if (!(asserted)) { std::cerr << "Assertion `" #asserted "' failed.\n" << msg << std::endl; queso_error(); } } while(0)
 
-#define queso_require(asserted) \
-  queso_require_msg(asserted, "")
-
 // When using C++11, we can test asserts comparing two different types
 // robustly
 // #if __cplusplus > 199711L // http://gcc.gnu.org/bugzilla/show_bug.cgi?id=1773
@@ -123,6 +120,28 @@
   queso_require_greater_equal_msg(expr1,expr2,msg)
 
 #endif // NDEBUG
+
+#define queso_require(asserted) \
+  queso_require_msg(asserted, "")
+
+#define queso_require_equal_to(expr1,expr2) \
+  queso_require_equal_to_msg(expr1,expr2,"")
+
+#define queso_require_not_equal_to(expr1,expr2) \
+  queso_require_not_equal_to_msg(expr1,expr2,"") \
+
+#define queso_require_less(expr1,expr2) \
+  queso_require_less_msg(expr1,expr2,"")
+
+#define queso_require_greater(expr1,expr2) \
+  queso_require_greater_msg(expr1,expr2,"")
+
+#define queso_require_less_equal(expr1,expr2) \
+  queso_require_less_equal_msg(expr1,expr2,"")
+
+#define queso_require_greater_equal(expr1,expr2) \
+  queso_require_greater_equal_msg(expr1,expr2,"")
+
 
 #define queso_assert(asserted) \
   queso_assert_msg(asserted, "")
