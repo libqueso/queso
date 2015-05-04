@@ -37,8 +37,7 @@ int main(int argc, char ** argv)
 
   int return_flag = 0;
 
-  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>
-    paramSpace(env,"param_", 4, NULL);
+  QUESO::VectorSpace<> paramSpace(env,"param_", 4, NULL);
 
   QUESO::GslVector paramMins(paramSpace.zeroVector());
   paramMins[0] = -1;
@@ -52,8 +51,7 @@ int main(int argc, char ** argv)
   paramMaxs[2] = 2.1;
   paramMaxs[3] = 4.1;
 
-  QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix>
-    paramDomain("param_", paramSpace, paramMins, paramMaxs);
+  QUESO::BoxSubset<> paramDomain("param_", paramSpace, paramMins, paramMaxs);
 
   std::vector<unsigned int> n_points(4);
   n_points[0] = 101;
@@ -61,8 +59,7 @@ int main(int argc, char ** argv)
   n_points[2] = 31;
   n_points[3] = 41;
 
-  QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
-    data(paramDomain,n_points);
+  QUESO::InterpolationSurrogateData<> data(paramDomain,n_points);
 
   std::vector<double> values(n_points[0]*n_points[1]*n_points[2]*n_points[3]);
 
@@ -95,8 +92,7 @@ int main(int argc, char ** argv)
 
   data.set_values( values );
 
-  QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
-    four_d_surrogate( data );
+  QUESO::LinearLagrangeInterpolationSurrogate<> four_d_surrogate( data );
 
   QUESO::GslVector domainVector(paramSpace.zeroVector());
   domainVector[0] = -0.4;
