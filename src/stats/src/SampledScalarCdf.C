@@ -74,10 +74,7 @@ SampledScalarCdf<T>::value(T paramValue) const
   }
   else {
     unsigned int intervalId = m_cdfGrid.findIntervalId(paramValue);
-    UQ_FATAL_TEST_MACRO(intervalId >= (m_cdfGrid.size()-1),
-                        m_env.worldRank(),
-                        "SampledScalarCdf<T>::value()",
-                        "invalid intervalId");
+    queso_require_less_msg(intervalId, (m_cdfGrid.size()-1), "invalid intervalId");
 
     double intervalLen = m_cdfGrid[intervalId+1] - m_cdfGrid[intervalId];
     double ratio = (paramValue - m_cdfGrid[intervalId])/intervalLen;
@@ -92,10 +89,7 @@ SampledScalarCdf<T>::value(T paramValue) const
                             << ", ratio = "                   << ratio
                             << std::endl;
 #endif
-    UQ_FATAL_TEST_MACRO(ratio < 0.,
-                        m_env.worldRank(),
-                        "SampledScalarCdf<T>::value()",
-                        "invalid ratio");
+    queso_require_greater_equal_msg(ratio, 0., "invalid ratio");
 
     result = (1.-ratio)*m_cdfValues[intervalId] + ratio*m_cdfValues[intervalId+1];
   }
@@ -109,10 +103,7 @@ SampledScalarCdf<T>::inverse(double cdfValue) const
 {
   //*m_env.subDisplayFile() << "In SampledScalarCdf::inverse(): cdfValue = " << cdfValue
   //                       << std::endl;
-  UQ_FATAL_TEST_MACRO((cdfValue < 0.) || (1. < cdfValue),
-                      m_env.worldRank(),
-                      "SampledScalarCdf<T>::inverse()",
-                      "invalid cdfValue");
+  queso_require_msg(!((cdfValue < 0.) || (1. < cdfValue)), "invalid cdfValue");
   double result = 0.;
   unsigned int i = 0;
   unsigned int j = m_cdfValues.size()-1;
@@ -131,10 +122,7 @@ SampledScalarCdf<T>::inverse(double cdfValue) const
     }
 
     if ((j-i) <= 0) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "SampledScalarCdf<T>::inverse()",
-                          "invalid pair of values 'i' and 'j'");
+      queso_error_msg("invalid pair of values 'i' and 'j'");
     }
     else if ((j-i) == 1) {
       double ratio = (cdfValue-m_cdfValues[i])/(m_cdfValues[j]-m_cdfValues[i]);
@@ -166,10 +154,7 @@ SampledScalarCdf<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
 {
   if ((m_minHorizontal == -INFINITY) ||
       (m_maxHorizontal ==  INFINITY)) {
-    UQ_FATAL_TEST_MACRO((m_minHorizontal != -INFINITY) || (m_maxHorizontal != INFINITY),
-                        m_env.worldRank(),
-                        "SampledScalarCdf<T>::getSupport()",
-                        "unexpected values of m_minHorizontal and/or m_maxHorizontal");
+    queso_require_msg(!((m_minHorizontal != -INFINITY) || (m_maxHorizontal != INFINITY)), "unexpected values of m_minHorizontal and/or m_maxHorizontal");
 
     unsigned int iMax = m_cdfGrid.size();
 
@@ -181,16 +166,10 @@ SampledScalarCdf<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
       }
     }
 
-    UQ_FATAL_TEST_MACRO(m_minHorizontal == -INFINITY,
-                        m_env.worldRank(),
-                        "SampledScalarCdf<T>::getSupport()",
-                        "unexpected value for m_minHorizontal");
+    queso_require_not_equal_to_msg(m_minHorizontal, -INFINITY, "unexpected value for m_minHorizontal");
 
     if (iMax == 1) {
-      UQ_FATAL_TEST_MACRO(m_cdfValues[iMax - 1] != 1.,
-                          m_env.worldRank(),
-                          "SampledScalarCdf<T>::getSupport()",
-                          "unexpected value for case 'iMax = 1'");
+      queso_require_equal_to_msg(m_cdfValues[iMax - 1], 1., "unexpected value for case 'iMax = 1'");
       m_maxHorizontal = m_cdfGrid[iMax-1];
     }
     else for (unsigned int i = 0; i < iMax; ++i) {
@@ -201,10 +180,7 @@ SampledScalarCdf<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
       }
     }
 
-    UQ_FATAL_TEST_MACRO(m_maxHorizontal == INFINITY,
-                        m_env.worldRank(),
-                        "SampledScalarCdf<T>::getSupport()",
-                        "unexpected value for m_maxHorizontal");
+    queso_require_not_equal_to_msg(m_maxHorizontal, INFINITY, "unexpected value for m_maxHorizontal");
   }
 
   minHorizontal = m_minHorizontal;
@@ -243,10 +219,7 @@ SampledScalarCdf<T>::subWriteContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "SampledScalarCdf<T>::subWriteContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openOutputFile(fileName,

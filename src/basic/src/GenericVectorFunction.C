@@ -68,7 +68,7 @@ GenericVectorFunction<P_V,P_M,Q_V,Q_M>::compute(
         DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
         DistArray<P_V*>* hessianEffects) const
 {
-  //UQ_FATAL_TEST_MACRO(false,
+
   //                    domainVector.env().worldRank(),
   //                    "GenericVectorFunction<P_V,P_M,Q_V,Q_M>::compute()",
   //                    "this method should not be called in the case of this class");

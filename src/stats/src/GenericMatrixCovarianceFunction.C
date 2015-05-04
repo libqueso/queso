@@ -80,20 +80,11 @@ GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& positionV
 
   unsigned int matrixOrder = m_imageSet.vectorSpace().dimLocal();
 
-  UQ_FATAL_TEST_MACRO(imageMatrix.numRowsLocal() != matrixOrder,
-                      m_env.worldRank(),
-                      "GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
-                      "imageMatrix has invalid number of rows");
+  queso_require_equal_to_msg(imageMatrix.numRowsLocal(), matrixOrder, "imageMatrix has invalid number of rows");
 
-  UQ_FATAL_TEST_MACRO(imageMatrix.numCols() != matrixOrder,
-                      m_env.worldRank(),
-                      "GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
-                      "imageMatrix has invalid number of columns");
+  queso_require_equal_to_msg(imageMatrix.numCols(), matrixOrder, "imageMatrix has invalid number of columns");
 
-  UQ_FATAL_TEST_MACRO(m_covRoutinePtr == NULL,
-                      m_env.worldRank(),
-                      "GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
-                      "m_covRoutinePtr = NULL");
+  queso_require_msg(m_covRoutinePtr, "m_covRoutinePtr = NULL");
 
   m_covRoutinePtr(positionVector1, positionVector2, m_routineDataPtr, imageMatrix);
 

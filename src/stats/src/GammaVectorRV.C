@@ -65,10 +65,7 @@ GammaVectorRV<V,M>::GammaVectorRV(
          << "Sampling will not cover all interval.\n"
          << std::endl;
 
-    UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
-                      m_env.worldRank(),
-                      "GammaVectorRealizer<V,M>::constructor()",
-                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0");
+    queso_require_greater_equal_msg(smallerOfMaxValues, 0, "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0");
  }
 // end kemelli 2013-April-22 --------------------------
 

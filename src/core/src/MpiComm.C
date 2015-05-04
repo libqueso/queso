@@ -40,22 +40,13 @@ MpiComm::MpiComm(const BaseEnvironment& env, RawType_MPI_Comm inputRawComm)
   m_numProc      (-1)
 {
   int mpiRC = MPI_Comm_rank(inputRawComm,&m_worldRank);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      UQ_UNAVAILABLE_RANK,
-                      "MpiComm::constructor()",
-                      "failed MPI_Comm_rank() on full rank");
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Comm_rank() on full rank");
 
   mpiRC = MPI_Comm_rank(inputRawComm,&m_myPid);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      "MpiComm::constructor()",
-                      "failed MPI_Comm_rank() on inputRawComm");
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Comm_rank() on inputRawComm");
 
   mpiRC = MPI_Comm_size(inputRawComm,&m_numProc);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      "MpiComm::constructor()",
-                      "failed MPI_Comm_size() on inputRawComm");
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Comm_size() on inputRawComm");
 }
 
 // Copy constructor ---------------------------------
@@ -121,10 +112,7 @@ void
 MpiComm::Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype datatype, RawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const
 {
   int mpiRC = MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, m_rawComm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, whatMsg);
 
   return;
 }
@@ -136,10 +124,7 @@ MpiComm::Barrier() const // const char* whereMsg, const char* whatMsg) const
   return m_epetraMpiComm->Barrier();
 #endif
   int mpiRC = MPI_Barrier(m_rawComm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      "MPIComm::Barrier()", // whereMsg,
-                      "mpiRC indicates failure");  // whatMsg);
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "mpiRC indicates failure");  // whatMsg);
   return;
 }
 //--------------------------------------------------
@@ -147,10 +132,7 @@ void
 MpiComm::Bcast(void* buffer, int count, RawType_MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
 {
   int mpiRC = MPI_Bcast(buffer, count, datatype, root, m_rawComm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, whatMsg);
   return;
 }
 //--------------------------------------------------
@@ -167,10 +149,7 @@ MpiComm::Gather(
   int mpiRC = MPI_Gather(sendbuf, sendcnt, sendtype,
                          recvbuf, recvcount, recvtype,
                          root, m_rawComm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, whatMsg);
   return;
 }
 //--------------------------------------------------
@@ -187,10 +166,7 @@ MpiComm::Gatherv(
   int mpiRC = MPI_Gatherv(sendbuf, sendcnt, sendtype,
                           recvbuf, recvcnts, displs, recvtype,
                           root, m_rawComm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, whatMsg);
   return;
 }
 //--------------------------------------------------
@@ -200,10 +176,7 @@ MpiComm::Recv(
   const char* whereMsg, const char* whatMsg) const
 {
   int mpiRC = MPI_Recv(buf, count, datatype, source, tag, m_rawComm, status);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, whatMsg);
   return;
 }
 //--------------------------------------------------
@@ -213,10 +186,7 @@ MpiComm::Send(
   const char* whereMsg, const char* whatMsg) const
 {
   int mpiRC = MPI_Send(buf, count, datatype, dest, tag, m_rawComm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, whatMsg);
   return;
 }
 // Misc methods ------------------------------------

@@ -89,10 +89,7 @@ GaussianVectorMdf<V,M>::values(
   const V& paramValues,
         V& mdfVec) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "GaussianVectorMdf<V,M>::mdfVec()",
-                      "incomplete code");
+  queso_error_msg("incomplete code");
   return;
 }
 // I/O method --------------------------------------
@@ -107,10 +104,7 @@ template<class V,class M>
 void
 GaussianVectorMdf<V,M>::commonConstructor()
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "GaussianVectorMdf<V,M>::commonConstructor()",
-                      "incomplete code");
+  queso_error_msg("incomplete code");
   return;
 }
 

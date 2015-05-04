@@ -88,10 +88,7 @@ SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation(const S_V& scenarioVec
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_addId >= m_paper_m,
-                      m_env.worldRank(),
-                      "SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation()",
-                      "too many adds...");
+  queso_require_less_msg(m_addId, m_paper_m, "too many adds...");
 
   m_scenarioVecs_original [m_addId] = &scenarioVec;
   m_parameterVecs_original[m_addId] = &parameterVec;
@@ -171,15 +168,9 @@ template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const S_V&
 SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original(unsigned int simulationId) const
 {
-  UQ_FATAL_TEST_MACRO(simulationId >= m_scenarioVecs_original.size(),
-                      m_env.worldRank(),
-                      "SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original()",
-                      "simulationId is too large");
+  queso_require_less_msg(simulationId, m_scenarioVecs_original.size(), "simulationId is too large");
 
-  UQ_FATAL_TEST_MACRO(m_scenarioVecs_original[simulationId] == NULL,
-                      m_env.worldRank(),
-                      "SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original()",
-                      "vector is NULL");
+  queso_require_msg(m_scenarioVecs_original[simulationId], "vector is NULL");
 
   return *(m_scenarioVecs_original[simulationId]);
 }
@@ -188,15 +179,9 @@ template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const P_V&
 SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original(unsigned int simulationId) const
 {
-  UQ_FATAL_TEST_MACRO(simulationId >= m_parameterVecs_original.size(),
-                      m_env.worldRank(),
-                      "SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original()",
-                      "simulationId is too large");
+  queso_require_less_msg(simulationId, m_parameterVecs_original.size(), "simulationId is too large");
 
-  UQ_FATAL_TEST_MACRO(m_parameterVecs_original[simulationId] == NULL,
-                      m_env.worldRank(),
-                      "SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original()",
-                      "vector is NULL");
+  queso_require_msg(m_parameterVecs_original[simulationId], "vector is NULL");
 
   return *(m_parameterVecs_original[simulationId]);
 }
@@ -205,15 +190,9 @@ template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const Q_V&
 SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original(unsigned int simulationId) const
 {
-  UQ_FATAL_TEST_MACRO(simulationId >= m_outputVecs_original.size(),
-                      m_env.worldRank(),
-                      "SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original()",
-                      "simulationId is too large");
+  queso_require_less_msg(simulationId, m_outputVecs_original.size(), "simulationId is too large");
 
-  UQ_FATAL_TEST_MACRO(m_outputVecs_original[simulationId] == NULL,
-                      m_env.worldRank(),
-                      "SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original()",
-                      "vector is NULL");
+  queso_require_msg(m_outputVecs_original[simulationId], "vector is NULL");
 
   return *(m_outputVecs_original[simulationId]);
 }
@@ -228,10 +207,7 @@ SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original() const
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_etaVec_original == NULL,
-                      m_env.worldRank(),
-                      "SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original()",
-                      "'m_etaVec_original' is NULL");
+  queso_require_msg(m_etaVec_original, "'m_etaVec_original' is NULL");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original()"

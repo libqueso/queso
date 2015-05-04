@@ -62,10 +62,7 @@ ConstantVectorFunction<P_V,P_M,Q_V,Q_M>::compute(
         DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
         DistArray<P_V*>* hessianEffects) const
 {
-  UQ_FATAL_TEST_MACRO(m_constantImageVector == NULL,
-                      domainVector.env().worldRank(),
-                      "ConstantVectorFunction<P_V,P_M,Q_V,Q_M>::compute()",
-                      "m_constantImageVector is NULL");
+  queso_require_msg(m_constantImageVector, "m_constantImageVector is NULL");
 
   imageVector = *m_constantImageVector;
 

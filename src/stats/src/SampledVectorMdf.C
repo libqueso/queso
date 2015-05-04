@@ -61,10 +61,7 @@ SampledVectorMdf<V,M>::values(
   const V& paramValues,
         V& mdfVec) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "SampledVectorMdf<V,M>::mdfVec()",
-                      "incomplete code");
+  queso_error_msg("incomplete code");
   return;
 }
 // I/O methods---------------------------------------

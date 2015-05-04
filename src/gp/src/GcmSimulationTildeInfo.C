@@ -104,10 +104,7 @@ GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfo(
       }
     }
     else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                          "code for horizontal 'm_Kmat' is not ready yet");
+      queso_error_msg("code for horizontal 'm_Kmat' is not ready yet");
       if (gcmOptionsObj.m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != gcmOptionsObj.m_ov.m_dataOutputAllowedSet.end()) {
         m_Kmat_tilde.subWriteContents("Ktilde",
                                       "Ktilde2",
@@ -162,10 +159,7 @@ GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfo(
                               << std::endl;
     }
 
-    UQ_FATAL_TEST_MACRO(kTildeRank != std::min(m_Kmat_tilde.numRowsGlobal(),m_Kmat_tilde.numCols()),
-                        m_env.worldRank(),
-                        "GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                        "'m_Kmat_tilde' does not have a proper rank");
+    queso_require_equal_to_msg(kTildeRank, std::min(m_Kmat_tilde.numRowsGlobal(),m_Kmat_tilde.numCols()), "'m_Kmat_tilde' does not have a proper rank");
 
     //******************************************************************************
     // Tilde situation: compute 'Ktilde^T Ktilde' matrix, and its inverse

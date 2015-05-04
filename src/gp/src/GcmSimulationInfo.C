@@ -306,10 +306,7 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
                             << ": finished instantiating m_Smat_w_is"
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(sumDims != m_w_size,
-                      m_env.worldRank(),
-                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumDims' and 'm_w_size' should be equal");
+  queso_require_equal_to_msg(sumDims, m_w_size, "'sumDims' and 'm_w_size' should be equal");
 
   unsigned int sumNumRows = 0;
   unsigned int sumNumCols = 0;
@@ -324,14 +321,8 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
                             << ": finished instantiating the m_Smat_w_hat_w_asterisk_i matrices"
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(sumNumRows != m_w_size,
-                      m_env.worldRank(),
-                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumNumRows' and 'm_w_size' should be equal");
-  UQ_FATAL_TEST_MACRO(sumNumCols != (m_paper_p_eta), //*m_paper_p_eta),
-                      m_env.worldRank(),
-                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'sumNumCols' and 'm_paper_p_eta*m_paper_p_eta' should be equal");
+  queso_require_equal_to_msg(sumNumRows, m_w_size, "'sumNumRows' and 'm_w_size' should be equal");
+  queso_require_equal_to_msg(sumNumCols, (m_paper_p_eta), "'sumNumCols' and 'm_paper_p_eta*m_paper_p_eta' should be equal");
 
   //********************************************************************************
   // Display information
@@ -362,15 +353,9 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
   //********************************************************************************
   // Make checks
   //********************************************************************************
-  UQ_FATAL_TEST_MACRO(simulationModel.etaVec_transformed("Gp.h.002").sizeLocal() != m_eta_size,
-                      m_env.worldRank(),
-                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "incompatible calculations for 'eta' vector size");
+  queso_require_equal_to_msg(simulationModel.etaVec_transformed("Gp.h.002").sizeLocal(), m_eta_size, "incompatible calculations for 'eta' vector size");
 
-  UQ_FATAL_TEST_MACRO(m_paper_p_x != simulationStorage.scenarioSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'m_paper_p_x' and 'simulationStorage.scenarioSpace().dimLocal()' should be equal");
+  queso_require_equal_to_msg(m_paper_p_x, simulationStorage.scenarioSpace().dimLocal(), "'m_paper_p_x' and 'simulationStorage.scenarioSpace().dimLocal()' should be equal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Leaving GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"

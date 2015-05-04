@@ -125,10 +125,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_option_predWsBySummingRVs             (m_prefix + "predWsBySummingRVs"             ),
   m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
-                      m_env.worldRank(),
-                      "GpmsaComputerModelOptions::constructor(1)",
-                      "this constructor is incompatible with the abscense of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
 }
 
 GpmsaComputerModelOptions::GpmsaComputerModelOptions(
@@ -162,10 +159,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_option_predWsBySummingRVs             (m_prefix + "predWsBySummingRVs"             ),
   m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
-                      m_env.worldRank(),
-                      "GpmsaComputerModelOptions::constructor(2)",
-                      "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In GpmsaComputerModelOptions::constructor(2)"
@@ -184,10 +178,7 @@ GpmsaComputerModelOptions::~GpmsaComputerModelOptions()
 void
 GpmsaComputerModelOptions::scanOptionsValues()
 {
-  UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
-                      m_env.worldRank(),
-                      "GpmsaComputerModelOptions::scanOptionsValues()",
-                      "m_optionsDesc variable is NULL");
+  queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);

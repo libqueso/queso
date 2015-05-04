@@ -192,15 +192,9 @@ GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const GcmZInfo
                               << ", m_Cmat_tilde.rank(0.,1.e-14) = " << cMatTildeRank14
                               << std::endl;
     }
-    UQ_FATAL_TEST_MACRO(cMatTildeRank != z.m_Cmat_rank,
-                        m_env.worldRank(),
-                        "GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()",
-                        "'m_Cmat_tilde' should have full column rank");
+    queso_require_equal_to_msg(cMatTildeRank, z.m_Cmat_rank, "'m_Cmat_tilde' should have full column rank");
 
-    UQ_FATAL_TEST_MACRO(m_Lmat.numRowsGlobal() >= m_Lmat.numCols(),
-                        m_env.worldRank(),
-                        "GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()",
-                        "'m_Lmat' should be a 'horizontal' rectangular matrix");
+    queso_require_less_msg(m_Lmat.numRowsGlobal(), m_Lmat.numCols(), "'m_Lmat' should be a 'horizontal' rectangular matrix");
 
     //******************************************************************************
     // Tilde situation: form 'm_Lmat_t'
@@ -217,10 +211,7 @@ GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const GcmZInfo
                               << std::endl;
     }
 
-    UQ_FATAL_TEST_MACRO(lMatRank != z.m_Cmat_rank,
-                        m_env.worldRank(),
-                        "GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()",
-                        "'m_Lmat' should have full row rank");
+    queso_require_equal_to_msg(lMatRank, z.m_Cmat_rank, "'m_Lmat' should have full row rank");
 
     if (m_env.checkingLevel() >= 1) {
       // Check if C == C_tilde * L

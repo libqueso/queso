@@ -47,10 +47,7 @@ WignerJointPdf<V,M>::WignerJointPdf(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_radius <= 0.,
-                      m_env.worldRank(),
-                      "WignerJointPdf<V,M>::constructor()",
-                      "invalid radius");
+  queso_require_greater_msg(m_radius, 0., "invalid radius");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving WignerJointPdf<V,M>::constructor()"
@@ -74,10 +71,7 @@ WignerJointPdf<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "WignerJointPdf<V,M>::actualValue()",
-                      "invalid input");
+  queso_require_equal_to_msg(domainVector.sizeLocal(), this->m_domainSet.vectorSpace().dimLocal(), "invalid input");
 
   if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
   if (hessianMatrix) *hessianMatrix *= 0.;

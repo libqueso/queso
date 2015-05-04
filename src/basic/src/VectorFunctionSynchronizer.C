@@ -90,10 +90,7 @@ VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::callFunction(
       std::vector<char> bufferChar(6,'0');
 
       if (m_env.subRank() == 0) {
-        UQ_FATAL_TEST_MACRO((vecValues != NULL) && (imageVector == NULL),
-                            m_env.worldRank(),
-                            "VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::callFunction()",
-                            "imageVector should not be NULL");
+        if ((vecValues != NULL)) queso_require_msg(imageVector, "imageVector should not be NULL");
         internalValues    = vecValues;
         internalDirection = vecDirection;
         internalImageVec  = imageVector;
@@ -208,14 +205,8 @@ VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::callFunction(
     } while (stayInRoutine);
   }
   else {
-    UQ_FATAL_TEST_MACRO((vecValues == NULL) || (imageVector == NULL),
-                        m_env.worldRank(),
-                        "VectorFunctionSynchronizer<V,M>::callFunction()",
-                        "Neither vecValues nor imageVector should not be NULL");
-    UQ_FATAL_TEST_MACRO((m_auxPVec.numOfProcsForStorage() != m_auxQVec.numOfProcsForStorage()),
-                        m_env.worldRank(),
-                        "VectorFunctionSynchronizer<V,M>::callFunction()",
-                        "Number of processors required for storage should be the same");
+    queso_require_msg(!((vecValues == NULL) || (imageVector == NULL)), "Neither vecValues nor imageVector should not be NULL");
+    queso_require_equal_to_msg(m_auxPVec.numOfProcsForStorage(), m_auxQVec.numOfProcsForStorage(), "Number of processors required for storage should be the same");
 
     m_env.subComm().Barrier();
     m_vectorFunction.compute(*vecValues,

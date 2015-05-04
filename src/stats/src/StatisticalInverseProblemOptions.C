@@ -175,10 +175,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
 #endif
 {
   queso_deprecated();
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
-                      m_env.worldRank(),
-                      "StatisticalInverseProblemOptions::constructor(1)",
-                      "this constructor is incompatible with the absence of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the absence of an options input file");
 }
 
 // Constructor 2------------------------------------
@@ -201,10 +198,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
 {
   queso_deprecated();
 
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
-                      m_env.worldRank(),
-                      "StatisticalInverseProblemOptions::constructor(2)",
-                      "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In StatisticalInverseProblemOptions::constructor(2)"
@@ -225,10 +219,7 @@ StatisticalInverseProblemOptions::~StatisticalInverseProblemOptions()
 void
 StatisticalInverseProblemOptions::scanOptionsValues()
 {
-  UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
-                      m_env.worldRank(),
-                      "StatisticalInverseProblemOptions::scanOptionsValues()",
-                      "m_optionsDesc variable is NULL");
+  queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);

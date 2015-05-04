@@ -50,10 +50,7 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     m_option_save_freq(m_prefix + "save_freq"),
     m_option_rwmh_step(m_prefix + "rwmh_step")
 {
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
-      m_env.worldRank(),
-      "InfiniteDimensionalMCMCSamplerOptions::constructor(1)",
-      "this constructor is incompatible with the abscense of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
 }
 
 InfiniteDimensionalMCMCSamplerOptions::~InfiniteDimensionalMCMCSamplerOptions()

@@ -235,10 +235,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
                               << ", m_Bmat_tilde.rank(0.,1.e-14) = " << bTildeRank14
                               << std::endl;
     }
-    UQ_FATAL_TEST_MACRO(m_Bmat_tilde_rank != std::min(m_Bmat_tilde.numRowsGlobal(),m_Bmat_tilde.numCols()),
-                        m_env.worldRank(),
-                        "GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                        "'m_Bmat_tilde' does not have a proper rank");
+    queso_require_equal_to_msg(m_Bmat_tilde_rank, std::min(m_Bmat_tilde.numRowsGlobal(),m_Bmat_tilde.numCols()), "'m_Bmat_tilde' does not have a proper rank");
 
     //******************************************************************************
     // Tilde situation: compute 'Btilde^T W_y Btilde' matrix, and its inverse

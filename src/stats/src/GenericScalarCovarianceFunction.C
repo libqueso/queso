@@ -76,10 +76,7 @@ GenericScalarCovarianceFunction<V,M>::value(const V& positionVector1, const V& p
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_covRoutinePtr == NULL,
-                      m_env.worldRank(),
-                      "GenericScalarCovarianceFunction<V,M>::value()",
-                      "m_covRoutinePtr = NULL");
+  queso_require_msg(m_covRoutinePtr, "m_covRoutinePtr = NULL");
 
   double result = m_covRoutinePtr(positionVector1, positionVector2, m_routineDataPtr);
 

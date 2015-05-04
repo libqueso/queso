@@ -202,10 +202,7 @@ SequenceStatisticalOptions::SequenceStatisticalOptions(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
-                      m_env.worldRank(),
-                      "SequenceStatisticalOptions::constructor(1)",
-                      "this constructor is incompatible with the abscense of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
@@ -286,10 +283,7 @@ SequenceStatisticalOptions::SequenceStatisticalOptions(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
-                      m_env.worldRank(),
-                      "SequenceStatisticalOptions::constructor(2)",
-                      "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "After setting values of options with prefix '" << m_prefix

@@ -120,10 +120,7 @@ EnvironmentOptions::EnvironmentOptions(
   m_option_platformName         (m_prefix + "platformName"         ),
   m_option_identifyingString    (m_prefix + "identifyingString"    )
 {
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
-                      m_env.worldRank(),
-                      "EnvironmentOptions::constructor(1)",
-                      "this constructor is incompatible with the abscense of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
 }
 // Constructor with alternative values --------------
 EnvironmentOptions::EnvironmentOptions(
@@ -149,10 +146,7 @@ EnvironmentOptions::EnvironmentOptions(
   m_option_platformName         (m_prefix + "platformName"         ),
   m_option_identifyingString    (m_prefix + "identifyingString"    )
 {
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
-                      m_env.worldRank(),
-                      "EnvironmentOptions::constructor(2)",
-                      "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In EnvironmentOptions::constructor(2)"
@@ -172,10 +166,7 @@ EnvironmentOptions::~EnvironmentOptions()
 void
 EnvironmentOptions::scanOptionsValues()
 {
-  UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
-                      m_env.worldRank(),
-                      "EnvironmentOptions::scanOptionsValues()",
-                      "m_optionsDesc variable is NULL");
+  queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
@@ -268,10 +259,7 @@ EnvironmentOptions::getMyOptionValues(po::options_description& optionsDesc)
               << ", m_numSubEnvironments = "       << m_ov.m_numSubEnvironments
               << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((m_env.fullComm().NumProc()%m_ov.m_numSubEnvironments) != 0,
-                      m_env.worldRank(),
-                      "BaseEnvironment::getMyOptionValues()",
-                      "total number of processors in environment must be multiple of the specified number of subEnvironments");
+  queso_require_equal_to_msg((m_env.fullComm().NumProc()%m_ov.m_numSubEnvironments), 0, "total number of processors in environment must be multiple of the specified number of subEnvironments");
 
   if (m_env.allOptionsMap().count(m_option_subDisplayFileName.c_str())) {
     m_ov.m_subDisplayFileName = m_env.allOptionsMap()[m_option_subDisplayFileName].as<std::string>();

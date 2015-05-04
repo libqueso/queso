@@ -84,17 +84,11 @@ VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(( sampleValues.sizeLocal() % fieldPositions.size() ) != 0,
-                      m_env.fullRank(),
-                      "VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction()",
-                      "input data is not multiple of each other");
+  queso_require_equal_to_msg(( sampleValues.sizeLocal() % fieldPositions.size() ), 0, "input data is not multiple of each other");
 
   unsigned int numberOfImageValuesPerIndex = sampleValues.sizeLocal()/fieldPositions.size();
 
-  UQ_FATAL_TEST_MACRO(numberOfImageValuesPerIndex != m_imageSetPerIndex.vectorSpace().dimLocal(),
-                      m_env.fullRank(),
-                      "VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction()",
-                      "invalid input data dimension");
+  queso_require_equal_to_msg(numberOfImageValuesPerIndex, m_imageSetPerIndex.vectorSpace().dimLocal(), "invalid input data dimension");
 
   if ((m_savedPositions.size() == 0   ) &&
       (m_savedRvImageSpace     == NULL) &&
@@ -111,10 +105,7 @@ VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V
     // Ok
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.fullRank(),
-                        "VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction()",
-                        "invalid combination of pointer values");
+    queso_error_msg("invalid combination of pointer values");
   }
 
   unsigned int numberOfPositions = fieldPositions.size();
@@ -122,10 +113,7 @@ VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V
   if (m_savedPositions.size() == numberOfPositions) {
     bool allPositionsAreEqual = true;
     for (unsigned int i = 0; i < numberOfPositions; ++i) {
-      UQ_FATAL_TEST_MACRO(m_savedPositions[i] == NULL,
-                          m_env.fullRank(),
-                          "VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction()",
-                          "m_savedPositions[i] should not be NULL");
+      queso_require_msg(m_savedPositions[i], "m_savedPositions[i] should not be NULL");
       if ((m_savedPositions[i]->sizeLocal() == fieldPositions[i]->sizeLocal()) &&
           (*(m_savedPositions[i])           == *(fieldPositions[i])          )) {
         // Ok
@@ -200,10 +188,7 @@ VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V
                                   << ", testMat = "              << testMat
                                   << ", tmpMat is not positive definite"
                                   << std::endl;
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.fullRank(),
-                              "VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction()",
-                              "tmpMat is not positive definite");
+          queso_error_msg("tmpMat is not positive definite");
         }
 #endif
         for (unsigned int k1 = 0; k1 < numberOfImageValuesPerIndex; ++k1) {

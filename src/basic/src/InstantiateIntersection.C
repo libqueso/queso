@@ -101,10 +101,7 @@ InstantiateIntersection(const VectorSet<V,M>& domain1, const VectorSet<V,M>& dom
         }
       }
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            domain1.env().worldRank(),
-                            "InstantiateIntersection<V,M>()",
-                            "situation 001");
+        queso_error_msg("situation 001");
       }
     }
   }
@@ -123,17 +120,11 @@ InstantiateIntersection(const VectorSet<V,M>& domain1, const VectorSet<V,M>& dom
                                              box1->maxValues());
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              domain1.env().worldRank(),
-                              "InstantiateIntersection<V,M>()",
-                              "situation 002");
+          queso_error_msg("situation 002");
         }
       }
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            domain1.env().worldRank(),
-                            "InstantiateIntersection<V,M>()",
-                            "situation 003");
+        queso_error_msg("situation 003");
       }
     }
   }
@@ -152,26 +143,17 @@ InstantiateIntersection(const VectorSet<V,M>& domain1, const VectorSet<V,M>& dom
                                              box2->maxValues());
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              domain1.env().worldRank(),
-                              "InstantiateIntersection<V,M>()",
-                              "situation 004");
+          queso_error_msg("situation 004");
         }
       }
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            domain1.env().worldRank(),
-                            "InstantiateIntersection<V,M>()",
-                            "situation 005");
+        queso_error_msg("situation 005");
       }
     }
   }
 
   if (result == NULL) {
-    UQ_FATAL_TEST_MACRO(true,
-                        domain1.env().worldRank(),
-                        "InstantiateIntersection<V,M>()",
-                        "situation 006");
+    queso_error_msg("situation 006");
   }
 
   return result;

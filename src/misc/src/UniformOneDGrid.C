@@ -69,10 +69,7 @@ template<class T>
 T
 UniformOneDGrid<T>::operator[](unsigned int i) const
 {
-  UQ_FATAL_TEST_MACRO(i >= m_size,
-                      m_env.worldRank(),
-                      "UniformOneDGrid<V,M>::operator[]",
-                      "too large i");
+  queso_require_less_msg(i, m_size, "too large i");
 
   T ratio = ((T) i)/(((T)m_size)-1.); // IMPORTANT: Yes, '-1.'
   T position = (1.-ratio)*m_minPosition + ratio*m_maxPosition;
@@ -83,10 +80,7 @@ template<class T>
 unsigned int
 UniformOneDGrid<T>::findIntervalId(const T& paramValue) const
 {
-  UQ_FATAL_TEST_MACRO((paramValue < m_minPosition) || (m_maxPosition < paramValue),
-                      m_env.worldRank(),
-                      "UniformOneDGrid<V,M>::findIntervalId[]",
-                      "paramValue is out of domain");
+  queso_require_msg(!((paramValue < m_minPosition) || (m_maxPosition < paramValue)), "paramValue is out of domain");
 
   T ratio = (paramValue - m_minPosition)/(m_maxPosition - m_minPosition);
   unsigned int i = (unsigned int) (ratio*(m_size-1.));

@@ -63,10 +63,7 @@ LogNormalVectorRV<V,M>::LogNormalVectorRV(
          << std::endl;
 
 
-    UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
-                      m_env.worldRank(),
-                      "LogNormalVectorRealizer<V,M>::constructor()",
-                      "invalid input: LogNormal distribution is only defined in (0, infinity), and min(m_maxValues)<0");
+    queso_require_greater_equal_msg(smallerOfMaxValues, 0, "invalid input: LogNormal distribution is only defined in (0, infinity), and min(m_maxValues)<0");
 
  }
 // end kemelli 2013-April-23 --------------------------
@@ -91,10 +88,7 @@ LogNormalVectorRV<V,M>::LogNormalVectorRV(
     M matVt (m_imageSet.vectorSpace().zeroVector());
     V vecS  (m_imageSet.vectorSpace().zeroVector());
     iRC = matLaw.svd(matU,vecS,matVt);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.worldRank(),
-                        "LogNormalVectorRV<V,M>::constructor() [1]",
-                        "Cholesky decomposition of covariance matrix failed.");
+    queso_require_msg(!(iRC), "Cholesky decomposition of covariance matrix failed.");
 
     vecS.cwSqrt();
     m_realizer = new LogNormalVectorRealizer<V,M>(m_prefix.c_str(),

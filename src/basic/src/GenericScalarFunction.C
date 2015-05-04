@@ -62,10 +62,7 @@ double GenericScalarFunction<V,M>::actualValue(const V& domainVector,
     M* hessianMatrix,
     V* hessianEffect) const
 {
-  UQ_FATAL_TEST_MACRO(m_valueRoutinePtr == NULL,
-                      m_env.worldRank(),
-                      "GenericScalarFunction<V,M>::actualValue()",
-                      "m_valueRoutinePtr = NULL");
+  queso_require_msg(m_valueRoutinePtr, "m_valueRoutinePtr = NULL");
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
   if (m_routineIsForLn) {
@@ -89,10 +86,7 @@ double GenericScalarFunction<V,M>::lnValue(const V& domainVector,
     M* hessianMatrix,
     V* hessianEffect) const
 {
-  UQ_FATAL_TEST_MACRO(m_valueRoutinePtr == NULL,
-                      m_env.worldRank(),
-                      "GenericScalarFunction<V,M>::lnValue()",
-                      "m_valueRoutinePtr = NULL");
+  queso_require_msg(m_valueRoutinePtr, "m_valueRoutinePtr = NULL");
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
   if (m_routineIsForLn == false) {

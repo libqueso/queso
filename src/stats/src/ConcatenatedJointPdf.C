@@ -46,10 +46,7 @@ ConcatenatedJointPdf<V,M>::ConcatenatedJointPdf(
   unsigned int size2 = m_densities[1]->domainSet().vectorSpace().dimLocal();
   unsigned int size  = concatenatedDomain.vectorSpace().dimLocal();
 
-  UQ_FATAL_TEST_MACRO((size1+size2) != size,
-                      m_env.worldRank(),
-                      "ConcatenatedJointPdf<V,M>::constructor(1)",
-                      "incompatible dimensions");
+  queso_require_equal_to_msg((size1+size2), size, "incompatible dimensions");
 }
 // Constructor -------------------------------------
 template<class V,class M>
@@ -69,10 +66,7 @@ ConcatenatedJointPdf<V,M>::ConcatenatedJointPdf(
 
   unsigned int size  = concatenatedDomain.vectorSpace().dimLocal();
 
-  UQ_FATAL_TEST_MACRO(sumSizes != size,
-                      m_env.worldRank(),
-                      "ConcatenatedJointPdf<V,M>::constructor(2)",
-                      "incompatible dimensions");
+  queso_require_equal_to_msg(sumSizes, size, "incompatible dimensions");
 }
 // Destructor --------------------------------------
 template<class V,class M>
@@ -105,15 +99,9 @@ ConcatenatedJointPdf<V,M>::actualValue(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "ConcatenatedJointPdf<V,M>::actualValue()",
-                      "invalid input");
+  queso_require_equal_to_msg(domainVector.sizeLocal(), this->m_domainSet.vectorSpace().dimLocal(), "invalid input");
 
-  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.worldRank(),
-                      "ConcatenatedJointPdf<V,M>::actualValue()",
-                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   std::vector<V*> vecs(m_densities.size(),(V*) NULL);
   std::vector<double> values(m_densities.size(),0.);
@@ -161,10 +149,7 @@ ConcatenatedJointPdf<V,M>::lnValue(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
-                      m_env.worldRank(),
-                      "ConcatenatedJointPdf<V,M>::lnValue()",
-                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   std::vector<V*> vecs(m_densities.size(),(V*) NULL);
   std::vector<double> values(m_densities.size(),0.);
