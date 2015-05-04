@@ -2005,7 +2005,8 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
                             << std::endl;
   }
 
-  queso_error_msg("'m_useTildeLogicForRankDefficientC' should be 'false'");
+  queso_require_msg(!m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC,
+                    "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
   // Form '\Sigma_z' matrix
@@ -2165,7 +2166,8 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
                             << std::endl;
   }
 
-  queso_error_msg("'m_useTildeLogicForRankDefficientC' should be 'false'");
+  queso_require_msg(!m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC,
+                    "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
   // Form '\Sigma_z' matrix
