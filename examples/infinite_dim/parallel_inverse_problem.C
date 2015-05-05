@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
 
   MPI_Init(&argc, &argv);
 
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, "infinite_dim/parallel_inverse_options", "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
 
   // When the number of processes passed to `mpirun` is different from the
   // number of subenvironments asked for in the input file, QUESO creates a
