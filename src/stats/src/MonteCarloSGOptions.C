@@ -388,6 +388,7 @@ MonteCarloSGOptions::MonteCarloSGOptions(
   m_option_qseq_computeStats        (m_prefix + "qseq_computeStats"          )
 #endif
 {
+  queso_deprecated();
   queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the absence of an options input file");
 }
 // Constructor 2 -----------------------------------
@@ -428,6 +429,7 @@ MonteCarloSGOptions::MonteCarloSGOptions(
   m_option_qseq_computeStats        (m_prefix + "qseq_computeStats"        )
 #endif
 {
+  queso_deprecated();
   queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
@@ -449,6 +451,8 @@ MonteCarloSGOptions::MonteCarloSGOptions(
 // Destructor --------------------------------------
 MonteCarloSGOptions::~MonteCarloSGOptions()
 {
+  queso_deprecated();
+
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_pseqStatisticalOptionsObj) delete m_pseqStatisticalOptionsObj; // dakota
   if (m_qseqStatisticalOptionsObj) delete m_qseqStatisticalOptionsObj; // dakota
@@ -459,6 +463,7 @@ MonteCarloSGOptions::~MonteCarloSGOptions()
 void
 MonteCarloSGOptions::scanOptionsValues()
 {
+  queso_deprecated();
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -486,6 +491,8 @@ MonteCarloSGOptions::scanOptionsValues()
 void
 MonteCarloSGOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                            "produce help message for Monte Carlo distribution calculator")
     (m_option_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV       ), "name of generic data output file"                            )
@@ -517,6 +524,8 @@ MonteCarloSGOptions::defineMyOptions(po::options_description& optionsDesc) const
 void
 MonteCarloSGOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -627,6 +636,8 @@ MonteCarloSGOptions::getMyOptionValues(po::options_description& optionsDesc)
 void
 MonteCarloSGOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os <<         m_option_dataOutputFileName   << " = " << m_ov.m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowedSet << " = ";
   for (std::set<unsigned int>::iterator setIt = m_ov.m_dataOutputAllowedSet.begin(); setIt != m_ov.m_dataOutputAllowedSet.end(); ++setIt) {
@@ -664,6 +675,8 @@ MonteCarloSGOptions::print(std::ostream& os) const
 
 std::ostream& operator<<(std::ostream& os, const MonteCarloSGOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
