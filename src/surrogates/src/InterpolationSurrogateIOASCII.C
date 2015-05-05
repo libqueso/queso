@@ -183,6 +183,17 @@ namespace QUESO
   void InterpolationSurrogateIOASCII<V,M>::write( const std::string& filename,
                                                   const InterpolationSurrogateData<V,M>& data ) const
   {
+    // Make sure there are values in the data. If not the user didn't populate the data
+    if( !data.n_values() > 0 )
+      {
+        std::string error = "ERROR: No values found in InterpolationSurrogateData.\n";
+        error += "Cannot write data without values.\n";
+        error += "Use InterpolationSurrogateBuilder or the read method to populate\n";
+        error += "data values.\n";
+
+        queso_error_msg(error);
+      }
+
     std::ofstream output;
 
     // Only processor 0 does the writing
