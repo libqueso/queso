@@ -29,6 +29,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/InterpolationSurrogateHelper.h>
+#include <queso/StreamUtilities.h>
 
 // C++
 #include <numeric>
@@ -162,7 +163,7 @@ namespace QUESO
         const MpiComm& inter0comm = this->m_data.get_paramDomain().env().inter0Comm();
 
         /*! \todo Would be more efficient to pack local_n and local_values
-            togethers and go Gatherv only once. */
+            togethers and do Gatherv only once. */
         inter0comm.Gatherv( &local_n[0], local_n.size(), MPI_UNSIGNED,
                             &all_indices[0], &m_njobs[0], &strides[0], MPI_UNSIGNED,
                             0 /*root*/,
@@ -188,13 +189,7 @@ namespace QUESO
       }
 
     // Now broadcast the values data to all other processes
-    const MpiComm& fullcomm = this->m_data.get_paramDomain().env().fullComm();
-
-    std::vector<double>& values = this->m_data.get_values();
-    fullcomm.Bcast( &values[0], values.size(), MPI_DOUBLE,
-                    0 /*root*/,
-                    "InterpolationSurrogateBuilder::sync_data()",
-                    "MpiComm::Bcast() failed!" );
+    this->m_data.sync_values( 0 /*root*/);
   }
 
   template<class V, class M>

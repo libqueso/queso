@@ -119,6 +119,7 @@ libqueso_la_SOURCES += misc/src/CovCond.C
 libqueso_la_SOURCES += misc/src/AsciiTable.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDTables.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDGrids.C
+libqueso_la_SOURCES += misc/src/StreamUtilities.C
 
 # Sources from misc/src withn gsl conditional
 
@@ -252,6 +253,8 @@ libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBase.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateHelper.C
 libqueso_la_SOURCES += surrogates/src/LinearLagrangeInterpolationSurrogate.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBuilder.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOBase.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOASCII.C
 
 # Sources from gp/src
 
@@ -332,6 +335,7 @@ libqueso_include_HEADERS += misc/inc/Miscellaneous.h
 libqueso_include_HEADERS += misc/inc/OneDGrid.h
 libqueso_include_HEADERS += misc/inc/UniformOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StdOneDGrid.h
+libqueso_include_HEADERS += misc/inc/StreamUtilities.h
 
 # Headers to install from basic/inc
 
@@ -453,6 +457,8 @@ libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateHelper.h
 libqueso_include_HEADERS += surrogates/inc/LinearLagrangeInterpolationSurrogate.h
 libqueso_include_HEADERS += surrogates/inc/SurrogateBuilderBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBuilder.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOBase.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOASCII.h
 
 # Headers to install from gp/inc
 

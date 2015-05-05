@@ -24,30 +24,10 @@
 
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
-#include <queso/BoxSubset.h>
-#include <queso/LinearLagrangeInterpolationSurrogate.h>
-#include <queso/InterpolationSurrogateBuilder.h>
 #include <queso/InterpolationSurrogateIOASCII.h>
+#include <queso/LinearLagrangeInterpolationSurrogate.h>
 
 double four_d_fn( double x, double y, double z, double a );
-
-/* We subclass InterpolationSurrogateBuilder to implement our model evaluation.
-   In this case, it just calls the simple function, but you may do much more
-   complicated things. */
-template<class V, class M>
-class MyInterpolationBuilder : public QUESO::InterpolationSurrogateBuilder<V,M>
-{
-public:
-  MyInterpolationBuilder( QUESO::InterpolationSurrogateData<V,M>& data )
-    : QUESO::InterpolationSurrogateBuilder<V,M>(data)
-  {};
-
-  virtual ~MyInterpolationBuilder(){};
-
-  virtual double evaluate_model( const V & domainVector ) const
-  { queso_assert_equal_to( domainVector.sizeGlobal(), 4);
-    return four_d_fn(domainVector[0],domainVector[1],domainVector[2],domainVector[3]); };
-};
 
 int main(int argc, char ** argv)
 {
@@ -61,57 +41,17 @@ int main(int argc, char ** argv)
   MPI_Init(&argc, &argv);
   QUESO::FullEnvironment env(MPI_COMM_WORLD, filename.c_str(), "", NULL);
 
-  // Define the parameter space. It's 4-dimensional in this example.
-  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>
-    paramSpace(env,"param_", 4, NULL);
-
-  // Define parameter bounds
-  QUESO::GslVector paramMins(paramSpace.zeroVector());
-  paramMins[0] = -1;
-  paramMins[1] = -0.5;
-  paramMins[2] = 1.1;
-  paramMins[3] = -2.1;
-
-  QUESO::GslVector paramMaxs(paramSpace.zeroVector());
-  paramMaxs[0] = 0.9;
-  paramMaxs[1] = 3.14;
-  paramMaxs[2] = 2.1;
-  paramMaxs[3] = 4.1;
-
-  // Define parameter domain.
-  QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix>
-    paramDomain("param_", paramSpace, paramMins, paramMaxs);
-
-  // How many points to use in each coordinate direction of parameter space.
-  // Since we're using an interpolation surrogate, it will evenly space the points
-  // in each coordinate direction. These are the points at which the model
-  // will be evaluated.
-  std::vector<unsigned int> n_points(4);
-  n_points[0] = 101;
-  n_points[1] = 51;
-  n_points[2] = 31;
-  n_points[3] = 41;
-
-  // Construct data object.
-  QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
-    data(paramDomain,n_points);
-
-  // Construct builder. The builder will add the values from the model evaluations
-  // so the data object must stay alive.
-  MyInterpolationBuilder<QUESO::GslVector,QUESO::GslMatrix>
-    builder( data );
-
-  // The expensive part. The builder will now evaluate the model for all the
-  // desired points in parameter space.
-  builder.build_values();
-
-  // Now that we've built the data, we write it out so we can reuse it later
+  // We will read in the previously computed interpolation data
   QUESO::InterpolationSurrogateIOASCII<QUESO::GslVector, QUESO::GslMatrix>
-    data_writer;
+    data_reader;
 
-  data_writer.write( "4d_interp_data.dat", data );
+  data_reader.read( "./4d_interp_data_coarse.dat", env, "param_" );
 
-  // The builder put the model values into the data, so now we can give the data
+  // Grab a reference to the data built in the reader
+  const QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>&
+    data = data_reader.data();
+
+  // The reader read in the data, so now we can give the data
   // to the interpolation surrogate. This object can now be used in a likelihood
   // function for example. Here, we just illustrate calling the surrogate model
   // evaluation.
@@ -119,7 +59,7 @@ int main(int argc, char ** argv)
     four_d_surrogate( data );
 
   // A point in parameter space at which we want to use the surrogate
-  QUESO::GslVector domainVector(paramSpace.zeroVector());
+  QUESO::GslVector domainVector(data.get_paramDomain().vectorSpace().zeroVector());
   domainVector[0] = -0.4;
   domainVector[1] = 3.0;
   domainVector[2] = 1.5;

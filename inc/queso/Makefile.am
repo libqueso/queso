@@ -93,6 +93,7 @@ BUILT_SOURCES += Fft.h
 BUILT_SOURCES += Miscellaneous.h
 BUILT_SOURCES += OneDGrid.h
 BUILT_SOURCES += StdOneDGrid.h
+BUILT_SOURCES += StreamUtilities.h
 BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += BayesianJointPdf.h
 BUILT_SOURCES += BetaJointPdf.h
@@ -183,6 +184,8 @@ BUILT_SOURCES += InterpolationSurrogateBase.h
 BUILT_SOURCES += InterpolationSurrogateBuilder.h
 BUILT_SOURCES += InterpolationSurrogateData.h
 BUILT_SOURCES += InterpolationSurrogateHelper.h
+BUILT_SOURCES += InterpolationSurrogateIOASCII.h
+BUILT_SOURCES += InterpolationSurrogateIOBase.h
 BUILT_SOURCES += LinearLagrangeInterpolationSurrogate.h
 BUILT_SOURCES += SurrogateBase.h
 BUILT_SOURCES += SurrogateBuilderBase.h
@@ -367,6 +370,8 @@ OneDGrid.h: $(top_srcdir)/src/misc/inc/OneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 StdOneDGrid.h: $(top_srcdir)/src/misc/inc/StdOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+StreamUtilities.h: $(top_srcdir)/src/misc/inc/StreamUtilities.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformOneDGrid.h: $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BayesianJointPdf.h: $(top_srcdir)/src/stats/inc/BayesianJointPdf.h
@@ -546,6 +551,10 @@ InterpolationSurrogateBuilder.h: $(top_srcdir)/src/surrogates/inc/InterpolationS
 InterpolationSurrogateData.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateData.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InterpolationSurrogateHelper.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateHelper.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateIOASCII.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateIOASCII.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateIOBase.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateIOBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 LinearLagrangeInterpolationSurrogate.h: $(top_srcdir)/src/surrogates/inc/LinearLagrangeInterpolationSurrogate.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
