@@ -439,4 +439,7 @@ if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif
 
+runalldir = $(prefix)/examples
+dist_runall_SCRIPTS = run_all.sh
+
 MAINTAINERCLEANFILES = Makefile.in
