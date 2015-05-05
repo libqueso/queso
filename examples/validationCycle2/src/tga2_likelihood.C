@@ -58,7 +58,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
     FILE *inp;
     inp = fopen(inpName1,"r");
 
-    queso_require_msg(inp, "Unable to open" << inpName1);
+    queso_require_msg(inp, "Unable to open " << inpName1);
 
     // Read kinetic parameters and convert heating rate to K/s
     int aux1 = fscanf(inp,"%lf %lf",&m_beta1,&m_variance1);
@@ -96,7 +96,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
     FILE *inp;
     inp = fopen(inpName2,"r");
 
-    queso_require_msg(inp, "Unable to open" << inpName2);
+    queso_require_msg(inp, "Unable to open " << inpName2);
 
     // Read kinetic parameters and convert heating rate to K/s
     int aux2 = fscanf(inp,"%lf %lf",&m_beta2,&m_variance2);
