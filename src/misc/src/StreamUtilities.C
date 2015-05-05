@@ -23,6 +23,7 @@
 //-----------------------------------------------------------------------el-
 
 // This class
+#include <queso/asserts.h>
 #include <queso/StreamUtilities.h>
 
 // C++
@@ -43,6 +44,7 @@ namespace QUESO
     while(std::isspace(c))in.get(c);
 
     in.putback(c);
+    queso_require( !in.fail() );
 
     while (in.get(c), c==comment_start)
        in.getline (line, 255);
@@ -50,6 +52,8 @@ namespace QUESO
     // put back first character of
     // first non-comment line
     in.putback (c);
+    queso_require( !in.fail() );
+
   }
 
 } // end namespace QUESO
