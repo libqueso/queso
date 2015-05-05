@@ -27,6 +27,7 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
+#include <queso/BaseInputOptions.h>
 
 #define UQ_MOC_SG_FILENAME_FOR_NO_FILE "."
 
@@ -53,7 +54,7 @@
 
 namespace QUESO {
 
-/*! \file uqMonteCarloSGOptions.h
+/*! \file MonteCarloSGOptions.h
     \brief Classes to allow options to be passed to a Monte Carlo sequence generator.
 */
 
@@ -63,7 +64,7 @@ namespace QUESO {
  *  Monte Carlo sequence generator expects options for its methods. This class provides default
  * values for such options if no input file is available. */
 
-class McOptionsValues
+class McOptionsValues : public BaseInputOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -72,17 +73,23 @@ public:
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   McOptionsValues            (const SsOptionsValues* alternativePSsOptionsValues,
                                      const SsOptionsValues* alternativeQSsOptionsValues);
+  McOptionsValues            (const SsOptionsValues* alternativePSsOptionsValues,
+                                     const SsOptionsValues* alternativeQSsOptionsValues,
+                                     const BaseEnvironment * env, const char * prefix);
 #else
   //! Default constructor.
   /*! Assigns the default suite of options to the Monte Carlo sequence generator.*/
   McOptionsValues            ();
+
+  //! Prefix constructor for reading input options from a file
+  McOptionsValues(const BaseEnvironment * env, const char * prefix);
 #endif
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
   McOptionsValues            (const McOptionsValues& src);
 
   //! Destructor
-  ~McOptionsValues            ();
+  virtual ~McOptionsValues            ();
   //@}
 
   //! @name Set methods
@@ -90,6 +97,8 @@ public:
   //! Assignment operator; it copies \c rhs to \c this.
   McOptionsValues& operator= (const McOptionsValues& rhs);
   //@}
+
+  std::string                        m_prefix;
 
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
@@ -116,6 +125,34 @@ public:
 #endif
 
 private:
+  std::string                   m_option_help;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowedSet;
+
+  std::string                   m_option_pseq_dataOutputPeriod;
+  std::string                   m_option_pseq_dataOutputFileName;
+  std::string                   m_option_pseq_dataOutputFileType;
+  std::string                   m_option_pseq_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  std::string                   m_option_pseq_computeStats;
+#endif
+
+  std::string                   m_option_qseq_dataInputFileName;
+  std::string                   m_option_qseq_dataInputFileType;
+  std::string                   m_option_qseq_size;
+  std::string                   m_option_qseq_displayPeriod;
+  std::string                   m_option_qseq_measureRunTimes;
+  std::string                   m_option_qseq_dataOutputPeriod;
+  std::string                   m_option_qseq_dataOutputFileName;
+  std::string                   m_option_qseq_dataOutputFileType;
+  std::string                   m_option_qseq_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  std::string                   m_option_qseq_computeStats;
+#endif
+
+  virtual void defineOptions();
+  virtual void getOptionValues();
+
   //! Copies the option values from \c src to \c this.
   void copy(const McOptionsValues& src);
 
