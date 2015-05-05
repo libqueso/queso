@@ -129,7 +129,7 @@ FilePtrSetStruct::~FilePtrSetStruct()
 // Default constructor --------------------------------
 BaseEnvironment::BaseEnvironment(
   const char*                    passedOptionsInputFileName,
-  const EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* alternativeOptionsValues)
   :
   m_fullEnvIsReady             (false),
   m_worldRank                  (-1),
@@ -151,11 +151,9 @@ BaseEnvironment::BaseEnvironment(
   m_rngObject                  (NULL),
   m_basicPdfs                  (NULL),
   m_exceptionalCircumstance    (false),
-  m_alternativeOptionsValues   (),
-  m_optionsObj                 (NULL)
+  m_optionsObj                 (alternativeOptionsValues)
 {
   if (passedOptionsInputFileName) m_optionsInputFileName     = passedOptionsInputFileName;
-  if (alternativeOptionsValues  ) m_alternativeOptionsValues = *alternativeOptionsValues;
 }
 // Destructor -------------------------------------------
 BaseEnvironment::~BaseEnvironment()
@@ -186,7 +184,6 @@ BaseEnvironment::~BaseEnvironment()
       }
     }
 
-  if (m_optionsObj) delete m_optionsObj;
   if (m_allOptionsMap) {
     delete m_allOptionsMap;
     delete m_allOptionsDesc;
@@ -282,14 +279,14 @@ BaseEnvironment::subDisplayFileName() const
 {
   if (m_optionsObj == NULL) return ".";
 
-  return m_optionsObj->m_ov.m_subDisplayFileName;
+  return m_optionsObj->m_subDisplayFileName;
 }
 //-------------------------------------------------------
 unsigned int
 BaseEnvironment::numSubEnvironments() const
 {
   queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
-  return m_optionsObj->m_ov.m_numSubEnvironments;
+  return m_optionsObj->m_numSubEnvironments;
 }
 //-------------------------------------------------------
 unsigned int
@@ -391,21 +388,21 @@ unsigned int
 BaseEnvironment::displayVerbosity() const
 {
   queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
-  return m_optionsObj->m_ov.m_displayVerbosity;
+  return m_optionsObj->m_displayVerbosity;
 }
 //-------------------------------------------------------
 unsigned int
 BaseEnvironment::syncVerbosity() const
 {
   queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
-  return m_optionsObj->m_ov.m_syncVerbosity;
+  return m_optionsObj->m_syncVerbosity;
 }
 //-------------------------------------------------------
 unsigned int
 BaseEnvironment::checkingLevel() const
 {
   queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
-  return m_optionsObj->m_ov.m_checkingLevel;
+  return m_optionsObj->m_checkingLevel;
 }
 //-------------------------------------------------------
 const RngBase*
@@ -436,19 +433,19 @@ BaseEnvironment::basicPdfs() const
 std::string
 BaseEnvironment::platformName() const
 {
-  return m_optionsObj->m_ov.m_platformName;
+  return m_optionsObj->m_platformName;
 }
 //-------------------------------------------------------
 std::string
 BaseEnvironment::identifyingString() const
 {
-  return m_optionsObj->m_ov.m_identifyingString;
+  return m_optionsObj->m_identifyingString;
 }
 //-------------------------------------------------------
 void
-BaseEnvironment::resetIdentifyingString(const std::string& newString) const // Yes, const
+BaseEnvironment::resetIdentifyingString(const std::string& newString)
 {
-  m_optionsObj->m_ov.m_identifyingString = newString;
+  m_optionsObj->m_identifyingString = newString;
   return;
 }
 //-------------------------------------------------------
@@ -1103,7 +1100,7 @@ FullEnvironment::FullEnvironment(
   RawType_MPI_Comm             inputComm,
   const char*                    passedOptionsInputFileName,
   const char*                    prefix,
-  const EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* alternativeOptionsValues)
   :
   BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
 {
@@ -1134,17 +1131,24 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   // Read options
   //////////////////////////////////////////////////
-  if (m_optionsInputFileName == "") {
-    m_optionsObj = new EnvironmentOptions(*this,prefix,m_alternativeOptionsValues);
-  }
-  else {
-    m_allOptionsMap  = new po::variables_map();
-    m_allOptionsDesc = new po::options_description("Allowed options");
-    m_optionsObj = new EnvironmentOptions(*this,prefix);
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
 
-    readOptionsInputFile();
+    // If there's an input file, we grab the options from there.  Otherwise the
+    // defaults are used
+    if (m_optionsInputFileName != "") {
+      m_allOptionsMap  = new po::variables_map();
+      m_allOptionsDesc = new po::options_description("Allowed options");
 
-    m_optionsObj->scanOptionsValues();
+      readOptionsInputFile();
+
+      tempOptions->scanOptionsValues();
+    }
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
   }
 
 #ifdef QUESO_MEMORY_DEBUGGING
@@ -1176,15 +1180,15 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the sub communicators, one for each subEnvironment
   //////////////////////////////////////////////////
-  unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_optionsObj->m_ov.m_numSubEnvironments;
+  unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_optionsObj->m_numSubEnvironments;
 
   m_subId = m_fullRank/numRanksPerSubEnvironment;
   char tmpSubId[16];
   sprintf(tmpSubId,"%u",m_subId);
   m_subIdString = tmpSubId;
 
-  if (m_optionsObj->m_ov.m_subDisplayAllowAll) {
-    m_optionsObj->m_ov.m_subDisplayAllowedSet.insert((unsigned int) m_subId);
+  if (m_optionsObj->m_subDisplayAllowAll) {
+    m_optionsObj->m_subDisplayAllowedSet.insert((unsigned int) m_subId);
   }
 
   std::vector<int> fullRanksOfMySubEnvironment(numRanksPerSubEnvironment,0);
@@ -1210,11 +1214,11 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the inter0 communicator
   //////////////////////////////////////////////////
-  std::vector<int> fullRanksOfInter0(m_optionsObj->m_ov.m_numSubEnvironments,0);
-  for (unsigned int i = 0; i < m_optionsObj->m_ov.m_numSubEnvironments; ++i) {
+  std::vector<int> fullRanksOfInter0(m_optionsObj->m_numSubEnvironments,0);
+  for (unsigned int i = 0; i < m_optionsObj->m_numSubEnvironments; ++i) {
     fullRanksOfInter0[i] = i * numRanksPerSubEnvironment;
   }
-  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_optionsObj->m_ov.m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
+  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_optionsObj->m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
   queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Group_incl() for inter0");
   RawType_MPI_Comm inter0RawComm;
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_inter0Group, &inter0RawComm);
@@ -1225,12 +1229,12 @@ FullEnvironment::FullEnvironment(
     m_inter0CommSize = m_inter0Comm->NumProc();
   }
 
-  if (m_optionsObj->m_ov.m_subDisplayAllowAll) {
+  if (m_optionsObj->m_subDisplayAllowAll) {
     // This situation has been already taken care of above
   }
-  else if (m_optionsObj->m_ov.m_subDisplayAllowInter0) {
+  else if (m_optionsObj->m_subDisplayAllowInter0) {
     if (m_inter0Rank >= 0) {
-      m_optionsObj->m_ov.m_subDisplayAllowedSet.insert((unsigned int) m_subId);
+      m_optionsObj->m_subDisplayAllowedSet.insert((unsigned int) m_subId);
     }
   }
 
@@ -1240,8 +1244,8 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   bool openFile = false;
   if ((m_subRank                                               == 0                                              ) &&
-      (m_optionsObj->m_ov.m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE             ) &&
-      (m_optionsObj->m_ov.m_subDisplayAllowedSet.find(m_subId) != m_optionsObj->m_ov.m_subDisplayAllowedSet.end())) {
+      (m_optionsObj->m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE             ) &&
+      (m_optionsObj->m_subDisplayAllowedSet.find(m_subId) != m_optionsObj->m_subDisplayAllowedSet.end())) {
     openFile = true;
   }
 
@@ -1250,7 +1254,7 @@ FullEnvironment::FullEnvironment(
     // Verify parent directory exists (for cases when a user
     // specifies a relative path for the desired output file).
     //////////////////////////////////////////////////////////////////
-    int irtrn = CheckFilePath((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+    int irtrn = CheckFilePath((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
     queso_require_greater_equal_msg(irtrn, 0, "unable to verify output path");
   }
 
@@ -1263,7 +1267,7 @@ FullEnvironment::FullEnvironment(
     //////////////////////////////////////////////////////////////////
     // Always write over an eventual pre-existing file
     //////////////////////////////////////////////////////////////////
-    m_subDisplayFile = new std::ofstream((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
+    m_subDisplayFile = new std::ofstream((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
                                          std::ofstream::out | std::ofstream::trunc);
     queso_require_msg((m_subDisplayFile && m_subDisplayFile->is_open()), "failed to open sub screen file");
 
@@ -1315,17 +1319,17 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   // Deal with seed
   //////////////////////////////////////////////////
-  if (m_optionsObj->m_ov.m_rngType == "gsl") {
-    m_rngObject = new RngGsl(m_optionsObj->m_ov.m_seed,m_worldRank);
+  if (m_optionsObj->m_rngType == "gsl") {
+    m_rngObject = new RngGsl(m_optionsObj->m_seed,m_worldRank);
     m_basicPdfs = new BasicPdfsGsl(m_worldRank);
   }
-  else if (m_optionsObj->m_ov.m_rngType == "boost") {
-    m_rngObject = new RngBoost(m_optionsObj->m_ov.m_seed,m_worldRank);
+  else if (m_optionsObj->m_rngType == "boost") {
+    m_rngObject = new RngBoost(m_optionsObj->m_seed,m_worldRank);
     m_basicPdfs = new BasicPdfsBoost(m_worldRank);
   }
   else {
     std::cerr << "In Environment::constructor()"
-              << ": rngType = " << m_optionsObj->m_ov.m_rngType
+              << ": rngType = " << m_optionsObj->m_rngType
               << std::endl;
     queso_error_msg("the requested 'rngType' is not supported yet");
   }
