@@ -87,7 +87,7 @@ namespace QUESO
     double get_x( unsigned int dim, unsigned int index ) const;
 
     //! Sync values across all processors from root processor
-    /*! m_values may only be set on one processor, to this method
+    /*! m_values may only be set on one processor, so this method
         is used for MPI_Bcast'ing those values to all processors.
         This calls MPI_Bcast, which is collective, so this *MUST*
         be called from all processors in env.fullComm(). */

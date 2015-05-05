@@ -197,7 +197,7 @@ namespace QUESO
         header += "# n_points in each dimension\n";
         header += "# x_min, x_max pairs for each dimension\n";
         header += "# values for each point in parameter space\n";
-        header += "# values musted ordered in structured format.\n";
+        header += "# values must be ordered in structured format.\n";
         output << header;
 
         // Write dimension

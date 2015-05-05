@@ -36,6 +36,7 @@ namespace QUESO
     StreamUtilities(){};
     ~StreamUtilities(){};
 
+    //! Skips comment lines until a line without a comment character is encountered
     static void skip_comment_lines( std::istream &in, const char comment_start);
 
   };
