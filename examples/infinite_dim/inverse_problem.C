@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 
   MPI_Init(&argc, &argv);
 
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, "infinite_dim/inverse_options", "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
 
   libMesh::LibMeshInit init(argc, argv);
 
