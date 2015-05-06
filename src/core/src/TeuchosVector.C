@@ -40,7 +40,7 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map)
 {
   m_vec.size(map.NumGlobalElements());
 
-  queso_require_msg(m_vec, "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
   queso_require_equal_to_msg(m_vec.length(), map.NumMyElements(), "incompatible local vec size");
 
@@ -63,7 +63,7 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map, double 
   m_vec.size(map.NumGlobalElements());
   m_vec = value;
 
-  queso_require_msg(m_vec, "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
   queso_require_equal_to_msg(m_vec.length(), map.NumMyElements(), "incompatible local vec size");
 
@@ -79,7 +79,7 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, double d1, double d2, c
   {
   m_vec.size(map.NumGlobalElements());
 
-  queso_require_msg(m_vec, "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
   queso_require_equal_to_msg(m_vec.length(), map.NumMyElements(), "incompatible local vec size");
 
@@ -100,7 +100,7 @@ TeuchosVector::TeuchosVector(const TeuchosVector& v, double d1, double d2)
 {
   m_vec.size(v.sizeLocal());
 
-  queso_require_msg(m_vec, "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
   queso_require_equal_to_msg(m_vec.length(), v.map().NumMyElements(), "incompatible local vec size");
 
@@ -121,7 +121,7 @@ TeuchosVector::TeuchosVector(const TeuchosVector& v)  // mox
  {
    m_vec.size(v.sizeLocal());
 
-  queso_require_msg(m_vec, "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
   queso_require_equal_to_msg(m_vec.length(), v.map().NumMyElements(), "incompatible local vec size");
 
