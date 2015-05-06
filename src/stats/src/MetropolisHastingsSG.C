@@ -2309,7 +2309,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
           (m_optionsObj->m_ov.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "Finished generating " << positionId+1
                                 << " positions"  // root
-                                << ", curret rejection percentage = " << (100. * ((double) m_rawChainInfo.numRejections)/((double) (positionId+1)))
+                                << ", current rejection percentage = " << (100. * ((double) m_rawChainInfo.numRejections)/((double) (positionId+1)))
                                 << " %"
                                 << std::endl;
       }
