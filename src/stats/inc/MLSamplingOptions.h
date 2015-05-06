@@ -75,7 +75,7 @@ public:
   MLSamplingOptions(const BaseEnvironment& env, const char* prefix);
 
   //! Destructor
-  ~MLSamplingOptions();
+  virtual ~MLSamplingOptions();
   //@}
 
   //! @name I/O methods
