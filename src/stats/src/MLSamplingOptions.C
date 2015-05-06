@@ -29,66 +29,47 @@ namespace QUESO {
 
 MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* prefix)
   :
-  m_prefix                               ((std::string)(prefix) + "ml_"                        ),
+    BaseInputOptions(&env),
+    m_prefix                               ((std::string)(prefix) + "ml_"                        ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-  m_restartOutput_levelPeriod            (UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV       ),
-  m_restartOutput_baseNameForFiles       (UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV),
-  m_restartOutput_fileType               (UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV          ),
-  m_restartInput_baseNameForFiles        (UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV ),
-  m_restartInput_fileType                (UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV           ),
+    m_restartOutput_levelPeriod            (UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV       ),
+    m_restartOutput_baseNameForFiles       (UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV),
+    m_restartOutput_fileType               (UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV          ),
+    m_restartInput_baseNameForFiles        (UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV ),
+    m_restartInput_fileType                (UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV           ),
 #else
-  m_restartInputFileName                 (UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV),
-  m_restartInputFileType                 (UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),
-  m_restartChainSize                     (UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV     ),
+    m_restartInputFileName                 (UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV),
+    m_restartInputFileType                 (UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),
+    m_restartChainSize                     (UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV     ),
 #endif
-  m_dataOutputFileName                   (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),
-//m_dataOutputAllowedSet                 (),
-  m_env                                  (env),
-  m_optionsDesc                          (new po::options_description("Multilevel sampling options")),
-  m_option_help                          (m_prefix + "help"                          ),
+    m_dataOutputFileName                   (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),
+  //m_dataOutputAllowedSet                 (),
+    m_env                                  (env),
+    m_option_help                          (m_prefix + "help"                          ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-  m_option_restartOutput_levelPeriod     (m_prefix + "restartOutput_levelPeriod"     ),
-  m_option_restartOutput_baseNameForFiles(m_prefix + "restartOutput_baseNameForFiles"),
-  m_option_restartOutput_fileType        (m_prefix + "restartOutput_fileType"        ),
-  m_option_restartInput_baseNameForFiles (m_prefix + "restartInput_baseNameForFiles" ),
-  m_option_restartInput_fileType         (m_prefix + "restartInput_fileType"         ),
+    m_option_restartOutput_levelPeriod     (m_prefix + "restartOutput_levelPeriod"     ),
+    m_option_restartOutput_baseNameForFiles(m_prefix + "restartOutput_baseNameForFiles"),
+    m_option_restartOutput_fileType        (m_prefix + "restartOutput_fileType"        ),
+    m_option_restartInput_baseNameForFiles (m_prefix + "restartInput_baseNameForFiles" ),
+    m_option_restartInput_fileType         (m_prefix + "restartInput_fileType"         ),
 #else
-  m_option_restartInputFileName          (m_prefix + "restartInputFileName"),
-  m_option_restartInputFileType          (m_prefix + "restartInputFileType"),
-  m_option_restartChainSize              (m_prefix + "restartChainSize"    ),
+    m_option_restartInputFileName          (m_prefix + "restartInputFileName"),
+    m_option_restartInputFileType          (m_prefix + "restartInputFileType"),
+    m_option_restartChainSize              (m_prefix + "restartChainSize"    ),
 #endif
-  m_option_dataOutputFileName            (m_prefix + "dataOutputFileName"  ),
-  m_option_dataOutputAllowedSet          (m_prefix + "dataOutputAllowedSet")
+    m_option_dataOutputFileName            (m_prefix + "dataOutputFileName"  ),
+    m_option_dataOutputAllowedSet          (m_prefix + "dataOutputAllowedSet")
 {
 }
 
 MLSamplingOptions::~MLSamplingOptions()
 {
-  if (m_optionsDesc) delete m_optionsDesc;
 }
 
 void
-MLSamplingOptions::scanOptionsValues()
+MLSamplingOptions::defineOptions()
 {
-  defineMyOptions                (*m_optionsDesc);
-  m_env.scanInputFileForMyOptions(*m_optionsDesc);
-  getMyOptionValues              (*m_optionsDesc);
-
-  if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In MLSamplingOptions::scanOptionsValues()"
-                            << ": after getting values of options with prefix '" << m_prefix
-                            << "', state of object is:"
-                            << "\n" << *this
-                            << std::endl;
-  }
-
-  return;
-}
-
-void
-MLSamplingOptions::defineMyOptions(po::options_description& optionsDesc) const
-{
-  optionsDesc.add_options()
+  (*m_optionsDescription).add_options()
     (m_option_help.c_str(),                                                                                                                            "produce help msg for ML sampling options"      )
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
     (m_option_restartOutput_levelPeriod.c_str(),      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV),        "restartOutput_levelPeriod"                     )
@@ -104,16 +85,14 @@ MLSamplingOptions::defineMyOptions(po::options_description& optionsDesc) const
     (m_option_dataOutputFileName.c_str(),             po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),            "name of generic output file"                   )
     (m_option_dataOutputAllowedSet.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV),            "subEnvs that will write to generic output file")
   ;
-
-  return;
 }
 
 void
-MLSamplingOptions::getMyOptionValues(po::options_description& optionsDesc)
+MLSamplingOptions::getOptionValues()
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << optionsDesc
+      *m_env.subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
     }
   }
