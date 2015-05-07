@@ -238,8 +238,6 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     minus_2_log_lhd += sol[i] * residual[i];
   }
 
-std::cout << "minus_2_log_lhd = " << minus_2_log_lhd << std::endl;
-
   return -0.5 * minus_2_log_lhd;
 }
 
