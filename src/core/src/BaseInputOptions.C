@@ -30,14 +30,16 @@ namespace QUESO {
 BaseInputOptions::BaseInputOptions(const BaseEnvironment * env)
   :
     m_env(env),
-    m_optionsDescription(new po::options_description("Input options"))
+    m_optionsDescription(new po::options_description("Input options")),
+    m_optionsMap(new po::variables_map())
 {
 }
 
 BaseInputOptions::BaseInputOptions()
   :
     m_env(NULL),
-    m_optionsDescription(new po::options_description("Input options"))
+    m_optionsDescription(new po::options_description("Input options")),
+    m_optionsMap(new po::variables_map())
 {
 }
 
@@ -45,6 +47,10 @@ BaseInputOptions::~BaseInputOptions()
 {
   if (m_optionsDescription) {
     delete m_optionsDescription;
+  }
+
+  if (m_optionsMap) {
+    delete m_optionsMap;
   }
 }
 

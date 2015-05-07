@@ -30,6 +30,7 @@ namespace boost
   namespace program_options
   {
     class options_description;
+    class variables_map;
   }
 }
 
@@ -75,6 +76,7 @@ private:
 protected:
   const BaseEnvironment * m_env;
   boost::program_options::options_description * m_optionsDescription;
+  boost::program_options::variables_map * m_optionsMap;
 };
 
 }  // End namespace QUESO
