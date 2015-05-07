@@ -28,6 +28,7 @@
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
 #include <queso/SequenceStatisticalOptions.h>
+#include <queso/BaseInputOptions.h>
 
 #undef  UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
@@ -107,7 +108,7 @@ namespace QUESO {
  * options if no input file is available.
  */
 
-class MhOptionsValues
+class MhOptionsValues : public BaseInputOptions
 {
 public:
 
@@ -117,11 +118,17 @@ public:
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   MhOptionsValues            (const SsOptionsValues* alternativeRawSsOptionsValues,
                                      const SsOptionsValues* alternativeFilteredSsOptionsValues);
+  MhOptionsValues            (const SsOptionsValues* alternativeRawSsOptionsValues,
+                                     const SsOptionsValues* alternativeFilteredSsOptionsValues,
+                                     const BaseEnvironment * env, const char * prefix);
 #else
 
   //! Default constructor.
   /*! Assigns the default suite of options to the Metropolis-Hastings generator of samples.*/
   MhOptionsValues            ();
+
+  //! Prefix constructor for input file parsing purposes
+  MhOptionsValues(const BaseEnvironment * env, const char * prefix);
 #endif
 
   //! Copy constructor.
@@ -129,7 +136,7 @@ public:
   MhOptionsValues            (const MhOptionsValues& src);
 
   //! Destructor
-  ~MhOptionsValues            ();
+  virtual ~MhOptionsValues            ();
   //@}
 
   //! @name Set methods
@@ -137,6 +144,8 @@ public:
   //! Assignment operator; it copies \c rhs to \c this.
   MhOptionsValues& operator= (const MhOptionsValues& rhs);
   //@}
+
+  std::string                        m_prefix;
 
   std::string                        m_dataOutputFileName;
   bool                               m_dataOutputAllowAll;
@@ -243,6 +252,73 @@ public:
   bool m_doLogitTransform;
 
 private:
+  std::string                   m_option_help;
+
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowAll;
+  std::string                   m_option_dataOutputAllowedSet;
+
+  std::string                   m_option_totallyMute;
+  std::string                   m_option_initialPosition_dataInputFileName;
+  std::string                   m_option_initialPosition_dataInputFileType;
+  std::string                   m_option_initialProposalCovMatrix_dataInputFileName;
+  std::string                   m_option_initialProposalCovMatrix_dataInputFileType;
+  std::string                   m_option_listOfDisabledParameters;  // gpmsa2
+  std::string                   m_option_rawChain_dataInputFileName;
+  std::string                   m_option_rawChain_dataInputFileType;
+  std::string                   m_option_rawChain_size;
+  std::string                   m_option_rawChain_generateExtra;
+  std::string                   m_option_rawChain_displayPeriod;
+  std::string                   m_option_rawChain_measureRunTimes;
+  std::string                   m_option_rawChain_dataOutputPeriod;
+  std::string                   m_option_rawChain_dataOutputFileName;
+  std::string                   m_option_rawChain_dataOutputFileType;
+  std::string                   m_option_rawChain_dataOutputAllowAll;
+  std::string                   m_option_rawChain_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  std::string                   m_option_rawChain_computeStats;
+#endif
+  std::string                   m_option_filteredChain_generate;
+  std::string                   m_option_filteredChain_discardedPortion;
+  std::string                   m_option_filteredChain_lag;
+  std::string                   m_option_filteredChain_dataOutputFileName;
+  std::string                   m_option_filteredChain_dataOutputFileType;
+  std::string                   m_option_filteredChain_dataOutputAllowAll;
+  std::string                   m_option_filteredChain_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  std::string                   m_option_filteredChain_computeStats;
+#endif
+  std::string                   m_option_displayCandidates;
+  std::string                   m_option_putOutOfBoundsInChain;
+  std::string                   m_option_tk_useLocalHessian;
+  std::string                   m_option_tk_useNewtonComponent;
+  std::string                   m_option_dr_maxNumExtraStages;
+  std::string                   m_option_dr_listOfScalesForExtraStages;
+  std::string                   m_option_dr_duringAmNonAdaptiveInt;
+  std::string                   m_option_am_keepInitialMatrix;
+  std::string                   m_option_am_initialNonAdaptInterval;
+  std::string                   m_option_am_adaptInterval;
+  std::string                   m_option_am_adaptedMatrices_dataOutputPeriod;
+  std::string                   m_option_am_adaptedMatrices_dataOutputFileName;
+  std::string                   m_option_am_adaptedMatrices_dataOutputFileType;
+  std::string                   m_option_am_adaptedMatrices_dataOutputAllowAll;
+  std::string                   m_option_am_adaptedMatrices_dataOutputAllowedSet;
+
+  //! See MhOptionsValues::m_amEta
+  std::string                   m_option_am_eta;
+  //! See MhOptionsValues::m_amEpsilon
+  std::string                   m_option_am_epsilon;
+
+  std::string                   m_option_enableBrooksGelmanConvMonitor;
+  std::string                   m_option_BrooksGelmanLag;
+
+  std::string                   m_option_outputLogLikelihood;
+  std::string                   m_option_outputLogTarget;
+  std::string                   m_option_doLogitTransform;
+
+  virtual void defineOptions();
+  virtual void getOptionValues();
+
   //! Copies the option values from \c src to \c this.
   void copy(const MhOptionsValues& src);
 

@@ -9,28 +9,28 @@ AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
 LIBS   = -L$(top_builddir)/src/ -lqueso
 
-if GRVY_ENABLED	
+if GRVY_ENABLED
   AM_CPPFLAGS += $(GRVY_CFLAGS)
 endif
 
 if TRILINOS_ENABLED
-  AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) 
+  AM_CPPFLAGS += -I$(TRILINOS_INCLUDE)
   LIBS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
 
-if GLPK_ENABLED	
+if GLPK_ENABLED
   AM_CPPFLAGS += $(GLPK_CFLAGS)
   LIBS += $(GLPK_LIBS)
 endif
 
-if HDF5_ENABLED	
-  AM_CPPFLAGS += $(HDF5_CFLAGS) 
+if HDF5_ENABLED
+  AM_CPPFLAGS += $(HDF5_CFLAGS)
   LIBS += $(HDF5_LIBS)
 endif
 
 EXTRA_DIST     = regression rtest02.sh
 check_PROGRAMS = SipSfpExample_gsl
-TESTS          = rtest02.sh 
+TESTS          = rtest02.sh
 
 SipSfpExample_gsl_SOURCES =
 SipSfpExample_gsl_SOURCES += example_main.C example_compute.C example_likelihood.C example_qoi.C
