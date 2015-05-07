@@ -611,6 +611,8 @@ SequenceStatisticalOptions::SequenceStatisticalOptions(
   m_option_covMatrix_compute        (m_prefix + "covMatrix_compute"        ),
   m_option_corrMatrix_compute       (m_prefix + "corrMatrix_compute"       )
 {
+  queso_deprecated();
+
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering SequenceStatisticalOptions::constructor(1)"
                             << ", prefix = " << m_prefix
@@ -692,6 +694,8 @@ SequenceStatisticalOptions::SequenceStatisticalOptions(
   m_option_covMatrix_compute        (m_prefix + "covMatrix_compute"        ),
   m_option_corrMatrix_compute       (m_prefix + "corrMatrix_compute"       )
 {
+  queso_deprecated();
+
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering SequenceStatisticalOptions::constructor(2)"
                             << ", prefix = " << m_prefix
@@ -716,6 +720,8 @@ SequenceStatisticalOptions::SequenceStatisticalOptions(
 
 SequenceStatisticalOptions::~SequenceStatisticalOptions()
 {
+  queso_deprecated();
+
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
@@ -723,6 +729,8 @@ void
 SequenceStatisticalOptions::defineMyOptions(
   po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                    "produce help message for chain statistical options"             )
     (m_option_initialDiscardedPortions.c_str(),       po::value<std::string >()->default_value(UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV      ), "list of initial discarded portions for chain statistics"        )
@@ -776,6 +784,8 @@ void
 SequenceStatisticalOptions::getMyOptionValues(
   po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -1001,6 +1011,8 @@ SequenceStatisticalOptions::getMyOptionValues(
 const std::vector<double>&
 SequenceStatisticalOptions::initialDiscardedPortions() const
 {
+  queso_deprecated();
+
   return m_ov.m_initialDiscardedPortions;
 }
 
@@ -1008,252 +1020,336 @@ SequenceStatisticalOptions::initialDiscardedPortions() const
 unsigned int
 SequenceStatisticalOptions::meanMonitorPeriod() const
 {
+  queso_deprecated();
+
   return m_ov.m_meanMonitorPeriod;
 }
 
 bool
 SequenceStatisticalOptions::bmmRun() const
 {
+  queso_deprecated();
+
   return m_ov.m_bmmRun;
 }
 
 const std::vector<unsigned int>&
 SequenceStatisticalOptions::bmmLengths() const
 {
+  queso_deprecated();
+
   return m_ov.m_bmmLengths;
 }
 
 bool
 SequenceStatisticalOptions::bmmDisplay() const
 {
+  queso_deprecated();
+
   return m_ov.m_bmmDisplay;
 }
 
 bool
 SequenceStatisticalOptions::bmmWrite() const
 {
+  queso_deprecated();
+
   return m_ov.m_bmmWrite;
 }
 
 bool
 SequenceStatisticalOptions::fftCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_fftCompute;
 }
 
 unsigned int
 SequenceStatisticalOptions::fftParamId() const
 {
+  queso_deprecated();
+
   return m_ov.m_fftParamId;
 }
 
 unsigned int
 SequenceStatisticalOptions::fftSize() const
 {
+  queso_deprecated();
+
   return m_ov.m_fftSize;
 }
 
 bool
 SequenceStatisticalOptions::fftTestInversion() const
 {
+  queso_deprecated();
+
   return m_ov.m_fftTestInversion;
 }
 
 bool
 SequenceStatisticalOptions::fftWrite() const
 {
+  queso_deprecated();
+
   return m_ov.m_fftWrite;
 }
 
 bool
 SequenceStatisticalOptions::psdCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdCompute;
 }
 
 unsigned int
 SequenceStatisticalOptions::psdNumBlocks() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdNumBlocks;
 }
 
 double
 SequenceStatisticalOptions::psdHopSizeRatio() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdHopSizeRatio;
 }
 
 unsigned int
 SequenceStatisticalOptions::psdParamId() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdParamId;
 }
 
 bool
 SequenceStatisticalOptions::psdWrite() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdWrite;
 }
 
 bool
 SequenceStatisticalOptions::psdAtZeroCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdAtZeroCompute;
 }
 
 const std::vector<unsigned int>&
 SequenceStatisticalOptions::psdAtZeroNumBlocks() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdAtZeroNumBlocks;
 }
 
 double
 SequenceStatisticalOptions::psdAtZeroHopSizeRatio() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdAtZeroHopSizeRatio;
 }
 
 bool
 SequenceStatisticalOptions::psdAtZeroDisplay() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdAtZeroDisplay;
 }
 
 bool
 SequenceStatisticalOptions::psdAtZeroWrite() const
 {
+  queso_deprecated();
+
   return m_ov.m_psdAtZeroWrite;
 }
 
 bool
 SequenceStatisticalOptions::gewekeCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_gewekeCompute;
 }
 
 double
 SequenceStatisticalOptions::gewekeNaRatio() const
 {
+  queso_deprecated();
+
   return m_ov.m_gewekeNaRatio;
 }
 
 double
 SequenceStatisticalOptions::gewekeNbRatio() const
 {
+  queso_deprecated();
+
   return m_ov.m_gewekeNbRatio;
 }
 
 bool
 SequenceStatisticalOptions::gewekeDisplay() const
 {
+  queso_deprecated();
+
   return m_ov.m_gewekeDisplay;
 }
 
 bool
 SequenceStatisticalOptions::gewekeWrite() const
 {
+  queso_deprecated();
+
   return m_ov.m_gewekeWrite;
 }
 
 bool
 SequenceStatisticalOptions::meanStaccCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_meanStaccCompute;
 }
 
 bool
 SequenceStatisticalOptions::histCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_histCompute;
 }
 
 unsigned int
 SequenceStatisticalOptions::histNumInternalBins() const
 {
+  queso_deprecated();
+
   return m_ov.m_histNumInternalBins;
 }
 
 bool
 SequenceStatisticalOptions::cdfStaccCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_cdfStaccCompute;
 }
 
 unsigned int
 SequenceStatisticalOptions::cdfStaccNumEvalPositions() const
 {
+  queso_deprecated();
+
   return m_ov.m_cdfStaccNumEvalPositions;
 }
 #endif
 bool
 SequenceStatisticalOptions::autoCorrComputeViaDef() const
 {
+  queso_deprecated();
+
   return m_ov.m_autoCorrComputeViaDef;
 }
 
 bool
 SequenceStatisticalOptions::autoCorrComputeViaFft() const
 {
+  queso_deprecated();
+
   return m_ov.m_autoCorrComputeViaFft;
 }
 
 unsigned int
 SequenceStatisticalOptions::autoCorrSecondLag() const
 {
+  queso_deprecated();
+
   return m_ov.m_autoCorrSecondLag;
 }
 
 unsigned int
 SequenceStatisticalOptions::autoCorrLagSpacing() const
 {
+  queso_deprecated();
+
   return m_ov.m_autoCorrLagSpacing;
 }
 
 unsigned int
 SequenceStatisticalOptions::autoCorrNumLags() const
 {
+  queso_deprecated();
+
   return m_ov.m_autoCorrNumLags;
 }
 
 bool
 SequenceStatisticalOptions::autoCorrDisplay() const
 {
+  queso_deprecated();
+
   return m_ov.m_autoCorrDisplay;
 }
 
 bool
 SequenceStatisticalOptions::autoCorrWrite() const
 {
+  queso_deprecated();
+
   return m_ov.m_autoCorrWrite;
 }
 
 bool
 SequenceStatisticalOptions::kdeCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_kdeCompute;
 }
 
 unsigned int
 SequenceStatisticalOptions::kdeNumEvalPositions() const
 {
+  queso_deprecated();
+
   return m_ov.m_kdeNumEvalPositions;
 }
 
 bool
 SequenceStatisticalOptions::covMatrixCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_covMatrixCompute;
 }
 
 bool
 SequenceStatisticalOptions::corrMatrixCompute() const
 {
+  queso_deprecated();
+
   return m_ov.m_corrMatrixCompute;
 }
 
 void
 SequenceStatisticalOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os << "\n" << m_option_initialDiscardedPortions << " = ";
   for (unsigned int i = 0; i < m_ov.m_initialDiscardedPortions.size(); ++i) {
     os << m_ov.m_initialDiscardedPortions[i] << " ";
@@ -1314,6 +1410,8 @@ SequenceStatisticalOptions::print(std::ostream& os) const
 std::ostream&
 operator<<(std::ostream& os, const SequenceStatisticalOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
