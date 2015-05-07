@@ -833,6 +833,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
   m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
+  queso_deprecated();
+
   queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the absence of an options input file");
 }
 // Constructor 2------------------------------------
@@ -908,6 +910,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
   m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
+  queso_deprecated();
+
   queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if ((m_env.subDisplayFile() != NULL ) &&
@@ -1003,6 +1007,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
   m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
+  queso_deprecated();
+
   m_ov.m_dataOutputFileName                        = mlOptions.m_dataOutputFileName;
   m_ov.m_dataOutputAllowAll                        = mlOptions.m_dataOutputAllowAll;
   m_ov.m_dataOutputAllowedSet                      = mlOptions.m_dataOutputAllowedSet;
@@ -1082,6 +1088,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 // Destructor --------------------------------------
 MetropolisHastingsSGOptions::~MetropolisHastingsSGOptions()
 {
+  queso_deprecated();
+
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptionsObj;
   if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptionsObj;
@@ -1093,6 +1101,8 @@ MetropolisHastingsSGOptions::~MetropolisHastingsSGOptions()
 void
 MetropolisHastingsSGOptions::scanOptionsValues()
 {
+  queso_deprecated();
+
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -1125,6 +1135,8 @@ MetropolisHastingsSGOptions::scanOptionsValues()
 void
 MetropolisHastingsSGOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os <<         m_option_dataOutputFileName                         << " = " << m_ov.m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowAll                         << " = " << m_ov.m_dataOutputAllowAll
      << "\n" << m_option_dataOutputAllowedSet << " = ";
@@ -1209,6 +1221,8 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
 void
 MetropolisHastingsSGOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                                                "produce help msg for Bayesian Metropolis-Hastings"          )
     (m_option_dataOutputFileName.c_str(),                         po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                           ), "name of generic output file"                                )
@@ -1274,6 +1288,8 @@ MetropolisHastingsSGOptions::defineMyOptions(po::options_description& optionsDes
 void
 MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if ((m_env.subDisplayFile()) &&
         (m_ov.m_totallyMute == false)) {
@@ -1587,6 +1603,8 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
 
 std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;
