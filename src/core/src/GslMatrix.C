@@ -153,7 +153,7 @@ GslMatrix::GslMatrix(const GslMatrix& B) // can be a rectangular matrix
   m_isSingular   (false)
 {
   queso_require_msg(m_mat, "null vector generated");
-  this->Matrix::copy(B);
+  this->Matrix::base_copy(B);
   this->copy(B);
 }
 
@@ -244,6 +244,7 @@ GslMatrix::operator()(unsigned int i, unsigned int j) const
 void
 GslMatrix::copy(const GslMatrix& src)
 {
+  // FIXME - should we be calling Matrix::base_copy here? - RHS
   this->resetLU();
   int iRC;
   iRC = gsl_matrix_memcpy(this->m_mat, src.m_mat);

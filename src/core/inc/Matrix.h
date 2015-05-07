@@ -109,8 +109,8 @@ public:
   //@}
 
 protected:
-  //! Copies matrix \c src to \c this matrix.
-  virtual void                    copy                (const Matrix& src);
+  //! Copies base data from matrix \c src to \c this matrix.
+  virtual void                    base_copy           (const Matrix& src);
 
   //! QUESO environment variable.
   const   BaseEnvironment& m_env;

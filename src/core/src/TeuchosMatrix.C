@@ -165,7 +165,7 @@ TeuchosMatrix::TeuchosMatrix(const TeuchosMatrix& B) // can be a rectangular mat
   m_mat.shape    (B.numRowsLocal(),B.numCols());
   m_LU.shape(0,0);
 
-  this->Matrix::copy(B);
+  this->Matrix::base_copy(B);
   this->copy(B);
 }
 
@@ -1930,6 +1930,7 @@ TeuchosMatrix::subWriteContents(
 void
 TeuchosMatrix::copy(const TeuchosMatrix& src) //dummy
 {
+  // FIXME - should we be calling Matrix::base_copy here? - RHS
   this->resetLU();
   unsigned int i,j, nrows=src.numRowsLocal(), ncols=src.numCols();
 
