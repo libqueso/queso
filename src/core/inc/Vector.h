@@ -110,8 +110,8 @@ public:
 
 protected:
 
-  //! Copies vector \c src to \c this matrix.
-  virtual void                    copy                (const Vector& src);
+  //! Copies base data from vector \c src to \c this vector
+  virtual void                    base_copy           (const Vector& src);
 
   //! Environment variable.
   const BaseEnvironment& m_env;
