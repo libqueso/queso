@@ -93,7 +93,9 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // emulator_data_precision(1)
 
   // Construct covariance matrix
-  unsigned int totalDim = this->m_numExperiments + this->m_numSimulations;
+  unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;
+  unsigned int numOutputs = this->m_experimentOutputSpace.dimLocal();
+  unsigned int totalOutputs = totalRuns * numOutputs;
   double prodScenario = 1.0;
   double prodParameter = 1.0;
   double prodDiscrepancy = 1.0;
@@ -101,7 +103,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   unsigned int dimParameter = (this->m_parameterSpace).dimLocal();
 
   // This is cumbersome.  All I want is a matrix.
-  VectorSpace<V, M> gpSpace(this->m_scenarioSpace.env(), "", totalDim, NULL);
+  VectorSpace<V, M> gpSpace(this->m_scenarioSpace.env(), "",
+                            totalOutputs, NULL);
   V residual(gpSpace.zeroVector());
   M covMatrix(residual);
 
@@ -111,8 +114,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   V *parameter2;
 
   // This for loop is a disaster and could do with a *lot* of optimisation
-  for (unsigned int i = 0; i < totalDim; i++) {
-    for (unsigned int j = 0; j < totalDim; j++) {
+  for (unsigned int i = 0; i < totalRuns; i++) {
+    for (unsigned int j = 0; j < totalRuns; j++) {
       // Decide whether to do experiment part of the covariance matrix
       // Get i-th simulation-parameter pair
       if (i < this->m_numExperiments) {
@@ -163,9 +166,13 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                   ((*parameter1)[k] - (*parameter2)[k]));
       }
 
+      // emulator precision
       double emPrecision = domainVector[dimParameter+1];
-      covMatrix(i, j) = prodScenario * prodParameter /
-                        emPrecision;  // emulator precision
+
+      for (unsigned int k = 0; k != numOutputs; ++k)
+        for (unsigned int l = 0; l != numOutputs; ++l)
+          covMatrix(i*numOutputs+k, j*numOutputs+l) =
+            prodScenario * prodParameter / emPrecision;
 
       delete scenario1;
       delete scenario2;
@@ -186,9 +193,13 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                                             ((*scenario1)[k] - (*scenario2)[k]));
         }
 
-        covMatrix(i, j) += prodDiscrepancy /
-                           domainVector[discrepancyCorrStrStart-1];
-        covMatrix(i, j) += (this->m_experimentErrors)(i, j);
+        for (unsigned int k = 0; k != numOutputs; ++k)
+          for (unsigned int l = 0; l != numOutputs; ++l) {
+            covMatrix(i*numOutputs+k, j*numOutputs+l) +=
+              prodDiscrepancy / domainVector[discrepancyCorrStrStart-1];
+            covMatrix(i*numOutputs+k, j*numOutputs+l) +=
+              (this->m_experimentErrors)(i*numOutputs+k, j*numOutputs+l);
+          }
 
         delete scenario1;
         delete scenario2;
@@ -202,17 +213,20 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                           dimScenario +
                           dimScenario;  // yum
     double nugget = 1.0 / domainVector[dimSum-1];
-    covMatrix(i, i) += nugget;
+    for (unsigned int k = 0; k != numOutputs; ++k)
+      covMatrix(i*numOutputs+k, i*numOutputs+k) += nugget;
   }
 
   // Form residual = D - mean
   for (unsigned int i = 0; i < this->m_numExperiments; i++) {
-    // Scalar so ok -- will need updating for nonscalar case
-    residual[i] = (*((this->m_experimentOutputs)[i]))[0];
+    for (unsigned int k = 0; k != numOutputs; ++k)
+      residual[i*numOutputs+k] =
+        (*((this->m_experimentOutputs)[i]))[k];
   }
   for (unsigned int i = 0; i < this->m_numSimulations; i++) {
-    // Scalar so ok -- will need updating for nonscalar case
-    residual[i+this->m_numExperiments] = (*((this->m_simulationOutputs)[i]))[0];
+    for (unsigned int k = 0; k != numOutputs; ++k)
+      residual[(i+this->m_numExperiments)*numOutputs+k] =
+        (*((this->m_simulationOutputs)[i]))[k];
   }
 
   // Solve covMatrix * sol = residual
@@ -220,9 +234,11 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
   // There's no dot product function in GslVector.
   double minus_2_log_lhd = 0.0;
-  for (unsigned int i = 0; i < totalDim; i++) {
+  for (unsigned int i = 0; i < totalOutputs; i++) {
     minus_2_log_lhd += sol[i] * residual[i];
   }
+
+std::cout << "minus_2_log_lhd = " << minus_2_log_lhd << std::endl;
 
   return -0.5 * minus_2_log_lhd;
 }
@@ -268,6 +284,11 @@ GPMSAFactory<V, M>::GPMSAFactory(
     m_numExperimentAdds(0),
     priors(7, (const BaseVectorRV<V, M> *)NULL)  // Needed for gcc 4.3.2
 {
+  // We should have the same number of outputs from both simulations
+  // and experiments
+  queso_assert_equal_to(simulationOutputSpace.dimGlobal(),
+                        experimentOutputSpace.dimGlobal());
+
   // DM: Not sure if the logic in these 3 if-blocks is correct
   if ((opts == NULL) && (this->m_env.optionsInputFileName() == "")) {
     queso_error_msg("Must options object or an input file");
