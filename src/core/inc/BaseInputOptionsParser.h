@@ -25,8 +25,6 @@
 #ifndef UQ_BASE_INPUT_OPTIONS_H
 #define UQ_BASE_INPUT_OPTIONS_H
 
-#include <queso/BaseInputOptionsParser.h>
-
 namespace QUESO {
 
 class BaseInputOptionsParser
