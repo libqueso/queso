@@ -326,6 +326,8 @@ BaseEnvironment::setOptionsInputFileAccessState(bool newState) const
 const boost::program_options::options_description&
 BaseEnvironment::allOptionsDesc() const
 {
+  queso_deprecated();
+
   return *m_allOptionsDesc;
 }
 #endif
@@ -333,6 +335,8 @@ BaseEnvironment::allOptionsDesc() const
 boost::program_options::variables_map&
 BaseEnvironment::allOptionsMap() const
 {
+  queso_deprecated();
+
   queso_require_msg(m_allOptionsMap, "m_allOptionsMap variable is NULL");
   return *m_allOptionsMap;
 }
@@ -340,6 +344,8 @@ BaseEnvironment::allOptionsMap() const
 void
 BaseEnvironment::scanInputFileForMyOptions(const boost::program_options::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
   // If you want to use command line options, the following line does *not* work outside 'main.C',
   // e.g., in the constructor of FullEnvironment:
