@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 #include <queso/Environment.h>
 
 #ifndef UQ_ENVIRONMENT_OPTIONS_H
@@ -61,7 +61,7 @@ namespace QUESO {
  *  EnvOptionsValues is responsible for this task.
  */
 
-class EnvOptionsValues : public BaseInputOptions
+class EnvOptionsValues : public BoostInputOptionsParser
 {
 public:
   //! @name Constructor/Destructor methods

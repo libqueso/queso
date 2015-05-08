@@ -39,7 +39,7 @@ McOptionsValues::McOptionsValues(
 #endif
   )
   :
-    BaseInputOptions(),
+    BoostInputOptionsParser(),
     m_prefix                          ("mc_"),
     m_dataOutputFileName         (UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV     ),
   //m_dataOutputAllowedSet       (),
@@ -102,7 +102,7 @@ McOptionsValues::McOptionsValues(
   const BaseEnvironment * env, const char * prefix
   )
   :
-    BaseInputOptions(env),
+    BoostInputOptionsParser(env),
     m_prefix                          ((std::string)(prefix) + "mc_"),
     m_dataOutputFileName         (UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV     ),
   //m_dataOutputAllowedSet       (),

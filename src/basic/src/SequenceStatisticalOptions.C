@@ -32,7 +32,7 @@ namespace QUESO {
 
 SsOptionsValues::SsOptionsValues()
   :
-    BaseInputOptions(),
+    BoostInputOptionsParser(),
     m_prefix                          ("stats_"),
     m_initialDiscardedPortions(0                                           ),//,0.),
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -127,7 +127,7 @@ SsOptionsValues::SsOptionsValues()
 SsOptionsValues::SsOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
-    BaseInputOptions(env),
+    BoostInputOptionsParser(env),
     m_prefix                          ((std::string)(prefix) + "stats_"),
     m_initialDiscardedPortions(0                                           ),//,0.),
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS

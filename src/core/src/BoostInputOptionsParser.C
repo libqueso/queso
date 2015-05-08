@@ -23,11 +23,11 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 namespace QUESO {
 
-BaseInputOptions::BaseInputOptions(const BaseEnvironment * env)
+BoostInputOptionsParser::BoostInputOptionsParser(const BaseEnvironment * env)
   :
     m_env(env),
     m_optionsDescription(new po::options_description("Input options")),
@@ -35,7 +35,7 @@ BaseInputOptions::BaseInputOptions(const BaseEnvironment * env)
 {
 }
 
-BaseInputOptions::BaseInputOptions()
+BoostInputOptionsParser::BoostInputOptionsParser()
   :
     m_env(NULL),
     m_optionsDescription(new po::options_description("Input options")),
@@ -43,7 +43,7 @@ BaseInputOptions::BaseInputOptions()
 {
 }
 
-BaseInputOptions::~BaseInputOptions()
+BoostInputOptionsParser::~BoostInputOptionsParser()
 {
   if (m_optionsDescription) {
     delete m_optionsDescription;
@@ -55,7 +55,7 @@ BaseInputOptions::~BaseInputOptions()
 }
 
 void
-BaseInputOptions::scanOptionsValues()
+BoostInputOptionsParser::scanOptionsValues()
 {
   queso_require_msg(m_optionsDescription, "m_optionsDescription variable is NULL");
 
@@ -78,7 +78,7 @@ BaseInputOptions::scanOptionsValues()
   }
 
   // if (m_env.subDisplayFile() != NULL) {
-  //   *m_env.subDisplayFile() << "In BaseInputOptions::scanOptionsValues()"
+  //   *m_env.subDisplayFile() << "In BoostInputOptionsParser::scanOptionsValues()"
   //                           << ": after reading values of options with prefix '" << m_prefix
   //                           << "', state of  object is:"
   //                           << "\n" << *this

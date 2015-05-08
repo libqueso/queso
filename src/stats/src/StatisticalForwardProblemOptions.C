@@ -35,7 +35,7 @@ namespace QUESO {
 // Default constructor -----------------------------
 SfpOptionsValues::SfpOptionsValues()
   :
-    BaseInputOptions(),
+    BoostInputOptionsParser(),
     m_prefix                     ("fp_"),
     m_computeSolution     (UQ_SFP_COMPUTE_SOLUTION_ODV     ),
     m_computeCovariances  (UQ_SFP_COMPUTE_COVARIANCES_ODV  ),
@@ -58,7 +58,7 @@ SfpOptionsValues::SfpOptionsValues()
 SfpOptionsValues::SfpOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
-    BaseInputOptions(env),
+    BoostInputOptionsParser(env),
     m_prefix                     ((std::string)(prefix) + "fp_"),
     m_computeSolution     (UQ_SFP_COMPUTE_SOLUTION_ODV     ),
     m_computeCovariances  (UQ_SFP_COMPUTE_COVARIANCES_ODV  ),

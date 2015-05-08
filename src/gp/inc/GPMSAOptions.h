@@ -22,7 +22,7 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #ifndef UQ_GPMSA_OPTIONS_H
 #define UQ_GPMSA_OPTIONS_H
@@ -37,7 +37,7 @@ namespace QUESO {
  * \brief This class defines the options that specify the behaviour of the Gaussian process emulator
  */
 
-class GPMSAOptions : public BaseInputOptions
+class GPMSAOptions : public BoostInputOptionsParser
 {
 public:
   //! Given prefix, read the input file for parameters named prefix_*

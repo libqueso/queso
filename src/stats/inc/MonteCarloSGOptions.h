@@ -27,7 +27,7 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_MOC_SG_FILENAME_FOR_NO_FILE "."
 
@@ -64,7 +64,7 @@ namespace QUESO {
  *  Monte Carlo sequence generator expects options for its methods. This class provides default
  * values for such options if no input file is available. */
 
-class McOptionsValues : public BaseInputOptions
+class McOptionsValues : public BoostInputOptionsParser
 {
 public:
   //! @name Constructor/Destructor methods

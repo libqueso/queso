@@ -31,7 +31,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   const BaseEnvironment& env,
   const char*                   prefix)
   :
-    BaseInputOptions(&env),
+    BoostInputOptionsParser(&env),
     m_prefix                                   ((std::string)(prefix) + ""),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -288,9 +288,9 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
 
   if (defaultOptions) this->copyOptionsValues(*defaultOptions);
 
-  // What the fuck?  I shouldn't need BaseInputOptions:: here but on g++ 4.7.3
-  // I get a compiler error if I don't do this.
-  this->BaseInputOptions::scanOptionsValues();
+  // What the fuck?  I shouldn't need BoostInputOptionsParser:: here but on
+  // g++ 4.7.3 I get a compiler error if I don't do this.
+  this->BoostInputOptionsParser::scanOptionsValues();
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_rawChainComputeStats) {

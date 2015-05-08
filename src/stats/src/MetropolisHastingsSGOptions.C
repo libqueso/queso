@@ -39,7 +39,7 @@ MhOptionsValues::MhOptionsValues(
 #endif
   )
   :
-    BaseInputOptions(),
+    BoostInputOptionsParser(),
     m_prefix                                           ("mh_"),
     m_dataOutputFileName                       (UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV),
     m_dataOutputAllowAll                       (UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV),
@@ -172,7 +172,7 @@ MhOptionsValues::MhOptionsValues(
   const char * prefix
   )
   :
-    BaseInputOptions(env),
+    BoostInputOptionsParser(env),
     m_prefix                                           ((std::string)(prefix) + "mh_"),
     m_dataOutputFileName                       (UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV),
     m_dataOutputAllowAll                       (UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV),

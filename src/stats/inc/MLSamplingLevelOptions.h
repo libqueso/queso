@@ -29,7 +29,7 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
@@ -113,7 +113,7 @@ namespace QUESO {
  * of the sequece generated. This class provides default values for such options if no
  * input file is available. */
 
-class MLSamplingLevelOptions : public BaseInputOptions
+class MLSamplingLevelOptions : public BoostInputOptionsParser
 {
 public:
   //! @name Constructor/Destructor methods

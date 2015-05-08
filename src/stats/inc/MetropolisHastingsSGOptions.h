@@ -28,7 +28,7 @@
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
 #include <queso/SequenceStatisticalOptions.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #undef  UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
@@ -108,7 +108,7 @@ namespace QUESO {
  * options if no input file is available.
  */
 
-class MhOptionsValues : public BaseInputOptions
+class MhOptionsValues : public BoostInputOptionsParser
 {
 public:
 

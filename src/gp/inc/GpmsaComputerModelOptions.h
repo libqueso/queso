@@ -26,7 +26,7 @@
 #define UQ_GCM_OPTIONS_H
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 #include <queso/SequenceStatisticalOptions.h>
 
 #define UQ_GCM_FILENAME_FOR_NO_FILE "."
@@ -56,7 +56,7 @@
 
 namespace QUESO {
 
-class GcmOptionsValues : public BaseInputOptions
+class GcmOptionsValues : public BoostInputOptionsParser
 {
 public:
   GcmOptionsValues            ();

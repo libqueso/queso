@@ -22,8 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef UQ_BASE_INPUT_OPTIONS_H
-#define UQ_BASE_INPUT_OPTIONS_H
+#ifndef UQ_BOOST_INPUT_OPTIONS_H
+#define UQ_BOOST_INPUT_OPTIONS_H
 
 namespace boost
 {
@@ -38,24 +38,24 @@ namespace QUESO {
 
 class BaseEnvironment;
 
-class BaseInputOptions
+class BoostInputOptionsParser
 {
 public:
   //! Constructor that sets the internal environment
-  BaseInputOptions(const BaseEnvironment * env);
+  BoostInputOptionsParser(const BaseEnvironment * env);
 
   //! Default constructor that sets m_env to NULL
   /*!
    * The use-case for m_env being NULL is that options are *not* read in from
    * a file but are instead wholly provided by the user.
    */
-  BaseInputOptions();
+  BoostInputOptionsParser();
 
   //! Destructor
   /*!
    * Deletes m_optionsDescription, but not m_env
    */
-  virtual ~BaseInputOptions();
+  virtual ~BoostInputOptionsParser();
 
   //! Calls the relevant QUESO BaseEnvironment methods to scan the input file
   void scanOptionsValues();
@@ -81,4 +81,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // UQ_BASE_INPUT_OPTIONS_H
+#endif  // UQ_BOOST_INPUT_OPTIONS_H

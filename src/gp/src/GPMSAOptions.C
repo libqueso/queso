@@ -42,7 +42,7 @@ GPMSAOptions::GPMSAOptions(
   const BaseEnvironment & env,
   const char * prefix)
   :
-  BaseInputOptions(&env),
+  BoostInputOptionsParser(&env),
   m_prefix((std::string)(prefix) + "gpmsa_"),
   m_emulatorPrecisionShape(UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV),
   m_emulatorPrecisionScale(UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV),

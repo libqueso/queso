@@ -30,7 +30,7 @@
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV   "0."
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -87,7 +87,7 @@
  */
 
 
-class SsOptionsValues : public BaseInputOptions
+class SsOptionsValues : public BoostInputOptionsParser
 {
 public:
   //! @name Constructor/Destructor methods

@@ -29,7 +29,7 @@ namespace QUESO {
 
 GcmOptionsValues::GcmOptionsValues()
   :
-    BaseInputOptions(),
+    BoostInputOptionsParser(),
     m_prefix                                ("gcm_"),
     m_checkAgainstPreviousSample     (UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ),
     m_dataOutputFileName             (UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ),
@@ -78,7 +78,7 @@ GcmOptionsValues::GcmOptionsValues()
 GcmOptionsValues::GcmOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
-    BaseInputOptions(env),
+    BoostInputOptionsParser(env),
     m_prefix                                ((std::string)(prefix) + "gcm_"),
     m_checkAgainstPreviousSample     (UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ),
     m_dataOutputFileName             (UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ),

@@ -26,7 +26,7 @@
 #define UQ_SIMULATION_MODEL_OPTIONS_H
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE "."
 
@@ -48,7 +48,7 @@
 
 namespace QUESO {
 
-class SmOptionsValues : public BaseInputOptions
+class SmOptionsValues : public BoostInputOptionsParser
 {
 public:
   SmOptionsValues();

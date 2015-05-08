@@ -29,7 +29,7 @@ namespace QUESO {
 
 SmOptionsValues::SmOptionsValues()
   :
-    BaseInputOptions(),
+    BoostInputOptionsParser(),
     m_prefix("sm_"),
     m_dataOutputFileName(UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV),
     m_dataOutputAllowAll(UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV),
@@ -66,7 +66,7 @@ SmOptionsValues::SmOptionsValues()
 SmOptionsValues::SmOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
-    BaseInputOptions(env),
+    BoostInputOptionsParser(env),
     m_prefix((std::string)(prefix) + "sm_"),
     m_dataOutputFileName(UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV),
     m_dataOutputAllowAll(UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV),

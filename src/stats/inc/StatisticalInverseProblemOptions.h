@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 #include <queso/Environment.h>
 
 #ifndef UQ_SIP_OPTIONS_H
@@ -56,7 +56,7 @@ namespace QUESO {
  * values for such options if no input file is available.
  */
 
-class SipOptionsValues : public BaseInputOptions
+class SipOptionsValues : public BoostInputOptionsParser
 {
 public:
   //! @name Constructor/Destructor methods

@@ -29,7 +29,7 @@ namespace QUESO {
 
 MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* prefix)
   :
-    BaseInputOptions(&env),
+    BoostInputOptionsParser(&env),
     m_prefix                               ((std::string)(prefix) + "ml_"                        ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
     m_restartOutput_levelPeriod            (UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV       ),

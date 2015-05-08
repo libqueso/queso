@@ -25,7 +25,7 @@
 #define UQ_INFMCMC_OPTIONS_H
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 namespace QUESO {
 
@@ -37,7 +37,7 @@ namespace QUESO {
  * \brief This class defines the options that specify the behaviour of the MCMC sampler
  */
 
-class InfiniteDimensionalMCMCSamplerOptions : public BaseInputOptions
+class InfiniteDimensionalMCMCSamplerOptions : public BoostInputOptionsParser
 {
 public:
   //! Given prefix, read the input file for parameters named prefix_*

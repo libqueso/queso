@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 #include <queso/Environment.h>
 
 #ifndef UQ_SFP_OPTIONS_H
@@ -54,7 +54,7 @@ namespace QUESO {
  * In order to solve a Statistical Forward Problem (SFP), QUESO expects some options for its methods to be
  * fully defined. This class provides default values for such options if no input file is available. */
 
-class SfpOptionsValues : public BaseInputOptions
+class SfpOptionsValues : public BoostInputOptionsParser
 {
 public:
   //! Constructor/Destructor methods

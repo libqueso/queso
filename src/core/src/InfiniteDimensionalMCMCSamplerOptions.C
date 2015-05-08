@@ -35,7 +35,7 @@ namespace QUESO {
 InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     const BaseEnvironment& env,
     const char * prefix)
-  : BaseInputOptions(&env),
+  : BoostInputOptionsParser(&env),
     m_prefix((std::string)(prefix) + "infmcmc_"),
     m_dataOutputDirName(UQ_INF_DATA_OUTPUT_DIR_NAME_ODV),
     m_dataOutputFileName(UQ_INF_DATA_OUTPUT_FILE_NAME_ODV),

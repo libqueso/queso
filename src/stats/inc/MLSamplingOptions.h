@@ -27,7 +27,7 @@
 
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE "."
 
@@ -65,7 +65,7 @@ namespace QUESO {
  *  Multilevel sequence generator expects options for its methods. This class provides default
  *  values for such options if no input file is available. */
 
-class MLSamplingOptions : public BaseInputOptions
+class MLSamplingOptions : public BoostInputOptionsParser
 {
 public:
   //! @name Constructor/Destructor methods

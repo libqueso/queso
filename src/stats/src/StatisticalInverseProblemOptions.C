@@ -35,7 +35,7 @@ namespace QUESO {
 // Default constructor -----------------------------
 SipOptionsValues::SipOptionsValues()
   :
-    BaseInputOptions(),
+    BoostInputOptionsParser(),
   m_prefix("ip_"),
   m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
   m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),
@@ -54,7 +54,7 @@ SipOptionsValues::SipOptionsValues()
 SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
-    BaseInputOptions(env),
+    BoostInputOptionsParser(env),
   m_prefix((std::string)(prefix) + "ip_"),
   m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
   m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),

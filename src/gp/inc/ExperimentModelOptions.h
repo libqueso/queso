@@ -26,7 +26,7 @@
 #define UQ_EXPERIMENT_MODEL_OPTIONS_H
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 // _ODV = option default value
 #define UQ_EXPERIMENT_MODEL_G_VALUES_ODV ""
@@ -39,7 +39,7 @@
 
 namespace QUESO {
 
-class EmOptionsValues : public BaseInputOptions
+class EmOptionsValues : public BoostInputOptionsParser
 {
 public:
   EmOptionsValues();
