@@ -25,6 +25,8 @@
 #ifndef UQ_BOOST_INPUT_OPTIONS_H
 #define UQ_BOOST_INPUT_OPTIONS_H
 
+#include <queso/BaseInputOptionsParser.h>
+
 namespace boost
 {
   namespace program_options
@@ -38,7 +40,7 @@ namespace QUESO {
 
 class BaseEnvironment;
 
-class BoostInputOptionsParser
+class BoostInputOptionsParser : public BaseInputOptionsParser
 {
 public:
   //! Constructor that sets the internal environment
