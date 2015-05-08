@@ -125,6 +125,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         // Experiment parameter (unknown)
         parameter1 = new V(*((this->m_simulationParameters)[0]));
         for (unsigned int k = 0; k < dimParameter; k++) {
+          queso_assert (!isnan(domainVector[k]));
           (*parameter1)[k] = domainVector[k];
         }
       }
@@ -139,6 +140,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         scenario2 = new V(*((this->m_experimentScenarios)[j]));
         parameter2 = new V(*((this->m_simulationParameters)[0]));
         for (unsigned int k = 0; k < dimParameter; k++) {
+          queso_assert (!isnan(domainVector[k]));
           (*parameter2)[k] = domainVector[k];
         }
       }
@@ -159,15 +161,23 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                                        ((*scenario1)[k] - (*scenario2)[k]));
       }
 
+      queso_assert (!isnan(prodScenario));
+
       for (unsigned int k = 0; k < dimParameter; k++) {
+        queso_assert (!isnan(domainVector[emulatorCorrStrStart+dimScenario+k]));
+        queso_assert (!isnan((*parameter1)[k]));
+        queso_assert (!isnan((*parameter2)[k]));
         prodParameter *= std::pow(
             domainVector[emulatorCorrStrStart+dimScenario+k],
             4.0 * ((*parameter1)[k] - (*parameter2)[k]) *
                   ((*parameter1)[k] - (*parameter2)[k]));
       }
 
+      queso_assert (!isnan(prodParameter));
+
       // emulator precision
       double emPrecision = domainVector[dimParameter+1];
+      queso_assert_greater(emPrecision, 0);
 
       for (unsigned int k = 0; k != numOutputs; ++k)
         for (unsigned int l = 0; l != numOutputs; ++l)
@@ -193,12 +203,24 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                                             ((*scenario1)[k] - (*scenario2)[k]));
         }
 
+        const double denominator = domainVector[discrepancyCorrStrStart-1]; 
+        queso_assert_greater(denominator, 0);
+        queso_assert (!isnan(prodDiscrepancy));
+
         for (unsigned int k = 0; k != numOutputs; ++k)
           for (unsigned int l = 0; l != numOutputs; ++l) {
-            covMatrix(i*numOutputs+k, j*numOutputs+l) +=
-              prodDiscrepancy / domainVector[discrepancyCorrStrStart-1];
-            covMatrix(i*numOutputs+k, j*numOutputs+l) +=
-              (this->m_experimentErrors)(i*numOutputs+k, j*numOutputs+l);
+            {
+              covMatrix(i*numOutputs+k, j*numOutputs+l) +=
+                prodDiscrepancy / denominator;
+
+              const double experimentalError = 
+                (this->m_experimentErrors)(i*numOutputs+k, j*numOutputs+l);
+
+              queso_assert_greater_equal (experimentalError, 0);
+
+              covMatrix(i*numOutputs+k, j*numOutputs+l) +=
+                experimentalError;
+            }
           }
 
         delete scenario1;
@@ -212,7 +234,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                           dimParameter +
                           dimScenario +
                           dimScenario;  // yum
+
+    queso_assert_greater(domainVector[dimSum-1], 0);
     double nugget = 1.0 / domainVector[dimSum-1];
+
     for (unsigned int k = 0; k != numOutputs; ++k)
       covMatrix(i*numOutputs+k, i*numOutputs+k) += nugget;
   }
@@ -237,6 +262,19 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   for (unsigned int i = 0; i < totalOutputs; i++) {
     minus_2_log_lhd += sol[i] * residual[i];
   }
+
+if (isnan(minus_2_log_lhd))
+  for (unsigned int i = 0; i < totalOutputs; i++) {
+    if (isnan(sol[i]))
+      std::cout << "NaN sol[" << i << ']' << std::endl;
+    if (isnan(residual[i]))
+      std::cout << "NaN residual[" << i << ']' << std::endl;
+
+    std::cout << "Covariance Matrix:" << std::endl;
+    covMatrix.print(std::cout);
+  }
+
+// std::cout << "minus_2_log_lhd = " << minus_2_log_lhd << std::endl;
 
   return -0.5 * minus_2_log_lhd;
 }
