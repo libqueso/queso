@@ -106,7 +106,7 @@ EmOptionsValues::defineOptions()
 void
 EmOptionsValues::getOptionValues()
 {
-  if (m_env->allOptionsMap().count(m_option_help)) {
+  if ((*m_optionsMap).count(m_option_help)) {
     if (m_env->subDisplayFile()) {
       *m_env->subDisplayFile() << *m_optionsDescription
                               << std::endl;
@@ -114,8 +114,8 @@ EmOptionsValues::getOptionValues()
   }
 
   std::vector<double> tmpValues(0,0.);
-  if (m_env->allOptionsMap().count(m_option_Gvalues)) {
-    std::string inputString = ((const po::variable_value&) m_env->allOptionsMap()[m_option_Gvalues]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_Gvalues)) {
+    std::string inputString = ((const po::variable_value&) (*m_optionsMap)[m_option_Gvalues]).as<std::string>();
     MiscReadDoublesFromString(inputString,tmpValues);
     //if (m_env->subDisplayFile()) {
     //  *m_env->subDisplayFile() << "In ExperimentModelOptions::getMyOptionValues(): tmpValues =";
@@ -132,28 +132,28 @@ EmOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_a_v)) {
-    m_a_v = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_v]).as<double>();
+  if ((*m_optionsMap).count(m_option_a_v)) {
+    m_a_v = ((const po::variable_value&) (*m_optionsMap)[m_option_a_v]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_b_v)) {
-    m_b_v = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_v]).as<double>();
+  if ((*m_optionsMap).count(m_option_b_v)) {
+    m_b_v = ((const po::variable_value&) (*m_optionsMap)[m_option_b_v]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_a_rho_v)) {
-    m_a_rho_v = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_rho_v]).as<double>();
+  if ((*m_optionsMap).count(m_option_a_rho_v)) {
+    m_a_rho_v = ((const po::variable_value&) (*m_optionsMap)[m_option_a_rho_v]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_b_rho_v)) {
-    m_b_rho_v = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_rho_v]).as<double>();
+  if ((*m_optionsMap).count(m_option_b_rho_v)) {
+    m_b_rho_v = ((const po::variable_value&) (*m_optionsMap)[m_option_b_rho_v]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_a_y)) {
-    m_a_y = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_y]).as<double>();
+  if ((*m_optionsMap).count(m_option_a_y)) {
+    m_a_y = ((const po::variable_value&) (*m_optionsMap)[m_option_a_y]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_b_y)) {
-    m_b_y = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_y]).as<double>();
+  if ((*m_optionsMap).count(m_option_b_y)) {
+    m_b_y = ((const po::variable_value&) (*m_optionsMap)[m_option_b_y]).as<double>();
   }
 }
 

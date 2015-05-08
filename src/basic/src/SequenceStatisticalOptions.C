@@ -288,17 +288,17 @@ SsOptionsValues::defineOptions()
 void
 SsOptionsValues::getOptionValues()
 {
-  if (m_env->allOptionsMap().count(m_option_help)) {
+  if ((*m_optionsMap).count(m_option_help)) {
     if (m_env->subDisplayFile()) {
       *m_env->subDisplayFile() << (*m_optionsDescription)
                              << std::endl;
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_initialDiscardedPortions)) {
+  if ((*m_optionsMap).count(m_option_initialDiscardedPortions)) {
     m_initialDiscardedPortions.clear();
     std::vector<double> tmpPortions(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_initialDiscardedPortions].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_initialDiscardedPortions].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpPortions);
     //if (m_env->subDisplayFile()) {
     //  *m_env->subDisplayFile() << "In SequenceStatisticalOptions::getMyOptionValues(): percents = ";
@@ -317,18 +317,18 @@ SsOptionsValues::getOptionValues()
   }
 
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-  if (m_env->allOptionsMap().count(m_option_mean_monitorPeriod)) {
-    m_meanMonitorPeriod = m_env->allOptionsMap()[m_option_mean_monitorPeriod].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_mean_monitorPeriod)) {
+    m_meanMonitorPeriod = (*m_optionsMap)[m_option_mean_monitorPeriod].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_bmm_run)) {
-    m_bmmRun = m_env->allOptionsMap()[m_option_bmm_run].as<bool>();
+  if ((*m_optionsMap).count(m_option_bmm_run)) {
+    m_bmmRun = (*m_optionsMap)[m_option_bmm_run].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_bmm_lengths)) {
+  if ((*m_optionsMap).count(m_option_bmm_lengths)) {
     m_bmmLengths.clear();
     std::vector<double> tmpLengths(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_bmm_lengths].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_bmm_lengths].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpLengths);
     //if (m_env->subDisplayFile()) {
     //  *m_env->subDisplayFile() << "In SequenceStatisticalOptions::getMyOptionValues(): lengths for BMM = ";
@@ -346,54 +346,54 @@ SsOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_fft_compute)) {
-    m_fftCompute = m_env->allOptionsMap()[m_option_fft_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_fft_compute)) {
+    m_fftCompute = (*m_optionsMap)[m_option_fft_compute].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_fft_paramId)) {
-    m_fftParamId = m_env->allOptionsMap()[m_option_fft_paramId].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_fft_paramId)) {
+    m_fftParamId = (*m_optionsMap)[m_option_fft_paramId].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_fft_size)) {
-    m_fftSize = m_env->allOptionsMap()[m_option_fft_size].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_fft_size)) {
+    m_fftSize = (*m_optionsMap)[m_option_fft_size].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_fft_testInversion)) {
-    m_fftTestInversion = m_env->allOptionsMap()[m_option_fft_testInversion].as<bool>();
+  if ((*m_optionsMap).count(m_option_fft_testInversion)) {
+    m_fftTestInversion = (*m_optionsMap)[m_option_fft_testInversion].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_fft_write)) {
-    m_fftWrite = m_env->allOptionsMap()[m_option_fft_write].as<bool>();
+  if ((*m_optionsMap).count(m_option_fft_write)) {
+    m_fftWrite = (*m_optionsMap)[m_option_fft_write].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_psd_compute)) {
-    m_psdCompute = m_env->allOptionsMap()[m_option_psd_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_psd_compute)) {
+    m_psdCompute = (*m_optionsMap)[m_option_psd_compute].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_psd_numBlocks)) {
-    m_psdNumBlocks = m_env->allOptionsMap()[m_option_psd_numBlocks].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_psd_numBlocks)) {
+    m_psdNumBlocks = (*m_optionsMap)[m_option_psd_numBlocks].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_psd_hopSizeRatio)) {
-    m_psdHopSizeRatio = m_env->allOptionsMap()[m_option_psd_hopSizeRatio].as<double>();
+  if ((*m_optionsMap).count(m_option_psd_hopSizeRatio)) {
+    m_psdHopSizeRatio = (*m_optionsMap)[m_option_psd_hopSizeRatio].as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_psd_paramId)) {
-    m_psdParamId = m_env->allOptionsMap()[m_option_psd_paramId].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_psd_paramId)) {
+    m_psdParamId = (*m_optionsMap)[m_option_psd_paramId].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_psd_write)) {
-    m_psdWrite = m_env->allOptionsMap()[m_option_psd_write].as<bool>();
+  if ((*m_optionsMap).count(m_option_psd_write)) {
+    m_psdWrite = (*m_optionsMap)[m_option_psd_write].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_psdAtZero_compute)) {
-    m_psdAtZeroCompute = m_env->allOptionsMap()[m_option_psdAtZero_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_psdAtZero_compute)) {
+    m_psdAtZeroCompute = (*m_optionsMap)[m_option_psdAtZero_compute].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_psdAtZero_numBlocks)) {
+  if ((*m_optionsMap).count(m_option_psdAtZero_numBlocks)) {
     m_psdAtZeroNumBlocks.clear();
     std::vector<double> tmpNumBlocks(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_psdAtZero_numBlocks].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_psdAtZero_numBlocks].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpNumBlocks);
     //if (m_env->subDisplayFile()) {
     //  *m_env->subDisplayFile() << "In SequenceStatisticalOptions::getMyOptionValues(): numBlocks for psdAtZero = ";
@@ -411,100 +411,100 @@ SsOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_psdAtZero_hopSizeRatio)) {
-    m_psdAtZeroHopSizeRatio = m_env->allOptionsMap()[m_option_psdAtZero_hopSizeRatio].as<double>();
+  if ((*m_optionsMap).count(m_option_psdAtZero_hopSizeRatio)) {
+    m_psdAtZeroHopSizeRatio = (*m_optionsMap)[m_option_psdAtZero_hopSizeRatio].as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_psdAtZero_display)) {
-    m_psdAtZeroDisplay = m_env->allOptionsMap()[m_option_psdAtZero_display].as<bool>();
+  if ((*m_optionsMap).count(m_option_psdAtZero_display)) {
+    m_psdAtZeroDisplay = (*m_optionsMap)[m_option_psdAtZero_display].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_psdAtZero_write)) {
-    m_psdAtZeroWrite = m_env->allOptionsMap()[m_option_psdAtZero_write].as<bool>();
+  if ((*m_optionsMap).count(m_option_psdAtZero_write)) {
+    m_psdAtZeroWrite = (*m_optionsMap)[m_option_psdAtZero_write].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_geweke_compute)) {
-    m_gewekeCompute = m_env->allOptionsMap()[m_option_geweke_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_geweke_compute)) {
+    m_gewekeCompute = (*m_optionsMap)[m_option_geweke_compute].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_geweke_naRatio)) {
-    m_gewekeNaRatio = m_env->allOptionsMap()[m_option_geweke_naRatio].as<double>();
+  if ((*m_optionsMap).count(m_option_geweke_naRatio)) {
+    m_gewekeNaRatio = (*m_optionsMap)[m_option_geweke_naRatio].as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_geweke_nbRatio)) {
-    m_gewekeNbRatio = m_env->allOptionsMap()[m_option_geweke_nbRatio].as<double>();
+  if ((*m_optionsMap).count(m_option_geweke_nbRatio)) {
+    m_gewekeNbRatio = (*m_optionsMap)[m_option_geweke_nbRatio].as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_geweke_display)) {
-    m_gewekeDisplay = m_env->allOptionsMap()[m_option_geweke_display].as<bool>();
+  if ((*m_optionsMap).count(m_option_geweke_display)) {
+    m_gewekeDisplay = (*m_optionsMap)[m_option_geweke_display].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_geweke_write)) {
-    m_gewekeWrite = m_env->allOptionsMap()[m_option_geweke_write].as<bool>();
+  if ((*m_optionsMap).count(m_option_geweke_write)) {
+    m_gewekeWrite = (*m_optionsMap)[m_option_geweke_write].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_meanStacc_compute)) {
-    m_meanStaccCompute = m_env->allOptionsMap()[m_option_meanStacc_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_meanStacc_compute)) {
+    m_meanStaccCompute = (*m_optionsMap)[m_option_meanStacc_compute].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_hist_compute)) {
-    m_histCompute = m_env->allOptionsMap()[m_option_hist_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_hist_compute)) {
+    m_histCompute = (*m_optionsMap)[m_option_hist_compute].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_hist_numInternalBins)) {
-    m_histNumInternalBins = m_env->allOptionsMap()[m_option_hist_numInternalBins].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_hist_numInternalBins)) {
+    m_histNumInternalBins = (*m_optionsMap)[m_option_hist_numInternalBins].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_cdfStacc_compute)) {
-    m_cdfStaccCompute = m_env->allOptionsMap()[m_option_cdfStacc_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_cdfStacc_compute)) {
+    m_cdfStaccCompute = (*m_optionsMap)[m_option_cdfStacc_compute].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_cdfStacc_numEvalPositions)) {
-    m_cdfStaccNumEvalPositions = m_env->allOptionsMap()[m_option_cdfStacc_numEvalPositions].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_cdfStacc_numEvalPositions)) {
+    m_cdfStaccNumEvalPositions = (*m_optionsMap)[m_option_cdfStacc_numEvalPositions].as<unsigned int>();
   }
 #endif
-  if (m_env->allOptionsMap().count(m_option_autoCorr_computeViaDef)) {
-    m_autoCorrComputeViaDef = m_env->allOptionsMap()[m_option_autoCorr_computeViaDef].as<bool>();
+  if ((*m_optionsMap).count(m_option_autoCorr_computeViaDef)) {
+    m_autoCorrComputeViaDef = (*m_optionsMap)[m_option_autoCorr_computeViaDef].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_autoCorr_computeViaFft)) {
-    m_autoCorrComputeViaFft = m_env->allOptionsMap()[m_option_autoCorr_computeViaFft].as<bool>();
+  if ((*m_optionsMap).count(m_option_autoCorr_computeViaFft)) {
+    m_autoCorrComputeViaFft = (*m_optionsMap)[m_option_autoCorr_computeViaFft].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_autoCorr_secondLag)) {
-    m_autoCorrSecondLag = m_env->allOptionsMap()[m_option_autoCorr_secondLag].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_autoCorr_secondLag)) {
+    m_autoCorrSecondLag = (*m_optionsMap)[m_option_autoCorr_secondLag].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_autoCorr_lagSpacing)) {
-    m_autoCorrLagSpacing = m_env->allOptionsMap()[m_option_autoCorr_lagSpacing].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_autoCorr_lagSpacing)) {
+    m_autoCorrLagSpacing = (*m_optionsMap)[m_option_autoCorr_lagSpacing].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_autoCorr_numLags)) {
-    m_autoCorrNumLags = m_env->allOptionsMap()[m_option_autoCorr_numLags].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_autoCorr_numLags)) {
+    m_autoCorrNumLags = (*m_optionsMap)[m_option_autoCorr_numLags].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_autoCorr_display)) {
-    m_autoCorrDisplay = m_env->allOptionsMap()[m_option_autoCorr_display].as<bool>();
+  if ((*m_optionsMap).count(m_option_autoCorr_display)) {
+    m_autoCorrDisplay = (*m_optionsMap)[m_option_autoCorr_display].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_autoCorr_write)) {
-    m_autoCorrWrite = m_env->allOptionsMap()[m_option_autoCorr_write].as<bool>();
+  if ((*m_optionsMap).count(m_option_autoCorr_write)) {
+    m_autoCorrWrite = (*m_optionsMap)[m_option_autoCorr_write].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_kde_compute)) {
-    m_kdeCompute = m_env->allOptionsMap()[m_option_kde_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_kde_compute)) {
+    m_kdeCompute = (*m_optionsMap)[m_option_kde_compute].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_kde_numEvalPositions)) {
-    m_kdeNumEvalPositions = m_env->allOptionsMap()[m_option_kde_numEvalPositions].as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_kde_numEvalPositions)) {
+    m_kdeNumEvalPositions = (*m_optionsMap)[m_option_kde_numEvalPositions].as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_covMatrix_compute)) {
-    m_covMatrixCompute = m_env->allOptionsMap()[m_option_covMatrix_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_covMatrix_compute)) {
+    m_covMatrixCompute = (*m_optionsMap)[m_option_covMatrix_compute].as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_corrMatrix_compute)) {
-    m_corrMatrixCompute = m_env->allOptionsMap()[m_option_corrMatrix_compute].as<bool>();
+  if ((*m_optionsMap).count(m_option_corrMatrix_compute)) {
+    m_corrMatrixCompute = (*m_optionsMap)[m_option_corrMatrix_compute].as<bool>();
   }
 }
 

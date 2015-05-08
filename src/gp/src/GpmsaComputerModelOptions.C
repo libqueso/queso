@@ -171,32 +171,32 @@ GcmOptionsValues::defineOptions()
 void
 GcmOptionsValues::getOptionValues()
 {
-  if (m_env->allOptionsMap().count(m_option_help)) {
+  if ((*m_optionsMap).count(m_option_help)) {
     if (m_env->subDisplayFile()) {
       *m_env->subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_checkAgainstPreviousSample)) {
-    m_checkAgainstPreviousSample = ((const po::variable_value&) m_env->allOptionsMap()[m_option_checkAgainstPreviousSample]).as<bool>();
+  if ((*m_optionsMap).count(m_option_checkAgainstPreviousSample)) {
+    m_checkAgainstPreviousSample = ((const po::variable_value&) (*m_optionsMap)[m_option_checkAgainstPreviousSample]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputAllowAll)) {
-    m_dataOutputAllowAll = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputAllowAll]).as<bool>();
+  if ((*m_optionsMap).count(m_option_dataOutputAllowAll)) {
+    m_dataOutputAllowAll = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputAllowAll]).as<bool>();
   }
 
   if (m_dataOutputAllowAll) {
     m_dataOutputAllowedSet.insert(m_env->subId());
   }
-  else if (m_env->allOptionsMap().count(m_option_dataOutputAllowedSet)) {
+  else if ((*m_optionsMap).count(m_option_dataOutputAllowedSet)) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -207,31 +207,31 @@ GcmOptionsValues::getOptionValues()
   }
 
   //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), m_option_priorSeqNumSamples = " << m_option_priorSeqNumSamples << "___" << std::endl;
-  if (m_env->allOptionsMap().count(m_option_priorSeqNumSamples)) {
+  if ((*m_optionsMap).count(m_option_priorSeqNumSamples)) {
     //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), going to read m_option_priorSeqNumSamples..." << std::endl;
-    m_priorSeqNumSamples = ((const po::variable_value&) m_env->allOptionsMap()[m_option_priorSeqNumSamples]).as<unsigned int>();
+    m_priorSeqNumSamples = ((const po::variable_value&) (*m_optionsMap)[m_option_priorSeqNumSamples]).as<unsigned int>();
     //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), just read m_option_priorSeqNumSamples = " << m_priorSeqNumSamples << std::endl;
   }
 
-  if (m_env->allOptionsMap().count(m_option_priorSeqDataOutputFileName)) {
-    m_priorSeqDataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_priorSeqDataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_priorSeqDataOutputFileName)) {
+    m_priorSeqDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_priorSeqDataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_priorSeqDataOutputFileType)) {
-    m_priorSeqDataOutputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_priorSeqDataOutputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_priorSeqDataOutputFileType)) {
+    m_priorSeqDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_priorSeqDataOutputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_priorSeqDataOutputAllowAll)) {
-    m_priorSeqDataOutputAllowAll = ((const po::variable_value&) m_env->allOptionsMap()[m_option_priorSeqDataOutputAllowAll]).as<bool>();
+  if ((*m_optionsMap).count(m_option_priorSeqDataOutputAllowAll)) {
+    m_priorSeqDataOutputAllowAll = ((const po::variable_value&) (*m_optionsMap)[m_option_priorSeqDataOutputAllowAll]).as<bool>();
   }
 
   if (m_priorSeqDataOutputAllowAll) {
     m_priorSeqDataOutputAllowedSet.insert(m_env->subId());
   }
-  else if (m_env->allOptionsMap().count(m_option_priorSeqDataOutputAllowedSet)) {
+  else if ((*m_optionsMap).count(m_option_priorSeqDataOutputAllowedSet)) {
     m_priorSeqDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_priorSeqDataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_priorSeqDataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -241,48 +241,48 @@ GcmOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_nuggetValueForBtWyB)) {
-    m_nuggetValueForBtWyB = ((const po::variable_value&) m_env->allOptionsMap()[m_option_nuggetValueForBtWyB]).as<double>();
+  if ((*m_optionsMap).count(m_option_nuggetValueForBtWyB)) {
+    m_nuggetValueForBtWyB = ((const po::variable_value&) (*m_optionsMap)[m_option_nuggetValueForBtWyB]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_nuggetValueForBtWyBInv)) {
-    m_nuggetValueForBtWyBInv = ((const po::variable_value&) m_env->allOptionsMap()[m_option_nuggetValueForBtWyBInv]).as<double>();
+  if ((*m_optionsMap).count(m_option_nuggetValueForBtWyBInv)) {
+    m_nuggetValueForBtWyBInv = ((const po::variable_value&) (*m_optionsMap)[m_option_nuggetValueForBtWyBInv]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_formCMatrix)) {
-    m_formCMatrix = ((const po::variable_value&) m_env->allOptionsMap()[m_option_formCMatrix]).as<double>();
+  if ((*m_optionsMap).count(m_option_formCMatrix)) {
+    m_formCMatrix = ((const po::variable_value&) (*m_optionsMap)[m_option_formCMatrix]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_useTildeLogicForRankDefficientC)) {
-    m_useTildeLogicForRankDefficientC = ((const po::variable_value&) m_env->allOptionsMap()[m_option_useTildeLogicForRankDefficientC]).as<bool>();
+  if ((*m_optionsMap).count(m_option_useTildeLogicForRankDefficientC)) {
+    m_useTildeLogicForRankDefficientC = ((const po::variable_value&) (*m_optionsMap)[m_option_useTildeLogicForRankDefficientC]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_predLag)) {
-    m_predLag = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predLag]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_predLag)) {
+    m_predLag = ((const po::variable_value&) (*m_optionsMap)[m_option_predLag]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_predVUsBySamplingRVs)) {
-    m_predVUsBySamplingRVs = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predVUsBySamplingRVs]).as<bool>();
+  if ((*m_optionsMap).count(m_option_predVUsBySamplingRVs)) {
+    m_predVUsBySamplingRVs = ((const po::variable_value&) (*m_optionsMap)[m_option_predVUsBySamplingRVs]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_predVUsBySummingRVs)) {
-    m_predVUsBySummingRVs = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predVUsBySummingRVs]).as<bool>();
+  if ((*m_optionsMap).count(m_option_predVUsBySummingRVs)) {
+    m_predVUsBySummingRVs = ((const po::variable_value&) (*m_optionsMap)[m_option_predVUsBySummingRVs]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_predVUsAtKeyPoints)) {
-    m_predVUsAtKeyPoints = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predVUsAtKeyPoints]).as<bool>();
+  if ((*m_optionsMap).count(m_option_predVUsAtKeyPoints)) {
+    m_predVUsAtKeyPoints = ((const po::variable_value&) (*m_optionsMap)[m_option_predVUsAtKeyPoints]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_predWsBySamplingRVs)) {
-    m_predWsBySamplingRVs = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predWsBySamplingRVs]).as<bool>();
+  if ((*m_optionsMap).count(m_option_predWsBySamplingRVs)) {
+    m_predWsBySamplingRVs = ((const po::variable_value&) (*m_optionsMap)[m_option_predWsBySamplingRVs]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_predWsBySummingRVs)) {
-    m_predWsBySummingRVs = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predWsBySummingRVs]).as<bool>();
+  if ((*m_optionsMap).count(m_option_predWsBySummingRVs)) {
+    m_predWsBySummingRVs = ((const po::variable_value&) (*m_optionsMap)[m_option_predWsBySummingRVs]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_predWsAtKeyPoints)) {
-    m_predWsAtKeyPoints = ((const po::variable_value&) m_env->allOptionsMap()[m_option_predWsAtKeyPoints]).as<bool>();
+  if ((*m_optionsMap).count(m_option_predWsAtKeyPoints)) {
+    m_predWsAtKeyPoints = ((const po::variable_value&) (*m_optionsMap)[m_option_predWsAtKeyPoints]).as<bool>();
   }
 }
 

@@ -90,7 +90,7 @@ MLSamplingOptions::defineOptions()
 void
 MLSamplingOptions::getOptionValues()
 {
-  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
+  if ((*m_optionsMap).count(m_option_help.c_str())) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
@@ -98,48 +98,48 @@ MLSamplingOptions::getOptionValues()
   }
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-  if (m_env.allOptionsMap().count(m_option_restartOutput_levelPeriod.c_str())) {
-    m_restartOutput_levelPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartOutput_levelPeriod.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_restartOutput_levelPeriod.c_str())) {
+    m_restartOutput_levelPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_restartOutput_levelPeriod.c_str()]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_restartOutput_baseNameForFiles.c_str())) {
-    m_restartOutput_baseNameForFiles = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartOutput_baseNameForFiles.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_restartOutput_baseNameForFiles.c_str())) {
+    m_restartOutput_baseNameForFiles = ((const po::variable_value&) (*m_optionsMap)[m_option_restartOutput_baseNameForFiles.c_str()]).as<std::string>();
   }
 
   if ((m_restartOutput_levelPeriod > 0)) queso_require_not_equal_to_msg(m_restartOutput_baseNameForFiles, ".", "Option 'restartOutput_levelPeriod' is > 0, but 'restartOutput_baseNameForFiles' is not specified...");
 
-  if (m_env.allOptionsMap().count(m_option_restartOutput_fileType.c_str())) {
-    m_restartOutput_fileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartOutput_fileType.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_restartOutput_fileType.c_str())) {
+    m_restartOutput_fileType = ((const po::variable_value&) (*m_optionsMap)[m_option_restartOutput_fileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_restartInput_baseNameForFiles.c_str())) {
-    m_restartInput_baseNameForFiles = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartInput_baseNameForFiles.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_restartInput_baseNameForFiles.c_str())) {
+    m_restartInput_baseNameForFiles = ((const po::variable_value&) (*m_optionsMap)[m_option_restartInput_baseNameForFiles.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_restartInput_fileType.c_str())) {
-    m_restartInput_fileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartInput_fileType.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_restartInput_fileType.c_str())) {
+    m_restartInput_fileType = ((const po::variable_value&) (*m_optionsMap)[m_option_restartInput_fileType.c_str()]).as<std::string>();
   }
 #else
-  if (m_env.allOptionsMap().count(m_option_restartInputFileName.c_str())) {
-    m_restartInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartInputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_restartInputFileName.c_str())) {
+    m_restartInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_restartInputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_restartInputFileType.c_str())) {
-    m_restartInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartInputFileType.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_restartInputFileType.c_str())) {
+    m_restartInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_restartInputFileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_restartChainSize.c_str())) {
-    m_restartChainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartChainSize.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_restartChainSize.c_str())) {
+    m_restartChainSize = ((const po::variable_value&) (*m_optionsMap)[m_option_restartChainSize.c_str()]).as<unsigned int>();
   }
 #endif
-  if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dataOutputFileName.c_str())) {
+    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+  if ((*m_optionsMap).count(m_option_dataOutputAllowedSet.c_str())) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {

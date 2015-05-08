@@ -386,7 +386,7 @@ MLSamplingLevelOptions::getOptionValues()
 {
   char tmpStr[64];
 
-  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
+  if ((*m_optionsMap).count(m_option_help.c_str())) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
@@ -395,30 +395,30 @@ MLSamplingLevelOptions::getOptionValues()
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
-  if (m_env.allOptionsMap().count(m_option_checkpointOutputFileName.c_str())) {
-    m_checkpointOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_checkpointOutputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_checkpointOutputFileName.c_str())) {
+    m_checkpointOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_checkpointOutputFileName.c_str()]).as<std::string>();
   }
 #endif
 
-  if (m_env.allOptionsMap().count(m_option_stopAtEnd.c_str())) {
-    m_stopAtEnd = ((const po::variable_value&) m_env.allOptionsMap()[m_option_stopAtEnd.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_stopAtEnd.c_str())) {
+    m_stopAtEnd = ((const po::variable_value&) (*m_optionsMap)[m_option_stopAtEnd.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dataOutputFileName.c_str())) {
+    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllowAll.c_str())) {
-    m_dataOutputAllowAll = m_env.allOptionsMap()[m_option_dataOutputAllowAll].as<bool>();
+  if ((*m_optionsMap).count(m_option_dataOutputAllowAll.c_str())) {
+    m_dataOutputAllowAll = (*m_optionsMap)[m_option_dataOutputAllowAll].as<bool>();
   }
 
   if (m_dataOutputAllowAll) {
     m_dataOutputAllowedSet.insert(m_env.subId());
   }
-  else if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+  else if ((*m_optionsMap).count(m_option_dataOutputAllowedSet.c_str())) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -434,16 +434,16 @@ MLSamplingLevelOptions::getOptionValues()
     m_str1 += " ";
   }
 
-  if (m_env.allOptionsMap().count(m_option_loadBalanceAlgorithmId.c_str())) {
-    m_loadBalanceAlgorithmId = ((const po::variable_value&) m_env.allOptionsMap()[m_option_loadBalanceAlgorithmId.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_loadBalanceAlgorithmId.c_str())) {
+    m_loadBalanceAlgorithmId = ((const po::variable_value&) (*m_optionsMap)[m_option_loadBalanceAlgorithmId.c_str()]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_loadBalanceTreshold.c_str())) {
-    m_loadBalanceTreshold = ((const po::variable_value&) m_env.allOptionsMap()[m_option_loadBalanceTreshold.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_loadBalanceTreshold.c_str())) {
+    m_loadBalanceTreshold = ((const po::variable_value&) (*m_optionsMap)[m_option_loadBalanceTreshold.c_str()]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_minEffectiveSizeRatio.c_str())) {
-    m_minEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minEffectiveSizeRatio.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_minEffectiveSizeRatio.c_str())) {
+    m_minEffectiveSizeRatio = ((const po::variable_value&) (*m_optionsMap)[m_option_minEffectiveSizeRatio.c_str()]).as<double>();
   }
   if (m_minEffectiveSizeRatio >= 1.) {
     std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
@@ -459,8 +459,8 @@ MLSamplingLevelOptions::getOptionValues()
     m_minEffectiveSizeRatio = .5;
   }
 
-  if (m_env.allOptionsMap().count(m_option_maxEffectiveSizeRatio.c_str())) {
-    m_maxEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxEffectiveSizeRatio.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_maxEffectiveSizeRatio.c_str())) {
+    m_maxEffectiveSizeRatio = ((const po::variable_value&) (*m_optionsMap)[m_option_maxEffectiveSizeRatio.c_str()]).as<double>();
   }
   if (m_maxEffectiveSizeRatio >= 1.) {
     std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
@@ -476,12 +476,12 @@ MLSamplingLevelOptions::getOptionValues()
     m_maxEffectiveSizeRatio = .5;
   }
 
-  if (m_env.allOptionsMap().count(m_option_scaleCovMatrix.c_str())) {
-    m_scaleCovMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_scaleCovMatrix.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_scaleCovMatrix.c_str())) {
+    m_scaleCovMatrix = ((const po::variable_value&) (*m_optionsMap)[m_option_scaleCovMatrix.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_minRejectionRate.c_str())) {
-    m_minRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minRejectionRate.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_minRejectionRate.c_str())) {
+    m_minRejectionRate = ((const po::variable_value&) (*m_optionsMap)[m_option_minRejectionRate.c_str()]).as<double>();
   }
   if (m_minRejectionRate >= 1.) {
     std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
@@ -497,8 +497,8 @@ MLSamplingLevelOptions::getOptionValues()
     m_minRejectionRate = .5;
   }
 
-  if (m_env.allOptionsMap().count(m_option_maxRejectionRate.c_str())) {
-    m_maxRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxRejectionRate.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_maxRejectionRate.c_str())) {
+    m_maxRejectionRate = ((const po::variable_value&) (*m_optionsMap)[m_option_maxRejectionRate.c_str()]).as<double>();
   }
   if (m_maxRejectionRate >= 1.) {
     std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
@@ -514,8 +514,8 @@ MLSamplingLevelOptions::getOptionValues()
     m_maxRejectionRate = .5;
   }
 
-  if (m_env.allOptionsMap().count(m_option_covRejectionRate.c_str())) {
-    m_covRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_covRejectionRate.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_covRejectionRate.c_str())) {
+    m_covRejectionRate = ((const po::variable_value&) (*m_optionsMap)[m_option_covRejectionRate.c_str()]).as<double>();
   }
   if (m_covRejectionRate >= 1.) {
     std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
@@ -531,38 +531,38 @@ MLSamplingLevelOptions::getOptionValues()
     m_covRejectionRate = .5;
   }
 
-  if (m_env.allOptionsMap().count(m_option_minAcceptableEta.c_str())) { // gpmsa1
-    m_minAcceptableEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minAcceptableEta.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_minAcceptableEta.c_str())) { // gpmsa1
+    m_minAcceptableEta = ((const po::variable_value&) (*m_optionsMap)[m_option_minAcceptableEta.c_str()]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_totallyMute.c_str())) {
-    m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_totallyMute.c_str())) {
+    m_totallyMute = ((const po::variable_value&) (*m_optionsMap)[m_option_totallyMute.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_initialPosition_dataInputFileName.c_str())) {
-    m_initialPositionDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_initialPosition_dataInputFileName.c_str())) {
+    m_initialPositionDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_initialPosition_dataInputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_initialPosition_dataInputFileType.c_str())) {
-    m_initialPositionDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileType.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_initialPosition_dataInputFileType.c_str())) {
+    m_initialPositionDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_initialPosition_dataInputFileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileName.c_str())) {
-    m_initialProposalCovMatrixDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_initialProposalCovMatrix_dataInputFileName.c_str())) {
+    m_initialProposalCovMatrixDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_initialProposalCovMatrix_dataInputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileType.c_str())) {
-    m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileType.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_initialProposalCovMatrix_dataInputFileType.c_str())) {
+    m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_initialProposalCovMatrix_dataInputFileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_initialPositionUsePreviousLevelLikelihood.c_str())) {  // ml_likelihood_caching
-    m_initialPositionUsePreviousLevelLikelihood = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPositionUsePreviousLevelLikelihood.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_initialPositionUsePreviousLevelLikelihood.c_str())) {  // ml_likelihood_caching
+    m_initialPositionUsePreviousLevelLikelihood = ((const po::variable_value&) (*m_optionsMap)[m_option_initialPositionUsePreviousLevelLikelihood.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_listOfDisabledParameters)) { // gpmsa2
+  if ((*m_optionsMap).count(m_option_listOfDisabledParameters)) { // gpmsa2
     m_parameterDisabledSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_listOfDisabledParameters].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_listOfDisabledParameters].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -577,8 +577,8 @@ MLSamplingLevelOptions::getOptionValues()
     m_str2 += " ";
   }
 
-  if (m_env.allOptionsMap().count(m_option_initialValuesOfDisabledParameters.c_str())) {
-    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialValuesOfDisabledParameters.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_initialValuesOfDisabledParameters.c_str())) {
+    std::string inputString = ((const po::variable_value&) (*m_optionsMap)[m_option_initialValuesOfDisabledParameters.c_str()]).as<std::string>();
     MiscReadDoublesFromString(inputString,m_initialValuesOfDisabledParameters);
     //if (m_env.subDisplayFile()) {
     //  *m_env.subDisplayFile() << "In MLSamplingLevelOptions::getMyOptionValues(): scales =";
@@ -596,51 +596,51 @@ MLSamplingLevelOptions::getOptionValues()
     m_str3 += " ";
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName.c_str())) {
-    m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataInputFileName.c_str())) {
+    m_rawChainDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataInputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileType.c_str())) {
-    m_rawChainDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileType.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataInputFileType.c_str())) {
+    m_rawChainDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataInputFileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_size.c_str())) {
+  if ((*m_optionsMap).count(m_option_rawChain_size.c_str())) {
     //std::cout << "In count()=true, rawChainSize = " << m_rawChainSize << std::endl;
-    m_rawChainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_size.c_str()]).as<unsigned int>();
+    m_rawChainSize = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_size.c_str()]).as<unsigned int>();
   }
 //std::cout << "After count(), rawChainSize = " << m_rawChainSize << std::endl;
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_displayPeriod.c_str())) {
-    m_rawChainDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_displayPeriod.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_rawChain_displayPeriod.c_str())) {
+    m_rawChainDisplayPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_displayPeriod.c_str()]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_measureRunTimes.c_str())) {
-    m_rawChainMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_measureRunTimes.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_rawChain_measureRunTimes.c_str())) {
+    m_rawChainMeasureRunTimes = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_measureRunTimes.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputPeriod.c_str())) {
-    m_rawChainDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputPeriod.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataOutputPeriod.c_str())) {
+    m_rawChainDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputPeriod.c_str()]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileName.c_str())) {
-    m_rawChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataOutputFileName.c_str())) {
+    m_rawChainDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileType.c_str())) {
-    m_rawChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileType.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataOutputFileType.c_str())) {
+    m_rawChainDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputFileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowAll.c_str())) {
-    m_rawChainDataOutputAllowAll = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowAll].as<bool>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataOutputAllowAll.c_str())) {
+    m_rawChainDataOutputAllowAll = (*m_optionsMap)[m_option_rawChain_dataOutputAllowAll].as<bool>();
   }
 
   if (m_rawChainDataOutputAllowAll) {
     m_rawChainDataOutputAllowedSet.insert(m_env.subId());
   }
-  else if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet.c_str())) {
+  else if ((*m_optionsMap).count(m_option_rawChain_dataOutputAllowedSet.c_str())) {
     m_rawChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_rawChain_dataOutputAllowedSet.c_str()].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -657,24 +657,24 @@ MLSamplingLevelOptions::getOptionValues()
   }
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  if (m_env.allOptionsMap().count(m_option_rawChain_computeStats.c_str())) {
-    m_rawChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_computeStats.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_rawChain_computeStats.c_str())) {
+    m_rawChainComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_computeStats.c_str()]).as<bool>();
   }
 #endif
-  if (m_env.allOptionsMap().count(m_option_rawChain_generateExtra.c_str())) {
-    m_rawChainGenerateExtra = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_generateExtra.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_rawChain_generateExtra.c_str())) {
+    m_rawChainGenerateExtra = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_generateExtra.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_generate.c_str())) {
-    m_filteredChainGenerate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_generate.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_filteredChain_generate.c_str())) {
+    m_filteredChainGenerate = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_generate.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_discardedPortion.c_str())) {
-    m_filteredChainDiscardedPortion = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_discardedPortion.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_filteredChain_discardedPortion.c_str())) {
+    m_filteredChainDiscardedPortion = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_discardedPortion.c_str()]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_lag.c_str())) {
-    m_filteredChainLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_filteredChain_lag.c_str())) {
+    m_filteredChainLag = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_lag.c_str()]).as<unsigned int>();
   }
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
@@ -691,25 +691,25 @@ MLSamplingLevelOptions::getOptionValues()
     m_filteredChainLag = 2;
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileName.c_str())) {
-    m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_filteredChain_dataOutputFileName.c_str())) {
+    m_filteredChainDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileType.c_str())) {
-    m_filteredChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileType.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_filteredChain_dataOutputFileType.c_str())) {
+    m_filteredChainDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_dataOutputFileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowAll.c_str())) {
-    m_filteredChainDataOutputAllowAll = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowAll].as<bool>();
+  if ((*m_optionsMap).count(m_option_filteredChain_dataOutputAllowAll.c_str())) {
+    m_filteredChainDataOutputAllowAll = (*m_optionsMap)[m_option_filteredChain_dataOutputAllowAll].as<bool>();
   }
 
   if (m_filteredChainDataOutputAllowAll) {
     m_filteredChainDataOutputAllowedSet.insert(m_env.subId());
   }
-  else if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet.c_str())) {
+  else if ((*m_optionsMap).count(m_option_filteredChain_dataOutputAllowedSet.c_str())) {
     m_filteredChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_filteredChain_dataOutputAllowedSet.c_str()].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -726,33 +726,33 @@ MLSamplingLevelOptions::getOptionValues()
   }
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats.c_str())) {
-    m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_filteredChain_computeStats.c_str())) {
+    m_filteredChainComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_computeStats.c_str()]).as<bool>();
   }
 #endif
-  if (m_env.allOptionsMap().count(m_option_displayCandidates.c_str())) {
-    m_displayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_displayCandidates.c_str())) {
+    m_displayCandidates = ((const po::variable_value&) (*m_optionsMap)[m_option_displayCandidates.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_putOutOfBoundsInChain.c_str())) {
-    m_putOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_putOutOfBoundsInChain.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_putOutOfBoundsInChain.c_str())) {
+    m_putOutOfBoundsInChain = ((const po::variable_value&) (*m_optionsMap)[m_option_putOutOfBoundsInChain.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian.c_str())) {
-    m_tkUseLocalHessian = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useLocalHessian.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_tk_useLocalHessian.c_str())) {
+    m_tkUseLocalHessian = ((const po::variable_value&) (*m_optionsMap)[m_option_tk_useLocalHessian.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_tk_useNewtonComponent.c_str())) {
-    m_tkUseNewtonComponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useNewtonComponent.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_tk_useNewtonComponent.c_str())) {
+    m_tkUseNewtonComponent = ((const po::variable_value&) (*m_optionsMap)[m_option_tk_useNewtonComponent.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dr_maxNumExtraStages.c_str())) {
-    m_drMaxNumExtraStages = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_maxNumExtraStages.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_dr_maxNumExtraStages.c_str())) {
+    m_drMaxNumExtraStages = ((const po::variable_value&) (*m_optionsMap)[m_option_dr_maxNumExtraStages.c_str()]).as<unsigned int>();
   }
 
   std::vector<double> tmpScales(0,0.);
-  if (m_env.allOptionsMap().count(m_option_dr_listOfScalesForExtraStages.c_str())) {
-    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dr_listOfScalesForExtraStages.c_str())) {
+    std::string inputString = ((const po::variable_value&) (*m_optionsMap)[m_option_dr_listOfScalesForExtraStages.c_str()]).as<std::string>();
     MiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subDisplayFile()) {
     //  *m_env.subDisplayFile() << "In MLSamplingLevelOptions::getMyOptionValues(): scales =";
@@ -786,45 +786,45 @@ MLSamplingLevelOptions::getOptionValues()
   }
 //std::cout << "m_str6 = " << m_str4 << std::endl;
 
-  if (m_env.allOptionsMap().count(m_option_dr_duringAmNonAdaptiveInt)) {
-    m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
+  if ((*m_optionsMap).count(m_option_dr_duringAmNonAdaptiveInt)) {
+    m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) (*m_optionsMap)[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_keepInitialMatrix.c_str())) {
-    m_amKeepInitialMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_keepInitialMatrix.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_am_keepInitialMatrix.c_str())) {
+    m_amKeepInitialMatrix = ((const po::variable_value&) (*m_optionsMap)[m_option_am_keepInitialMatrix.c_str()]).as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval.c_str())) {
-    m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_am_initialNonAdaptInterval.c_str())) {
+    m_amInitialNonAdaptInterval = ((const po::variable_value&) (*m_optionsMap)[m_option_am_initialNonAdaptInterval.c_str()]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_adaptInterval.c_str())) {
-    m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_am_adaptInterval.c_str())) {
+    m_amAdaptInterval = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptInterval.c_str()]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputPeriod.c_str())) {
-    m_amAdaptedMatricesDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputPeriod.c_str()]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputPeriod.c_str())) {
+    m_amAdaptedMatricesDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputPeriod.c_str()]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileName.c_str())) {
-    m_amAdaptedMatricesDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileName.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputFileName.c_str())) {
+    m_amAdaptedMatricesDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileType.c_str())) {
-    m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileType.c_str()]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputFileType.c_str())) {
+    m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputFileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputAllowAll.c_str())) {
-    m_amAdaptedMatricesDataOutputAllowAll = m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputAllowAll].as<bool>();
+  if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputAllowAll.c_str())) {
+    m_amAdaptedMatricesDataOutputAllowAll = (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputAllowAll].as<bool>();
   }
 
   if (m_amAdaptedMatricesDataOutputAllowAll) {
     m_amAdaptedMatricesDataOutputAllowedSet.insert(m_env.subId());
   }
-  else if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str())) {
+  else if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str())) {
     m_amAdaptedMatricesDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str()].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str()].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -840,16 +840,16 @@ MLSamplingLevelOptions::getOptionValues()
     m_str7 += " ";
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_eta.c_str())) {
-    m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_am_eta.c_str())) {
+    m_amEta = ((const po::variable_value&) (*m_optionsMap)[m_option_am_eta.c_str()]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_epsilon.c_str())) {
-    m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon.c_str()]).as<double>();
+  if ((*m_optionsMap).count(m_option_am_epsilon.c_str())) {
+    m_amEpsilon = ((const po::variable_value&) (*m_optionsMap)[m_option_am_epsilon.c_str()]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_doLogitTransform.c_str())) {
-    m_doLogitTransform = ((const po::variable_value&) m_env.allOptionsMap()[m_option_doLogitTransform.c_str()]).as<bool>();
+  if ((*m_optionsMap).count(m_option_doLogitTransform.c_str())) {
+    m_doLogitTransform = ((const po::variable_value&) (*m_optionsMap)[m_option_doLogitTransform.c_str()]).as<bool>();
   }
 }
 

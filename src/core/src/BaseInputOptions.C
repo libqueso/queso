@@ -62,7 +62,18 @@ BaseInputOptions::scanOptionsValues()
   // If it's NULL then the defaults are used
   if (m_env != NULL) {
     defineOptions();
-    (*m_env).scanInputFileForMyOptions(*m_optionsDescription);
+
+    queso_require_not_equal_to_msg(m_env->optionsInputFileName(), "", "m_optionsInputFileName is 'nothing'");
+
+    std::ifstream ifs;
+    ifs.open(m_env->optionsInputFileName().c_str());
+
+    queso_require_msg(m_optionsMap, "m_allOptionsMap variable is NULL");
+    po::store(po::parse_config_file(ifs, *m_optionsDescription, true), *m_optionsMap);
+    po::notify(*m_optionsMap);
+
+    ifs.close();
+
     getOptionValues();
   }
 

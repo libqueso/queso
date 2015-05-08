@@ -104,25 +104,25 @@ SipOptionsValues::defineOptions()
 void
 SipOptionsValues::getOptionValues()
 {
-  if (m_env->allOptionsMap().count(m_option_help)) {
+  if ((*m_optionsMap).count(m_option_help)) {
     if (m_env->subDisplayFile()) {
       *m_env->subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_computeSolution)) {
-    m_computeSolution = ((const po::variable_value&) m_env->allOptionsMap()[m_option_computeSolution]).as<bool>();
+  if ((*m_optionsMap).count(m_option_computeSolution)) {
+    m_computeSolution = ((const po::variable_value&) (*m_optionsMap)[m_option_computeSolution]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputAllowedSet)) {
+  if ((*m_optionsMap).count(m_option_dataOutputAllowedSet)) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -133,8 +133,8 @@ SipOptionsValues::getOptionValues()
   }
 
 #ifdef UQ_SIP_READS_SOLVER_OPTION
-  if (m_env->allOptionsMap().count(m_option_solver)) {
-    m_solverString = ((const po::variable_value&) m_env->allOptionsMap()[m_option_solver]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_solver)) {
+    m_solverString = ((const po::variable_value&) (*m_optionsMap)[m_option_solver]).as<std::string>();
   }
 #endif
 }

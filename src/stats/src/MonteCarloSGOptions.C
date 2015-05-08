@@ -206,21 +206,21 @@ McOptionsValues::defineOptions()
 void
 McOptionsValues::getOptionValues()
 {
-  if (m_env->allOptionsMap().count(m_option_help)) {
+  if ((*m_optionsMap).count(m_option_help)) {
     if (m_env->subDisplayFile()) {
       *m_env->subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputAllowedSet)) {
+  if ((*m_optionsMap).count(m_option_dataOutputAllowedSet)) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -230,22 +230,22 @@ McOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_pseq_dataOutputPeriod)) {
-    m_pseqDataOutputPeriod = ((const po::variable_value&) m_env->allOptionsMap()[m_option_pseq_dataOutputPeriod]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_pseq_dataOutputPeriod)) {
+    m_pseqDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_pseq_dataOutputPeriod]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_pseq_dataOutputFileName)) {
-    m_pseqDataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_pseq_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_pseq_dataOutputFileName)) {
+    m_pseqDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_pseq_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_pseq_dataOutputFileType)) {
-    m_pseqDataOutputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_pseq_dataOutputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_pseq_dataOutputFileType)) {
+    m_pseqDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_pseq_dataOutputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_pseq_dataOutputAllowedSet)) {
+  if ((*m_optionsMap).count(m_option_pseq_dataOutputAllowedSet)) {
     m_pseqDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_pseq_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_pseq_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -256,46 +256,46 @@ McOptionsValues::getOptionValues()
   }
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  if (m_env->allOptionsMap().count(m_option_pseq_computeStats)) {
-    m_pseqComputeStats = ((const po::variable_value&) m_env->allOptionsMap()[m_option_pseq_computeStats]).as<bool>();
+  if ((*m_optionsMap).count(m_option_pseq_computeStats)) {
+    m_pseqComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_pseq_computeStats]).as<bool>();
   }
 #endif
-  if (m_env->allOptionsMap().count(m_option_qseq_dataInputFileName)) {
-    m_qseqDataInputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataInputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_qseq_dataInputFileName)) {
+    m_qseqDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataInputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_qseq_dataInputFileType)) {
-    m_qseqDataInputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataInputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_qseq_dataInputFileType)) {
+    m_qseqDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataInputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_qseq_size)) {
-    m_qseqSize = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_size]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_qseq_size)) {
+    m_qseqSize = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_size]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_qseq_displayPeriod)) {
-    m_qseqDisplayPeriod = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_displayPeriod]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_qseq_displayPeriod)) {
+    m_qseqDisplayPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_displayPeriod]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_qseq_measureRunTimes)) {
-    m_qseqMeasureRunTimes = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_measureRunTimes]).as<bool>();
+  if ((*m_optionsMap).count(m_option_qseq_measureRunTimes)) {
+    m_qseqMeasureRunTimes = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_measureRunTimes]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_qseq_dataOutputPeriod)) {
-    m_qseqDataOutputPeriod = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataOutputPeriod]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_qseq_dataOutputPeriod)) {
+    m_qseqDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataOutputPeriod]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_qseq_dataOutputFileName)) {
-    m_qseqDataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_qseq_dataOutputFileName)) {
+    m_qseqDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_qseq_dataOutputFileType)) {
-    m_qseqDataOutputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_dataOutputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_qseq_dataOutputFileType)) {
+    m_qseqDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataOutputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_qseq_dataOutputAllowedSet)) {
+  if ((*m_optionsMap).count(m_option_qseq_dataOutputAllowedSet)) {
     m_qseqDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_qseq_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_qseq_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -306,8 +306,8 @@ McOptionsValues::getOptionValues()
   }
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  if (m_env->allOptionsMap().count(m_option_qseq_computeStats)) {
-    m_qseqComputeStats = ((const po::variable_value&) m_env->allOptionsMap()[m_option_qseq_computeStats]).as<bool>();
+  if ((*m_optionsMap).count(m_option_qseq_computeStats)) {
+    m_qseqComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_computeStats]).as<bool>();
   }
 #endif
 }

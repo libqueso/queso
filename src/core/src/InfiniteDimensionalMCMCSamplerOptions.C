@@ -70,31 +70,31 @@ void InfiniteDimensionalMCMCSamplerOptions::defineOptions()
 
 void InfiniteDimensionalMCMCSamplerOptions::getOptionValues()
 {
-  if (m_env.allOptionsMap().count(m_option_help)) {
+  if ((*m_optionsMap).count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputDirName)) {
-    this->m_dataOutputDirName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputDirName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dataOutputDirName)) {
+    this->m_dataOutputDirName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputDirName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
-    this->m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
+    this->m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_num_iters)) {
-    this->m_num_iters = ((const po::variable_value&) m_env.allOptionsMap()[m_option_num_iters]).as<int>();
+  if ((*m_optionsMap).count(m_option_num_iters)) {
+    this->m_num_iters = ((const po::variable_value&) (*m_optionsMap)[m_option_num_iters]).as<int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_save_freq)) {
-    this->m_save_freq = ((const po::variable_value&) m_env.allOptionsMap()[m_option_save_freq]).as<int>();
+  if ((*m_optionsMap).count(m_option_save_freq)) {
+    this->m_save_freq = ((const po::variable_value&) (*m_optionsMap)[m_option_save_freq]).as<int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rwmh_step)) {
-    this->m_rwmh_step = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rwmh_step]).as<double>();
+  if ((*m_optionsMap).count(m_option_rwmh_step)) {
+    this->m_rwmh_step = ((const po::variable_value&) (*m_optionsMap)[m_option_rwmh_step]).as<double>();
   }
 
   return;

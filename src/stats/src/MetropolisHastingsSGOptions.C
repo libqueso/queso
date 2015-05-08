@@ -378,7 +378,7 @@ MhOptionsValues::defineOptions()
 void
 MhOptionsValues::getOptionValues()
 {
-  if (m_env->allOptionsMap().count(m_option_help)) {
+  if ((*m_optionsMap).count(m_option_help)) {
     if ((m_env->subDisplayFile()) &&
         (m_totallyMute == false)) {
       *m_env->subDisplayFile() << (*m_optionsDescription)
@@ -386,21 +386,21 @@ MhOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputAllowAll.c_str())) {
-    m_dataOutputAllowAll = m_env->allOptionsMap()[m_option_dataOutputAllowAll].as<bool>();
+  if ((*m_optionsMap).count(m_option_dataOutputAllowAll.c_str())) {
+    m_dataOutputAllowAll = (*m_optionsMap)[m_option_dataOutputAllowAll].as<bool>();
   }
 
   if (m_dataOutputAllowAll) {
     m_dataOutputAllowedSet.insert(m_env->subId());
   }
-  else if (m_env->allOptionsMap().count(m_option_dataOutputAllowedSet)) {
+  else if ((*m_optionsMap).count(m_option_dataOutputAllowedSet)) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -410,30 +410,30 @@ MhOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_totallyMute)) {
-    m_totallyMute = ((const po::variable_value&) m_env->allOptionsMap()[m_option_totallyMute]).as<bool>();
+  if ((*m_optionsMap).count(m_option_totallyMute)) {
+    m_totallyMute = ((const po::variable_value&) (*m_optionsMap)[m_option_totallyMute]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_initialPosition_dataInputFileName)) {
-    m_initialPositionDataInputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_initialPosition_dataInputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_initialPosition_dataInputFileName)) {
+    m_initialPositionDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_initialPosition_dataInputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_initialPosition_dataInputFileType)) {
-    m_initialPositionDataInputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_initialPosition_dataInputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_initialPosition_dataInputFileType)) {
+    m_initialPositionDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_initialPosition_dataInputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileName)) {
-    m_initialProposalCovMatrixDataInputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_initialProposalCovMatrix_dataInputFileName)) {
+    m_initialProposalCovMatrixDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_initialProposalCovMatrix_dataInputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileType)) {
-    m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_initialProposalCovMatrix_dataInputFileType)) {
+    m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_initialProposalCovMatrix_dataInputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_listOfDisabledParameters)) {
+  if ((*m_optionsMap).count(m_option_listOfDisabledParameters)) {
     m_parameterDisabledSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_listOfDisabledParameters].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_listOfDisabledParameters].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -442,49 +442,49 @@ MhOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_rawChain_dataInputFileName)) {
-    m_rawChainDataInputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_dataInputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataInputFileName)) {
+    m_rawChainDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataInputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_rawChain_dataInputFileType)) {
-    m_rawChainDataInputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_dataInputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataInputFileType)) {
+    m_rawChainDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataInputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_rawChain_size)) {
-    m_rawChainSize = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_size]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_rawChain_size)) {
+    m_rawChainSize = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_size]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_rawChain_displayPeriod)) {
-    m_rawChainDisplayPeriod = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_displayPeriod]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_rawChain_displayPeriod)) {
+    m_rawChainDisplayPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_displayPeriod]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_rawChain_measureRunTimes)) {
-    m_rawChainMeasureRunTimes = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_measureRunTimes]).as<bool>();
+  if ((*m_optionsMap).count(m_option_rawChain_measureRunTimes)) {
+    m_rawChainMeasureRunTimes = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_measureRunTimes]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_rawChain_dataOutputPeriod)) {
-    m_rawChainDataOutputPeriod = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_dataOutputPeriod]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataOutputPeriod)) {
+    m_rawChainDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputPeriod]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_rawChain_dataOutputFileName)) {
-    m_rawChainDataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataOutputFileName)) {
+    m_rawChainDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_rawChain_dataOutputFileType)) {
-    m_rawChainDataOutputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_dataOutputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataOutputFileType)) {
+    m_rawChainDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_rawChain_dataOutputAllowAll.c_str())) {
-    m_rawChainDataOutputAllowAll = m_env->allOptionsMap()[m_option_rawChain_dataOutputAllowAll].as<bool>();
+  if ((*m_optionsMap).count(m_option_rawChain_dataOutputAllowAll.c_str())) {
+    m_rawChainDataOutputAllowAll = (*m_optionsMap)[m_option_rawChain_dataOutputAllowAll].as<bool>();
   }
 
   if (m_rawChainDataOutputAllowAll) {
     m_rawChainDataOutputAllowedSet.insert(m_env->subId());
   }
-  else if (m_env->allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet)) {
+  else if ((*m_optionsMap).count(m_option_rawChain_dataOutputAllowedSet)) {
     m_rawChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_rawChain_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_rawChain_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -495,24 +495,24 @@ MhOptionsValues::getOptionValues()
   }
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  if (m_env->allOptionsMap().count(m_option_rawChain_computeStats)) {
-    m_rawChainComputeStats = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_computeStats]).as<bool>();
+  if ((*m_optionsMap).count(m_option_rawChain_computeStats)) {
+    m_rawChainComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_computeStats]).as<bool>();
   }
 #endif
-  if (m_env->allOptionsMap().count(m_option_rawChain_generateExtra)) {
-    m_rawChainGenerateExtra = ((const po::variable_value&) m_env->allOptionsMap()[m_option_rawChain_generateExtra]).as<bool>();
+  if ((*m_optionsMap).count(m_option_rawChain_generateExtra)) {
+    m_rawChainGenerateExtra = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_generateExtra]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_filteredChain_generate)) {
-    m_filteredChainGenerate = ((const po::variable_value&) m_env->allOptionsMap()[m_option_filteredChain_generate]).as<bool>();
+  if ((*m_optionsMap).count(m_option_filteredChain_generate)) {
+    m_filteredChainGenerate = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_generate]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_filteredChain_discardedPortion)) {
-    m_filteredChainDiscardedPortion = ((const po::variable_value&) m_env->allOptionsMap()[m_option_filteredChain_discardedPortion]).as<double>();
+  if ((*m_optionsMap).count(m_option_filteredChain_discardedPortion)) {
+    m_filteredChainDiscardedPortion = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_discardedPortion]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_filteredChain_lag)) {
-    m_filteredChainLag = ((const po::variable_value&) m_env->allOptionsMap()[m_option_filteredChain_lag]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_filteredChain_lag)) {
+    m_filteredChainLag = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_lag]).as<unsigned int>();
   }
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
@@ -529,25 +529,25 @@ MhOptionsValues::getOptionValues()
     m_filteredChainLag = 2;
   }
 
-  if (m_env->allOptionsMap().count(m_option_filteredChain_dataOutputFileName)) {
-    m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_filteredChain_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_filteredChain_dataOutputFileName)) {
+    m_filteredChainDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_filteredChain_dataOutputFileType)) {
-    m_filteredChainDataOutputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_filteredChain_dataOutputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_filteredChain_dataOutputFileType)) {
+    m_filteredChainDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_dataOutputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_filteredChain_dataOutputAllowAll.c_str())) {
-    m_filteredChainDataOutputAllowAll = m_env->allOptionsMap()[m_option_filteredChain_dataOutputAllowAll].as<bool>();
+  if ((*m_optionsMap).count(m_option_filteredChain_dataOutputAllowAll.c_str())) {
+    m_filteredChainDataOutputAllowAll = (*m_optionsMap)[m_option_filteredChain_dataOutputAllowAll].as<bool>();
   }
 
   if (m_filteredChainDataOutputAllowAll) {
     m_filteredChainDataOutputAllowedSet.insert(m_env->subId());
   }
-  else if (m_env->allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet)) {
+  else if ((*m_optionsMap).count(m_option_filteredChain_dataOutputAllowedSet)) {
     m_filteredChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_filteredChain_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_filteredChain_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -558,33 +558,33 @@ MhOptionsValues::getOptionValues()
   }
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  if (m_env->allOptionsMap().count(m_option_filteredChain_computeStats)) {
-    m_filteredChainComputeStats = ((const po::variable_value&) m_env->allOptionsMap()[m_option_filteredChain_computeStats]).as<bool>();
+  if ((*m_optionsMap).count(m_option_filteredChain_computeStats)) {
+    m_filteredChainComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_computeStats]).as<bool>();
   }
 #endif
-  if (m_env->allOptionsMap().count(m_option_displayCandidates)) {
-    m_displayCandidates = ((const po::variable_value&) m_env->allOptionsMap()[m_option_displayCandidates]).as<bool>();
+  if ((*m_optionsMap).count(m_option_displayCandidates)) {
+    m_displayCandidates = ((const po::variable_value&) (*m_optionsMap)[m_option_displayCandidates]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_putOutOfBoundsInChain)) {
-    m_putOutOfBoundsInChain = ((const po::variable_value&) m_env->allOptionsMap()[m_option_putOutOfBoundsInChain]).as<bool>();
+  if ((*m_optionsMap).count(m_option_putOutOfBoundsInChain)) {
+    m_putOutOfBoundsInChain = ((const po::variable_value&) (*m_optionsMap)[m_option_putOutOfBoundsInChain]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_tk_useLocalHessian)) {
-    m_tkUseLocalHessian = ((const po::variable_value&) m_env->allOptionsMap()[m_option_tk_useLocalHessian]).as<bool>();
+  if ((*m_optionsMap).count(m_option_tk_useLocalHessian)) {
+    m_tkUseLocalHessian = ((const po::variable_value&) (*m_optionsMap)[m_option_tk_useLocalHessian]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_tk_useNewtonComponent)) {
-    m_tkUseNewtonComponent = ((const po::variable_value&) m_env->allOptionsMap()[m_option_tk_useNewtonComponent]).as<bool>();
+  if ((*m_optionsMap).count(m_option_tk_useNewtonComponent)) {
+    m_tkUseNewtonComponent = ((const po::variable_value&) (*m_optionsMap)[m_option_tk_useNewtonComponent]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_dr_maxNumExtraStages)) {
-    m_drMaxNumExtraStages = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dr_maxNumExtraStages]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_dr_maxNumExtraStages)) {
+    m_drMaxNumExtraStages = ((const po::variable_value&) (*m_optionsMap)[m_option_dr_maxNumExtraStages]).as<unsigned int>();
   }
 
   std::vector<double> tmpScales(0,0.);
-  if (m_env->allOptionsMap().count(m_option_dr_listOfScalesForExtraStages)) {
-    std::string inputString = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dr_listOfScalesForExtraStages]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dr_listOfScalesForExtraStages)) {
+    std::string inputString = ((const po::variable_value&) (*m_optionsMap)[m_option_dr_listOfScalesForExtraStages]).as<std::string>();
     MiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env->subDisplayFile()) {
     //  *m_env->subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::getMyOptionValues(): scales =";
@@ -608,45 +608,45 @@ MhOptionsValues::getOptionValues()
     //updateTK();
   }
 
-  if (m_env->allOptionsMap().count(m_option_dr_duringAmNonAdaptiveInt)) {
-    m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
+  if ((*m_optionsMap).count(m_option_dr_duringAmNonAdaptiveInt)) {
+    m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) (*m_optionsMap)[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_am_keepInitialMatrix)) {
-    m_amKeepInitialMatrix = ((const po::variable_value&) m_env->allOptionsMap()[m_option_am_keepInitialMatrix]).as<bool>();
+  if ((*m_optionsMap).count(m_option_am_keepInitialMatrix)) {
+    m_amKeepInitialMatrix = ((const po::variable_value&) (*m_optionsMap)[m_option_am_keepInitialMatrix]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_am_initialNonAdaptInterval)) {
-    m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env->allOptionsMap()[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_am_initialNonAdaptInterval)) {
+    m_amInitialNonAdaptInterval = ((const po::variable_value&) (*m_optionsMap)[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_am_adaptInterval)) {
-    m_amAdaptInterval = ((const po::variable_value&) m_env->allOptionsMap()[m_option_am_adaptInterval]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_am_adaptInterval)) {
+    m_amAdaptInterval = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptInterval]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputPeriod)) {
-    m_amAdaptedMatricesDataOutputPeriod = ((const po::variable_value&) m_env->allOptionsMap()[m_option_am_adaptedMatrices_dataOutputPeriod]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputPeriod)) {
+    m_amAdaptedMatricesDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputPeriod]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileName)) {
-    m_amAdaptedMatricesDataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputFileName)) {
+    m_amAdaptedMatricesDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileType)) {
-    m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) m_env->allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileType]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputFileType)) {
+    m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputFileType]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputAllowAll.c_str())) {
-    m_amAdaptedMatricesDataOutputAllowAll = m_env->allOptionsMap()[m_option_am_adaptedMatrices_dataOutputAllowAll].as<bool>();
+  if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputAllowAll.c_str())) {
+    m_amAdaptedMatricesDataOutputAllowAll = (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputAllowAll].as<bool>();
   }
 
   if (m_amAdaptedMatricesDataOutputAllowAll) {
     m_amAdaptedMatricesDataOutputAllowedSet.insert(m_env->subId());
   }
-  else if (m_env->allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputAllowedSet)) {
+  else if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputAllowedSet)) {
     m_amAdaptedMatricesDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_am_adaptedMatrices_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -656,32 +656,32 @@ MhOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_am_eta)) {
-    m_amEta = ((const po::variable_value&) m_env->allOptionsMap()[m_option_am_eta]).as<double>();
+  if ((*m_optionsMap).count(m_option_am_eta)) {
+    m_amEta = ((const po::variable_value&) (*m_optionsMap)[m_option_am_eta]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_am_epsilon)) {
-    m_amEpsilon = ((const po::variable_value&) m_env->allOptionsMap()[m_option_am_epsilon]).as<double>();
+  if ((*m_optionsMap).count(m_option_am_epsilon)) {
+    m_amEpsilon = ((const po::variable_value&) (*m_optionsMap)[m_option_am_epsilon]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_enableBrooksGelmanConvMonitor)) {
-    m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) m_env->allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_enableBrooksGelmanConvMonitor)) {
+    m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) (*m_optionsMap)[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_BrooksGelmanLag)) {
-    m_BrooksGelmanLag = ((const po::variable_value&) m_env->allOptionsMap()[m_option_BrooksGelmanLag]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_BrooksGelmanLag)) {
+    m_BrooksGelmanLag = ((const po::variable_value&) (*m_optionsMap)[m_option_BrooksGelmanLag]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_outputLogLikelihood)) {
-    m_outputLogLikelihood = ((const po::variable_value&) m_env->allOptionsMap()[m_option_outputLogLikelihood]).as<bool>();
+  if ((*m_optionsMap).count(m_option_outputLogLikelihood)) {
+    m_outputLogLikelihood = ((const po::variable_value&) (*m_optionsMap)[m_option_outputLogLikelihood]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_outputLogTarget)) {
-    m_outputLogTarget = ((const po::variable_value&) m_env->allOptionsMap()[m_option_outputLogTarget]).as<bool>();
+  if ((*m_optionsMap).count(m_option_outputLogTarget)) {
+    m_outputLogTarget = ((const po::variable_value&) (*m_optionsMap)[m_option_outputLogTarget]).as<bool>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_doLogitTransform)) {
-    m_doLogitTransform = ((const po::variable_value&) m_env->allOptionsMap()[m_option_doLogitTransform]).as<bool>();
+  if ((*m_optionsMap).count(m_option_doLogitTransform)) {
+    m_doLogitTransform = ((const po::variable_value&) (*m_optionsMap)[m_option_doLogitTransform]).as<bool>();
   }
 }
 

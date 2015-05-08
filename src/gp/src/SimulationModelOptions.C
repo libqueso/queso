@@ -141,28 +141,28 @@ SmOptionsValues::defineOptions()
 void
 SmOptionsValues::getOptionValues()
 {
-  if (m_env->allOptionsMap().count(m_option_help)) {
+  if ((*m_optionsMap).count(m_option_help)) {
     if (m_env->subDisplayFile()) {
       *m_env->subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+  if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
+    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_dataOutputAllowAll)) {
-    m_dataOutputAllowAll = ((const po::variable_value&) m_env->allOptionsMap()[m_option_dataOutputAllowAll]).as<bool>();
+  if ((*m_optionsMap).count(m_option_dataOutputAllowAll)) {
+    m_dataOutputAllowAll = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputAllowAll]).as<bool>();
   }
 
   if (m_dataOutputAllowAll) {
     m_dataOutputAllowedSet.insert(m_env->subId());
   }
-  else if (m_env->allOptionsMap().count(m_option_dataOutputAllowedSet)) {
+  else if ((*m_optionsMap).count(m_option_dataOutputAllowedSet)) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env->allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
+    std::string inputString = (*m_optionsMap)[m_option_dataOutputAllowedSet].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
@@ -172,48 +172,48 @@ SmOptionsValues::getOptionValues()
     }
   }
 
-  if (m_env->allOptionsMap().count(m_option_p_eta)) {
-    m_p_eta = ((const po::variable_value&) m_env->allOptionsMap()[m_option_p_eta]).as<unsigned int>();
+  if ((*m_optionsMap).count(m_option_p_eta)) {
+    m_p_eta = ((const po::variable_value&) (*m_optionsMap)[m_option_p_eta]).as<unsigned int>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_zeroRelativeSingularValue)) {
-    m_zeroRelativeSingularValue = ((const po::variable_value&) m_env->allOptionsMap()[m_option_zeroRelativeSingularValue]).as<double>();
+  if ((*m_optionsMap).count(m_option_zeroRelativeSingularValue)) {
+    m_zeroRelativeSingularValue = ((const po::variable_value&) (*m_optionsMap)[m_option_zeroRelativeSingularValue]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_cdfThresholdForPEta)) {
-    m_cdfThresholdForPEta = ((const po::variable_value&) m_env->allOptionsMap()[m_option_cdfThresholdForPEta]).as<double>();
+  if ((*m_optionsMap).count(m_option_cdfThresholdForPEta)) {
+    m_cdfThresholdForPEta = ((const po::variable_value&) (*m_optionsMap)[m_option_cdfThresholdForPEta]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_a_w)) {
-    m_a_w = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_w]).as<double>();
+  if ((*m_optionsMap).count(m_option_a_w)) {
+    m_a_w = ((const po::variable_value&) (*m_optionsMap)[m_option_a_w]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_b_w)) {
-    m_b_w = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_w]).as<double>();
+  if ((*m_optionsMap).count(m_option_b_w)) {
+    m_b_w = ((const po::variable_value&) (*m_optionsMap)[m_option_b_w]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_a_rho_w)) {
-    m_a_rho_w = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_rho_w]).as<double>();
+  if ((*m_optionsMap).count(m_option_a_rho_w)) {
+    m_a_rho_w = ((const po::variable_value&) (*m_optionsMap)[m_option_a_rho_w]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_b_rho_w)) {
-    m_b_rho_w = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_rho_w]).as<double>();
+  if ((*m_optionsMap).count(m_option_b_rho_w)) {
+    m_b_rho_w = ((const po::variable_value&) (*m_optionsMap)[m_option_b_rho_w]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_a_eta)) {
-    m_a_eta = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_eta]).as<double>();
+  if ((*m_optionsMap).count(m_option_a_eta)) {
+    m_a_eta = ((const po::variable_value&) (*m_optionsMap)[m_option_a_eta]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_b_eta)) {
-    m_b_eta = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_eta]).as<double>();
+  if ((*m_optionsMap).count(m_option_b_eta)) {
+    m_b_eta = ((const po::variable_value&) (*m_optionsMap)[m_option_b_eta]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_a_s)) {
-    m_a_s = ((const po::variable_value&) m_env->allOptionsMap()[m_option_a_s]).as<double>();
+  if ((*m_optionsMap).count(m_option_a_s)) {
+    m_a_s = ((const po::variable_value&) (*m_optionsMap)[m_option_a_s]).as<double>();
   }
 
-  if (m_env->allOptionsMap().count(m_option_b_s)) {
-    m_b_s = ((const po::variable_value&) m_env->allOptionsMap()[m_option_b_s]).as<double>();
+  if ((*m_optionsMap).count(m_option_b_s)) {
+    m_b_s = ((const po::variable_value&) (*m_optionsMap)[m_option_b_s]).as<double>();
   }
 }
 

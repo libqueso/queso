@@ -96,51 +96,51 @@ GPMSAOptions::defineOptions()
 void
 GPMSAOptions::getOptionValues()
 {
-  if (m_env.allOptionsMap().count(m_option_help)) {
+  if ((*m_optionsMap).count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << (*m_optionsDescription)
                               << std::endl;
     }
   }
 
-  if (m_env.allOptionsMap().count(m_option_emulatorPrecisionShape)) {
-    this->m_emulatorPrecisionShape = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorPrecisionShape]).as<double>();
+  if ((*m_optionsMap).count(m_option_emulatorPrecisionShape)) {
+    this->m_emulatorPrecisionShape = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorPrecisionShape]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_emulatorPrecisionScale)) {
-    this->m_emulatorPrecisionScale = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorPrecisionScale]).as<double>();
+  if ((*m_optionsMap).count(m_option_emulatorPrecisionScale)) {
+    this->m_emulatorPrecisionScale = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorPrecisionScale]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_emulatorCorrelationStrengthAlpha)) {
-    this->m_emulatorCorrelationStrengthAlpha = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorCorrelationStrengthAlpha]).as<double>();
+  if ((*m_optionsMap).count(m_option_emulatorCorrelationStrengthAlpha)) {
+    this->m_emulatorCorrelationStrengthAlpha = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorCorrelationStrengthAlpha]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_emulatorCorrelationStrengthBeta)) {
-    this->m_emulatorCorrelationStrengthBeta = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorCorrelationStrengthBeta]).as<double>();
+  if ((*m_optionsMap).count(m_option_emulatorCorrelationStrengthBeta)) {
+    this->m_emulatorCorrelationStrengthBeta = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorCorrelationStrengthBeta]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_discrepancyPrecisionShape)) {
-    this->m_discrepancyPrecisionShape = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyPrecisionShape]).as<double>();
+  if ((*m_optionsMap).count(m_option_discrepancyPrecisionShape)) {
+    this->m_discrepancyPrecisionShape = ((const po::variable_value &) (*m_optionsMap)[m_option_discrepancyPrecisionShape]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_discrepancyPrecisionScale)) {
-    this->m_discrepancyPrecisionScale = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyPrecisionScale]).as<double>();
+  if ((*m_optionsMap).count(m_option_discrepancyPrecisionScale)) {
+    this->m_discrepancyPrecisionScale = ((const po::variable_value &) (*m_optionsMap)[m_option_discrepancyPrecisionScale]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_discrepancyCorrelationStrengthAlpha)) {
-    this->m_discrepancyCorrelationStrengthAlpha = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyCorrelationStrengthAlpha]).as<double>();
+  if ((*m_optionsMap).count(m_option_discrepancyCorrelationStrengthAlpha)) {
+    this->m_discrepancyCorrelationStrengthAlpha = ((const po::variable_value &) (*m_optionsMap)[m_option_discrepancyCorrelationStrengthAlpha]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_discrepancyCorrelationStrengthBeta)) {
-    this->m_discrepancyCorrelationStrengthBeta = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyCorrelationStrengthBeta]).as<double>();
+  if ((*m_optionsMap).count(m_option_discrepancyCorrelationStrengthBeta)) {
+    this->m_discrepancyCorrelationStrengthBeta = ((const po::variable_value &) (*m_optionsMap)[m_option_discrepancyCorrelationStrengthBeta]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_emulatorDataPrecisionShape)) {
-    this->m_emulatorDataPrecisionShape = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorDataPrecisionShape]).as<double>();
+  if ((*m_optionsMap).count(m_option_emulatorDataPrecisionShape)) {
+    this->m_emulatorDataPrecisionShape = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorDataPrecisionShape]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_emulatorDataPrecisionScale)) {
-    this->m_emulatorDataPrecisionScale = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorDataPrecisionScale]).as<double>();
+  if ((*m_optionsMap).count(m_option_emulatorDataPrecisionScale)) {
+    this->m_emulatorDataPrecisionScale = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorDataPrecisionScale]).as<double>();
   }
 }
 
