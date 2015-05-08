@@ -22,11 +22,14 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/BoostInputOptionsParser.h>
-#include <queso/Environment.h>
-
 #ifndef UQ_ENVIRONMENT_OPTIONS_H
 #define UQ_ENVIRONMENT_OPTIONS_H
+
+#include <string>
+#include <set>
+#include <vector>
+
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
 #define UQ_ENV_FILENAME_FOR_NO_INPUT_FILE  "."
@@ -47,7 +50,17 @@
 #define UQ_ENV_NUM_DEBUG_PARAMS_ODV         0
 #define UQ_ENV_DEBUG_PARAM_ODV              0.
 
+// Forward declarations
+namespace boost {
+  namespace program_options {
+    class options_description;
+    }
+}
+
 namespace QUESO {
+
+// Forward declarations
+class BaseEnvironment;
 
 /*! \file EnvironmentOptions.h
     \brief Class to allow options to be passed to a QUESO environment.
@@ -226,10 +239,10 @@ public:
 
 private:
   //! Define my environment options as the default options
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the option values of the environment.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   //! Environment.
   const BaseEnvironment& m_env;
@@ -241,7 +254,7 @@ private:
   /*! Uses boost::program_options::options_description. A set of option descriptions.
    * This provides convenient interface for adding new option method, and facilities
    * to search for options by name.*/
-  po::options_description* m_optionsDesc;
+  boost::program_options::options_description* m_optionsDesc;
 
   std::string              m_option_help;
 

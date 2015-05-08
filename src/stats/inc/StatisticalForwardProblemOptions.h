@@ -42,6 +42,12 @@
 #define UQ_SFP_SOLVER_ODV                  "mc" // Monte Carlo
 #endif
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
+
 namespace QUESO {
 
 /*! \file uqStatisticalForwardProblemOptions.h
@@ -152,14 +158,14 @@ public:
 
 private:
   //! Define my SFP options as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the option values of the SFP.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
 
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
   std::string                   m_option_help;
   std::string                   m_option_computeSolution;
   std::string                   m_option_computeCovariances;

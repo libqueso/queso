@@ -37,6 +37,12 @@
 #define UQ_EXPERIMENT_MODEL_A_Y_ODV      0.
 #define UQ_EXPERIMENT_MODEL_B_Y_ODV      0.
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
+
 namespace QUESO {
 
 class EmOptionsValues : public BoostInputOptionsParser
@@ -88,12 +94,12 @@ public:
   std::string              m_prefix;
 
 private:
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
 
-  po::options_description* m_optionsDesc;
+  boost::program_options::options_description* m_optionsDesc;
   std::string              m_option_help;
   std::string              m_option_Gvalues;
   std::string              m_option_a_v;

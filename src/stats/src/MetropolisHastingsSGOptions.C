@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/MetropolisHastingsSGOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -317,61 +319,61 @@ MhOptionsValues::defineOptions()
 {
   (*m_optionsDescription).add_options()
     (m_option_help.c_str(),                                                                                                                                                "produce help msg for Bayesian Metropolis-Hastings"          )
-    (m_option_dataOutputFileName.c_str(),                         po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                           ), "name of generic output file"                                )
-    (m_option_dataOutputAllowAll.c_str(),                         po::value<bool        >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                           ), "allow all subEnvs write to a generic output file"           )
-    (m_option_dataOutputAllowedSet.c_str(),                       po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                         ), "subEnvs that will write to generic output file"             )
-    (m_option_totallyMute.c_str(),                                po::value<bool        >()->default_value(UQ_MH_SG_TOTALLY_MUTE_ODV                                    ), "totally mute (no printout msg)"                             )
-    (m_option_initialPosition_dataInputFileName.c_str(),          po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV           ), "name of input file for raw chain "                          )
-    (m_option_initialPosition_dataInputFileType.c_str(),          po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV           ), "type of input file for raw chain "                          )
-    (m_option_initialProposalCovMatrix_dataInputFileName.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV), "name of input file for raw chain "                          )
-    (m_option_initialProposalCovMatrix_dataInputFileType.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV), "type of input file for raw chain "                          )
-    (m_option_listOfDisabledParameters.c_str(),                   po::value<std::string >()->default_value(UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV                     ), "list of disabled parameters"                                )
-    (m_option_rawChain_dataInputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                  ), "name of input file for raw chain "                          )
-    (m_option_rawChain_dataInputFileType.c_str(),                 po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                  ), "type of input file for raw chain "                          )
-    (m_option_rawChain_size.c_str(),                              po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_SIZE_ODV                                  ), "size of raw chain"                                          )
-    (m_option_rawChain_generateExtra.c_str(),                     po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV                        ), "generate extra information about raw chain"                 )
-    (m_option_rawChain_displayPeriod.c_str(),                     po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV                        ), "period of msg display during raw chain generation"          )
-    (m_option_rawChain_measureRunTimes.c_str(),                   po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV                     ), "measure run times"                                          )
-    (m_option_rawChain_dataOutputPeriod.c_str(),                  po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV                    ), "period of msg display during raw chain generation"          )
-    (m_option_rawChain_dataOutputFileName.c_str(),                po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                 ), "name of output file for raw chain "                         )
-    (m_option_rawChain_dataOutputFileType.c_str(),                po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                 ), "type of output file for raw chain "                         )
-    (m_option_rawChain_dataOutputAllowAll.c_str(),                po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV                 ), "allow all subEnvs to write raw chain to an output file"     )
-    (m_option_rawChain_dataOutputAllowedSet.c_str(),              po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV               ), "subEnvs that will write raw chain to output file"           )
+    (m_option_dataOutputFileName.c_str(),                         boost::program_options::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                           ), "name of generic output file"                                )
+    (m_option_dataOutputAllowAll.c_str(),                         boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                           ), "allow all subEnvs write to a generic output file"           )
+    (m_option_dataOutputAllowedSet.c_str(),                       boost::program_options::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                         ), "subEnvs that will write to generic output file"             )
+    (m_option_totallyMute.c_str(),                                boost::program_options::value<bool        >()->default_value(UQ_MH_SG_TOTALLY_MUTE_ODV                                    ), "totally mute (no printout msg)"                             )
+    (m_option_initialPosition_dataInputFileName.c_str(),          boost::program_options::value<std::string >()->default_value(UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV           ), "name of input file for raw chain "                          )
+    (m_option_initialPosition_dataInputFileType.c_str(),          boost::program_options::value<std::string >()->default_value(UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV           ), "type of input file for raw chain "                          )
+    (m_option_initialProposalCovMatrix_dataInputFileName.c_str(), boost::program_options::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV), "name of input file for raw chain "                          )
+    (m_option_initialProposalCovMatrix_dataInputFileType.c_str(), boost::program_options::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV), "type of input file for raw chain "                          )
+    (m_option_listOfDisabledParameters.c_str(),                   boost::program_options::value<std::string >()->default_value(UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV                     ), "list of disabled parameters"                                )
+    (m_option_rawChain_dataInputFileName.c_str(),                 boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                  ), "name of input file for raw chain "                          )
+    (m_option_rawChain_dataInputFileType.c_str(),                 boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                  ), "type of input file for raw chain "                          )
+    (m_option_rawChain_size.c_str(),                              boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_SIZE_ODV                                  ), "size of raw chain"                                          )
+    (m_option_rawChain_generateExtra.c_str(),                     boost::program_options::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV                        ), "generate extra information about raw chain"                 )
+    (m_option_rawChain_displayPeriod.c_str(),                     boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV                        ), "period of msg display during raw chain generation"          )
+    (m_option_rawChain_measureRunTimes.c_str(),                   boost::program_options::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV                     ), "measure run times"                                          )
+    (m_option_rawChain_dataOutputPeriod.c_str(),                  boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV                    ), "period of msg display during raw chain generation"          )
+    (m_option_rawChain_dataOutputFileName.c_str(),                boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                 ), "name of output file for raw chain "                         )
+    (m_option_rawChain_dataOutputFileType.c_str(),                boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                 ), "type of output file for raw chain "                         )
+    (m_option_rawChain_dataOutputAllowAll.c_str(),                boost::program_options::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV                 ), "allow all subEnvs to write raw chain to an output file"     )
+    (m_option_rawChain_dataOutputAllowedSet.c_str(),              boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV               ), "subEnvs that will write raw chain to output file"           )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_rawChain_computeStats.c_str(),                      po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                         ), "compute statistics on raw chain"                            )
+    (m_option_rawChain_computeStats.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                         ), "compute statistics on raw chain"                            )
 #endif
-    (m_option_filteredChain_generate.c_str(),                     po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                         ), "generate filtered chain"                                    )
-    (m_option_filteredChain_discardedPortion.c_str(),             po::value<double      >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV                ), "initial discarded portion for chain filtering"              )
-    (m_option_filteredChain_lag.c_str(),                          po::value<unsigned int>()->default_value(UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                              ), "spacing for chain filtering"                                )
-    (m_option_filteredChain_dataOutputFileName.c_str(),           po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV            ), "name of output file for filtered chain"                     )
-    (m_option_filteredChain_dataOutputFileType.c_str(),           po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV            ), "type of output file for filtered chain"                     )
-    (m_option_filteredChain_dataOutputAllowAll.c_str(),           po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV            ), "allow all subEnvs to write filt chain to an output file"    )
-    (m_option_filteredChain_dataOutputAllowedSet.c_str(),         po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV          ), "subEnvs that will write filt chain to output file"          )
+    (m_option_filteredChain_generate.c_str(),                     boost::program_options::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                         ), "generate filtered chain"                                    )
+    (m_option_filteredChain_discardedPortion.c_str(),             boost::program_options::value<double      >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV                ), "initial discarded portion for chain filtering"              )
+    (m_option_filteredChain_lag.c_str(),                          boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                              ), "spacing for chain filtering"                                )
+    (m_option_filteredChain_dataOutputFileName.c_str(),           boost::program_options::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV            ), "name of output file for filtered chain"                     )
+    (m_option_filteredChain_dataOutputFileType.c_str(),           boost::program_options::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV            ), "type of output file for filtered chain"                     )
+    (m_option_filteredChain_dataOutputAllowAll.c_str(),           boost::program_options::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV            ), "allow all subEnvs to write filt chain to an output file"    )
+    (m_option_filteredChain_dataOutputAllowedSet.c_str(),         boost::program_options::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV          ), "subEnvs that will write filt chain to output file"          )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_filteredChain_computeStats.c_str(),                 po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV                    ), "compute statistics on filtered chain"                       )
+    (m_option_filteredChain_computeStats.c_str(),                 boost::program_options::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV                    ), "compute statistics on filtered chain"                       )
 #endif
-    (m_option_displayCandidates.c_str(),                          po::value<bool        >()->default_value(UQ_MH_SG_DISPLAY_CANDIDATES_ODV                              ), "display candidates in the core MH algorithm"                )
-    (m_option_putOutOfBoundsInChain.c_str(),                      po::value<bool        >()->default_value(UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV                      ), "put 'out of bound' candidates in chain as well"             )
-    (m_option_tk_useLocalHessian.c_str(),                         po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                            ), "'proposal' use local Hessian"                               )
-    (m_option_tk_useNewtonComponent.c_str(),                      po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                         ), "'proposal' use Newton component"                            )
-    (m_option_dr_maxNumExtraStages.c_str(),                       po::value<unsigned int>()->default_value(UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                         ), "'dr' maximum number of extra stages"                        )
-    (m_option_dr_listOfScalesForExtraStages.c_str(),              po::value<std::string >()->default_value(UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV              ), "'dr' scales for prop cov matrices from 2nd stage on"        )
-    (m_option_dr_duringAmNonAdaptiveInt.c_str(),                  po::value<bool        >()->default_value(UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV                   ), "'dr' used during 'am' non adaptive interval"                )
-    (m_option_am_keepInitialMatrix.c_str(),                       po::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                          ), "'am' keep initial (given) matrix"                           )
-    (m_option_am_initialNonAdaptInterval.c_str(),                 po::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                           ), "'am' initial non adaptation interval"                       )
-    (m_option_am_adaptInterval.c_str(),                           po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                               ), "'am' adaptation interval"                                   )
-    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          ), "period for outputting 'am' adapted matrices"                )
-    (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for 'am' adapted matrices"              )
-    (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for 'am' adapted matrices"              )
-    (m_option_am_adaptedMatrices_dataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV       ), "type of output file for 'am' adapted matrices"              )
-    (m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV     ), "type of output file for 'am' adapted matrices"              )
-    (m_option_am_eta.c_str(),                                     po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                          ), "'am' eta"                                                   )
-    (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                                      ), "'am' epsilon"                                               )
-    (m_option_enableBrooksGelmanConvMonitor.c_str(),              po::value<unsigned int>()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                   ), "assess convergence using Brooks-Gelman metric"              )
-    (m_option_BrooksGelmanLag.c_str(),                            po::value<unsigned int>()->default_value(UQ_MH_SG_BROOKS_GELMAN_LAG                                   ), "number of chain positions before starting to compute metric")
-    (m_option_outputLogLikelihood.c_str(),                        po::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               ), "flag to toggle output of log likelihood values"             )
-    (m_option_outputLogTarget.c_str(),                            po::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_TARGET                                   ), "flag to toggle output of log target values"                 )
-    (m_option_doLogitTransform.c_str(),                           po::value<bool        >()->default_value(UQ_MH_SG_DO_LOGIT_TRANSFORM                                  ), "flag to toggle logit transform for bounded domains"         )
+    (m_option_displayCandidates.c_str(),                          boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DISPLAY_CANDIDATES_ODV                              ), "display candidates in the core MH algorithm"                )
+    (m_option_putOutOfBoundsInChain.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV                      ), "put 'out of bound' candidates in chain as well"             )
+    (m_option_tk_useLocalHessian.c_str(),                         boost::program_options::value<bool        >()->default_value(UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                            ), "'proposal' use local Hessian"                               )
+    (m_option_tk_useNewtonComponent.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                         ), "'proposal' use Newton component"                            )
+    (m_option_dr_maxNumExtraStages.c_str(),                       boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                         ), "'dr' maximum number of extra stages"                        )
+    (m_option_dr_listOfScalesForExtraStages.c_str(),              boost::program_options::value<std::string >()->default_value(UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV              ), "'dr' scales for prop cov matrices from 2nd stage on"        )
+    (m_option_dr_duringAmNonAdaptiveInt.c_str(),                  boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV                   ), "'dr' used during 'am' non adaptive interval"                )
+    (m_option_am_keepInitialMatrix.c_str(),                       boost::program_options::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                          ), "'am' keep initial (given) matrix"                           )
+    (m_option_am_initialNonAdaptInterval.c_str(),                 boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                           ), "'am' initial non adaptation interval"                       )
+    (m_option_am_adaptInterval.c_str(),                           boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                               ), "'am' adaptation interval"                                   )
+    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          ), "period for outputting 'am' adapted matrices"                )
+    (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for 'am' adapted matrices"              )
+    (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for 'am' adapted matrices"              )
+    (m_option_am_adaptedMatrices_dataOutputAllowAll.c_str(),      boost::program_options::value<bool        >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV       ), "type of output file for 'am' adapted matrices"              )
+    (m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV     ), "type of output file for 'am' adapted matrices"              )
+    (m_option_am_eta.c_str(),                                     boost::program_options::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                          ), "'am' eta"                                                   )
+    (m_option_am_epsilon.c_str(),                                 boost::program_options::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                                      ), "'am' epsilon"                                               )
+    (m_option_enableBrooksGelmanConvMonitor.c_str(),              boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                   ), "assess convergence using Brooks-Gelman metric"              )
+    (m_option_BrooksGelmanLag.c_str(),                            boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_BROOKS_GELMAN_LAG                                   ), "number of chain positions before starting to compute metric")
+    (m_option_outputLogLikelihood.c_str(),                        boost::program_options::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               ), "flag to toggle output of log likelihood values"             )
+    (m_option_outputLogTarget.c_str(),                            boost::program_options::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_TARGET                                   ), "flag to toggle output of log target values"                 )
+    (m_option_doLogitTransform.c_str(),                           boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DO_LOGIT_TRANSFORM                                  ), "flag to toggle logit transform for bounded domains"         )
   ;
 }
 // -------------------------------------------------
@@ -387,7 +389,7 @@ MhOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
+    m_dataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_dataOutputAllowAll.c_str())) {
@@ -411,23 +413,23 @@ MhOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_totallyMute)) {
-    m_totallyMute = ((const po::variable_value&) (*m_optionsMap)[m_option_totallyMute]).as<bool>();
+    m_totallyMute = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_totallyMute]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_initialPosition_dataInputFileName)) {
-    m_initialPositionDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_initialPosition_dataInputFileName]).as<std::string>();
+    m_initialPositionDataInputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_initialPosition_dataInputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_initialPosition_dataInputFileType)) {
-    m_initialPositionDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_initialPosition_dataInputFileType]).as<std::string>();
+    m_initialPositionDataInputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_initialPosition_dataInputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_initialProposalCovMatrix_dataInputFileName)) {
-    m_initialProposalCovMatrixDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_initialProposalCovMatrix_dataInputFileName]).as<std::string>();
+    m_initialProposalCovMatrixDataInputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_initialProposalCovMatrix_dataInputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_initialProposalCovMatrix_dataInputFileType)) {
-    m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_initialProposalCovMatrix_dataInputFileType]).as<std::string>();
+    m_initialProposalCovMatrixDataInputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_initialProposalCovMatrix_dataInputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_listOfDisabledParameters)) {
@@ -443,35 +445,35 @@ MhOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_rawChain_dataInputFileName)) {
-    m_rawChainDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataInputFileName]).as<std::string>();
+    m_rawChainDataInputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_dataInputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_rawChain_dataInputFileType)) {
-    m_rawChainDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataInputFileType]).as<std::string>();
+    m_rawChainDataInputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_dataInputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_rawChain_size)) {
-    m_rawChainSize = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_size]).as<unsigned int>();
+    m_rawChainSize = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_size]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_rawChain_displayPeriod)) {
-    m_rawChainDisplayPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_displayPeriod]).as<unsigned int>();
+    m_rawChainDisplayPeriod = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_displayPeriod]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_rawChain_measureRunTimes)) {
-    m_rawChainMeasureRunTimes = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_measureRunTimes]).as<bool>();
+    m_rawChainMeasureRunTimes = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_measureRunTimes]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_rawChain_dataOutputPeriod)) {
-    m_rawChainDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputPeriod]).as<unsigned int>();
+    m_rawChainDataOutputPeriod = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputPeriod]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_rawChain_dataOutputFileName)) {
-    m_rawChainDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputFileName]).as<std::string>();
+    m_rawChainDataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_rawChain_dataOutputFileType)) {
-    m_rawChainDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputFileType]).as<std::string>();
+    m_rawChainDataOutputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_dataOutputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_rawChain_dataOutputAllowAll.c_str())) {
@@ -496,23 +498,23 @@ MhOptionsValues::getOptionValues()
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if ((*m_optionsMap).count(m_option_rawChain_computeStats)) {
-    m_rawChainComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_computeStats]).as<bool>();
+    m_rawChainComputeStats = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_computeStats]).as<bool>();
   }
 #endif
   if ((*m_optionsMap).count(m_option_rawChain_generateExtra)) {
-    m_rawChainGenerateExtra = ((const po::variable_value&) (*m_optionsMap)[m_option_rawChain_generateExtra]).as<bool>();
+    m_rawChainGenerateExtra = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rawChain_generateExtra]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_filteredChain_generate)) {
-    m_filteredChainGenerate = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_generate]).as<bool>();
+    m_filteredChainGenerate = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_filteredChain_generate]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_filteredChain_discardedPortion)) {
-    m_filteredChainDiscardedPortion = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_discardedPortion]).as<double>();
+    m_filteredChainDiscardedPortion = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_filteredChain_discardedPortion]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_filteredChain_lag)) {
-    m_filteredChainLag = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_lag]).as<unsigned int>();
+    m_filteredChainLag = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_filteredChain_lag]).as<unsigned int>();
   }
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
@@ -530,11 +532,11 @@ MhOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_filteredChain_dataOutputFileName)) {
-    m_filteredChainDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_dataOutputFileName]).as<std::string>();
+    m_filteredChainDataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_filteredChain_dataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_filteredChain_dataOutputFileType)) {
-    m_filteredChainDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_dataOutputFileType]).as<std::string>();
+    m_filteredChainDataOutputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_filteredChain_dataOutputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_filteredChain_dataOutputAllowAll.c_str())) {
@@ -559,32 +561,32 @@ MhOptionsValues::getOptionValues()
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if ((*m_optionsMap).count(m_option_filteredChain_computeStats)) {
-    m_filteredChainComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_filteredChain_computeStats]).as<bool>();
+    m_filteredChainComputeStats = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_filteredChain_computeStats]).as<bool>();
   }
 #endif
   if ((*m_optionsMap).count(m_option_displayCandidates)) {
-    m_displayCandidates = ((const po::variable_value&) (*m_optionsMap)[m_option_displayCandidates]).as<bool>();
+    m_displayCandidates = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_displayCandidates]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_putOutOfBoundsInChain)) {
-    m_putOutOfBoundsInChain = ((const po::variable_value&) (*m_optionsMap)[m_option_putOutOfBoundsInChain]).as<bool>();
+    m_putOutOfBoundsInChain = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_putOutOfBoundsInChain]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_tk_useLocalHessian)) {
-    m_tkUseLocalHessian = ((const po::variable_value&) (*m_optionsMap)[m_option_tk_useLocalHessian]).as<bool>();
+    m_tkUseLocalHessian = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_tk_useLocalHessian]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_tk_useNewtonComponent)) {
-    m_tkUseNewtonComponent = ((const po::variable_value&) (*m_optionsMap)[m_option_tk_useNewtonComponent]).as<bool>();
+    m_tkUseNewtonComponent = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_tk_useNewtonComponent]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_dr_maxNumExtraStages)) {
-    m_drMaxNumExtraStages = ((const po::variable_value&) (*m_optionsMap)[m_option_dr_maxNumExtraStages]).as<unsigned int>();
+    m_drMaxNumExtraStages = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dr_maxNumExtraStages]).as<unsigned int>();
   }
 
   std::vector<double> tmpScales(0,0.);
   if ((*m_optionsMap).count(m_option_dr_listOfScalesForExtraStages)) {
-    std::string inputString = ((const po::variable_value&) (*m_optionsMap)[m_option_dr_listOfScalesForExtraStages]).as<std::string>();
+    std::string inputString = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dr_listOfScalesForExtraStages]).as<std::string>();
     MiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env->subDisplayFile()) {
     //  *m_env->subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::getMyOptionValues(): scales =";
@@ -609,31 +611,31 @@ MhOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_dr_duringAmNonAdaptiveInt)) {
-    m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) (*m_optionsMap)[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
+    m_drDuringAmNonAdaptiveInt = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_am_keepInitialMatrix)) {
-    m_amKeepInitialMatrix = ((const po::variable_value&) (*m_optionsMap)[m_option_am_keepInitialMatrix]).as<bool>();
+    m_amKeepInitialMatrix = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_am_keepInitialMatrix]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_am_initialNonAdaptInterval)) {
-    m_amInitialNonAdaptInterval = ((const po::variable_value&) (*m_optionsMap)[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
+    m_amInitialNonAdaptInterval = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_am_adaptInterval)) {
-    m_amAdaptInterval = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptInterval]).as<unsigned int>();
+    m_amAdaptInterval = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_am_adaptInterval]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputPeriod)) {
-    m_amAdaptedMatricesDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputPeriod]).as<unsigned int>();
+    m_amAdaptedMatricesDataOutputPeriod = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputPeriod]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputFileName)) {
-    m_amAdaptedMatricesDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputFileName]).as<std::string>();
+    m_amAdaptedMatricesDataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputFileType)) {
-    m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputFileType]).as<std::string>();
+    m_amAdaptedMatricesDataOutputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_am_adaptedMatrices_dataOutputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_am_adaptedMatrices_dataOutputAllowAll.c_str())) {
@@ -657,31 +659,31 @@ MhOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_am_eta)) {
-    m_amEta = ((const po::variable_value&) (*m_optionsMap)[m_option_am_eta]).as<double>();
+    m_amEta = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_am_eta]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_am_epsilon)) {
-    m_amEpsilon = ((const po::variable_value&) (*m_optionsMap)[m_option_am_epsilon]).as<double>();
+    m_amEpsilon = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_am_epsilon]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_enableBrooksGelmanConvMonitor)) {
-    m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) (*m_optionsMap)[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
+    m_enableBrooksGelmanConvMonitor = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_BrooksGelmanLag)) {
-    m_BrooksGelmanLag = ((const po::variable_value&) (*m_optionsMap)[m_option_BrooksGelmanLag]).as<unsigned int>();
+    m_BrooksGelmanLag = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_BrooksGelmanLag]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_outputLogLikelihood)) {
-    m_outputLogLikelihood = ((const po::variable_value&) (*m_optionsMap)[m_option_outputLogLikelihood]).as<bool>();
+    m_outputLogLikelihood = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_outputLogLikelihood]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_outputLogTarget)) {
-    m_outputLogTarget = ((const po::variable_value&) (*m_optionsMap)[m_option_outputLogTarget]).as<bool>();
+    m_outputLogTarget = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_outputLogTarget]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_doLogitTransform)) {
-    m_doLogitTransform = ((const po::variable_value&) (*m_optionsMap)[m_option_doLogitTransform]).as<bool>();
+    m_doLogitTransform = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_doLogitTransform]).as<bool>();
   }
 }
 
@@ -775,7 +777,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 #endif
   m_prefix                                           ((std::string)(prefix) + "mh_"),
   m_env                                              (env),
-  m_optionsDesc                                      (new po::options_description("Bayesian Metropolis-Hastings options")),
+  m_optionsDesc                                      (new boost::program_options::options_description("Bayesian Metropolis-Hastings options")),
   m_option_help                                      (m_prefix + "help"                                      ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
   m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -1219,74 +1221,74 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
 
 // Private methods----------------------------------
 void
-MetropolisHastingsSGOptions::defineMyOptions(po::options_description& optionsDesc) const
+MetropolisHastingsSGOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
   queso_deprecated();
 
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                                                "produce help msg for Bayesian Metropolis-Hastings"          )
-    (m_option_dataOutputFileName.c_str(),                         po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                           ), "name of generic output file"                                )
-    (m_option_dataOutputAllowAll.c_str(),                         po::value<bool        >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                           ), "allow all subEnvs write to a generic output file"           )
-    (m_option_dataOutputAllowedSet.c_str(),                       po::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                         ), "subEnvs that will write to generic output file"             )
-    (m_option_totallyMute.c_str(),                                po::value<bool        >()->default_value(UQ_MH_SG_TOTALLY_MUTE_ODV                                    ), "totally mute (no printout msg)"                             )
-    (m_option_initialPosition_dataInputFileName.c_str(),          po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV           ), "name of input file for raw chain "                          )
-    (m_option_initialPosition_dataInputFileType.c_str(),          po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV           ), "type of input file for raw chain "                          )
-    (m_option_initialProposalCovMatrix_dataInputFileName.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV), "name of input file for raw chain "                          )
-    (m_option_initialProposalCovMatrix_dataInputFileType.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV), "type of input file for raw chain "                          )
-    (m_option_listOfDisabledParameters.c_str(),                   po::value<std::string >()->default_value(UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV                     ), "list of disabled parameters"                                )
-    (m_option_rawChain_dataInputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                  ), "name of input file for raw chain "                          )
-    (m_option_rawChain_dataInputFileType.c_str(),                 po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                  ), "type of input file for raw chain "                          )
-    (m_option_rawChain_size.c_str(),                              po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_SIZE_ODV                                  ), "size of raw chain"                                          )
-    (m_option_rawChain_generateExtra.c_str(),                     po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV                        ), "generate extra information about raw chain"                 )
-    (m_option_rawChain_displayPeriod.c_str(),                     po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV                        ), "period of msg display during raw chain generation"          )
-    (m_option_rawChain_measureRunTimes.c_str(),                   po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV                     ), "measure run times"                                          )
-    (m_option_rawChain_dataOutputPeriod.c_str(),                  po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV                    ), "period of msg display during raw chain generation"          )
-    (m_option_rawChain_dataOutputFileName.c_str(),                po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                 ), "name of output file for raw chain "                         )
-    (m_option_rawChain_dataOutputFileType.c_str(),                po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                 ), "type of output file for raw chain "                         )
-    (m_option_rawChain_dataOutputAllowAll.c_str(),                po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV                 ), "allow all subEnvs to write raw chain to an output file"     )
-    (m_option_rawChain_dataOutputAllowedSet.c_str(),              po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV               ), "subEnvs that will write raw chain to output file"           )
+    (m_option_dataOutputFileName.c_str(),                         boost::program_options::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                           ), "name of generic output file"                                )
+    (m_option_dataOutputAllowAll.c_str(),                         boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                           ), "allow all subEnvs write to a generic output file"           )
+    (m_option_dataOutputAllowedSet.c_str(),                       boost::program_options::value<std::string >()->default_value(UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                         ), "subEnvs that will write to generic output file"             )
+    (m_option_totallyMute.c_str(),                                boost::program_options::value<bool        >()->default_value(UQ_MH_SG_TOTALLY_MUTE_ODV                                    ), "totally mute (no printout msg)"                             )
+    (m_option_initialPosition_dataInputFileName.c_str(),          boost::program_options::value<std::string >()->default_value(UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV           ), "name of input file for raw chain "                          )
+    (m_option_initialPosition_dataInputFileType.c_str(),          boost::program_options::value<std::string >()->default_value(UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV           ), "type of input file for raw chain "                          )
+    (m_option_initialProposalCovMatrix_dataInputFileName.c_str(), boost::program_options::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV), "name of input file for raw chain "                          )
+    (m_option_initialProposalCovMatrix_dataInputFileType.c_str(), boost::program_options::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV), "type of input file for raw chain "                          )
+    (m_option_listOfDisabledParameters.c_str(),                   boost::program_options::value<std::string >()->default_value(UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV                     ), "list of disabled parameters"                                )
+    (m_option_rawChain_dataInputFileName.c_str(),                 boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                  ), "name of input file for raw chain "                          )
+    (m_option_rawChain_dataInputFileType.c_str(),                 boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                  ), "type of input file for raw chain "                          )
+    (m_option_rawChain_size.c_str(),                              boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_SIZE_ODV                                  ), "size of raw chain"                                          )
+    (m_option_rawChain_generateExtra.c_str(),                     boost::program_options::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV                        ), "generate extra information about raw chain"                 )
+    (m_option_rawChain_displayPeriod.c_str(),                     boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV                        ), "period of msg display during raw chain generation"          )
+    (m_option_rawChain_measureRunTimes.c_str(),                   boost::program_options::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV                     ), "measure run times"                                          )
+    (m_option_rawChain_dataOutputPeriod.c_str(),                  boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV                    ), "period of msg display during raw chain generation"          )
+    (m_option_rawChain_dataOutputFileName.c_str(),                boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                 ), "name of output file for raw chain "                         )
+    (m_option_rawChain_dataOutputFileType.c_str(),                boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                 ), "type of output file for raw chain "                         )
+    (m_option_rawChain_dataOutputAllowAll.c_str(),                boost::program_options::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV                 ), "allow all subEnvs to write raw chain to an output file"     )
+    (m_option_rawChain_dataOutputAllowedSet.c_str(),              boost::program_options::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV               ), "subEnvs that will write raw chain to output file"           )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_rawChain_computeStats.c_str(),                      po::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                         ), "compute statistics on raw chain"                            )
+    (m_option_rawChain_computeStats.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                         ), "compute statistics on raw chain"                            )
 #endif
-    (m_option_filteredChain_generate.c_str(),                     po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                         ), "generate filtered chain"                                    )
-    (m_option_filteredChain_discardedPortion.c_str(),             po::value<double      >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV                ), "initial discarded portion for chain filtering"              )
-    (m_option_filteredChain_lag.c_str(),                          po::value<unsigned int>()->default_value(UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                              ), "spacing for chain filtering"                                )
-    (m_option_filteredChain_dataOutputFileName.c_str(),           po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV            ), "name of output file for filtered chain"                     )
-    (m_option_filteredChain_dataOutputFileType.c_str(),           po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV            ), "type of output file for filtered chain"                     )
-    (m_option_filteredChain_dataOutputAllowAll.c_str(),           po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV            ), "allow all subEnvs to write filt chain to an output file"    )
-    (m_option_filteredChain_dataOutputAllowedSet.c_str(),         po::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV          ), "subEnvs that will write filt chain to output file"          )
+    (m_option_filteredChain_generate.c_str(),                     boost::program_options::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                         ), "generate filtered chain"                                    )
+    (m_option_filteredChain_discardedPortion.c_str(),             boost::program_options::value<double      >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV                ), "initial discarded portion for chain filtering"              )
+    (m_option_filteredChain_lag.c_str(),                          boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                              ), "spacing for chain filtering"                                )
+    (m_option_filteredChain_dataOutputFileName.c_str(),           boost::program_options::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV            ), "name of output file for filtered chain"                     )
+    (m_option_filteredChain_dataOutputFileType.c_str(),           boost::program_options::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV            ), "type of output file for filtered chain"                     )
+    (m_option_filteredChain_dataOutputAllowAll.c_str(),           boost::program_options::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV            ), "allow all subEnvs to write filt chain to an output file"    )
+    (m_option_filteredChain_dataOutputAllowedSet.c_str(),         boost::program_options::value<std::string >()->default_value(UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV          ), "subEnvs that will write filt chain to output file"          )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_filteredChain_computeStats.c_str(),                 po::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV                    ), "compute statistics on filtered chain"                       )
+    (m_option_filteredChain_computeStats.c_str(),                 boost::program_options::value<bool        >()->default_value(UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV                    ), "compute statistics on filtered chain"                       )
 #endif
-    (m_option_displayCandidates.c_str(),                          po::value<bool        >()->default_value(UQ_MH_SG_DISPLAY_CANDIDATES_ODV                              ), "display candidates in the core MH algorithm"                )
-    (m_option_putOutOfBoundsInChain.c_str(),                      po::value<bool        >()->default_value(UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV                      ), "put 'out of bound' candidates in chain as well"             )
-    (m_option_tk_useLocalHessian.c_str(),                         po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                            ), "'proposal' use local Hessian"                               )
-    (m_option_tk_useNewtonComponent.c_str(),                      po::value<bool        >()->default_value(UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                         ), "'proposal' use Newton component"                            )
-    (m_option_dr_maxNumExtraStages.c_str(),                       po::value<unsigned int>()->default_value(UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                         ), "'dr' maximum number of extra stages"                        )
-    (m_option_dr_listOfScalesForExtraStages.c_str(),              po::value<std::string >()->default_value(UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV              ), "'dr' scales for prop cov matrices from 2nd stage on"        )
-    (m_option_dr_duringAmNonAdaptiveInt.c_str(),                  po::value<bool        >()->default_value(UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV                   ), "'dr' used during 'am' non adaptive interval"                )
-    (m_option_am_keepInitialMatrix.c_str(),                       po::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                          ), "'am' keep initial (given) matrix"                           )
-    (m_option_am_initialNonAdaptInterval.c_str(),                 po::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                           ), "'am' initial non adaptation interval"                       )
-    (m_option_am_adaptInterval.c_str(),                           po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                               ), "'am' adaptation interval"                                   )
-    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          ), "period for outputting 'am' adapted matrices"                )
-    (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for 'am' adapted matrices"              )
-    (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for 'am' adapted matrices"              )
-    (m_option_am_adaptedMatrices_dataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV       ), "type of output file for 'am' adapted matrices"              )
-    (m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV     ), "type of output file for 'am' adapted matrices"              )
-    (m_option_am_eta.c_str(),                                     po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                          ), "'am' eta"                                                   )
-    (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                                      ), "'am' epsilon"                                               )
-    (m_option_enableBrooksGelmanConvMonitor.c_str(),              po::value<unsigned int>()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                   ), "assess convergence using Brooks-Gelman metric"              )
-    (m_option_BrooksGelmanLag.c_str(),                            po::value<unsigned int>()->default_value(UQ_MH_SG_BROOKS_GELMAN_LAG                                   ), "number of chain positions before starting to compute metric")
-    (m_option_outputLogLikelihood.c_str(),                        po::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               ), "flag to toggle output of log likelihood values"             )
-    (m_option_outputLogTarget.c_str(),                            po::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_TARGET                                   ), "flag to toggle output of log target values"                 )
-    (m_option_doLogitTransform.c_str(),                           po::value<bool        >()->default_value(UQ_MH_SG_DO_LOGIT_TRANSFORM                                  ), "flag to toggle logit transform for bounded domains"         )
+    (m_option_displayCandidates.c_str(),                          boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DISPLAY_CANDIDATES_ODV                              ), "display candidates in the core MH algorithm"                )
+    (m_option_putOutOfBoundsInChain.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV                      ), "put 'out of bound' candidates in chain as well"             )
+    (m_option_tk_useLocalHessian.c_str(),                         boost::program_options::value<bool        >()->default_value(UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                            ), "'proposal' use local Hessian"                               )
+    (m_option_tk_useNewtonComponent.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                         ), "'proposal' use Newton component"                            )
+    (m_option_dr_maxNumExtraStages.c_str(),                       boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                         ), "'dr' maximum number of extra stages"                        )
+    (m_option_dr_listOfScalesForExtraStages.c_str(),              boost::program_options::value<std::string >()->default_value(UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV              ), "'dr' scales for prop cov matrices from 2nd stage on"        )
+    (m_option_dr_duringAmNonAdaptiveInt.c_str(),                  boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV                   ), "'dr' used during 'am' non adaptive interval"                )
+    (m_option_am_keepInitialMatrix.c_str(),                       boost::program_options::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                          ), "'am' keep initial (given) matrix"                           )
+    (m_option_am_initialNonAdaptInterval.c_str(),                 boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                           ), "'am' initial non adaptation interval"                       )
+    (m_option_am_adaptInterval.c_str(),                           boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                               ), "'am' adaptation interval"                                   )
+    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          ), "period for outputting 'am' adapted matrices"                )
+    (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for 'am' adapted matrices"              )
+    (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for 'am' adapted matrices"              )
+    (m_option_am_adaptedMatrices_dataOutputAllowAll.c_str(),      boost::program_options::value<bool        >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV       ), "type of output file for 'am' adapted matrices"              )
+    (m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV     ), "type of output file for 'am' adapted matrices"              )
+    (m_option_am_eta.c_str(),                                     boost::program_options::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                          ), "'am' eta"                                                   )
+    (m_option_am_epsilon.c_str(),                                 boost::program_options::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                                      ), "'am' epsilon"                                               )
+    (m_option_enableBrooksGelmanConvMonitor.c_str(),              boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                   ), "assess convergence using Brooks-Gelman metric"              )
+    (m_option_BrooksGelmanLag.c_str(),                            boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_BROOKS_GELMAN_LAG                                   ), "number of chain positions before starting to compute metric")
+    (m_option_outputLogLikelihood.c_str(),                        boost::program_options::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               ), "flag to toggle output of log likelihood values"             )
+    (m_option_outputLogTarget.c_str(),                            boost::program_options::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_TARGET                                   ), "flag to toggle output of log target values"                 )
+    (m_option_doLogitTransform.c_str(),                           boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DO_LOGIT_TRANSFORM                                  ), "flag to toggle logit transform for bounded domains"         )
   ;
 
   return;
 }
 // -------------------------------------------------
 void
-MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsDesc)
+MetropolisHastingsSGOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
 {
   queso_deprecated();
 
@@ -1299,7 +1301,7 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_ov.m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+    m_ov.m_dataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputAllowAll.c_str())) {
@@ -1323,23 +1325,23 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
   }
 
   if (m_env.allOptionsMap().count(m_option_totallyMute)) {
-    m_ov.m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute]).as<bool>();
+    m_ov.m_totallyMute = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_totallyMute]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_initialPosition_dataInputFileName)) {
-    m_ov.m_initialPositionDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileName]).as<std::string>();
+    m_ov.m_initialPositionDataInputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_initialPosition_dataInputFileType)) {
-    m_ov.m_initialPositionDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileType]).as<std::string>();
+    m_ov.m_initialPositionDataInputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileName)) {
-    m_ov.m_initialProposalCovMatrixDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileName]).as<std::string>();
+    m_ov.m_initialProposalCovMatrixDataInputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileType)) {
-    m_ov.m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileType]).as<std::string>();
+    m_ov.m_initialProposalCovMatrixDataInputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_listOfDisabledParameters)) {
@@ -1355,35 +1357,35 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName)) {
-    m_ov.m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName]).as<std::string>();
+    m_ov.m_rawChainDataInputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileType)) {
-    m_ov.m_rawChainDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileType]).as<std::string>();
+    m_ov.m_rawChainDataInputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_size)) {
-    m_ov.m_rawChainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_size]).as<unsigned int>();
+    m_ov.m_rawChainSize = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_size]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_displayPeriod)) {
-    m_ov.m_rawChainDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_displayPeriod]).as<unsigned int>();
+    m_ov.m_rawChainDisplayPeriod = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_displayPeriod]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_measureRunTimes)) {
-    m_ov.m_rawChainMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_measureRunTimes]).as<bool>();
+    m_ov.m_rawChainMeasureRunTimes = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_measureRunTimes]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputPeriod)) {
-    m_ov.m_rawChainDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputPeriod]).as<unsigned int>();
+    m_ov.m_rawChainDataOutputPeriod = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputPeriod]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileName)) {
-    m_ov.m_rawChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName]).as<std::string>();
+    m_ov.m_rawChainDataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileType)) {
-    m_ov.m_rawChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileType]).as<std::string>();
+    m_ov.m_rawChainDataOutputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowAll.c_str())) {
@@ -1408,23 +1410,23 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_env.allOptionsMap().count(m_option_rawChain_computeStats)) {
-    m_ov.m_rawChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_computeStats]).as<bool>();
+    m_ov.m_rawChainComputeStats = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_computeStats]).as<bool>();
   }
 #endif
   if (m_env.allOptionsMap().count(m_option_rawChain_generateExtra)) {
-    m_ov.m_rawChainGenerateExtra = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_generateExtra]).as<bool>();
+    m_ov.m_rawChainGenerateExtra = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_rawChain_generateExtra]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_generate)) {
-    m_ov.m_filteredChainGenerate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_generate]).as<bool>();
+    m_ov.m_filteredChainGenerate = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_generate]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_discardedPortion)) {
-    m_ov.m_filteredChainDiscardedPortion = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_discardedPortion]).as<double>();
+    m_ov.m_filteredChainDiscardedPortion = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_discardedPortion]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_lag)) {
-    m_ov.m_filteredChainLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag]).as<unsigned int>();
+    m_ov.m_filteredChainLag = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag]).as<unsigned int>();
   }
   if ((m_ov.m_filteredChainGenerate == true) &&
       (m_ov.m_filteredChainLag      < 2    )) {
@@ -1442,11 +1444,11 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileName)) {
-    m_ov.m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName]).as<std::string>();
+    m_ov.m_filteredChainDataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileType)) {
-    m_ov.m_filteredChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileType]).as<std::string>();
+    m_ov.m_filteredChainDataOutputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowAll.c_str())) {
@@ -1471,32 +1473,32 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats)) {
-    m_ov.m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats]).as<bool>();
+    m_ov.m_filteredChainComputeStats = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats]).as<bool>();
   }
 #endif
   if (m_env.allOptionsMap().count(m_option_displayCandidates)) {
-    m_ov.m_displayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates]).as<bool>();
+    m_ov.m_displayCandidates = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_putOutOfBoundsInChain)) {
-    m_ov.m_putOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_putOutOfBoundsInChain]).as<bool>();
+    m_ov.m_putOutOfBoundsInChain = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_putOutOfBoundsInChain]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian)) {
-    m_ov.m_tkUseLocalHessian = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useLocalHessian]).as<bool>();
+    m_ov.m_tkUseLocalHessian = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_tk_useLocalHessian]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_tk_useNewtonComponent)) {
-    m_ov.m_tkUseNewtonComponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useNewtonComponent]).as<bool>();
+    m_ov.m_tkUseNewtonComponent = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_tk_useNewtonComponent]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dr_maxNumExtraStages)) {
-    m_ov.m_drMaxNumExtraStages = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_maxNumExtraStages]).as<unsigned int>();
+    m_ov.m_drMaxNumExtraStages = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_dr_maxNumExtraStages]).as<unsigned int>();
   }
 
   std::vector<double> tmpScales(0,0.);
   if (m_env.allOptionsMap().count(m_option_dr_listOfScalesForExtraStages)) {
-    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages]).as<std::string>();
+    std::string inputString = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages]).as<std::string>();
     MiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subDisplayFile()) {
     //  *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::getMyOptionValues(): scales =";
@@ -1521,31 +1523,31 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
   }
 
   if (m_env.allOptionsMap().count(m_option_dr_duringAmNonAdaptiveInt)) {
-    m_ov.m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
+    m_ov.m_drDuringAmNonAdaptiveInt = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_keepInitialMatrix)) {
-    m_ov.m_amKeepInitialMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_keepInitialMatrix]).as<bool>();
+    m_ov.m_amKeepInitialMatrix = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_am_keepInitialMatrix]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval)) {
-    m_ov.m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
+    m_ov.m_amInitialNonAdaptInterval = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_adaptInterval)) {
-    m_ov.m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval]).as<unsigned int>();
+    m_ov.m_amAdaptInterval = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputPeriod)) {
-    m_ov.m_amAdaptedMatricesDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputPeriod]).as<unsigned int>();
+    m_ov.m_amAdaptedMatricesDataOutputPeriod = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputPeriod]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileName)) {
-    m_ov.m_amAdaptedMatricesDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileName]).as<std::string>();
+    m_ov.m_amAdaptedMatricesDataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileType)) {
-    m_ov.m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileType]).as<std::string>();
+    m_ov.m_amAdaptedMatricesDataOutputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputAllowAll.c_str())) {
@@ -1569,31 +1571,31 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
   }
 
   if (m_env.allOptionsMap().count(m_option_am_eta)) {
-    m_ov.m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta]).as<double>();
+    m_ov.m_amEta = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_am_eta]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_epsilon)) {
-    m_ov.m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
+    m_ov.m_amEpsilon = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_enableBrooksGelmanConvMonitor)) {
-    m_ov.m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) m_env.allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
+    m_ov.m_enableBrooksGelmanConvMonitor = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_BrooksGelmanLag)) {
-    m_ov.m_BrooksGelmanLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_BrooksGelmanLag]).as<unsigned int>();
+    m_ov.m_BrooksGelmanLag = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_BrooksGelmanLag]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_outputLogLikelihood)) {
-    m_ov.m_outputLogLikelihood = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputLogLikelihood]).as<bool>();
+    m_ov.m_outputLogLikelihood = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_outputLogLikelihood]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_outputLogTarget)) {
-    m_ov.m_outputLogTarget = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputLogTarget]).as<bool>();
+    m_ov.m_outputLogTarget = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_outputLogTarget]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_doLogitTransform)) {
-    m_ov.m_doLogitTransform = ((const po::variable_value&) m_env.allOptionsMap()[m_option_doLogitTransform]).as<bool>();
+    m_ov.m_doLogitTransform = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_doLogitTransform]).as<bool>();
   }
 }
 

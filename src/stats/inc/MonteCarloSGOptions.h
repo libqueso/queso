@@ -52,6 +52,12 @@
 #define UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV           0
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
+
 namespace QUESO {
 
 /*! \file MonteCarloSGOptions.h
@@ -211,13 +217,13 @@ public:
 
 private:
   //! Defines the options for the Monte Carlo sequence generator as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the sequence options.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
   std::string                   m_option_dataOutputFileName;

@@ -26,26 +26,31 @@
 #define UQ_ENVIRONMENT_H
 
 #include <queso/Defines.h>
-namespace QUESO {
-  class EnvironmentOptions;
-}  // End namespace QUESO
-
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
 #include <queso/MpiComm.h>
 #ifdef QUESO_HAS_HDF5
 #include <hdf5.h>
 #endif
-#include <boost/program_options.hpp>
-namespace po = boost::program_options;
 #include <iostream>
 #include <fstream>
 
-#include <queso/EnvironmentOptions.h>
 #include <queso/RngBase.h>
 #include <queso/BasicPdfsBase.h>
 
+// Forward declarations
+namespace boost {
+  namespace program_options {
+    class options_description;
+    class variables_map;
+    }
+}
+
 namespace QUESO {
+
+// Forward declarations
+class EnvironmentOptions;
+class EnvOptionsValues;
 
 
   /*! queso_terminate_handler
@@ -256,18 +261,18 @@ public:
 
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
-  const po::options_description& allOptionsDesc () const;
+  const boost::program_options::options_description& allOptionsDesc () const;
 #endif
 
-  //! Access function to private attribute m_allOptionsMap. It is an instance of po::variables_map(), which
+  //! Access function to private attribute m_allOptionsMap. It is an instance of boost::program_options::variables_map(), which
   //! allows concrete variables to map which store variables in real map.
-  po::variables_map&      allOptionsMap () const;
+  boost::program_options::variables_map&      allOptionsMap () const;
 
 
   //! This method scans the input file provided by the user to QUESO.
   /*! It checks if no input file is passed and updates the private attribute m_allOptionsDesc, which
    * keeps all the options.*/
-  void    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
+  void    scanInputFileForMyOptions(const boost::program_options::options_description& optionsDesc) const;
 
   //! Access function to private attribute m_displayVerbosity. It manages how much information will be
   //! release during the use of the QUESO library.
@@ -352,8 +357,8 @@ protected:
 
   std::string		     m_optionsInputFileName;
   mutable bool       	     m_optionsInputFileAccessState; // Yes, 'mutable'
-  po::options_description*   m_allOptionsDesc;
-  po::variables_map* 	     m_allOptionsMap;
+  boost::program_options::options_description*   m_allOptionsDesc;
+  boost::program_options::variables_map* 	     m_allOptionsMap;
 
   unsigned int               m_subId;
   std::string 		     m_subIdString;

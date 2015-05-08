@@ -25,6 +25,8 @@
 #ifndef UQ_FINITE_DISTRIBUTION_H
 #define UQ_FINITE_DISTRIBUTION_H
 
+#include <map>
+#include <vector>
 #include <queso/Environment.h>
 
 namespace QUESO {

@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/Defines.h>
 #include <queso/StatisticalInverseProblemOptions.h>
 #include <queso/Miscellaneous.h>
@@ -92,11 +94,11 @@ SipOptionsValues::defineOptions()
 {
   (*m_optionsDescription).add_options()
     (m_option_help.c_str(),                                                                                              "produce help message for statistical inverse problem")
-    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
-    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file"                            )
-    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file"         )
+    (m_option_computeSolution.c_str(),      boost::program_options::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
+    (m_option_dataOutputFileName.c_str(),   boost::program_options::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(), boost::program_options::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file"         )
 #ifdef UQ_SIP_READS_SOLVER_OPTION
-    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV                 ), "algorithm for calibration"                           )
+    (m_option_solver.c_str(),               boost::program_options::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV                 ), "algorithm for calibration"                           )
 #endif
   ;
 }
@@ -112,11 +114,11 @@ SipOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_computeSolution)) {
-    m_computeSolution = ((const po::variable_value&) (*m_optionsMap)[m_option_computeSolution]).as<bool>();
+    m_computeSolution = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_computeSolution]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
+    m_dataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_dataOutputAllowedSet)) {
@@ -134,7 +136,7 @@ SipOptionsValues::getOptionValues()
 
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   if ((*m_optionsMap).count(m_option_solver)) {
-    m_solverString = ((const po::variable_value&) (*m_optionsMap)[m_option_solver]).as<std::string>();
+    m_solverString = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_solver]).as<std::string>();
   }
 #endif
 }
@@ -165,7 +167,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_ov                         (),
   m_prefix                     ((std::string)(prefix) + "ip_"),
   m_env                        (env),
-  m_optionsDesc                (new po::options_description("Statistical Inverse Problem options")),
+  m_optionsDesc                (new boost::program_options::options_description("Statistical Inverse Problem options")),
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
@@ -261,17 +263,17 @@ StatisticalInverseProblemOptions::print(std::ostream& os) const
 }
 // Private methods ---------------------------------
 void
-StatisticalInverseProblemOptions::defineMyOptions(po::options_description& optionsDesc) const
+StatisticalInverseProblemOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
   queso_deprecated();
 
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                              "produce help message for statistical inverse problem")
-    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
-    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file"                            )
-    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file"         )
+    (m_option_computeSolution.c_str(),      boost::program_options::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
+    (m_option_dataOutputFileName.c_str(),   boost::program_options::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(), boost::program_options::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file"         )
 #ifdef UQ_SIP_READS_SOLVER_OPTION
-    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV                 ), "algorithm for calibration"                           )
+    (m_option_solver.c_str(),               boost::program_options::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV                 ), "algorithm for calibration"                           )
 #endif
   ;
 
@@ -279,7 +281,7 @@ StatisticalInverseProblemOptions::defineMyOptions(po::options_description& optio
 }
 //--------------------------------------------------
 void
-StatisticalInverseProblemOptions::getMyOptionValues(po::options_description& optionsDesc)
+StatisticalInverseProblemOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
 {
   queso_deprecated();
 
@@ -291,11 +293,11 @@ StatisticalInverseProblemOptions::getMyOptionValues(po::options_description& opt
   }
 
   if (m_env.allOptionsMap().count(m_option_computeSolution)) {
-    m_ov.m_computeSolution = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeSolution]).as<bool>();
+    m_ov.m_computeSolution = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_computeSolution]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_ov.m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+    m_ov.m_dataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet)) {
@@ -313,7 +315,7 @@ StatisticalInverseProblemOptions::getMyOptionValues(po::options_description& opt
 
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   if (m_env.allOptionsMap().count(m_option_solver)) {
-    m_ov.m_solverString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_solver]).as<std::string>();
+    m_ov.m_solverString = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_solver]).as<std::string>();
   }
 #endif
 

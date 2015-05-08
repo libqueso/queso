@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/Environment.h>
 #include <queso/BoostInputOptionsParser.h>
 
@@ -30,16 +32,16 @@ namespace QUESO {
 BoostInputOptionsParser::BoostInputOptionsParser(const BaseEnvironment * env)
   :
     m_env(env),
-    m_optionsDescription(new po::options_description("Input options")),
-    m_optionsMap(new po::variables_map())
+    m_optionsDescription(new boost::program_options::options_description("Input options")),
+    m_optionsMap(new boost::program_options::variables_map())
 {
 }
 
 BoostInputOptionsParser::BoostInputOptionsParser()
   :
     m_env(NULL),
-    m_optionsDescription(new po::options_description("Input options")),
-    m_optionsMap(new po::variables_map())
+    m_optionsDescription(new boost::program_options::options_description("Input options")),
+    m_optionsMap(new boost::program_options::variables_map())
 {
 }
 
@@ -69,8 +71,8 @@ BoostInputOptionsParser::scanOptionsValues()
     ifs.open(m_env->optionsInputFileName().c_str());
 
     queso_require_msg(m_optionsMap, "m_allOptionsMap variable is NULL");
-    po::store(po::parse_config_file(ifs, *m_optionsDescription, true), *m_optionsMap);
-    po::notify(*m_optionsMap);
+    boost::program_options::store(boost::program_options::parse_config_file(ifs, *m_optionsDescription, true), *m_optionsMap);
+    boost::program_options::notify(*m_optionsMap);
 
     ifs.close();
 

@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <limits>
 #include <queso/LogNormalVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>

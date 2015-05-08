@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <limits>
 #include <queso/InverseGammaVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>

@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/EnvironmentOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -130,19 +132,19 @@ EnvOptionsValues::defineOptions()
 #endif
   (*m_optionsDescription).add_options()
     (m_option_help.c_str(),                                                                                                 "produce help message for  environment"       )
-    (m_option_numSubEnvironments.c_str(),    po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),     "number of subEnvironments"                     )
-    (m_option_subDisplayFileName.c_str(),    po::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),    "output filename for subscreen writing"         )
-    (m_option_subDisplayAllowAll.c_str(),    po::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),    "Allow all processors to write to output file"  )
-    (m_option_subDisplayAllowInter0.c_str(), po::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV), "Allow all inter0 nodes to write to output file")
-    (m_option_subDisplayAllowedSet.c_str(),  po::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV),  "subEnvs that will write to output file"        )
-    (m_option_displayVerbosity.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),        "set verbosity"                                 )
-    (m_option_syncVerbosity.c_str(),         po::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),           "set sync verbosity"                            )
-    (m_option_checkingLevel.c_str(),         po::value<unsigned int>()->default_value(UQ_ENV_CHECKING_LEVEL_ODV),           "set checking level"                            )
-    (m_option_rngType.c_str(),               po::value<std::string >()->default_value(UQ_ENV_RNG_TYPE_ODV),                 "set rngType"                                   )
-    (m_option_seed.c_str(),                  po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                     "set seed"                                      )
-    (m_option_platformName.c_str(),          po::value<std::string >()->default_value(UQ_ENV_PLATFORM_NAME_ODV),            "platform name"                                 )
-    (m_option_identifyingString.c_str(),     po::value<std::string >()->default_value(UQ_ENV_IDENTIFYING_STRING_ODV),       "identifying string"                            )
-  //(m_option_numDebugParams.c_str(),        po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),         "set number of debug parameters"                )
+    (m_option_numSubEnvironments.c_str(),    boost::program_options::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),     "number of subEnvironments"                     )
+    (m_option_subDisplayFileName.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),    "output filename for subscreen writing"         )
+    (m_option_subDisplayAllowAll.c_str(),    boost::program_options::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),    "Allow all processors to write to output file"  )
+    (m_option_subDisplayAllowInter0.c_str(), boost::program_options::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV), "Allow all inter0 nodes to write to output file")
+    (m_option_subDisplayAllowedSet.c_str(),  boost::program_options::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV),  "subEnvs that will write to output file"        )
+    (m_option_displayVerbosity.c_str(),      boost::program_options::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),        "set verbosity"                                 )
+    (m_option_syncVerbosity.c_str(),         boost::program_options::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),           "set sync verbosity"                            )
+    (m_option_checkingLevel.c_str(),         boost::program_options::value<unsigned int>()->default_value(UQ_ENV_CHECKING_LEVEL_ODV),           "set checking level"                            )
+    (m_option_rngType.c_str(),               boost::program_options::value<std::string >()->default_value(UQ_ENV_RNG_TYPE_ODV),                 "set rngType"                                   )
+    (m_option_seed.c_str(),                  boost::program_options::value<int         >()->default_value(UQ_ENV_SEED_ODV),                     "set seed"                                      )
+    (m_option_platformName.c_str(),          boost::program_options::value<std::string >()->default_value(UQ_ENV_PLATFORM_NAME_ODV),            "platform name"                                 )
+    (m_option_identifyingString.c_str(),     boost::program_options::value<std::string >()->default_value(UQ_ENV_IDENTIFYING_STRING_ODV),       "identifying string"                            )
+  //(m_option_numDebugParams.c_str(),        boost::program_options::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),         "set number of debug parameters"                )
   ;
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In EnvOptions::defineMyOptions(), after add_options()" << std::endl;
@@ -285,7 +287,7 @@ EnvironmentOptions::EnvironmentOptions(
   m_ov                          (),
   m_env                         (env),
   m_prefix                      ((std::string)(prefix) + "env_"),
-  m_optionsDesc                 (new po::options_description("Environment options")),
+  m_optionsDesc                 (new boost::program_options::options_description("Environment options")),
   m_option_help                 (m_prefix + "help"                 ),
   m_option_numSubEnvironments   (m_prefix + "numSubEnvironments"   ),
   m_option_subDisplayFileName   (m_prefix + "subDisplayFileName"   ),
@@ -398,7 +400,7 @@ EnvironmentOptions::print(std::ostream& os) const
 
 // Private methods ----------------------------------
 void
-EnvironmentOptions::defineMyOptions(po::options_description& optionsDesc) const
+EnvironmentOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
   queso_deprecated();
 
@@ -407,19 +409,19 @@ EnvironmentOptions::defineMyOptions(po::options_description& optionsDesc) const
 #endif
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                 "produce help message for  environment"       )
-    (m_option_numSubEnvironments.c_str(),    po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),     "number of subEnvironments"                     )
-    (m_option_subDisplayFileName.c_str(),    po::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),    "output filename for subscreen writing"         )
-    (m_option_subDisplayAllowAll.c_str(),    po::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),    "Allow all processors to write to output file"  )
-    (m_option_subDisplayAllowInter0.c_str(), po::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV), "Allow all inter0 nodes to write to output file")
-    (m_option_subDisplayAllowedSet.c_str(),  po::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV),  "subEnvs that will write to output file"        )
-    (m_option_displayVerbosity.c_str(),      po::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),        "set verbosity"                                 )
-    (m_option_syncVerbosity.c_str(),         po::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),           "set sync verbosity"                            )
-    (m_option_checkingLevel.c_str(),         po::value<unsigned int>()->default_value(UQ_ENV_CHECKING_LEVEL_ODV),           "set checking level"                            )
-    (m_option_rngType.c_str(),               po::value<std::string >()->default_value(UQ_ENV_RNG_TYPE_ODV),                 "set rngType"                                   )
-    (m_option_seed.c_str(),                  po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                     "set seed"                                      )
-    (m_option_platformName.c_str(),          po::value<std::string >()->default_value(UQ_ENV_PLATFORM_NAME_ODV),            "platform name"                                 )
-    (m_option_identifyingString.c_str(),     po::value<std::string >()->default_value(UQ_ENV_IDENTIFYING_STRING_ODV),       "identifying string"                            )
-  //(m_option_numDebugParams.c_str(),        po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),         "set number of debug parameters"                )
+    (m_option_numSubEnvironments.c_str(),    boost::program_options::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),     "number of subEnvironments"                     )
+    (m_option_subDisplayFileName.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),    "output filename for subscreen writing"         )
+    (m_option_subDisplayAllowAll.c_str(),    boost::program_options::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),    "Allow all processors to write to output file"  )
+    (m_option_subDisplayAllowInter0.c_str(), boost::program_options::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV), "Allow all inter0 nodes to write to output file")
+    (m_option_subDisplayAllowedSet.c_str(),  boost::program_options::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV),  "subEnvs that will write to output file"        )
+    (m_option_displayVerbosity.c_str(),      boost::program_options::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),        "set verbosity"                                 )
+    (m_option_syncVerbosity.c_str(),         boost::program_options::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),           "set sync verbosity"                            )
+    (m_option_checkingLevel.c_str(),         boost::program_options::value<unsigned int>()->default_value(UQ_ENV_CHECKING_LEVEL_ODV),           "set checking level"                            )
+    (m_option_rngType.c_str(),               boost::program_options::value<std::string >()->default_value(UQ_ENV_RNG_TYPE_ODV),                 "set rngType"                                   )
+    (m_option_seed.c_str(),                  boost::program_options::value<int         >()->default_value(UQ_ENV_SEED_ODV),                     "set seed"                                      )
+    (m_option_platformName.c_str(),          boost::program_options::value<std::string >()->default_value(UQ_ENV_PLATFORM_NAME_ODV),            "platform name"                                 )
+    (m_option_identifyingString.c_str(),     boost::program_options::value<std::string >()->default_value(UQ_ENV_IDENTIFYING_STRING_ODV),       "identifying string"                            )
+  //(m_option_numDebugParams.c_str(),        boost::program_options::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),         "set number of debug parameters"                )
   ;
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In EnvOptions::defineMyOptions(), after add_options()" << std::endl;
@@ -429,7 +431,7 @@ EnvironmentOptions::defineMyOptions(po::options_description& optionsDesc) const
 }
 // --------------------------------------------------
 void
-EnvironmentOptions::getMyOptionValues(po::options_description& optionsDesc)
+EnvironmentOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
 {
   queso_deprecated();
 

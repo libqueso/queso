@@ -5,6 +5,9 @@
 #include <vector>
 #include <string>
 #include <cmath>
+
+#include <boost/program_options.hpp>
+
 #include <queso/Environment.h>
 #include <queso/GslMatrix.h>
 #include <queso/GenericScalarFunction.h>
@@ -218,39 +221,39 @@ int main(int argc, char* argv[]) {
   std::string dataString;
   likelihoodData dat;
 
-  po::options_description generic("Generic options");
+  boost::program_options::options_description generic("Generic options");
   generic.add_options()
     ("help,h", "Produce help message");
 
-  po::options_description config("GaussianMean1DRegression specific options");
+  boost::program_options::options_description config("GaussianMean1DRegression specific options");
   config.add_options()
-    ("GaussianMean1DRegression_priorMean", po::value<double>(&priorMean)->default_value(priorMeanODV), "Prior Mean")
-    ("GaussianMean1DRegression_priorVar", po::value<double>(&priorVar)->default_value(priorVarODV), "Prior Standard Deviation")
-    ("GaussianMean1DRegression_samplingVar", po::value<double>(&dat.samplingVar)->default_value(samplingVarODV), "Data Sampling Standard Deviation")
-    ("GaussianMean1DRegression_dataSet", po::value<std::string>(&dataString)->default_value(dataSetODV), "Calibration Data");
+    ("GaussianMean1DRegression_priorMean", boost::program_options::value<double>(&priorMean)->default_value(priorMeanODV), "Prior Mean")
+    ("GaussianMean1DRegression_priorVar", boost::program_options::value<double>(&priorVar)->default_value(priorVarODV), "Prior Standard Deviation")
+    ("GaussianMean1DRegression_samplingVar", boost::program_options::value<double>(&dat.samplingVar)->default_value(samplingVarODV), "Data Sampling Standard Deviation")
+    ("GaussianMean1DRegression_dataSet", boost::program_options::value<std::string>(&dataString)->default_value(dataSetODV), "Calibration Data");
 
-  po::options_description hidden("hidden options");
+  boost::program_options::options_description hidden("hidden options");
   hidden.add_options()
-    ("input_file", po::value<std::string>(&inputFile)->default_value(inputFileODV), "QUESO configuration file");
-  po::positional_options_description p;
+    ("input_file", boost::program_options::value<std::string>(&inputFile)->default_value(inputFileODV), "QUESO configuration file");
+  boost::program_options::positional_options_description p;
   p.add("input_file", -1);
 
-  po::options_description cmdline_options;
+  boost::program_options::options_description cmdline_options;
   cmdline_options.add(generic).add(config).add(hidden);
-  po::options_description visible("Allowed options");
+  boost::program_options::options_description visible("Allowed options");
   visible.add(generic).add(config);
 
   // parse command line for help, inputFile, and any config options present
-  po::variables_map vm;
+  boost::program_options::variables_map vm;
   try {
-    po::store(po::command_line_parser(argc, argv).
+    boost::program_options::store(boost::program_options::command_line_parser(argc, argv).
 	      options(cmdline_options).positional(p).run(), vm);
   } catch (std::exception& e) {
     if(rank == 0)
       std::cout<<"Caught exception: "<<e.what()<<std::endl;
     MPI_Abort(MPI_COMM_WORLD, -1);
   }
-  po::notify(vm);
+  boost::program_options::notify(vm);
 
   // if help is requested, print out usgae and visible options, then exit cleanly
   if (vm.count("help")) {
@@ -266,13 +269,13 @@ int main(int argc, char* argv[]) {
   // parse the input file to get GaussianMean1DRegression option values
   std::ifstream config_stream(inputFile.c_str());
   try {
-    po::store(po::parse_config_file(config_stream, config, true), vm);
+    boost::program_options::store(boost::program_options::parse_config_file(config_stream, config, true), vm);
   } catch (std::exception& e) {
     if(rank == 0)
       std::cout << "Caught exception: " << e.what() << std::endl;
     MPI_Abort(MPI_COMM_WORLD, -1);
   }
-  po::notify(vm);
+  boost::program_options::notify(vm);
   config_stream.close();
 
    // parse the data string into a vector of doubles and store them in dat.dataSet

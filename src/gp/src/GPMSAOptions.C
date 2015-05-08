@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/GPMSAOptions.h>
 
 // ODV = option default value
@@ -81,16 +83,16 @@ GPMSAOptions::defineOptions()
 {
   (*m_optionsDescription).add_options()
     (m_option_help.c_str(), "produce help message Gaussian process emulator")
-    (m_option_emulatorPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator precision")
-    (m_option_emulatorPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator precision")
-    (m_option_emulatorCorrelationStrengthAlpha.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for emulator correlation strength")
-    (m_option_emulatorCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for emulator correlation strength")
-    (m_option_discrepancyPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for discrepancy precision")
-    (m_option_discrepancyPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for discrepancy precision")
-    (m_option_discrepancyCorrelationStrengthAlpha.c_str(), po::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for discrepancy correlation strength")
-    (m_option_discrepancyCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for discrepancy correlation strength")
-    (m_option_emulatorDataPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator data precision")
-    (m_option_emulatorDataPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator data precision");
+    (m_option_emulatorPrecisionShape.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator precision")
+    (m_option_emulatorPrecisionScale.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator precision")
+    (m_option_emulatorCorrelationStrengthAlpha.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for emulator correlation strength")
+    (m_option_emulatorCorrelationStrengthBeta.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for emulator correlation strength")
+    (m_option_discrepancyPrecisionShape.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for discrepancy precision")
+    (m_option_discrepancyPrecisionScale.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for discrepancy precision")
+    (m_option_discrepancyCorrelationStrengthAlpha.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for discrepancy correlation strength")
+    (m_option_discrepancyCorrelationStrengthBeta.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for discrepancy correlation strength")
+    (m_option_emulatorDataPrecisionShape.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator data precision")
+    (m_option_emulatorDataPrecisionScale.c_str(), boost::program_options::value<double>()->default_value(UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator data precision");
 }
 
 void
@@ -104,43 +106,43 @@ GPMSAOptions::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_emulatorPrecisionShape)) {
-    this->m_emulatorPrecisionShape = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorPrecisionShape]).as<double>();
+    this->m_emulatorPrecisionShape = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_emulatorPrecisionShape]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_emulatorPrecisionScale)) {
-    this->m_emulatorPrecisionScale = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorPrecisionScale]).as<double>();
+    this->m_emulatorPrecisionScale = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_emulatorPrecisionScale]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_emulatorCorrelationStrengthAlpha)) {
-    this->m_emulatorCorrelationStrengthAlpha = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorCorrelationStrengthAlpha]).as<double>();
+    this->m_emulatorCorrelationStrengthAlpha = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_emulatorCorrelationStrengthAlpha]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_emulatorCorrelationStrengthBeta)) {
-    this->m_emulatorCorrelationStrengthBeta = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorCorrelationStrengthBeta]).as<double>();
+    this->m_emulatorCorrelationStrengthBeta = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_emulatorCorrelationStrengthBeta]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_discrepancyPrecisionShape)) {
-    this->m_discrepancyPrecisionShape = ((const po::variable_value &) (*m_optionsMap)[m_option_discrepancyPrecisionShape]).as<double>();
+    this->m_discrepancyPrecisionShape = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_discrepancyPrecisionShape]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_discrepancyPrecisionScale)) {
-    this->m_discrepancyPrecisionScale = ((const po::variable_value &) (*m_optionsMap)[m_option_discrepancyPrecisionScale]).as<double>();
+    this->m_discrepancyPrecisionScale = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_discrepancyPrecisionScale]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_discrepancyCorrelationStrengthAlpha)) {
-    this->m_discrepancyCorrelationStrengthAlpha = ((const po::variable_value &) (*m_optionsMap)[m_option_discrepancyCorrelationStrengthAlpha]).as<double>();
+    this->m_discrepancyCorrelationStrengthAlpha = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_discrepancyCorrelationStrengthAlpha]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_discrepancyCorrelationStrengthBeta)) {
-    this->m_discrepancyCorrelationStrengthBeta = ((const po::variable_value &) (*m_optionsMap)[m_option_discrepancyCorrelationStrengthBeta]).as<double>();
+    this->m_discrepancyCorrelationStrengthBeta = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_discrepancyCorrelationStrengthBeta]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_emulatorDataPrecisionShape)) {
-    this->m_emulatorDataPrecisionShape = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorDataPrecisionShape]).as<double>();
+    this->m_emulatorDataPrecisionShape = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_emulatorDataPrecisionShape]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_emulatorDataPrecisionScale)) {
-    this->m_emulatorDataPrecisionScale = ((const po::variable_value &) (*m_optionsMap)[m_option_emulatorDataPrecisionScale]).as<double>();
+    this->m_emulatorDataPrecisionScale = ((const boost::program_options::variable_value &) (*m_optionsMap)[m_option_emulatorDataPrecisionScale]).as<double>();
   }
 }
 

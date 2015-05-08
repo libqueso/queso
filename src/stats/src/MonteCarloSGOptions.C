@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/MonteCarloSGOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -179,26 +181,26 @@ McOptionsValues::defineOptions()
 {
   (*m_optionsDescription).add_options()
     (m_option_help.c_str(),                                                                                                            "produce help message for Monte Carlo distribution calculator")
-    (m_option_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV       ), "name of generic data output file"                            )
-    (m_option_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write to generic data output file"         )
-    (m_option_pseq_dataOutputPeriod.c_str(),     po::value<unsigned int>()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during param sequence generation"  )
-    (m_option_pseq_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for parameters"                     )
-    (m_option_pseq_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for parameters"                     )
-    (m_option_pseq_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for parameters"  )
+    (m_option_dataOutputFileName.c_str(),        boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV       ), "name of generic data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write to generic data output file"         )
+    (m_option_pseq_dataOutputPeriod.c_str(),     boost::program_options::value<unsigned int>()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during param sequence generation"  )
+    (m_option_pseq_dataOutputFileName.c_str(),   boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for parameters"                     )
+    (m_option_pseq_dataOutputFileType.c_str(),   boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for parameters"                     )
+    (m_option_pseq_dataOutputAllowedSet.c_str(), boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for parameters"  )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_pseq_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of parameter"                 )
+    (m_option_pseq_computeStats.c_str(),         boost::program_options::value<bool        >()->default_value(UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of parameter"                 )
 #endif
-    (m_option_qseq_dataInputFileName.c_str(),    po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV   ), "name of data input file for qois"                            )
-    (m_option_qseq_dataInputFileType.c_str(),    po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV   ), "type of data input file for qois"                            )
-    (m_option_qseq_size.c_str(),                 po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_SIZE_ODV                   ), "size of qoi sequence"                                        )
-    (m_option_qseq_displayPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV         ), "period of message display during qoi sequence generation"    )
-    (m_option_qseq_measureRunTimes.c_str(),      po::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV      ), "measure run times"                                           )
-    (m_option_qseq_dataOutputPeriod.c_str(),     po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during qoi sequence generation"    )
-    (m_option_qseq_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for qois"                           )
-    (m_option_qseq_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for qois"                           )
-    (m_option_qseq_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for qois"        )
+    (m_option_qseq_dataInputFileName.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV   ), "name of data input file for qois"                            )
+    (m_option_qseq_dataInputFileType.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV   ), "type of data input file for qois"                            )
+    (m_option_qseq_size.c_str(),                 boost::program_options::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_SIZE_ODV                   ), "size of qoi sequence"                                        )
+    (m_option_qseq_displayPeriod.c_str(),        boost::program_options::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV         ), "period of message display during qoi sequence generation"    )
+    (m_option_qseq_measureRunTimes.c_str(),      boost::program_options::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV      ), "measure run times"                                           )
+    (m_option_qseq_dataOutputPeriod.c_str(),     boost::program_options::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during qoi sequence generation"    )
+    (m_option_qseq_dataOutputFileName.c_str(),   boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for qois"                           )
+    (m_option_qseq_dataOutputFileType.c_str(),   boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for qois"                           )
+    (m_option_qseq_dataOutputAllowedSet.c_str(), boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for qois"        )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_qseq_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of qoi"                       )
+    (m_option_qseq_computeStats.c_str(),         boost::program_options::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of qoi"                       )
 #endif
    ;
 }
@@ -214,7 +216,7 @@ McOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
+    m_dataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_dataOutputAllowedSet)) {
@@ -231,15 +233,15 @@ McOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_pseq_dataOutputPeriod)) {
-    m_pseqDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_pseq_dataOutputPeriod]).as<unsigned int>();
+    m_pseqDataOutputPeriod = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_pseq_dataOutputPeriod]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_pseq_dataOutputFileName)) {
-    m_pseqDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_pseq_dataOutputFileName]).as<std::string>();
+    m_pseqDataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_pseq_dataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_pseq_dataOutputFileType)) {
-    m_pseqDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_pseq_dataOutputFileType]).as<std::string>();
+    m_pseqDataOutputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_pseq_dataOutputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_pseq_dataOutputAllowedSet)) {
@@ -257,39 +259,39 @@ McOptionsValues::getOptionValues()
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if ((*m_optionsMap).count(m_option_pseq_computeStats)) {
-    m_pseqComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_pseq_computeStats]).as<bool>();
+    m_pseqComputeStats = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_pseq_computeStats]).as<bool>();
   }
 #endif
   if ((*m_optionsMap).count(m_option_qseq_dataInputFileName)) {
-    m_qseqDataInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataInputFileName]).as<std::string>();
+    m_qseqDataInputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_qseq_dataInputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_qseq_dataInputFileType)) {
-    m_qseqDataInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataInputFileType]).as<std::string>();
+    m_qseqDataInputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_qseq_dataInputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_qseq_size)) {
-    m_qseqSize = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_size]).as<unsigned int>();
+    m_qseqSize = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_qseq_size]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_qseq_displayPeriod)) {
-    m_qseqDisplayPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_displayPeriod]).as<unsigned int>();
+    m_qseqDisplayPeriod = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_qseq_displayPeriod]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_qseq_measureRunTimes)) {
-    m_qseqMeasureRunTimes = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_measureRunTimes]).as<bool>();
+    m_qseqMeasureRunTimes = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_qseq_measureRunTimes]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_qseq_dataOutputPeriod)) {
-    m_qseqDataOutputPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataOutputPeriod]).as<unsigned int>();
+    m_qseqDataOutputPeriod = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_qseq_dataOutputPeriod]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_qseq_dataOutputFileName)) {
-    m_qseqDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataOutputFileName]).as<std::string>();
+    m_qseqDataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_qseq_dataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_qseq_dataOutputFileType)) {
-    m_qseqDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_dataOutputFileType]).as<std::string>();
+    m_qseqDataOutputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_qseq_dataOutputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_qseq_dataOutputAllowedSet)) {
@@ -307,7 +309,7 @@ McOptionsValues::getOptionValues()
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if ((*m_optionsMap).count(m_option_qseq_computeStats)) {
-    m_qseqComputeStats = ((const po::variable_value&) (*m_optionsMap)[m_option_qseq_computeStats]).as<bool>();
+    m_qseqComputeStats = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_qseq_computeStats]).as<bool>();
   }
 #endif
 }
@@ -363,7 +365,7 @@ MonteCarloSGOptions::MonteCarloSGOptions(
 #endif
   m_prefix                          ((std::string)(prefix) + "mc_"),
   m_env                             (env),
-  m_optionsDesc                     (new po::options_description("Monte Carlo options")),
+  m_optionsDesc                     (new boost::program_options::options_description("Monte Carlo options")),
   m_option_help                     (m_prefix + "help"                       ),
   m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"         ),
   m_option_dataOutputAllowedSet     (m_prefix + "dataOutputAllowedSet"       ),
@@ -489,32 +491,32 @@ MonteCarloSGOptions::scanOptionsValues()
 }
 // Private methods ---------------------------------
 void
-MonteCarloSGOptions::defineMyOptions(po::options_description& optionsDesc) const
+MonteCarloSGOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
   queso_deprecated();
 
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                            "produce help message for Monte Carlo distribution calculator")
-    (m_option_dataOutputFileName.c_str(),        po::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV       ), "name of generic data output file"                            )
-    (m_option_dataOutputAllowedSet.c_str(),      po::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write to generic data output file"         )
-    (m_option_pseq_dataOutputPeriod.c_str(),     po::value<unsigned int>()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during param sequence generation"  )
-    (m_option_pseq_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for parameters"                     )
-    (m_option_pseq_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for parameters"                     )
-    (m_option_pseq_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for parameters"  )
+    (m_option_dataOutputFileName.c_str(),        boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV       ), "name of generic data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV     ), "subEnvs that will write to generic data output file"         )
+    (m_option_pseq_dataOutputPeriod.c_str(),     boost::program_options::value<unsigned int>()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during param sequence generation"  )
+    (m_option_pseq_dataOutputFileName.c_str(),   boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for parameters"                     )
+    (m_option_pseq_dataOutputFileType.c_str(),   boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for parameters"                     )
+    (m_option_pseq_dataOutputAllowedSet.c_str(), boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for parameters"  )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_pseq_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of parameter"                 )
+    (m_option_pseq_computeStats.c_str(),         boost::program_options::value<bool        >()->default_value(UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of parameter"                 )
 #endif
-    (m_option_qseq_dataInputFileName.c_str(),    po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV   ), "name of data input file for qois"                            )
-    (m_option_qseq_dataInputFileType.c_str(),    po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV   ), "type of data input file for qois"                            )
-    (m_option_qseq_size.c_str(),                 po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_SIZE_ODV                   ), "size of qoi sequence"                                        )
-    (m_option_qseq_displayPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV         ), "period of message display during qoi sequence generation"    )
-    (m_option_qseq_measureRunTimes.c_str(),      po::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV      ), "measure run times"                                           )
-    (m_option_qseq_dataOutputPeriod.c_str(),     po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during qoi sequence generation"    )
-    (m_option_qseq_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for qois"                           )
-    (m_option_qseq_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for qois"                           )
-    (m_option_qseq_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for qois"        )
+    (m_option_qseq_dataInputFileName.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV   ), "name of data input file for qois"                            )
+    (m_option_qseq_dataInputFileType.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV   ), "type of data input file for qois"                            )
+    (m_option_qseq_size.c_str(),                 boost::program_options::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_SIZE_ODV                   ), "size of qoi sequence"                                        )
+    (m_option_qseq_displayPeriod.c_str(),        boost::program_options::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV         ), "period of message display during qoi sequence generation"    )
+    (m_option_qseq_measureRunTimes.c_str(),      boost::program_options::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV      ), "measure run times"                                           )
+    (m_option_qseq_dataOutputPeriod.c_str(),     boost::program_options::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_PERIOD_ODV     ), "period of message display during qoi sequence generation"    )
+    (m_option_qseq_dataOutputFileName.c_str(),   boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for qois"                           )
+    (m_option_qseq_dataOutputFileType.c_str(),   boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for qois"                           )
+    (m_option_qseq_dataOutputAllowedSet.c_str(), boost::program_options::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for qois"        )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_qseq_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of qoi"                       )
+    (m_option_qseq_computeStats.c_str(),         boost::program_options::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of qoi"                       )
 #endif
    ;
 
@@ -522,7 +524,7 @@ MonteCarloSGOptions::defineMyOptions(po::options_description& optionsDesc) const
 }
 
 void
-MonteCarloSGOptions::getMyOptionValues(po::options_description& optionsDesc)
+MonteCarloSGOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
 {
   queso_deprecated();
 
@@ -534,7 +536,7 @@ MonteCarloSGOptions::getMyOptionValues(po::options_description& optionsDesc)
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_ov.m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+    m_ov.m_dataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet)) {
@@ -551,15 +553,15 @@ MonteCarloSGOptions::getMyOptionValues(po::options_description& optionsDesc)
   }
 
   if (m_env.allOptionsMap().count(m_option_pseq_dataOutputPeriod)) {
-    m_ov.m_pseqDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_dataOutputPeriod]).as<unsigned int>();
+    m_ov.m_pseqDataOutputPeriod = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_pseq_dataOutputPeriod]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_pseq_dataOutputFileName)) {
-    m_ov.m_pseqDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_dataOutputFileName]).as<std::string>();
+    m_ov.m_pseqDataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_pseq_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_pseq_dataOutputFileType)) {
-    m_ov.m_pseqDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_dataOutputFileType]).as<std::string>();
+    m_ov.m_pseqDataOutputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_pseq_dataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_pseq_dataOutputAllowedSet)) {
@@ -577,39 +579,39 @@ MonteCarloSGOptions::getMyOptionValues(po::options_description& optionsDesc)
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_env.allOptionsMap().count(m_option_pseq_computeStats)) {
-    m_ov.m_pseqComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_computeStats]).as<bool>();
+    m_ov.m_pseqComputeStats = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_pseq_computeStats]).as<bool>();
   }
 #endif
   if (m_env.allOptionsMap().count(m_option_qseq_dataInputFileName)) {
-    m_ov.m_qseqDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataInputFileName]).as<std::string>();
+    m_ov.m_qseqDataInputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataInputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_qseq_dataInputFileType)) {
-    m_ov.m_qseqDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataInputFileType]).as<std::string>();
+    m_ov.m_qseqDataInputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataInputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_qseq_size)) {
-    m_ov.m_qseqSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_size]).as<unsigned int>();
+    m_ov.m_qseqSize = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_size]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_qseq_displayPeriod)) {
-    m_ov.m_qseqDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_displayPeriod]).as<unsigned int>();
+    m_ov.m_qseqDisplayPeriod = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_displayPeriod]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_qseq_measureRunTimes)) {
-    m_ov.m_qseqMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_measureRunTimes]).as<bool>();
+    m_ov.m_qseqMeasureRunTimes = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_measureRunTimes]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_qseq_dataOutputPeriod)) {
-    m_ov.m_qseqDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataOutputPeriod]).as<unsigned int>();
+    m_ov.m_qseqDataOutputPeriod = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataOutputPeriod]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_qseq_dataOutputFileName)) {
-    m_ov.m_qseqDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataOutputFileName]).as<std::string>();
+    m_ov.m_qseqDataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_qseq_dataOutputFileType)) {
-    m_ov.m_qseqDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataOutputFileType]).as<std::string>();
+    m_ov.m_qseqDataOutputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_qseq_dataOutputAllowedSet)) {
@@ -627,7 +629,7 @@ MonteCarloSGOptions::getMyOptionValues(po::options_description& optionsDesc)
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_env.allOptionsMap().count(m_option_qseq_computeStats)) {
-    m_ov.m_qseqComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_computeStats]).as<bool>();
+    m_ov.m_qseqComputeStats = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_computeStats]).as<bool>();
   }
 #endif
   return;

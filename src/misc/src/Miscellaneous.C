@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <cstring>
 #include <queso/Defines.h>
 #include <queso/Miscellaneous.h>
 #include <queso/GslVector.h>

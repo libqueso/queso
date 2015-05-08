@@ -25,6 +25,8 @@
 #include <queso/Defines.h>
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
+#include <boost/program_options.hpp>
+
 #include <queso/SequenceStatisticalOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -240,48 +242,48 @@ SsOptionsValues::defineOptions()
 {
   (*m_optionsDescription).add_options()
     (m_option_help.c_str(),                                                                                                                    "produce help message for chain statistical options"             )
-    (m_option_initialDiscardedPortions.c_str(),       po::value<std::string >()->default_value(UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV      ), "list of initial discarded portions for chain statistics"        )
+    (m_option_initialDiscardedPortions.c_str(),       boost::program_options::value<std::string >()->default_value(UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV      ), "list of initial discarded portions for chain statistics"        )
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-    (m_option_mean_monitorPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV             ), "period for monitoring mean"                                     )
-    (m_option_bmm_run.c_str(),                        po::value<bool        >()->default_value(UQ_SEQUENCE_BMM_RUN_ODV                         ), "compute variance of sample mean with batch means method"        )
-    (m_option_bmm_lengths.c_str(),                    po::value<std::string >()->default_value(UQ_SEQUENCE_BMM_LENGTHS_ODV                     ), "list of batch lenghts for BMM"                                  )
-    (m_option_fft_compute.c_str(),                    po::value<bool        >()->default_value(UQ_SEQUENCE_FFT_COMPUTE_ODV                     ), "compute fft"                                                    )
-    (m_option_fft_paramId.c_str(),                    po::value<unsigned int>()->default_value(UQ_SEQUENCE_FFT_PARAM_ID_ODV                    ), "parameter id for fft computations"                              )
-    (m_option_fft_size.c_str(),                       po::value<unsigned int>()->default_value(UQ_SEQUENCE_FFT_SIZE_ODV                        ), "fft size"                                                       )
-    (m_option_fft_testInversion.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_FFT_TEST_INVERSION_ODV              ), "test fft inversion"                                             )
-    (m_option_fft_write.c_str(),                      po::value<bool        >()->default_value(UQ_SEQUENCE_FFT_WRITE_ODV                       ), "write fft"                                                      )
-    (m_option_psd_compute.c_str(),                    po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_COMPUTE_ODV                     ), "compute psd"                                                    )
-    (m_option_psd_numBlocks.c_str(),                  po::value<unsigned int>()->default_value(UQ_SEQUENCE_PSD_NUM_BLOCKS_ODV                  ), "number of blocks for computation of psd"                        )
-    (m_option_psd_hopSizeRatio.c_str(),               po::value<double      >()->default_value(UQ_SEQUENCE_PSD_HOP_SIZE_RATIO_ODV              ), "hop size ratio for psd"                                         )
-    (m_option_psd_paramId.c_str(),                    po::value<unsigned int>()->default_value(UQ_SEQUENCE_PSD_PARAM_ID_ODV                    ), "parameter id for psd computations"                              )
-    (m_option_psd_write.c_str(),                      po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_WRITE_ODV                       ), "write psd"                                                      )
-    (m_option_psdAtZero_compute.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_COMPUTE_ODV             ), "compute power spectral densities"                               )
-    (m_option_psdAtZero_numBlocks.c_str(),            po::value<std::string >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_NUM_BLOCKS_ODV          ), "list of numbers of blocks for computation of psd at zero"       )
-    (m_option_psdAtZero_hopSizeRatio.c_str(),         po::value<double      >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV      ), "hop size ratio for psd at zero"                                 )
-    (m_option_psdAtZero_display.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_DISPLAY_ODV             ), "display computed psd at frequency zero on screen"               )
-    (m_option_psdAtZero_write.c_str(),                po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_WRITE_ODV               ), "write computed psd at frequency zero to the output file"        )
-    (m_option_geweke_compute.c_str(),                 po::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_COMPUTE_ODV                  ), "compute Geweke coefficients"                                    )
-    (m_option_geweke_naRatio.c_str(),                 po::value<double      >()->default_value(UQ_SEQUENCE_GEWEKE_NA_RATIO_ODV                 ), "ratio NA for Geweke"                                            )
-    (m_option_geweke_nbRatio.c_str(),                 po::value<double      >()->default_value(UQ_SEQUENCE_GEWEKE_NB_RATIO_ODV                 ), "ratio NB for Geweke"                                            )
-    (m_option_geweke_display.c_str(),                 po::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_DISPLAY_ODV                  ), "display computed Geweke on screen"                              )
-    (m_option_geweke_write.c_str(),                   po::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_WRITE_ODV                    ), "write computed Geweke to the output file"                       )
-    (m_option_meanStacc_compute.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV              ), "compute statistical accuracy of mean"                           )
-    (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_SEQUENCE_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
-    (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
-    (m_option_cdfStacc_compute.c_str(),               po::value<bool        >()->default_value(UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV               ), "compute statisical accuracy of cdf"                             )
-    (m_option_cdfStacc_numEvalPositions.c_str(),      po::value<unsigned int>()->default_value(UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV    ), "number of evaluations points for statistical accuracy of cdf"   )
+    (m_option_mean_monitorPeriod.c_str(),             boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV             ), "period for monitoring mean"                                     )
+    (m_option_bmm_run.c_str(),                        boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_BMM_RUN_ODV                         ), "compute variance of sample mean with batch means method"        )
+    (m_option_bmm_lengths.c_str(),                    boost::program_options::value<std::string >()->default_value(UQ_SEQUENCE_BMM_LENGTHS_ODV                     ), "list of batch lenghts for BMM"                                  )
+    (m_option_fft_compute.c_str(),                    boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_FFT_COMPUTE_ODV                     ), "compute fft"                                                    )
+    (m_option_fft_paramId.c_str(),                    boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_FFT_PARAM_ID_ODV                    ), "parameter id for fft computations"                              )
+    (m_option_fft_size.c_str(),                       boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_FFT_SIZE_ODV                        ), "fft size"                                                       )
+    (m_option_fft_testInversion.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_FFT_TEST_INVERSION_ODV              ), "test fft inversion"                                             )
+    (m_option_fft_write.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_FFT_WRITE_ODV                       ), "write fft"                                                      )
+    (m_option_psd_compute.c_str(),                    boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_COMPUTE_ODV                     ), "compute psd"                                                    )
+    (m_option_psd_numBlocks.c_str(),                  boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_PSD_NUM_BLOCKS_ODV                  ), "number of blocks for computation of psd"                        )
+    (m_option_psd_hopSizeRatio.c_str(),               boost::program_options::value<double      >()->default_value(UQ_SEQUENCE_PSD_HOP_SIZE_RATIO_ODV              ), "hop size ratio for psd"                                         )
+    (m_option_psd_paramId.c_str(),                    boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_PSD_PARAM_ID_ODV                    ), "parameter id for psd computations"                              )
+    (m_option_psd_write.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_WRITE_ODV                       ), "write psd"                                                      )
+    (m_option_psdAtZero_compute.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_COMPUTE_ODV             ), "compute power spectral densities"                               )
+    (m_option_psdAtZero_numBlocks.c_str(),            boost::program_options::value<std::string >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_NUM_BLOCKS_ODV          ), "list of numbers of blocks for computation of psd at zero"       )
+    (m_option_psdAtZero_hopSizeRatio.c_str(),         boost::program_options::value<double      >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV      ), "hop size ratio for psd at zero"                                 )
+    (m_option_psdAtZero_display.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_DISPLAY_ODV             ), "display computed psd at frequency zero on screen"               )
+    (m_option_psdAtZero_write.c_str(),                boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_WRITE_ODV               ), "write computed psd at frequency zero to the output file"        )
+    (m_option_geweke_compute.c_str(),                 boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_COMPUTE_ODV                  ), "compute Geweke coefficients"                                    )
+    (m_option_geweke_naRatio.c_str(),                 boost::program_options::value<double      >()->default_value(UQ_SEQUENCE_GEWEKE_NA_RATIO_ODV                 ), "ratio NA for Geweke"                                            )
+    (m_option_geweke_nbRatio.c_str(),                 boost::program_options::value<double      >()->default_value(UQ_SEQUENCE_GEWEKE_NB_RATIO_ODV                 ), "ratio NB for Geweke"                                            )
+    (m_option_geweke_display.c_str(),                 boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_DISPLAY_ODV                  ), "display computed Geweke on screen"                              )
+    (m_option_geweke_write.c_str(),                   boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_WRITE_ODV                    ), "write computed Geweke to the output file"                       )
+    (m_option_meanStacc_compute.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV              ), "compute statistical accuracy of mean"                           )
+    (m_option_hist_compute.c_str(),                   boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
+    (m_option_hist_numInternalBins.c_str(),           boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
+    (m_option_cdfStacc_compute.c_str(),               boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV               ), "compute statisical accuracy of cdf"                             )
+    (m_option_cdfStacc_numEvalPositions.c_str(),      boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV    ), "number of evaluations points for statistical accuracy of cdf"   )
 #endif
-    (m_option_autoCorr_computeViaDef.c_str(),         po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_DEF_ODV       ), "compute correlations via definition"                            )
-    (m_option_autoCorr_computeViaFft.c_str(),         po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_FFT_ODV       ), "compute correlations via fft"                                   )
-    (m_option_autoCorr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_SECOND_LAG_ODV            ), "second lag for computation of autocorrelations"                 )
-    (m_option_autoCorr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_LAG_SPACING_ODV           ), "lag spacing for computation of autocorrelations"                )
-    (m_option_autoCorr_numLags.c_str(),               po::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
-    (m_option_autoCorr_display.c_str(),               po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
-    (m_option_autoCorr_write.c_str(),                 po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
-    (m_option_kde_compute.c_str(),                    po::value<bool        >()->default_value(UQ_SEQUENCE_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
-    (m_option_kde_numEvalPositions.c_str(),           po::value<unsigned int>()->default_value(UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
-    (m_option_covMatrix_compute.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV              ), "compute covariance matrix"                                      )
-    (m_option_corrMatrix_compute.c_str(),             po::value<bool        >()->default_value(UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV             ), "compute correlation matrix"                                     )
+    (m_option_autoCorr_computeViaDef.c_str(),         boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_DEF_ODV       ), "compute correlations via definition"                            )
+    (m_option_autoCorr_computeViaFft.c_str(),         boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_FFT_ODV       ), "compute correlations via fft"                                   )
+    (m_option_autoCorr_secondLag.c_str(),             boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_SECOND_LAG_ODV            ), "second lag for computation of autocorrelations"                 )
+    (m_option_autoCorr_lagSpacing.c_str(),            boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_LAG_SPACING_ODV           ), "lag spacing for computation of autocorrelations"                )
+    (m_option_autoCorr_numLags.c_str(),               boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
+    (m_option_autoCorr_display.c_str(),               boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
+    (m_option_autoCorr_write.c_str(),                 boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
+    (m_option_kde_compute.c_str(),                    boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
+    (m_option_kde_numEvalPositions.c_str(),           boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
+    (m_option_covMatrix_compute.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV              ), "compute covariance matrix"                                      )
+    (m_option_corrMatrix_compute.c_str(),             boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV             ), "compute correlation matrix"                                     )
   ;
 }
 
@@ -564,7 +566,7 @@ SequenceStatisticalOptions::SequenceStatisticalOptions(
   m_ov                              (),
   m_prefix                          ((std::string)(prefix) + "stats_"),
   m_env                             (env),
-  m_optionsDesc                     (new po::options_description("Chain statistical options")),
+  m_optionsDesc                     (new boost::program_options::options_description("Chain statistical options")),
   m_option_help                     (m_prefix + "help"                     ),
   m_option_initialDiscardedPortions (m_prefix + "initialDiscardedPortions" ),
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -727,54 +729,54 @@ SequenceStatisticalOptions::~SequenceStatisticalOptions()
 
 void
 SequenceStatisticalOptions::defineMyOptions(
-  po::options_description& optionsDesc) const
+  boost::program_options::options_description& optionsDesc) const
 {
   queso_deprecated();
 
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                    "produce help message for chain statistical options"             )
-    (m_option_initialDiscardedPortions.c_str(),       po::value<std::string >()->default_value(UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV      ), "list of initial discarded portions for chain statistics"        )
+    (m_option_initialDiscardedPortions.c_str(),       boost::program_options::value<std::string >()->default_value(UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV      ), "list of initial discarded portions for chain statistics"        )
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-    (m_option_mean_monitorPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV             ), "period for monitoring mean"                                     )
-    (m_option_bmm_run.c_str(),                        po::value<bool        >()->default_value(UQ_SEQUENCE_BMM_RUN_ODV                         ), "compute variance of sample mean with batch means method"        )
-    (m_option_bmm_lengths.c_str(),                    po::value<std::string >()->default_value(UQ_SEQUENCE_BMM_LENGTHS_ODV                     ), "list of batch lenghts for BMM"                                  )
-    (m_option_fft_compute.c_str(),                    po::value<bool        >()->default_value(UQ_SEQUENCE_FFT_COMPUTE_ODV                     ), "compute fft"                                                    )
-    (m_option_fft_paramId.c_str(),                    po::value<unsigned int>()->default_value(UQ_SEQUENCE_FFT_PARAM_ID_ODV                    ), "parameter id for fft computations"                              )
-    (m_option_fft_size.c_str(),                       po::value<unsigned int>()->default_value(UQ_SEQUENCE_FFT_SIZE_ODV                        ), "fft size"                                                       )
-    (m_option_fft_testInversion.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_FFT_TEST_INVERSION_ODV              ), "test fft inversion"                                             )
-    (m_option_fft_write.c_str(),                      po::value<bool        >()->default_value(UQ_SEQUENCE_FFT_WRITE_ODV                       ), "write fft"                                                      )
-    (m_option_psd_compute.c_str(),                    po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_COMPUTE_ODV                     ), "compute psd"                                                    )
-    (m_option_psd_numBlocks.c_str(),                  po::value<unsigned int>()->default_value(UQ_SEQUENCE_PSD_NUM_BLOCKS_ODV                  ), "number of blocks for computation of psd"                        )
-    (m_option_psd_hopSizeRatio.c_str(),               po::value<double      >()->default_value(UQ_SEQUENCE_PSD_HOP_SIZE_RATIO_ODV              ), "hop size ratio for psd"                                         )
-    (m_option_psd_paramId.c_str(),                    po::value<unsigned int>()->default_value(UQ_SEQUENCE_PSD_PARAM_ID_ODV                    ), "parameter id for psd computations"                              )
-    (m_option_psd_write.c_str(),                      po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_WRITE_ODV                       ), "write psd"                                                      )
-    (m_option_psdAtZero_compute.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_COMPUTE_ODV             ), "compute power spectral densities"                               )
-    (m_option_psdAtZero_numBlocks.c_str(),            po::value<std::string >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_NUM_BLOCKS_ODV          ), "list of numbers of blocks for computation of psd at zero"       )
-    (m_option_psdAtZero_hopSizeRatio.c_str(),         po::value<double      >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV      ), "hop size ratio for psd at zero"                                 )
-    (m_option_psdAtZero_display.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_DISPLAY_ODV             ), "display computed psd at frequency zero on screen"               )
-    (m_option_psdAtZero_write.c_str(),                po::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_WRITE_ODV               ), "write computed psd at frequency zero to the output file"        )
-    (m_option_geweke_compute.c_str(),                 po::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_COMPUTE_ODV                  ), "compute Geweke coefficients"                                    )
-    (m_option_geweke_naRatio.c_str(),                 po::value<double      >()->default_value(UQ_SEQUENCE_GEWEKE_NA_RATIO_ODV                 ), "ratio NA for Geweke"                                            )
-    (m_option_geweke_nbRatio.c_str(),                 po::value<double      >()->default_value(UQ_SEQUENCE_GEWEKE_NB_RATIO_ODV                 ), "ratio NB for Geweke"                                            )
-    (m_option_geweke_display.c_str(),                 po::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_DISPLAY_ODV                  ), "display computed Geweke on screen"                              )
-    (m_option_geweke_write.c_str(),                   po::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_WRITE_ODV                    ), "write computed Geweke to the output file"                       )
-    (m_option_meanStacc_compute.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV              ), "compute statistical accuracy of mean"                           )
-    (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_SEQUENCE_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
-    (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
-    (m_option_cdfStacc_compute.c_str(),               po::value<bool        >()->default_value(UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV               ), "compute statisical accuracy of cdf"                             )
-    (m_option_cdfStacc_numEvalPositions.c_str(),      po::value<unsigned int>()->default_value(UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV    ), "number of evaluations points for statistical accuracy of cdf"   )
+    (m_option_mean_monitorPeriod.c_str(),             boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV             ), "period for monitoring mean"                                     )
+    (m_option_bmm_run.c_str(),                        boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_BMM_RUN_ODV                         ), "compute variance of sample mean with batch means method"        )
+    (m_option_bmm_lengths.c_str(),                    boost::program_options::value<std::string >()->default_value(UQ_SEQUENCE_BMM_LENGTHS_ODV                     ), "list of batch lenghts for BMM"                                  )
+    (m_option_fft_compute.c_str(),                    boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_FFT_COMPUTE_ODV                     ), "compute fft"                                                    )
+    (m_option_fft_paramId.c_str(),                    boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_FFT_PARAM_ID_ODV                    ), "parameter id for fft computations"                              )
+    (m_option_fft_size.c_str(),                       boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_FFT_SIZE_ODV                        ), "fft size"                                                       )
+    (m_option_fft_testInversion.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_FFT_TEST_INVERSION_ODV              ), "test fft inversion"                                             )
+    (m_option_fft_write.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_FFT_WRITE_ODV                       ), "write fft"                                                      )
+    (m_option_psd_compute.c_str(),                    boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_COMPUTE_ODV                     ), "compute psd"                                                    )
+    (m_option_psd_numBlocks.c_str(),                  boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_PSD_NUM_BLOCKS_ODV                  ), "number of blocks for computation of psd"                        )
+    (m_option_psd_hopSizeRatio.c_str(),               boost::program_options::value<double      >()->default_value(UQ_SEQUENCE_PSD_HOP_SIZE_RATIO_ODV              ), "hop size ratio for psd"                                         )
+    (m_option_psd_paramId.c_str(),                    boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_PSD_PARAM_ID_ODV                    ), "parameter id for psd computations"                              )
+    (m_option_psd_write.c_str(),                      boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_WRITE_ODV                       ), "write psd"                                                      )
+    (m_option_psdAtZero_compute.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_COMPUTE_ODV             ), "compute power spectral densities"                               )
+    (m_option_psdAtZero_numBlocks.c_str(),            boost::program_options::value<std::string >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_NUM_BLOCKS_ODV          ), "list of numbers of blocks for computation of psd at zero"       )
+    (m_option_psdAtZero_hopSizeRatio.c_str(),         boost::program_options::value<double      >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV      ), "hop size ratio for psd at zero"                                 )
+    (m_option_psdAtZero_display.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_DISPLAY_ODV             ), "display computed psd at frequency zero on screen"               )
+    (m_option_psdAtZero_write.c_str(),                boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_PSD_AT_ZERO_WRITE_ODV               ), "write computed psd at frequency zero to the output file"        )
+    (m_option_geweke_compute.c_str(),                 boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_COMPUTE_ODV                  ), "compute Geweke coefficients"                                    )
+    (m_option_geweke_naRatio.c_str(),                 boost::program_options::value<double      >()->default_value(UQ_SEQUENCE_GEWEKE_NA_RATIO_ODV                 ), "ratio NA for Geweke"                                            )
+    (m_option_geweke_nbRatio.c_str(),                 boost::program_options::value<double      >()->default_value(UQ_SEQUENCE_GEWEKE_NB_RATIO_ODV                 ), "ratio NB for Geweke"                                            )
+    (m_option_geweke_display.c_str(),                 boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_DISPLAY_ODV                  ), "display computed Geweke on screen"                              )
+    (m_option_geweke_write.c_str(),                   boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_WRITE_ODV                    ), "write computed Geweke to the output file"                       )
+    (m_option_meanStacc_compute.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV              ), "compute statistical accuracy of mean"                           )
+    (m_option_hist_compute.c_str(),                   boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
+    (m_option_hist_numInternalBins.c_str(),           boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
+    (m_option_cdfStacc_compute.c_str(),               boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV               ), "compute statisical accuracy of cdf"                             )
+    (m_option_cdfStacc_numEvalPositions.c_str(),      boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV    ), "number of evaluations points for statistical accuracy of cdf"   )
 #endif
-    (m_option_autoCorr_computeViaDef.c_str(),         po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_DEF_ODV       ), "compute correlations via definition"                            )
-    (m_option_autoCorr_computeViaFft.c_str(),         po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_FFT_ODV       ), "compute correlations via fft"                                   )
-    (m_option_autoCorr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_SECOND_LAG_ODV            ), "second lag for computation of autocorrelations"                 )
-    (m_option_autoCorr_lagSpacing.c_str(),            po::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_LAG_SPACING_ODV           ), "lag spacing for computation of autocorrelations"                )
-    (m_option_autoCorr_numLags.c_str(),               po::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
-    (m_option_autoCorr_display.c_str(),               po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
-    (m_option_autoCorr_write.c_str(),                 po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
-    (m_option_kde_compute.c_str(),                    po::value<bool        >()->default_value(UQ_SEQUENCE_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
-    (m_option_kde_numEvalPositions.c_str(),           po::value<unsigned int>()->default_value(UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
-    (m_option_covMatrix_compute.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV              ), "compute covariance matrix"                                      )
-    (m_option_corrMatrix_compute.c_str(),             po::value<bool        >()->default_value(UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV             ), "compute correlation matrix"                                     )
+    (m_option_autoCorr_computeViaDef.c_str(),         boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_DEF_ODV       ), "compute correlations via definition"                            )
+    (m_option_autoCorr_computeViaFft.c_str(),         boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_FFT_ODV       ), "compute correlations via fft"                                   )
+    (m_option_autoCorr_secondLag.c_str(),             boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_SECOND_LAG_ODV            ), "second lag for computation of autocorrelations"                 )
+    (m_option_autoCorr_lagSpacing.c_str(),            boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_LAG_SPACING_ODV           ), "lag spacing for computation of autocorrelations"                )
+    (m_option_autoCorr_numLags.c_str(),               boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
+    (m_option_autoCorr_display.c_str(),               boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
+    (m_option_autoCorr_write.c_str(),                 boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
+    (m_option_kde_compute.c_str(),                    boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
+    (m_option_kde_numEvalPositions.c_str(),           boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
+    (m_option_covMatrix_compute.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV              ), "compute covariance matrix"                                      )
+    (m_option_corrMatrix_compute.c_str(),             boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV             ), "compute correlation matrix"                                     )
   ;
 
   return;
@@ -782,7 +784,7 @@ SequenceStatisticalOptions::defineMyOptions(
 
 void
 SequenceStatisticalOptions::getMyOptionValues(
-  po::options_description& optionsDesc)
+  boost::program_options::options_description& optionsDesc)
 {
   queso_deprecated();
 

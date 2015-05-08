@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <algorithm>
 #include <queso/ScalarSequence.h>
 
 namespace QUESO {

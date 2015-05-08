@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/GpmsaComputerModelOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -145,26 +147,26 @@ GcmOptionsValues::defineOptions()
 {
   (*m_optionsDescription).add_options()
     (m_option_help.c_str(),                                                                                                                        "produce help message for mixed inverse problem")
-    (m_option_checkAgainstPreviousSample.c_str(),      po::value<bool        >()->default_value(UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ), "check against previous sample"                 )
-    (m_option_dataOutputFileName.c_str(),              po::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ), "name of data output file"                      )
-    (m_option_dataOutputAllowAll.c_str(),              po::value<bool        >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV                ), "allow all or not"                              )
-    (m_option_dataOutputAllowedSet.c_str(),            po::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOWED_SET_ODV              ), "subEnvs that will write to data output file"   )
-    (m_option_priorSeqNumSamples.c_str(),              po::value<unsigned int>()->default_value(UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV                ), "prior sequence size"                           )
-    (m_option_priorSeqDataOutputFileName.c_str(),      po::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV      ), "prior sequence data output filename"           )
-    (m_option_priorSeqDataOutputFileType.c_str(),      po::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV      ), "prior sequence data output filetype"           )
-    (m_option_priorSeqDataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV      ), "allow all or not"                              )
-    (m_option_priorSeqDataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOWED_SET_ODV    ), "subEnvs that will write to data output file"   )
-    (m_option_nuggetValueForBtWyB.c_str(),             po::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV             ), "nugget value for Bt_Wy_W matrix"               )
-    (m_option_nuggetValueForBtWyBInv.c_str(),          po::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV         ), "nugget value for Bt_Wy_W inverse matrix"       )
-    (m_option_formCMatrix.c_str(),                     po::value<double      >()->default_value(UQ_GCM_FORM_C_MATRIX_ODV                        ), "form C matrix"                                 )
-    (m_option_useTildeLogicForRankDefficientC.c_str(), po::value<bool        >()->default_value(UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV), "use tilde logic for rank defficient C"         )
-    (m_option_predLag.c_str(),                         po::value<unsigned int>()->default_value(UQ_GCM_PRED_LAG_ODV                             ), "predLag"                                       )
-    (m_option_predVUsBySamplingRVs.c_str(),            po::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV             ), "predVUsBySamplingRVs"                          )
-    (m_option_predVUsBySummingRVs.c_str(),             po::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV              ), "predVUsBySummingRVs"                           )
-    (m_option_predVUsAtKeyPoints.c_str(),              po::value<bool        >()->default_value(UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV               ), "predVUsAtKeyPoints"                            )
-    (m_option_predWsBySamplingRVs.c_str(),             po::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ), "predWsBySamplingRVs"                           )
-    (m_option_predWsBySummingRVs.c_str(),              po::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ), "predWsBySummingRVs"                            )
-    (m_option_predWsAtKeyPoints.c_str(),               po::value<bool        >()->default_value(UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ), "predWsAtKeyPoints"                             )
+    (m_option_checkAgainstPreviousSample.c_str(),      boost::program_options::value<bool        >()->default_value(UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ), "check against previous sample"                 )
+    (m_option_dataOutputFileName.c_str(),              boost::program_options::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ), "name of data output file"                      )
+    (m_option_dataOutputAllowAll.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV                ), "allow all or not"                              )
+    (m_option_dataOutputAllowedSet.c_str(),            boost::program_options::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOWED_SET_ODV              ), "subEnvs that will write to data output file"   )
+    (m_option_priorSeqNumSamples.c_str(),              boost::program_options::value<unsigned int>()->default_value(UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV                ), "prior sequence size"                           )
+    (m_option_priorSeqDataOutputFileName.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV      ), "prior sequence data output filename"           )
+    (m_option_priorSeqDataOutputFileType.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV      ), "prior sequence data output filetype"           )
+    (m_option_priorSeqDataOutputAllowAll.c_str(),      boost::program_options::value<bool        >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV      ), "allow all or not"                              )
+    (m_option_priorSeqDataOutputAllowedSet.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOWED_SET_ODV    ), "subEnvs that will write to data output file"   )
+    (m_option_nuggetValueForBtWyB.c_str(),             boost::program_options::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV             ), "nugget value for Bt_Wy_W matrix"               )
+    (m_option_nuggetValueForBtWyBInv.c_str(),          boost::program_options::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV         ), "nugget value for Bt_Wy_W inverse matrix"       )
+    (m_option_formCMatrix.c_str(),                     boost::program_options::value<double      >()->default_value(UQ_GCM_FORM_C_MATRIX_ODV                        ), "form C matrix"                                 )
+    (m_option_useTildeLogicForRankDefficientC.c_str(), boost::program_options::value<bool        >()->default_value(UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV), "use tilde logic for rank defficient C"         )
+    (m_option_predLag.c_str(),                         boost::program_options::value<unsigned int>()->default_value(UQ_GCM_PRED_LAG_ODV                             ), "predLag"                                       )
+    (m_option_predVUsBySamplingRVs.c_str(),            boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV             ), "predVUsBySamplingRVs"                          )
+    (m_option_predVUsBySummingRVs.c_str(),             boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV              ), "predVUsBySummingRVs"                           )
+    (m_option_predVUsAtKeyPoints.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV               ), "predVUsAtKeyPoints"                            )
+    (m_option_predWsBySamplingRVs.c_str(),             boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ), "predWsBySamplingRVs"                           )
+    (m_option_predWsBySummingRVs.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ), "predWsBySummingRVs"                            )
+    (m_option_predWsAtKeyPoints.c_str(),               boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ), "predWsAtKeyPoints"                             )
   ;
 }
 
@@ -179,15 +181,15 @@ GcmOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_checkAgainstPreviousSample)) {
-    m_checkAgainstPreviousSample = ((const po::variable_value&) (*m_optionsMap)[m_option_checkAgainstPreviousSample]).as<bool>();
+    m_checkAgainstPreviousSample = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_checkAgainstPreviousSample]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
-    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
+    m_dataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_dataOutputAllowAll)) {
-    m_dataOutputAllowAll = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputAllowAll]).as<bool>();
+    m_dataOutputAllowAll = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dataOutputAllowAll]).as<bool>();
   }
 
   if (m_dataOutputAllowAll) {
@@ -209,20 +211,20 @@ GcmOptionsValues::getOptionValues()
   //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), m_option_priorSeqNumSamples = " << m_option_priorSeqNumSamples << "___" << std::endl;
   if ((*m_optionsMap).count(m_option_priorSeqNumSamples)) {
     //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), going to read m_option_priorSeqNumSamples..." << std::endl;
-    m_priorSeqNumSamples = ((const po::variable_value&) (*m_optionsMap)[m_option_priorSeqNumSamples]).as<unsigned int>();
+    m_priorSeqNumSamples = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_priorSeqNumSamples]).as<unsigned int>();
     //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), just read m_option_priorSeqNumSamples = " << m_priorSeqNumSamples << std::endl;
   }
 
   if ((*m_optionsMap).count(m_option_priorSeqDataOutputFileName)) {
-    m_priorSeqDataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_priorSeqDataOutputFileName]).as<std::string>();
+    m_priorSeqDataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_priorSeqDataOutputFileName]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_priorSeqDataOutputFileType)) {
-    m_priorSeqDataOutputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_priorSeqDataOutputFileType]).as<std::string>();
+    m_priorSeqDataOutputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_priorSeqDataOutputFileType]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_priorSeqDataOutputAllowAll)) {
-    m_priorSeqDataOutputAllowAll = ((const po::variable_value&) (*m_optionsMap)[m_option_priorSeqDataOutputAllowAll]).as<bool>();
+    m_priorSeqDataOutputAllowAll = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_priorSeqDataOutputAllowAll]).as<bool>();
   }
 
   if (m_priorSeqDataOutputAllowAll) {
@@ -242,47 +244,47 @@ GcmOptionsValues::getOptionValues()
   }
 
   if ((*m_optionsMap).count(m_option_nuggetValueForBtWyB)) {
-    m_nuggetValueForBtWyB = ((const po::variable_value&) (*m_optionsMap)[m_option_nuggetValueForBtWyB]).as<double>();
+    m_nuggetValueForBtWyB = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_nuggetValueForBtWyB]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_nuggetValueForBtWyBInv)) {
-    m_nuggetValueForBtWyBInv = ((const po::variable_value&) (*m_optionsMap)[m_option_nuggetValueForBtWyBInv]).as<double>();
+    m_nuggetValueForBtWyBInv = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_nuggetValueForBtWyBInv]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_formCMatrix)) {
-    m_formCMatrix = ((const po::variable_value&) (*m_optionsMap)[m_option_formCMatrix]).as<double>();
+    m_formCMatrix = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_formCMatrix]).as<double>();
   }
 
   if ((*m_optionsMap).count(m_option_useTildeLogicForRankDefficientC)) {
-    m_useTildeLogicForRankDefficientC = ((const po::variable_value&) (*m_optionsMap)[m_option_useTildeLogicForRankDefficientC]).as<bool>();
+    m_useTildeLogicForRankDefficientC = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_useTildeLogicForRankDefficientC]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_predLag)) {
-    m_predLag = ((const po::variable_value&) (*m_optionsMap)[m_option_predLag]).as<unsigned int>();
+    m_predLag = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_predLag]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_predVUsBySamplingRVs)) {
-    m_predVUsBySamplingRVs = ((const po::variable_value&) (*m_optionsMap)[m_option_predVUsBySamplingRVs]).as<bool>();
+    m_predVUsBySamplingRVs = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_predVUsBySamplingRVs]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_predVUsBySummingRVs)) {
-    m_predVUsBySummingRVs = ((const po::variable_value&) (*m_optionsMap)[m_option_predVUsBySummingRVs]).as<bool>();
+    m_predVUsBySummingRVs = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_predVUsBySummingRVs]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_predVUsAtKeyPoints)) {
-    m_predVUsAtKeyPoints = ((const po::variable_value&) (*m_optionsMap)[m_option_predVUsAtKeyPoints]).as<bool>();
+    m_predVUsAtKeyPoints = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_predVUsAtKeyPoints]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_predWsBySamplingRVs)) {
-    m_predWsBySamplingRVs = ((const po::variable_value&) (*m_optionsMap)[m_option_predWsBySamplingRVs]).as<bool>();
+    m_predWsBySamplingRVs = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_predWsBySamplingRVs]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_predWsBySummingRVs)) {
-    m_predWsBySummingRVs = ((const po::variable_value&) (*m_optionsMap)[m_option_predWsBySummingRVs]).as<bool>();
+    m_predWsBySummingRVs = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_predWsBySummingRVs]).as<bool>();
   }
 
   if ((*m_optionsMap).count(m_option_predWsAtKeyPoints)) {
-    m_predWsAtKeyPoints = ((const po::variable_value&) (*m_optionsMap)[m_option_predWsAtKeyPoints]).as<bool>();
+    m_predWsAtKeyPoints = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_predWsAtKeyPoints]).as<bool>();
   }
 }
 
@@ -320,7 +322,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_ov                                    (),
   m_prefix                                ((std::string)(prefix) + "gcm_"),
   m_env                                   (env),
-  m_optionsDesc                           (new po::options_description("Mixed Inverse Problem options")),
+  m_optionsDesc                           (new boost::program_options::options_description("Mixed Inverse Problem options")),
   m_option_help                           (m_prefix + "help"                           ),
   m_option_checkAgainstPreviousSample     (m_prefix + "checkAgainstPreviousSample"     ),
   m_option_dataOutputFileName             (m_prefix + "dataOutputFileName"             ),
@@ -423,39 +425,39 @@ GpmsaComputerModelOptions::scanOptionsValues()
 }
 
 void
-GpmsaComputerModelOptions::defineMyOptions(po::options_description& optionsDesc) const
+GpmsaComputerModelOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
   queso_deprecated();
 
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                        "produce help message for mixed inverse problem")
-    (m_option_checkAgainstPreviousSample.c_str(),      po::value<bool        >()->default_value(UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ), "check against previous sample"                 )
-    (m_option_dataOutputFileName.c_str(),              po::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ), "name of data output file"                      )
-    (m_option_dataOutputAllowAll.c_str(),              po::value<bool        >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV                ), "allow all or not"                              )
-    (m_option_dataOutputAllowedSet.c_str(),            po::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOWED_SET_ODV              ), "subEnvs that will write to data output file"   )
-    (m_option_priorSeqNumSamples.c_str(),              po::value<unsigned int>()->default_value(UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV                ), "prior sequence size"                           )
-    (m_option_priorSeqDataOutputFileName.c_str(),      po::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV      ), "prior sequence data output filename"           )
-    (m_option_priorSeqDataOutputFileType.c_str(),      po::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV      ), "prior sequence data output filetype"           )
-    (m_option_priorSeqDataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV      ), "allow all or not"                              )
-    (m_option_priorSeqDataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOWED_SET_ODV    ), "subEnvs that will write to data output file"   )
-    (m_option_nuggetValueForBtWyB.c_str(),             po::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV             ), "nugget value for Bt_Wy_W matrix"               )
-    (m_option_nuggetValueForBtWyBInv.c_str(),          po::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV         ), "nugget value for Bt_Wy_W inverse matrix"       )
-    (m_option_formCMatrix.c_str(),                     po::value<double      >()->default_value(UQ_GCM_FORM_C_MATRIX_ODV                        ), "form C matrix"                                 )
-    (m_option_useTildeLogicForRankDefficientC.c_str(), po::value<bool        >()->default_value(UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV), "use tilde logic for rank defficient C"         )
-    (m_option_predLag.c_str(),                         po::value<unsigned int>()->default_value(UQ_GCM_PRED_LAG_ODV                             ), "predLag"                                       )
-    (m_option_predVUsBySamplingRVs.c_str(),            po::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV             ), "predVUsBySamplingRVs"                          )
-    (m_option_predVUsBySummingRVs.c_str(),             po::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV              ), "predVUsBySummingRVs"                           )
-    (m_option_predVUsAtKeyPoints.c_str(),              po::value<bool        >()->default_value(UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV               ), "predVUsAtKeyPoints"                            )
-    (m_option_predWsBySamplingRVs.c_str(),             po::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ), "predWsBySamplingRVs"                           )
-    (m_option_predWsBySummingRVs.c_str(),              po::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ), "predWsBySummingRVs"                            )
-    (m_option_predWsAtKeyPoints.c_str(),               po::value<bool        >()->default_value(UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ), "predWsAtKeyPoints"                             )
+    (m_option_checkAgainstPreviousSample.c_str(),      boost::program_options::value<bool        >()->default_value(UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ), "check against previous sample"                 )
+    (m_option_dataOutputFileName.c_str(),              boost::program_options::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ), "name of data output file"                      )
+    (m_option_dataOutputAllowAll.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV                ), "allow all or not"                              )
+    (m_option_dataOutputAllowedSet.c_str(),            boost::program_options::value<std::string >()->default_value(UQ_GCM_DATA_OUTPUT_ALLOWED_SET_ODV              ), "subEnvs that will write to data output file"   )
+    (m_option_priorSeqNumSamples.c_str(),              boost::program_options::value<unsigned int>()->default_value(UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV                ), "prior sequence size"                           )
+    (m_option_priorSeqDataOutputFileName.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV      ), "prior sequence data output filename"           )
+    (m_option_priorSeqDataOutputFileType.c_str(),      boost::program_options::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV      ), "prior sequence data output filetype"           )
+    (m_option_priorSeqDataOutputAllowAll.c_str(),      boost::program_options::value<bool        >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV      ), "allow all or not"                              )
+    (m_option_priorSeqDataOutputAllowedSet.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOWED_SET_ODV    ), "subEnvs that will write to data output file"   )
+    (m_option_nuggetValueForBtWyB.c_str(),             boost::program_options::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV             ), "nugget value for Bt_Wy_W matrix"               )
+    (m_option_nuggetValueForBtWyBInv.c_str(),          boost::program_options::value<double      >()->default_value(UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV         ), "nugget value for Bt_Wy_W inverse matrix"       )
+    (m_option_formCMatrix.c_str(),                     boost::program_options::value<double      >()->default_value(UQ_GCM_FORM_C_MATRIX_ODV                        ), "form C matrix"                                 )
+    (m_option_useTildeLogicForRankDefficientC.c_str(), boost::program_options::value<bool        >()->default_value(UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV), "use tilde logic for rank defficient C"         )
+    (m_option_predLag.c_str(),                         boost::program_options::value<unsigned int>()->default_value(UQ_GCM_PRED_LAG_ODV                             ), "predLag"                                       )
+    (m_option_predVUsBySamplingRVs.c_str(),            boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV             ), "predVUsBySamplingRVs"                          )
+    (m_option_predVUsBySummingRVs.c_str(),             boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV              ), "predVUsBySummingRVs"                           )
+    (m_option_predVUsAtKeyPoints.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV               ), "predVUsAtKeyPoints"                            )
+    (m_option_predWsBySamplingRVs.c_str(),             boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ), "predWsBySamplingRVs"                           )
+    (m_option_predWsBySummingRVs.c_str(),              boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ), "predWsBySummingRVs"                            )
+    (m_option_predWsAtKeyPoints.c_str(),               boost::program_options::value<bool        >()->default_value(UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ), "predWsAtKeyPoints"                             )
   ;
 
   return;
 }
 
 void
-GpmsaComputerModelOptions::getMyOptionValues(po::options_description& optionsDesc)
+GpmsaComputerModelOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
 {
   queso_deprecated();
 
@@ -467,15 +469,15 @@ GpmsaComputerModelOptions::getMyOptionValues(po::options_description& optionsDes
   }
 
   if (m_env.allOptionsMap().count(m_option_checkAgainstPreviousSample)) {
-    m_ov.m_checkAgainstPreviousSample = ((const po::variable_value&) m_env.allOptionsMap()[m_option_checkAgainstPreviousSample]).as<bool>();
+    m_ov.m_checkAgainstPreviousSample = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_checkAgainstPreviousSample]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_ov.m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+    m_ov.m_dataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputAllowAll)) {
-    m_ov.m_dataOutputAllowAll = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputAllowAll]).as<bool>();
+    m_ov.m_dataOutputAllowAll = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_dataOutputAllowAll]).as<bool>();
   }
 
   if (m_ov.m_dataOutputAllowAll) {
@@ -497,20 +499,20 @@ GpmsaComputerModelOptions::getMyOptionValues(po::options_description& optionsDes
   //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), m_option_priorSeqNumSamples = " << m_option_priorSeqNumSamples << "___" << std::endl;
   if (m_env.allOptionsMap().count(m_option_priorSeqNumSamples)) {
     //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), going to read m_option_priorSeqNumSamples..." << std::endl;
-    m_ov.m_priorSeqNumSamples = ((const po::variable_value&) m_env.allOptionsMap()[m_option_priorSeqNumSamples]).as<unsigned int>();
+    m_ov.m_priorSeqNumSamples = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_priorSeqNumSamples]).as<unsigned int>();
     //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), just read m_option_priorSeqNumSamples = " << m_ov.m_priorSeqNumSamples << std::endl;
   }
 
   if (m_env.allOptionsMap().count(m_option_priorSeqDataOutputFileName)) {
-    m_ov.m_priorSeqDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_priorSeqDataOutputFileName]).as<std::string>();
+    m_ov.m_priorSeqDataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_priorSeqDataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_priorSeqDataOutputFileType)) {
-    m_ov.m_priorSeqDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_priorSeqDataOutputFileType]).as<std::string>();
+    m_ov.m_priorSeqDataOutputFileType = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_priorSeqDataOutputFileType]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_priorSeqDataOutputAllowAll)) {
-    m_ov.m_priorSeqDataOutputAllowAll = ((const po::variable_value&) m_env.allOptionsMap()[m_option_priorSeqDataOutputAllowAll]).as<bool>();
+    m_ov.m_priorSeqDataOutputAllowAll = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_priorSeqDataOutputAllowAll]).as<bool>();
   }
 
   if (m_ov.m_priorSeqDataOutputAllowAll) {
@@ -530,47 +532,47 @@ GpmsaComputerModelOptions::getMyOptionValues(po::options_description& optionsDes
   }
 
   if (m_env.allOptionsMap().count(m_option_nuggetValueForBtWyB)) {
-    m_ov.m_nuggetValueForBtWyB = ((const po::variable_value&) m_env.allOptionsMap()[m_option_nuggetValueForBtWyB]).as<double>();
+    m_ov.m_nuggetValueForBtWyB = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_nuggetValueForBtWyB]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_nuggetValueForBtWyBInv)) {
-    m_ov.m_nuggetValueForBtWyBInv = ((const po::variable_value&) m_env.allOptionsMap()[m_option_nuggetValueForBtWyBInv]).as<double>();
+    m_ov.m_nuggetValueForBtWyBInv = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_nuggetValueForBtWyBInv]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_formCMatrix)) {
-    m_ov.m_formCMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_formCMatrix]).as<double>();
+    m_ov.m_formCMatrix = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_formCMatrix]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_useTildeLogicForRankDefficientC)) {
-    m_ov.m_useTildeLogicForRankDefficientC = ((const po::variable_value&) m_env.allOptionsMap()[m_option_useTildeLogicForRankDefficientC]).as<bool>();
+    m_ov.m_useTildeLogicForRankDefficientC = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_useTildeLogicForRankDefficientC]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_predLag)) {
-    m_ov.m_predLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_predLag]).as<unsigned int>();
+    m_ov.m_predLag = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_predLag]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_predVUsBySamplingRVs)) {
-    m_ov.m_predVUsBySamplingRVs = ((const po::variable_value&) m_env.allOptionsMap()[m_option_predVUsBySamplingRVs]).as<bool>();
+    m_ov.m_predVUsBySamplingRVs = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_predVUsBySamplingRVs]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_predVUsBySummingRVs)) {
-    m_ov.m_predVUsBySummingRVs = ((const po::variable_value&) m_env.allOptionsMap()[m_option_predVUsBySummingRVs]).as<bool>();
+    m_ov.m_predVUsBySummingRVs = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_predVUsBySummingRVs]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_predVUsAtKeyPoints)) {
-    m_ov.m_predVUsAtKeyPoints = ((const po::variable_value&) m_env.allOptionsMap()[m_option_predVUsAtKeyPoints]).as<bool>();
+    m_ov.m_predVUsAtKeyPoints = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_predVUsAtKeyPoints]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_predWsBySamplingRVs)) {
-    m_ov.m_predWsBySamplingRVs = ((const po::variable_value&) m_env.allOptionsMap()[m_option_predWsBySamplingRVs]).as<bool>();
+    m_ov.m_predWsBySamplingRVs = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_predWsBySamplingRVs]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_predWsBySummingRVs)) {
-    m_ov.m_predWsBySummingRVs = ((const po::variable_value&) m_env.allOptionsMap()[m_option_predWsBySummingRVs]).as<bool>();
+    m_ov.m_predWsBySummingRVs = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_predWsBySummingRVs]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_predWsAtKeyPoints)) {
-    m_ov.m_predWsAtKeyPoints = ((const po::variable_value&) m_env.allOptionsMap()[m_option_predWsAtKeyPoints]).as<bool>();
+    m_ov.m_predWsAtKeyPoints = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_predWsAtKeyPoints]).as<bool>();
   }
 
   return;

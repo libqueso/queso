@@ -93,6 +93,12 @@
 #define UQ_MH_SG_OUTPUT_LOG_TARGET                                    1
 #define UQ_MH_SG_DO_LOGIT_TRANSFORM                                   1
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
+
 namespace QUESO {
 
 /*! \file MetropolisHastingsSGOptions.h
@@ -384,13 +390,13 @@ public:
 
 private:
   //! Defines the options for the Metropolis-Hastings generator of samples as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the sequence options defined to the  Metropolis-Hastings algorithm.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
 

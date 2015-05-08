@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/MLSamplingOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -72,18 +74,18 @@ MLSamplingOptions::defineOptions()
   (*m_optionsDescription).add_options()
     (m_option_help.c_str(),                                                                                                                            "produce help msg for ML sampling options"      )
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-    (m_option_restartOutput_levelPeriod.c_str(),      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV),        "restartOutput_levelPeriod"                     )
-    (m_option_restartOutput_baseNameForFiles.c_str(), po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV), "restartOutput_baseNameForFiles"                )
-    (m_option_restartOutput_fileType.c_str(),         po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV),           "restartOutput_fileType"                        )
-    (m_option_restartInput_baseNameForFiles.c_str(),  po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV),  "restartInput_baseNameForFiles"                 )
-    (m_option_restartInput_fileType.c_str(),          po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),            "restartInput_fileType"                         )
+    (m_option_restartOutput_levelPeriod.c_str(),      boost::program_options::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV),        "restartOutput_levelPeriod"                     )
+    (m_option_restartOutput_baseNameForFiles.c_str(), boost::program_options::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV), "restartOutput_baseNameForFiles"                )
+    (m_option_restartOutput_fileType.c_str(),         boost::program_options::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV),           "restartOutput_fileType"                        )
+    (m_option_restartInput_baseNameForFiles.c_str(),  boost::program_options::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV),  "restartInput_baseNameForFiles"                 )
+    (m_option_restartInput_fileType.c_str(),          boost::program_options::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),            "restartInput_fileType"                         )
 #else
-    (m_option_restartInputFileName.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV),            "name of restart input file"                    )
-    (m_option_restartInputFileType.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),            "type of restart input file"                    )
-    (m_option_restartChainSize.c_str(),               po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV),                 "size of restart chain"                         )
+    (m_option_restartInputFileName.c_str(),           boost::program_options::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV),            "name of restart input file"                    )
+    (m_option_restartInputFileType.c_str(),           boost::program_options::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),            "type of restart input file"                    )
+    (m_option_restartChainSize.c_str(),               boost::program_options::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV),                 "size of restart chain"                         )
 #endif
-    (m_option_dataOutputFileName.c_str(),             po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),            "name of generic output file"                   )
-    (m_option_dataOutputAllowedSet.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV),            "subEnvs that will write to generic output file")
+    (m_option_dataOutputFileName.c_str(),             boost::program_options::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),            "name of generic output file"                   )
+    (m_option_dataOutputAllowedSet.c_str(),           boost::program_options::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV),            "subEnvs that will write to generic output file")
   ;
 }
 
@@ -99,41 +101,41 @@ MLSamplingOptions::getOptionValues()
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   if ((*m_optionsMap).count(m_option_restartOutput_levelPeriod.c_str())) {
-    m_restartOutput_levelPeriod = ((const po::variable_value&) (*m_optionsMap)[m_option_restartOutput_levelPeriod.c_str()]).as<unsigned int>();
+    m_restartOutput_levelPeriod = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_restartOutput_levelPeriod.c_str()]).as<unsigned int>();
   }
 
   if ((*m_optionsMap).count(m_option_restartOutput_baseNameForFiles.c_str())) {
-    m_restartOutput_baseNameForFiles = ((const po::variable_value&) (*m_optionsMap)[m_option_restartOutput_baseNameForFiles.c_str()]).as<std::string>();
+    m_restartOutput_baseNameForFiles = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_restartOutput_baseNameForFiles.c_str()]).as<std::string>();
   }
 
   if ((m_restartOutput_levelPeriod > 0)) queso_require_not_equal_to_msg(m_restartOutput_baseNameForFiles, ".", "Option 'restartOutput_levelPeriod' is > 0, but 'restartOutput_baseNameForFiles' is not specified...");
 
   if ((*m_optionsMap).count(m_option_restartOutput_fileType.c_str())) {
-    m_restartOutput_fileType = ((const po::variable_value&) (*m_optionsMap)[m_option_restartOutput_fileType.c_str()]).as<std::string>();
+    m_restartOutput_fileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_restartOutput_fileType.c_str()]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_restartInput_baseNameForFiles.c_str())) {
-    m_restartInput_baseNameForFiles = ((const po::variable_value&) (*m_optionsMap)[m_option_restartInput_baseNameForFiles.c_str()]).as<std::string>();
+    m_restartInput_baseNameForFiles = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_restartInput_baseNameForFiles.c_str()]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_restartInput_fileType.c_str())) {
-    m_restartInput_fileType = ((const po::variable_value&) (*m_optionsMap)[m_option_restartInput_fileType.c_str()]).as<std::string>();
+    m_restartInput_fileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_restartInput_fileType.c_str()]).as<std::string>();
   }
 #else
   if ((*m_optionsMap).count(m_option_restartInputFileName.c_str())) {
-    m_restartInputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_restartInputFileName.c_str()]).as<std::string>();
+    m_restartInputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_restartInputFileName.c_str()]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_restartInputFileType.c_str())) {
-    m_restartInputFileType = ((const po::variable_value&) (*m_optionsMap)[m_option_restartInputFileType.c_str()]).as<std::string>();
+    m_restartInputFileType = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_restartInputFileType.c_str()]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_restartChainSize.c_str())) {
-    m_restartChainSize = ((const po::variable_value&) (*m_optionsMap)[m_option_restartChainSize.c_str()]).as<unsigned int>();
+    m_restartChainSize = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_restartChainSize.c_str()]).as<unsigned int>();
   }
 #endif
   if ((*m_optionsMap).count(m_option_dataOutputFileName.c_str())) {
-    m_dataOutputFileName = ((const po::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName.c_str()]).as<std::string>();
+    m_dataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName.c_str()]).as<std::string>();
   }
 
   if ((*m_optionsMap).count(m_option_dataOutputAllowedSet.c_str())) {

@@ -40,6 +40,12 @@
 #define UQ_SIP_SOLVER_ODV                  "bayes_mc" // Bayesian formula + Metropolis-Hastings
 #endif
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
+
 namespace QUESO {
 
 /*!
@@ -155,14 +161,14 @@ public:
 
 private:
   //! Define my SIP options as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the option values of the SIP.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
 
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
   std::string                   m_option_help;
   std::string                   m_option_computeSolution;
   std::string                   m_option_dataOutputFileName;
