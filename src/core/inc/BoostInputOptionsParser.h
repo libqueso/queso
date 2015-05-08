@@ -59,19 +59,25 @@ public:
    */
   virtual ~BoostInputOptionsParser();
 
-  //! Calls the relevant QUESO BaseEnvironment methods to scan the input file
-  void scanOptionsValues();
+  //! This is the method that parses the input file
+  /*!
+   * It calls defineOptions, which sets m_optionsDescription, to define the
+   * boost options, then it parses the input file and sets the m_optionsMap
+   * member.  After both of those are done, it *sets* the options by calling
+   * getOptionValues.
+   */
+  virtual void scanOptionsValues();
 
 private:
-  //! Subclasses implement this to *define* input options
+  //! Subclasses implement this to *define* boost input options
   /*!
    * This will act on the boost-specific m_optionsDescription
    */
   virtual void defineOptions() = 0;
 
-  //! Subclasses implement this to *set* input options from an input string
+  //! Subclasses implement this to *set* boost input options from an input string
   /*!
-   * This will act on the boost-specific m_optionsDescription
+   * This will act on the boost-specific m_optionsDescription and m_optionsMap
    */
   virtual void getOptionValues() = 0;
 

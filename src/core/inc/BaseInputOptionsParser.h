@@ -36,7 +36,11 @@ public:
   //! Destructor
   virtual ~BaseInputOptionsParser();
 
-  //! Calls the relevant QUESO BaseEnvironment methods to scan the input file
+  //! Method that parses the QUESO input file
+  /*!
+   * The name of the input file can be found by probing the QUESO
+   * BaseEnvironment object.
+   */
   virtual void scanOptionsValues() = 0;
 };
 
