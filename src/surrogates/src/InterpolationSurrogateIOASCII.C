@@ -181,10 +181,11 @@ namespace QUESO
 
   template<class V, class M>
   void InterpolationSurrogateIOASCII<V,M>::write( const std::string& filename,
-                                                  const InterpolationSurrogateData<V,M>& data ) const
+                                                  const InterpolationSurrogateData<V,M>& data,
+                                                  int writing_rank ) const
   {
     // Make sure there are values in the data. If not the user didn't populate the data
-    if( !data.n_values() > 0 )
+    if( !(data.n_values() > 0) )
       {
         std::string error = "ERROR: No values found in InterpolationSurrogateData.\n";
         error += "Cannot write data without values.\n";
