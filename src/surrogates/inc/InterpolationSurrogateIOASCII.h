@@ -38,12 +38,23 @@ namespace QUESO
 
     virtual ~InterpolationSurrogateIOASCII(){};
 
+    //! Read Interpolation surrogate data from filename using processor reading_rank
+    /*! This will read the data the file given by filename and setup all
+        the infrastructure for InterpolationSurrogateData so that the user
+        can then call the data() method. This can then be used to construct
+        an Interpolation object. env.fullRank() must contain reading_rank.
+        By default, processor 0 reads the data. */
     virtual void read( const std::string& filename,
                        const FullEnvironment& env,
-                       const std::string& vector_space_prefix );
+                       const std::string& vector_space_prefix,
+                       int reading_rank = 0 );
 
+    //! Write interpolation surrogate data to filename using processor writing_rank
+    /*! env.fullRank() must contain writing_rank. By default processor 0
+        writes the data. */
     virtual void write( const std::string& filename,
-                        const InterpolationSurrogateData<V,M>& data ) const;
+                        const InterpolationSurrogateData<V,M>& data,
+                        int writing_rank = 0 ) const;
 
   };
 } // end namespace QUESO
