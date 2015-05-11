@@ -29,10 +29,11 @@
 #include <queso/InterpolationSurrogateBuilder.h>
 #include <queso/InterpolationSurrogateIOASCII.h>
 
-double four_d_fn( double x, double y, double z, double a );
+double four_d_fn_1( double x, double y, double z, double a );
+double four_d_fn_2( double x, double y, double z, double a );
 
 /* We subclass InterpolationSurrogateBuilder to implement our model evaluation.
-   In this case, it just calls the simple function, but you may do much more
+   In this case, it just calls the simple functions, but you may do much more
    complicated things. */
 template<class V, class M>
 class MyInterpolationBuilder : public QUESO::InterpolationSurrogateBuilder<V,M>
@@ -46,8 +47,9 @@ public:
 
   virtual void evaluate_model( const V & domainVector, std::vector<double>& values )
   { queso_assert_equal_to( domainVector.sizeGlobal(), 4);
-    queso_assert_equal_to( values.size(), 1);
-    values[0] = four_d_fn(domainVector[0],domainVector[1],domainVector[2],domainVector[3]);
+    queso_assert_equal_to( values.size(), 2);
+    values[0] = four_d_fn_1(domainVector[0],domainVector[1],domainVector[2],domainVector[3]);
+    values[1] = four_d_fn_2(domainVector[0],domainVector[1],domainVector[2],domainVector[3]);
   };
 };
 
@@ -94,9 +96,11 @@ int main(int argc, char ** argv)
   n_points[2] = 31;
   n_points[3] = 41;
 
-  // Construct data object.
+  // Construct data object. We have two functions we're interpolating
+  // at the same time, so n_datasets = 2.
+  unsigned int n_datasets = 2;
   QUESO::InterpolationSurrogateDataSet<QUESO::GslVector, QUESO::GslMatrix>
-    data(paramDomain,n_points,1);
+    data(paramDomain,n_points,n_datasets);
 
   // Construct builder. The builder will add the values from the model evaluations
   // so the data object must stay alive.
@@ -104,21 +108,28 @@ int main(int argc, char ** argv)
     builder( data );
 
   // The expensive part. The builder will now evaluate the model for all the
-  // desired points in parameter space.
+  // desired points in parameter space. This will build both interpolants.
   builder.build_values();
 
   // Now that we've built the data, we write it out so we can reuse it later
   QUESO::InterpolationSurrogateIOASCII<QUESO::GslVector, QUESO::GslMatrix>
     data_writer;
 
-  data_writer.write( "4d_interp_data.dat", data.get_dataset(0) );
+  // Write each datasets separately. We'll be able to read each one in
+  // individually and construct separate LinearLagrangeInterpolationSurrogate
+  // objects.
+  //data_writer.write( "4d_interp_data_1.dat", data.get_dataset(0) );
+  //data_writer.write( "4d_interp_data_2.dat", data.get_dataset(1) );
 
   // The builder put the model values into the data, so now we can give the data
   // to the interpolation surrogate. This object can now be used in a likelihood
   // function for example. Here, we just illustrate calling the surrogate model
   // evaluation.
   QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
-    four_d_surrogate( data.get_dataset(0) );
+    four_d_surrogate_1( data.get_dataset(0) );
+
+  QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
+    four_d_surrogate_2( data.get_dataset(1) );
 
   // A point in parameter space at which we want to use the surrogate
   QUESO::GslVector domainVector(paramSpace.zeroVector());
@@ -130,7 +141,9 @@ int main(int argc, char ** argv)
   // Evaluate the surrogate model at the given point in parameter space
   // Because the exact function is quadrilinear, our interpolated value
   // should be exact.
-  double value = four_d_surrogate.evaluate(domainVector);
+  double value_1 = four_d_surrogate_1.evaluate(domainVector);
+  double value_2 = four_d_surrogate_2.evaluate(domainVector);
+
 
   for( int r = 0; r < env.fullComm().NumProc(); r++ )
     {
@@ -138,8 +151,11 @@ int main(int argc, char ** argv)
         {
           std::cout << "======================================" << std::endl
                     << "Processor: " << env.fullRank() << std::endl
-                    << "Interpolated value: " << value << std::endl
-                    << "Exact value: " << four_d_fn( domainVector[0],domainVector[1],domainVector[2],domainVector[3])
+                    << "Interpolated value for model 1: " << value_1 << std::endl
+                    << "Exact value for model 1: " << four_d_fn_1( domainVector[0],domainVector[1],domainVector[2],domainVector[3])
+                    << std::endl
+                    << "Interpolated value for model 2: " << value_2 << std::endl
+                    << "Exact value for model 2: " << four_d_fn_2( domainVector[0],domainVector[1],domainVector[2],domainVector[3])
                     << std::endl
                     << "======================================" << std::endl;
         }
@@ -152,10 +168,18 @@ int main(int argc, char ** argv)
   return 0;
 }
 
-double four_d_fn( double x, double y, double z, double a )
+double four_d_fn_1( double x, double y, double z, double a )
 {
   return 3.0 + 2.5*x - 3.1*y + 2.71*z + 3.14*a
     + 0.1*x*y + 1.2*x*z + 0.5*y*z + 0.1*x*a + 1.1*y*a + 2.1*z*a
     + 0.3*x*y*a + 0.5*x*z*a + 1.2*y*z*a + 0.9*x*y*z
     + 2.5*x*y*z*a;
+}
+
+double four_d_fn_2( double x, double y, double z, double a )
+{
+  return 2.0 + 1.5*x - 2.1*y + 1.71*z + 2.14*a
+    + 0.01*x*y + 0.2*x*z + 0.05*y*z + 0.01*x*a + 2.1*y*a + 3.1*z*a
+    + 1.3*x*y*a + 1.5*x*z*a + 2.2*y*z*a + 1.9*x*y*z
+    + 3.5*x*y*z*a;
 }
