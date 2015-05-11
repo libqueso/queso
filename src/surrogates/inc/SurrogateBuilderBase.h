@@ -25,6 +25,9 @@
 #ifndef UQ_SURROGATE_BUILDER_BASE_H
 #define UQ_SURROGATE_BUILDER_BASE_H
 
+// C++
+#include <vector>
+
 namespace QUESO
 {
   class GslVector;
@@ -41,7 +44,7 @@ namespace QUESO
 
     virtual ~SurrogateBuilderBase(){};
 
-    virtual double evaluate_model( const V & domainVector ) const =0;
+    virtual void evaluate_model( const V & domainVector, std::vector<double>& values ) =0;
 
   };
 

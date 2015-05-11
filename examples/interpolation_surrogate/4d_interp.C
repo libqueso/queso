@@ -38,15 +38,17 @@ template<class V, class M>
 class MyInterpolationBuilder : public QUESO::InterpolationSurrogateBuilder<V,M>
 {
 public:
-  MyInterpolationBuilder( QUESO::InterpolationSurrogateData<V,M>& data )
+  MyInterpolationBuilder( QUESO::InterpolationSurrogateDataSet<V,M>& data )
     : QUESO::InterpolationSurrogateBuilder<V,M>(data)
   {};
 
   virtual ~MyInterpolationBuilder(){};
 
-  virtual double evaluate_model( const V & domainVector ) const
+  virtual void evaluate_model( const V & domainVector, std::vector<double>& values )
   { queso_assert_equal_to( domainVector.sizeGlobal(), 4);
-    return four_d_fn(domainVector[0],domainVector[1],domainVector[2],domainVector[3]); };
+    queso_assert_equal_to( values.size(), 1);
+    values[0] = four_d_fn(domainVector[0],domainVector[1],domainVector[2],domainVector[3]);
+  };
 };
 
 int main(int argc, char ** argv)
@@ -93,8 +95,8 @@ int main(int argc, char ** argv)
   n_points[3] = 41;
 
   // Construct data object.
-  QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
-    data(paramDomain,n_points);
+  QUESO::InterpolationSurrogateDataSet<QUESO::GslVector, QUESO::GslMatrix>
+    data(paramDomain,n_points,1);
 
   // Construct builder. The builder will add the values from the model evaluations
   // so the data object must stay alive.
@@ -109,14 +111,14 @@ int main(int argc, char ** argv)
   QUESO::InterpolationSurrogateIOASCII<QUESO::GslVector, QUESO::GslMatrix>
     data_writer;
 
-  data_writer.write( "4d_interp_data.dat", data );
+  data_writer.write( "4d_interp_data.dat", data.get_dataset(0) );
 
   // The builder put the model values into the data, so now we can give the data
   // to the interpolation surrogate. This object can now be used in a likelihood
   // function for example. Here, we just illustrate calling the surrogate model
   // evaluation.
   QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
-    four_d_surrogate( data );
+    four_d_surrogate( data.get_dataset(0) );
 
   // A point in parameter space at which we want to use the surrogate
   QUESO::GslVector domainVector(paramSpace.zeroVector());

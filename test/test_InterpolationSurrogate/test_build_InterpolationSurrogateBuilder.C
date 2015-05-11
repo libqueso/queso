@@ -27,7 +27,7 @@
 #include <queso/BoxSubset.h>
 #include <queso/LinearLagrangeInterpolationSurrogate.h>
 #include <queso/InterpolationSurrogateBuilder.h>
-#include <queso/InterpolationSurrogateData.h>
+#include <queso/InterpolationSurrogateDataSet.h>
 #include <queso/InterpolationSurrogateIOASCII.h>
 
 double four_d_fn( double x, double y, double z, double a );
@@ -36,15 +36,17 @@ template<class V, class M>
 class MyInterpolationBuilder : public QUESO::InterpolationSurrogateBuilder<V,M>
 {
 public:
-  MyInterpolationBuilder( QUESO::InterpolationSurrogateData<V,M>& data )
+  MyInterpolationBuilder( QUESO::InterpolationSurrogateDataSet<V,M>& data )
     : QUESO::InterpolationSurrogateBuilder<V,M>(data)
   {};
 
   virtual ~MyInterpolationBuilder(){};
 
-  virtual double evaluate_model( const V & domainVector ) const
+  virtual void evaluate_model( const V & domainVector, std::vector<double>& values )
   { queso_assert_equal_to( domainVector.sizeGlobal(), 4);
-    return four_d_fn(domainVector[0],domainVector[1],domainVector[2],domainVector[3]); };
+    queso_assert_equal_to( values.size(), 1 );
+    values [0] = four_d_fn(domainVector[0],domainVector[1],domainVector[2],domainVector[3]);
+  };
 };
 
 int main(int argc, char ** argv)
@@ -96,8 +98,8 @@ int main(int argc, char ** argv)
     n_points[2] = 31;
     n_points[3] = 41;
 
-    QUESO::InterpolationSurrogateData<QUESO::GslVector, QUESO::GslMatrix>
-      data(paramDomain,n_points);
+    QUESO::InterpolationSurrogateDataSet<QUESO::GslVector, QUESO::GslMatrix>
+      data(paramDomain,n_points,1);
 
     MyInterpolationBuilder<QUESO::GslVector,QUESO::GslMatrix>
       builder( data );
@@ -105,7 +107,7 @@ int main(int argc, char ** argv)
     builder.build_values();
 
     QUESO::LinearLagrangeInterpolationSurrogate<QUESO::GslVector,QUESO::GslMatrix>
-      four_d_surrogate( data );
+      four_d_surrogate( data.get_dataset(0) );
 
     double test_val = four_d_surrogate.evaluate(domainVector);
 
@@ -127,7 +129,7 @@ int main(int argc, char ** argv)
     QUESO::InterpolationSurrogateIOASCII<QUESO::GslVector,QUESO::GslMatrix>
       data_writer;
 
-    data_writer.write( filename, data );
+    data_writer.write( filename, data.get_dataset(0) );
   }
 
   // Now read the data and test
