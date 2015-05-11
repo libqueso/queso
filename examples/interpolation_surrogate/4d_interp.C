@@ -117,9 +117,15 @@ int main(int argc, char ** argv)
 
   // Write each datasets separately. We'll be able to read each one in
   // individually and construct separate LinearLagrangeInterpolationSurrogate
-  // objects.
-  //data_writer.write( "4d_interp_data_1.dat", data.get_dataset(0) );
-  //data_writer.write( "4d_interp_data_2.dat", data.get_dataset(1) );
+  // objects. If we have more than 1 processor at our disposal, have the
+  // second data set written out by someone other than processor 0 since
+  // processor 0 will be writing out the first data set.
+  data_writer.write( "4d_interp_data_1.dat", data.get_dataset(0) );
+
+  if( env.fullComm().NumProc() > 1 )
+    data_writer.write( "4d_interp_data_2.dat", data.get_dataset(1), 1 );
+  else
+    data_writer.write( "4d_interp_data_2.dat", data.get_dataset(1) );
 
   // The builder put the model values into the data, so now we can give the data
   // to the interpolation surrogate. This object can now be used in a likelihood
