@@ -276,6 +276,8 @@ if (isnan(minus_2_log_lhd))
 
 // std::cout << "minus_2_log_lhd = " << minus_2_log_lhd << std::endl;
 
+  queso_assert_greater(minus_2_log_lhd, 0);
+
   return -0.5 * minus_2_log_lhd;
 }
 
