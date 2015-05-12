@@ -42,30 +42,7 @@ namespace QUESO
     m_data(data),
     m_njobs(this->get_default_data().get_paramDomain().env().numSubEnvironments(), 0)
   {
-    this->check_process_config();
-
     this->partition_work();
-  }
-
-  template<class V, class M>
-  void InterpolationSurrogateBuilder<V,M>::check_process_config()
-  {
-    /* If fullComm() > 1 and n_subenvironments == 1 this is strange and means
-       the user is doing redundant work. So, let's make that an error.
-       This could happen if, for example the user forgets to change the number
-       of subenvironments to > 1 and runs with multiple MPI processes. */
-    unsigned int full_comm_size = this->get_default_data().get_paramDomain().env().fullComm().NumProc();
-    unsigned int n_subenvs = this->get_default_data().get_paramDomain().env().numSubEnvironments();
-
-    if( (full_comm_size > 1) &&  (n_subenvs == 1) )
-      {
-        std::string error = "ERROR: fullComm() size is greater than 1 and the number\n";
-        error += "       of subenvrionments = 1. InterpolationSurrogateBuilder\n";
-        error += "       is not compatible with this configuration.\n";
-        error += "       Did you forget to change the number of subenvironments?\n";
-
-        queso_error_msg(error);
-      }
   }
 
   template<class V, class M>

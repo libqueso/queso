@@ -61,12 +61,6 @@ namespace QUESO
     //! Cache the amount of work for each subenvironment
     std::vector<int> m_njobs;
 
-    //! Ensure that if fullComm() size > 1, then n_subenvironments > 1
-    /*! If not, this is a strange configuration and breaks things like inter0Comm
-        and would induce redundant work. Thus, this configuration is not supported and
-        we error out. */
-    void check_process_config();
-
     //! Partition the workload of model evaluations across the subenvironments
     void partition_work();
 
