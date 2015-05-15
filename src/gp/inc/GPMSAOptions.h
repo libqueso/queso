@@ -37,7 +37,7 @@ namespace QUESO {
  * \brief This class defines the options that specify the behaviour of the Gaussian process emulator
  */
 
-class GPMSAOptions : public BoostInputOptionsParser
+class GPMSAOptions
 {
 public:
   //! Given prefix, read the input file for parameters named prefix_*
@@ -92,10 +92,9 @@ public:
   }
 
 private:
-  void defineOptions();
-  void getOptionValues();
-
   const BaseEnvironment& m_env;
+
+  BoostInputOptionsParser * m_parser;
 
   std::string m_option_help;
   std::string m_option_emulatorPrecisionShape;

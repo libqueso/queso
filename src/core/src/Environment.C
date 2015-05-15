@@ -1150,8 +1150,6 @@ FullEnvironment::FullEnvironment(
       m_allOptionsDesc = new boost::program_options::options_description("Allowed options");
 
       readOptionsInputFile();
-
-      tempOptions->scanOptionsValues();
     }
 
     // We did this dance because scanOptionsValues is not a const method, but

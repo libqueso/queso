@@ -113,7 +113,7 @@ namespace QUESO {
  * of the sequece generated. This class provides default values for such options if no
  * input file is available. */
 
-class MLSamplingLevelOptions : public BoostInputOptionsParser
+class MLSamplingLevelOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -347,11 +347,11 @@ public:
 private:
   //! Copies the option values from \c srcOptions to \c this.
   void   copyOptionsValues(const MLSamplingLevelOptions& srcOptions);
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
+  void getAllOptions();
 
   const BaseEnvironment&        m_env;
+
+  BoostInputOptionsParser * m_parser;
 
   std::string                   m_option_help;
 

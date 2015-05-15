@@ -74,7 +74,7 @@ class BaseEnvironment;
  *  EnvOptionsValues is responsible for this task.
  */
 
-class EnvOptionsValues : public BoostInputOptionsParser
+class EnvOptionsValues
 {
 public:
   //! @name Constructor/Destructor methods
@@ -151,6 +151,8 @@ public:
   //@}
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   std::string m_option_help;
 
   //! My number of sub-environments.
@@ -194,9 +196,6 @@ private:
 
   //! Identifying string.
   std::string m_option_identifyingString;
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   //! Makes an exact copy of an existing EnvOptionsValues instance.
   void copy(const EnvOptionsValues& src);

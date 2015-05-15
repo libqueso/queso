@@ -62,7 +62,7 @@ namespace QUESO {
  * values for such options if no input file is available.
  */
 
-class SipOptionsValues : public BoostInputOptionsParser
+class SipOptionsValues
 {
 public:
   //! @name Constructor/Destructor methods
@@ -98,6 +98,8 @@ public:
   //MhOptionsValues m_mhOptionsValues;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   // The input options as strings so we can parse the input file later
   std::string                   m_option_help;
   std::string                   m_option_computeSolution;
@@ -106,11 +108,6 @@ private:
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   std::string                   m_option_solver;
 #endif
-
-  // We have these two because of we don't want to break backwards
-  // compatibility
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   //! Copies the option values from \c src to \c this.
   void copy(const SipOptionsValues& src);

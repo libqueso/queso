@@ -65,7 +65,7 @@ namespace QUESO {
  *  Multilevel sequence generator expects options for its methods. This class provides default
  *  values for such options if no input file is available. */
 
-class MLSamplingOptions : public BoostInputOptionsParser
+class MLSamplingOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -120,10 +120,9 @@ public:
   std::set<unsigned int> m_dataOutputAllowedSet;
 
 private:
-  virtual void defineOptions();
-  virtual void getOptionValues();
-
   const BaseEnvironment& m_env;
+
+  BoostInputOptionsParser * m_parser;
 
   std::string                   m_option_help;
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY

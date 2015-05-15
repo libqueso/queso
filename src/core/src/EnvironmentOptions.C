@@ -38,7 +38,6 @@ namespace QUESO {
 // Default constructor ------------------------------
 EnvOptionsValues::EnvOptionsValues()
   :
-    BoostInputOptionsParser(),
     m_prefix("env_"),
     m_numSubEnvironments(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
     m_subDisplayFileName(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
@@ -54,6 +53,7 @@ EnvOptionsValues::EnvOptionsValues()
     m_identifyingString(UQ_ENV_IDENTIFYING_STRING_ODV),
     m_numDebugParams(UQ_ENV_NUM_DEBUG_PARAMS_ODV),
     m_debugParams(m_numDebugParams,0.),
+    m_parser(NULL),
     m_option_help(m_prefix + "help"),
     m_option_numSubEnvironments(m_prefix + "numSubEnvironments"),
     m_option_subDisplayFileName(m_prefix + "subDisplayFileName"),
@@ -73,7 +73,6 @@ EnvOptionsValues::EnvOptionsValues()
 EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
-    BoostInputOptionsParser(env),
     m_prefix((std::string) + "env_"),
     m_numSubEnvironments(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
     m_subDisplayFileName(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
@@ -89,6 +88,7 @@ EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
     m_identifyingString(UQ_ENV_IDENTIFYING_STRING_ODV),
     m_numDebugParams(UQ_ENV_NUM_DEBUG_PARAMS_ODV),
     m_debugParams(m_numDebugParams,0.),
+    m_parser(new BoostInputOptionsParser(env)),
     m_option_help(m_prefix + "help"),
     m_option_numSubEnvironments(m_prefix + "numSubEnvironments"),
     m_option_subDisplayFileName(m_prefix + "subDisplayFileName"),
@@ -103,6 +103,36 @@ EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
     m_option_platformName(m_prefix + "platformName"),
     m_option_identifyingString(m_prefix + "identifyingString")
 {
+  // Register all options with parser
+  m_parser->registerOption(m_option_help, "produce help message for environment");
+  m_parser->registerOption<unsigned int>(m_option_numSubEnvironments, UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV, "number of subEnvironments");
+  m_parser->registerOption<std::string >(m_option_subDisplayFileName, UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV, "output filename for subscreen writing");
+  m_parser->registerOption<bool        >(m_option_subDisplayAllowAll, UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV, "Allow all processors to write to output file");
+  m_parser->registerOption<bool        >(m_option_subDisplayAllowInter0, UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV, "Allow all inter0 nodes to write to output file");
+  m_parser->registerOption<std::string >(m_option_subDisplayAllowedSet, UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV, "subEnvs that will write to output file");
+  m_parser->registerOption<unsigned int>(m_option_displayVerbosity, UQ_ENV_DISPLAY_VERBOSITY_ODV, "set verbosity");
+  m_parser->registerOption<unsigned int>(m_option_syncVerbosity, UQ_ENV_SYNC_VERBOSITY_ODV, "set sync verbosity");
+  m_parser->registerOption<unsigned int>(m_option_checkingLevel, UQ_ENV_CHECKING_LEVEL_ODV, "set checking level");
+  m_parser->registerOption<std::string >(m_option_rngType, UQ_ENV_RNG_TYPE_ODV, "set rngType");
+  m_parser->registerOption<int         >(m_option_seed, UQ_ENV_SEED_ODV, "set seed");
+  m_parser->registerOption<std::string >(m_option_platformName, UQ_ENV_PLATFORM_NAME_ODV, "platform name");
+  m_parser->registerOption<std::string >(m_option_identifyingString, UQ_ENV_IDENTIFYING_STRING_ODV, "identifying string");
+
+  // Read the input file
+  m_parser->scanInputFile();
+
+  m_parser->getOption<unsigned int>(m_option_numSubEnvironments, m_numSubEnvironments);
+  m_parser->getOption<std::string>(m_option_subDisplayFileName, m_subDisplayFileName);
+  m_parser->getOption<bool>(m_option_subDisplayAllowAll, m_subDisplayAllowAll);
+  m_parser->getOption<bool>(m_option_subDisplayAllowInter0, m_subDisplayAllowInter0);
+  m_parser->getOption<std::set<unsigned int> >(m_option_subDisplayAllowedSet, m_subDisplayAllowedSet);
+  m_parser->getOption<unsigned int>(m_option_displayVerbosity, m_displayVerbosity);
+  m_parser->getOption<unsigned int>(m_option_syncVerbosity, m_syncVerbosity);
+  m_parser->getOption<unsigned int>(m_option_checkingLevel, m_checkingLevel);
+  m_parser->getOption<std::string>(m_option_rngType, m_rngType);
+  m_parser->getOption<int>(m_option_seed, m_seed);
+  m_parser->getOption<std::string>(m_option_platformName, m_platformName);
+  m_parser->getOption<std::string>(m_option_identifyingString, m_identifyingString);
 }
 
 // Copy constructor ---------------------------------
@@ -114,6 +144,9 @@ EnvOptionsValues::EnvOptionsValues(const EnvOptionsValues& src)
 // Destructor ---------------------------------------
 EnvOptionsValues::~EnvOptionsValues()
 {
+  if (m_parser) {
+    delete m_parser;
+  }
 }
 
 // Set methods---------------------------------------
@@ -124,135 +157,135 @@ EnvOptionsValues::operator=(const EnvOptionsValues& rhs)
   return *this;
 }
 // Private methods-----------------------------------
-void
-EnvOptionsValues::defineOptions()
-{
-#ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "In EnvOptions::defineMyOptions(), before add_options()" << std::endl;
-#endif
-  (*m_optionsDescription).add_options()
-    (m_option_help.c_str(),                                                                                                 "produce help message for  environment"       )
-    (m_option_numSubEnvironments.c_str(),    boost::program_options::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),     "number of subEnvironments"                     )
-    (m_option_subDisplayFileName.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),    "output filename for subscreen writing"         )
-    (m_option_subDisplayAllowAll.c_str(),    boost::program_options::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),    "Allow all processors to write to output file"  )
-    (m_option_subDisplayAllowInter0.c_str(), boost::program_options::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV), "Allow all inter0 nodes to write to output file")
-    (m_option_subDisplayAllowedSet.c_str(),  boost::program_options::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV),  "subEnvs that will write to output file"        )
-    (m_option_displayVerbosity.c_str(),      boost::program_options::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),        "set verbosity"                                 )
-    (m_option_syncVerbosity.c_str(),         boost::program_options::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),           "set sync verbosity"                            )
-    (m_option_checkingLevel.c_str(),         boost::program_options::value<unsigned int>()->default_value(UQ_ENV_CHECKING_LEVEL_ODV),           "set checking level"                            )
-    (m_option_rngType.c_str(),               boost::program_options::value<std::string >()->default_value(UQ_ENV_RNG_TYPE_ODV),                 "set rngType"                                   )
-    (m_option_seed.c_str(),                  boost::program_options::value<int         >()->default_value(UQ_ENV_SEED_ODV),                     "set seed"                                      )
-    (m_option_platformName.c_str(),          boost::program_options::value<std::string >()->default_value(UQ_ENV_PLATFORM_NAME_ODV),            "platform name"                                 )
-    (m_option_identifyingString.c_str(),     boost::program_options::value<std::string >()->default_value(UQ_ENV_IDENTIFYING_STRING_ODV),       "identifying string"                            )
-  //(m_option_numDebugParams.c_str(),        boost::program_options::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),         "set number of debug parameters"                )
-  ;
-#ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "In EnvOptions::defineMyOptions(), after add_options()" << std::endl;
-#endif
-}
-
-void
-EnvOptionsValues::getOptionValues()
-{
-#ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "Entering EnvOptions::getMyOptionsValues()" << std::endl;
-#endif
-  if ((*m_optionsMap).count(m_option_help.c_str())) {
-    // 'm_subDisplayOutputFile' is still not available at this moment. Use 'std::cout'
-    if (m_env->fullRank() == 0) std::cout << *m_optionsDescription
-                                         << std::endl;
-  }
-
-  if ((*m_optionsMap).count(m_option_numSubEnvironments.c_str())) {
-    m_numSubEnvironments = (*m_optionsMap)[m_option_numSubEnvironments].as<unsigned int>();
-  }
-  if ((m_env->fullComm().NumProc()%m_numSubEnvironments) != 0) {
-    std::cerr << "In BaseEnvironment::getMyOptionValues()"
-              << ": m_env->fullComm().NumProc() = " << m_env->fullComm().NumProc()
-              << ", m_numSubEnvironments = "       << m_numSubEnvironments
-              << std::endl;
-  }
-  UQ_FATAL_TEST_MACRO((m_env->fullComm().NumProc()%m_numSubEnvironments) != 0,
-                      m_env->worldRank(),
-                      "BaseEnvironment::getMyOptionValues()",
-                      "total number of processors in environment must be multiple of the specified number of subEnvironments");
-
-  if ((*m_optionsMap).count(m_option_subDisplayFileName.c_str())) {
-    m_subDisplayFileName = (*m_optionsMap)[m_option_subDisplayFileName].as<std::string>();
-  }
-
-  if ((*m_optionsMap).count(m_option_subDisplayAllowAll.c_str())) {
-    m_subDisplayAllowAll = (*m_optionsMap)[m_option_subDisplayAllowAll].as<bool>();
-  }
-
-  if ((*m_optionsMap).count(m_option_subDisplayAllowInter0.c_str())) {
-    m_subDisplayAllowInter0 = (*m_optionsMap)[m_option_subDisplayAllowInter0].as<bool>();
-  }
-
-  if (m_subDisplayAllowAll) {
-    m_subDisplayAllowedSet.clear();
-    // The line below is commented because 'm_subId' is not set at this point yet
-    //m_subDisplayAllowedSet.insert((unsigned int) m_subId);
-  }
-  else if (m_subDisplayAllowInter0) {
-    m_subDisplayAllowedSet.clear();
-  }
-  else if ((*m_optionsMap).count(m_option_subDisplayAllowedSet.c_str())) {
-    m_subDisplayAllowedSet.clear();
-    std::vector<double> tmpAllow(0,0.);
-    std::string inputString = (*m_optionsMap)[m_option_subDisplayAllowedSet].as<std::string>();
-    MiscReadDoublesFromString(inputString,tmpAllow);
-    //if (m_subDisplayOutputFile) {
-    //  *m_subDisplayOutputFile << "In EnvironmentOptions::getMyOptionValues(): allow = ";
-    //  for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-    //    *m_subDisplayOutputFile << " " << tmpAllow[i];
-    //  }
-    //  *m_subDisplayOutputFile << std::endl;
-    //}
-
-    if (tmpAllow.size() > 0) {
-      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_subDisplayAllowedSet.insert((unsigned int) tmpAllow[i]);
-      }
-    }
-  }
-
-  if ((*m_optionsMap).count(m_option_displayVerbosity.c_str())) {
-    m_displayVerbosity = (*m_optionsMap)[m_option_displayVerbosity].as<unsigned int>();
-  }
-
-  if ((*m_optionsMap).count(m_option_syncVerbosity.c_str())) {
-    m_syncVerbosity = (*m_optionsMap)[m_option_syncVerbosity].as<unsigned int>();
-  }
-
-  if ((*m_optionsMap).count(m_option_checkingLevel.c_str())) {
-    m_checkingLevel = (*m_optionsMap)[m_option_checkingLevel].as<unsigned int>();
-  }
-
-  if ((*m_optionsMap).count(m_option_rngType.c_str())) {
-    m_rngType = (*m_optionsMap)[m_option_rngType].as<std::string>();
-  }
-
-  if ((*m_optionsMap).count(m_option_seed.c_str())) {
-    m_seed = (*m_optionsMap)[m_option_seed].as<int>();
-  }
-
-  if ((*m_optionsMap).count(m_option_platformName.c_str())) {
-    m_platformName = (*m_optionsMap)[m_option_platformName].as<std::string>();
-  }
-
-  if ((*m_optionsMap).count(m_option_identifyingString.c_str())) {
-    m_identifyingString = (*m_optionsMap)[m_option_identifyingString].as<std::string>();
-  }
-
-  //if ((*m_optionsMap).count(m_option_numDebugParams.c_str())) {
-  //  m_numDebugParams = (*m_optionsMap)[m_option_numDebugParams].as<unsigned int>();
-  //}
-
-#ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "Leaving EnvOptions::getMyOptionsValues()" << std::endl;
-#endif
-}
+// void
+// EnvOptionsValues::defineOptions()
+// {
+// #ifdef QUESO_MEMORY_DEBUGGING
+//   std::cout << "In EnvOptions::defineMyOptions(), before add_options()" << std::endl;
+// #endif
+//   (*m_optionsDescription).add_options()
+//     (m_option_help.c_str(),                                                                                                 "produce help message for  environment"       )
+//     (m_option_numSubEnvironments.c_str(),    boost::program_options::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),     "number of subEnvironments"                     )
+//     (m_option_subDisplayFileName.c_str(),    boost::program_options::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),    "output filename for subscreen writing"         )
+//     (m_option_subDisplayAllowAll.c_str(),    boost::program_options::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),    "Allow all processors to write to output file"  )
+//     (m_option_subDisplayAllowInter0.c_str(), boost::program_options::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV), "Allow all inter0 nodes to write to output file")
+//     (m_option_subDisplayAllowedSet.c_str(),  boost::program_options::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV),  "subEnvs that will write to output file"        )
+//     (m_option_displayVerbosity.c_str(),      boost::program_options::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),        "set verbosity"                                 )
+//     (m_option_syncVerbosity.c_str(),         boost::program_options::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),           "set sync verbosity"                            )
+//     (m_option_checkingLevel.c_str(),         boost::program_options::value<unsigned int>()->default_value(UQ_ENV_CHECKING_LEVEL_ODV),           "set checking level"                            )
+//     (m_option_rngType.c_str(),               boost::program_options::value<std::string >()->default_value(UQ_ENV_RNG_TYPE_ODV),                 "set rngType"                                   )
+//     (m_option_seed.c_str(),                  boost::program_options::value<int         >()->default_value(UQ_ENV_SEED_ODV),                     "set seed"                                      )
+//     (m_option_platformName.c_str(),          boost::program_options::value<std::string >()->default_value(UQ_ENV_PLATFORM_NAME_ODV),            "platform name"                                 )
+//     (m_option_identifyingString.c_str(),     boost::program_options::value<std::string >()->default_value(UQ_ENV_IDENTIFYING_STRING_ODV),       "identifying string"                            )
+//   //(m_option_numDebugParams.c_str(),        boost::program_options::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),         "set number of debug parameters"                )
+//   ;
+// #ifdef QUESO_MEMORY_DEBUGGING
+//   std::cout << "In EnvOptions::defineMyOptions(), after add_options()" << std::endl;
+// #endif
+// }
+//
+// void
+// EnvOptionsValues::getOptionValues()
+// {
+// #ifdef QUESO_MEMORY_DEBUGGING
+//   std::cout << "Entering EnvOptions::getMyOptionsValues()" << std::endl;
+// #endif
+//   if ((*m_optionsMap).count(m_option_help.c_str())) {
+//     // 'm_subDisplayOutputFile' is still not available at this moment. Use 'std::cout'
+//     if (m_env->fullRank() == 0) std::cout << *m_optionsDescription
+//                                          << std::endl;
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_numSubEnvironments.c_str())) {
+//     m_numSubEnvironments = (*m_optionsMap)[m_option_numSubEnvironments].as<unsigned int>();
+//   }
+//   if ((m_env->fullComm().NumProc()%m_numSubEnvironments) != 0) {
+//     std::cerr << "In BaseEnvironment::getMyOptionValues()"
+//               << ": m_env->fullComm().NumProc() = " << m_env->fullComm().NumProc()
+//               << ", m_numSubEnvironments = "       << m_numSubEnvironments
+//               << std::endl;
+//   }
+//   UQ_FATAL_TEST_MACRO((m_env->fullComm().NumProc()%m_numSubEnvironments) != 0,
+//                       m_env->worldRank(),
+//                       "BaseEnvironment::getMyOptionValues()",
+//                       "total number of processors in environment must be multiple of the specified number of subEnvironments");
+//
+//   if ((*m_optionsMap).count(m_option_subDisplayFileName.c_str())) {
+//     m_subDisplayFileName = (*m_optionsMap)[m_option_subDisplayFileName].as<std::string>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_subDisplayAllowAll.c_str())) {
+//     m_subDisplayAllowAll = (*m_optionsMap)[m_option_subDisplayAllowAll].as<bool>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_subDisplayAllowInter0.c_str())) {
+//     m_subDisplayAllowInter0 = (*m_optionsMap)[m_option_subDisplayAllowInter0].as<bool>();
+//   }
+//
+//   if (m_subDisplayAllowAll) {
+//     m_subDisplayAllowedSet.clear();
+//     // The line below is commented because 'm_subId' is not set at this point yet
+//     //m_subDisplayAllowedSet.insert((unsigned int) m_subId);
+//   }
+//   else if (m_subDisplayAllowInter0) {
+//     m_subDisplayAllowedSet.clear();
+//   }
+//   else if ((*m_optionsMap).count(m_option_subDisplayAllowedSet.c_str())) {
+//     m_subDisplayAllowedSet.clear();
+//     std::vector<double> tmpAllow(0,0.);
+//     std::string inputString = (*m_optionsMap)[m_option_subDisplayAllowedSet].as<std::string>();
+//     MiscReadDoublesFromString(inputString,tmpAllow);
+//     //if (m_subDisplayOutputFile) {
+//     //  *m_subDisplayOutputFile << "In EnvironmentOptions::getMyOptionValues(): allow = ";
+//     //  for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+//     //    *m_subDisplayOutputFile << " " << tmpAllow[i];
+//     //  }
+//     //  *m_subDisplayOutputFile << std::endl;
+//     //}
+//
+//     if (tmpAllow.size() > 0) {
+//       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+//         m_subDisplayAllowedSet.insert((unsigned int) tmpAllow[i]);
+//       }
+//     }
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_displayVerbosity.c_str())) {
+//     m_displayVerbosity = (*m_optionsMap)[m_option_displayVerbosity].as<unsigned int>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_syncVerbosity.c_str())) {
+//     m_syncVerbosity = (*m_optionsMap)[m_option_syncVerbosity].as<unsigned int>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_checkingLevel.c_str())) {
+//     m_checkingLevel = (*m_optionsMap)[m_option_checkingLevel].as<unsigned int>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_rngType.c_str())) {
+//     m_rngType = (*m_optionsMap)[m_option_rngType].as<std::string>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_seed.c_str())) {
+//     m_seed = (*m_optionsMap)[m_option_seed].as<int>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_platformName.c_str())) {
+//     m_platformName = (*m_optionsMap)[m_option_platformName].as<std::string>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_identifyingString.c_str())) {
+//     m_identifyingString = (*m_optionsMap)[m_option_identifyingString].as<std::string>();
+//   }
+//
+//   //if ((*m_optionsMap).count(m_option_numDebugParams.c_str())) {
+//   //  m_numDebugParams = (*m_optionsMap)[m_option_numDebugParams].as<unsigned int>();
+//   //}
+//
+// #ifdef QUESO_MEMORY_DEBUGGING
+//   std::cout << "Leaving EnvOptions::getMyOptionsValues()" << std::endl;
+// #endif
+// }
 
 void
 EnvOptionsValues::copy(const EnvOptionsValues& src)

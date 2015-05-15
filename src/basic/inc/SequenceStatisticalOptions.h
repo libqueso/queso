@@ -91,7 +91,7 @@ namespace boost {
  *    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence.
  */
 
-class SsOptionsValues : public BoostInputOptionsParser
+class SsOptionsValues
 {
 public:
   //! @name Constructor/Destructor methods
@@ -202,6 +202,8 @@ public:
   //@}
   // end public attributes
 private:
+  BoostInputOptionsParser * m_parser;
+
   std::string                   m_option_help;
   std::string                   m_option_initialDiscardedPortions;
 
@@ -249,9 +251,6 @@ private:
   std::string                   m_option_cdfStacc_compute;
   std::string                   m_option_cdfStacc_numEvalPositions;
 #endif
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   //! Copies the option values from \c src to \c this.
   void copy(const SsOptionsValues& src);

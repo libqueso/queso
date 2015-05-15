@@ -26,6 +26,7 @@
 
 #include <queso/Environment.h>
 #include <queso/BoostInputOptionsParser.h>
+#include <queso/Miscellaneous.h>
 
 namespace QUESO {
 
@@ -33,7 +34,8 @@ BoostInputOptionsParser::BoostInputOptionsParser(const BaseEnvironment * env)
   :
     m_env(env),
     m_optionsDescription(new boost::program_options::options_description("Input options")),
-    m_optionsMap(new boost::program_options::variables_map())
+    m_optionsMap(new boost::program_options::variables_map()),
+    m_scannedInputFile(false)
 {
 }
 
@@ -41,7 +43,8 @@ BoostInputOptionsParser::BoostInputOptionsParser()
   :
     m_env(NULL),
     m_optionsDescription(new boost::program_options::options_description("Input options")),
-    m_optionsMap(new boost::program_options::variables_map())
+    m_optionsMap(new boost::program_options::variables_map()),
+    m_scannedInputFile(false)
 {
 }
 
@@ -57,35 +60,109 @@ BoostInputOptionsParser::~BoostInputOptionsParser()
 }
 
 void
-BoostInputOptionsParser::scanOptionsValues()
+BoostInputOptionsParser::scanInputFile()
 {
   queso_require_msg(m_optionsDescription, "m_optionsDescription variable is NULL");
 
   // If it's NULL then the defaults are used
   if (m_env != NULL) {
-    defineOptions();
+    if (m_env->optionsInputFileName() != "") {
+      std::ifstream ifs;
+      ifs.open(m_env->optionsInputFileName().c_str());
 
-    queso_require_not_equal_to_msg(m_env->optionsInputFileName(), "", "m_optionsInputFileName is 'nothing'");
+      queso_require_msg(m_optionsMap, "m_allOptionsMap variable is NULL");
+      boost::program_options::store(boost::program_options::parse_config_file(ifs, *m_optionsDescription, true), *m_optionsMap);
+      boost::program_options::notify(*m_optionsMap);
 
-    std::ifstream ifs;
-    ifs.open(m_env->optionsInputFileName().c_str());
+      ifs.close();
 
-    queso_require_msg(m_optionsMap, "m_allOptionsMap variable is NULL");
-    boost::program_options::store(boost::program_options::parse_config_file(ifs, *m_optionsDescription, true), *m_optionsMap);
-    boost::program_options::notify(*m_optionsMap);
-
-    ifs.close();
-
-    getOptionValues();
+      m_scannedInputFile = true;
+    }
   }
-
-  // if (m_env.subDisplayFile() != NULL) {
-  //   *m_env.subDisplayFile() << "In BoostInputOptionsParser::scanOptionsValues()"
-  //                           << ": after reading values of options with prefix '" << m_prefix
-  //                           << "', state of  object is:"
-  //                           << "\n" << *this
-  //                           << std::endl;
-  // }
 }
+
+template <typename T>
+void
+BoostInputOptionsParser::registerOption(std::string name, T defaultValue,
+    std::string description)
+{
+  m_optionsDescription->add_options()
+    (name.c_str(),
+     boost::program_options::value<T>()->default_value(defaultValue),
+     description.c_str());
+}
+
+void
+BoostInputOptionsParser::registerOption(std::string name, std::string description)
+{
+  m_optionsDescription->add_options()
+    (name.c_str(),
+     description.c_str());
+}
+
+template <typename T>
+void
+BoostInputOptionsParser::getOption(std::string & name, T & value)
+{
+  if (m_scannedInputFile) {
+    queso_require_msg(m_optionsMap->count(name.c_str()), "option `" << name << "` not registered");
+    value = (*m_optionsMap)[name].as<T>();
+  }
+}
+
+template <>
+void
+BoostInputOptionsParser::getOption(std::string & name, std::set<unsigned int, std::less<unsigned int>, std::allocator<unsigned int> > & value)
+{
+  if (m_scannedInputFile) {
+    queso_require_msg(m_optionsMap->count(name.c_str()), "option `" << name << "` not registered");
+
+    // Clear before putting things in it
+    value.clear();
+
+    // Get the option as a string
+    // DM:  Why do it this way?  Doesn't boost support vectors as input options?
+    std::vector<double> tmpVec(0, 0.0);
+    std::string optionValue;
+    this->getOption<std::string>(name, optionValue);
+    MiscReadDoublesFromString(optionValue, tmpVec);
+
+    for (unsigned int i = 0; i < tmpVec.size(); i++) {
+      value.insert((unsigned int) tmpVec[i]);  // Why cast?!
+    }
+  }
+}
+
+template <>
+void
+BoostInputOptionsParser::getOption<std::vector<double, std::allocator<double> > >(std::string & name, std::vector<double, std::allocator<double> > & value)
+{
+  if (m_scannedInputFile) {
+    queso_require_msg(m_optionsMap->count(name.c_str()), "option `" << name << "` not registered");
+
+    // Need to reset value?
+
+    // Get the option as a string
+    // DM:  Why do it this way?  Doesn't boost support vectors as input options?
+    std::string optionValue;
+    this->getOption<std::string>(name, optionValue);
+    MiscReadDoublesFromString(optionValue, value);
+  }
+}
+
+template void BoostInputOptionsParser::registerOption<int>(std::string, int, std::string);
+template void BoostInputOptionsParser::registerOption<unsigned int>(std::string, unsigned int, std::string);
+template void BoostInputOptionsParser::registerOption<bool>(std::string, bool, std::string);
+template void BoostInputOptionsParser::registerOption<double>(std::string, double, std::string);
+template void BoostInputOptionsParser::registerOption<std::string>(std::string, std::string, std::string);
+
+template void BoostInputOptionsParser::getOption<int>(std::string&, int&);
+template void BoostInputOptionsParser::getOption<unsigned int>(std::string&, unsigned int&);
+template void BoostInputOptionsParser::getOption<double>(std::string&, double&);
+template void BoostInputOptionsParser::getOption<bool>(std::string&, bool&);
+template void BoostInputOptionsParser::getOption<std::string>(std::string&, std::string&);
+template void BoostInputOptionsParser::getOption<std::set<unsigned int, std::less<unsigned int>, std::allocator<unsigned int> > >(std::string&, std::set<unsigned int, std::less<unsigned int>, std::allocator<unsigned int> >&);
+template void BoostInputOptionsParser::getOption<std::vector<unsigned int, std::allocator<unsigned int> > >(std::string&, std::vector<unsigned int, std::allocator<unsigned int> >&);
+template void BoostInputOptionsParser::getOption<std::vector<double, std::allocator<double> > >(std::string&, std::vector<double, std::allocator<double> >&);
 
 }  // End namespace QUESO

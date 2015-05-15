@@ -25,6 +25,7 @@
 #ifndef UQ_BOOST_INPUT_OPTIONS_H
 #define UQ_BOOST_INPUT_OPTIONS_H
 
+#include <string>
 #include <queso/BaseInputOptionsParser.h>
 
 namespace boost
@@ -66,25 +67,24 @@ public:
    * member.  After both of those are done, it *sets* the options by calling
    * getOptionValues.
    */
-  virtual void scanOptionsValues();
+  void scanInputFile();
 
-private:
-  //! Subclasses implement this to *define* boost input options
-  /*!
-   * This will act on the boost-specific m_optionsDescription
-   */
-  virtual void defineOptions() = 0;
+  template <class T>
+  void registerOption(std::string name, T defaultValue, std::string description);
 
-  //! Subclasses implement this to *set* boost input options from an input string
-  /*!
-   * This will act on the boost-specific m_optionsDescription and m_optionsMap
-   */
-  virtual void getOptionValues() = 0;
+  //! For flags *without* values
+  void registerOption(std::string name, std::string description);
+
+  template <class T>
+  void getOption(std::string & name, T & value);
 
 protected:
   const BaseEnvironment * m_env;
   boost::program_options::options_description * m_optionsDescription;
   boost::program_options::variables_map * m_optionsMap;
+
+private:
+  bool m_scannedInputFile;
 };
 
 }  // End namespace QUESO

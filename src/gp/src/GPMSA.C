@@ -281,10 +281,6 @@ GPMSAFactory<V, M>::GPMSAFactory(
     this->m_opts = new GPMSAOptions(this->m_env, "");
   }
 
-  if (this->m_env.optionsInputFileName() != "") {
-    this->m_opts->scanOptionsValues();
-  }
-
   this->setUpHyperpriors();
   this->m_constructedGP = false;
 }

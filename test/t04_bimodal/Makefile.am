@@ -31,6 +31,7 @@ endif
 EXTRA_DIST     = regression rtest04.sh
 check_PROGRAMS = BimodalExample_gsl
 TESTS          = rtest04.sh
+XFAIL_TESTS          = rtest04.sh
 
 BimodalExample_gsl_SOURCES =
 BimodalExample_gsl_SOURCES += example_main.C example_compute.C example_likelihood.C

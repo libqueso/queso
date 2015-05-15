@@ -31,7 +31,6 @@ namespace QUESO {
 
 EmOptionsValues::EmOptionsValues()
   :
-    BoostInputOptionsParser(),
     m_prefix("em_"),
     m_Gvalues(0),
     m_a_v(UQ_EXPERIMENT_MODEL_A_V_ODV),
@@ -40,6 +39,7 @@ EmOptionsValues::EmOptionsValues()
     m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
     m_a_y(UQ_EXPERIMENT_MODEL_A_Y_ODV),
     m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV),
+    m_parser(NULL),
     m_option_help(m_prefix + "help"),
     m_option_Gvalues(m_prefix + "Gvalues"),
     m_option_a_v(m_prefix + "a_v"),
@@ -54,7 +54,6 @@ EmOptionsValues::EmOptionsValues()
 EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
-    BoostInputOptionsParser(env),
     m_prefix((std::string)(prefix) + "em_"),
     m_Gvalues(0),
     m_a_v(UQ_EXPERIMENT_MODEL_A_V_ODV),
@@ -63,6 +62,7 @@ EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
     m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
     m_a_y(UQ_EXPERIMENT_MODEL_A_Y_ODV),
     m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV),
+    m_parser(new BoostInputOptionsParser(env)),
     m_option_help(m_prefix + "help"),
     m_option_Gvalues(m_prefix + "Gvalues"),
     m_option_a_v(m_prefix + "a_v"),
@@ -72,6 +72,24 @@ EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
     m_option_a_y(m_prefix + "a_y"),
     m_option_b_y(m_prefix + "b_y")
 {
+  m_parser->registerOption(m_option_help,                                                                                "produce help message for experiment model options");
+  m_parser->registerOption<std::string >(m_option_Gvalues, UQ_EXPERIMENT_MODEL_G_VALUES_ODV, "G values"                                         );
+  m_parser->registerOption<double      >(m_option_a_v,     UQ_EXPERIMENT_MODEL_A_V_ODV     , "a_v"                                              );
+  m_parser->registerOption<double      >(m_option_b_v,     UQ_EXPERIMENT_MODEL_B_V_ODV     , "b_v"                                              );
+  m_parser->registerOption<double      >(m_option_a_rho_v, UQ_EXPERIMENT_MODEL_A_RHO_V_ODV , "a_rho_v"                                          );
+  m_parser->registerOption<double      >(m_option_b_rho_v, UQ_EXPERIMENT_MODEL_B_RHO_V_ODV , "b_rho_v"                                          );
+  m_parser->registerOption<double      >(m_option_a_y,     UQ_EXPERIMENT_MODEL_A_Y_ODV     , "a_y"                                              );
+  m_parser->registerOption<double      >(m_option_b_y,     UQ_EXPERIMENT_MODEL_B_Y_ODV     , "b_y"                                              );
+
+  m_parser->scanInputFile();
+
+  m_parser->getOption<std::vector<unsigned int> >(m_option_Gvalues, m_Gvalues);
+  m_parser->getOption<double      >(m_option_a_v,     m_a_v);
+  m_parser->getOption<double      >(m_option_b_v,     m_b_v);
+  m_parser->getOption<double      >(m_option_a_rho_v, m_a_rho_v);
+  m_parser->getOption<double      >(m_option_b_rho_v, m_b_rho_v);
+  m_parser->getOption<double      >(m_option_a_y,     m_a_y);
+  m_parser->getOption<double      >(m_option_b_y,     m_b_y);
 }
 
 EmOptionsValues::~EmOptionsValues()
@@ -90,74 +108,74 @@ EmOptionsValues::operator=(const EmOptionsValues& rhs)
   return *this;
 }
 
-void
-EmOptionsValues::defineOptions()
-{
-  (*m_optionsDescription).add_options()
-    (m_option_help.c_str(),                                                                                "produce help message for experiment model options")
-    (m_option_Gvalues.c_str(), boost::program_options::value<std::string >()->default_value(UQ_EXPERIMENT_MODEL_G_VALUES_ODV), "G values"                                         )
-    (m_option_a_v.c_str(),     boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_V_ODV     ), "a_v"                                              )
-    (m_option_b_v.c_str(),     boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_B_V_ODV     ), "b_v"                                              )
-    (m_option_a_rho_v.c_str(), boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_RHO_V_ODV ), "a_rho_v"                                          )
-    (m_option_b_rho_v.c_str(), boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV ), "b_rho_v"                                          )
-    (m_option_a_y.c_str(),     boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_Y_ODV     ), "a_y"                                              )
-    (m_option_b_y.c_str(),     boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_B_Y_ODV     ), "b_y"                                              )
-  ;
-}
-
-void
-EmOptionsValues::getOptionValues()
-{
-  if ((*m_optionsMap).count(m_option_help)) {
-    if (m_env->subDisplayFile()) {
-      *m_env->subDisplayFile() << *m_optionsDescription
-                              << std::endl;
-    }
-  }
-
-  std::vector<double> tmpValues(0,0.);
-  if ((*m_optionsMap).count(m_option_Gvalues)) {
-    std::string inputString = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_Gvalues]).as<std::string>();
-    MiscReadDoublesFromString(inputString,tmpValues);
-    //if (m_env->subDisplayFile()) {
-    //  *m_env->subDisplayFile() << "In ExperimentModelOptions::getMyOptionValues(): tmpValues =";
-    //  for (unsigned int i = 0; i < tmpValues.size(); ++i) {
-    //    *m_env->subDisplayFile() << " " << tmpValues[i];
-    //  }
-    //  *m_env->subDisplayFile() << std::endl;
-    //}
-    unsigned int tmpSize = tmpValues.size();
-    m_Gvalues.clear();
-    m_Gvalues.resize(tmpSize,0);
-    for (unsigned int i = 0; i < tmpSize; ++i) {
-      m_Gvalues[i] = (unsigned int) tmpValues[i];
-    }
-  }
-
-  if ((*m_optionsMap).count(m_option_a_v)) {
-    m_a_v = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_a_v]).as<double>();
-  }
-
-  if ((*m_optionsMap).count(m_option_b_v)) {
-    m_b_v = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_b_v]).as<double>();
-  }
-
-  if ((*m_optionsMap).count(m_option_a_rho_v)) {
-    m_a_rho_v = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_a_rho_v]).as<double>();
-  }
-
-  if ((*m_optionsMap).count(m_option_b_rho_v)) {
-    m_b_rho_v = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_b_rho_v]).as<double>();
-  }
-
-  if ((*m_optionsMap).count(m_option_a_y)) {
-    m_a_y = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_a_y]).as<double>();
-  }
-
-  if ((*m_optionsMap).count(m_option_b_y)) {
-    m_b_y = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_b_y]).as<double>();
-  }
-}
+// void
+// EmOptionsValues::defineOptions()
+// {
+//   (*m_optionsDescription).add_options()
+//     (m_option_help.c_str(),                                                                                "produce help message for experiment model options")
+//     (m_option_Gvalues.c_str(), boost::program_options::value<std::string >()->default_value(UQ_EXPERIMENT_MODEL_G_VALUES_ODV), "G values"                                         )
+//     (m_option_a_v.c_str(),     boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_V_ODV     ), "a_v"                                              )
+//     (m_option_b_v.c_str(),     boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_B_V_ODV     ), "b_v"                                              )
+//     (m_option_a_rho_v.c_str(), boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_RHO_V_ODV ), "a_rho_v"                                          )
+//     (m_option_b_rho_v.c_str(), boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV ), "b_rho_v"                                          )
+//     (m_option_a_y.c_str(),     boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_A_Y_ODV     ), "a_y"                                              )
+//     (m_option_b_y.c_str(),     boost::program_options::value<double      >()->default_value(UQ_EXPERIMENT_MODEL_B_Y_ODV     ), "b_y"                                              )
+//   ;
+// }
+//
+// void
+// EmOptionsValues::getOptionValues()
+// {
+//   if ((*m_optionsMap).count(m_option_help)) {
+//     if (m_env->subDisplayFile()) {
+//       *m_env->subDisplayFile() << *m_optionsDescription
+//                               << std::endl;
+//     }
+//   }
+//
+//   std::vector<double> tmpValues(0,0.);
+//   if ((*m_optionsMap).count(m_option_Gvalues)) {
+//     std::string inputString = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_Gvalues]).as<std::string>();
+//     MiscReadDoublesFromString(inputString,tmpValues);
+//     //if (m_env->subDisplayFile()) {
+//     //  *m_env->subDisplayFile() << "In ExperimentModelOptions::getMyOptionValues(): tmpValues =";
+//     //  for (unsigned int i = 0; i < tmpValues.size(); ++i) {
+//     //    *m_env->subDisplayFile() << " " << tmpValues[i];
+//     //  }
+//     //  *m_env->subDisplayFile() << std::endl;
+//     //}
+//     unsigned int tmpSize = tmpValues.size();
+//     m_Gvalues.clear();
+//     m_Gvalues.resize(tmpSize,0);
+//     for (unsigned int i = 0; i < tmpSize; ++i) {
+//       m_Gvalues[i] = (unsigned int) tmpValues[i];
+//     }
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_a_v)) {
+//     m_a_v = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_a_v]).as<double>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_b_v)) {
+//     m_b_v = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_b_v]).as<double>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_a_rho_v)) {
+//     m_a_rho_v = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_a_rho_v]).as<double>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_b_rho_v)) {
+//     m_b_rho_v = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_b_rho_v]).as<double>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_a_y)) {
+//     m_a_y = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_a_y]).as<double>();
+//   }
+//
+//   if ((*m_optionsMap).count(m_option_b_y)) {
+//     m_b_y = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_b_y]).as<double>();
+//   }
+// }
 
 void
 EmOptionsValues::copy(const EmOptionsValues& src)

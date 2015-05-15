@@ -114,7 +114,7 @@ namespace QUESO {
  * options if no input file is available.
  */
 
-class MhOptionsValues : public BoostInputOptionsParser
+class MhOptionsValues
 {
 public:
 
@@ -258,6 +258,8 @@ public:
   bool m_doLogitTransform;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   std::string                   m_option_help;
 
   std::string                   m_option_dataOutputFileName;
@@ -321,9 +323,6 @@ private:
   std::string                   m_option_outputLogLikelihood;
   std::string                   m_option_outputLogTarget;
   std::string                   m_option_doLogitTransform;
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   //! Copies the option values from \c src to \c this.
   void copy(const MhOptionsValues& src);

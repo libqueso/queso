@@ -34,7 +34,6 @@ namespace QUESO {
 
 SsOptionsValues::SsOptionsValues()
   :
-    BoostInputOptionsParser(),
     m_prefix                          ("stats_"),
     m_initialDiscardedPortions(0                                           ),//,0.),
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -129,7 +128,6 @@ SsOptionsValues::SsOptionsValues()
 SsOptionsValues::SsOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
-    BoostInputOptionsParser(env),
     m_prefix                          ((std::string)(prefix) + "stats_"),
     m_initialDiscardedPortions(0                                           ),//,0.),
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -173,6 +171,7 @@ SsOptionsValues::SsOptionsValues(const BaseEnvironment * env, const char *
     m_kdeNumEvalPositions     (UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV      ),
     m_covMatrixCompute        (UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV          ),
     m_corrMatrixCompute       (UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV         ),
+    m_parser(new BoostInputOptionsParser()),
     m_option_help                     (m_prefix + "help"                     ),
     m_option_initialDiscardedPortions (m_prefix + "initialDiscardedPortions" ),
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -219,6 +218,49 @@ SsOptionsValues::SsOptionsValues(const BaseEnvironment * env, const char *
     m_option_covMatrix_compute        (m_prefix + "covMatrix_compute"        ),
     m_option_corrMatrix_compute       (m_prefix + "corrMatrix_compute"       )
 {
+  (m_option_help,                                                                                                                    "produce help message for chain statistical options"             )
+  (m_option_initialDiscardedPortions,       boost::program_options::value<std::string >()->default_value(UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV      ), "list of initial discarded portions for chain statistics"        )
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  m_parser->registerOption(m_option_mean_monitorPeriod,             UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV, "period for monitoring mean"                                     );
+  m_parser->registerOption(m_option_bmm_run,                        UQ_SEQUENCE_BMM_RUN_ODV            , "compute variance of sample mean with batch means method"        );
+  m_parser->registerOption<std::string>(m_option_bmm_lengths,                    UQ_SEQUENCE_BMM_LENGTHS_ODV        , "list of batch lenghts for BMM"                                  );
+  m_parser->registerOption(m_option_fft_compute,                    UQ_SEQUENCE_FFT_COMPUTE_ODV        , "compute fft"                                                    );
+  m_parser->registerOption(m_option_fft_paramId,                    UQ_SEQUENCE_FFT_PARAM_ID_ODV       , "parameter id for fft computations"                              );
+  m_parser->registerOption(m_option_fft_size,                       UQ_SEQUENCE_FFT_SIZE_ODV           , "fft size"                                                       );
+  m_parser->registerOption(m_option_fft_testInversion,              UQ_SEQUENCE_FFT_TEST_INVERSION_ODV , "test fft inversion"                                             );
+  m_parser->registerOption(m_option_fft_write,                      UQ_SEQUENCE_FFT_WRITE_ODV          , "write fft"                                                      );
+  m_parser->registerOption(m_option_psd_compute,                    UQ_SEQUENCE_PSD_COMPUTE_ODV        , "compute psd"                                                    );
+  m_parser->registerOption(m_option_psd_numBlocks,                  UQ_SEQUENCE_PSD_NUM_BLOCKS_ODV     , "number of blocks for computation of psd"                        );
+  m_parser->registerOption(m_option_psd_hopSizeRatio,               UQ_SEQUENCE_PSD_HOP_SIZE_RATIO_ODV , "hop size ratio for psd"                                         );
+  m_parser->registerOption(m_option_psd_paramId,                    UQ_SEQUENCE_PSD_PARAM_ID_ODV       , "parameter id for psd computations"                              );
+  m_parser->registerOption(m_option_psd_write,                      UQ_SEQUENCE_PSD_WRITE_ODV          , "write psd"                                                      );
+  m_parser->registerOption(m_option_psdAtZero_compute,              UQ_SEQUENCE_PSD_AT_ZERO_COMPUTE_ODV, "compute power spectral densities"                               );
+  m_parser->registerOption<std::string>(m_option_psdAtZero_numBlocks,            UQ_SEQUENCE_PSD_AT_ZERO_NUM_BLOCKS_ODV          , "list of numbers of blocks for computation of psd at zero"       );
+  m_parser->registerOption(m_option_psdAtZero_hopSizeRatio,         UQ_SEQUENCE_PSD_AT_ZERO_HOP_SIZE_RATIO_ODV      , "hop size ratio for psd at zero"                                 );
+  m_parser->registerOption(m_option_psdAtZero_display,              UQ_SEQUENCE_PSD_AT_ZERO_DISPLAY_ODV, "display computed psd at frequency zero on screen"               );
+  m_parser->registerOption(m_option_psdAtZero_write,                UQ_SEQUENCE_PSD_AT_ZERO_WRITE_ODV  , "write computed psd at frequency zero to the output file"        );
+  m_parser->registerOption(m_option_geweke_compute,                 UQ_SEQUENCE_GEWEKE_COMPUTE_ODV     , "compute Geweke coefficients"                                    );
+  m_parser->registerOption(m_option_geweke_naRatio,                 UQ_SEQUENCE_GEWEKE_NA_RATIO_ODV    , "ratio NA for Geweke"                                            );
+  m_parser->registerOption(m_option_geweke_nbRatio,                 UQ_SEQUENCE_GEWEKE_NB_RATIO_ODV    , "ratio NB for Geweke"                                            );
+  m_parser->registerOption(m_option_geweke_display,                 UQ_SEQUENCE_GEWEKE_DISPLAY_ODV     , "display computed Geweke on screen"                              );
+  m_parser->registerOption(m_option_geweke_write,                   UQ_SEQUENCE_GEWEKE_WRITE_ODV       , "write computed Geweke to the output file"                       );
+  m_parser->registerOption(m_option_meanStacc_compute,              UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV , "compute statistical accuracy of mean"                           );
+  m_parser->registerOption(m_option_hist_compute,                   UQ_SEQUENCE_HIST_COMPUTE_ODV       , "compute histograms"                                             );
+  m_parser->registerOption(m_option_hist_numInternalBins,           UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV          , "number of internal bins"                                        );
+  m_parser->registerOption(m_option_cdfStacc_compute,               UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV  , "compute statisical accuracy of cdf"                             );
+  m_parser->registerOption(m_option_cdfStacc_numEvalPositions,      UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV    , "number of evaluations points for statistical accuracy of cdf"   );
+#endif
+  m_parser->registerOption(m_option_autoCorr_computeViaDef,         boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_DEF_ODV       ), "compute correlations via definition"                            )
+  m_parser->registerOption(m_option_autoCorr_computeViaFft,         boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_FFT_ODV       ), "compute correlations via fft"                                   )
+  m_parser->registerOption(m_option_autoCorr_secondLag,             boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_SECOND_LAG_ODV            ), "second lag for computation of autocorrelations"                 )
+  m_parser->registerOption(m_option_autoCorr_lagSpacing,            boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_LAG_SPACING_ODV           ), "lag spacing for computation of autocorrelations"                )
+  m_parser->registerOption(m_option_autoCorr_numLags,               boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
+  m_parser->registerOption(m_option_autoCorr_display,               boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
+  m_parser->registerOption(m_option_autoCorr_write,                 boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
+  m_parser->registerOption(m_option_kde_compute,                    boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
+  m_parser->registerOption(m_option_kde_numEvalPositions,           boost::program_options::value<unsigned int>()->default_value(UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
+  m_parser->registerOption(m_option_covMatrix_compute,              boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV              ), "compute covariance matrix"                                      )
+  m_parser->registerOption(m_option_corrMatrix_compute,             boost::program_options::value<bool        >()->default_value(UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV             ), "compute correlation matrix"                                     )
 }
 
 SsOptionsValues::~SsOptionsValues()

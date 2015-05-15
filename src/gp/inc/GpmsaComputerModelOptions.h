@@ -62,7 +62,7 @@ namespace boost {
 
 namespace QUESO {
 
-class GcmOptionsValues : public BoostInputOptionsParser
+class GcmOptionsValues
 {
 public:
   GcmOptionsValues            ();
@@ -97,6 +97,8 @@ public:
   //MhOptionsValues m_mhOptionsValues;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   std::string                   m_option_help;
   std::string                   m_option_checkAgainstPreviousSample;
   std::string                   m_option_dataOutputFileName;
@@ -118,9 +120,6 @@ private:
   std::string                   m_option_predWsBySamplingRVs;
   std::string                   m_option_predWsBySummingRVs;
   std::string                   m_option_predWsAtKeyPoints;
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   void copy(const GcmOptionsValues& src);
 

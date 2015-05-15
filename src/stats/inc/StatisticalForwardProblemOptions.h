@@ -60,7 +60,7 @@ namespace QUESO {
  * In order to solve a Statistical Forward Problem (SFP), QUESO expects some options for its methods to be
  * fully defined. This class provides default values for such options if no input file is available. */
 
-class SfpOptionsValues : public BoostInputOptionsParser
+class SfpOptionsValues
 {
 public:
   //! Constructor/Destructor methods
@@ -98,6 +98,8 @@ public:
   //McOptionsValues m_mcOptionsValues;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   // The input options as strings so we can parse the input file later
   std::string                   m_option_help;
   std::string                   m_option_computeSolution;
@@ -108,9 +110,6 @@ private:
 #ifdef UQ_SFP_READS_SOLVER_OPTION
   std::string                   m_option_solver;
 #endif
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   //! Copies the option values from \c src to \c this.
   void copy(const SfpOptionsValues& src);

@@ -37,7 +37,7 @@ namespace QUESO {
  * \brief This class defines the options that specify the behaviour of the MCMC sampler
  */
 
-class InfiniteDimensionalMCMCSamplerOptions : public BoostInputOptionsParser
+class InfiniteDimensionalMCMCSamplerOptions
 {
 public:
   //! Given prefix, read the input file for parameters named prefix_*
@@ -78,8 +78,7 @@ public:
   const BaseEnvironment& env() const;
 
 private:
-  virtual void defineOptions();
-  virtual void getOptionValues();
+  BoostInputOptionsParser * m_parser;
 
   const BaseEnvironment& m_env;
 

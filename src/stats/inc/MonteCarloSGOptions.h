@@ -70,7 +70,7 @@ namespace QUESO {
  *  Monte Carlo sequence generator expects options for its methods. This class provides default
  * values for such options if no input file is available. */
 
-class McOptionsValues : public BoostInputOptionsParser
+class McOptionsValues
 {
 public:
   //! @name Constructor/Destructor methods
@@ -131,6 +131,8 @@ public:
 #endif
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   std::string                   m_option_help;
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
@@ -155,9 +157,6 @@ private:
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   std::string                   m_option_qseq_computeStats;
 #endif
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   //! Copies the option values from \c src to \c this.
   void copy(const McOptionsValues& src);

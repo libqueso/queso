@@ -171,12 +171,6 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   if (m_optionsObj == NULL) {
     MhOptionsValues * tempOptions = new MhOptionsValues(&m_env, prefix);
 
-    // If there's an input file, we grab the options from there.  Otherwise the
-    // defaults are used
-    if (m_env.optionsInputFileName() != "") {
-      tempOptions->scanOptionsValues();
-    }
-
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
@@ -248,12 +242,6 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   // If NULL, we create one
   if (m_optionsObj == NULL) {
     MhOptionsValues * tempOptions = new MhOptionsValues(&m_env, prefix);
-
-    // If there's an input file, we grab the options from there.  Otherwise the
-    // defaults are used
-    if (m_env.optionsInputFileName() != "") {
-      tempOptions->scanOptionsValues();
-    }
 
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const

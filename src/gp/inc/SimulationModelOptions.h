@@ -54,7 +54,7 @@ namespace boost {
 
 namespace QUESO {
 
-class SmOptionsValues : public BoostInputOptionsParser
+class SmOptionsValues
 {
 public:
   SmOptionsValues();
@@ -81,6 +81,8 @@ public:
   double m_b_s;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   std::string m_option_help;
   std::string m_option_dataOutputFileName;
   std::string m_option_dataOutputAllowAll;
@@ -96,9 +98,6 @@ private:
   std::string m_option_b_eta;
   std::string m_option_a_s;
   std::string m_option_b_s;
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   void copy(const SmOptionsValues& src);
 };

@@ -35,13 +35,6 @@ public:
 
   //! Destructor
   virtual ~BaseInputOptionsParser();
-
-  //! Method that parses the QUESO input file
-  /*!
-   * The name of the input file can be found by probing the QUESO
-   * BaseEnvironment object.
-   */
-  virtual void scanOptionsValues() = 0;
 };
 
 }  // End namespace QUESO

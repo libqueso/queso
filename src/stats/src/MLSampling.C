@@ -4001,8 +4001,6 @@ MLSampling<P_V,P_M>::MLSampling(
                             << std::endl;
   }
 
-  m_options.scanOptionsValues();
-
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving MLSampling<P_V,P_M>::constructor()"
                             << std::endl;

@@ -68,10 +68,6 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
                             << std::endl;
   }
 
-  if (m_env.optionsInputFileName() != "") {
-    this->m_ov->scanOptionsValues();
-  }
-
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In InfiniteDimensionalMCMCSamplerOptions,"
             << " finished scanning options" << std::endl;
