@@ -92,8 +92,6 @@ MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* pre
 #endif
   m_parser->getOption<std::string >(m_option_dataOutputFileName,             m_dataOutputFileName);
   m_parser->getOption<std::set<unsigned int> >(m_option_dataOutputAllowedSet,           m_dataOutputAllowedSet);
-
-  this->print(std::cout);
 }
 
 MLSamplingOptions::~MLSamplingOptions()
