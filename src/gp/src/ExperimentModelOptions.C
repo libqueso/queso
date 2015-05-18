@@ -62,7 +62,7 @@ EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
     m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
     m_a_y(UQ_EXPERIMENT_MODEL_A_Y_ODV),
     m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV),
-    m_parser(new BoostInputOptionsParser(env)),
+    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
     m_option_help(m_prefix + "help"),
     m_option_Gvalues(m_prefix + "Gvalues"),
     m_option_a_v(m_prefix + "a_v"),

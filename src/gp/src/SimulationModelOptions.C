@@ -83,7 +83,7 @@ SmOptionsValues::SmOptionsValues(const BaseEnvironment * env, const char *
     m_b_eta(UQ_SIMULATION_MODEL_B_ETA_ODV),
     m_a_s(UQ_SIMULATION_MODEL_A_S_ODV),
     m_b_s(UQ_SIMULATION_MODEL_B_S_ODV),
-    m_parser(new BoostInputOptionsParser(env)),
+    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
     m_option_help(m_prefix + "help"),
     m_option_dataOutputFileName(m_prefix + "dataOutputFileName"),
     m_option_dataOutputAllowAll(m_prefix + "dataOutputAllowAll"),

@@ -43,7 +43,7 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     m_num_iters(UQ_INF_NUM_ITERS_ODV),
     m_save_freq(UQ_INF_SAVE_FREQ_ODV),
     m_rwmh_step(UQ_INF_RWMH_STEP_ODV),
-    m_parser(new BoostInputOptionsParser(&env)),
+    m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
     m_env(env),
     m_option_help(m_prefix + "help"),
     m_option_dataOutputDirName(m_prefix + "dataOutputDirName"),

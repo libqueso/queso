@@ -56,7 +56,7 @@ GPMSAOptions::GPMSAOptions(
   m_emulatorDataPrecisionShape(UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV),
   m_emulatorDataPrecisionScale(UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV),
   m_env(env),
-  m_parser(new BoostInputOptionsParser(&env)),
+  m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
   m_option_help(m_prefix + "help"),
   m_option_emulatorPrecisionShape(m_prefix + "emulator_precision_shape"),
   m_option_emulatorPrecisionScale(m_prefix + "emulator_precision_scale"),

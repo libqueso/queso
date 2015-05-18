@@ -39,15 +39,13 @@ namespace boost
 
 namespace QUESO {
 
-class BaseEnvironment;
-
 class BoostInputOptionsParser : public BaseInputOptionsParser
 {
 public:
-  //! Constructor that sets the internal environment
-  BoostInputOptionsParser(const BaseEnvironment * env);
+  //! Constructor that parses file \c filename
+  BoostInputOptionsParser(const std::string & filename);
 
-  //! Default constructor that sets m_env to NULL
+  //! Default constructor that sets m_filename to ""
   /*!
    * The use-case for m_env being NULL is that options are *not* read in from
    * a file but are instead wholly provided by the user.
@@ -56,7 +54,7 @@ public:
 
   //! Destructor
   /*!
-   * Deletes m_optionsDescription, but not m_env
+   * Deletes m_optionsDescription
    */
   virtual ~BoostInputOptionsParser();
 
@@ -79,7 +77,7 @@ public:
   void getOption(std::string & name, T & value);
 
 protected:
-  const BaseEnvironment * m_env;
+  const std::string & m_filename;
   boost::program_options::options_description * m_optionsDescription;
   boost::program_options::variables_map * m_optionsMap;
 

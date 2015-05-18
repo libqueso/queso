@@ -128,7 +128,7 @@ McOptionsValues::McOptionsValues(
     m_alternativePSsOptionsValues(),
     m_alternativeQSsOptionsValues(),
 #endif
-    m_parser(new BoostInputOptionsParser(env)),
+    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
     m_option_help                     (m_prefix + "help"                       ),
     m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"         ),
     m_option_dataOutputAllowedSet     (m_prefix + "dataOutputAllowedSet"       ),

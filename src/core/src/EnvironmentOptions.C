@@ -88,7 +88,7 @@ EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
     m_identifyingString(UQ_ENV_IDENTIFYING_STRING_ODV),
     m_numDebugParams(UQ_ENV_NUM_DEBUG_PARAMS_ODV),
     m_debugParams(m_numDebugParams,0.),
-    m_parser(new BoostInputOptionsParser(env)),
+    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
     m_option_help(m_prefix + "help"),
     m_option_numSubEnvironments(m_prefix + "numSubEnvironments"),
     m_option_subDisplayFileName(m_prefix + "subDisplayFileName"),

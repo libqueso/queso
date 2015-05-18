@@ -66,7 +66,7 @@ SfpOptionsValues::SfpOptionsValues(const BaseEnvironment * env, const char *
     m_computeCorrelations (UQ_SFP_COMPUTE_CORRELATIONS_ODV ),
     m_dataOutputFileName  (UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV),
     //m_dataOutputAllowedSet(),
-    m_parser(new BoostInputOptionsParser(env)),
+    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
     m_option_help                (m_prefix + "help"                ),
     m_option_computeSolution     (m_prefix + "computeSolution"     ),
     m_option_computeCovariances  (m_prefix + "computeCovariances"  ),

@@ -46,7 +46,7 @@ MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* pre
     m_dataOutputFileName                   (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),
   //m_dataOutputAllowedSet                 (),
     m_env                                  (env),
-    m_parser(new BoostInputOptionsParser(&env)),
+    m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
     m_option_help                          (m_prefix + "help"                          ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
     m_option_restartOutput_levelPeriod     (m_prefix + "restartOutput_levelPeriod"     ),

@@ -101,7 +101,7 @@ GcmOptionsValues::GcmOptionsValues(const BaseEnvironment * env, const char *
     m_predWsBySamplingRVs            (UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ),
     m_predWsBySummingRVs             (UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ),
     m_predWsAtKeyPoints              (UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ),
-    m_parser(new BoostInputOptionsParser(env)),
+    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
     m_option_help                           (m_prefix + "help"                           ),
     m_option_checkAgainstPreviousSample     (m_prefix + "checkAgainstPreviousSample"     ),
     m_option_dataOutputFileName             (m_prefix + "dataOutputFileName"             ),

@@ -24,15 +24,14 @@
 
 #include <boost/program_options.hpp>
 
-#include <queso/Environment.h>
 #include <queso/BoostInputOptionsParser.h>
 #include <queso/Miscellaneous.h>
 
 namespace QUESO {
 
-BoostInputOptionsParser::BoostInputOptionsParser(const BaseEnvironment * env)
+BoostInputOptionsParser::BoostInputOptionsParser(const std::string & filename)
   :
-    m_env(env),
+    m_filename(filename),
     m_optionsDescription(new boost::program_options::options_description("Input options")),
     m_optionsMap(new boost::program_options::variables_map()),
     m_scannedInputFile(false)
@@ -41,7 +40,7 @@ BoostInputOptionsParser::BoostInputOptionsParser(const BaseEnvironment * env)
 
 BoostInputOptionsParser::BoostInputOptionsParser()
   :
-    m_env(NULL),
+    m_filename(""),
     m_optionsDescription(new boost::program_options::options_description("Input options")),
     m_optionsMap(new boost::program_options::variables_map()),
     m_scannedInputFile(false)
@@ -64,20 +63,20 @@ BoostInputOptionsParser::scanInputFile()
 {
   queso_require_msg(m_optionsDescription, "m_optionsDescription variable is NULL");
 
-  // If it's NULL then the defaults are used
-  if (m_env != NULL) {
-    if (m_env->optionsInputFileName() != "") {
-      std::ifstream ifs;
-      ifs.open(m_env->optionsInputFileName().c_str());
+  // If it's the empty string then the defaults are used
+  if (m_filename != "") {
+    std::ifstream ifs;
+    ifs.open(m_filename.c_str());
 
-      queso_require_msg(m_optionsMap, "m_allOptionsMap variable is NULL");
-      boost::program_options::store(boost::program_options::parse_config_file(ifs, *m_optionsDescription, true), *m_optionsMap);
-      boost::program_options::notify(*m_optionsMap);
+    queso_require_msg(m_optionsMap, "m_allOptionsMap variable is NULL");
+    boost::program_options::store(
+        boost::program_options::parse_config_file(
+          ifs, *m_optionsDescription, true), *m_optionsMap);
+    boost::program_options::notify(*m_optionsMap);
 
-      ifs.close();
+    ifs.close();
 
-      m_scannedInputFile = true;
-    }
+    m_scannedInputFile = true;
   }
 }
 

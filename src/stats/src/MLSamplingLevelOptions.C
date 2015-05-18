@@ -112,7 +112,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
     m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
     m_env                                      (env),
-    m_parser(new BoostInputOptionsParser(&env)),
+    m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
     m_option_help                                      (m_prefix + "help"                                      ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -442,7 +442,7 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
   // Replace the parser since default values changed
   if (m_parser) {
     delete m_parser;
-    m_parser = new BoostInputOptionsParser(&m_env);
+    m_parser = new BoostInputOptionsParser(m_env.optionsInputFileName());
   }
 
   this->defineAllOptions();

@@ -171,7 +171,7 @@ SsOptionsValues::SsOptionsValues(const BaseEnvironment * env, const char *
     m_kdeNumEvalPositions     (UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV      ),
     m_covMatrixCompute        (UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV          ),
     m_corrMatrixCompute       (UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV         ),
-    m_parser(new BoostInputOptionsParser()),
+    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
     m_option_help                     (m_prefix + "help"                     ),
     m_option_initialDiscardedPortions (m_prefix + "initialDiscardedPortions" ),
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
