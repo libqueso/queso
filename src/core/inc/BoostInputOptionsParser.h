@@ -47,8 +47,8 @@ public:
 
   //! Default constructor that sets m_filename to ""
   /*!
-   * The use-case for m_env being NULL is that options are *not* read in from
-   * a file but are instead wholly provided by the user.
+   * The use-case that options are *not* read in from a file but are instead
+   * wholly provided by the user.
    */
   BoostInputOptionsParser();
 
@@ -60,19 +60,24 @@ public:
 
   //! This is the method that parses the input file
   /*!
-   * It calls defineOptions, which sets m_optionsDescription, to define the
-   * boost options, then it parses the input file and sets the m_optionsMap
-   * member.  After both of those are done, it *sets* the options by calling
-   * getOptionValues.
+   * It parses the input file and sets the m_optionsMap member.
    */
   void scanInputFile();
 
+  //! Call this to register an option with the parser.
+  /*!
+   * The name of the option to look for in the input file is given by \c name
+   * is given by.  If no option is present in the input file, then use
+   * \c defaultValue is used for the default value for the option.  Describe
+   * the option with a helpful message using \c description.
+   */
   template <class T>
   void registerOption(std::string name, T defaultValue, std::string description);
 
-  //! For flags *without* values
+  //! For flags *without* values.  Like a help message, for example.
   void registerOption(std::string name, std::string description);
 
+  //! Get option \c name from the parser and set \c value to the parsed value.
   template <class T>
   void getOption(std::string & name, T & value);
 
