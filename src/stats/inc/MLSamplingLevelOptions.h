@@ -348,6 +348,7 @@ private:
   //! Copies the option values from \c srcOptions to \c this.
   void   copyOptionsValues(const MLSamplingLevelOptions& srcOptions);
   void getAllOptions();
+  void defineAllOptions();
 
   const BaseEnvironment&        m_env;
 

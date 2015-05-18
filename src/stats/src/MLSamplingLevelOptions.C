@@ -182,6 +182,14 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
     m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
+  this->defineAllOptions();
+  m_parser->scanInputFile();
+  this->getAllOptions();
+}
+
+void
+MLSamplingLevelOptions::defineAllOptions()
+{
   m_parser->registerOption(m_option_help,                                                                                                                              "produce help message for Bayesian Markov chain distr. calculator");
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -250,10 +258,6 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_parser->registerOption<double      >(m_option_am_eta,                                     m_amEta                                    , "'am' eta"                                                        );
   m_parser->registerOption<double      >(m_option_am_epsilon,                                 m_amEpsilon                                , "'am' epsilon"                                                    );
   m_parser->registerOption<bool        >(m_option_doLogitTransform,                           UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        , "flag for doing logit transform for bounded domains"              );
-
-  m_parser->scanInputFile();
-
-  this->getAllOptions();
 }
 
 void
@@ -434,6 +438,15 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
 
   // FIXME
   if (defaultOptions) this->copyOptionsValues(*defaultOptions);
+
+  // Replace the parser since default values changed
+  if (m_parser) {
+    delete m_parser;
+    m_parser = new BoostInputOptionsParser(&m_env);
+  }
+
+  this->defineAllOptions();
+  m_parser->scanInputFile();
   this->getAllOptions();
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
