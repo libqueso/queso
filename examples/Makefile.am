@@ -387,7 +387,7 @@ gpmsa_vector_CPPFLAGS = -I$(top_srcdir)/examples/gp/vector $(QUESO_CPPFLAGS)
 dist_gpmsa_vector_DATA =
 dist_gpmsa_vector_DATA += ${gpmsa_vector_SOURCES}
 dist_gpmsa_vector_DATA += gp/scalar/dakota_pstudy.dat
-dist_gpmsa_vector_DATA += gp/scalar/gpmsa_input.txt
+dist_gpmsa_vector_DATA += gp/vector/gpmsa_input.txt
 dist_gpmsa_vector_DATA += gp/scalar/ctf_dat.txt
 
 
