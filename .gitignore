@@ -115,7 +115,6 @@ test/test_uqEnvironment
 test/test_uqEnvironmentCopy
 test/test_uqEnvironmentEquals
 test/test_uqEnvironmentNonFatal
-test/test_uqEnvironmentOptionsPrint
 test/test_uqGaussianVectorRVClass
 test/test_uqGslMatrix
 test/test_uqGslMatrixConstructorFatal
@@ -188,4 +187,5 @@ test/test_fullCovarianceChain
 test/test_diagonalCovarianceChain
 test/test_scalarCovarianceChain
 test/test_blockDiagonalCovarianceChain
+test/test_BoostInputOptionsParser
 test/test_InputOptionsParser/test_options.txt
