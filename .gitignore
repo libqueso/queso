@@ -188,3 +188,4 @@ test/test_fullCovarianceChain
 test/test_diagonalCovarianceChain
 test/test_scalarCovarianceChain
 test/test_blockDiagonalCovarianceChain
+test/test_InputOptionsParser/test_options.txt
