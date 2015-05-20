@@ -3,6 +3,7 @@ set -e
 
 (cd gp/scalar && ./gpmsa_scalar gpmsa_input.txt)
 (cd gp/vector && ./gpmsa_vector gpmsa_input.txt)
+(cd gp/pseudovector && ./gpmsa_pseudovector gpmsa_input.txt)
 (cd bimodal && ./bimodal_gsl bimodal_1chain.inp)
 (cd gravity && ./gravity_gsl gravity_inv_fwd.inp)
 (cd hysteretic && ./hysteretic_gsl example.inp)
