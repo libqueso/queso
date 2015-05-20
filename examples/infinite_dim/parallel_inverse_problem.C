@@ -74,6 +74,12 @@ int main(int argc, char **argv) {
 
   QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
 
+#ifndef QUESO_HAVE_HDF5
+  std::cerr << "Cannot run infinite dimensional inverse problems\n" <<
+               "without HDF5 enabled." << std::endl;
+  return 0;
+#else
+
   // When the number of processes passed to `mpirun` is different from the
   // number of subenvironments asked for in the input file, QUESO creates a
   // subcommunicator that 'does the right thing'.
@@ -143,6 +149,8 @@ int main(int argc, char **argv) {
     }
   }
 }
+
+#endif // QUESO_HAVE_HDF5
 
   MPI_Finalize();
 

@@ -70,6 +70,12 @@ int main(int argc, char **argv) {
 
   QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
 
+#ifndef QUESO_HAVE_HDF5
+  std::cerr << "Cannot run infinite dimensional inverse problems\n" <<
+               "without HDF5 enabled." << std::endl;
+  return 0;
+#else
+
   libMesh::LibMeshInit init(argc, argv);
 
   // Generate the mesh on which the samples live.
@@ -126,6 +132,8 @@ int main(int argc, char **argv) {
       std::cout << "l2 norm is: " << s.llhd_val() << std::endl;
     }
   }
+
+#endif // QUESO_HAVE_HDF5
 
   return 0;
 }
