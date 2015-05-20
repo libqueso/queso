@@ -215,7 +215,9 @@ AC_CONFIG_FILES([
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
   test/test_gaussian_likelihoods/gaussian_consistency_input.txt
-  test/test_InputOptionsParser/test_options.txt
+  test/test_InputOptionsParser/test_options_good.txt
+  test/test_InputOptionsParser/test_options_bad.txt
+  test/test_InputOptionsParser/test_options_default.txt
 ])
 
 AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh

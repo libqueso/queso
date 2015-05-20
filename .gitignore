@@ -188,4 +188,6 @@ test/test_diagonalCovarianceChain
 test/test_scalarCovarianceChain
 test/test_blockDiagonalCovarianceChain
 test/test_BoostInputOptionsParser
-test/test_InputOptionsParser/test_options.txt
+test/test_InputOptionsParser/test_options_good.txt
+test/test_InputOptionsParser/test_options_bad.txt
+test/test_InputOptionsParser/test_options_default.txt
