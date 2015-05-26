@@ -77,6 +77,9 @@ int main(int argc, char **argv) {
 #ifndef QUESO_HAVE_HDF5
   std::cerr << "Cannot run infinite dimensional inverse problems\n" <<
                "without HDF5 enabled." << std::endl;
+
+  MPI_Finalize();
+
   return 0;
 #else
 
