@@ -96,7 +96,7 @@ Matrix::getInDebugMode() const
 
 // --------------------------------------------------
 void
-Matrix::copy(const Matrix& src)
+Matrix::base_copy(const Matrix& src)
 {
   //m_env = src.env;
   //m_map = src.map;

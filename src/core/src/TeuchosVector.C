@@ -1157,7 +1157,7 @@ TeuchosVector::subWriteContents(
 void
 TeuchosVector::copy(const TeuchosVector& rhs)
 {
-  this->Vector::copy(rhs);
+  this->Vector::base_copy(rhs);
 
   unsigned int size1 = m_vec.length();
   unsigned int size2 = rhs.sizeLocal();

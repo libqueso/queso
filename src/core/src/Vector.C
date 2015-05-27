@@ -98,7 +98,7 @@ Vector::getPrintScientific() const
 }
 // --------------------------------------------------
 void
-Vector::copy(const Vector& src)
+Vector::base_copy(const Vector& src)
 {
   //m_env               = src.env;
   //m_map               = src.map; // prudenci 2010-06-17

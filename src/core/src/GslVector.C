@@ -240,7 +240,7 @@ GslVector::operator[](unsigned int i) const
 void
 GslVector::copy(const GslVector& src)
 {
-  this->Vector::copy(src); // prudenci 2010-06-17 mox
+  this->Vector::base_copy(src);
   int iRC;
   iRC = gsl_vector_memcpy(this->m_vec, src.m_vec);
   queso_require_msg(!(iRC), "failed");
