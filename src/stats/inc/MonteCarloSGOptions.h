@@ -32,6 +32,7 @@
 #define UQ_MOC_SG_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
+#define UQ_MOC_SG_HELP                             ""
 #define UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV        UQ_MOC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV      ""
 
@@ -106,6 +107,9 @@ public:
 
   std::string                        m_prefix;
 
+  //! If non-empty string, print options and values to output file
+  std::string                        m_help;
+
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
 
@@ -160,6 +164,11 @@ private:
 
   //! Copies the option values from \c src to \c this.
   void copy(const McOptionsValues& src);
+
+  void checkOptions();
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const McOptionsValues & obj);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   friend class MonteCarloSGOptions;
