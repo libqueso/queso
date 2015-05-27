@@ -120,7 +120,8 @@ BoostInputOptionsParser::getOption(std::string & name, std::set<unsigned int, st
     value.clear();
 
     // Get the option as a string
-    // DM:  Why do it this way?  Doesn't boost support vectors as input options?
+    // DM:  Why do it this way?  Doesn't boost support vectors as input
+    //      options?
     std::vector<double> tmpVec(0, 0.0);
     std::string optionValue;
     this->getOption<std::string>(name, optionValue);

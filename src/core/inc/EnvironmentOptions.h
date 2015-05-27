@@ -99,19 +99,30 @@ public:
   std::string m_prefix;
 
   //! @name Attributes
-  //! Number of sub-environments.
+  //! Number of sub-environments (chains).  Each chain may have multiple
+  //! processes.
   unsigned int m_numSubEnvironments;
 
   //! Output filename for sub-screen writing.
   std::string m_subDisplayFileName;
 
   //! Allows (or not) all sub-environments to write to output file.
+  /*!
+   * If this option is true, m_subDisplayAllowedSet is ignored.
+   */
   bool m_subDisplayAllowAll;
 
   //! Allows (or not) all inter0 nodes to write to output file
+  /*!
+   * If this option is true, m_subDisplayAllowedSet is ignored.
+   */
   bool m_subDisplayAllowInter0;
 
   //! Sub-environments that will write to output.
+  /*!
+   * This option is ignored if either m_subDisplayAllowAll or
+   * m_subDisplayAllowInter0 are true.
+   */
   std::set<unsigned int> m_subDisplayAllowedSet;
 
   //! Verbosity.
@@ -141,58 +152,53 @@ public:
   //! Identifying string.
   std::string m_identifyingString;
 
-  //! Number of debug parameters.
+  //! Number of debug parameters.  Unused?
   unsigned int m_numDebugParams;
 
-  //! Debug parameters
+  //! Debug parameters.  Unused?
   std::vector<double> m_debugParams;
   //@}
 
 private:
   BoostInputOptionsParser * m_parser;
 
+  //! Input file option name for flagging helpful printing output
   std::string m_option_help;
 
-  //! My number of sub-environments.
+  //! Input file option name for m_numSubEnvironments.
   std::string m_option_numSubEnvironments;
 
-  //! My output filename for sub-screen writing.
+  //! Input file option name for m_subDisplayFileName
   std::string m_option_subDisplayFileName;
 
-  //! Allows (or not) all sub-environments to write to output file.
+  //! Input file option name for m_subDisplayAllowAll
   std::string m_option_subDisplayAllowAll;
 
-  //! Allows (or not) all inter0 nodes to write to output file
+  //! Input file option name for m_subDisplayAllowInter0
   std::string m_option_subDisplayAllowInter0;
 
-  //! Sub-environments that will write to output.
+  //! Input file option name for m_subDisplayAllowedSet
   std::string m_option_subDisplayAllowedSet;
 
-  //! Verbosity.
+  //! Input file option name for m_displayVerbosity
   std::string m_option_displayVerbosity;
 
-  //! Synchronized verbosity.
+  //! Input file option name for m_syncVerbosity
   std::string m_option_syncVerbosity;
 
-  //! Checking level
+  //! Input file option name for m_checkingLevel
   std::string m_option_checkingLevel;
 
-  //! Type of the random number generator.
+  //! Input file option name for m_rngType
   std::string m_option_rngType;
 
-  //! Seed of the random number generator.
-  /*!
-   * If env_seed = -z, with z>=1, then each processor sets the seed to value
-   * MPI_RANK + z.  It is crucial that \verb+env_seed+ takes a
-   * \underline{negative} value, otherwise all chain samples are going to be
-   * the same.
-   */
+  //! Input file option name for m_seed
   std::string m_option_seed;
 
-  //! Platform name.
+  //! Input file option name for m_platformName
   std::string m_option_platformName;
 
-  //! Identifying string.
+  //! Input file option name for m_identifyingString
   std::string m_option_identifyingString;
 
   //! Makes an exact copy of an existing EnvOptionsValues instance.
