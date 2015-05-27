@@ -79,6 +79,12 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblem(
     m_optionsObj = tempOptions;
   }
 
+  if (m_optionsObj->m_help != "") {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << (*m_optionsObj) << std::endl;
+    }
+  }
+
   queso_require_equal_to_msg(paramRv.imageSet().vectorSpace().dimLocal(), qoiFunction.domainSet().vectorSpace().dimLocal(), "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
 
   queso_require_equal_to_msg(qoiFunction.imageSet().vectorSpace().dimLocal(), qoiRv.imageSet().vectorSpace().dimLocal(), "'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions");

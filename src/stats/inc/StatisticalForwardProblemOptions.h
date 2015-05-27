@@ -33,6 +33,7 @@
 #define UQ_SFP_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
+#define UQ_SFP_HELP        ""
 #define UQ_SFP_COMPUTE_SOLUTION_ODV        1
 #define UQ_SFP_COMPUTE_COVARIANCES_ODV     1
 #define UQ_SFP_COMPUTE_CORRELATIONS_ODV    1
@@ -86,6 +87,9 @@ public:
 
   std::string                   m_prefix;
 
+  //! If non-empty string, options and values are printed to the output file
+  std::string m_help;
+
   bool                   m_computeSolution;
   bool                   m_computeCovariances;
   bool                   m_computeCorrelations;
@@ -113,6 +117,11 @@ private:
 
   //! Copies the option values from \c src to \c this.
   void copy(const SfpOptionsValues& src);
+
+  void checkOptions();
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const SfpOptionsValues & obj);
 };
 
 /*! \class StatisticalForwardProblemOptions
