@@ -34,6 +34,7 @@
 #define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
 #define UQ_ENV_FILENAME_FOR_NO_INPUT_FILE  "."
 
+#define UQ_ENV_HELP                         ""
 #define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV     1
 #define UQ_ENV_SUB_SCREEN_WRITE_ODV         0
 #define UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV    UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE
@@ -99,6 +100,9 @@ public:
   std::string m_prefix;
 
   //! @name Attributes
+  //! If this string is non-empty, print the options object to the output file
+  std::string m_help;
+
   //! Number of sub-environments (chains).  Each chain may have multiple
   //! processes.
   unsigned int m_numSubEnvironments;
@@ -206,6 +210,10 @@ private:
 
   //! Sorts out any inter-option conflicts
   void checkOptions();
+
+  //! Print values of the options chosen.
+  friend std::ostream& operator<<(std::ostream& os,
+      const EnvOptionsValues & obj);
 };
 
 /*! \class EnvironmentOptions

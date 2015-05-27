@@ -1157,6 +1157,12 @@ FullEnvironment::FullEnvironment(
     m_optionsObj = tempOptions;
   }
 
+  // If help option was supplied, print info
+  if (m_optionsObj->m_help != "") {
+    // We write to std::cout because subDisplayFile() isn't ready yet?
+    std::cout << (*m_optionsObj) << std::endl;
+  }
+
   queso_require_equal_to_msg(
       fullComm().NumProc() % m_optionsObj->m_numSubEnvironments, 0,
       "total number of processors in environment must be multiple of the specified number of subEnvironments");

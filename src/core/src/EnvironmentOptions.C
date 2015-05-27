@@ -39,6 +39,7 @@ namespace QUESO {
 EnvOptionsValues::EnvOptionsValues()
   :
     m_prefix("env_"),
+    m_help(UQ_ENV_HELP),
     m_numSubEnvironments(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
     m_subDisplayFileName(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
     m_subDisplayAllowAll(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),
@@ -74,6 +75,7 @@ EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
     m_prefix((std::string) + "env_"),
+    m_help(UQ_ENV_HELP),
     m_numSubEnvironments(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
     m_subDisplayFileName(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
     m_subDisplayAllowAll(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),
@@ -104,7 +106,7 @@ EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
     m_option_identifyingString(m_prefix + "identifyingString")
 {
   // Register all options with parser
-  m_parser->registerOption(m_option_help, "produce help message for environment");
+  m_parser->registerOption<std::string >(m_option_help, UQ_ENV_HELP, "produce help message for environment");
   m_parser->registerOption<unsigned int>(m_option_numSubEnvironments, UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV, "number of subEnvironments");
   m_parser->registerOption<std::string >(m_option_subDisplayFileName, UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV, "output filename for subscreen writing");
   m_parser->registerOption<bool        >(m_option_subDisplayAllowAll, UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV, "Allow all processors to write to output file");
@@ -121,6 +123,7 @@ EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
   // Read the input file
   m_parser->scanInputFile();
 
+  m_parser->getOption<std::string >(m_option_help, m_help);
   m_parser->getOption<unsigned int>(m_option_numSubEnvironments, m_numSubEnvironments);
   m_parser->getOption<std::string>(m_option_subDisplayFileName, m_subDisplayFileName);
   m_parser->getOption<bool>(m_option_subDisplayAllowAll, m_subDisplayAllowAll);
@@ -140,10 +143,6 @@ EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
 void
 EnvOptionsValues::checkOptions()
 {
-  if (m_parser->optionWasParsed(m_option_help)) {
-    std::cout << (*m_parser) << std::endl;
-  }
-
   // Clear the permitted set of ranks if the user specifies that all are
   // allowed to display or the Inter0 communicator is allowed to display
   if (m_subDisplayAllowAll) {
@@ -197,6 +196,32 @@ EnvOptionsValues::copy(const EnvOptionsValues& src)
   m_debugParams           = src.m_debugParams;
 
   return;
+}
+
+std::ostream& operator<<(std::ostream& os, const EnvOptionsValues & obj)
+{
+  // Print the parser
+  os << (*(obj.m_parser)) << std::endl;
+
+  // Print the option names and current values
+  os <<         obj.m_option_numSubEnvironments    << " = " << obj.m_numSubEnvironments
+     << "\n" << obj.m_option_subDisplayFileName    << " = " << obj.m_subDisplayFileName
+     << "\n" << obj.m_option_subDisplayAllowAll    << " = " << obj.m_subDisplayAllowAll
+   //<< "\n" << obj.m_option_subDisplayAllowInter0 << " = " << obj.m_subDisplayAllowInter0
+     << "\n" << obj.m_option_subDisplayAllowedSet  << " = ";
+  for (std::set<unsigned int>::iterator setIt = obj.m_subDisplayAllowedSet.begin(); setIt != obj.m_subDisplayAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os << "\n" << obj.m_option_displayVerbosity  << " = " << obj.m_displayVerbosity
+     << "\n" << obj.m_option_syncVerbosity     << " = " << obj.m_syncVerbosity
+     << "\n" << obj.m_option_checkingLevel     << " = " << obj.m_checkingLevel
+     << "\n" << obj.m_option_rngType           << " = " << obj.m_rngType
+     << "\n" << obj.m_option_seed              << " = " << obj.m_seed
+     << "\n" << obj.m_option_platformName      << " = " << obj.m_platformName
+     << "\n" << obj.m_option_identifyingString << " = " << obj.m_identifyingString
+   //<< "\n" << obj.m_option_numDebugParams    << " = " << obj.m_numDebugParams
+     << std::endl;
+  return os;
 }
 
 // --------------------------------------------------

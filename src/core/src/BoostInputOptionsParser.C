@@ -145,17 +145,6 @@ BoostInputOptionsParser::getOption<std::vector<double, std::allocator<double> > 
   }
 }
 
-bool
-BoostInputOptionsParser::optionWasParsed(std::string & name) const
-{
-  if (m_scannedInputFile && m_optionsMap->count(name.c_str())) {
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
 std::ostream &
 operator<<(std::ostream & os, const BoostInputOptionsParser & parser)
 {
