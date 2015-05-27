@@ -52,6 +52,9 @@ public:
   //! The prefix to look for in the input file
   std::string m_prefix;
 
+  //! If this string is non-empty, print the options object to the output file
+  std::string m_help;
+
   //! The shape parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionShape;
 
@@ -85,11 +88,7 @@ public:
   //! The scale parameter for the Gamma hyperprior for the emulator data precision
   double m_emulatorDataPrecisionScale;
 
-  friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj)
-  {
-    obj.print(os);
-    return os;
-  }
+  friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj);
 
 private:
   const BaseEnvironment& m_env;
@@ -107,6 +106,8 @@ private:
   std::string m_option_discrepancyCorrelationStrengthBeta;
   std::string m_option_emulatorDataPrecisionShape;
   std::string m_option_emulatorDataPrecisionScale;
+
+  void checkOptions();
 };
 
 }  // End namespace QUESO
