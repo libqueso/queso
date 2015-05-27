@@ -30,6 +30,7 @@
 
 #undef UQ_SIP_READS_SOLVER_OPTION
 
+#define UQ_SIP_HELP ""
 #define UQ_SIP_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
@@ -88,6 +89,9 @@ public:
 
   std::string m_prefix;
 
+  //! If this string is non-empty, options are print to the output file
+  std::string m_help;
+
   bool                   m_computeSolution;
   std::string            m_dataOutputFileName;
   std::set<unsigned int> m_dataOutputAllowedSet;
@@ -111,6 +115,11 @@ private:
 
   //! Copies the option values from \c src to \c this.
   void copy(const SipOptionsValues& src);
+
+  void checkOptions();
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const SipOptionsValues & obj);
 };
 
 // --------------------------------------------------

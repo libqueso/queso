@@ -38,6 +38,7 @@ namespace QUESO {
 SipOptionsValues::SipOptionsValues()
   :
   m_prefix("ip_"),
+  m_help(UQ_SIP_HELP),
   m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
   m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet(),
@@ -57,6 +58,7 @@ SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
   m_prefix((std::string)(prefix) + "ip_"),
+  m_help(UQ_SIP_HELP),
   m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
   m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet(),
@@ -70,7 +72,7 @@ SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
   m_solverString        (UQ_SIP_SOLVER_ODV)
 #endif
 {
-  m_parser->registerOption(m_option_help,                                                                                              "produce help message for statistical inverse problem");
+  m_parser->registerOption<std::string>(m_option_help, UQ_SIP_HELP, "produce help message for statistical inverse problem");
   m_parser->registerOption<bool       >(m_option_computeSolution,      UQ_SIP_COMPUTE_SOLUTION_ODV       , "compute solution process"                            );
   m_parser->registerOption<std::string>(m_option_dataOutputFileName,   UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV  , "name of data output file"                            );
   m_parser->registerOption<std::string>(m_option_dataOutputAllowedSet, UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV, "subEnvs that will write to data output file"         );
@@ -80,12 +82,15 @@ SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
 
   m_parser->scanInputFile();
 
+  m_parser->getOption<std::string>(m_option_help, m_help);
   m_parser->getOption<bool       >(m_option_computeSolution,      m_computeSolution);
   m_parser->getOption<std::string>(m_option_dataOutputFileName,   m_dataOutputFileName);
   m_parser->getOption<std::set<unsigned int> >(m_option_dataOutputAllowedSet, m_dataOutputAllowedSet);
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_parser->getOption<std::string>(m_option_solver,               m_solver);
 #endif
+
+  checkOptions();
 }
 // Copy constructor - -----------------------------
 SipOptionsValues::SipOptionsValues(const SipOptionsValues& src)
@@ -105,57 +110,11 @@ SipOptionsValues::operator=(const SipOptionsValues& rhs)
   return *this;
 }
 // Private methods-----------------------------------
-// void
-// SipOptionsValues::defineOptions()
-// {
-//   (*m_optionsDescription).add_options()
-//     (m_option_help.c_str(),                                                                                              "produce help message for statistical inverse problem")
-//     (m_option_computeSolution.c_str(),      boost::program_options::value<bool       >()->default_value(UQ_SIP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
-//     (m_option_dataOutputFileName.c_str(),   boost::program_options::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file"                            )
-//     (m_option_dataOutputAllowedSet.c_str(), boost::program_options::value<std::string>()->default_value(UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file"         )
-// #ifdef UQ_SIP_READS_SOLVER_OPTION
-//     (m_option_solver.c_str(),               boost::program_options::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV                 ), "algorithm for calibration"                           )
-// #endif
-//   ;
-// }
-//
-// void
-// SipOptionsValues::getOptionValues()
-// {
-//   if ((*m_optionsMap).count(m_option_help)) {
-//     if (m_env->subDisplayFile()) {
-//       *m_env->subDisplayFile() << (*m_optionsDescription)
-//                               << std::endl;
-//     }
-//   }
-//
-//   if ((*m_optionsMap).count(m_option_computeSolution)) {
-//     m_computeSolution = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_computeSolution]).as<bool>();
-//   }
-//
-//   if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
-//     m_dataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
-//   }
-//
-//   if ((*m_optionsMap).count(m_option_dataOutputAllowedSet)) {
-//     m_dataOutputAllowedSet.clear();
-//     std::vector<double> tmpAllow(0,0.);
-//     std::string inputString = (*m_optionsMap)[m_option_dataOutputAllowedSet].as<std::string>();
-//     MiscReadDoublesFromString(inputString,tmpAllow);
-//
-//     if (tmpAllow.size() > 0) {
-//       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-//         m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
-//       }
-//     }
-//   }
-//
-// #ifdef UQ_SIP_READS_SOLVER_OPTION
-//   if ((*m_optionsMap).count(m_option_solver)) {
-//     m_solverString = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_solver]).as<std::string>();
-//   }
-// #endif
-// }
+void
+SipOptionsValues::checkOptions()
+{
+  // Nothing
+}
 
 void
 SipOptionsValues::copy(const SipOptionsValues& src)
@@ -169,6 +128,22 @@ SipOptionsValues::copy(const SipOptionsValues& src)
 //m_mhOptionsValues      = src.m_mhOptionsValues;
 
   return;
+}
+
+std::ostream &
+operator<<(std::ostream& os, const SipOptionsValues & obj)
+{
+  os << "\n" << obj.m_option_computeSolution      << " = " << obj.m_computeSolution
+     << "\n" << obj.m_option_dataOutputFileName   << " = " << obj.m_dataOutputFileName;
+  os << "\n" << obj.m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = obj.m_dataOutputAllowedSet.begin(); setIt != obj.m_dataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+     << "\n" << obj.m_option_solver << " = " << obj.m_solverString
+#endif
+  os << std::endl;
+  return os;
 }
 
 // -------------------------------------------------
