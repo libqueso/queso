@@ -149,6 +149,24 @@ BoostInputOptionsParser::getOption<std::vector<double, std::allocator<double> > 
   }
 }
 
+bool
+BoostInputOptionsParser::optionWasParsed(std::string & name) const
+{
+  if (m_scannedInputFile && m_optionsMap->count(name.c_str())) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+std::ostream &
+operator<<(std::ostream & os, const BoostInputOptionsParser & parser)
+{
+  os << *(parser.m_optionsDescription);
+  return os;
+}
+
 template void BoostInputOptionsParser::registerOption<int>(std::string, int, std::string);
 template void BoostInputOptionsParser::registerOption<unsigned int>(std::string, unsigned int, std::string);
 template void BoostInputOptionsParser::registerOption<bool>(std::string, bool, std::string);

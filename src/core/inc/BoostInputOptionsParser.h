@@ -81,6 +81,14 @@ public:
   template <class T>
   void getOption(std::string & name, T & value);
 
+  //! Returns true if an input was read and the option called \c name was set
+  //! in the input file
+  bool optionWasParsed(std::string & name) const;
+
+  //! Helpful stream operator for printing the parser state
+  friend std::ostream & operator<<(std::ostream & os,
+      const BoostInputOptionsParser & parser);
+
 protected:
   const std::string & m_filename;
   boost::program_options::options_description * m_optionsDescription;
