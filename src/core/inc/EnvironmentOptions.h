@@ -127,8 +127,6 @@ public:
   std::string m_rngType;
 
   //! Seed of the random number generator.
-  //
-
   /*!
    * If env_seed = -z, with z>=1, then each processor sets the seed to value
    * MPI_RANK + z.  It is crucial that \verb+env_seed+ takes a
