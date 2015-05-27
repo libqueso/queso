@@ -37,46 +37,23 @@
 namespace QUESO
 {
   template<class V, class M>
-  InterpolationSurrogateBuilder<V,M>::InterpolationSurrogateBuilder( InterpolationSurrogateData<V,M>& data )
+  InterpolationSurrogateBuilder<V,M>::InterpolationSurrogateBuilder( InterpolationSurrogateDataSet<V,M>& data )
     : SurrogateBuilderBase<V>(),
     m_data(data),
-    m_njobs(data.get_paramDomain().env().numSubEnvironments(), 0)
+    m_njobs(this->get_default_data().get_paramDomain().env().numSubEnvironments(), 0)
   {
-    this->check_process_config();
-
     this->partition_work();
-  }
-
-  template<class V, class M>
-  void InterpolationSurrogateBuilder<V,M>::check_process_config()
-  {
-    /* If fullComm() > 1 and n_subenvironments == 1 this is strange and means
-       the user is doing redundant work. So, let's make that an error.
-       This could happen if, for example the user forgets to change the number
-       of subenvironments to > 1 and runs with multiple MPI processes. */
-    unsigned int full_comm_size = this->m_data.get_paramDomain().env().fullComm().NumProc();
-    unsigned int n_subenvs = this->m_data.get_paramDomain().env().numSubEnvironments();
-
-    if( (full_comm_size > 1) &&  (n_subenvs == 1) )
-      {
-        std::string error = "ERROR: fullComm() size is greater than 1 and the number\n";
-        error += "       of subenvrionments = 1. InterpolationSurrogateBuilder\n";
-        error += "       is not compatible with this configuration.\n";
-        error += "       Did you forget to change the number of subenvironments?\n";
-
-        queso_error_msg(error);
-      }
   }
 
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::partition_work()
   {
     // Convenience
-    unsigned int n_values = this->m_data.n_values();
-    unsigned int n_workers = this->m_data.get_paramDomain().env().numSubEnvironments();
+    unsigned int n_values = this->get_default_data().n_values();
+    unsigned int n_workers = this->get_default_data().get_paramDomain().env().numSubEnvironments();
 
     unsigned int n_jobs = n_values/n_workers;
-    unsigned int n_leftover = this->m_data.n_values() % n_workers;
+    unsigned int n_leftover = this->get_default_data().n_values() % n_workers;
 
     /* If the number of values is evenly divisible over all workers,
        then everyone gets the same amount work */
@@ -109,32 +86,46 @@ namespace QUESO
 
     // Cache each processors work, then we only need to do 1 Allgather
     std::vector<unsigned int> local_n(n_end-n_begin);
-    std::vector<double> local_values(n_end-n_begin);
+
+    // We need to cache (n_end-n_begin) values for each dataset,
+    std::vector<std::vector<double> > local_values(this->m_data.size());
+    for( std::vector<std::vector<double> >::iterator it = local_values.begin();
+         it != local_values.end(); ++it )
+      it->resize(n_end-n_begin);
+
     unsigned int count = 0;
 
     // vector to store current domain value
-    V domain_vector(this->m_data.get_paramDomain().vectorSpace().zeroVector());
+    V domain_vector(this->get_default_data().get_paramDomain().vectorSpace().zeroVector());
+
+    // vector to store values evaluated at the current domain_vector
+    std::vector<double> values(this->m_data.size());
 
     for( unsigned int n = n_begin; n < n_end; n++ )
       {
         this->set_domain_vector( n, domain_vector );
 
-        double value = this->evaluate_model( domain_vector );
+        this->evaluate_model( domain_vector, values );
 
         local_n[count] = n;
-        local_values[count] = value;
+
+        for( unsigned int s = 0; s < this->m_data.size(); s++ )
+          local_values[s][count] = values[s];
+
         count += 1;
       }
 
     /* Sync all the locally computed values between the subenvironments
-       so all processes have all the computed values. */
-    this->sync_data( local_n, local_values );
+       so all processes have all the computed values. We need to sync
+       values for every data set. */
+    for( unsigned int s = 0; s < this->m_data.size(); s++ )
+      this->sync_data( local_n, local_values[s], this->m_data.get_dataset(s) );
   }
 
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::set_work_bounds( unsigned int& n_begin, unsigned int& n_end ) const
   {
-    unsigned int my_subid = this->m_data.get_paramDomain().env().subId();
+    unsigned int my_subid = this->get_default_data().get_paramDomain().env().subId();
 
     /* Starting index will be the sum of the all the previous num jobs */
     n_begin = 0;
@@ -146,21 +137,22 @@ namespace QUESO
 
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::sync_data( std::vector<unsigned int>& local_n,
-                                                      std::vector<double>& local_values  )
+                                                      std::vector<double>& local_values,
+                                                      InterpolationSurrogateData<V,M>& data )
   {
     // Only members of the inter0comm will do the communication of the local values
-    unsigned int my_subrank = this->m_data.get_paramDomain().env().subRank();
+    unsigned int my_subrank = data.get_paramDomain().env().subRank();
 
     if( my_subrank == 0 )
       {
-        std::vector<double> all_values(this->m_data.n_values());
+        std::vector<double> all_values(data.n_values());
 
-        std::vector<unsigned int> all_indices(this->m_data.n_values());
+        std::vector<unsigned int> all_indices(data.n_values());
 
         std::vector<int> strides;
         this->compute_strides( strides );
 
-        const MpiComm& inter0comm = this->m_data.get_paramDomain().env().inter0Comm();
+        const MpiComm& inter0comm = data.get_paramDomain().env().inter0Comm();
 
         /*! \todo Would be more efficient to pack local_n and local_values
             togethers and do Gatherv only once. */
@@ -181,35 +173,35 @@ namespace QUESO
            I'm not sure we can assume the same continuity of the inter0 ranks, i.e.
            I'm not sure how QUESO ordered the inter0 ranks. So, we go ahead and
            manually set the values. */
-        if( this->m_data.get_paramDomain().env().subRank() == 0 )
+        if( data.get_paramDomain().env().subRank() == 0 )
           {
-            for( unsigned int n = 0; n < this->m_data.n_values(); n++ )
-              this->m_data.set_value( all_indices[n], all_values[n] );
+            for( unsigned int n = 0; n < data.n_values(); n++ )
+              data.set_value( all_indices[n], all_values[n] );
           }
       }
 
     // Now broadcast the values data to all other processes
-    this->m_data.sync_values( 0 /*root*/);
+    data.sync_values( 0 /*root*/);
   }
 
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::set_domain_vector( unsigned int n, V& domain_vector ) const
   {
     // Convert global index n to local coordinates in each dimension
-    std::vector<unsigned int> indices(this->m_data.dim());
-    InterpolationSurrogateHelper::globalToCoord( n, this->m_data.get_n_points(), indices );
+    std::vector<unsigned int> indices(this->get_default_data().dim());
+    InterpolationSurrogateHelper::globalToCoord( n, this->get_default_data().get_n_points(), indices );
 
     // Use indices to get x coordinates and populate domain_vector
-    for( unsigned int d = 0; d < this->m_data.dim(); d++ )
+    for( unsigned int d = 0; d < this->get_default_data().dim(); d++ )
       {
-        domain_vector[d] = this->m_data.get_x( d, indices[d] );
+        domain_vector[d] = this->get_default_data().get_x( d, indices[d] );
       }
   }
 
   template<class V, class M>
   void InterpolationSurrogateBuilder<V,M>::compute_strides( std::vector<int>& strides ) const
   {
-    unsigned int n_subenvs = this->m_data.get_paramDomain().env().numSubEnvironments();
+    unsigned int n_subenvs = this->get_default_data().get_paramDomain().env().numSubEnvironments();
 
     strides.resize(n_subenvs);
 

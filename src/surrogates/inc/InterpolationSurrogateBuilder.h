@@ -26,7 +26,7 @@
 #define UQ_INTERPOLATION_SURROGATE_BUILDER_H
 
 #include <queso/SurrogateBuilderBase.h>
-#include <queso/InterpolationSurrogateData.h>
+#include <queso/InterpolationSurrogateDataSet.h>
 
 namespace QUESO
 {
@@ -47,7 +47,7 @@ namespace QUESO
     //! Constructor
     /*! We do not take a const& to the data because we want to compute and
         set the values directly. */
-    InterpolationSurrogateBuilder( InterpolationSurrogateData<V,M>& data );
+    InterpolationSurrogateBuilder( InterpolationSurrogateDataSet<V,M>& data );
 
     virtual ~InterpolationSurrogateBuilder(){};
 
@@ -56,16 +56,10 @@ namespace QUESO
 
   protected:
 
-    InterpolationSurrogateData<V,M>& m_data;
+    InterpolationSurrogateDataSet<V,M>& m_data;
 
     //! Cache the amount of work for each subenvironment
     std::vector<int> m_njobs;
-
-    //! Ensure that if fullComm() size > 1, then n_subenvironments > 1
-    /*! If not, this is a strange configuration and breaks things like inter0Comm
-        and would induce redundant work. Thus, this configuration is not supported and
-        we error out. */
-    void check_process_config();
 
     //! Partition the workload of model evaluations across the subenvironments
     void partition_work();
@@ -76,15 +70,24 @@ namespace QUESO
 
     //! Take the local values computed from each process and communicate
     /*! The end result will be that all processes have all the data.
-        I.e. m_values will be completely populated on all processes. */
+        I.e. m_values will be completely populated on all processes.
+        This is done on the InterpolationSurrogateData passed to the
+        function. */
     void sync_data( std::vector<unsigned int>& local_n,
-                    std::vector<double>& local_values );
+                    std::vector<double>& local_values,
+                    InterpolationSurrogateData<V,M>& data );
 
     //! Provide the spatial coordinates for the global index n
     void set_domain_vector( unsigned int n, V& domain_vector ) const;
 
     //! Helper function to compute strides needed for MPI_Gatherv
     void compute_strides( std::vector<int>& strides ) const;
+
+    //! Helper function to grab representative dataset from m_data
+    /*! We only grab the first data set since the environments are guaranteed
+      to be consistent by the nature of constructing an InterpolationSurrogateDataSet. */
+    const InterpolationSurrogateData<V,M>& get_default_data() const
+    { return m_data.get_dataset(0); }
 
   private:
 

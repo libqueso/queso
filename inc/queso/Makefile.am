@@ -183,6 +183,7 @@ BUILT_SOURCES += WignerVectorRealizer.h
 BUILT_SOURCES += InterpolationSurrogateBase.h
 BUILT_SOURCES += InterpolationSurrogateBuilder.h
 BUILT_SOURCES += InterpolationSurrogateData.h
+BUILT_SOURCES += InterpolationSurrogateDataSet.h
 BUILT_SOURCES += InterpolationSurrogateHelper.h
 BUILT_SOURCES += InterpolationSurrogateIOASCII.h
 BUILT_SOURCES += InterpolationSurrogateIOBase.h
@@ -549,6 +550,8 @@ InterpolationSurrogateBase.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurr
 InterpolationSurrogateBuilder.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateBuilder.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InterpolationSurrogateData.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateData.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateDataSet.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateDataSet.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InterpolationSurrogateHelper.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateHelper.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

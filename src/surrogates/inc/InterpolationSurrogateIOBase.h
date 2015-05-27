@@ -42,10 +42,12 @@ namespace QUESO
 
     virtual void read( const std::string& filename,
                        const FullEnvironment& env,
-                       const std::string& vector_space_prefix ) =0;
+                       const std::string& vector_space_prefix,
+                       int reading_rank ) =0;
 
     virtual void write( const std::string& filename,
-                        const InterpolationSurrogateData<V,M>& data ) const =0;
+                        const InterpolationSurrogateData<V,M>& data,
+                        int writing_rank ) const =0;
 
     //! Reference to data object
     /*! If we read the data, then use this method to grab

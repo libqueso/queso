@@ -44,10 +44,11 @@ namespace QUESO
   template<class V, class M>
   void InterpolationSurrogateIOASCII<V,M>::read( const std::string& filename,
                                                  const FullEnvironment& env,
-                                                 const std::string& vector_space_prefix )
+                                                 const std::string& vector_space_prefix,
+                                                 int reading_rank )
   {
     // Root processor
-    unsigned int root = 0;
+    int root = reading_rank;
 
     MpiComm full_comm = env.fullComm();
 
@@ -181,10 +182,11 @@ namespace QUESO
 
   template<class V, class M>
   void InterpolationSurrogateIOASCII<V,M>::write( const std::string& filename,
-                                                  const InterpolationSurrogateData<V,M>& data ) const
+                                                  const InterpolationSurrogateData<V,M>& data,
+                                                  int writing_rank ) const
   {
     // Make sure there are values in the data. If not the user didn't populate the data
-    if( !data.n_values() > 0 )
+    if( !(data.n_values() > 0) )
       {
         std::string error = "ERROR: No values found in InterpolationSurrogateData.\n";
         error += "Cannot write data without values.\n";
@@ -197,7 +199,7 @@ namespace QUESO
     std::ofstream output;
 
     // Only processor 0 does the writing
-    if( data.get_paramDomain().env().fullRank() == 0 )
+    if( data.get_paramDomain().env().fullRank() == writing_rank )
       {
         output.open( filename.c_str() );
 
@@ -243,7 +245,7 @@ namespace QUESO
         // All done
         output.close();
 
-      } // data.get_paramDomain().env().fullRank() == 0
+      } // data.get_paramDomain().env().fullRank() == writing_rank
   }
 
 } // end namespace QUESO

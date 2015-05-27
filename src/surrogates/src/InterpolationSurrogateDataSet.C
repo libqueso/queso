@@ -22,32 +22,34 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef UQ_SURROGATE_BUILDER_BASE_H
-#define UQ_SURROGATE_BUILDER_BASE_H
+// This class
+#include <queso/InterpolationSurrogateDataSet.h>
 
-// C++
-#include <vector>
+// QUESO
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO
 {
-  class GslVector;
-
-  //! Base class for builders of surrogates
-  /*! This class provides the interface to the user's model for which
-      we are constructing a surrogate. */
-  template<class V = GslVector>
-  class SurrogateBuilderBase
+  template<class V, class M>
+  InterpolationSurrogateDataSet<V,M>::InterpolationSurrogateDataSet(const BoxSubset<V,M> & domain,
+                                                                    const std::vector<unsigned int>& n_points,
+                                                                    unsigned int n_datasets )
+    : m_datasets(n_datasets,NULL)
   {
-  public:
+    for( unsigned int s = 0; s < n_datasets; s++ )
+      m_datasets[s] = new InterpolationSurrogateData<V,M>( domain, n_points );
+  }
 
-    SurrogateBuilderBase(){};
-
-    virtual ~SurrogateBuilderBase(){};
-
-    virtual void evaluate_model( const V & domainVector, std::vector<double>& values ) =0;
-
-  };
+  template<class V, class M>
+  InterpolationSurrogateDataSet<V,M>::~InterpolationSurrogateDataSet()
+  {
+    for( typename std::vector<InterpolationSurrogateData<V,M>*>::iterator it = m_datasets.begin();
+         it != m_datasets.end(); ++it )
+      delete *it;
+  }
 
 } // end namespace QUESO
 
-#endif // UQ_SURROGATE_BUILDER_BASE_H
+// Instantiate
+template class QUESO::InterpolationSurrogateDataSet<QUESO::GslVector,QUESO::GslMatrix>;
