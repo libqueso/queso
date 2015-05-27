@@ -88,9 +88,12 @@ private:
   std::string m_option_num_iters;
   std::string m_option_save_freq;
   std::string m_option_rwmh_step;
-};
 
-std::ostream& operator<<(std::ostream& os, const InfiniteDimensionalMCMCSamplerOptions & opts);
+  void checkOptions();
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const InfiniteDimensionalMCMCSamplerOptions & opts);
+};
 
 }  // End namespace QUESO
 

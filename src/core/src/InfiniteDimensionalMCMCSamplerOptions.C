@@ -68,54 +68,20 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
   m_parser->getOption<unsigned int>(m_option_num_iters,          m_num_iters);
   m_parser->getOption<unsigned int>(m_option_save_freq,          m_save_freq);
   m_parser->getOption<double     >(m_option_rwmh_step,          m_rwmh_step);
+
+  checkOptions();
+}
+
+void
+InfiniteDimensionalMCMCSamplerOptions::checkOptions()
+{
+  queso_require_equal_to_msg(m_num_iters % m_save_freq, 0, "save frequency must divide number of iterations");
+  queso_require_greater_msg(m_rwmh_step, 0, "random-walk Metropolis step size must be positive");
 }
 
 InfiniteDimensionalMCMCSamplerOptions::~InfiniteDimensionalMCMCSamplerOptions()
 {
 }
-
-// void InfiniteDimensionalMCMCSamplerOptions::defineOptions()
-// {
-//   (*m_optionsDescription).add_options()
-//     (m_option_help.c_str(), "produce help message for infinite dimensional sampler")
-//     (m_option_dataOutputDirName.c_str(), boost::program_options::value<std::string>()->default_value(UQ_INF_DATA_OUTPUT_DIR_NAME_ODV), "name of data output dir")
-//     (m_option_dataOutputFileName.c_str(), boost::program_options::value<std::string>()->default_value(UQ_INF_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file (HDF5)")
-//     (m_option_num_iters.c_str(), boost::program_options::value<int>()->default_value(UQ_INF_NUM_ITERS_ODV), "number of mcmc iterations to do")
-//     (m_option_save_freq.c_str(), boost::program_options::value<int>()->default_value(UQ_INF_SAVE_FREQ_ODV), "the frequency at which to save the chain state")
-//     (m_option_rwmh_step.c_str(), boost::program_options::value<double>()->default_value(UQ_INF_RWMH_STEP_ODV), "the step-size in the random-walk Metropolis proposal");
-// }
-//
-// void InfiniteDimensionalMCMCSamplerOptions::getOptionValues()
-// {
-//   if ((*m_optionsMap).count(m_option_help)) {
-//     if (m_env.subDisplayFile()) {
-//       *m_env.subDisplayFile() << (*m_optionsDescription)
-//                               << std::endl;
-//     }
-//   }
-//
-//   if ((*m_optionsMap).count(m_option_dataOutputDirName)) {
-//     this->m_dataOutputDirName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dataOutputDirName]).as<std::string>();
-//   }
-//
-//   if ((*m_optionsMap).count(m_option_dataOutputFileName)) {
-//     this->m_dataOutputFileName = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_dataOutputFileName]).as<std::string>();
-//   }
-//
-//   if ((*m_optionsMap).count(m_option_num_iters)) {
-//     this->m_num_iters = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_num_iters]).as<int>();
-//   }
-//
-//   if ((*m_optionsMap).count(m_option_save_freq)) {
-//     this->m_save_freq = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_save_freq]).as<int>();
-//   }
-//
-//   if ((*m_optionsMap).count(m_option_rwmh_step)) {
-//     this->m_rwmh_step = ((const boost::program_options::variable_value&) (*m_optionsMap)[m_option_rwmh_step]).as<double>();
-//   }
-//
-//   return;
-// }
 
 void InfiniteDimensionalMCMCSamplerOptions::print(std::ostream & os) const
 {
@@ -131,6 +97,7 @@ void InfiniteDimensionalMCMCSamplerOptions::print(std::ostream & os) const
 std::ostream & operator<<(std::ostream & os,
     const InfiniteDimensionalMCMCSamplerOptions & obj)
 {
+  os << (*(obj.m_parser)) << std::endl;
   obj.print(os);
   return os;
 }
