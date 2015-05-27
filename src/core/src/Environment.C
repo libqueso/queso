@@ -1157,6 +1157,10 @@ FullEnvironment::FullEnvironment(
     m_optionsObj = tempOptions;
   }
 
+  queso_require_equal_to_msg(
+      fullComm().NumProc() % m_optionsObj->m_numSubEnvironments, 0,
+      "total number of processors in environment must be multiple of the specified number of subEnvironments");
+
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In FullEnv, finished scanning options" << std::endl;
 #endif

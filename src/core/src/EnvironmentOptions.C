@@ -133,6 +133,27 @@ EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
   m_parser->getOption<int>(m_option_seed, m_seed);
   m_parser->getOption<std::string>(m_option_platformName, m_platformName);
   m_parser->getOption<std::string>(m_option_identifyingString, m_identifyingString);
+
+  checkOptions();
+}
+
+void
+EnvOptionsValues::checkOptions()
+{
+  if (m_parser->optionWasParsed(m_option_help)) {
+    std::cout << (*m_parser) << std::endl;
+  }
+
+  // Clear the permitted set of ranks if the user specifies that all are
+  // allowed to display or the Inter0 communicator is allowed to display
+  if (m_subDisplayAllowAll) {
+    // This will get filled by the Environment after the sub communicators are
+    // created
+    m_subDisplayAllowedSet.clear();
+  }
+  else if (m_subDisplayAllowInter0) {
+    m_subDisplayAllowedSet.clear();
+  }
 }
 
 // Copy constructor ---------------------------------

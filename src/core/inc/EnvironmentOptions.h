@@ -203,6 +203,9 @@ private:
 
   //! Makes an exact copy of an existing EnvOptionsValues instance.
   void copy(const EnvOptionsValues& src);
+
+  //! Sorts out any inter-option conflicts
+  void checkOptions();
 };
 
 /*! \class EnvironmentOptions

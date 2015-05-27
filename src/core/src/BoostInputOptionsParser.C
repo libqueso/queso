@@ -104,7 +104,6 @@ void
 BoostInputOptionsParser::getOption(std::string & name, T & value)
 {
   if (m_scannedInputFile) {
-    queso_require_msg(m_optionsMap->count(name.c_str()), "option `" << name << "` not registered");
     value = (*m_optionsMap)[name].as<T>();
   }
 }
@@ -114,8 +113,6 @@ void
 BoostInputOptionsParser::getOption(std::string & name, std::set<unsigned int, std::less<unsigned int>, std::allocator<unsigned int> > & value)
 {
   if (m_scannedInputFile) {
-    queso_require_msg(m_optionsMap->count(name.c_str()), "option `" << name << "` not registered");
-
     // Clear before putting things in it
     value.clear();
 
@@ -138,8 +135,6 @@ void
 BoostInputOptionsParser::getOption<std::vector<double, std::allocator<double> > >(std::string & name, std::vector<double, std::allocator<double> > & value)
 {
   if (m_scannedInputFile) {
-    queso_require_msg(m_optionsMap->count(name.c_str()), "option `" << name << "` not registered");
-
     // Need to reset value?
 
     // Get the option as a string
