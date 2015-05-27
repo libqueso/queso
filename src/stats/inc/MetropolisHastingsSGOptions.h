@@ -36,6 +36,7 @@
 #define UQ_MH_SG_FILENAME_FOR_NO_FILE   "."
 
 // _ODV = option default value
+#define UQ_MH_SG_HELP                                                 ""
 #define UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                            UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                            0
 #define UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                          ""
@@ -101,6 +102,8 @@ namespace boost {
 
 namespace QUESO {
 
+class BaseEnvironment;
+
 /*! \file MetropolisHastingsSGOptions.h
     \brief Classes to allow options to be passed to a Metropolis-Hastings algorithm.
 */
@@ -152,6 +155,9 @@ public:
   //@}
 
   std::string                        m_prefix;
+
+  //! If non-empty string, print options and values to the output file
+  std::string m_help;
 
   std::string                        m_dataOutputFileName;
   bool                               m_dataOutputAllowAll;
@@ -326,6 +332,13 @@ private:
 
   //! Copies the option values from \c src to \c this.
   void copy(const MhOptionsValues& src);
+
+  // We pass the the passed environment to get access to the MPI ranks etc for
+  // sanity checks
+  void checkOptions(const BaseEnvironment * env);
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const MhOptionsValues & obj);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   friend class MetropolisHastingsSGOptions;

@@ -176,6 +176,12 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
     m_optionsObj = tempOptions;
   }
 
+  if (m_optionsObj->m_help != "") {
+    if (m_env.subDisplayFile() && !m_optionsObj->m_totallyMute) {
+      *m_env.subDisplayFile() << (*m_optionsObj) << std::endl;
+    }
+  }
+
   if ((m_env.subDisplayFile()                   ) &&
       (m_optionsObj->m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Entering MetropolisHastingsSG<P_V,P_M>::constructor(1)"
@@ -246,6 +252,12 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
+  }
+
+  if (m_optionsObj->m_help != "") {
+    if (m_env.subDisplayFile() && !m_optionsObj->m_totallyMute) {
+      *m_env.subDisplayFile() << (*m_optionsObj) << std::endl;
+    }
   }
 
   if ((m_env.subDisplayFile()                   ) &&
