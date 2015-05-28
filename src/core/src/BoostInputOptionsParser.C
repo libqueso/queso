@@ -49,13 +49,7 @@ BoostInputOptionsParser::BoostInputOptionsParser()
 
 BoostInputOptionsParser::~BoostInputOptionsParser()
 {
-  if (m_optionsDescription) {
-    delete m_optionsDescription;
-  }
-
-  if (m_optionsMap) {
-    delete m_optionsMap;
-  }
+  // Do nothing
 }
 
 void

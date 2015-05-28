@@ -26,6 +26,7 @@
 #define UQ_BOOST_INPUT_OPTIONS_H
 
 #include <string>
+#include <queso/ScopedPtr.h>
 #include <queso/BaseInputOptionsParser.h>
 
 namespace boost
@@ -87,8 +88,8 @@ public:
 
 protected:
   const std::string & m_filename;
-  boost::program_options::options_description * m_optionsDescription;
-  boost::program_options::variables_map * m_optionsMap;
+  typename ScopedPtr<boost::program_options::options_description>::Type m_optionsDescription;
+  typename ScopedPtr<boost::program_options::variables_map>::Type m_optionsMap;
 
 private:
   bool m_scannedInputFile;
