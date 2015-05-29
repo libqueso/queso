@@ -154,6 +154,7 @@ public:
   MhOptionsValues& operator= (const MhOptionsValues& rhs);
   //@}
 
+  //! Prefix for input file option names.  Prepends all options for this class.
   std::string                        m_prefix;
 
   //! If non-empty string, print options and values to the output file
@@ -162,8 +163,7 @@ public:
    */
   std::string m_help;
 
-  //! The base name of output files where the chain (and related information)
-  //! will be written.
+  //! The base name of output files where the chain (and related information) will be written.
   /*!
    * For multiple environments, the respective chains will append "_subN"
    * where N is the environment number.
@@ -193,16 +193,13 @@ public:
   //! If true, zero output is written to files.  Default is false.
   bool                               m_totallyMute;
 
-  //! If not ".", reads the contents of the file and uses that to start the
-  //! MCMC.  Default is "."
+  //! If not ".", reads the contents of the file and uses that to start the MCMC.  Default is "."
   std::string                        m_initialPositionDataInputFileName;
 
-  //! The filetype of m_initialPositionDataInputFileName.  Only "m" (matlab) is
-  //! currently supported.  Default is "m"
+  //! The filetype of m_initialPositionDataInputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
   std::string                        m_initialPositionDataInputFileType;
 
-  //! If not ".", reads the contents of the file as the initial proposal
-  //! covariance matrix.
+  //! If not ".", reads the contents of the file as the initial proposal covariance matrix.
   /*!
    * To use this, m_tkUseLocalHessian must be false
    *
@@ -210,8 +207,7 @@ public:
    */
   std::string                        m_initialProposalCovMatrixDataInputFileName;
 
-  //! The filetype of m_initialProposalCovMatrixDataInputFileName.  Only "m"
-  //! (matlab) is currently supported.  Default is "m"
+  //! The filetype of m_initialProposalCovMatrixDataInputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
   std::string                        m_initialProposalCovMatrixDataInputFileType;
 
   //! \todo DOCUMENT ME
@@ -231,12 +227,10 @@ public:
    */
   std::string                        m_rawChainDataInputFileName;
 
-  //! The filetype of m_rawChainDataInputFileName.  Only "m" (matlab) is
-  //! currently supported.  Default is "m"
+  //! The filetype of m_rawChainDataInputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
   std::string                        m_rawChainDataInputFileType;
 
-  //! The size of the chain (number of posterior samples) to generate.  Default
-  //! is 100
+  //! The size of the chain (number of posterior samples) to generate.  Default is 100
   unsigned int                       m_rawChainSize;
 
   //! If true, extra chain information is computed/stored
@@ -256,8 +250,7 @@ public:
    */
   unsigned int                       m_rawChainDisplayPeriod;
 
-  //! If true, measures timings spent in various chain computions and writes
-  //! them to the output file
+  //! If true, measures timings spent in various chain computions and writes them to the output file
   /*!
    * The measurements are:
    *
@@ -285,12 +278,10 @@ public:
    */
   std::string                        m_rawChainDataOutputFileName;
 
-  //! The filetype of m_rawChainDataOutputFileName.  Only "m" (matlab) is
-  //! currently supported.  Default is "m"
+  //! The filetype of m_rawChainDataOutputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
   std::string                        m_rawChainDataOutputFileType;
 
-  //! Toggle for whether or not to allow all processes to write Markov chain
-  //! output to a file
+  //! Toggle for whether or not to allow all processes to write Markov chain output to a file
   /*!
    * If true, all processes write Markov chain output and
    * m_rawChainDataOutputAllowedSet is ignored.
@@ -302,12 +293,10 @@ public:
    */
   bool                               m_rawChainDataOutputAllowAll;
 
-  //! The set of MPI ranks that will write Markov chain output to a file.  See
-  //! also m_rawChainDataOutputAllowAll.  Default is empty set.
+  //! The set of MPI ranks that will write Markov chain output to a file.  See also m_rawChainDataOutputAllowAll.  Default is empty set.
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  //! Flag to tell QUESO whether or not to compute chain statistics.  Default
-  //! is false.
+  //! Flag to tell QUESO whether or not to compute chain statistics.  Default is false.
   bool                               m_rawChainComputeStats;
 #endif
 
@@ -339,12 +328,10 @@ public:
   //! If not ".", file name to save the filtered chain to.  Default is ".".
   std::string                        m_filteredChainDataOutputFileName;
 
-  //! The filetype of m_filteredChainDataOutputFileName.  Only "m" (matlab) is
-  //! currently supported.  Default is "m"
+  //! The filetype of m_filteredChainDataOutputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
   std::string                        m_filteredChainDataOutputFileType;
 
-  //! Toggle for whether or not to allow all processes to write *filetered*
-  //! Markov chain output to a file
+  //! Toggle for whether or not to allow all processes to write *filetered* Markov chain output to a file
   /*!
    * If true, all processes write filtered Markov chain output and
    * m_filteredChainDataOutputAllowedSet is ignored.
@@ -356,21 +343,17 @@ public:
    */
   bool                               m_filteredChainDataOutputAllowAll;
 
-  //! The set of MPI ranks that will write filtered Markov chain output to a
-  //! file.  See also m_filteredChainDataOutputAllowAll.  Default is empty set.
+  //! The set of MPI ranks that will write filtered Markov chain output to a file.  See also m_filteredChainDataOutputAllowAll.  Default is empty set.
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  //! Toggle to tell QUESO whether or not to compute statistics on the filtered
-  //! chain.  Default is false
+  //! Toggle to tell QUESO whether or not to compute statistics on the filtered chain.  Default is false
   bool                               m_filteredChainComputeStats;
 #endif
 
-  //! Toggle to tell QUESO whether or not to write proposal (candidate) state
-  //! to output file.  Default is false
+  //! Toggle to tell QUESO whether or not to write proposal (candidate) state to output file.  Default is false
   bool                               m_displayCandidates;
 
-  //! Flag to tell QUESO how chains should be upon generating a proposal that
-  //! is out of the problem domain.
+  //! Flag to tell QUESO how chains should be upon generating a proposal that is out of the problem domain.
   /*!
    * If true, the chain will reject any proposal states outside of the
    * problem domain and the chain will *advance* to the next iteration, staying
@@ -385,8 +368,7 @@ public:
    */
   bool                               m_putOutOfBoundsInChain;
 
-  //! Flag to tell QUESO whether or not to use Hessian information for the
-  //! proposal covariance matrix
+  //! Flag to tell QUESO whether or not to use Hessian information for the proposal covariance matrix
   /*!
    * The interaction with delayed rejection:
    *
@@ -425,8 +407,7 @@ public:
    */
   unsigned int                       m_drMaxNumExtraStages;
 
-  //! The vector of scale factors for the proposal covariance matrix to use for
-  //! delayed rejection.
+  //! The vector of scale factors for the proposal covariance matrix to use for delayed rejection.
   /*!
    * Example:
    *
@@ -470,8 +451,7 @@ public:
   //! This option is a no-op.  The default is false.
   bool                               m_amKeepInitialMatrix;
 
-  //! The number of initial samples to do without adapting the proposal
-  //! covariance matrix
+  //! The number of initial samples to do without adapting the proposal covariance matrix
   /*!
    * If positive and the current sampler iteration is <=
    * m_amInitialNonAdaptInterval, then no delayed rejection is done if
@@ -492,8 +472,7 @@ public:
    */
   unsigned int                       m_amAdaptInterval;
 
-  //! The frequency (after m_amInitialNonAdaptInterval samples are done) of
-  //! printing the last adapted proposal covariance matrix.
+  //! The frequency (after m_amInitialNonAdaptInterval samples are done) of printing the last adapted proposal covariance matrix.
   /*!
    * Provided m_amAdaptedMatricesDataOutputFileName is not ".", the last
    * adapted proposal covariance matrix will be written regardless of the value
@@ -508,12 +487,10 @@ public:
    */
   unsigned int                       m_amAdaptedMatricesDataOutputPeriod;
 
-  //! If not ".", this is the file to write adapted proposal covariance
-  //! matrices to.  Default is "."
+  //! If not ".", this is the file to write adapted proposal covariance matrices to.  Default is "."
   std::string                        m_amAdaptedMatricesDataOutputFileName;
 
-  //! The filetype of m_amAdaptedMatricesDataOutputFileName.  Only "m" (matlab)
-  //is currently supported.  Default is "m"
+  //! The filetype of m_amAdaptedMatricesDataOutputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
   std::string                        m_amAdaptedMatricesDataOutputFileType;
 
   //! This option is a no-op.  The default is false.
@@ -547,8 +524,7 @@ public:
    */
   double                             m_amEpsilon;
 
-  //! The frequency with which to compute the Brooks-Gelman convergence
-  //! statistic.
+  //! The frequency with which to compute the Brooks-Gelman convergence statistic.
   /*!
    * If zero, it is not computed.
    *
@@ -574,16 +550,13 @@ public:
    */
   unsigned int                       m_BrooksGelmanLag;
 
-  //! Flag for deciding whether or not to dump log likelihood values in output.
-  //! Default is true.
+  //! Flag for deciding whether or not to dump log likelihood values in output.  Default is true.
   bool m_outputLogLikelihood;
 
-  //! Flag for deciding whether or not to dump log target values in output
-  //! Default is true.
+  //! Flag for deciding whether or not to dump log target values in output Default is true.
   bool m_outputLogTarget;
 
-  //! Flag for deciding whether or not to do logit transform of bounded domains
-  //! Default is true.
+  //! Flag for deciding whether or not to do logit transform of bounded domains Default is true.
   bool m_doLogitTransform;
 
 private:
