@@ -562,68 +562,118 @@ public:
 private:
   BoostInputOptionsParser * m_parser;
 
+  //! Option name for MhOptionsValues::m_help.  Option name is m_prefix + "mh_help"
   std::string                   m_option_help;
 
+  //! Option name for MhOptionsValues::m_dataOutputFileName.  Option name is m_prefix + "mh_dataOutputFileName"
   std::string                   m_option_dataOutputFileName;
+  //! Option name for MhOptionsValues::m_dataOutputAllowAll.  Option name is m_prefix + "mh_dataOutputAllowAll"
   std::string                   m_option_dataOutputAllowAll;
+  //! Option name for MhOptionsValues::m_dataOutputAllowedSet.  Option name is m_prefix + "mh_dataOutputAllowedSet"
   std::string                   m_option_dataOutputAllowedSet;
 
+  //! Option name for MhOptionsValues::m_totallyMute.  Option name is m_prefix + "mh_totallyMute"
   std::string                   m_option_totallyMute;
+  //! Option name for MhOptionsValues::m_initialPositionDataInputFileName.  Option name is m_prefix + "mh_initialPosition_dataInputFileName"
   std::string                   m_option_initialPosition_dataInputFileName;
+  //! Option name for MhOptionsValues::m_initialPositionDataInputFileType.  Option name is m_prefix + "mh_initialPosition_dataInputFileType"
   std::string                   m_option_initialPosition_dataInputFileType;
+  //! Option name for MhOptionsValues::m_initialProposalCovMatrixDataInputFileName.  Option name is m_prefix + "mh_initialProposalCovMatrix_dataInputFileName"
   std::string                   m_option_initialProposalCovMatrix_dataInputFileName;
+  //! Option name for MhOptionsValues::m_initialProposalCovMatrixDataInputFileType.  Option name is m_prefix + "mh_initialProposalCovMatrix_dataInputFileType"
   std::string                   m_option_initialProposalCovMatrix_dataInputFileType;
+  //! Option name for MhOptionsValues::m_parameterDisabledSet.  Option name is m_prefix + "mh_listOfDisabledParameters"
   std::string                   m_option_listOfDisabledParameters;  // gpmsa2
+  //! Option name for MhOptionsValues::m_rawChainDataInputFileName.  Option name is m_prefix + "mh_rawChain_dataInputFileName"
   std::string                   m_option_rawChain_dataInputFileName;
+  //! Option name for MhOptionsValues::m_rawChainDataInputFileType.  Option name is m_prefix + "mh_rawChain_dataInputFileType"
   std::string                   m_option_rawChain_dataInputFileType;
+  //! Option name for MhOptionsValues::m_rawChainSize.  Option name is m_prefix + "mh_rawChain_size"
   std::string                   m_option_rawChain_size;
+  //! Option name for MhOptionsValues::m_rawChainGenerateExtra.  Option name is m_prefix + "mh_rawChain_generateExtra"
   std::string                   m_option_rawChain_generateExtra;
+  //! Option name for MhOptionsValues::m_rawChainDisplayPeriod.  Option name is m_prefix + "mh_rawChain_displayPeriod"
   std::string                   m_option_rawChain_displayPeriod;
+  //! Option name for MhOptionsValues::m_rawChainMeasureRunTimes.  Option name is m_prefix + "mh_rawChain_measureRunTimes"
   std::string                   m_option_rawChain_measureRunTimes;
+  //! Option name for MhOptionsValues::m_rawChainDataOutputPeriod.  Option name is m_prefix + "mh_rawChain_dataOutputPeriod"
   std::string                   m_option_rawChain_dataOutputPeriod;
+  //! Option name for MhOptionsValues::m_rawChainDataOutputFileName.  Option name is m_prefix + "mh_rawChain_dataOutputFileName"
   std::string                   m_option_rawChain_dataOutputFileName;
+  //! Option name for MhOptionsValues::m_rawChainDataOutputFileType.  Option name is m_prefix + "mh_rawChain_dataOutputFileType"
   std::string                   m_option_rawChain_dataOutputFileType;
+  //! Option name for MhOptionsValues::m_rawChainDataOutputAllowAll.  Option name is m_prefix + "mh_rawChain_dataOutputAllowAll"
   std::string                   m_option_rawChain_dataOutputAllowAll;
+  //! Option name for MhOptionsValues::m_rawChainDataOutputAllowedSet.  Option name is m_prefix + "mh_rawChain_dataOutputAllowedSet"
   std::string                   m_option_rawChain_dataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  //! Option name for MhOptionsValues::m_rawChainComputeStats.  Option name is m_prefix + "mh_rawChain_computeStats"
   std::string                   m_option_rawChain_computeStats;
 #endif
+  //! Option name for MhOptionsValues::m_filteredChainGenerate.  Option name is m_prefix + "mh_filteredChain_generate"
   std::string                   m_option_filteredChain_generate;
+  //! Option name for MhOptionsValues::m_filteredChainDiscardedPortion.  Option name is m_prefix + "mh_filteredChain_discardedPortion"
   std::string                   m_option_filteredChain_discardedPortion;
+  //! Option name for MhOptionsValues::m_filteredChainLag.  Option name is m_prefix + "mh_filteredChain_lag"
   std::string                   m_option_filteredChain_lag;
+  //! Option name for MhOptionsValues::m_filteredChainDataOutputFileName.  Option name is m_prefix + "mh_filteredChain_dataOutputFileName"
   std::string                   m_option_filteredChain_dataOutputFileName;
+  //! Option name for MhOptionsValues::m_filteredChainDataOutputFileType.  Option name is m_prefix + "mh_filteredChain_dataOutputFileType"
   std::string                   m_option_filteredChain_dataOutputFileType;
+  //! Option name for MhOptionsValues::m_filteredChainDataOutputAllowAll.  Option name is m_prefix + "mh_filteredChain_dataOutputAllowAll"
   std::string                   m_option_filteredChain_dataOutputAllowAll;
+  //! Option name for MhOptionsValues::m_filteredChainDataOutputAllowedSet.  Option name is m_prefix + "mh_filteredChain_dataOutputAllowedSet"
   std::string                   m_option_filteredChain_dataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  //! Option name for MhOptionsValues::m_filteredChainComputeStats.  Option name is m_prefix + "mh_filteredChain_computeStats"
   std::string                   m_option_filteredChain_computeStats;
 #endif
+  //! Option name for MhOptionsValues::m_displayCandidates.  Option name is m_prefix + "mh_displayCandidates"
   std::string                   m_option_displayCandidates;
+  //! Option name for MhOptionsValues::m_putOutOfBoundsInChain.  Option name is m_prefix + "mh_putOutOfBoundsInChain"
   std::string                   m_option_putOutOfBoundsInChain;
+  //! Option name for MhOptionsValues::m_tkUseLocalHessian.  Option name is m_prefix + "mh_tk_useLocalHessian"
   std::string                   m_option_tk_useLocalHessian;
+  //! Option name for MhOptionsValues::m_tkUseNewtonComponent.  Option name is m_prefix + "mh_tk_useNewtonComponent"
   std::string                   m_option_tk_useNewtonComponent;
+  //! Option name for MhOptionsValues::m_drMaxNumExtraStages.  Option name is m_prefix + "mh_dr_maxNumExtraStages"
   std::string                   m_option_dr_maxNumExtraStages;
+  //! Option name for MhOptionsValues::m_drScalesForExtraStages.  Option name is m_prefix + "mh_dr_listOfScalesForExtraStages"
   std::string                   m_option_dr_listOfScalesForExtraStages;
+  //! Option name for MhOptionsValues::m_drDuringAmNonAdaptiveInt.  Option name is m_prefix + "mh_dr_duringAmNonAdaptiveInt"
   std::string                   m_option_dr_duringAmNonAdaptiveInt;
+  //! Option name for MhOptionsValues::m_amKeepInitialMatrix.  Option name is m_prefix + "mh_am_keepInitialMatrix"
   std::string                   m_option_am_keepInitialMatrix;
+  //! Option name for MhOptionsValues::m_amInitialNonAdaptInterval.  Option name is m_prefix + "mh_am_initialNonAdaptInterval"
   std::string                   m_option_am_initialNonAdaptInterval;
+  //! Option name for MhOptionsValues::m_amAdaptInterval.  Option name is m_prefix + "mh_am_adaptInterval"
   std::string                   m_option_am_adaptInterval;
+  //! Option name for MhOptionsValues::m_amAdaptedMatricesDataOutputPeriod.  Option name is m_prefix + "mh_am_adaptedMatrices_dataOutputPeriod"
   std::string                   m_option_am_adaptedMatrices_dataOutputPeriod;
+  //! Option name for MhOptionsValues::m_amAdaptedMatricesDataOutputFileName.  Option name is m_prefix + "mh_am_adaptedMatrices_dataOutputFileName"
   std::string                   m_option_am_adaptedMatrices_dataOutputFileName;
+  //! Option name for MhOptionsValues::m_amAdaptedMatricesDataOutputFileType.  Option name is m_prefix + "mh_am_adaptedMatrices_dataOutputFileType"
   std::string                   m_option_am_adaptedMatrices_dataOutputFileType;
+  //! Option name for MhOptionsValues::m_amAdaptedMatricesDataOutputAllowAll.  Option name is m_prefix + "mh_am_adaptedMatrices_dataOutputAllowAll"
   std::string                   m_option_am_adaptedMatrices_dataOutputAllowAll;
+  //! Option name for MhOptionsValues::m_amAdaptedMatricesDataOutputAllowedSet.  Option name is m_prefix + "mh_am_adaptedMatrices_dataOutputAllowedSet"
   std::string                   m_option_am_adaptedMatrices_dataOutputAllowedSet;
 
-  //! See MhOptionsValues::m_amEta
+  //! Option name for MhOptionsValues::m_amEta.  Option name is m_prefix + "mh_am_eta"
   std::string                   m_option_am_eta;
-  //! See MhOptionsValues::m_amEpsilon
+  //! Option name for MhOptionsValues::m_amEpsilon.  Option name is m_prefix + "mh_am_epsilon"
   std::string                   m_option_am_epsilon;
 
+  //! Option name for MhOptionsValues::m_enableBrooksGelmanConvMonitor.  Option name is m_prefix + "mh_enableBrooksGelmanConvMonitor"
   std::string                   m_option_enableBrooksGelmanConvMonitor;
+  //! Option name for MhOptionsValues::m_BrooksGelmanLag.  Option name is m_prefix + "mh_BrooksGelmanLag"
   std::string                   m_option_BrooksGelmanLag;
 
+  //! Option name for MhOptionsValues::m_outputLogLikelihood.  Option name is m_prefix + "mh_outputLogLikelihood"
   std::string                   m_option_outputLogLikelihood;
+  //! Option name for MhOptionsValues::m_outputLogTarget.  Option name is m_prefix + "mh_outputLogTarget"
   std::string                   m_option_outputLogTarget;
+  //! Option name for MhOptionsValues::m_doLogitTransform.  Option name is m_prefix + "mh_doLogitTransform"
   std::string                   m_option_doLogitTransform;
 
   //! Copies the option values from \c src to \c this.
