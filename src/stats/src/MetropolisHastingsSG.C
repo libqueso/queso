@@ -2056,18 +2056,20 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       m_logTargets[positionId] = currentPositionData.logTarget();
     }
 
-    if( m_optionsObj->m_enableBrooksGelmanConvMonitor > 0 ) {
-      if( positionId%m_optionsObj->m_enableBrooksGelmanConvMonitor == 0 &&
-    positionId > m_optionsObj->m_BrooksGelmanLag+1 ) { //+1 to help ensure there are at least 2 samples to use
+    if (m_optionsObj->m_enableBrooksGelmanConvMonitor > 0) {
+      if (positionId % m_optionsObj->m_enableBrooksGelmanConvMonitor == 0 &&
+          positionId > m_optionsObj->m_BrooksGelmanLag + 1) {  // +1 to help ensure there are at least 2 samples to use
 
-  double conv_est = workingChain.estimateConvBrooksGelman( m_optionsObj->m_BrooksGelmanLag,
-                 positionId - m_optionsObj->m_BrooksGelmanLag );
+        double conv_est = workingChain.estimateConvBrooksGelman(
+            m_optionsObj->m_BrooksGelmanLag,
+            positionId - m_optionsObj->m_BrooksGelmanLag);
 
-  if ( m_env.subDisplayFile() ) {
-      *m_env.subDisplayFile() << "positionId = " << positionId
-            << ", conv_est = " << conv_est << std::endl;
-      (*m_env.subDisplayFile()).flush();
-  }
+        if (m_env.subDisplayFile()) {
+          *m_env.subDisplayFile() << "positionId = " << positionId
+                                  << ", conv_est = " << conv_est
+                                  << std::endl;
+          (*m_env.subDisplayFile()).flush();
+        }
       }
     }
 
