@@ -235,6 +235,9 @@ private:
                                    ScalarSequence<double>*      workingLogLikelihoodValues,
                                    ScalarSequence<double>*      workingLogTargetValues);
 
+  void adapt(unsigned int positionId,
+      BaseVectorSequence<P_V, P_M> & workingChain);
+
   //! This method reads the chain contents.
   void   readFullChain            (const std::string&                  inputFileName,
                                    const std::string&                  inputFileType,
