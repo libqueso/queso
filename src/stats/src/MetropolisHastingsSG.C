@@ -2236,80 +2236,143 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     }
   }
 
-  // If now is indeed the moment to adapt, then do it!
-  if (partialChain.subSequenceSize() > 0) {
-    P_V transporterVec(m_vectorSpace.zeroVector());
-    for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
-      workingChain.getPositionValues(idOfFirstPositionInSubChain+i,transporterVec);
-
-      // Transform to the space without boundaries.  This is the space
-      // where the proposal distribution is Gaussian
-      if (this->m_optionsObj->m_doLogitTransform == true) {
-        // Only do this when we don't use the Hessian (this may change in
-        // future, but transformToGaussianSpace() is only implemented in
-        // TransformedScaledCovMatrixTKGroup
-        P_V transformedTransporterVec(m_vectorSpace.zeroVector());
-        dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V, P_M>* >(
-            m_tk)->transformToGaussianSpace(transporterVec,
-              transformedTransporterVec);
-        partialChain.setPositionValues(i, transformedTransporterVec);
-      }
-      else {
-        partialChain.setPositionValues(i, transporterVec);
-      }
+  // Bail out if we don't have the samples to adapt
+  if (partialChain.subSequenceSize() == 0) {
+    // Save timings and bail
+    if (m_optionsObj->m_rawChainMeasureRunTimes) {
+      m_rawChainInfo.amRunTime += MiscGetEllapsedSeconds(&timevalAM);
     }
 
-    updateAdaptedCovMatrix(partialChain,
-                           idOfFirstPositionInSubChain,
-                           m_lastChainSize,
-                           *m_lastMean,
-                           *m_lastAdaptedCovMatrix);
+    return;
+  }
 
-    // Print adapted matrix info
-    if ((printAdaptedMatrix == true) &&
-        (m_optionsObj->m_amAdaptedMatricesDataOutputFileName != "." )) {
-      char varNamePrefix[64];
-      sprintf(varNamePrefix,"mat_am%d",positionId);
+  // If now is indeed the moment to adapt, then do it!
+  P_V transporterVec(m_vectorSpace.zeroVector());
+  for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
+    workingChain.getPositionValues(idOfFirstPositionInSubChain+i,transporterVec);
 
-      char tmpChar[64];
-      sprintf(tmpChar,"_am%d",positionId);
+    // Transform to the space without boundaries.  This is the space
+    // where the proposal distribution is Gaussian
+    if (this->m_optionsObj->m_doLogitTransform == true) {
+      // Only do this when we don't use the Hessian (this may change in
+      // future, but transformToGaussianSpace() is only implemented in
+      // TransformedScaledCovMatrixTKGroup
+      P_V transformedTransporterVec(m_vectorSpace.zeroVector());
+      dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V, P_M>* >(
+          m_tk)->transformToGaussianSpace(transporterVec,
+            transformedTransporterVec);
+      partialChain.setPositionValues(i, transformedTransporterVec);
+    }
+    else {
+      partialChain.setPositionValues(i, transporterVec);
+    }
+  }
 
-      std::set<unsigned int> tmpSet;
-      tmpSet.insert(m_env.subId());
+  updateAdaptedCovMatrix(partialChain,
+                         idOfFirstPositionInSubChain,
+                         m_lastChainSize,
+                         *m_lastMean,
+                         *m_lastAdaptedCovMatrix);
 
-      m_lastAdaptedCovMatrix->subWriteContents(varNamePrefix,
-                                               (m_optionsObj->m_amAdaptedMatricesDataOutputFileName+tmpChar),
-                                               m_optionsObj->m_amAdaptedMatricesDataOutputFileType,
-                                               tmpSet);
-      if ((m_env.subDisplayFile()                   ) &&
-          (m_optionsObj->m_totallyMute == false)) {
-        *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
-                                << ": just wrote last adapted proposal cov matrix contents = " << *m_lastAdaptedCovMatrix
-                                << std::endl;
+  // Print adapted matrix info
+  if ((printAdaptedMatrix == true) &&
+      (m_optionsObj->m_amAdaptedMatricesDataOutputFileName != "." )) {
+    char varNamePrefix[64];
+    sprintf(varNamePrefix,"mat_am%d",positionId);
+
+    char tmpChar[64];
+    sprintf(tmpChar,"_am%d",positionId);
+
+    std::set<unsigned int> tmpSet;
+    tmpSet.insert(m_env.subId());
+
+    m_lastAdaptedCovMatrix->subWriteContents(varNamePrefix,
+                                             (m_optionsObj->m_amAdaptedMatricesDataOutputFileName+tmpChar),
+                                             m_optionsObj->m_amAdaptedMatricesDataOutputFileType,
+                                             tmpSet);
+    if ((m_env.subDisplayFile()                   ) &&
+        (m_optionsObj->m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
+                              << ": just wrote last adapted proposal cov matrix contents = " << *m_lastAdaptedCovMatrix
+                              << std::endl;
+    }
+  }
+
+  bool tmpCholIsPositiveDefinite = false;
+  P_M tmpChol(*m_lastAdaptedCovMatrix);
+  P_M attemptedMatrix(tmpChol);
+  if ((m_env.subDisplayFile()        ) &&
+      (m_env.displayVerbosity() >= 10)) {
+//(m_optionsObj->m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
+                            << ", positionId = "  << positionId
+                            << ": 'am' calling first tmpChol.chol()"
+                            << std::endl;
+  }
+  iRC = tmpChol.chol();
+  if (iRC) {
+    std::cerr << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): first chol failed\n";
+  }
+  if ((m_env.subDisplayFile()        ) &&
+      (m_env.displayVerbosity() >= 10)) {
+//(m_optionsObj->m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
+                            << ", positionId = "  << positionId
+                            << ": 'am' got first tmpChol.chol() with iRC = " << iRC
+                            << std::endl;
+    if (iRC == 0) {
+      double diagMult = 1.;
+      for (unsigned int j = 0; j < tmpChol.numRowsLocal(); ++j) {
+        diagMult *= tmpChol(j,j);
       }
-    } // if (printAdaptedMatrix && ...)
+      *m_env.subDisplayFile() << "diagMult = " << diagMult
+                              << std::endl;
+    }
+  }
+#if 0 // tentative logic
+  if (iRC == 0) {
+    double diagMult = 1.;
+    for (unsigned int j = 0; j < tmpChol.numRowsLocal(); ++j) {
+      diagMult *= tmpChol(j,j);
+    }
+    if (diagMult < 1.e-40) {
+      iRC = UQ_MATRIX_IS_NOT_POS_DEFINITE_RC;
+    }
+  }
+#endif
 
-    bool tmpCholIsPositiveDefinite = false;
-    P_M tmpChol(*m_lastAdaptedCovMatrix);
-    P_M attemptedMatrix(tmpChol);
+  if (iRC) {
+    queso_require_equal_to_msg(iRC, UQ_MATRIX_IS_NOT_POS_DEFINITE_RC, "invalid iRC returned from first chol()");
+    // Matrix is not positive definite
+    P_M* tmpDiag = m_vectorSpace.newDiagMatrix(m_optionsObj->m_amEpsilon);
+    if (m_numDisabledParameters > 0) { // gpmsa2
+      for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+        if (m_parameterEnabledStatus[paramId] == false) {
+          (*tmpDiag)(paramId,paramId) = 0.;
+        }
+      }
+    }
+    tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
+    attemptedMatrix = tmpChol;
+    delete tmpDiag;
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
 //(m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
                               << ", positionId = "  << positionId
-                              << ": 'am' calling first tmpChol.chol()"
+                              << ": 'am' calling second tmpChol.chol()"
                               << std::endl;
     }
     iRC = tmpChol.chol();
     if (iRC) {
-      std::cerr << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): first chol failed\n";
+      std::cerr << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): second chol failed\n";
     }
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
 //(m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
-                              << ", positionId = "  << positionId
-                              << ": 'am' got first tmpChol.chol() with iRC = " << iRC
+                              << ", positionId = " << positionId
+                              << ": 'am' got second tmpChol.chol() with iRC = " << iRC
                               << std::endl;
       if (iRC == 0) {
         double diagMult = 1.;
@@ -2319,111 +2382,56 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
         *m_env.subDisplayFile() << "diagMult = " << diagMult
                                 << std::endl;
       }
-    }
-#if 0 // tentative logic
-    if (iRC == 0) {
-      double diagMult = 1.;
-      for (unsigned int j = 0; j < tmpChol.numRowsLocal(); ++j) {
-        diagMult *= tmpChol(j,j);
-      }
-      if (diagMult < 1.e-40) {
-        iRC = UQ_MATRIX_IS_NOT_POS_DEFINITE_RC;
-      }
-    }
-#endif
-
-    if (iRC) {
-      queso_require_equal_to_msg(iRC, UQ_MATRIX_IS_NOT_POS_DEFINITE_RC, "invalid iRC returned from first chol()");
-      // Matrix is not positive definite
-      P_M* tmpDiag = m_vectorSpace.newDiagMatrix(m_optionsObj->m_amEpsilon);
-      if (m_numDisabledParameters > 0) { // gpmsa2
-        for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
-          if (m_parameterEnabledStatus[paramId] == false) {
-            (*tmpDiag)(paramId,paramId) = 0.;
-          }
-        }
-      }
-      tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
-      attemptedMatrix = tmpChol;
-      delete tmpDiag;
-      if ((m_env.subDisplayFile()        ) &&
-          (m_env.displayVerbosity() >= 10)) {
-  //(m_optionsObj->m_totallyMute == false)) {
-        *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
-                                << ", positionId = "  << positionId
-                                << ": 'am' calling second tmpChol.chol()"
-                                << std::endl;
-      }
-      iRC = tmpChol.chol();
-      if (iRC) {
-        std::cerr << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): second chol failed\n";
-      }
-      if ((m_env.subDisplayFile()        ) &&
-          (m_env.displayVerbosity() >= 10)) {
-  //(m_optionsObj->m_totallyMute == false)) {
-        *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
-                                << ", positionId = " << positionId
-                                << ": 'am' got second tmpChol.chol() with iRC = " << iRC
-                                << std::endl;
-        if (iRC == 0) {
-          double diagMult = 1.;
-          for (unsigned int j = 0; j < tmpChol.numRowsLocal(); ++j) {
-            diagMult *= tmpChol(j,j);
-          }
-          *m_env.subDisplayFile() << "diagMult = " << diagMult
-                                  << std::endl;
-        }
-        else {
-          *m_env.subDisplayFile() << "attemptedMatrix = " << attemptedMatrix // FIX ME: might demand parallelism
-                                  << std::endl;
-        }
-      }
-      if (iRC) {
-        queso_require_equal_to_msg(iRC, UQ_MATRIX_IS_NOT_POS_DEFINITE_RC, "invalid iRC returned from second chol()");
-        // Do nothing
-      }
       else {
-        tmpCholIsPositiveDefinite = true;
+        *m_env.subDisplayFile() << "attemptedMatrix = " << attemptedMatrix // FIX ME: might demand parallelism
+                                << std::endl;
       }
+    }
+    if (iRC) {
+      queso_require_equal_to_msg(iRC, UQ_MATRIX_IS_NOT_POS_DEFINITE_RC, "invalid iRC returned from second chol()");
+      // Do nothing
     }
     else {
       tmpCholIsPositiveDefinite = true;
     }
-    if (tmpCholIsPositiveDefinite) {
-      P_M tmpMatrix(m_optionsObj->m_amEta*attemptedMatrix);
-      if (m_numDisabledParameters > 0) { // gpmsa2
-        for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
-          if (m_parameterEnabledStatus[paramId] == false) {
-            for (unsigned int i = 0; i < m_vectorSpace.dimLocal(); ++i) {
-              tmpMatrix(i,paramId) = 0.;
-            }
-            for (unsigned int j = 0; j < m_vectorSpace.dimLocal(); ++j) {
-              tmpMatrix(paramId,j) = 0.;
-            }
-            tmpMatrix(paramId,paramId) = 1.;
+  }
+  else {
+    tmpCholIsPositiveDefinite = true;
+  }
+
+  if (tmpCholIsPositiveDefinite) {
+    P_M tmpMatrix(m_optionsObj->m_amEta*attemptedMatrix);
+    if (m_numDisabledParameters > 0) { // gpmsa2
+      for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+        if (m_parameterEnabledStatus[paramId] == false) {
+          for (unsigned int i = 0; i < m_vectorSpace.dimLocal(); ++i) {
+            tmpMatrix(i,paramId) = 0.;
           }
+          for (unsigned int j = 0; j < m_vectorSpace.dimLocal(); ++j) {
+            tmpMatrix(paramId,j) = 0.;
+          }
+          tmpMatrix(paramId,paramId) = 1.;
         }
       }
-      if (this->m_optionsObj->m_doLogitTransform) {
-        (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
-          ->updateLawCovMatrix(tmpMatrix);
-      }
-      else{
-        (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
-          ->updateLawCovMatrix(tmpMatrix);
-      }
-
-#ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
-      queso_require_msg(!(UQ_INCOMPLETE_IMPLEMENTATION_RC), "need to code the update of m_upperCholProposalPrecMatrices");
-#endif
+    }
+    if (this->m_optionsObj->m_doLogitTransform) {
+      (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+        ->updateLawCovMatrix(tmpMatrix);
+    }
+    else{
+      (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+        ->updateLawCovMatrix(tmpMatrix);
     }
 
-    //for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
-    //  if (partialChain[i]) delete partialChain[i];
-    //}
-  } // if (partialChain.subSequenceSize() > 0)
+#ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
+    queso_require_msg(!(UQ_INCOMPLETE_IMPLEMENTATION_RC), "need to code the update of m_upperCholProposalPrecMatrices");
+#endif
+  }
 
-      //
+  //for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
+  //  if (partialChain[i]) delete partialChain[i];
+  //}
+
   if (m_optionsObj->m_rawChainMeasureRunTimes) {
     m_rawChainInfo.amRunTime += MiscGetEllapsedSeconds(&timevalAM);
   }
@@ -2459,7 +2467,6 @@ MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix(
   }
   else {
     queso_require_greater_equal_msg(partialChain.subSequenceSize(), 1, "'partialChain.subSequenceSize()' should be >= 1");
-
     queso_require_greater_equal_msg(idOfFirstPositionInSubChain, 1, "'idOfFirstPositionInSubChain' should be >= 1");
 
     P_V tmpVec (m_vectorSpace.zeroVector());
