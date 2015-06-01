@@ -2312,7 +2312,11 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
   }
   iRC = tmpChol.chol();
   if (iRC) {
-    std::cerr << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): first chol failed\n";
+    std::string err1 = "In MetropolisHastingsSG<P_V,P_M>::adapt(): first ";
+    err1 += "Cholesky factorisation of proposal covariance matrix ";
+    err1 += "failed.  QUESO will now attempt to regularise the ";
+    err1 += "matrix before proceeding.  This is not a fatal error.";
+    std::cerr << err1 << std::endl;
   }
 
   // Print some infor about the Cholesky factorisation
@@ -2373,7 +2377,12 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     // Trying the second (regularised Cholesky factorisation)
     iRC = tmpChol.chol();
     if (iRC) {
-      std::cerr << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): second chol failed\n";
+      std::string err2 = "In MetropolisHastingsSG<P_V,P_M>::adapt(): second ";
+      err2 += "Cholesky factorisation of (regularised) proposal ";
+      err2 += "covariance matrix failed.  QUESO is falling back to ";
+      err2 += "the last factorisable proposal covariance matrix.  ";
+      err2 += "This is not a fatal error.";
+      std::cerr << err2 << std::endl;
     }
 
     // Print some diagnostic info
