@@ -2298,6 +2298,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     }
   }
 
+  // Check if adapted matrix is positive definite
   bool tmpCholIsPositiveDefinite = false;
   P_M tmpChol(*m_lastAdaptedCovMatrix);
   P_M attemptedMatrix(tmpChol);
@@ -2313,6 +2314,8 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
   if (iRC) {
     std::cerr << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): first chol failed\n";
   }
+
+  // Print some infor about the Cholesky factorisation
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
 //(m_optionsObj->m_totallyMute == false)) {
@@ -2329,6 +2332,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
                               << std::endl;
     }
   }
+
 #if 0 // tentative logic
   if (iRC == 0) {
     double diagMult = 1.;
@@ -2341,6 +2345,8 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
   }
 #endif
 
+  // If the Cholesky factorisation failed, add a regularisation to the
+  // diagonal components (of size m_amEpsilon) and try the factorisation again
   if (iRC) {
     queso_require_equal_to_msg(iRC, UQ_MATRIX_IS_NOT_POS_DEFINITE_RC, "invalid iRC returned from first chol()");
     // Matrix is not positive definite
@@ -2355,21 +2361,24 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
     attemptedMatrix = tmpChol;
     delete tmpDiag;
+
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
-//(m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
                               << ", positionId = "  << positionId
                               << ": 'am' calling second tmpChol.chol()"
                               << std::endl;
     }
+
+    // Trying the second (regularised Cholesky factorisation)
     iRC = tmpChol.chol();
     if (iRC) {
       std::cerr << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): second chol failed\n";
     }
+
+    // Print some diagnostic info
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
-//(m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
                               << ", positionId = " << positionId
                               << ": 'am' got second tmpChol.chol() with iRC = " << iRC
@@ -2387,6 +2396,8 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
                                 << std::endl;
       }
     }
+
+    // If the second (regularised) Cholesky factorisation failed, do nothing
     if (iRC) {
       queso_require_equal_to_msg(iRC, UQ_MATRIX_IS_NOT_POS_DEFINITE_RC, "invalid iRC returned from second chol()");
       // Do nothing
@@ -2399,6 +2410,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     tmpCholIsPositiveDefinite = true;
   }
 
+  // If the adapted matrix is pos. def., scale by \eta (s_d in Haario paper)
   if (tmpCholIsPositiveDefinite) {
     P_M tmpMatrix(m_optionsObj->m_amEta*attemptedMatrix);
     if (m_numDisabledParameters > 0) { // gpmsa2
@@ -2414,6 +2426,9 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
         }
       }
     }
+
+    // Transform the proposal covariance matrix if we have Logit transforms
+    // turned on
     if (this->m_optionsObj->m_doLogitTransform) {
       (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
         ->updateLawCovMatrix(tmpMatrix);
@@ -2428,6 +2443,8 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 #endif
   }
 
+  // FIXME: What is this for?  Check the destructor frees the memory and nuke
+  //        the commented code below
   //for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
   //  if (partialChain[i]) delete partialChain[i];
   //}
