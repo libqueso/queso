@@ -78,7 +78,8 @@ int main(int argc, char ** argv) {
   sipOptions.m_dataOutputAllowedSet.clear();
   sipOptions.m_dataOutputAllowedSet.insert(0);
 
-  QUESO::StatisticalInverseProblem<> ip("", NULL, priorRv, lhood, postRv);
+  QUESO::StatisticalInverseProblem<> ip("", &sipOptions, priorRv, lhood,
+      postRv);
 
   QUESO::GslVector paramInitials(paramSpace.zeroVector());
   paramInitials[0] = 0.0;
