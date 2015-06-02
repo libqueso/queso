@@ -29,10 +29,11 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
+#define UQ_ML_SAMPLING_L_HELP                                                 ""
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
 #define UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV                      UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
@@ -113,7 +114,7 @@ namespace QUESO {
  * of the sequece generated. This class provides default values for such options if no
  * input file is available. */
 
-class MLSamplingLevelOptions : public BaseInputOptions
+class MLSamplingLevelOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -144,6 +145,9 @@ public:
   void print            (std::ostream& os) const;
   //@}
   std::string                        m_prefix;
+
+  //! If non-empty string, print options and values to output file
+  std::string m_help;
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -347,11 +351,12 @@ public:
 private:
   //! Copies the option values from \c srcOptions to \c this.
   void   copyOptionsValues(const MLSamplingLevelOptions& srcOptions);
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
+  void getAllOptions();
+  void defineAllOptions();
 
   const BaseEnvironment&        m_env;
+
+  BoostInputOptionsParser * m_parser;
 
   std::string                   m_option_help;
 
@@ -424,9 +429,13 @@ private:
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
   std::string                   m_option_doLogitTransform;
+
+  void checkOptions(const BaseEnvironment * env);
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const MLSamplingLevelOptions & obj);
 };
 
-std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptions& obj);
 
 }  // End namespace QUESO
 

@@ -30,7 +30,7 @@
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV   "0."
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -77,6 +77,11 @@
 #define UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV           0
 #define UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV          0
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
 
 /*!\file SequenceStatisticalOptions.h
  * \brief A templated class that stores default statistical options
@@ -86,8 +91,7 @@
  *    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence.
  */
 
-
-class SsOptionsValues : public BaseInputOptions
+class SsOptionsValues
 {
 public:
   //! @name Constructor/Destructor methods
@@ -198,6 +202,8 @@ public:
   //@}
   // end public attributes
 private:
+  BoostInputOptionsParser * m_parser;
+
   std::string                   m_option_help;
   std::string                   m_option_initialDiscardedPortions;
 
@@ -245,9 +251,6 @@ private:
   std::string                   m_option_cdfStacc_compute;
   std::string                   m_option_cdfStacc_numEvalPositions;
 #endif
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   //! Copies the option values from \c src to \c this.
   void copy(const SsOptionsValues& src);
@@ -379,14 +382,14 @@ public:
 
 private:
   //! Defines the options for the chain
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Reads the chain options
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   std::string                   m_prefix;
   const BaseEnvironment& m_env;
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
   std::string                   m_option_initialDiscardedPortions;

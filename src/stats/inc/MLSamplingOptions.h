@@ -27,7 +27,7 @@
 
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE "."
 
@@ -35,6 +35,7 @@
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 
+#define UQ_ML_SAMPLING_HELP                                    ""
 #define UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV         0
 #define UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV  UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
@@ -65,7 +66,7 @@ namespace QUESO {
  *  Multilevel sequence generator expects options for its methods. This class provides default
  *  values for such options if no input file is available. */
 
-class MLSamplingOptions : public BaseInputOptions
+class MLSamplingOptions
 {
 public:
   //! @name Constructor/Destructor methods
@@ -86,6 +87,9 @@ public:
 
   //! Class prefix. (ml)
   std::string            m_prefix;
+
+  //! If non-empty string, options and values are printed to the output file
+  std::string m_help;
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   //! Period of restart output file (level).
@@ -120,10 +124,9 @@ public:
   std::set<unsigned int> m_dataOutputAllowedSet;
 
 private:
-  virtual void defineOptions();
-  virtual void getOptionValues();
-
   const BaseEnvironment& m_env;
+
+  BoostInputOptionsParser * m_parser;
 
   std::string                   m_option_help;
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
@@ -140,9 +143,13 @@ private:
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowAll;
   std::string                   m_option_dataOutputAllowedSet;
+
+  void checkOptions(const BaseEnvironment * env);
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const MLSamplingOptions & obj);
 };
 
-std::ostream& operator<<(std::ostream& os, const MLSamplingOptions& obj);
 
 }  // End namespace QUESO
 

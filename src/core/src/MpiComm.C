@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <unistd.h>
 #include <queso/MpiComm.h>
 #include <queso/Environment.h>
 

@@ -1,6 +1,7 @@
 #include <mpi.h>
 
 #include <queso/Environment.h>
+#include <queso/EnvironmentOptions.h>
 #include <queso/VectorSpace.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>

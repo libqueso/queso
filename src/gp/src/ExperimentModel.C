@@ -63,12 +63,6 @@ ExperimentModel<S_V,S_M,D_V,D_M>::ExperimentModel(
   if (m_optionsObj == NULL) {
     EmOptionsValues * tempOptions = new EmOptionsValues(&m_env, prefix);
 
-    // If there's an input file, we grab the options from there.  Otherwise the
-    // defaults are used
-    if (m_env.optionsInputFileName() != "") {
-      tempOptions->scanOptionsValues();
-    }
-
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;

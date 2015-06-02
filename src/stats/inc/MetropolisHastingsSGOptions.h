@@ -28,7 +28,7 @@
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
 #include <queso/SequenceStatisticalOptions.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #undef  UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
@@ -36,6 +36,7 @@
 #define UQ_MH_SG_FILENAME_FOR_NO_FILE   "."
 
 // _ODV = option default value
+#define UQ_MH_SG_HELP                                                 ""
 #define UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                            UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                            0
 #define UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                          ""
@@ -93,7 +94,15 @@
 #define UQ_MH_SG_OUTPUT_LOG_TARGET                                    1
 #define UQ_MH_SG_DO_LOGIT_TRANSFORM                                   1
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
+
 namespace QUESO {
+
+class BaseEnvironment;
 
 /*! \file MetropolisHastingsSGOptions.h
     \brief Classes to allow options to be passed to a Metropolis-Hastings algorithm.
@@ -108,7 +117,7 @@ namespace QUESO {
  * options if no input file is available.
  */
 
-class MhOptionsValues : public BaseInputOptions
+class MhOptionsValues
 {
 public:
 
@@ -146,6 +155,9 @@ public:
   //@}
 
   std::string                        m_prefix;
+
+  //! If non-empty string, print options and values to the output file
+  std::string m_help;
 
   std::string                        m_dataOutputFileName;
   bool                               m_dataOutputAllowAll;
@@ -252,6 +264,8 @@ public:
   bool m_doLogitTransform;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   std::string                   m_option_help;
 
   std::string                   m_option_dataOutputFileName;
@@ -316,11 +330,15 @@ private:
   std::string                   m_option_outputLogTarget;
   std::string                   m_option_doLogitTransform;
 
-  virtual void defineOptions();
-  virtual void getOptionValues();
-
   //! Copies the option values from \c src to \c this.
   void copy(const MhOptionsValues& src);
+
+  // We pass the the passed environment to get access to the MPI ranks etc for
+  // sanity checks
+  void checkOptions(const BaseEnvironment * env);
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const MhOptionsValues & obj);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   friend class MetropolisHastingsSGOptions;
@@ -384,13 +402,13 @@ public:
 
 private:
   //! Defines the options for the Metropolis-Hastings generator of samples as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the sequence options defined to the  Metropolis-Hastings algorithm.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
 

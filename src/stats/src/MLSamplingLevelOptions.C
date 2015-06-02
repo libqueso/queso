@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/MLSamplingLevelOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -31,8 +33,8 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   const BaseEnvironment& env,
   const char*                   prefix)
   :
-    BaseInputOptions(&env),
     m_prefix                                   ((std::string)(prefix) + ""),
+    m_help                                     (UQ_ML_SAMPLING_L_HELP),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
     m_checkpointOutputFileName                 (UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV),
@@ -111,6 +113,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
     m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
     m_env                                      (env),
+    m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
     m_option_help                                      (m_prefix + "help"                                      ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -180,6 +183,156 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
     m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
+  this->defineAllOptions();
+  m_parser->scanInputFile();
+  this->getAllOptions();
+  checkOptions(&env);
+}
+
+void
+MLSamplingLevelOptions::defineAllOptions()
+{
+  m_parser->registerOption<std::string >(m_option_help,                                       UQ_ML_SAMPLING_L_HELP                      , "produce help message for Bayesian Markov chain distr. calculator");
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
+  m_parser->registerOption<std::string >(m_option_checkpointOutputFileName,                   m_checkpointOutputFileName                 , "name of checpoint output file"                                   );
+#endif
+  m_parser->registerOption<bool        >(m_option_stopAtEnd,                                  m_stopAtEnd                                , "stop at end of such level"                                       );
+  m_parser->registerOption<std::string >(m_option_dataOutputFileName,                         m_dataOutputFileName                       , "name of generic output file"                                     );
+  m_parser->registerOption<bool        >(m_option_dataOutputAllowAll,                         m_dataOutputAllowAll                       , "subEnvs that will write to generic output file"                  );
+  m_parser->registerOption<std::string >(m_option_dataOutputAllowedSet,                       m_str1                                     , "subEnvs that will write to generic output file"                  );
+  m_parser->registerOption<unsigned int>(m_option_loadBalanceAlgorithmId,                     m_loadBalanceAlgorithmId                   , "Perform load balancing with chosen algorithm (0 = no balancing)" );
+  m_parser->registerOption<double      >(m_option_loadBalanceTreshold,                        m_loadBalanceTreshold                      , "Perform load balancing if load unbalancing ratio > treshold"     );
+  m_parser->registerOption<double      >(m_option_minEffectiveSizeRatio,                      m_minEffectiveSizeRatio                    , "minimum allowed effective size ratio wrt previous level"         );
+  m_parser->registerOption<double      >(m_option_maxEffectiveSizeRatio,                      m_maxEffectiveSizeRatio                    , "maximum allowed effective size ratio wrt previous level"         );
+  m_parser->registerOption<bool        >(m_option_scaleCovMatrix,                             m_scaleCovMatrix                           , "scale proposal covariance matrix"                                );
+  m_parser->registerOption<double      >(m_option_minRejectionRate,                           m_minRejectionRate                         , "minimum allowed attempted rejection rate at current level"       );
+  m_parser->registerOption<double      >(m_option_maxRejectionRate,                           m_maxRejectionRate                         , "maximum allowed attempted rejection rate at current level"       );
+  m_parser->registerOption<double      >(m_option_covRejectionRate,                           m_covRejectionRate                         , "c.o.v. for judging attempted rejection rate at current level"    );
+  m_parser->registerOption<double      >(m_option_minAcceptableEta,                           m_minAcceptableEta                         , "min acceptable eta"                                              );
+  m_parser->registerOption<bool        >(m_option_totallyMute,                                m_totallyMute                              , "totally mute (no printout message)"                              );
+  m_parser->registerOption<std::string >(m_option_initialPosition_dataInputFileName,          m_initialPositionDataInputFileName         , "name of input file for initial position"                         );
+  m_parser->registerOption<std::string >(m_option_initialPosition_dataInputFileType,          m_initialPositionDataInputFileType         , "type of input file for initial position"                         );
+  m_parser->registerOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileName, m_initialProposalCovMatrixDataInputFileName, "name of input file for initial proposal covariance matrix"       );
+  m_parser->registerOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileType, m_initialProposalCovMatrixDataInputFileType, "type of input file for initial proposal covariance matrix"       );
+  m_parser->registerOption<bool        >(m_option_initialPositionUsePreviousLevelLikelihood,  m_initialPositionUsePreviousLevelLikelihood, "use previous level likelihood for initial chain position instead of re-computing from target pdf");
+  m_parser->registerOption<std::string >(m_option_listOfDisabledParameters,                   m_str2                                     , "list of disabled parameters"                                     );  // gpmsa2
+  m_parser->registerOption<std::string >(m_option_initialValuesOfDisabledParameters,          m_str3                                     , "initial values of disabled parameters"                           );  // gpmsa2
+  m_parser->registerOption<std::string >(m_option_rawChain_dataInputFileName,                 m_rawChainDataInputFileName                , "name of input file for raw chain "                               );
+  m_parser->registerOption<std::string >(m_option_rawChain_dataInputFileType,                 m_rawChainDataInputFileType                , "type of input file for raw chain "                               );
+  m_parser->registerOption<unsigned int>(m_option_rawChain_size,                              m_rawChainSize                             , "size of raw chain"                                               );
+  m_parser->registerOption<bool        >(m_option_rawChain_generateExtra,                     m_rawChainGenerateExtra                    , "generate extra information about raw chain"                      );
+  m_parser->registerOption<unsigned int>(m_option_rawChain_displayPeriod,                     m_rawChainDisplayPeriod                    , "period of message display during raw chain generation"           );
+  m_parser->registerOption<bool        >(m_option_rawChain_measureRunTimes,                   m_rawChainMeasureRunTimes                  , "measure run times"                                               );
+  m_parser->registerOption<unsigned int>(m_option_rawChain_dataOutputPeriod,                  m_rawChainDataOutputPeriod                 , "period of message display during raw chain generation"           );
+  m_parser->registerOption<std::string >(m_option_rawChain_dataOutputFileName,                m_rawChainDataOutputFileName               , "name of output file for raw chain "                              );
+  m_parser->registerOption<std::string >(m_option_rawChain_dataOutputFileType,                m_rawChainDataOutputFileType               , "type of output file for raw chain "                              );
+  m_parser->registerOption<bool        >(m_option_rawChain_dataOutputAllowAll,                m_rawChainDataOutputAllowAll               , "subEnvs that will write to output file for raw chain"            );
+  m_parser->registerOption<std::string >(m_option_rawChain_dataOutputAllowedSet,              m_str4                                     , "subEnvs that will write to output file for raw chain"            );
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_parser->registerOption<bool        >(m_option_rawChain_computeStats,                      m_rawChainComputeStats                     , "compute statistics on raw chain"                                 );
+#endif
+  m_parser->registerOption<bool        >(m_option_filteredChain_generate,                     m_filteredChainGenerate                    , "generate filtered chain"                                         );
+  m_parser->registerOption<double      >(m_option_filteredChain_discardedPortion,             m_filteredChainDiscardedPortion            , "initial discarded portion for chain filtering"                   );
+  m_parser->registerOption<unsigned int>(m_option_filteredChain_lag,                          m_filteredChainLag                         , "spacing for chain filtering"                                     );
+  m_parser->registerOption<std::string >(m_option_filteredChain_dataOutputFileName,           m_filteredChainDataOutputFileName          , "name of output file for filtered chain"                          );
+  m_parser->registerOption<std::string >(m_option_filteredChain_dataOutputFileType,           m_filteredChainDataOutputFileType          , "type of output file for filtered chain"                          );
+  m_parser->registerOption<bool        >(m_option_filteredChain_dataOutputAllowAll,           m_filteredChainDataOutputAllowAll          , "subEnvs that will write to output file for filtered chain"       );
+  m_parser->registerOption<std::string >(m_option_filteredChain_dataOutputAllowedSet,         m_str5                                     , "subEnvs that will write to output file for filtered chain"       );
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_parser->registerOption<bool        >(m_option_filteredChain_computeStats,                 m_filteredChainComputeStats                , "compute statistics on filtered chain"                            );
+#endif
+  m_parser->registerOption<bool        >(m_option_displayCandidates,                          m_displayCandidates                        , "display candidates generated in the core MH algorithm"           );
+  m_parser->registerOption<bool        >(m_option_putOutOfBoundsInChain,                      m_putOutOfBoundsInChain                    , "put 'out of bound' candidates in chain as well"                  );
+  m_parser->registerOption<bool        >(m_option_tk_useLocalHessian,                         m_tkUseLocalHessian                        , "'proposal' use local Hessian"                                    );
+  m_parser->registerOption<bool        >(m_option_tk_useNewtonComponent,                      m_tkUseNewtonComponent                     , "'proposal' use Newton component"                                 );
+  m_parser->registerOption<unsigned int>(m_option_dr_maxNumExtraStages,                       m_drMaxNumExtraStages                      , "'dr' maximum number of extra stages"                             );
+  m_parser->registerOption<std::string >(m_option_dr_listOfScalesForExtraStages,              m_str6                                     , "'dr' list of scales for proposal cov matrices from 2nd stage on" );
+  m_parser->registerOption<bool        >(m_option_dr_duringAmNonAdaptiveInt,                  m_drDuringAmNonAdaptiveInt                 , "'dr' used during 'am' non adaptive interval"                     );
+  m_parser->registerOption<bool        >(m_option_am_keepInitialMatrix,                       m_amKeepInitialMatrix                      , "'am' keep initial (given) matrix"                                );
+  m_parser->registerOption<unsigned int>(m_option_am_initialNonAdaptInterval,                 m_amInitialNonAdaptInterval                , "'am' initial non adaptation interval"                            );
+  m_parser->registerOption<unsigned int>(m_option_am_adaptInterval,                           m_amAdaptInterval                          , "'am' adaptation interval"                                        );
+  m_parser->registerOption<unsigned int>(m_option_am_adaptedMatrices_dataOutputPeriod,        m_amAdaptedMatricesDataOutputPeriod        , "period for outputing 'am' adapted matrices"                      );
+  m_parser->registerOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileName,      m_amAdaptedMatricesDataOutputFileName      , "name of output file for 'am' adapted matrices"                   );
+  m_parser->registerOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileType,      m_amAdaptedMatricesDataOutputFileType      , "type of output file for 'am' adapted matrices"                   );
+  m_parser->registerOption<bool        >(m_option_am_adaptedMatrices_dataOutputAllowAll,      m_amAdaptedMatricesDataOutputAllowAll      , "type of output file for 'am' adapted matrices"                   );
+  m_parser->registerOption<std::string >(m_option_am_adaptedMatrices_dataOutputAllowedSet,    m_str7                                     , "type of output file for 'am' adapted matrices"                   );
+  m_parser->registerOption<double      >(m_option_am_eta,                                     m_amEta                                    , "'am' eta"                                                        );
+  m_parser->registerOption<double      >(m_option_am_epsilon,                                 m_amEpsilon                                , "'am' epsilon"                                                    );
+  m_parser->registerOption<bool        >(m_option_doLogitTransform,                           UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        , "flag for doing logit transform for bounded domains"              );
+}
+
+void
+MLSamplingLevelOptions::getAllOptions()
+{
+  m_parser->getOption<std::string >(m_option_help,                                       m_help);
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
+  m_parser->getOption<std::string >(m_option_checkpointOutputFileName,                   m_checkpointOutputFileName                 );
+#endif
+  m_parser->getOption<bool        >(m_option_stopAtEnd,                                  m_stopAtEnd                                );
+  m_parser->getOption<std::string >(m_option_dataOutputFileName,                         m_dataOutputFileName                       );
+  m_parser->getOption<bool        >(m_option_dataOutputAllowAll,                         m_dataOutputAllowAll                       );
+  m_parser->getOption<std::set<unsigned int> >(m_option_dataOutputAllowedSet,                       m_dataOutputAllowedSet);
+  m_parser->getOption<unsigned int>(m_option_loadBalanceAlgorithmId,                     m_loadBalanceAlgorithmId                   );
+  m_parser->getOption<double      >(m_option_loadBalanceTreshold,                        m_loadBalanceTreshold                      );
+  m_parser->getOption<double      >(m_option_minEffectiveSizeRatio,                      m_minEffectiveSizeRatio                    );
+  m_parser->getOption<double      >(m_option_maxEffectiveSizeRatio,                      m_maxEffectiveSizeRatio                    );
+  m_parser->getOption<bool        >(m_option_scaleCovMatrix,                             m_scaleCovMatrix                           );
+  m_parser->getOption<double      >(m_option_minRejectionRate,                           m_minRejectionRate                         );
+  m_parser->getOption<double      >(m_option_maxRejectionRate,                           m_maxRejectionRate                         );
+  m_parser->getOption<double      >(m_option_covRejectionRate,                           m_covRejectionRate                         );
+  m_parser->getOption<double      >(m_option_minAcceptableEta,                           m_minAcceptableEta                         );
+  m_parser->getOption<bool        >(m_option_totallyMute,                                m_totallyMute                              );
+  m_parser->getOption<std::string >(m_option_initialPosition_dataInputFileName,          m_initialPositionDataInputFileName         );
+  m_parser->getOption<std::string >(m_option_initialPosition_dataInputFileType,          m_initialPositionDataInputFileType         );
+  m_parser->getOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileName, m_initialProposalCovMatrixDataInputFileName);
+  m_parser->getOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileType, m_initialProposalCovMatrixDataInputFileType);
+  m_parser->getOption<bool        >(m_option_initialPositionUsePreviousLevelLikelihood,  m_initialPositionUsePreviousLevelLikelihood);
+  m_parser->getOption<std::set<unsigned int> >(m_option_listOfDisabledParameters,                   m_parameterDisabledSet);  // gpmsa2
+  m_parser->getOption<std::vector<double> >(m_option_initialValuesOfDisabledParameters,          m_initialValuesOfDisabledParameters);  // gpmsa2
+  m_parser->getOption<std::string >(m_option_rawChain_dataInputFileName,                 m_rawChainDataInputFileName                );
+  m_parser->getOption<std::string >(m_option_rawChain_dataInputFileType,                 m_rawChainDataInputFileType                );
+  m_parser->getOption<unsigned int>(m_option_rawChain_size,                              m_rawChainSize                             );
+  m_parser->getOption<bool        >(m_option_rawChain_generateExtra,                     m_rawChainGenerateExtra                    );
+  m_parser->getOption<unsigned int>(m_option_rawChain_displayPeriod,                     m_rawChainDisplayPeriod                    );
+  m_parser->getOption<bool        >(m_option_rawChain_measureRunTimes,                   m_rawChainMeasureRunTimes                  );
+  m_parser->getOption<unsigned int>(m_option_rawChain_dataOutputPeriod,                  m_rawChainDataOutputPeriod                 );
+  m_parser->getOption<std::string >(m_option_rawChain_dataOutputFileName,                m_rawChainDataOutputFileName               );
+  m_parser->getOption<std::string >(m_option_rawChain_dataOutputFileType,                m_rawChainDataOutputFileType               );
+  m_parser->getOption<bool        >(m_option_rawChain_dataOutputAllowAll,                m_rawChainDataOutputAllowAll               );
+  m_parser->getOption<std::set<unsigned int> >(m_option_rawChain_dataOutputAllowedSet,              m_rawChainDataOutputAllowedSet);
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_parser->getOption<bool        >(m_option_rawChain_computeStats,                      m_rawChainComputeStats                     );
+#endif
+  m_parser->getOption<bool        >(m_option_filteredChain_generate,                     m_filteredChainGenerate                    );
+  m_parser->getOption<double      >(m_option_filteredChain_discardedPortion,             m_filteredChainDiscardedPortion            );
+  m_parser->getOption<unsigned int>(m_option_filteredChain_lag,                          m_filteredChainLag                         );
+  m_parser->getOption<std::string >(m_option_filteredChain_dataOutputFileName,           m_filteredChainDataOutputFileName          );
+  m_parser->getOption<std::string >(m_option_filteredChain_dataOutputFileType,           m_filteredChainDataOutputFileType          );
+  m_parser->getOption<bool        >(m_option_filteredChain_dataOutputAllowAll,           m_filteredChainDataOutputAllowAll          );
+  m_parser->getOption<std::set<unsigned int> >(m_option_filteredChain_dataOutputAllowedSet,         m_filteredChainDataOutputAllowedSet);
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_parser->getOption<bool        >(m_option_filteredChain_computeStats,                 m_filteredChainComputeStats                );
+#endif
+  m_parser->getOption<bool        >(m_option_displayCandidates,                          m_displayCandidates                        );
+  m_parser->getOption<bool        >(m_option_putOutOfBoundsInChain,                      m_putOutOfBoundsInChain                    );
+  m_parser->getOption<bool        >(m_option_tk_useLocalHessian,                         m_tkUseLocalHessian                        );
+  m_parser->getOption<bool        >(m_option_tk_useNewtonComponent,                      m_tkUseNewtonComponent                     );
+  m_parser->getOption<unsigned int>(m_option_dr_maxNumExtraStages,                       m_drMaxNumExtraStages                      );
+  m_parser->getOption<std::vector<double> >(m_option_dr_listOfScalesForExtraStages,              m_drScalesForExtraStages);
+  m_parser->getOption<bool        >(m_option_dr_duringAmNonAdaptiveInt,                  m_drDuringAmNonAdaptiveInt                 );
+  m_parser->getOption<bool        >(m_option_am_keepInitialMatrix,                       m_amKeepInitialMatrix                      );
+  m_parser->getOption<unsigned int>(m_option_am_initialNonAdaptInterval,                 m_amInitialNonAdaptInterval                );
+  m_parser->getOption<unsigned int>(m_option_am_adaptInterval,                           m_amAdaptInterval                          );
+  m_parser->getOption<unsigned int>(m_option_am_adaptedMatrices_dataOutputPeriod,        m_amAdaptedMatricesDataOutputPeriod        );
+  m_parser->getOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileName,      m_amAdaptedMatricesDataOutputFileName      );
+  m_parser->getOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileType,      m_amAdaptedMatricesDataOutputFileType      );
+  m_parser->getOption<bool        >(m_option_am_adaptedMatrices_dataOutputAllowAll,      m_amAdaptedMatricesDataOutputAllowAll      );
+  m_parser->getOption<std::set<unsigned int> >(m_option_am_adaptedMatrices_dataOutputAllowedSet,    m_amAdaptedMatricesDataOutputAllowedSet);
+  m_parser->getOption<double      >(m_option_am_eta,                                     m_amEta                                    );
+  m_parser->getOption<double      >(m_option_am_epsilon,                                 m_amEpsilon                                );
+  m_parser->getOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform);
 }
 
 void
@@ -286,11 +439,18 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
 {
   queso_deprecated();
 
+  // FIXME
   if (defaultOptions) this->copyOptionsValues(*defaultOptions);
 
-  // What the fuck?  I shouldn't need BaseInputOptions:: here but on g++ 4.7.3
-  // I get a compiler error if I don't do this.
-  this->BaseInputOptions::scanOptionsValues();
+  // Replace the parser since default values changed
+  if (m_parser) {
+    delete m_parser;
+    m_parser = new BoostInputOptionsParser(m_env.optionsInputFileName());
+  }
+
+  this->defineAllOptions();
+  m_parser->scanInputFile();
+  this->getAllOptions();
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_rawChainComputeStats) {
@@ -305,128 +465,23 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
 }
 
 void
-MLSamplingLevelOptions::defineOptions()
-{
-  (*m_optionsDescription).add_options()
-    (m_option_help.c_str(),                                                                                                                              "produce help message for Bayesian Markov chain distr. calculator")
-#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-#else
-    (m_option_checkpointOutputFileName.c_str(),                   po::value<std::string >()->default_value(m_checkpointOutputFileName                 ), "name of checpoint output file"                                   )
-#endif
-    (m_option_stopAtEnd.c_str(),                                  po::value<bool        >()->default_value(m_stopAtEnd                                ), "stop at end of such level"                                       )
-    (m_option_dataOutputFileName.c_str(),                         po::value<std::string >()->default_value(m_dataOutputFileName                       ), "name of generic output file"                                     )
-    (m_option_dataOutputAllowAll.c_str(),                         po::value<bool        >()->default_value(m_dataOutputAllowAll                       ), "subEnvs that will write to generic output file"                  )
-    (m_option_dataOutputAllowedSet.c_str(),                       po::value<std::string >()->default_value(m_str1                                     ), "subEnvs that will write to generic output file"                  )
-    (m_option_loadBalanceAlgorithmId.c_str(),                     po::value<unsigned int>()->default_value(m_loadBalanceAlgorithmId                   ), "Perform load balancing with chosen algorithm (0 = no balancing)" )
-    (m_option_loadBalanceTreshold.c_str(),                        po::value<double      >()->default_value(m_loadBalanceTreshold                      ), "Perform load balancing if load unbalancing ratio > treshold"     )
-    (m_option_minEffectiveSizeRatio.c_str(),                      po::value<double      >()->default_value(m_minEffectiveSizeRatio                    ), "minimum allowed effective size ratio wrt previous level"         )
-    (m_option_maxEffectiveSizeRatio.c_str(),                      po::value<double      >()->default_value(m_maxEffectiveSizeRatio                    ), "maximum allowed effective size ratio wrt previous level"         )
-    (m_option_scaleCovMatrix.c_str(),                             po::value<bool        >()->default_value(m_scaleCovMatrix                           ), "scale proposal covariance matrix"                                )
-    (m_option_minRejectionRate.c_str(),                           po::value<double      >()->default_value(m_minRejectionRate                         ), "minimum allowed attempted rejection rate at current level"       )
-    (m_option_maxRejectionRate.c_str(),                           po::value<double      >()->default_value(m_maxRejectionRate                         ), "maximum allowed attempted rejection rate at current level"       )
-    (m_option_covRejectionRate.c_str(),                           po::value<double      >()->default_value(m_covRejectionRate                         ), "c.o.v. for judging attempted rejection rate at current level"    )
-    (m_option_minAcceptableEta.c_str(),                           po::value<double      >()->default_value(m_minAcceptableEta                         ), "min acceptable eta"                                              )
-    (m_option_totallyMute.c_str(),                                po::value<bool        >()->default_value(m_totallyMute                              ), "totally mute (no printout message)"                              )
-    (m_option_initialPosition_dataInputFileName.c_str(),          po::value<std::string >()->default_value(m_initialPositionDataInputFileName         ), "name of input file for initial position"                         )
-    (m_option_initialPosition_dataInputFileType.c_str(),          po::value<std::string >()->default_value(m_initialPositionDataInputFileType         ), "type of input file for initial position"                         )
-    (m_option_initialProposalCovMatrix_dataInputFileName.c_str(), po::value<std::string >()->default_value(m_initialProposalCovMatrixDataInputFileName), "name of input file for initial proposal covariance matrix"       )
-    (m_option_initialProposalCovMatrix_dataInputFileType.c_str(), po::value<std::string >()->default_value(m_initialProposalCovMatrixDataInputFileType), "type of input file for initial proposal covariance matrix"       )
-    (m_option_initialPositionUsePreviousLevelLikelihood.c_str(),  po::value<bool        >()->default_value(m_initialPositionUsePreviousLevelLikelihood), "use previous level likelihood for initial chain position instead of re-computing from target pdf")
-    (m_option_listOfDisabledParameters.c_str(),                   po::value<std::string >()->default_value(m_str2                                     ), "list of disabled parameters"                                     ) // gpmsa2
-    (m_option_initialValuesOfDisabledParameters.c_str(),          po::value<std::string >()->default_value(m_str3                                     ), "initial values of disabled parameters"                           ) // gpmsa2
-    (m_option_rawChain_dataInputFileName.c_str(),                 po::value<std::string >()->default_value(m_rawChainDataInputFileName                ), "name of input file for raw chain "                               )
-    (m_option_rawChain_dataInputFileType.c_str(),                 po::value<std::string >()->default_value(m_rawChainDataInputFileType                ), "type of input file for raw chain "                               )
-    (m_option_rawChain_size.c_str(),                              po::value<unsigned int>()->default_value(m_rawChainSize                             ), "size of raw chain"                                               )
-    (m_option_rawChain_generateExtra.c_str(),                     po::value<bool        >()->default_value(m_rawChainGenerateExtra                    ), "generate extra information about raw chain"                      )
-    (m_option_rawChain_displayPeriod.c_str(),                     po::value<unsigned int>()->default_value(m_rawChainDisplayPeriod                    ), "period of message display during raw chain generation"           )
-    (m_option_rawChain_measureRunTimes.c_str(),                   po::value<bool        >()->default_value(m_rawChainMeasureRunTimes                  ), "measure run times"                                               )
-    (m_option_rawChain_dataOutputPeriod.c_str(),                  po::value<unsigned int>()->default_value(m_rawChainDataOutputPeriod                 ), "period of message display during raw chain generation"           )
-    (m_option_rawChain_dataOutputFileName.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileName               ), "name of output file for raw chain "                              )
-    (m_option_rawChain_dataOutputFileType.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileType               ), "type of output file for raw chain "                              )
-    (m_option_rawChain_dataOutputAllowAll.c_str(),                po::value<bool        >()->default_value(m_rawChainDataOutputAllowAll               ), "subEnvs that will write to output file for raw chain"            )
-    (m_option_rawChain_dataOutputAllowedSet.c_str(),              po::value<std::string >()->default_value(m_str4                                     ), "subEnvs that will write to output file for raw chain"            )
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_rawChain_computeStats.c_str(),                      po::value<bool        >()->default_value(m_rawChainComputeStats                     ), "compute statistics on raw chain"                                 )
-#endif
-    (m_option_filteredChain_generate.c_str(),                     po::value<bool        >()->default_value(m_filteredChainGenerate                    ), "generate filtered chain"                                         )
-    (m_option_filteredChain_discardedPortion.c_str(),             po::value<double      >()->default_value(m_filteredChainDiscardedPortion            ), "initial discarded portion for chain filtering"                   )
-    (m_option_filteredChain_lag.c_str(),                          po::value<unsigned int>()->default_value(m_filteredChainLag                         ), "spacing for chain filtering"                                     )
-    (m_option_filteredChain_dataOutputFileName.c_str(),           po::value<std::string >()->default_value(m_filteredChainDataOutputFileName          ), "name of output file for filtered chain"                          )
-    (m_option_filteredChain_dataOutputFileType.c_str(),           po::value<std::string >()->default_value(m_filteredChainDataOutputFileType          ), "type of output file for filtered chain"                          )
-    (m_option_filteredChain_dataOutputAllowAll.c_str(),           po::value<bool        >()->default_value(m_filteredChainDataOutputAllowAll          ), "subEnvs that will write to output file for filtered chain"       )
-    (m_option_filteredChain_dataOutputAllowedSet.c_str(),         po::value<std::string >()->default_value(m_str5                                     ), "subEnvs that will write to output file for filtered chain"       )
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    (m_option_filteredChain_computeStats.c_str(),                 po::value<bool        >()->default_value(m_filteredChainComputeStats                ), "compute statistics on filtered chain"                            )
-#endif
-    (m_option_displayCandidates.c_str(),                          po::value<bool        >()->default_value(m_displayCandidates                        ), "display candidates generated in the core MH algorithm"           )
-    (m_option_putOutOfBoundsInChain.c_str(),                      po::value<bool        >()->default_value(m_putOutOfBoundsInChain                    ), "put 'out of bound' candidates in chain as well"                  )
-    (m_option_tk_useLocalHessian.c_str(),                         po::value<bool        >()->default_value(m_tkUseLocalHessian                        ), "'proposal' use local Hessian"                                    )
-    (m_option_tk_useNewtonComponent.c_str(),                      po::value<bool        >()->default_value(m_tkUseNewtonComponent                     ), "'proposal' use Newton component"                                 )
-    (m_option_dr_maxNumExtraStages.c_str(),                       po::value<unsigned int>()->default_value(m_drMaxNumExtraStages                      ), "'dr' maximum number of extra stages"                             )
-    (m_option_dr_listOfScalesForExtraStages.c_str(),              po::value<std::string >()->default_value(m_str6                                     ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
-    (m_option_dr_duringAmNonAdaptiveInt.c_str(),                  po::value<bool        >()->default_value(m_drDuringAmNonAdaptiveInt                 ), "'dr' used during 'am' non adaptive interval"                     )
-    (m_option_am_keepInitialMatrix.c_str(),                       po::value<bool        >()->default_value(m_amKeepInitialMatrix                      ), "'am' keep initial (given) matrix"                                )
-    (m_option_am_initialNonAdaptInterval.c_str(),                 po::value<unsigned int>()->default_value(m_amInitialNonAdaptInterval                ), "'am' initial non adaptation interval"                            )
-    (m_option_am_adaptInterval.c_str(),                           po::value<unsigned int>()->default_value(m_amAdaptInterval                          ), "'am' adaptation interval"                                        )
-    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(m_amAdaptedMatricesDataOutputPeriod        ), "period for outputing 'am' adapted matrices"                      )
-    (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileName      ), "name of output file for 'am' adapted matrices"                   )
-    (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileType      ), "type of output file for 'am' adapted matrices"                   )
-    (m_option_am_adaptedMatrices_dataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(m_amAdaptedMatricesDataOutputAllowAll      ), "type of output file for 'am' adapted matrices"                   )
-    (m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(m_str7                                     ), "type of output file for 'am' adapted matrices"                   )
-    (m_option_am_eta.c_str(),                                     po::value<double      >()->default_value(m_amEta                                    ), "'am' eta"                                                        )
-    (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(m_amEpsilon                                ), "'am' epsilon"                                                    )
-    (m_option_doLogitTransform.c_str(),                           po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        ), "flag for doing logit transform for bounded domains"              )
-  ;
-
-  return;
-}
-
-void
-MLSamplingLevelOptions::getOptionValues()
+MLSamplingLevelOptions::checkOptions(const BaseEnvironment * env)
 {
   char tmpStr[64];
 
-  if (m_env.allOptionsMap().count(m_option_help.c_str())) {
+  // DM: Print here because I don't know where the class is instantiated
+  if (m_help != "") {
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << (*m_optionsDescription)
-                              << std::endl;
+      *m_env.subDisplayFile() << (*this) << std::endl;
     }
-  }
-
-#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-#else
-  if (m_env.allOptionsMap().count(m_option_checkpointOutputFileName.c_str())) {
-    m_checkpointOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_checkpointOutputFileName.c_str()]).as<std::string>();
-  }
-#endif
-
-  if (m_env.allOptionsMap().count(m_option_stopAtEnd.c_str())) {
-    m_stopAtEnd = ((const po::variable_value&) m_env.allOptionsMap()[m_option_stopAtEnd.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_dataOutputFileName.c_str())) {
-    m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllowAll.c_str())) {
-    m_dataOutputAllowAll = m_env.allOptionsMap()[m_option_dataOutputAllowAll].as<bool>();
   }
 
   if (m_dataOutputAllowAll) {
+    m_dataOutputAllowedSet.clear();
     m_dataOutputAllowedSet.insert(m_env.subId());
   }
-  else if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
-    m_dataOutputAllowedSet.clear();
-    std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
-    MiscReadDoublesFromString(inputString,tmpAllow);
 
-    if (tmpAllow.size() > 0) {
-      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_dataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
-      }
-    }
-  }
+  // DM: Not sure what this is for
   m_str1.clear();
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     sprintf(tmpStr,"%d",(int)(*setIt));
@@ -434,142 +489,13 @@ MLSamplingLevelOptions::getOptionValues()
     m_str1 += " ";
   }
 
-  if (m_env.allOptionsMap().count(m_option_loadBalanceAlgorithmId.c_str())) {
-    m_loadBalanceAlgorithmId = ((const po::variable_value&) m_env.allOptionsMap()[m_option_loadBalanceAlgorithmId.c_str()]).as<unsigned int>();
-  }
+  queso_require_less_msg(m_minEffectiveSizeRatio, 1.0, "option `" << m_option_minEffectiveSizeRatio << "` must be less than 1.0");
+  queso_require_less_msg(m_maxEffectiveSizeRatio, 1.0, "option `" << m_option_maxEffectiveSizeRatio << "` must be less than 1.0");
+  queso_require_less_msg(m_minRejectionRate, 1.0, "option `" << m_option_minRejectionRate << "` must be less than 1.0");
+  queso_require_less_msg(m_maxRejectionRate, 1.0, "option `" << m_option_maxRejectionRate << "` must be less than 1.0");
+  queso_require_less_msg(m_covRejectionRate, 1.0, "option `" << m_option_covRejectionRate << "` must be less than 1.0");
 
-  if (m_env.allOptionsMap().count(m_option_loadBalanceTreshold.c_str())) {
-    m_loadBalanceTreshold = ((const po::variable_value&) m_env.allOptionsMap()[m_option_loadBalanceTreshold.c_str()]).as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_minEffectiveSizeRatio.c_str())) {
-    m_minEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minEffectiveSizeRatio.c_str()]).as<double>();
-  }
-  if (m_minEffectiveSizeRatio >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
-              << ", worldRank "             << m_env.worldRank()
-              << ", fullRank "              << m_env.fullRank()
-              << ", subEnvironment "        << m_env.subId()
-              << ", subRank "               << m_env.subRank()
-              << ", inter0Rank "            << m_env.inter0Rank()
-              << ": forcing the value of '" << m_option_minEffectiveSizeRatio.c_str()
-              << "' from "                  << m_minEffectiveSizeRatio
-              << " to "                     << .5
-              << std::endl;
-    m_minEffectiveSizeRatio = .5;
-  }
-
-  if (m_env.allOptionsMap().count(m_option_maxEffectiveSizeRatio.c_str())) {
-    m_maxEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxEffectiveSizeRatio.c_str()]).as<double>();
-  }
-  if (m_maxEffectiveSizeRatio >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
-              << ", worldRank "             << m_env.worldRank()
-              << ", fullRank "              << m_env.fullRank()
-              << ", subEnvironment "        << m_env.subId()
-              << ", subRank "               << m_env.subRank()
-              << ", inter0Rank "            << m_env.inter0Rank()
-              << ": forcing the value of '" << m_option_maxEffectiveSizeRatio.c_str()
-              << "' from "                  << m_maxEffectiveSizeRatio
-              << " to "                     << .5
-              << std::endl;
-    m_maxEffectiveSizeRatio = .5;
-  }
-
-  if (m_env.allOptionsMap().count(m_option_scaleCovMatrix.c_str())) {
-    m_scaleCovMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_scaleCovMatrix.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_minRejectionRate.c_str())) {
-    m_minRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minRejectionRate.c_str()]).as<double>();
-  }
-  if (m_minRejectionRate >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
-              << ", worldRank "             << m_env.worldRank()
-              << ", fullRank "              << m_env.fullRank()
-              << ", subEnvironment "        << m_env.subId()
-              << ", subRank "               << m_env.subRank()
-              << ", inter0Rank "            << m_env.inter0Rank()
-              << ": forcing the value of '" << m_option_minRejectionRate.c_str()
-              << "' from "                  << m_minRejectionRate
-              << " to "                     << .5
-              << std::endl;
-    m_minRejectionRate = .5;
-  }
-
-  if (m_env.allOptionsMap().count(m_option_maxRejectionRate.c_str())) {
-    m_maxRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxRejectionRate.c_str()]).as<double>();
-  }
-  if (m_maxRejectionRate >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
-              << ", worldRank "             << m_env.worldRank()
-              << ", fullRank "              << m_env.fullRank()
-              << ", subEnvironment "        << m_env.subId()
-              << ", subRank "               << m_env.subRank()
-              << ", inter0Rank "            << m_env.inter0Rank()
-              << ": forcing the value of '" << m_option_maxRejectionRate.c_str()
-              << "' from "                  << m_maxRejectionRate
-              << " to "                     << .5
-              << std::endl;
-    m_maxRejectionRate = .5;
-  }
-
-  if (m_env.allOptionsMap().count(m_option_covRejectionRate.c_str())) {
-    m_covRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_covRejectionRate.c_str()]).as<double>();
-  }
-  if (m_covRejectionRate >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
-              << ", worldRank "             << m_env.worldRank()
-              << ", fullRank "              << m_env.fullRank()
-              << ", subEnvironment "        << m_env.subId()
-              << ", subRank "               << m_env.subRank()
-              << ", inter0Rank "            << m_env.inter0Rank()
-              << ": forcing the value of '" << m_option_covRejectionRate.c_str()
-              << "' from "                  << m_covRejectionRate
-              << " to "                     << .5
-              << std::endl;
-    m_covRejectionRate = .5;
-  }
-
-  if (m_env.allOptionsMap().count(m_option_minAcceptableEta.c_str())) { // gpmsa1
-    m_minAcceptableEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minAcceptableEta.c_str()]).as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_totallyMute.c_str())) {
-    m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_initialPosition_dataInputFileName.c_str())) {
-    m_initialPositionDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileName.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_initialPosition_dataInputFileType.c_str())) {
-    m_initialPositionDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileType.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileName.c_str())) {
-    m_initialProposalCovMatrixDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileName.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileType.c_str())) {
-    m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileType.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_initialPositionUsePreviousLevelLikelihood.c_str())) {  // ml_likelihood_caching
-    m_initialPositionUsePreviousLevelLikelihood = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPositionUsePreviousLevelLikelihood.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_listOfDisabledParameters)) { // gpmsa2
-    m_parameterDisabledSet.clear();
-    std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_listOfDisabledParameters].as<std::string>();
-    MiscReadDoublesFromString(inputString,tmpAllow);
-    if (tmpAllow.size() > 0) {
-      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_parameterDisabledSet.insert((unsigned int) tmpAllow[i]);
-      }
-    }
-  }
+  // DM: Not sure what this is for
   m_str2.clear();
   for (std::set<unsigned int>::iterator setIt = m_parameterDisabledSet.begin(); setIt != m_parameterDisabledSet.end(); ++setIt) { // gpmsa2
     sprintf(tmpStr,"%d",(int)(*setIt));
@@ -577,18 +503,7 @@ MLSamplingLevelOptions::getOptionValues()
     m_str2 += " ";
   }
 
-  if (m_env.allOptionsMap().count(m_option_initialValuesOfDisabledParameters.c_str())) {
-    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialValuesOfDisabledParameters.c_str()]).as<std::string>();
-    MiscReadDoublesFromString(inputString,m_initialValuesOfDisabledParameters);
-    //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In MLSamplingLevelOptions::getMyOptionValues(): scales =";
-    //  for (unsigned int i = 0; i < tmpValues.size(); ++i) {
-    //    *m_env.subDisplayFile() << " " << tmpValues[i];
-    //  }
-    //  *m_env.subDisplayFile() << std::endl;
-    //}
-
-  }
+  // DM: Not sure what this is for
   m_str3.clear();
   for (unsigned int i = 0; i < m_initialValuesOfDisabledParameters.size(); ++i) {
     sprintf(tmpStr,"%e",m_initialValuesOfDisabledParameters[i]);
@@ -596,59 +511,12 @@ MLSamplingLevelOptions::getOptionValues()
     m_str3 += " ";
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName.c_str())) {
-    m_rawChainDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileName.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileType.c_str())) {
-    m_rawChainDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataInputFileType.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_size.c_str())) {
-    //std::cout << "In count()=true, rawChainSize = " << m_rawChainSize << std::endl;
-    m_rawChainSize = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_size.c_str()]).as<unsigned int>();
-  }
-//std::cout << "After count(), rawChainSize = " << m_rawChainSize << std::endl;
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_displayPeriod.c_str())) {
-    m_rawChainDisplayPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_displayPeriod.c_str()]).as<unsigned int>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_measureRunTimes.c_str())) {
-    m_rawChainMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_measureRunTimes.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputPeriod.c_str())) {
-    m_rawChainDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputPeriod.c_str()]).as<unsigned int>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileName.c_str())) {
-    m_rawChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileName.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileType.c_str())) {
-    m_rawChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileType.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowAll.c_str())) {
-    m_rawChainDataOutputAllowAll = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowAll].as<bool>();
-  }
-
   if (m_rawChainDataOutputAllowAll) {
+    m_rawChainDataOutputAllowedSet.clear();
     m_rawChainDataOutputAllowedSet.insert(m_env.subId());
   }
-  else if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet.c_str())) {
-    m_rawChainDataOutputAllowedSet.clear();
-    std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowedSet.c_str()].as<std::string>();
-    MiscReadDoublesFromString(inputString,tmpAllow);
 
-    if (tmpAllow.size() > 0) {
-      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_rawChainDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
-      }
-    }
-  }
+  // DM: Not sure what this is for
   m_str4.clear();
   for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
     sprintf(tmpStr,"%d",(int)(*setIt));
@@ -656,68 +524,16 @@ MLSamplingLevelOptions::getOptionValues()
     m_str4 += " ";
   }
 
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  if (m_env.allOptionsMap().count(m_option_rawChain_computeStats.c_str())) {
-    m_rawChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_computeStats.c_str()]).as<bool>();
-  }
-#endif
-  if (m_env.allOptionsMap().count(m_option_rawChain_generateExtra.c_str())) {
-    m_rawChainGenerateExtra = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_generateExtra.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_filteredChain_generate.c_str())) {
-    m_filteredChainGenerate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_generate.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_filteredChain_discardedPortion.c_str())) {
-    m_filteredChainDiscardedPortion = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_discardedPortion.c_str()]).as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_filteredChain_lag.c_str())) {
-    m_filteredChainLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_lag.c_str()]).as<unsigned int>();
-  }
-  if ((m_filteredChainGenerate == true) &&
-      (m_filteredChainLag      < 2    )) {
-    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
-              << ", worldRank "             << m_env.worldRank()
-              << ", fullRank "              << m_env.fullRank()
-              << ", subEnvironment "        << m_env.subId()
-              << ", subRank "               << m_env.subRank()
-              << ", inter0Rank "            << m_env.inter0Rank()
-              << ": forcing the value of '" << m_option_filteredChain_lag.c_str()
-              << "' from "                  << m_filteredChainLag
-              << " to "                     << 2
-              << std::endl;
-    m_filteredChainLag = 2;
-  }
-
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileName.c_str())) {
-    m_filteredChainDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileName.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputFileType.c_str())) {
-    m_filteredChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileType.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowAll.c_str())) {
-    m_filteredChainDataOutputAllowAll = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowAll].as<bool>();
+  if (m_filteredChainGenerate == true) {
+    queso_require_greater_equal_msg(m_filteredChainLag, 2, "option `" << m_option_filteredChain_lag << "` must be at least 2");
   }
 
   if (m_filteredChainDataOutputAllowAll) {
+    m_filteredChainDataOutputAllowedSet.clear();
     m_filteredChainDataOutputAllowedSet.insert(m_env.subId());
   }
-  else if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet.c_str())) {
-    m_filteredChainDataOutputAllowedSet.clear();
-    std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowedSet.c_str()].as<std::string>();
-    MiscReadDoublesFromString(inputString,tmpAllow);
 
-    if (tmpAllow.size() > 0) {
-      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_filteredChainDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
-      }
-    }
-  }
+  // DM: Not sure what this is for
   m_str5.clear();
   for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
     sprintf(tmpStr,"%d",(int)(*setIt));
@@ -725,131 +541,37 @@ MLSamplingLevelOptions::getOptionValues()
     m_str5 += " ";
   }
 
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats.c_str())) {
-    m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()]).as<bool>();
-  }
-#endif
-  if (m_env.allOptionsMap().count(m_option_displayCandidates.c_str())) {
-    m_displayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_putOutOfBoundsInChain.c_str())) {
-    m_putOutOfBoundsInChain = ((const po::variable_value&) m_env.allOptionsMap()[m_option_putOutOfBoundsInChain.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_tk_useLocalHessian.c_str())) {
-    m_tkUseLocalHessian = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useLocalHessian.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_tk_useNewtonComponent.c_str())) {
-    m_tkUseNewtonComponent = ((const po::variable_value&) m_env.allOptionsMap()[m_option_tk_useNewtonComponent.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_dr_maxNumExtraStages.c_str())) {
-    m_drMaxNumExtraStages = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_maxNumExtraStages.c_str()]).as<unsigned int>();
-  }
-
-  std::vector<double> tmpScales(0,0.);
-  if (m_env.allOptionsMap().count(m_option_dr_listOfScalesForExtraStages.c_str())) {
-    std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages.c_str()]).as<std::string>();
-    MiscReadDoublesFromString(inputString,tmpScales);
-    //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In MLSamplingLevelOptions::getMyOptionValues(): scales =";
-    //  for (unsigned int i = 0; i < tmpScales.size(); ++i) {
-    //    *m_env.subDisplayFile() << " " << tmpScales[i];
-    //  }
-    //  *m_env.subDisplayFile() << std::endl;
-    //}
-  }
-
   if (m_drMaxNumExtraStages > 0) {
-    m_drScalesForExtraStages.clear();
+    unsigned int size = m_drScalesForExtraStages.size();
 
-    double scale = 1.0;
-    unsigned int tmpSize = tmpScales.size();
-
-    m_drScalesForExtraStages.resize(m_drMaxNumExtraStages,1.);
-
-    for (unsigned int i = 0; i < m_drMaxNumExtraStages; ++i) {
-      if (i < tmpSize) scale = tmpScales[i];
-      m_drScalesForExtraStages[i] = scale;
+    // If we asked more stages than scales provided, pad with ones
+    if (m_drMaxNumExtraStages > size) {
+      for (unsigned int i = size; i < m_drMaxNumExtraStages; i++) {
+        double scale = 1.0;
+        m_drScalesForExtraStages.push_back(scale);
+      }
     }
-    //updateTK();
   }
 
+  // DM: Not sure what this is for
   m_str6.clear();
   for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
     sprintf(tmpStr,"%e",m_drScalesForExtraStages[i]);
     m_str6 += tmpStr;
     m_str6 += " ";
   }
-//std::cout << "m_str6 = " << m_str4 << std::endl;
-
-  if (m_env.allOptionsMap().count(m_option_dr_duringAmNonAdaptiveInt)) {
-    m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_keepInitialMatrix.c_str())) {
-    m_amKeepInitialMatrix = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_keepInitialMatrix.c_str()]).as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_initialNonAdaptInterval.c_str())) {
-    m_amInitialNonAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_initialNonAdaptInterval.c_str()]).as<unsigned int>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_adaptInterval.c_str())) {
-    m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval.c_str()]).as<unsigned int>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputPeriod.c_str())) {
-    m_amAdaptedMatricesDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputPeriod.c_str()]).as<unsigned int>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileName.c_str())) {
-    m_amAdaptedMatricesDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileName.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileType.c_str())) {
-    m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileType.c_str()]).as<std::string>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputAllowAll.c_str())) {
-    m_amAdaptedMatricesDataOutputAllowAll = m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputAllowAll].as<bool>();
-  }
 
   if (m_amAdaptedMatricesDataOutputAllowAll) {
+    m_amAdaptedMatricesDataOutputAllowedSet.clear();
     m_amAdaptedMatricesDataOutputAllowedSet.insert(m_env.subId());
   }
-  else if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str())) {
-    m_amAdaptedMatricesDataOutputAllowedSet.clear();
-    std::vector<double> tmpAllow(0,0.);
-    std::string inputString = m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str()].as<std::string>();
-    MiscReadDoublesFromString(inputString,tmpAllow);
 
-    if (tmpAllow.size() > 0) {
-      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
-        m_amAdaptedMatricesDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
-      }
-    }
-  }
+  // DM: Not sure what this is for
   m_str7.clear();
   for (std::set<unsigned int>::iterator setIt = m_amAdaptedMatricesDataOutputAllowedSet.begin(); setIt != m_amAdaptedMatricesDataOutputAllowedSet.end(); ++setIt) {
     sprintf(tmpStr,"%d",(int)(*setIt));
     m_str7 += tmpStr;
     m_str7 += " ";
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_eta.c_str())) {
-    m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta.c_str()]).as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_epsilon.c_str())) {
-    m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon.c_str()]).as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_doLogitTransform.c_str())) {
-    m_doLogitTransform = ((const po::variable_value&) m_env.allOptionsMap()[m_option_doLogitTransform.c_str()]).as<bool>();
   }
 }
 
@@ -960,8 +682,8 @@ MLSamplingLevelOptions::env() const
 
 std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptions& obj)
 {
+  os << (*(obj.m_parser)) << std::endl;
   obj.print(os);
-
   return os;
 }
 

@@ -71,16 +71,17 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   if (m_optionsObj == NULL) {
     SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
 
-    // If there's an input file, we grab the options from there.  Otherwise the
-    // defaults are used
-    if (m_env.optionsInputFileName() != "") {
-      tempOptions->scanOptionsValues();
-    }
-
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
   }
+
+  if (m_optionsObj->m_help != "") {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << (*m_optionsObj) << std::endl;
+    }
+  }
+
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In Sip, finished scanning options" << std::endl;
 #endif
@@ -134,15 +135,15 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   if (m_optionsObj == NULL) {
     SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
 
-    // If there's an input file, we grab the options from there.  Otherwise the
-    // defaults are used
-    if (m_env.optionsInputFileName() != "") {
-      tempOptions->scanOptionsValues();
-    }
-
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
+  }
+
+  if (m_optionsObj->m_help != "") {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << (*m_optionsObj) << std::endl;
+    }
   }
 
   queso_require_equal_to_msg(m_priorRv.imageSet().vectorSpace().dimLocal(), m_likelihoodFunction.domainSet().vectorSpace().dimLocal(), "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");

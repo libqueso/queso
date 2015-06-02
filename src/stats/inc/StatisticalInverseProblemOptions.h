@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 #include <queso/Environment.h>
 
 #ifndef UQ_SIP_OPTIONS_H
@@ -30,6 +30,7 @@
 
 #undef UQ_SIP_READS_SOLVER_OPTION
 
+#define UQ_SIP_HELP ""
 #define UQ_SIP_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
@@ -39,6 +40,12 @@
 #ifdef UQ_SIP_READS_SOLVER_OPTION
 #define UQ_SIP_SOLVER_ODV                  "bayes_mc" // Bayesian formula + Metropolis-Hastings
 #endif
+
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
 
 namespace QUESO {
 
@@ -56,7 +63,7 @@ namespace QUESO {
  * values for such options if no input file is available.
  */
 
-class SipOptionsValues : public BaseInputOptions
+class SipOptionsValues
 {
 public:
   //! @name Constructor/Destructor methods
@@ -82,6 +89,9 @@ public:
 
   std::string m_prefix;
 
+  //! If this string is non-empty, options are print to the output file
+  std::string m_help;
+
   bool                   m_computeSolution;
   std::string            m_dataOutputFileName;
   std::set<unsigned int> m_dataOutputAllowedSet;
@@ -92,6 +102,8 @@ public:
   //MhOptionsValues m_mhOptionsValues;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   // The input options as strings so we can parse the input file later
   std::string                   m_option_help;
   std::string                   m_option_computeSolution;
@@ -101,13 +113,13 @@ private:
   std::string                   m_option_solver;
 #endif
 
-  // We have these two because of we don't want to break backwards
-  // compatibility
-  virtual void defineOptions();
-  virtual void getOptionValues();
-
   //! Copies the option values from \c src to \c this.
   void copy(const SipOptionsValues& src);
+
+  void checkOptions();
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const SipOptionsValues & obj);
 };
 
 // --------------------------------------------------
@@ -155,14 +167,14 @@ public:
 
 private:
   //! Define my SIP options as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the option values of the SIP.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
 
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
   std::string                   m_option_help;
   std::string                   m_option_computeSolution;
   std::string                   m_option_dataOutputFileName;

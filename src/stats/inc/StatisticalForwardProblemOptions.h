@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 #include <queso/Environment.h>
 
 #ifndef UQ_SFP_OPTIONS_H
@@ -33,6 +33,7 @@
 #define UQ_SFP_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
+#define UQ_SFP_HELP        ""
 #define UQ_SFP_COMPUTE_SOLUTION_ODV        1
 #define UQ_SFP_COMPUTE_COVARIANCES_ODV     1
 #define UQ_SFP_COMPUTE_CORRELATIONS_ODV    1
@@ -41,6 +42,12 @@
 #ifdef UQ_SFP_READS_SOLVER_OPTION
 #define UQ_SFP_SOLVER_ODV                  "mc" // Monte Carlo
 #endif
+
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
 
 namespace QUESO {
 
@@ -54,7 +61,7 @@ namespace QUESO {
  * In order to solve a Statistical Forward Problem (SFP), QUESO expects some options for its methods to be
  * fully defined. This class provides default values for such options if no input file is available. */
 
-class SfpOptionsValues : public BaseInputOptions
+class SfpOptionsValues
 {
 public:
   //! Constructor/Destructor methods
@@ -80,6 +87,9 @@ public:
 
   std::string                   m_prefix;
 
+  //! If non-empty string, options and values are printed to the output file
+  std::string m_help;
+
   bool                   m_computeSolution;
   bool                   m_computeCovariances;
   bool                   m_computeCorrelations;
@@ -92,6 +102,8 @@ public:
   //McOptionsValues m_mcOptionsValues;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   // The input options as strings so we can parse the input file later
   std::string                   m_option_help;
   std::string                   m_option_computeSolution;
@@ -103,11 +115,13 @@ private:
   std::string                   m_option_solver;
 #endif
 
-  virtual void defineOptions();
-  virtual void getOptionValues();
-
   //! Copies the option values from \c src to \c this.
   void copy(const SfpOptionsValues& src);
+
+  void checkOptions();
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const SfpOptionsValues & obj);
 };
 
 /*! \class StatisticalForwardProblemOptions
@@ -152,14 +166,14 @@ public:
 
 private:
   //! Define my SFP options as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the option values of the SFP.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
 
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
   std::string                   m_option_help;
   std::string                   m_option_computeSolution;
   std::string                   m_option_computeCovariances;

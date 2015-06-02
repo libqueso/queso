@@ -22,7 +22,7 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #ifndef UQ_GPMSA_OPTIONS_H
 #define UQ_GPMSA_OPTIONS_H
@@ -37,7 +37,7 @@ namespace QUESO {
  * \brief This class defines the options that specify the behaviour of the Gaussian process emulator
  */
 
-class GPMSAOptions : public BaseInputOptions
+class GPMSAOptions
 {
 public:
   //! Given prefix, read the input file for parameters named prefix_*
@@ -51,6 +51,9 @@ public:
 
   //! The prefix to look for in the input file
   std::string m_prefix;
+
+  //! If this string is non-empty, print the options object to the output file
+  std::string m_help;
 
   //! The shape parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionShape;
@@ -85,17 +88,12 @@ public:
   //! The scale parameter for the Gamma hyperprior for the emulator data precision
   double m_emulatorDataPrecisionScale;
 
-  friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj)
-  {
-    obj.print(os);
-    return os;
-  }
+  friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj);
 
 private:
-  void defineOptions();
-  void getOptionValues();
-
   const BaseEnvironment& m_env;
+
+  BoostInputOptionsParser * m_parser;
 
   std::string m_option_help;
   std::string m_option_emulatorPrecisionShape;
@@ -108,6 +106,8 @@ private:
   std::string m_option_discrepancyCorrelationStrengthBeta;
   std::string m_option_emulatorDataPrecisionShape;
   std::string m_option_emulatorDataPrecisionScale;
+
+  void checkOptions();
 };
 
 }  // End namespace QUESO

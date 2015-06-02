@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/queso.h>
 #include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
@@ -321,32 +323,38 @@ BaseEnvironment::setOptionsInputFileAccessState(bool newState) const
 }
 //-------------------------------------------------------
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
-const po::options_description&
+const boost::program_options::options_description&
 BaseEnvironment::allOptionsDesc() const
 {
+  queso_deprecated();
+
   return *m_allOptionsDesc;
 }
 #endif
 //-------------------------------------------------------
-po::variables_map&
+boost::program_options::variables_map&
 BaseEnvironment::allOptionsMap() const
 {
+  queso_deprecated();
+
   queso_require_msg(m_allOptionsMap, "m_allOptionsMap variable is NULL");
   return *m_allOptionsMap;
 }
 //-------------------------------------------------------
 void
-BaseEnvironment::scanInputFileForMyOptions(const po::options_description& optionsDesc) const
+BaseEnvironment::scanInputFileForMyOptions(const boost::program_options::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
   // If you want to use command line options, the following line does *not* work outside 'main.C',
   // e.g., in the constructor of FullEnvironment:
-  // Line: po::store(po::parse_command_line(argc, argv, *m_allOptionsDesc), *m_allOptionsMap);
+  // Line: boost::program_options::store(boost::program_options::parse_command_line(argc, argv, *m_allOptionsDesc), *m_allOptionsMap);
   //
   // Instead, put the following three lines *immediately after* instantianting the UQ environment
   // variable "FullEnvironment* env":
-  // Line 1: po::store(po::parse_command_line(argc, argv, env->allOptionsDesc()), env->allOptionsMap());
-  // Line 2: po::notify(env->allOptionsMap());
+  // Line 1: boost::program_options::store(boost::program_options::parse_command_line(argc, argv, env->allOptionsDesc()), env->allOptionsMap());
+  // Line 2: boost::program_options::notify(env->allOptionsMap());
   // Line 3: env->getMyOptionValues();
 #endif
 
@@ -369,11 +377,11 @@ BaseEnvironment::scanInputFileForMyOptions(const po::options_description& option
 #endif
 
   queso_require_msg(m_allOptionsMap, "m_allOptionsMap variable is NULL");
-  po::store(po::parse_config_file(*ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
+  boost::program_options::store(boost::program_options::parse_config_file(*ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "in BaseEnv::scanInputFileForMyOptions(), after store(a)" << std::endl;
 #endif
-  po::notify(*m_allOptionsMap);
+  boost::program_options::notify(*m_allOptionsMap);
 
   //ifs.close();
   delete ifs;
@@ -1138,18 +1146,26 @@ FullEnvironment::FullEnvironment(
     // If there's an input file, we grab the options from there.  Otherwise the
     // defaults are used
     if (m_optionsInputFileName != "") {
-      m_allOptionsMap  = new po::variables_map();
-      m_allOptionsDesc = new po::options_description("Allowed options");
+      m_allOptionsMap  = new boost::program_options::variables_map();
+      m_allOptionsDesc = new boost::program_options::options_description("Allowed options");
 
       readOptionsInputFile();
-
-      tempOptions->scanOptionsValues();
     }
 
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
   }
+
+  // If help option was supplied, print info
+  if (m_optionsObj->m_help != "") {
+    // We write to std::cout because subDisplayFile() isn't ready yet?
+    std::cout << (*m_optionsObj) << std::endl;
+  }
+
+  queso_require_equal_to_msg(
+      fullComm().NumProc() % m_optionsObj->m_numSubEnvironments, 0,
+      "total number of processors in environment must be multiple of the specified number of subEnvironments");
 
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In FullEnv, finished scanning options" << std::endl;

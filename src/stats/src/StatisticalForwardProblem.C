@@ -74,15 +74,15 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblem(
   if (m_optionsObj == NULL) {
     SfpOptionsValues * tempOptions = new SfpOptionsValues(&m_env, prefix);
 
-    // If there's an input file, we grab the options from there.  Otherwise the
-    // defaults are used
-    if (m_env.optionsInputFileName () != "") {
-      tempOptions->scanOptionsValues();
-    }
-
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
+  }
+
+  if (m_optionsObj->m_help != "") {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << (*m_optionsObj) << std::endl;
+    }
   }
 
   queso_require_equal_to_msg(paramRv.imageSet().vectorSpace().dimLocal(), qoiFunction.domainSet().vectorSpace().dimLocal(), "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");

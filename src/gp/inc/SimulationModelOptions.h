@@ -26,7 +26,7 @@
 #define UQ_SIMULATION_MODEL_OPTIONS_H
 
 #include <queso/Environment.h>
-#include <queso/BaseInputOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE "."
 
@@ -46,9 +46,15 @@
 #define UQ_SIMULATION_MODEL_A_S_ODV                          0.
 #define UQ_SIMULATION_MODEL_B_S_ODV                          0.
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
+
 namespace QUESO {
 
-class SmOptionsValues : public BaseInputOptions
+class SmOptionsValues
 {
 public:
   SmOptionsValues();
@@ -75,6 +81,8 @@ public:
   double m_b_s;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
   std::string m_option_help;
   std::string m_option_dataOutputFileName;
   std::string m_option_dataOutputAllowAll;
@@ -90,9 +98,6 @@ private:
   std::string m_option_b_eta;
   std::string m_option_a_s;
   std::string m_option_b_s;
-
-  virtual void defineOptions();
-  virtual void getOptionValues();
 
   void copy(const SmOptionsValues& src);
 };
@@ -113,12 +118,12 @@ public:
   std::string                   m_prefix;
 
 private:
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
 
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
   std::string                   m_option_help;
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowAll;

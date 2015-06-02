@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <limits>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/BoxSubset.h>

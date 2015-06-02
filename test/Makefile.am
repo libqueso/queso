@@ -6,7 +6,6 @@ endif
 
 check_PROGRAMS = # Append below
 check_PROGRAMS += test_uqEnvironmentNonFatal
-check_PROGRAMS += test_uqEnvironmentOptionsPrint
 check_PROGRAMS += test_uqGslVector
 check_PROGRAMS += test_uqGaussianVectorRVClass
 check_PROGRAMS += test_VectorPdf_gsl
@@ -50,6 +49,7 @@ check_PROGRAMS += test_3D_LinearLagrangeInterpolationSurrogate
 check_PROGRAMS += test_4D_LinearLagrangeInterpolationSurrogate
 check_PROGRAMS += test_InterpolationSurrogateHelper
 check_PROGRAMS += test_build_InterpolationSurrogateBuilder
+check_PROGRAMS += test_BoostInputOptionsParser
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -80,7 +80,6 @@ if LIBMESH_ENABLED
 endif
 
 test_uqEnvironmentNonFatal_SOURCES = test_Environment/test_uqEnvironmentNonFatal.C
-test_uqEnvironmentOptionsPrint_SOURCES = test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.C
 test_uqGslVector_SOURCES = test_GslVector/test_uqGslVector.C
 test_uqGaussianVectorRVClass_SOURCES = test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
 test_VectorPdf_gsl_SOURCES = test_GaussianVectorRVClass/test_VectorPdf_gsl.C
@@ -125,6 +124,7 @@ test_3D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurroga
 test_4D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurrogate/test_4D_LinearLagrangeInterpolationSurrogate.C
 test_InterpolationSurrogateHelper_SOURCES = test_InterpolationSurrogate/test_InterpolationSurrogateHelper.C
 test_build_InterpolationSurrogateBuilder_SOURCES = test_InterpolationSurrogate/test_build_InterpolationSurrogateBuilder.C
+test_BoostInputOptionsParser_SOURCES = test_InputOptionsParser/test_BoostInputOptionsParser.C
 
 # Files to freedom stamp
 srcstamp =
@@ -171,10 +171,10 @@ srcstamp += $(test_3D_LinearLagrangeInterpolationSurrogate_SOURCES)
 srcstamp += $(test_4D_LinearLagrangeInterpolationSurrogate_SOURCES)
 srcstamp += $(test_InterpolationSurrogateHelper_SOURCES)
 srcstamp += $(test_build_InterpolationSurrogateBuilder_SOURCES)
+srcstamp += $(test_BoostInputOptionsParser_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
-TESTS += $(top_builddir)/test/test_uqEnvironmentOptionsPrint
 TESTS += $(top_builddir)/test/test_uqGslVector
 TESTS += $(top_builddir)/test/test_uqGaussianVectorRVClass
 TESTS += $(top_builddir)/test/test_VectorPdf_gsl
@@ -218,6 +218,7 @@ TESTS += $(top_builddir)/test/test_3D_LinearLagrangeInterpolationSurrogate
 TESTS += $(top_builddir)/test/test_4D_LinearLagrangeInterpolationSurrogate
 TESTS += $(top_builddir)/test/test_InterpolationSurrogateHelper
 TESTS += $(top_builddir)/test/test_build_InterpolationSurrogateBuilder
+TESTS += $(top_builddir)/test/test_BoostInputOptionsParser
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -244,6 +245,7 @@ EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
 EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt.in
 EXTRA_DIST += test_InterpolationSurrogate/queso_input.txt.in
 EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
+EXTRA_DIST += test_InputOptionsParser/test_options.txt.in
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt

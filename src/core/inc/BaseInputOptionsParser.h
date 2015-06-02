@@ -25,58 +25,18 @@
 #ifndef UQ_BASE_INPUT_OPTIONS_H
 #define UQ_BASE_INPUT_OPTIONS_H
 
-namespace boost
-{
-  namespace program_options
-  {
-    class options_description;
-  }
-}
-
 namespace QUESO {
 
-class BaseEnvironment;
-
-class BaseInputOptions
+class BaseInputOptionsParser
 {
 public:
-  //! Constructor that sets the internal environment
-  BaseInputOptions(const BaseEnvironment * env);
-
-  //! Default constructor that sets m_env to NULL
-  /*!
-   * The use-case for m_env being NULL is that options are *not* read in from
-   * a file but are instead wholly provided by the user.
-   */
-  BaseInputOptions();
+  //! Default constructor
+  BaseInputOptionsParser();
 
   //! Destructor
-  /*!
-   * Deletes m_optionsDescription, but not m_env
-   */
-  virtual ~BaseInputOptions();
-
-  //! Calls the relevant QUESO BaseEnvironment methods to scan the input file
-  void scanOptionsValues();
-
-private:
-  //! Subclasses implement this to *define* input options
-  /*!
-   * This will act on the boost-specific m_optionsDescription
-   */
-  virtual void defineOptions() = 0;
-
-  //! Subclasses implement this to *set* input options from an input string
-  /*!
-   * This will act on the boost-specific m_optionsDescription
-   */
-  virtual void getOptionValues() = 0;
-
-protected:
-  const BaseEnvironment * m_env;
-  boost::program_options::options_description * m_optionsDescription;
+  virtual ~BaseInputOptionsParser();
 };
 
 }  // End namespace QUESO
 
-#endif // UQ_BASE_INPUT_OPTIONS_H
+#endif  // UQ_BASE_INPUT_OPTIONS_H
