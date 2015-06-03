@@ -183,6 +183,8 @@ private:
         ArrayOfOneDTables <Q_V,Q_M>*         m_unifiedCdfValues;
         BaseVectorCdf     <Q_V,Q_M>*         m_unifiedSolutionCdf;
 #endif
+
+  bool m_userDidNotProvideOptions;
 };
 
 }  // End namespace QUESO

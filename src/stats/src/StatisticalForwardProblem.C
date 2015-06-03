@@ -60,7 +60,8 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblem(
   m_unifiedSolutionCdf      (NULL),
 #endif
   m_solutionPdf             (NULL),
-  m_optionsObj              (alternativeOptionsValues)
+  m_optionsObj              (alternativeOptionsValues),
+  m_userDidNotProvideOptions(false)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor()"
@@ -77,6 +78,9 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblem(
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
+
+    // We do this so we don't delete the user's object in the dtor
+    m_userDidNotProvideOptions = true;
   }
 
   if (m_optionsObj->m_help != "") {
