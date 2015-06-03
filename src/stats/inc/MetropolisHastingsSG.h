@@ -306,6 +306,8 @@ private:
 
   void transformInitialCovMatrixToGaussianSpace(const BoxSubset<P_V, P_M> &
       boxSubset);
+
+  bool m_userDidNotProvideOptions;
 };
 
 }  // End namespace QUESO

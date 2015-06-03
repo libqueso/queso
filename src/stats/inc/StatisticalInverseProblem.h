@@ -239,6 +239,8 @@ private:
         ArrayOfOneDGrids    <P_V,P_M>*   m_subMdfGrids;
         ArrayOfOneDTables   <P_V,P_M>*   m_subMdfValues;
 #endif
+
+  bool m_userDidNotProvideOptions;
 };
 
 }  // End namespace QUESO

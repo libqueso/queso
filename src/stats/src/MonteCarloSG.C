@@ -44,7 +44,8 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::MonteCarloSG(
   m_qoiFunctionSynchronizer (new VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>(m_qoiFunction,m_paramRv.imageSet().vectorSpace().zeroVector(),m_qoiFunction.imageSet().vectorSpace().zeroVector())),
   m_numPsNotSubWritten      (0),
   m_numQsNotSubWritten      (0),
-  m_optionsObj              (alternativeOptionsValues)
+  m_optionsObj              (alternativeOptionsValues),
+  m_userDidNotProvideOptions(false)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering MonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor()"
@@ -61,6 +62,9 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::MonteCarloSG(
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
+
+    // We do this so we don't delete the user's object in the dtor
+    m_userDidNotProvideOptions = true;
   }
 
   if (m_optionsObj->m_help != "") {
@@ -80,7 +84,10 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::MonteCarloSG(
 template <class P_V,class P_M,class Q_V,class Q_M>
 MonteCarloSG<P_V,P_M,Q_V,Q_M>::~MonteCarloSG()
 {
-  if (m_optionsObj             ) delete m_optionsObj;
+  if (m_optionsObj && m_userDidNotProvideOptions) {
+    delete m_optionsObj;
+  }
+
   if (m_qoiFunctionSynchronizer) delete m_qoiFunctionSynchronizer;
 }
 // Statistical methods ------------------------------

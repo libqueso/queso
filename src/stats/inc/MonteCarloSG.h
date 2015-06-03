@@ -131,6 +131,8 @@ private:
   unsigned int                                              m_numQsNotSubWritten;
 
   const McOptionsValues *                            m_optionsObj;
+
+  bool m_userDidNotProvideOptions;
 };
 
 }  // End namespace QUESO

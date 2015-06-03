@@ -54,7 +54,8 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
   m_optionsObj              (alternativeOptionsValues),
-  m_seedWithMAPEstimator    (false)
+  m_seedWithMAPEstimator    (false),
+  m_userDidNotProvideOptions(false)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering Sip" << std::endl;
@@ -74,6 +75,10 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
+
+    // We set this flag so we don't delete the user-created object when it
+    // comes time to deconstruct
+    m_userDidNotProvideOptions = true;
   }
 
   if (m_optionsObj->m_help != "") {
@@ -121,7 +126,8 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
   m_optionsObj              (alternativeOptionsValues),
-  m_seedWithMAPEstimator    (false)
+  m_seedWithMAPEstimator    (false),
+  m_userDidNotProvideOptions(false)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering StatisticalInverseProblem<P_V,P_M>::constructor()"
@@ -138,6 +144,8 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
+
+    m_userDidNotProvideOptions = true;
   }
 
   if (m_optionsObj->m_help != "") {
@@ -182,7 +190,10 @@ StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
   if (m_subSolutionMdf  ) delete m_subSolutionMdf;
   if (m_solutionPdf     ) delete m_solutionPdf;
   if (m_solutionDomain  ) delete m_solutionDomain;
-  if (m_optionsObj      ) delete m_optionsObj;
+
+  if (m_optionsObj && m_userDidNotProvideOptions) {
+    delete m_optionsObj;
+  }
 }
 // Statistical methods -----------------------------
 template <class P_V,class P_M>

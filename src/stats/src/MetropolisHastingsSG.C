@@ -162,7 +162,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_optionsObj                (alternativeOptionsValues),
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
-  m_initialLogLikelihoodValue (0.)
+  m_initialLogLikelihoodValue (0.),
+  m_userDidNotProvideOptions(false)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -174,6 +175,9 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
+
+    // We set this flag so we don't free something the user created
+    m_userDidNotProvideOptions = true;
   }
 
   if (m_optionsObj->m_help != "") {
@@ -239,7 +243,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_optionsObj                (alternativeOptionsValues),
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
-  m_initialLogLikelihoodValue (initialLogLikelihood)
+  m_initialLogLikelihoodValue (initialLogLikelihood),
+  m_userDidNotProvideOptions(false)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -252,6 +257,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
     m_optionsObj = tempOptions;
+
+    m_userDidNotProvideOptions = true;
   }
 
   if (m_optionsObj->m_help != "") {
@@ -313,7 +320,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_lastAdaptedCovMatrix      (NULL),
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
-  m_initialLogLikelihoodValue (0.)
+  m_initialLogLikelihoodValue (0.),
+  m_userDidNotProvideOptions(true)
 {
   // We do this dance because one of the MetropolisHastingsSGOptions
   // constructors takes one of the old-style MLSamplingLevelOptions options
@@ -378,7 +386,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_lastAdaptedCovMatrix      (NULL),
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
-  m_initialLogLikelihoodValue (initialLogLikelihood)
+  m_initialLogLikelihoodValue (initialLogLikelihood),
+  m_userDidNotProvideOptions(true)
 {
   // We do this dance because one of the MetropolisHastingsSGOptions
   // constructors takes one of the old-style MLSamplingLevelOptions options
@@ -436,7 +445,13 @@ MetropolisHastingsSG<P_V,P_M>::~MetropolisHastingsSG()
 
   if (m_tk                   ) delete m_tk;
   if (m_targetPdfSynchronizer) delete m_targetPdfSynchronizer;
-  if (m_optionsObj           ) delete m_optionsObj;
+
+  // Only delete if the user didn't provide the options
+  // I.e., if the user created their options object, then they are resonsible
+  // for freeing it.
+  if (m_optionsObj && m_userDidNotProvideOptions) {
+    delete m_optionsObj;
+  }
 
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::destructor()"

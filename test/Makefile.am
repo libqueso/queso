@@ -50,6 +50,7 @@ check_PROGRAMS += test_4D_LinearLagrangeInterpolationSurrogate
 check_PROGRAMS += test_InterpolationSurrogateHelper
 check_PROGRAMS += test_build_InterpolationSurrogateBuilder
 check_PROGRAMS += test_BoostInputOptionsParser
+check_PROGRAMS += test_NoInputFile
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -125,6 +126,7 @@ test_4D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurroga
 test_InterpolationSurrogateHelper_SOURCES = test_InterpolationSurrogate/test_InterpolationSurrogateHelper.C
 test_build_InterpolationSurrogateBuilder_SOURCES = test_InterpolationSurrogate/test_build_InterpolationSurrogateBuilder.C
 test_BoostInputOptionsParser_SOURCES = test_InputOptionsParser/test_BoostInputOptionsParser.C
+test_NoInputFile_SOURCES = test_StatisticalInverseProblem/test_NoInputFile.C
 
 # Files to freedom stamp
 srcstamp =
@@ -172,6 +174,7 @@ srcstamp += $(test_4D_LinearLagrangeInterpolationSurrogate_SOURCES)
 srcstamp += $(test_InterpolationSurrogateHelper_SOURCES)
 srcstamp += $(test_build_InterpolationSurrogateBuilder_SOURCES)
 srcstamp += $(test_BoostInputOptionsParser_SOURCES)
+srcstamp += $(test_NoInputFile_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -219,6 +222,7 @@ TESTS += $(top_builddir)/test/test_4D_LinearLagrangeInterpolationSurrogate
 TESTS += $(top_builddir)/test/test_InterpolationSurrogateHelper
 TESTS += $(top_builddir)/test/test_build_InterpolationSurrogateBuilder
 TESTS += $(top_builddir)/test/test_BoostInputOptionsParser
+TESTS += $(top_builddir)/test/test_NoInputFile
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -259,6 +263,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/test_output_gaussian_likelihoods
 	rm -rf $(top_builddir)/test/test_gpmsa_cobra_output
 	rm -rf $(top_builddir)/test/test_adaptedcov_output
+	rm -rf $(top_builddir)/test/test_outputNoInputFile
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
