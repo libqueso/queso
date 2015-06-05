@@ -204,7 +204,9 @@ public:
 
   //! If not ".", reads the contents of the file as the initial proposal covariance matrix.
   /*!
-   * To use this, m_tkUseLocalHessian must be false
+   * To use this, m_tkUseLocalHessian must be false.  If it is true, and this
+   * option is ".", no input file is read and the user-provided initial
+   * proposal covariance matrix is used.
    *
    * If this option is ".", no input file is read.
    *
@@ -215,13 +217,13 @@ public:
   //! The filetype of m_initialProposalCovMatrixDataInputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
   std::string                        m_initialProposalCovMatrixDataInputFileType;
 
-  //! \todo DOCUMENT ME
+  //! Set of parameters that don't get sampled
   /*!
    * Default is empty set
    */
   std::set<unsigned int>             m_parameterDisabledSet;  // gpmsa2
 
-  //! Filename for reading and already-produced Markov chain
+  //! Filename for reading an already-produced Markov chain
   /*!
    * If ".", generates the Markov chain without reading anything.
    * If not ".", this is the name of the file to read a Markov chain from
@@ -249,7 +251,9 @@ public:
 
   //! The frequency with which to output diagnostic information
   /*!
-   * Diagnostics are current sample iteration and current rejection percentage
+   * Diagnostics are current sample iteration and current rejection percentage.
+   *
+   * Must be an integer.
    *
    * Default is 500
    */
@@ -345,7 +349,7 @@ public:
   //! The filetype of m_filteredChainDataOutputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
   std::string                        m_filteredChainDataOutputFileType;
 
-  //! Toggle for whether or not to allow all processes to write *filetered* Markov chain output to a file
+  //! Toggle for whether or not to allow all processes to write *filtered* Markov chain output to a file
   /*!
    * If true, all processes write filtered Markov chain output and
    * m_filteredChainDataOutputAllowedSet is ignored.
@@ -496,6 +500,8 @@ public:
    * Beyond m_amInitialNonAdaptInterval, the last adapted proposal covariance
    * matrix will be printed to the output file every
    * m_amAdaptedMatricesDataOutputPeriod samples.
+   *
+   * If zero, no output is written.
    *
    * The default is 0
    */
