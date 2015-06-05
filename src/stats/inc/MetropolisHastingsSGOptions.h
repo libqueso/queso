@@ -194,6 +194,9 @@ public:
   bool                               m_totallyMute;
 
   //! If not ".", reads the contents of the file and uses that to start the MCMC.  Default is "."
+  /*!
+   * If ".", the input file is not read.
+   */
   std::string                        m_initialPositionDataInputFileName;
 
   //! The filetype of m_initialPositionDataInputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
@@ -202,6 +205,8 @@ public:
   //! If not ".", reads the contents of the file as the initial proposal covariance matrix.
   /*!
    * To use this, m_tkUseLocalHessian must be false
+   *
+   * If this option is ".", no input file is read.
    *
    * Default is "."
    */
@@ -272,7 +277,10 @@ public:
 
   //! If not ".", filename to write the Markov chain to
   /*!
-   * m_totallyMute must be false
+   * If ".", the chain is not written to a file.
+   *
+   * If m_totallyMute is true, the chain is not written regardless of the value
+   * of this option.
    *
    * Default is "."
    */
@@ -326,6 +334,12 @@ public:
   unsigned int                       m_filteredChainLag;              // input or set during run time
 
   //! If not ".", file name to save the filtered chain to.  Default is ".".
+  /*!
+   * If ".", the filtered chain is not written to a file.
+   *
+   * If m_totallyMute is true, then the chain is not written to a file
+   * regardless of the value of this option.
+   */
   std::string                        m_filteredChainDataOutputFileName;
 
   //! The filetype of m_filteredChainDataOutputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
@@ -488,6 +502,9 @@ public:
   unsigned int                       m_amAdaptedMatricesDataOutputPeriod;
 
   //! If not ".", this is the file to write adapted proposal covariance matrices to.  Default is "."
+  /*!
+   * If ".", the adapted proposal covariance matrices are not written to a file
+   */
   std::string                        m_amAdaptedMatricesDataOutputFileName;
 
   //! The filetype of m_amAdaptedMatricesDataOutputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
