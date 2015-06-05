@@ -2072,6 +2072,10 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       }
     }
 
+    //****************************************************
+    // Point 5/6 of logic for new position
+    // Adaptive Metropolis calculation
+    //****************************************************
     this->adapt(positionId, workingChain);
 
     //****************************************************
@@ -2206,7 +2210,6 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     iRC = gettimeofday(&timevalAM, NULL);
   }
 
-  // Now might be the moment to adapt
   unsigned int idOfFirstPositionInSubChain = 0;
   SequenceOfVectors<P_V,P_M> partialChain(m_vectorSpace,0,m_optionsObj->m_prefix+"partialChain");
 
