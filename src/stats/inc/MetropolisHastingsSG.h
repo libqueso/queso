@@ -235,6 +235,10 @@ private:
                                    ScalarSequence<double>*      workingLogLikelihoodValues,
                                    ScalarSequence<double>*      workingLogTargetValues);
 
+  //! Adaptive Metropolis method that deals with adapting the proposal covariance matrix
+  void adapt(unsigned int positionId,
+      BaseVectorSequence<P_V, P_M> & workingChain);
+
   //! This method reads the chain contents.
   void   readFullChain            (const std::string&                  inputFileName,
                                    const std::string&                  inputFileType,
