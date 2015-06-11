@@ -229,7 +229,6 @@ XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 EXTRA_DIST =
 EXTRA_DIST += common/compare.pl
 EXTRA_DIST += common/verify.sh
-EXTRA_DIST += test_uqEnvironmentOptions/test.inp
 EXTRA_DIST += test_infinite/inf_options
 EXTRA_DIST += test_Regression/GaussianMean1DRegression_options.in
 EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt.in
@@ -249,7 +248,9 @@ EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
 EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt.in
 EXTRA_DIST += test_InterpolationSurrogate/queso_input.txt.in
 EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
-EXTRA_DIST += test_InputOptionsParser/test_options.txt.in
+EXTRA_DIST += test_InputOptionsParser/test_options_good.txt.in
+EXTRA_DIST += test_InputOptionsParser/test_options_bad.txt.in
+EXTRA_DIST += test_InputOptionsParser/test_options_default.txt.in
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
@@ -264,6 +265,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/test_gpmsa_cobra_output
 	rm -rf $(top_builddir)/test/test_adaptedcov_output
 	rm -rf $(top_builddir)/test/test_outputNoInputFile
+	rm -rf $(top_builddir)/test/test_output_interp_surrogates
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno

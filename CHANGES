@@ -3,6 +3,14 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.53.0
+  * Add linear interpolation surrogates
+  * Refactor input options processing
+  * Refactor existing queso errors and asserts
+  * Add new error checking macros
+  * Add basic scoped pointer wrappers
+  * Better error message reporting for bad sample covariance matrices
+
 Version 0.52.0
   * Add canned Gaussian likelihoods
   * Fix bug in logit transform logic
