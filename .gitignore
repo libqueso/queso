@@ -89,6 +89,8 @@ examples/fullCovariance
 examples/blockDiagonalCovariance
 examples/fullCovarianceRandomCoefficient
 examples/blockDiagonalCovarianceRandomCoefficients
+examples/4d_interp
+examples/4d_interp_read
 
 src/core/inc/queso.h
 src/libqueso.la
@@ -196,3 +198,11 @@ test/test_InterpolationSurrogate/queso_input.txt
 test/test_output_interp_surrogates
 test/test_write_InterpolationSurrogateBuilder.dat
 test/test_outputNoInputFile
+test/test_1D_LinearLagrangeInterpolationSurrogate
+test/test_2D_LinearLagrangeInterpolationSurrogate
+test/test_3D_LinearLagrangeInterpolationSurrogate
+test/test_4D_LinearLagrangeInterpolationSurrogate
+test/test_InterpolationSurrogateHelper
+test/test_build_InterpolationSurrogateBuilder
+test/test_write_InterpolationSurrogateBuilder_1.dat
+test/test_write_InterpolationSurrogateBuilder_2.dat
