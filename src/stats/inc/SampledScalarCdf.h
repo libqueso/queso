@@ -42,7 +42,7 @@ namespace QUESO {
  * This class implements a sampled cumulative distribution function (CDF), given
  * the grid points where it will be sampled and its resulting values.*/
 
-template<class T>
+template <class T>
 class SampledScalarCdf : public BaseScalarCdf<T> {
 public:
   //! @name Constructor/Destructor methods

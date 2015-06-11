@@ -40,11 +40,8 @@ Base1DQuadrature::Base1DQuadrature(
   m_positions     (0),
   m_weights       (0)
 {
-  UQ_FATAL_TEST_MACRO(m_minDomainValue >= m_maxDomainValue,
-                      UQ_UNAVAILABLE_RANK,
-                      "Base1DQuadrature::constructor()",
-                      "min >= max");
-  //UQ_FATAL_TEST_MACRO(order == 0, // eep2011
+  queso_require_less_msg(m_minDomainValue, m_maxDomainValue, "min >= max");
+
   //                    UQ_UNAVAILABLE_RANK,
   //                    "Base1DQuadrature::constructor()",
   //                    "order = 0");
@@ -75,20 +72,14 @@ Base1DQuadrature::order() const
 const std::vector<double>&
 Base1DQuadrature::positions() const
 {
-  UQ_FATAL_TEST_MACRO(m_positions.size() == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "Base1DQuadrature::positions()",
-                      "size = 0");
+  queso_require_not_equal_to_msg(m_positions.size(), 0, "size = 0");
   return m_positions;
 }
 
 const std::vector<double>&
 Base1DQuadrature::weights() const
 {
-  UQ_FATAL_TEST_MACRO(m_weights.size() == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "Base1DQuadrature::weights()",
-                      "size = 0");
+  queso_require_not_equal_to_msg(m_weights.size(), 0, "size = 0");
   return m_weights;
 }
 
@@ -106,15 +97,9 @@ Generic1DQuadrature::Generic1DQuadrature(
   m_positions = positions;
   m_weights   = weights;
 
-  UQ_FATAL_TEST_MACRO(m_positions.size() == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "Generic1DQuadrature::constructor()",
-                      "invalid positions");
+  queso_require_not_equal_to_msg(m_positions.size(), 0, "invalid positions");
 
-  UQ_FATAL_TEST_MACRO(m_positions.size() != m_weights.size(),
-                      UQ_UNAVAILABLE_RANK,
-                      "Generic1DQuadrature::constructor()",
-                      "inconsistent positions and weight");
+  queso_require_equal_to_msg(m_positions.size(), m_weights.size(), "inconsistent positions and weight");
 }
 
 Generic1DQuadrature::~Generic1DQuadrature()
@@ -409,10 +394,7 @@ UniformLegendre1DQuadrature::UniformLegendre1DQuadrature(
       std::cerr << "In UniformLegendre1DQuadrature::constructor()"
                 << ": m_order = " << m_order
                 << std::endl;
-      UQ_FATAL_TEST_MACRO(true,
-                          UQ_UNAVAILABLE_RANK,
-                          "UniformLegendre1DQuadrature::constructor()",
-                          "order not supported");
+      queso_error_msg("order not supported");
     break;
   }
 
@@ -650,10 +632,7 @@ GaussianHermite1DQuadrature::GaussianHermite1DQuadrature(
       std::cerr << "In GaussianHermite1DQuadrature::constructor()"
                 << ": m_order = " << m_order
                 << std::endl;
-      UQ_FATAL_TEST_MACRO(true,
-                          UQ_UNAVAILABLE_RANK,
-                          "GaussianHermite1DQuadrature::constructor()",
-                          "order not supported");
+      queso_error_msg("order not supported");
     break;
   }
   for (unsigned int j = 0; j < (m_order+1); ++j) {
@@ -688,10 +667,7 @@ WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature(
   // http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature
   switch (m_order) {
     default:
-      UQ_FATAL_TEST_MACRO(true,
-                          UQ_UNAVAILABLE_RANK,
-                          "WignerInverseChebyshev1st1DQuadrature::constructor()",
-                          "order not supported");
+      queso_error_msg("order not supported");
     break;
   }
 

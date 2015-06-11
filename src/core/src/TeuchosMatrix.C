@@ -37,18 +37,6 @@ namespace QUESO {
 
 using std:: cout;
 using std:: endl;
-// ---------------------------------------------------
-// default constructor -------------------------------
-TeuchosMatrix::TeuchosMatrix()
-  :
-  Matrix()
-{
-  //this part is never called.
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::constructor(), default",
-                      "should not be used by user");
-}
 
 // ---------------------------------------------------
 // shaped constructor (square/rectangular)------------
@@ -177,7 +165,7 @@ TeuchosMatrix::TeuchosMatrix(const TeuchosMatrix& B) // can be a rectangular mat
   m_mat.shape    (B.numRowsLocal(),B.numCols());
   m_LU.shape(0,0);
 
-  this->Matrix::copy(B);
+  this->Matrix::base_copy(B);
   this->copy(B);
 }
 
@@ -206,10 +194,7 @@ TeuchosMatrix& TeuchosMatrix::operator*=(double a)
   this->resetLU();
   int iRC;
   iRC = m_mat.scale(a);
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "TeuchosMatrix::operator*=()",
-                    "scaling failed");
+  queso_require_msg(!(iRC), "scaling failed");
   return *this;
 }
 
@@ -267,14 +252,8 @@ double& TeuchosMatrix::operator()(unsigned int i, unsigned int j)
               << ", m_mat.numRows() = " << (unsigned int) m_mat.numRows()
               << ", m_mat.numCols() = " << (unsigned int) m_mat.numCols()
               << std::endl;
-    UQ_FATAL_TEST_MACRO(i >= (unsigned int) m_mat.numRows(),
-                        m_env.worldRank(),
-                        "TeuchosMatrix::operator(i,j)",
-                        "i is too large");
-    UQ_FATAL_TEST_MACRO(j >= (unsigned int) m_mat.numCols(),
-                        m_env.worldRank(),
-                        "TeuchosMatrix::operator(i,j)",
-                        "j is too large");
+    queso_require_less_msg(i, (unsigned int) m_mat.numRows(), "i is too large");
+    queso_require_less_msg(j, (unsigned int) m_mat.numCols(), "j is too large");
   }
   return m_mat(i,j);
 }
@@ -282,14 +261,8 @@ double& TeuchosMatrix::operator()(unsigned int i, unsigned int j)
 // ---------------------------------------------------
 const double& TeuchosMatrix::operator()(unsigned int i, unsigned int j) const
 {
-  UQ_FATAL_TEST_MACRO(i >= (unsigned int) m_mat.numRows(),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::operator(i,j) const",
-                      "i is too large");
-  UQ_FATAL_TEST_MACRO(j >= (unsigned int) m_mat.numCols(),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::operator(i,j) const",
-                      "j is too large");
+  queso_require_less_msg(i, (unsigned int) m_mat.numRows(), "i is too large");
+  queso_require_less_msg(j, (unsigned int) m_mat.numCols(), "j is too large");
   return m_mat(i,j);
 }
 
@@ -401,10 +374,7 @@ TeuchosMatrix::transpose() const
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                       m_env.worldRank(),
-                       "TeuchosMatrix::transpose()",
-                       "routine works only for square matrices");
+  queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
 
   TeuchosMatrix mat(m_env,m_map,nCols);
   for (unsigned int row = 0; row < nRows; ++row) {
@@ -424,10 +394,7 @@ TeuchosMatrix::inverse() const
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::inverse()",
-                      "matrix is not square");
+  queso_require_equal_to_msg(nRows, nCols, "matrix is not square");
 
   if (m_inverse == NULL) {
     m_inverse = new TeuchosMatrix(m_env,m_map,nCols);
@@ -652,20 +619,11 @@ TeuchosMatrix::svd(TeuchosMatrix& matU, TeuchosVector& vecS, TeuchosMatrix& matV
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((matU.numRowsLocal() != nRows) || (matU.numCols() != nCols),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::svd()",
-                      "invalid matU");
+  queso_require_msg(!((matU.numRowsLocal() != nRows) || (matU.numCols() != nCols)), "invalid matU");
 
-  UQ_FATAL_TEST_MACRO((vecS.sizeLocal() != nCols), //std::min(nRows,nRows)),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::svd()",
-                      "invalid vecS");
+  queso_require_equal_to_msg(vecS.sizeLocal(), nCols, "invalid vecS");
 
-  UQ_FATAL_TEST_MACRO((matVt.numRowsLocal() != nCols) || (matVt.numCols() != nCols),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::svd()",
-                      "invalid matVt");
+  queso_require_msg(!((matVt.numRowsLocal() != nCols) || (matVt.numCols() != nCols)), "invalid matVt");
 
   int iRC = internalSvd();
 
@@ -712,15 +670,9 @@ TeuchosMatrix::svdSolve(const TeuchosVector& rhsVec, TeuchosVector& solVec) cons
   unsigned int nCols = this->numCols();
   unsigned int i;
 
-  UQ_FATAL_TEST_MACRO((rhsVec.sizeLocal() != nRows),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::svdSolve()",
-                      "invalid rhsVec");
+  queso_require_equal_to_msg(rhsVec.sizeLocal(), nRows, "invalid rhsVec");
 
-  UQ_FATAL_TEST_MACRO((solVec.sizeLocal() != nCols),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::svdSolve()",
-                      "invalid solVec");
+  queso_require_equal_to_msg(solVec.sizeLocal(), nCols, "invalid solVec");
 
   int iRC = internalSvd();
 
@@ -785,20 +737,11 @@ TeuchosMatrix::svdSolve(const TeuchosMatrix& rhsMat, TeuchosMatrix& solMat) cons
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((rhsMat.numRowsLocal() != nRows),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::svdSolve()",
-                      "invalid rhsMat");
+  queso_require_equal_to_msg(rhsMat.numRowsLocal(), nRows, "invalid rhsMat");
 
-  UQ_FATAL_TEST_MACRO((solMat.numRowsLocal() != nCols),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::svdSolve()",
-                      "invalid solMat");
+  queso_require_equal_to_msg(solMat.numRowsLocal(), nCols, "invalid solMat");
 
-  UQ_FATAL_TEST_MACRO((rhsMat.numCols() != solMat.numCols()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::svdSolve()",
-                      "rhsMat and solMat are not compatible");
+  queso_require_equal_to_msg(rhsMat.numCols(), solMat.numCols(), "rhsMat and solMat are not compatible");
 
   TeuchosVector rhsVec(m_env,rhsMat.map());
   TeuchosVector solVec(m_env,solMat.map());
@@ -821,10 +764,7 @@ TeuchosMatrix::svdSolve(const TeuchosMatrix& rhsMat, TeuchosMatrix& solMat) cons
 TeuchosVector
 TeuchosMatrix::multiply(const TeuchosVector& x) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::multiply(), return vector",
-                      "matrix and vector have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), x.sizeLocal(), "matrix and vector have incompatible sizes");
 
   TeuchosVector y(m_env,m_map);
   this->multiply(x,y);
@@ -837,10 +777,7 @@ TeuchosMatrix::multiply(const TeuchosVector& x) const
 TeuchosVector
 TeuchosMatrix::invertMultiply(const TeuchosVector& b) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply(), return vector",
-                      "matrix and rhs have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), b.sizeLocal(), "matrix and rhs have incompatible sizes");
   TeuchosVector x(m_env,m_map);
 
   this->invertMultiply(b,x);
@@ -853,36 +790,21 @@ TeuchosMatrix::invertMultiply(const TeuchosVector& b) const
 void
 TeuchosMatrix::invertMultiply(const TeuchosVector& b, TeuchosVector& x) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply(), return void",
-                      "matrix and rhs have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), b.sizeLocal(), "matrix and rhs have incompatible sizes");
 
-  UQ_FATAL_TEST_MACRO((x.sizeLocal() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply(), return void",
-                      "solution and rhs have incompatible sizes");
+  queso_require_equal_to_msg(x.sizeLocal(), b.sizeLocal(), "solution and rhs have incompatible sizes");
 
   if (m_LU.numCols() == 0 && m_LU.numRows() == 0)
   {
-  UQ_FATAL_TEST_MACRO((v_pivoting != NULL),
-                         m_env.worldRank(),
-                         "TeuchosMatrix::invertMultiply()",
-                         "v_pivoting should be NULL");
+  queso_require_msg(!(v_pivoting), "v_pivoting should be NULL");
 
   //allocate m_LU and v_pivoting
   m_LU = m_mat;
   v_pivoting =(int *) malloc(sizeof(int)*m_LU.numCols() );
 
-  UQ_FATAL_TEST_MACRO((m_LU.numCols() == 0 && m_LU.numRows() == 0),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply()",
-                      "malloc() failed");
+  queso_require_not_equal_to_msg(m_LU.numCols(), 0 && m_LU.numRows() == 0, "malloc() failed");
 
-  UQ_FATAL_TEST_MACRO((v_pivoting == NULL),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply()",
-                      "malloc() failed");
+  queso_require_msg(v_pivoting, "malloc() failed");
 
   if (m_inDebugMode) {
     std::cout << "In TeuchosMatrix::invertMultiply()"
@@ -910,10 +832,7 @@ TeuchosMatrix::invertMultiply(const TeuchosVector& b, TeuchosVector& x) const
                 << "by zero will occur if it is used to solve a system of equations."
                 << std::endl;
   }
-  UQ_FATAL_RC_MACRO(info,
-		    m_env.worldRank(),
-		    "TeuchosMatrix::invertMultiplyForceLU()",
-		    "GETRF() failed");
+  queso_require_msg(!(info), "GETRF() failed");
 
   if (info >  0)
      m_isSingular = true;
@@ -956,10 +875,7 @@ TeuchosMatrix::invertMultiply(const TeuchosVector& b, TeuchosVector& x) const
                 << ",\nINFO < 0:  if INFO = -i, the i-th argument had an illegal value.\n"
                 << std::endl;
   }
-  UQ_FATAL_RC_MACRO(info02,
-		    m_env.worldRank(),
-		    "TeuchosMatrix::invertMultiplyForceLU()",
-		    "GETRS() failed");
+  queso_require_msg(!(info02), "GETRS() failed");
  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In TeuchosMatrix::invertMultiply()"
 			    << ", after lapack.GETRS() - solve LU system."
@@ -990,15 +906,9 @@ void
 TeuchosMatrix::invertMultiply(const TeuchosMatrix& B, TeuchosMatrix& X) const
 {
   // Sanity Checks
-  UQ_FATAL_RC_MACRO(((B.numRowsLocal() != X.numRowsLocal()) || (B.numCols() != X.numCols())),
-             m_env.worldRank(),
-		    "TeuchosMatrix::invertMultiply()",
-		    "Matrices B and X are incompatible");
+  queso_require_msg(!((B.numRowsLocal() != X.numRowsLocal()) || (B.numCols() != X.numCols())), "Matrices B and X are incompatible");
 
-  UQ_FATAL_RC_MACRO((this->numRowsLocal() != X.numRowsLocal()),
-             m_env.worldRank(),
-		    "TeuchosMatrix::invertMultiply()",
-		    "This and X matrices are incompatible");
+  queso_require_equal_to_msg(this->numRowsLocal(), X.numRowsLocal(), "This and X matrices are incompatible");
 
   // Some local variables used within the loop.
   TeuchosVector b(m_env, m_map);
@@ -1017,10 +927,7 @@ TeuchosMatrix::invertMultiply(const TeuchosMatrix& B, TeuchosMatrix& X) const
 TeuchosVector
 TeuchosMatrix::invertMultiplyForceLU(const TeuchosVector& b) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply(), return vector",
-                      "matrix and rhs have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), b.sizeLocal(), "matrix and rhs have incompatible sizes");
 
   TeuchosVector x(m_env,m_map);
   this->invertMultiplyForceLU(b,x);
@@ -1033,39 +940,24 @@ TeuchosMatrix::invertMultiplyForceLU(const TeuchosVector& b) const
 void
 TeuchosMatrix::invertMultiplyForceLU(const TeuchosVector& b, TeuchosVector& x) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply(), return void",
-                      "matrix and rhs have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), b.sizeLocal(), "matrix and rhs have incompatible sizes");
 
-  UQ_FATAL_TEST_MACRO((x.sizeLocal() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply(), return void",
-                      "solution and rhs have incompatible sizes");
+  queso_require_equal_to_msg(x.sizeLocal(), b.sizeLocal(), "solution and rhs have incompatible sizes");
 
   if (m_LU.numCols() == 0 && m_LU.numRows() == 0) {
-    UQ_FATAL_TEST_MACRO((v_pivoting != NULL),
-                         m_env.worldRank(),
-                         "TeuchosMatrix::invertMultiply()",
-                         "v_pivoting should be NULL");
+    queso_require_msg(!(v_pivoting), "v_pivoting should be NULL");
   }
 
   //allocate m_LU , yes outside the if above
   m_LU = m_mat;
 
-  UQ_FATAL_TEST_MACRO((m_LU.numCols() == 0 && m_LU.numRows() == 0),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply()",
-                      "Teuchos atttribuition m_LU = m_mat failed");
+  queso_require_not_equal_to_msg(m_LU.numCols(), 0 && m_LU.numRows() == 0, "Teuchos atttribuition m_LU = m_mat failed");
 
   //allocate v_pivoting
   if ( v_pivoting == NULL )
     v_pivoting =(int *) malloc(sizeof(int)*m_LU.numCols() );
 
-  UQ_FATAL_TEST_MACRO((v_pivoting == NULL),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::invertMultiply()",
-                      "malloc() for v_pivoting failed");
+  queso_require_msg(v_pivoting, "malloc() for v_pivoting failed");
 
   // Perform an LU factorization of matrix m_LU. Checked 12/06/12
   Teuchos::LAPACK<int, double> lapack;
@@ -1084,10 +976,7 @@ TeuchosMatrix::invertMultiplyForceLU(const TeuchosVector& b, TeuchosVector& x) c
                 << std::endl;
   }
 
-  UQ_FATAL_RC_MACRO(info,
-		    m_env.worldRank(),
-		    "TeuchosMatrix::invertMultiplyForceLU()",
-		    "GETRF() failed");
+  queso_require_msg(!(info), "GETRF() failed");
 
   if (info >  0)
      m_isSingular = true;
@@ -1113,10 +1002,7 @@ TeuchosMatrix::invertMultiplyForceLU(const TeuchosVector& b, TeuchosVector& x) c
                 << std::endl;
     }
 
-    UQ_FATAL_RC_MACRO(info02,
-		    m_env.worldRank(),
-		    "TeuchosMatrix::invertMultiplyForceLU()",
-		    "GETRS() failed");
+    queso_require_msg(!(info02), "GETRS() failed");
 
  return;
 }
@@ -1154,16 +1040,10 @@ TeuchosMatrix::eigen(TeuchosVector& eigenValues, TeuchosMatrix* eigenVectors) co
 {
   unsigned int n = eigenValues.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "TeuchosMatrix::eigen()",
-                      "invalid input vector size");
+  queso_require_not_equal_to_msg(n, 0, "invalid input vector size");
 
   if (eigenVectors) {
-    UQ_FATAL_TEST_MACRO((eigenValues.sizeLocal() != eigenVectors->numRowsLocal()),
-                        env().fullRank(),
-                        "TeuchosVector::eigen()",
-                        "different input vector sizes");
+    queso_require_equal_to_msg(eigenValues.sizeLocal(), eigenVectors->numRowsLocal(), "different input vector sizes");
   }
 
   // At the end of execution, Lapack funcion destroys the input matrix
@@ -1188,10 +1068,7 @@ TeuchosMatrix::eigen(TeuchosVector& eigenValues, TeuchosMatrix* eigenVectors) co
     for (unsigned int i=0; i< n; i++)
       eigenValues[i] = W[i];
 
-    UQ_FATAL_TEST_MACRO((info != 0),
-                      env().fullRank(),
-                      "TeuchosMatrix::eigen()",
-                      "invalid input vector size");
+    queso_require_equal_to_msg(info, 0, "invalid input vector size");
   }
   else {
   	char JOBZ = 'V';//eigenvalues and eigenvectors
@@ -1221,10 +1098,7 @@ TeuchosMatrix::largestEigen(double& eigenValue, TeuchosVector& eigenVector) cons
 {
   unsigned int n = eigenVector.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "TeuchosMatrix::largestEigen()",
-                      "invalid input vector size");
+  queso_require_not_equal_to_msg(n, 0, "invalid input vector size");
   Teuchos::LAPACK<int, double> lapack;
 
   //SYEV destroys the input matrix, so lets operate in a copy
@@ -1268,10 +1142,7 @@ TeuchosMatrix::smallestEigen(double& eigenValue, TeuchosVector& eigenVector) con
 {
   unsigned int n = eigenVector.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "TeuchosMatrix::smallestEigen()",
-                      "invalid input vector size");
+  queso_require_not_equal_to_msg(n, 0, "invalid input vector size");
   Teuchos::LAPACK<int, double> lapack;
 
   //SYEV destroys the input matrix, so lets operate in a copy
@@ -1326,25 +1197,13 @@ TeuchosMatrix::cwSet(double value)
 void
 TeuchosMatrix::cwSet(unsigned int rowId,unsigned int colId,const TeuchosMatrix& mat)
 {
-  UQ_FATAL_TEST_MACRO(rowId >= this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::cwSet()",
-                      "invalid rowId");
+  queso_require_less_msg(rowId, this->numRowsLocal(), "invalid rowId");
 
-  UQ_FATAL_TEST_MACRO((rowId + mat.numRowsLocal()) > this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::cwSet()",
-                      "invalid vec.numRowsLocal()");
+  queso_require_less_equal_msg((rowId + mat.numRowsLocal()), this->numRowsLocal(), "invalid vec.numRowsLocal()");
 
-  UQ_FATAL_TEST_MACRO(colId >= this->numCols(),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::cwSet()",
-                      "invalid colId");
+  queso_require_less_msg(colId, this->numCols(), "invalid colId");
 
-  UQ_FATAL_TEST_MACRO((colId + mat.numCols()) > this->numCols(),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::cwSet()",
-                      "invalid vec.numCols()");
+  queso_require_less_equal_msg((colId + mat.numCols()), this->numCols(), "invalid vec.numCols()");
 
   for (unsigned int i = 0; i < mat.numRowsLocal(); ++i) {
     for (unsigned int j = 0; j < mat.numCols(); ++j) {
@@ -1361,15 +1220,9 @@ void
 TeuchosMatrix::getColumn(unsigned int column_num, TeuchosVector& column) const
 {
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
-                      env().fullRank(),
-                      "TeuchosMatrix::getColumn",
-                      "Specified row number not within range");
+  queso_require_less_msg(column_num, this->numCols(), "Specified row number not within range");
 
-  UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "TeuchosMatrix::getColumn",
-                      "column vector not same size as this matrix");
+  queso_require_equal_to_msg(column.sizeLocal(), this->numRowsLocal(), "column vector not same size as this matrix");
 
   // Temporary working pointer
   const double* temp_ptr ;
@@ -1403,15 +1256,9 @@ TeuchosMatrix::setColumn(unsigned int column_num, const TeuchosVector& column)
 {
   this->resetLU();
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
-                      env().fullRank(),
-                      "TeuchosMatrix::setColumn",
-                      "Specified column number not within range");
+  queso_require_less_msg(column_num, this->numCols(), "Specified column number not within range");
 
-  UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "TeuchosMatrix::setColumn",
-                      "column vector not same size as this matrix");
+  queso_require_equal_to_msg(column.sizeLocal(), this->numRowsLocal(), "column vector not same size as this matrix");
 
   for (unsigned int i =0; i < column.sizeLocal(); i++)
     m_mat(i,column_num) = column[i];
@@ -1425,15 +1272,9 @@ void
 TeuchosMatrix::getRow(unsigned int row_num, TeuchosVector& row) const
 {
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
-                      env().fullRank(),
-                      "TeuchosMatrix::getRow",
-                      "Specified row number not within range");
+  queso_require_less_msg(row_num, this->numRowsLocal(), "Specified row number not within range");
 
-  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "TeuchosMatrix::getRow",
-                      "row vector not same size as this matrix");
+  queso_require_equal_to_msg(row.sizeLocal(), this->numRowsLocal(), "row vector not same size as this matrix");
 
   // Copy row from Teuchos matrix into our TeuchosVector object
   for (unsigned int i=0; i< row.sizeLocal();i++)
@@ -1460,15 +1301,9 @@ void
 TeuchosMatrix::setRow (const unsigned int row_num, const TeuchosVector& row)
 {
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
-                      env().fullRank(),
-                      "TeuchosMatrix::getRow",
-                      "Specified row number not within range");
+  queso_require_less_msg(row_num, this->numRowsLocal(), "Specified row number not within range");
 
-  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "TeuchosMatrix::getRow",
-                      "row vector not same size as this matrix");
+  queso_require_equal_to_msg(row.sizeLocal(), this->numRowsLocal(), "row vector not same size as this matrix");
 
   // Copy our TeuchosVector object to our Teuchos Matrix
   for (unsigned int i=0; i< row.sizeLocal();i++)
@@ -1485,10 +1320,7 @@ TeuchosMatrix::zeroLower(bool includeDiagonal)
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::zeroLower()",
-                      "routine works only for square matrices");
+  queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
   this->resetLU();
 
   if (includeDiagonal) {
@@ -1517,10 +1349,7 @@ TeuchosMatrix::zeroUpper(bool includeDiagonal)
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::zeroUpper()",
-                      "routine works only for square matrices");
+  queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
   this->resetLU();
 
   if (includeDiagonal) {
@@ -1592,14 +1421,8 @@ TeuchosMatrix::fillWithTranspose(const TeuchosMatrix& mat)
 {
   unsigned int nRows = mat.numRowsLocal();
   unsigned int nCols = mat.numCols();
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != nCols,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithTranspose()",
-                      "inconsistent local number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() != nRows,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithTranspose()",
-                      "inconsistent number of cols");
+  queso_require_equal_to_msg(this->numRowsLocal(), nCols, "inconsistent local number of rows");
+  queso_require_equal_to_msg(this->numCols(), nRows, "inconsistent number of cols");
 
   for (unsigned int row = 0; row < nRows; ++row) {
     for (unsigned int col = 0; col < nCols; ++col) {
@@ -1621,14 +1444,8 @@ TeuchosMatrix::fillWithBlocksDiagonally(const std::vector<const TeuchosMatrix* >
     sumNumRowsLocals += matrices[i]->numRowsLocal();
     sumNumCols       += matrices[i]->numCols();
   }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRowsLocals,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithBlocksDiagonally(const)",
-                      "inconsistent local number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithBlocksDiagonally(const)",
-                      "inconsistent number of cols");
+  queso_require_equal_to_msg(this->numRowsLocal(), sumNumRowsLocals, "inconsistent local number of rows");
+  queso_require_equal_to_msg(this->numCols(), sumNumCols, "inconsistent number of cols");
 
   unsigned int cumulativeRowId = 0;
   unsigned int cumulativeColId = 0;
@@ -1657,14 +1474,8 @@ TeuchosMatrix::fillWithBlocksDiagonally(const std::vector<TeuchosMatrix* >& matr
     sumNumRowsLocals += matrices[i]->numRowsLocal();
     sumNumCols       += matrices[i]->numCols();
   }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRowsLocals,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithBlocksDiagonally()",
-                      "inconsistent local number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithBlocksDiagonally()",
-                      "inconsistent number of cols");
+  queso_require_equal_to_msg(this->numRowsLocal(), sumNumRowsLocals, "inconsistent local number of rows");
+  queso_require_equal_to_msg(this->numCols(), sumNumCols, "inconsistent number of cols");
 
   unsigned int cumulativeRowId = 0;
   unsigned int cumulativeColId = 0;
@@ -1689,16 +1500,10 @@ TeuchosMatrix::fillWithBlocksHorizontally(const std::vector<const TeuchosMatrix*
 {
   unsigned int sumNumCols = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
-                        m_env.worldRank(),
-                        "TeuchosMatrix::fillWithBlocksHorizontally(const)",
-                        "inconsistent local number of rows");
+    queso_require_equal_to_msg(this->numRowsLocal(), matrices[i]->numRowsLocal(), "inconsistent local number of rows");
     sumNumCols += matrices[i]->numCols();
   }
-  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithBlocksHorizontally(const)",
-                      "inconsistent number of cols");
+  queso_require_equal_to_msg(this->numCols(), sumNumCols, "inconsistent number of cols");
 
   unsigned int cumulativeColId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -1722,16 +1527,10 @@ TeuchosMatrix::fillWithBlocksHorizontally(const std::vector<TeuchosMatrix* >& ma
 {
   unsigned int sumNumCols = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
-                        m_env.worldRank(),
-                        "TeuchosMatrix::fillWithBlocksHorizontally()",
-                        "inconsistent local number of rows");
+    queso_require_equal_to_msg(this->numRowsLocal(), matrices[i]->numRowsLocal(), "inconsistent local number of rows");
     sumNumCols += matrices[i]->numCols();
   }
-  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithBlocksHorizontally()",
-                      "inconsistent number of cols");
+  queso_require_equal_to_msg(this->numCols(), sumNumCols, "inconsistent number of cols");
 
   unsigned int cumulativeColId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -1755,16 +1554,10 @@ TeuchosMatrix::fillWithBlocksVertically(const std::vector<const TeuchosMatrix* >
 {
   unsigned int sumNumRows = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
-                        m_env.worldRank(),
-                        "TeuchosMatrix::fillWithBlocksVertically(const)",
-                        "inconsistent local number of cols");
+    queso_require_equal_to_msg(this->numCols(), matrices[i]->numCols(), "inconsistent local number of cols");
     sumNumRows += matrices[i]->numRowsLocal();
   }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithBlocksVertically(const)",
-                      "inconsistent number of rows");
+  queso_require_equal_to_msg(this->numRowsLocal(), sumNumRows, "inconsistent number of rows");
 
   unsigned int cumulativeRowId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -1787,16 +1580,10 @@ TeuchosMatrix::fillWithBlocksVertically(const std::vector<TeuchosMatrix* >& matr
 {
   unsigned int sumNumRows = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
-                        m_env.worldRank(),
-                        "TeuchosMatrix::fillWithBlocksVertically()",
-                        "inconsistent local number of cols");
+    queso_require_equal_to_msg(this->numCols(), matrices[i]->numCols(), "inconsistent local number of cols");
     sumNumRows += matrices[i]->numRowsLocal();
   }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillWithBlocksVertically()",
-                      "inconsistent number of rows");
+  queso_require_equal_to_msg(this->numRowsLocal(), sumNumRows, "inconsistent number of rows");
 
   unsigned int cumulativeRowId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -1817,14 +1604,8 @@ TeuchosMatrix::fillWithBlocksVertically(const std::vector<TeuchosMatrix* >& matr
 void
 TeuchosMatrix::fillWithTensorProduct(const TeuchosMatrix& mat1, const TeuchosMatrix& mat2)
 {
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * mat2.numRowsLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillTensorProduct(mat and mat)",
-                      "inconsistent local number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * mat2.numCols()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillTensorProduct(mat and mat)",
-                      "inconsistent number of columns");
+  queso_require_equal_to_msg(this->numRowsLocal(), (mat1.numRowsLocal() * mat2.numRowsLocal()), "inconsistent local number of rows");
+  queso_require_equal_to_msg(this->numCols(), (mat1.numCols() * mat2.numCols()), "inconsistent number of columns");
 
   for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
     for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
@@ -1846,14 +1627,8 @@ TeuchosMatrix::fillWithTensorProduct(const TeuchosMatrix& mat1, const TeuchosMat
 void
 TeuchosMatrix::fillWithTensorProduct(const TeuchosMatrix& mat1, const TeuchosVector& vec2)
 {
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * vec2.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillTensorProduct(mat and vec)",
-                      "inconsistent local number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * 1),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::fillTensorProduct(mat and vec)",
-                      "inconsistent number of columns");
+  queso_require_equal_to_msg(this->numRowsLocal(), (mat1.numRowsLocal() * vec2.sizeLocal()), "inconsistent local number of rows");
+  queso_require_equal_to_msg(this->numCols(), (mat1.numCols() * 1), "inconsistent number of columns");
 
   for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
     for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
@@ -1878,11 +1653,12 @@ void
 TeuchosMatrix::mpiSum( const MpiComm& comm, TeuchosMatrix& M_global ) const
 {
   // Sanity Checks
-  UQ_FATAL_RC_MACRO(((this->numRowsLocal() != M_global.numRowsLocal()) ||
-                     (this->numCols()      != M_global.numCols()     )),
-		    env().fullRank(),
-		    "TeuchosMatrix::mpiSum()",
-		    "local and global matrices incompatible");
+  queso_require_equal_to_msg(this->numRowsLocal(),
+                             M_global.numRowsLocal(),
+		             "local and global matrices incompatible");
+  queso_require_equal_to_msg(this->numCols(),
+                             M_global.numCols(),
+		             "local and global matrices incompatible");
 
   /* TODO: Probably a better way to handle this unpacking/packing of data */
   int size = M_global.numRowsLocal()*M_global.numCols();
@@ -1919,25 +1695,13 @@ TeuchosMatrix::matlabLinearInterpExtrap(
   const TeuchosMatrix& y1Mat,
   const TeuchosVector& x2Vec)
 {
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::matlabLinearInterpExtrap()",
-                      "invalid 'x1' size");
+  queso_require_greater_msg(x1Vec.sizeLocal(), 1, "invalid 'x1' size");
 
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Mat.numRowsLocal(),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::matlabLinearInterpExtrap()",
-                      "invalid 'x1' and 'y1' sizes");
+  queso_require_equal_to_msg(x1Vec.sizeLocal(), y1Mat.numRowsLocal(), "invalid 'x1' and 'y1' sizes");
 
-  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::matlabLinearInterpExtrap()",
-                      "invalid 'x2' and 'this' sizes");
+  queso_require_equal_to_msg(x2Vec.sizeLocal(), this->numRowsLocal(), "invalid 'x2' and 'this' sizes");
 
-  UQ_FATAL_TEST_MACRO(y1Mat.numCols() != this->numCols(),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::matlabLinearInterpExtrap()",
-                      "invalid 'y1' and 'this' sizes");
+  queso_require_equal_to_msg(y1Mat.numCols(), this->numCols(), "invalid 'y1' and 'this' sizes");
 
   TeuchosVector y1Vec(x1Vec);
   TeuchosVector y2Vec(x2Vec);
@@ -1989,15 +1753,9 @@ TeuchosMatrix::subReadContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds)
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::subReadContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
-  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::subReadContents()",
-                      "implemented just for sequential vectors for now");
+  queso_require_less_equal_msg(this->numOfProcsForStorage(), 1, "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openInputFile(fileName,
@@ -2023,10 +1781,7 @@ TeuchosMatrix::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
 
-    UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.worldRank(),
-                        "TeuchosMatrix::subReadContents()",
-                        "string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, "=", "string should be the '=' sign");
 
     // Read 'zeros(n_rows,n_cols)' string
     *filePtrSet.ifsVar >> tmpString;
@@ -2037,10 +1792,7 @@ TeuchosMatrix::subReadContents(
     char nRowsString[tmpString.size()-posInTmpString+1];
     unsigned int posInRowsString = 0;
     do {
-      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.worldRank(),
-                          "TeuchosMatrix::subReadContents()",
-                          "symbol ',' not found in first line of file");
+      queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ',' not found in first line of file");
       nRowsString[posInRowsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ',');
     nRowsString[posInRowsString] = '\0';
@@ -2050,10 +1802,7 @@ TeuchosMatrix::subReadContents(
     char nColsString[tmpString.size()-posInTmpString+1];
     unsigned int posInColsString = 0;
     do {
-      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.worldRank(),
-                          "TeuchosMatrix::subReadContents()",
-                          "symbol ')' not found in first line of file");
+      queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ')' not found in first line of file");
       nColsString[posInColsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ')');
     nColsString[posInColsString] = '\0';
@@ -2072,16 +1821,10 @@ TeuchosMatrix::subReadContents(
     }
 
     // Check if [num of rows in file] == [requested matrix row size]
-    UQ_FATAL_TEST_MACRO(numRowsInFile != nRowsLocal,
-                        m_env.worldRank(),
-                        "TeuchosMatrix::subReadContents()",
-                        "size of vec in file is not big enough");
+    queso_require_equal_to_msg(numRowsInFile, nRowsLocal, "size of vec in file is not big enough");
 
     // Check if [num of cols in file] == [num cols in current matrix]
-    UQ_FATAL_TEST_MACRO(numColsInFile != nCols,
-                        m_env.worldRank(),
-                        "TeuchosMatrix::subReadContents()",
-                        "number of parameters of vec in file is different than number of parameters in this vec object");
+    queso_require_equal_to_msg(numColsInFile, nCols, "number of parameters of vec in file is different than number of parameters in this vec object");
 
     // Code common to any core in a communicator
     unsigned int maxCharsPerLine = 64*nCols; // Up to about 60 characters to represent each parameter value
@@ -2107,10 +1850,7 @@ TeuchosMatrix::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-    UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.worldRank(),
-                        "TeuchosMatrix::subReadContents()",
-                        "in core 0, string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, "=", "in core 0, string should be the '=' sign");
 
     // Take into account the ' [' portion
     std::streampos tmpPos = filePtrSet.ifsVar->tellg();
@@ -2148,15 +1888,9 @@ TeuchosMatrix::subWriteContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::subWriteContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
-  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.worldRank(),
-                      "TeuchosMatrix::subWriteContents()",
-                      "implemented just for sequential vectors for now");
+  queso_require_less_equal_msg(this->numOfProcsForStorage(), 1, "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openOutputFile(fileName,
@@ -2196,6 +1930,7 @@ TeuchosMatrix::subWriteContents(
 void
 TeuchosMatrix::copy(const TeuchosMatrix& src) //dummy
 {
+  // FIXME - should we be calling Matrix::base_copy here? - RHS
   this->resetLU();
   unsigned int i,j, nrows=src.numRowsLocal(), ncols=src.numCols();
 
@@ -2257,15 +1992,9 @@ TeuchosMatrix::resetLU()
 void
 TeuchosMatrix::multiply(const TeuchosVector& x, TeuchosVector& y) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::multiply(), vector return void",
-                      "matrix and x have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), x.sizeLocal(), "matrix and x have incompatible sizes");
 
-  UQ_FATAL_TEST_MACRO((this->numRowsLocal() != y.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosMatrix::multiply(), vector return void",
-                      "matrix and y have incompatible sizes");
+  queso_require_equal_to_msg(this->numRowsLocal(), y.sizeLocal(), "matrix and y have incompatible sizes");
 
   unsigned int sizeX = this->numCols();
   unsigned int sizeY = this->numRowsLocal();
@@ -2288,10 +2017,7 @@ TeuchosMatrix::internalSvd() const
   if (m_svdColMap == NULL) {
     int nRows = (int) this->numRowsLocal();
     int nCols = (int) this->numCols();
-    UQ_FATAL_TEST_MACRO(nRows < nCols,
-                        m_env.worldRank(),
-                        "TeuchosMatrix::internalSvd()",
-                        "LAPACK/Teuchos only supports cases where nRows >= nCols");
+    queso_require_greater_equal_msg(nRows, nCols, "LAPACK/Teuchos only supports cases where nRows >= nCols");
 
     m_svdColMap = new Map(this->numCols(),0,this->map().Comm()); // see 'VectorSpace<.,.>::newMap()'
   //in src/basic/src/TeuchosVectorSpace.C //old comment already existent in GslMatrix
@@ -2356,10 +2082,7 @@ TeuchosMatrix operator*(const TeuchosMatrix& m1, const TeuchosMatrix& m2)
   unsigned int m2Rows = m2.numRowsLocal();
   unsigned int m2Cols = m2.numCols();
 
-  UQ_FATAL_TEST_MACRO((m1Cols != m2Rows),
-                      m1.env().worldRank(),
-                      "TeuchosMatrix operator*(matrix,matrix)",
-                      "different sizes m1Cols and m2Rows");
+  queso_require_equal_to_msg(m1Cols, m2Rows, "different sizes m1Cols and m2Rows");
 
   TeuchosMatrix mat(m1.env(),m1.map(),m2Cols);
   unsigned int commonSize = m1Cols;
@@ -2417,15 +2140,9 @@ TeuchosMatrix leftDiagScaling(const TeuchosVector& vec, const TeuchosMatrix& mat
   unsigned int mRows = mat.numRowsLocal();
   unsigned int mCols = mat.numCols();
 
-  UQ_FATAL_TEST_MACRO((vSize != mRows),
-                      mat.env().worldRank(),
-                      "TeuchosMatrix leftDiagScaling(vector,matrix)",
-                      "size of vector is different from the number of rows in matrix");
+  queso_require_equal_to_msg(vSize, mRows, "size of vector is different from the number of rows in matrix");
 
-  UQ_FATAL_TEST_MACRO((mCols != mRows),
-                      mat.env().worldRank(),
-                      "TeuchosMatrix leftDiagScaling(vector,matrix)",
-                      "routine currently works for square matrices only");
+  queso_require_equal_to_msg(mCols, mRows, "routine currently works for square matrices only");
 
   TeuchosMatrix answer(mat);
   for (unsigned int i = 0; i < mRows; ++i) {
@@ -2445,15 +2162,9 @@ TeuchosMatrix rightDiagScaling(const TeuchosMatrix& mat, const TeuchosVector& ve
   unsigned int mRows = mat.numRowsLocal();
   unsigned int mCols = mat.numCols();
 
-  UQ_FATAL_TEST_MACRO((vSize != mCols),
-                      mat.env().worldRank(),
-                      "TeuchosMatrix rightDiagScaling(matrix,vector)",
-                      "size of vector is different from the number of cols in matrix");
+  queso_require_equal_to_msg(vSize, mCols, "size of vector is different from the number of cols in matrix");
 
-  UQ_FATAL_TEST_MACRO((mCols != mRows),
-                      mat.env().worldRank(),
-                      "TeuchosMatrix rightDiagScaling(matrix,vector)",
-                      "routine currently works for square matrices only");
+  queso_require_equal_to_msg(mCols, mRows, "routine currently works for square matrices only");
 
   TeuchosMatrix answer(mat);
   for (unsigned int j = 0; j < mCols; ++j) {

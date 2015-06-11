@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Gamma class [R-06]
 //*****************************************************
@@ -41,7 +44,7 @@ namespace QUESO {
  *
  * This class handles sampling from a Gamma probability density distribution, of
  * parameters \c a and \c b.*/
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GammaVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 

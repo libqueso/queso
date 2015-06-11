@@ -22,14 +22,15 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/BoostInputOptionsParser.h>
+#include <queso/Environment.h>
+
 #ifndef UQ_SIP_OPTIONS_H
 #define UQ_SIP_OPTIONS_H
 
-#include <queso/Environment.h>
-//#include <queso/MetropolisHastingsSGOptions.h>
-
 #undef UQ_SIP_READS_SOLVER_OPTION
 
+#define UQ_SIP_HELP ""
 #define UQ_SIP_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
@@ -39,6 +40,12 @@
 #ifdef UQ_SIP_READS_SOLVER_OPTION
 #define UQ_SIP_SOLVER_ODV                  "bayes_mc" // Bayesian formula + Metropolis-Hastings
 #endif
+
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
 
 namespace QUESO {
 
@@ -64,13 +71,14 @@ public:
   //! Default constructor.
   /*! Assigns the default suite of options to the Statistical Inverse Problem.*/
   SipOptionsValues            ();
+  SipOptionsValues(const BaseEnvironment * env, const char * prefix);
 
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
   SipOptionsValues            (const SipOptionsValues& src);
 
   //! Destructor
-  ~SipOptionsValues            ();
+  virtual ~SipOptionsValues            ();
   //@}
 
   //! @name Set methods
@@ -78,6 +86,11 @@ public:
   //! Assignment operator; it copies \c rhs to \c this.
   SipOptionsValues& operator= (const SipOptionsValues& rhs);
   //@}
+
+  std::string m_prefix;
+
+  //! If this string is non-empty, options are print to the output file
+  std::string m_help;
 
   bool                   m_computeSolution;
   std::string            m_dataOutputFileName;
@@ -89,8 +102,24 @@ public:
   //MhOptionsValues m_mhOptionsValues;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
+  // The input options as strings so we can parse the input file later
+  std::string                   m_option_help;
+  std::string                   m_option_computeSolution;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowedSet;
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  std::string                   m_option_solver;
+#endif
+
   //! Copies the option values from \c src to \c this.
   void copy(const SipOptionsValues& src);
+
+  void checkOptions();
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const SipOptionsValues & obj);
 };
 
 // --------------------------------------------------
@@ -138,14 +167,14 @@ public:
 
 private:
   //! Define my SIP options as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the option values of the SIP.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
 
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
   std::string                   m_option_help;
   std::string                   m_option_computeSolution;
   std::string                   m_option_dataOutputFileName;

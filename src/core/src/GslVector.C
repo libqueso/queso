@@ -22,22 +22,13 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <algorithm>
 #include <queso/GslVector.h>
 #include <queso/Defines.h>
 #include <gsl/gsl_sort_vector.h>
 #include <cmath>
 
 namespace QUESO {
-
-GslVector::GslVector()
-  :
-  Vector()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "GslVector::constructor(), default",
-                      "should not be used by user");
-}
 
 GslVector::GslVector(const BaseEnvironment& env, const Map& map)
   :
@@ -46,25 +37,13 @@ GslVector::GslVector(const BaseEnvironment& env, const Map& map)
 {
   //std::cout << "Entering GslVector::constructor(1)" << std::endl;
 
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "GslVector::constructor(1)",
-                      "null vector generated");
+  queso_require_msg(m_vec, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(1)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) map.NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumGlobalElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(1)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) map.NumGlobalElements(), "incompatible global vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(1)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) m_map.NumMyElements(), "incompatible own vec size");
 
   //std::cout << "In GslVector::constructor(env,map)"
   //          << "\n  m_vec->size             = " << m_vec->size
@@ -82,27 +61,15 @@ GslVector::GslVector(const BaseEnvironment& env, const Map& map, double value)
 {
   //std::cout << "Entering GslVector::constructor(2)" << std::endl;
 
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "GslVector::constructor(2)",
-                      "null vector generated");
+  queso_require_msg(m_vec, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(2)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) map.NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumGlobalElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(2)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) map.NumGlobalElements(), "incompatible global vec size");
 
   this->cwSet(value);
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(2)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) m_map.NumMyElements(), "incompatible own vec size");
 
   //std::cout << "Leaving GslVector::constructor(2)" << std::endl;
 }
@@ -114,30 +81,18 @@ GslVector::GslVector(const BaseEnvironment& env, double d1, double d2, const Map
 {
   //std::cout << "Entering GslVector::constructor(3)" << std::endl;
 
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "GslVector::constructor(3), linspace",
-                      "null vector generated");
+  queso_require_msg(m_vec, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(3)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) map.NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumGlobalElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(3)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) map.NumGlobalElements(), "incompatible global vec size");
 
   for (unsigned int i = 0; i < m_vec->size; ++i) {
     double alpha = (double) i / ((double) m_vec->size - 1.);
     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
   }
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(3)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) m_map.NumMyElements(), "incompatible own vec size");
 
   //std::cout << "Leaving GslVector::constructor(3)" << std::endl;
 }
@@ -149,30 +104,18 @@ GslVector::GslVector(const GslVector& v, double start, double end)
 {
   //std::cout << "Entering GslVector::constructor(4)" << std::endl;
 
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "GslVector::constructor(4), linspace",
-                      "null vector generated");
+  queso_require_msg(m_vec, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) v.map().NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(4)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) v.map().NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) v.map().NumGlobalElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(4)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) v.map().NumGlobalElements(), "incompatible global vec size");
 
   for (unsigned int i = 0; i < m_vec->size; ++i) {
     double alpha = (double) i / ((double) m_vec->size - 1.);
     (*this)[i] = (1. - alpha) * start + alpha * end;
   }
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(4)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) m_map.NumMyElements(), "incompatible own vec size");
 
   //std::cout << "Leaving GslVector::constructor(4)" << std::endl;
 }
@@ -185,27 +128,15 @@ GslVector::GslVector(const GslVector& v)  // mox
   //std::cout << "Entering GslVector::constructor(5)" << std::endl;
 
   // prudenci 2010-06-17 mox
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "GslVector::constructor(5), copy",
-                      "null vector generated");
+  queso_require_msg(m_vec, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) v.map().NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(5)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) v.map().NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) v.map().NumGlobalElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(5)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) v.map().NumGlobalElements(), "incompatible global vec size");
 
   this->copy(v);
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::constructor(5)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) m_map.NumMyElements(), "incompatible own vec size");
 
   //std::cout << "Leaving GslVector::constructor(5)" << std::endl;
 }
@@ -226,10 +157,7 @@ GslVector::operator=(const GslVector& rhs)
   //          << ": setting size2"
   //          << std::endl;
   unsigned int size2 = rhs.sizeLocal();
-  UQ_FATAL_TEST_MACRO(size1 != size2, // mox
-                      m_env.worldRank(),
-                      "GslVector::operator=()",
-                      "sizes are not compatible");
+  queso_require_equal_to_msg(size1, size2, "sizes are not compatible");
   this->copy(rhs);
   return *this;
 }
@@ -239,10 +167,7 @@ GslVector::operator*=(double a)
 {
   int iRC;
   iRC = gsl_vector_scale(m_vec,a);
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "GslVector::operator*=()",
-                    "failed");
+  queso_require_msg(!(iRC), "failed");
   return *this;
 }
 
@@ -259,10 +184,7 @@ GslVector::operator*=(const GslVector& rhs)
 {
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.worldRank(),
-                      "GslVector::operator*=()",
-                      "different sizes of this and rhs");
+  queso_require_equal_to_msg(size1, size2, "different sizes of this and rhs");
 
   for (unsigned int i = 0; i < size1; ++i) {
     (*this)[i] *= rhs[i];
@@ -276,10 +198,7 @@ GslVector::operator/=(const GslVector& rhs)
 {
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.worldRank(),
-                      "GslVector::operator/=()",
-                      "different sizes of this and rhs");
+  queso_require_equal_to_msg(size1, size2, "different sizes of this and rhs");
 
   for (unsigned int i = 0; i < size1; ++i) {
     (*this)[i] /= rhs[i];
@@ -293,10 +212,7 @@ GslVector::operator+=(const GslVector& rhs)
 {
   int iRC;
   iRC = gsl_vector_add(m_vec,rhs.m_vec);
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "GslVector::operator+=()",
-                    "failed");
+  queso_require_msg(!(iRC), "failed");
   return *this;
 }
 
@@ -305,10 +221,7 @@ GslVector::operator-=(const GslVector& rhs)
 {
   int iRC;
   iRC = gsl_vector_sub(m_vec,rhs.m_vec);
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "GslVector::operator-=()",
-                    "failed");
+  queso_require_msg(!(iRC), "failed");
 
   return *this;
 }
@@ -328,13 +241,10 @@ GslVector::operator[](unsigned int i) const
 void
 GslVector::copy(const GslVector& src)
 {
-  this->Vector::copy(src); // prudenci 2010-06-17 mox
+  this->Vector::base_copy(src);
   int iRC;
   iRC = gsl_vector_memcpy(this->m_vec, src.m_vec);
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "GslVector::copy()",
-                    "failed");
+  queso_require_msg(!(iRC), "failed");
 
   return;
 }
@@ -353,10 +263,7 @@ GslVector::sizeLocal() const
   //std::cout << ", m_vec->size = "           << m_vec->size
   //          << std::endl;
 
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "GslVector::sizeLocal()",
-                      "incompatible vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) m_map.NumMyElements(), "incompatible vec size");
 
   //std::cout << "Leaving GslVector::sizeLocal()"
   //          << ": m_vec = " << m_vec
@@ -371,10 +278,7 @@ GslVector::sizeLocal() const
 unsigned int
 GslVector::sizeGlobal() const
 {
-  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumGlobalElements(),
-                      m_env.worldRank(),
-                      "GslVector::sizeGlobal()",
-                      "incompatible vec size");
+  queso_require_equal_to_msg(m_vec->size, (unsigned int) m_map.NumGlobalElements(), "incompatible vec size");
 
   return m_vec->size;
 }
@@ -473,15 +377,9 @@ GslVector::cwSetUniform(const GslVector& aVec, const GslVector& bVec)
 void
 GslVector::cwSetBeta(const GslVector& alpha, const GslVector& beta)
 {
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwSetBeta()",
-                      "incompatible alpha size");
+  queso_require_equal_to_msg(this->sizeLocal(), alpha.sizeLocal(), "incompatible alpha size");
 
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwSetBeta()",
-                      "incompatible beta size");
+  queso_require_equal_to_msg(this->sizeLocal(), beta.sizeLocal(), "incompatible beta size");
 
   double tmpSample = 0.;
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
@@ -536,15 +434,9 @@ GslVector::cwSetBeta(const GslVector& alpha, const GslVector& beta)
 void
 GslVector::cwSetGamma(const GslVector& a, const GslVector& b)
 {
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != a.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwSetGamma()",
-                      "incompatible a size");
+  queso_require_equal_to_msg(this->sizeLocal(), a.sizeLocal(), "incompatible a size");
 
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != b.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwSetGamma()",
-                      "incompatible b size");
+  queso_require_equal_to_msg(this->sizeLocal(), b.sizeLocal(), "incompatible b size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
     (*this)[i] = m_env.rngObject()->gammaSample(a[i],b[i]);
@@ -555,15 +447,9 @@ GslVector::cwSetGamma(const GslVector& a, const GslVector& b)
 void
 GslVector::cwSetInverseGamma(const GslVector& alpha, const GslVector& beta)
 {
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwSetInverseGamma()",
-                      "incompatible alpha size");
+  queso_require_equal_to_msg(this->sizeLocal(), alpha.sizeLocal(), "incompatible alpha size");
 
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwSetInverseGamma()",
-                      "incompatible beta size");
+  queso_require_equal_to_msg(this->sizeLocal(), beta.sizeLocal(), "incompatible beta size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
     (*this)[i] = 1./m_env.rngObject()->gammaSample(alpha[i],1./beta[i]);
@@ -574,10 +460,7 @@ GslVector::cwSetInverseGamma(const GslVector& alpha, const GslVector& beta)
 void
 GslVector::cwSetConcatenated(const GslVector& v1, const GslVector& v2)
 {
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwSetConcatenated(1)",
-                      "incompatible vector sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), v1.sizeLocal() + v2.sizeLocal(), "incompatible vector sizes");
 
   for (unsigned int i = 0; i < v1.sizeLocal(); ++i) {
     (*this)[i] = v1[i];
@@ -602,10 +485,7 @@ GslVector::cwSetConcatenated(const std::vector<const GslVector* >& vecs)
     cummulativeSize += vecs[i]->sizeLocal();
   }
 
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != cummulativeSize,
-                      m_env.worldRank(),
-                      "GslVector::cwSetConcatenated(1)",
-                      "incompatible vector sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), cummulativeSize, "incompatible vector sizes");
   return;
 }
 
@@ -613,15 +493,9 @@ GslVector::cwSetConcatenated(const std::vector<const GslVector* >& vecs)
 void
 GslVector::cwSet(unsigned int initialPos, const GslVector& vec)
 {
-  UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwSet()",
-                      "invalid initialPos");
+  queso_require_less_msg(initialPos, this->sizeLocal(), "invalid initialPos");
 
-  UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwSet()",
-                      "invalid vec.sizeLocal()");
+  queso_require_less_equal_msg((initialPos +vec.sizeLocal()), this->sizeLocal(), "invalid vec.sizeLocal()");
 
   for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
     (*this)[initialPos+i] = vec[i];
@@ -633,15 +507,9 @@ GslVector::cwSet(unsigned int initialPos, const GslVector& vec)
 void
 GslVector::cwExtract(unsigned int initialPos, GslVector& vec) const
 {
-  UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwExtract()",
-                      "invalid initialPos");
+  queso_require_less_msg(initialPos, this->sizeLocal(), "invalid initialPos");
 
-  UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::cwExtract()",
-                      "invalid vec.sizeLocal()");
+  queso_require_less_equal_msg((initialPos +vec.sizeLocal()), this->sizeLocal(), "invalid vec.sizeLocal()");
 
   for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
     vec[i] = (*this)[initialPos+i];
@@ -680,15 +548,9 @@ GslVector::matlabDiff(
 {
   unsigned int size = this->sizeLocal();
 
-  UQ_FATAL_TEST_MACRO(firstPositionToStoreDiff > 1,
-                      m_env.worldRank(),
-                      "GslVector::matlabDiff()",
-                      "invalid firstPositionToStoreDiff");
+  queso_require_less_equal_msg(firstPositionToStoreDiff, 1, "invalid firstPositionToStoreDiff");
 
-  UQ_FATAL_TEST_MACRO(size != outputVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::matlabDiff()",
-                      "invalid size of outputVecs");
+  queso_require_equal_to_msg(size, outputVec.sizeLocal(), "invalid size of outputVecs");
 
   for (unsigned int i = 0; i < (size-1); ++i) {
     outputVec[firstPositionToStoreDiff+i] = (*this)[i+1]-(*this)[i];
@@ -709,26 +571,14 @@ GslVector::matlabLinearInterpExtrap(
   const GslVector& y1Vec,
   const GslVector& x2Vec)
 {
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
-                      m_env.worldRank(),
-                      "GslVector::matlabLinearInterpExtrap()",
-                      "invalid 'x1' size");
+  queso_require_greater_msg(x1Vec.sizeLocal(), 1, "invalid 'x1' size");
 
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Vec.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::matlabLinearInterpExtrap()",
-                      "invalid 'x1' and 'y1' sizes");
+  queso_require_equal_to_msg(x1Vec.sizeLocal(), y1Vec.sizeLocal(), "invalid 'x1' and 'y1' sizes");
 
-  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::matlabLinearInterpExtrap()",
-                      "invalid 'x2' and 'this' sizes");
+  queso_require_equal_to_msg(x2Vec.sizeLocal(), this->sizeLocal(), "invalid 'x2' and 'this' sizes");
 
   for (unsigned int i = 1; i < x1Vec.sizeLocal(); ++i) { // Yes, '1'
-    UQ_FATAL_TEST_MACRO(x1Vec[i] <= x1Vec[i-1],
-                        m_env.worldRank(),
-                        "GslVector::matlabLinearInterpExtrap()",
-                        "invalid 'x1' values");
+    queso_require_greater_msg(x1Vec[i], x1Vec[i-1], "invalid 'x1' values");
   }
 
   for (unsigned int id2 = 0; id2 < x2Vec.sizeLocal(); ++id2) {
@@ -800,10 +650,7 @@ GslVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
   if (bcastComm.MyPID() < 0) return;
 
   // Check 'srcRank'
-  UQ_FATAL_TEST_MACRO((srcRank < 0) || (srcRank >= bcastComm.NumProc()),
-                      m_env.worldRank(),
-                      "GslVector::mpiBcast()",
-                      "invalud srcRank");
+  queso_require_msg(!((srcRank < 0) || (srcRank >= bcastComm.NumProc())), "invalud srcRank");
 
   // Check number of participant nodes
   double localNumNodes = 1.;
@@ -811,10 +658,7 @@ GslVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
   bcastComm.Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
                       "GslVector::mpiBcast()",
                       "failed MPI.Allreduce() for numNodes");
-  UQ_FATAL_TEST_MACRO(((int) totalNumNodes) != bcastComm.NumProc(),
-                      m_env.worldRank(),
-                      "GslVector::mpiBcast()",
-                      "inconsistent numNodes");
+  queso_require_equal_to_msg(((int) totalNumNodes), bcastComm.NumProc(), "inconsistent numNodes");
 
   // Check that all participant nodes have the same vector size
   double localVectorSize  = this->sizeLocal();
@@ -831,10 +675,7 @@ GslVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
               << std::endl;
   }
   bcastComm.Barrier();
-  UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)),
-                      m_env.worldRank(),
-                      "GslVector::mpiBcast()",
-                      "inconsistent vectorSize");
+  queso_require_equal_to_msg(((unsigned int) sumOfVectorSizes), ((unsigned int)(totalNumNodes*localVectorSize)), "inconsistent vectorSize");
 
   // Ok, bcast data
   std::vector<double> dataBuffer((unsigned int) localVectorSize, 0.);
@@ -864,10 +705,7 @@ GslVector::mpiAllReduce(RawType_MPI_Op mpiOperation, const MpiComm& opComm, GslV
   if (opComm.MyPID() < 0) return;
 
   unsigned int size = this->sizeLocal();
-  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::mpiAllReduce()",
-                      "different vector sizes");
+  queso_require_equal_to_msg(size, resultVec.sizeLocal(), "different vector sizes");
 
   for (unsigned int i = 0; i < size; ++i) {
     double srcValue = (*this)[i];
@@ -887,16 +725,10 @@ GslVector::mpiAllQuantile(double probability, const MpiComm& opComm, GslVector& 
   // Filter out those nodes that should not participate
   if (opComm.MyPID() < 0) return;
 
-  UQ_FATAL_TEST_MACRO((probability < 0.) || (1. < probability),
-                      m_env.worldRank(),
-                      "GslVector::mpiAllQuantile()",
-                      "invalid input");
+  queso_require_msg(!((probability < 0.) || (1. < probability)), "invalid input");
 
   unsigned int size = this->sizeLocal();
-  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "GslVector::mpiAllQuantile()",
-                      "different vector sizes");
+  queso_require_equal_to_msg(size, resultVec.sizeLocal(), "different vector sizes");
 
   for (unsigned int i = 0; i < size; ++i) {
     double auxDouble = (int) (*this)[i];
@@ -986,15 +818,9 @@ GslVector::subWriteContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "GslVector::subWriteContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
-  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.worldRank(),
-                      "GslVector::subWriteContents()",
-                      "implemented just for sequential vectors for now");
+  queso_require_less_equal_msg(this->numOfProcsForStorage(), 1, "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openOutputFile(fileName,
@@ -1031,15 +857,9 @@ GslVector::subReadContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds)
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "GslVector::subReadContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
-  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.worldRank(),
-                      "GslVector::subReadContents()",
-                      "implemented just for sequential vectors for now");
+  queso_require_less_equal_msg(this->numOfProcsForStorage(), 1, "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openInputFile(fileName,
@@ -1064,10 +884,7 @@ GslVector::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
-    UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.worldRank(),
-                        "GslVector::subReadContents()",
-                        "string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, "=", "string should be the '=' sign");
 
     // Read 'zeros(n_positions,n_params)' string
     *filePtrSet.ifsVar >> tmpString;
@@ -1078,10 +895,7 @@ GslVector::subReadContents(
     char nPositionsString[tmpString.size()-posInTmpString+1];
     unsigned int posInPositionsString = 0;
     do {
-      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.worldRank(),
-                          "GslVector::subReadContents()",
-                          "symbol ',' not found in first line of file");
+      queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ',' not found in first line of file");
       nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ',');
     nPositionsString[posInPositionsString] = '\0';
@@ -1091,10 +905,7 @@ GslVector::subReadContents(
     char nParamsString[tmpString.size()-posInTmpString+1];
     unsigned int posInParamsString = 0;
     do {
-      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.worldRank(),
-                          "GslVector::subReadContents()",
-                          "symbol ')' not found in first line of file");
+      queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ')' not found in first line of file");
       nParamsString[posInParamsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ')');
     nParamsString[posInParamsString] = '\0';
@@ -1112,16 +923,10 @@ GslVector::subReadContents(
     }
 
     // Check if [size of vec in file] >= [requested sub vec size]
-    UQ_FATAL_TEST_MACRO(sizeOfVecInFile < subReadSize,
-                        m_env.worldRank(),
-                        "GslVector::subReadContents()",
-                        "size of vec in file is not big enough");
+    queso_require_greater_equal_msg(sizeOfVecInFile, subReadSize, "size of vec in file is not big enough");
 
     // Check if [num params in file] == [num params in current vec]
-    UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
-                        m_env.worldRank(),
-                        "GslVector::subReadContents()",
-                        "number of parameters of vec in file is different than number of parameters in this vec object");
+    queso_require_equal_to_msg(numParamsInFile, numParams, "number of parameters of vec in file is different than number of parameters in this vec object");
 
     // Code common to any core in a communicator
     unsigned int maxCharsPerLine = 64*numParams; // Up to about 60 characters to represent each parameter value
@@ -1147,10 +952,7 @@ GslVector::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-    UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.worldRank(),
-                        "GslVector::subReadContents()",
-                        "in core 0, string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, "=", "in core 0, string should be the '=' sign");
 
     // Take into account the ' [' portion
     std::streampos tmpPos = filePtrSet.ifsVar->tellg();
@@ -1185,10 +987,7 @@ GslVector::data() const
 bool
 GslVector::atLeastOneComponentSmallerThan(const GslVector& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslVector::atLeastOneComponentSmallerThan()",
-                      "vectors have different sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), rhs.sizeLocal(), "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
@@ -1204,10 +1003,7 @@ GslVector::atLeastOneComponentSmallerThan(const GslVector& rhs) const
 bool
 GslVector::atLeastOneComponentBiggerThan(const GslVector& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslVector::atLeastOneComponentBiggerThan()",
-                      "vectors have different sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), rhs.sizeLocal(), "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
@@ -1223,10 +1019,7 @@ GslVector::atLeastOneComponentBiggerThan(const GslVector& rhs) const
 bool
 GslVector::atLeastOneComponentSmallerOrEqualThan(const GslVector& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslVector::atLeastOneComponentSmallerOrEqualThan()",
-                      "vectors have different sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), rhs.sizeLocal(), "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
@@ -1242,10 +1035,7 @@ GslVector::atLeastOneComponentSmallerOrEqualThan(const GslVector& rhs) const
 bool
 GslVector::atLeastOneComponentBiggerOrEqualThan(const GslVector& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslVector::atLeastOneComponentBiggerOrEqualThan()",
-                      "vectors have different sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), rhs.sizeLocal(), "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
@@ -1361,10 +1151,7 @@ double scalarProduct(const GslVector& x, const GslVector& y)
 {
   unsigned int size1 = x.sizeLocal();
   unsigned int size2 = y.sizeLocal();
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                      x.env().worldRank(),
-                      "scalarProduct()",
-                      "different sizes of x and y");
+  queso_require_equal_to_msg(size1, size2, "different sizes of x and y");
 
   double result = 0.;
   for (unsigned int i = 0; i < size1; ++i) {
@@ -1397,10 +1184,7 @@ operator== (const GslVector& lhs, const GslVector& rhs)
 
   unsigned int size1 = lhs.sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                      lhs.env().worldRank(),
-                      "operator==()",
-                      "different sizes of lhs and rhs");
+  queso_require_equal_to_msg(size1, size2, "different sizes of lhs and rhs");
 
   for (unsigned int i = 0; i < size1; ++i) {
     if (lhs[i] != rhs[i]) {

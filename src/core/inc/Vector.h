@@ -50,36 +50,11 @@ public:
 
   //! @name Constructor/Destructor methods
   //@{
-  //! Default Constructor
-  Vector();
-
   //! Shaped Constructor
   Vector(const BaseEnvironment& env, const Map& map);
 
-  //! Copy Constructor
-  Vector(const Vector& rhs);
-
   //! Virtual Destructor
   virtual ~Vector();
-  //@}
-
-  //! @name Set methods
-  //@{
-
-  //! Operator for copying a vector.
-  Vector& operator=(const Vector& rhs);
-
-  //! Operator for multiplication of the vector by a scalar.
-  Vector& operator*=(double a);
-
-  //! Operator for division of the vector by a scalar.
-  Vector& operator/=(double a);
-
-  //! Operator for addition (element-wise) of two vectors.
-  Vector& operator+=(const Vector& rhs);
-
-  //! Operator for subtraction (element-wise) of two vectors.
-  Vector& operator-=(const Vector& rhs);
   //@}
 
   //! @name Environment and Map methods
@@ -135,8 +110,8 @@ public:
 
 protected:
 
-  //! Copies vector \c src to \c this matrix.
-  virtual void                    copy                (const Vector& src);
+  //! Copies base data from vector \c src to \c this vector
+  virtual void                    base_copy           (const Vector& src);
 
   //! Environment variable.
   const BaseEnvironment& m_env;
@@ -156,6 +131,10 @@ protected:
 
   //! Flag for either or not print this matrix in scientific notation.
   mutable bool                  m_printScientific;
+
+private:
+  //! Default Constructor
+  Vector();
 };
 
 }  // End namespace QUESO

@@ -35,35 +35,33 @@ DiscreteSubset<V,M>::DiscreteSubset(const char* prefix,
   : VectorSubset<V,M>(prefix, vectorSpace, 0.),
     m_elements(elements.size(),NULL)
 {
+  queso_deprecated();
+
   m_volume = 0.;
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "DiscreteSubset<V,M>::contains()",
-                      "incomplete code");
+  queso_not_implemented();
 }
 
 // Destructor
 template<class V, class M>
 DiscreteSubset<V,M>::~DiscreteSubset()
 {
+  queso_deprecated();
 }
 
 // Mathematical methods
 template<class V, class M>
 bool DiscreteSubset<V,M>::contains(const V& vec) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "DiscreteSubset<V,M>::contains()",
-                      "incomplete code");
-
-  return false;
+  queso_deprecated();
+  queso_not_implemented();
 }
 
 // I/O methods
 template <class V, class M>
 void DiscreteSubset<V,M>::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os << "In DiscreteSubset<V,M>::print()"
      << ": nothing to print"
      << std::endl;

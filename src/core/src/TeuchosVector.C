@@ -33,18 +33,6 @@ namespace QUESO {
 using std:: cout;
 using std:: endl;
 
-// ---------------------------------------------------
-// default constructor -------------------------------
-TeuchosVector::TeuchosVector()  :
-  Vector()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(), default",
-                      "should not be used by user");
-};
-
-
 // constructor with dimension -----------------------
 TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map)
   :
@@ -52,25 +40,13 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map)
 {
   m_vec.size(map.NumGlobalElements());
 
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(1)",
-                      "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() != map.NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(1)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec.length(), map.NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() != map.NumGlobalElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(1)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec.length(), map.NumGlobalElements(), "incompatible global vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() != m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(1)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec.length(), m_map.NumMyElements(), "incompatible own vec size");
 
   //std::cout << "In TeuchosVector::constructor(env,map)"
   //          << "\n  m_vec.length()             = " << m_vec.length()
@@ -87,25 +63,13 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map, double 
   m_vec.size(map.NumGlobalElements());
   m_vec = value;
 
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(2)",
-                      "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  map.NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(2)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec.length(), map.NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  map.NumGlobalElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(2)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec.length(), map.NumGlobalElements(), "incompatible global vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(2)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec.length(), m_map.NumMyElements(), "incompatible own vec size");
 }
 
 // ---------------------------------------------------
@@ -115,30 +79,18 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, double d1, double d2, c
   {
   m_vec.size(map.NumGlobalElements());
 
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(3), linspace",
-                      "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  map.NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(3)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec.length(), map.NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  map.NumGlobalElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(3)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec.length(), map.NumGlobalElements(), "incompatible global vec size");
 
   for (int i = 0; i < m_vec.length(); ++i) {
     double alpha = (double) i / ((double) m_vec.length() - 1.);
     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
   }
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(3)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec.length(), m_map.NumMyElements(), "incompatible own vec size");
 }
 
 // ---------------------------------------------------
@@ -148,30 +100,18 @@ TeuchosVector::TeuchosVector(const TeuchosVector& v, double d1, double d2)
 {
   m_vec.size(v.sizeLocal());
 
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(4), linspace",
-                      "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  v.map().NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(4)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec.length(), v.map().NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  v.map().NumGlobalElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(4)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec.length(), v.map().NumGlobalElements(), "incompatible global vec size");
 
   for ( int i = 0; i < m_vec.length(); ++i) {
     double alpha = (double) i / ((double) m_vec.length() - 1.);
     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
   }
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(4)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec.length(), m_map.NumMyElements(), "incompatible own vec size");
 }
 
 // ---------------------------------------------------
@@ -181,26 +121,14 @@ TeuchosVector::TeuchosVector(const TeuchosVector& v)  // mox
  {
    m_vec.size(v.sizeLocal());
 
-  UQ_FATAL_TEST_MACRO((m_vec == NULL),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(5), copy",
-                      "null vector generated");
+  queso_require_msg(m_vec != NULL, "null vector generated");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  v.map().NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(5)",
-                      "incompatible local vec size");
+  queso_require_equal_to_msg(m_vec.length(), v.map().NumMyElements(), "incompatible local vec size");
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() !=  v.map().NumGlobalElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(5)",
-                      "incompatible global vec size");
+  queso_require_equal_to_msg(m_vec.length(), v.map().NumGlobalElements(), "incompatible global vec size");
   this->copy(v);
 
-  UQ_FATAL_TEST_MACRO(m_vec.length() != m_map.NumMyElements(),
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(5)",
-                      "incompatible own vec size");
+  queso_require_equal_to_msg(m_vec.length(), m_map.NumMyElements(), "incompatible own vec size");
 }
 
 
@@ -224,10 +152,7 @@ TeuchosVector& TeuchosVector::operator=(const TeuchosVector& rhs)
   unsigned int size1 = m_vec.length();
   unsigned int size2 = rhs.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO(size1 != size2, // mox
-                      m_env.worldRank(),
-                      "TeuchosVector::operator=()",
-                      "the vectors do NOT have the same size.\n");
+  queso_require_equal_to_msg(size1, size2, "the vectors do NOT have the same size.\n");
 
   if (size1==size2){
     for (unsigned int i=0;i<size1;i++){
@@ -257,10 +182,7 @@ TeuchosVector& TeuchosVector::operator*=(const TeuchosVector& rhs)
 {
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.worldRank(),
-                      "TeuchosVector::operator*=()",
-                      "the vectors do NOT have the same size.\n");
+  queso_require_equal_to_msg(size1, size2, "the vectors do NOT have the same size.\n");
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
       (*this)[i] *= rhs[i];
@@ -275,10 +197,7 @@ TeuchosVector& TeuchosVector::operator/=(const TeuchosVector& rhs)
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.worldRank(),
-                      "TeuchosVector::operator/=()",
-                      "the vectors do NOT have the same size.\n");
+  queso_require_equal_to_msg(size1, size2, "the vectors do NOT have the same size.\n");
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
       (*this)[i] /= rhs[i];
@@ -293,10 +212,7 @@ TeuchosVector& TeuchosVector::operator+=(const TeuchosVector& rhs)
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.worldRank(),
-                      "TeuchosVector::operator+=()",
-                      "the vectors do NOT have the same size.\n");
+  queso_require_equal_to_msg(size1, size2, "the vectors do NOT have the same size.\n");
 
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
@@ -312,10 +228,7 @@ TeuchosVector& TeuchosVector::operator-=(const TeuchosVector& rhs)
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                      m_env.worldRank(),
-                      "TeuchosVector::operator-=()",
-                      "the vectors do NOT have the same size.\n");
+  queso_require_equal_to_msg(size1, size2, "the vectors do NOT have the same size.\n");
 
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
@@ -344,10 +257,7 @@ const double& TeuchosVector::operator[](unsigned int i) const
 //-------------------------------------------------
 unsigned int TeuchosVector::sizeLocal() const
 {
-  UQ_FATAL_TEST_MACRO(m_vec.length() != (int) m_map.NumMyElements(),
-                       m_env.worldRank(),
-                       "TeuchosVector::sizeLocal()",
-                       "incompatible vec size");
+  queso_require_equal_to_msg(m_vec.length(), (int) m_map.NumMyElements(), "incompatible vec size");
 
   return m_vec.length();
 }
@@ -355,10 +265,7 @@ unsigned int TeuchosVector::sizeLocal() const
 //-------------------------------------------------
 unsigned int TeuchosVector::sizeGlobal() const
 {
-   UQ_FATAL_TEST_MACRO(m_vec.length() != (int) m_map.NumGlobalElements(),
-                       m_env.worldRank(),
-                       "TeuchosVector::sizeGlobal()",
-                       "incompatible vec size");
+   queso_require_equal_to_msg(m_vec.length(), (int) m_map.NumGlobalElements(), "incompatible vec size");
   return m_vec.length();
 }
 
@@ -504,10 +411,7 @@ double TeuchosVector::normInf() const
 bool
 TeuchosVector::atLeastOneComponentSmallerThan(const TeuchosVector& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosVector::atLeastOneComponentSmallerThan()",
-                      "vectors have different sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), rhs.sizeLocal(), "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
@@ -524,10 +428,7 @@ TeuchosVector::atLeastOneComponentSmallerThan(const TeuchosVector& rhs) const
 bool
 TeuchosVector::atLeastOneComponentBiggerThan(const TeuchosVector& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosVector::atLeastOneComponentBiggerThan()",
-                      "vectors have different sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), rhs.sizeLocal(), "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
@@ -544,10 +445,7 @@ TeuchosVector::atLeastOneComponentBiggerThan(const TeuchosVector& rhs) const
 bool
 TeuchosVector::atLeastOneComponentSmallerOrEqualThan(const TeuchosVector& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosVector::atLeastOneComponentSmallerOrEqualThan()",
-                      "vectors have different sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), rhs.sizeLocal(), "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
@@ -564,10 +462,7 @@ TeuchosVector::atLeastOneComponentSmallerOrEqualThan(const TeuchosVector& rhs) c
 bool
 TeuchosVector::atLeastOneComponentBiggerOrEqualThan(const TeuchosVector& rhs) const
 {
-  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
-                      m_env.worldRank(),
-                      "TeuchosVector::atLeastOneComponentBiggerOrEqualThan()",
-                      "vectors have different sizes");
+  queso_require_equal_to_msg(this->sizeLocal(), rhs.sizeLocal(), "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
@@ -593,15 +488,9 @@ void TeuchosVector::cwSet(double value)
 //----------------------------------------------------
 void TeuchosVector::cwSet(unsigned int initialPos, const TeuchosVector& vec)
 {
-   UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
-                       m_env.worldRank(),
-                       "TeuchosVector::cwSet()",
-                       "invalid initialPos");
+   queso_require_less_msg(initialPos, this->sizeLocal(), "invalid initialPos");
 
-   UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
-                       m_env.worldRank(),
-                       "TeuchosVector::cwSet()",
-                       "invalid vec.sizeLocal()");
+   queso_require_less_equal_msg((initialPos +vec.sizeLocal()), this->sizeLocal(), "invalid vec.sizeLocal()");
 
   for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
     (*this)[initialPos+i] = vec[i];
@@ -615,15 +504,9 @@ void TeuchosVector::cwSet(unsigned int initialPos, const TeuchosVector& vec)
 /* extracts elements from vector (*this) starting at position initialPos and save in vec */
 void TeuchosVector::cwExtract(unsigned int initialPos, TeuchosVector& vec) const
 {
-   UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
-                       m_env.worldRank(),
-                       "TeuchosVector::cwExtract()",
-                       "invalid initialPos");
+   queso_require_less_msg(initialPos, this->sizeLocal(), "invalid initialPos");
 
-   UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
-                       m_env.worldRank(),
-                       "TeuchosVector::cwExtract()",
-                       "invalid vec.sizeLocal()");
+   queso_require_less_equal_msg((initialPos +vec.sizeLocal()), this->sizeLocal(), "invalid vec.sizeLocal()");
 
   for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
     vec[i] = (*this)[initialPos+i];
@@ -658,10 +541,7 @@ void TeuchosVector::cwSqrt()
 void
 TeuchosVector::cwSetConcatenated(const TeuchosVector& v1, const TeuchosVector& v2)
 {
-   UQ_FATAL_TEST_MACRO(this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal(),
-                       m_env.worldRank(),
-                       "TeuchosVector::cwSetConcatenated(1)",
-                       "incompatible vector sizes");
+   queso_require_equal_to_msg(this->sizeLocal(), v1.sizeLocal() + v2.sizeLocal(), "incompatible vector sizes");
 
 //  if ( this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal() ) {
 //    std::cout << "ERROR in TeuchosVector:: cwSetConcatenated  ---> the vectors' sizes are not compatible.\n";
@@ -719,15 +599,9 @@ void TeuchosVector::cwSetGaussian(const TeuchosVector& meanVec, const TeuchosVec
 //updated on 3/18, to use the RngBase+Boost
 void TeuchosVector::cwSetBeta(const TeuchosVector& alpha, const TeuchosVector& beta)
 {
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::cwSetBeta()",
-                      "incompatible alpha size");
+  queso_require_equal_to_msg(this->sizeLocal(), alpha.sizeLocal(), "incompatible alpha size");
 
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::cwSetBeta()",
-                      "incompatible beta size");
+  queso_require_equal_to_msg(this->sizeLocal(), beta.sizeLocal(), "incompatible beta size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i)
   {
@@ -751,15 +625,9 @@ void TeuchosVector::cwSetBeta(const TeuchosVector& alpha, const TeuchosVector& b
 //updated on 3/18, to use the RngBase+Boost
 void TeuchosVector::cwSetGamma(const TeuchosVector& aVec, const TeuchosVector& bVec)
 {
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != aVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::cwSetGamma()",
-                      "incompatible a size");
+  queso_require_equal_to_msg(this->sizeLocal(), aVec.sizeLocal(), "incompatible a size");
 
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != bVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::cwSetGamma()",
-                      "incompatible b size");
+  queso_require_equal_to_msg(this->sizeLocal(), bVec.sizeLocal(), "incompatible b size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
     (*this)[i] = m_env.rngObject()->gammaSample(aVec[i],bVec[i]);
@@ -773,15 +641,9 @@ void TeuchosVector::cwSetGamma(const TeuchosVector& aVec, const TeuchosVector& b
 // Note the divisions: 1.0/b and the 1.0/generator; they are crucial
 void TeuchosVector::cwSetInverseGamma(const TeuchosVector& alpha, const TeuchosVector& beta)
 {
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::cwSetInverseGamma()",
-                      "incompatible alpha size");
+  queso_require_equal_to_msg(this->sizeLocal(), alpha.sizeLocal(), "incompatible alpha size");
 
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::cwSetInverseGamma()",
-                      "incompatible beta size");
+  queso_require_equal_to_msg(this->sizeLocal(), beta.sizeLocal(), "incompatible beta size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
     (*this)[i] = 1./m_env.rngObject()->gammaSample(alpha[i],1./beta[i]);
@@ -828,10 +690,7 @@ TeuchosVector::copy_from_std_vector(const std::vector<double> vec)
 {
   unsigned int size1 = vec.size(), size2= this->sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                       m_env.worldRank(),
-                       "In TeuchosVector::copy_from_std_vector()",
-					   "vectors have different sizes");
+  queso_require_equal_to_msg(size1, size2, "vectors have different sizes");
 
   for (unsigned int i = 0; i < size1; ++i)
       m_vec[i] = vec[i];
@@ -873,10 +732,7 @@ TeuchosVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
   if (bcastComm.MyPID() < 0) return;
 
   // Check 'srcRank'
-  UQ_FATAL_TEST_MACRO((srcRank < 0) || (srcRank >= bcastComm.NumProc()),
-                      m_env.worldRank(),
-                      "TeuchosVector::mpiBcast()",
-                      "invalud srcRank");
+  queso_require_msg(!((srcRank < 0) || (srcRank >= bcastComm.NumProc())), "invalud srcRank");
 
   // Check number of participant nodes
   double localNumNodes = 1.;
@@ -884,10 +740,7 @@ TeuchosVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
   bcastComm.Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
                       "TeuchosVector::mpiBcast()",
                       "failed MPI.Allreduce() for numNodes");
-  UQ_FATAL_TEST_MACRO(((int) totalNumNodes) != bcastComm.NumProc(),
-                      m_env.worldRank(),
-                      "TeuchosVector::mpiBcast()",
-                      "inconsistent numNodes");
+  queso_require_equal_to_msg(((int) totalNumNodes), bcastComm.NumProc(), "inconsistent numNodes");
 
   // Check that all participant nodes have the same vector size
   double localVectorSize  = this->sizeLocal();
@@ -904,10 +757,7 @@ TeuchosVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
               << std::endl;
   }
   bcastComm.Barrier();
-  UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)),
-                      m_env.worldRank(),
-                      "TeuchosVector::mpiBcast()",
-                      "inconsistent vectorSize");
+  queso_require_equal_to_msg(((unsigned int) sumOfVectorSizes), ((unsigned int)(totalNumNodes*localVectorSize)), "inconsistent vectorSize");
 
   // Ok, bcast data
   std::vector<double> dataBuffer((unsigned int) localVectorSize, 0.);
@@ -939,10 +789,7 @@ TeuchosVector::mpiAllReduce(RawType_MPI_Op mpiOperation, const MpiComm& opComm, 
   if (opComm.MyPID() < 0) return;
 
   unsigned int size = this->sizeLocal();
-  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::mpiAllReduce()",
-                      "different vector sizes");
+  queso_require_equal_to_msg(size, resultVec.sizeLocal(), "different vector sizes");
 
   for (unsigned int i = 0; i < size; ++i) {
     double srcValue = (*this)[i];
@@ -964,16 +811,10 @@ TeuchosVector::mpiAllQuantile(double probability, const MpiComm& opComm, Teuchos
   // Filter out those nodes that should not participate
   if (opComm.MyPID() < 0) return;
 
-  UQ_FATAL_TEST_MACRO((probability < 0.) || (1. < probability),
-                      m_env.worldRank(),
-                      "TeuchosVector::mpiAllQuantile()",
-                      "invalid input");
+  queso_require_msg(!((probability < 0.) || (1. < probability)), "invalid input");
 
   unsigned int size = this->sizeLocal();
-  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::mpiAllQuantile()",
-                      "different vector sizes");
+  queso_require_equal_to_msg(size, resultVec.sizeLocal(), "different vector sizes");
 
   for (unsigned int i = 0; i < size; ++i) {
     double auxDouble = (int) (*this)[i];
@@ -1004,26 +845,14 @@ TeuchosVector::matlabLinearInterpExtrap(
   const TeuchosVector& y1Vec,
   const TeuchosVector& x2Vec)
 {
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
-                      m_env.worldRank(),
-                      "TeuchosVector::matlabLinearInterpExtrap()",
-                      "invalid 'x1' size");
+  queso_require_greater_msg(x1Vec.sizeLocal(), 1, "invalid 'x1' size");
 
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Vec.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::matlabLinearInterpExtrap()",
-                      "invalid 'x1' and 'y1' sizes");
+  queso_require_equal_to_msg(x1Vec.sizeLocal(), y1Vec.sizeLocal(), "invalid 'x1' and 'y1' sizes");
 
-  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::matlabLinearInterpExtrap()",
-                      "invalid 'x2' and 'this' sizes");
+  queso_require_equal_to_msg(x2Vec.sizeLocal(), this->sizeLocal(), "invalid 'x2' and 'this' sizes");
 
   for (unsigned int i = 1; i < x1Vec.sizeLocal(); ++i) { // Yes, '1'
-    UQ_FATAL_TEST_MACRO(x1Vec[i] <= x1Vec[i-1],
-                        m_env.worldRank(),
-                        "TeuchosVector::matlabLinearInterpExtrap()",
-                        "invalid 'x1' values");
+    queso_require_greater_msg(x1Vec[i], x1Vec[i-1], "invalid 'x1' values");
   }
 
   for (unsigned int id2 = 0; id2 < x2Vec.sizeLocal(); ++id2) {
@@ -1087,15 +916,9 @@ TeuchosVector::matlabDiff(
 {
   unsigned int size = this->sizeLocal();
 
-  UQ_FATAL_TEST_MACRO(firstPositionToStoreDiff > 1,
-                      m_env.worldRank(),
-                      "TeuchosVector::matlabDiff()",
-                      "invalid firstPositionToStoreDiff");
+  queso_require_less_equal_msg(firstPositionToStoreDiff, 1, "invalid firstPositionToStoreDiff");
 
-  UQ_FATAL_TEST_MACRO(size != outputVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "TeuchosVector::matlabDiff()",
-                      "invalid size of outputVecs");
+  queso_require_equal_to_msg(size, outputVec.sizeLocal(), "invalid size of outputVecs");
 
   for (unsigned int i = 0; i < (size-1); ++i) {
     outputVec[firstPositionToStoreDiff+i] = (*this)[i+1]-(*this)[i];
@@ -1164,15 +987,9 @@ TeuchosVector::subReadContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds)
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "TeuchosVector::subReadContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
-  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.worldRank(),
-                      "TeuchosVector::subReadContents()",
-                      "implemented just for sequential vectors for now");
+  queso_require_less_equal_msg(this->numOfProcsForStorage(), 1, "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openInputFile(fileName,
@@ -1197,10 +1014,7 @@ TeuchosVector::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
-    UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.worldRank(),
-                        "TeuchosVector::subReadContents()",
-                        "string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, "=", "string should be the '=' sign");
 
     // Read 'zeros(n_positions,n_params)' string
     *filePtrSet.ifsVar >> tmpString;
@@ -1211,10 +1025,7 @@ TeuchosVector::subReadContents(
     char nPositionsString[tmpString.size()-posInTmpString+1];
     unsigned int posInPositionsString = 0;
     do {
-      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.worldRank(),
-                          "TeuchosVector::subReadContents()",
-                          "symbol ',' not found in first line of file");
+      queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ',' not found in first line of file");
       nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ',');
     nPositionsString[posInPositionsString] = '\0';
@@ -1224,10 +1035,7 @@ TeuchosVector::subReadContents(
     char nParamsString[tmpString.size()-posInTmpString+1];
     unsigned int posInParamsString = 0;
     do {
-      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.worldRank(),
-                          "TeuchosVector::subReadContents()",
-                          "symbol ')' not found in first line of file");
+      queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ')' not found in first line of file");
       nParamsString[posInParamsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ')');
     nParamsString[posInParamsString] = '\0';
@@ -1245,16 +1053,10 @@ TeuchosVector::subReadContents(
     }
 
     // Check if [size of vec in file] >= [requested sub vec size]
-    UQ_FATAL_TEST_MACRO(sizeOfVecInFile < subReadSize,
-                        m_env.worldRank(),
-                        "TeuchosVector::subReadContents()",
-                        "size of vec in file is not big enough");
+    queso_require_greater_equal_msg(sizeOfVecInFile, subReadSize, "size of vec in file is not big enough");
 
     // Check if [num params in file] == [num params in current vec]
-    UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
-                        m_env.worldRank(),
-                        "TeuchosVector::subReadContents()",
-                        "number of parameters of vec in file is different than number of parameters in this vec object");
+    queso_require_equal_to_msg(numParamsInFile, numParams, "number of parameters of vec in file is different than number of parameters in this vec object");
 
     // Code common to any core in a communicator
     unsigned int maxCharsPerLine = 64*numParams; // Up to about 60 characters to represent each parameter value
@@ -1280,10 +1082,7 @@ TeuchosVector::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-    UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.worldRank(),
-                        "TeuchosVector::subReadContents()",
-                        "in core 0, string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, "=", "in core 0, string should be the '=' sign");
 
     // Take into account the ' [' portion
     std::streampos tmpPos = filePtrSet.ifsVar->tellg();
@@ -1317,15 +1116,9 @@ TeuchosVector::subWriteContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "TeuchosVector::subWriteContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
-  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.worldRank(),
-                      "TeuchosVector::subWriteContents()",
-                      "implemented just for sequential vectors for now");
+  queso_require_less_equal_msg(this->numOfProcsForStorage(), 1, "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openOutputFile(fileName,
@@ -1364,7 +1157,7 @@ TeuchosVector::subWriteContents(
 void
 TeuchosVector::copy(const TeuchosVector& rhs)
 {
-  this->Vector::copy(rhs);
+  this->Vector::base_copy(rhs);
 
   unsigned int size1 = m_vec.length();
   unsigned int size2 = rhs.sizeLocal();
@@ -1421,10 +1214,7 @@ double scalarProduct(const TeuchosVector& x, const TeuchosVector& y)
   unsigned int size1 = x.sizeLocal();
   unsigned int size2 = y.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                       x.env().worldRank(),
-                       "scalarProduct()",
-                       "different sizes of x and y");
+  queso_require_equal_to_msg(size1, size2, "different sizes of x and y");
   double result = 0.;
   for (unsigned int i = 0; i < size1; ++i) {
     result += x[i]*y[i];
@@ -1457,10 +1247,7 @@ operator== (const TeuchosVector& lhs, const TeuchosVector& rhs)
   unsigned int size1 = lhs.sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((size1 != size2),
-                       lhs.env().worldRank(),
-                       "operator==()",
-                       "different sizes of lhs and rhs");
+  queso_require_equal_to_msg(size1, size2, "different sizes of lhs and rhs");
 
   for (unsigned int i = 0; i < size1; ++i) {
     if (lhs[i] != rhs[i]) {

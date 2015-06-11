@@ -29,17 +29,6 @@
 
 namespace QUESO {
 
-// Default constructor ------------------------------
-BasicPdfsGsl::BasicPdfsGsl()
-  :
-  BasicPdfsBase()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "BasicPdfsGsl::constructor(), default",
-                      "should not be used by user");
-}
-
 //! Constructor ---------------------------
 BasicPdfsGsl::BasicPdfsGsl(int worldRank)
   :

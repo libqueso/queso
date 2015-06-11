@@ -85,10 +85,7 @@ template<class V, class M>
 const BaseJointPdf<V,M>&
 BaseVectorRV<V,M>::pdf() const
 {
-  UQ_FATAL_TEST_MACRO(m_pdf == NULL,
-                      m_env.worldRank(),
-                      "BaseVectorRV<V,M>::pdf()",
-                      "m_pdf is NULL");
+  queso_require_msg(m_pdf, "m_pdf is NULL");
 
   return *m_pdf;
 }
@@ -97,10 +94,7 @@ template<class V, class M>
 const BaseVectorRealizer<V,M>&
 BaseVectorRV<V,M>::realizer() const
 {
-  UQ_FATAL_TEST_MACRO(m_realizer == NULL,
-                      m_env.worldRank(),
-                      (std::string)("BaseVectorRV<V,M>::realizer(), prefix=")+m_prefix,
-                      "m_realizer is NULL");
+  queso_require_msg(m_realizer, "m_realizer is NULL");
 
   return *m_realizer;
 }
@@ -109,10 +103,7 @@ template<class V, class M>
 const BaseVectorCdf<V,M>&
 BaseVectorRV<V,M>::subCdf() const
 {
-  UQ_FATAL_TEST_MACRO(m_subCdf == NULL,
-                      m_env.worldRank(),
-                      (std::string)("BaseVectorRV<V,M>::subCdf(), prefix=")+m_prefix,
-                      "m_subCdf is NULL");
+  queso_require_msg(m_subCdf, "m_subCdf is NULL");
 
   return *m_subCdf;
 }
@@ -121,10 +112,7 @@ template<class V, class M>
 const BaseVectorCdf<V,M>&
 BaseVectorRV<V,M>::unifiedCdf() const
 {
-  UQ_FATAL_TEST_MACRO(m_unifiedCdf == NULL,
-                      m_env.worldRank(),
-                      (std::string)("BaseVectorRV<V,M>::unifiedCdf(), prefix=")+m_prefix,
-                      "m_unifiedCdf is NULL");
+  queso_require_msg(m_unifiedCdf, "m_unifiedCdf is NULL");
 
   return *m_unifiedCdf;
 }
@@ -133,10 +121,7 @@ template<class V, class M>
 const BaseVectorMdf<V,M>&
 BaseVectorRV<V,M>::mdf() const
 {
-  UQ_FATAL_TEST_MACRO(m_mdf == NULL,
-                      m_env.worldRank(),
-                      (std::string)("BaseVectorRV<V,M>::mdf(), prefix=")+m_prefix,
-                      "m_mdf is NULL");
+  queso_require_msg(m_mdf, "m_mdf is NULL");
 
   return *m_mdf;
 }
@@ -223,28 +208,16 @@ ComputeCovCorrMatricesBetweenVectorRvs(
   bool useOnlyInter0Comm = (paramRv.imageSet().vectorSpace().numOfProcsForStorage() == 1) &&
                            (qoiRv.imageSet().vectorSpace().numOfProcsForStorage()   == 1);
 
-  UQ_FATAL_TEST_MACRO((useOnlyInter0Comm == false),
-                      env.worldRank(),
-                      "ComputeCovCorrMatricesBetweenVectorRvs()",
-                      "parallel vectors not supported yet");
+  queso_require_msg(useOnlyInter0Comm, "parallel vectors not supported yet");
 
   unsigned int numRows = paramRv.imageSet().vectorSpace().dim();
   unsigned int numCols = qoiRv.imageSet().vectorSpace().dim();
 
-  UQ_FATAL_TEST_MACRO((numRows != pqCovMatrix.numRows()) || (numCols != pqCovMatrix.numCols()),
-                      env.worldRank(),
-                      "ComputeCovCorrMatricesBetweenVectorRvs()",
-                      "inconsistent dimensions for covariance matrix");
+  queso_require_msg(!((numRows != pqCovMatrix.numRows()) || (numCols != pqCovMatrix.numCols())), "inconsistent dimensions for covariance matrix");
 
-  UQ_FATAL_TEST_MACRO((numRows != pqCorrMatrix.numRows()) || (numCols != pqCorrMatrix.numCols()),
-                      env.worldRank(),
-                      "ComputeCorrelationBetweenVectorRvs()",
-                      "inconsistent dimensions for correlation matrix");
+  queso_require_msg(!((numRows != pqCorrMatrix.numRows()) || (numCols != pqCorrMatrix.numCols())), "inconsistent dimensions for correlation matrix");
 
-  UQ_FATAL_TEST_MACRO((localNumSamples > paramRv.realizer().period()) || (localNumSamples > qoiRv.realizer().period()),
-                      env.worldRank(),
-                      "ComputeCovCorrMatricesBetweenVectorRvs()",
-                      "localNumSamples is too large");
+  queso_require_msg(!((localNumSamples > paramRv.realizer().period()) || (localNumSamples > qoiRv.realizer().period())), "localNumSamples is too large");
 
   // For both P and Q vector sequences: fill them
   P_V tmpP(paramRv.imageSet().vectorSpace().zeroVector());

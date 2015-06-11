@@ -4,6 +4,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/VectorSpace.h>
 #include <queso/Environment.h>
+#include <queso/EnvironmentOptions.h>
 
 #include <mpi.h>
 

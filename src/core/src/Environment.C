@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
 #include <queso/queso.h>
 #include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
@@ -129,7 +131,7 @@ FilePtrSetStruct::~FilePtrSetStruct()
 // Default constructor --------------------------------
 BaseEnvironment::BaseEnvironment(
   const char*                    passedOptionsInputFileName,
-  const EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* alternativeOptionsValues)
   :
   m_fullEnvIsReady             (false),
   m_worldRank                  (-1),
@@ -151,19 +153,9 @@ BaseEnvironment::BaseEnvironment(
   m_rngObject                  (NULL),
   m_basicPdfs                  (NULL),
   m_exceptionalCircumstance    (false),
-  m_alternativeOptionsValues   (),
-  m_optionsObj                 (NULL)
+  m_optionsObj                 (alternativeOptionsValues)
 {
   if (passedOptionsInputFileName) m_optionsInputFileName     = passedOptionsInputFileName;
-  if (alternativeOptionsValues  ) m_alternativeOptionsValues = *alternativeOptionsValues;
-}
-// Copy constructor -------------------------------------
-BaseEnvironment::BaseEnvironment(const BaseEnvironment& obj)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      obj.worldRank(),
-                      "BaseEnvironment::constructor(), copy",
-                      "code should not execute through here");
 }
 // Destructor -------------------------------------------
 BaseEnvironment::~BaseEnvironment()
@@ -194,7 +186,6 @@ BaseEnvironment::~BaseEnvironment()
       }
     }
 
-  if (m_optionsObj) delete m_optionsObj;
   if (m_allOptionsMap) {
     delete m_allOptionsMap;
     delete m_allOptionsDesc;
@@ -213,16 +204,6 @@ BaseEnvironment::~BaseEnvironment()
   if (m_selfComm      ) delete m_selfComm;
   if (m_subComm       ) delete m_subComm;
   if (m_fullComm      ) delete m_fullComm;
-}
-// Set methods ------------------------------------------
-BaseEnvironment&
-BaseEnvironment::operator= (const BaseEnvironment& rhs)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.worldRank(),
-                      "BaseEnvironment::operator=()",
-                      "code should not execute through here");
-  return *this;
 }
 // Environment, Communicator and Options Input File methods
 bool
@@ -246,10 +227,7 @@ BaseEnvironment::fullRank() const
 const MpiComm&
 BaseEnvironment::fullComm() const
 {
-  UQ_FATAL_TEST_MACRO(m_fullComm == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::fullComm()",
-                      "m_fullComm variable is NULL");
+  queso_require_msg(m_fullComm, "m_fullComm variable is NULL");
   return *m_fullComm;
 }
 //-------------------------------------------------------
@@ -268,20 +246,14 @@ BaseEnvironment::subRank() const
 const MpiComm&
 BaseEnvironment::subComm() const
 {
-  UQ_FATAL_TEST_MACRO(m_subComm == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::subComm()",
-                      "m_subComm variable is NULL");
+  queso_require_msg(m_subComm, "m_subComm variable is NULL");
   return *m_subComm;
 }
 //-------------------------------------------------------
 const MpiComm&
 BaseEnvironment::selfComm() const
 {
-  UQ_FATAL_TEST_MACRO(m_selfComm == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::selfComm()",
-                      "m_selfComm variable is NULL");
+  queso_require_msg(m_selfComm, "m_selfComm variable is NULL");
   return *m_selfComm;
 }
 //-------------------------------------------------------
@@ -294,10 +266,7 @@ BaseEnvironment::inter0Rank() const
 const MpiComm&
 BaseEnvironment::inter0Comm() const
 {
-  UQ_FATAL_TEST_MACRO(m_inter0Comm == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::inter0Comm()",
-                      "m_inter0Comm variable is NULL");
+  queso_require_msg(m_inter0Comm, "m_inter0Comm variable is NULL");
   return *m_inter0Comm;
 }
 //-------------------------------------------------------
@@ -312,17 +281,14 @@ BaseEnvironment::subDisplayFileName() const
 {
   if (m_optionsObj == NULL) return ".";
 
-  return m_optionsObj->m_ov.m_subDisplayFileName;
+  return m_optionsObj->m_subDisplayFileName;
 }
 //-------------------------------------------------------
 unsigned int
 BaseEnvironment::numSubEnvironments() const
 {
-  UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::numSubEnvironments()",
-                      "m_optionsObj variable is NULL");
-  return m_optionsObj->m_ov.m_numSubEnvironments;
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
+  return m_optionsObj->m_numSubEnvironments;
 }
 //-------------------------------------------------------
 unsigned int
@@ -357,35 +323,38 @@ BaseEnvironment::setOptionsInputFileAccessState(bool newState) const
 }
 //-------------------------------------------------------
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
-const po::options_description&
+const boost::program_options::options_description&
 BaseEnvironment::allOptionsDesc() const
 {
+  queso_deprecated();
+
   return *m_allOptionsDesc;
 }
 #endif
 //-------------------------------------------------------
-po::variables_map&
+boost::program_options::variables_map&
 BaseEnvironment::allOptionsMap() const
 {
-  UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::allOptionsMap()",
-                      "m_allOptionsMap variable is NULL");
+  queso_deprecated();
+
+  queso_require_msg(m_allOptionsMap, "m_allOptionsMap variable is NULL");
   return *m_allOptionsMap;
 }
 //-------------------------------------------------------
 void
-BaseEnvironment::scanInputFileForMyOptions(const po::options_description& optionsDesc) const
+BaseEnvironment::scanInputFileForMyOptions(const boost::program_options::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
   // If you want to use command line options, the following line does *not* work outside 'main.C',
   // e.g., in the constructor of FullEnvironment:
-  // Line: po::store(po::parse_command_line(argc, argv, *m_allOptionsDesc), *m_allOptionsMap);
+  // Line: boost::program_options::store(boost::program_options::parse_command_line(argc, argv, *m_allOptionsDesc), *m_allOptionsMap);
   //
   // Instead, put the following three lines *immediately after* instantianting the UQ environment
   // variable "FullEnvironment* env":
-  // Line 1: po::store(po::parse_command_line(argc, argv, env->allOptionsDesc()), env->allOptionsMap());
-  // Line 2: po::notify(env->allOptionsMap());
+  // Line 1: boost::program_options::store(boost::program_options::parse_command_line(argc, argv, env->allOptionsDesc()), env->allOptionsMap());
+  // Line 2: boost::program_options::notify(env->allOptionsMap());
   // Line 3: env->getMyOptionValues();
 #endif
 
@@ -393,35 +362,26 @@ BaseEnvironment::scanInputFileForMyOptions(const po::options_description& option
   std::cout << "Entering BaseEnv::scanInputFileForMyOptions()" << std::endl;
 #endif
 
-  UQ_FATAL_TEST_MACRO(m_allOptionsDesc == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::scanInputFileForMyOptions()",
-                      "m_allOptionsDesc variable is NULL");
+  queso_require_msg(m_allOptionsDesc, "m_allOptionsDesc variable is NULL");
   m_allOptionsDesc->add(optionsDesc);
   //if (m_subDisplayFile) {
   //  *m_subDisplayFile << *m_allOptionsDesc
   //                    << std::endl;
   //}
 
-  UQ_FATAL_TEST_MACRO(m_optionsInputFileName == "",
-                      m_worldRank,
-                      "BaseEnvironment::scanInputFileForMyOptions()",
-                      "m_optionsInputFileName is 'nothing'");
+  queso_require_not_equal_to_msg(m_optionsInputFileName, "", "m_optionsInputFileName is 'nothing'");
   //std::ifstream ifs(m_optionsInputFileName.c_str());
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "in BaseEnv::scanInputFileForMyOptions(), before store(a)" << std::endl;
 #endif
 
-  UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::scanInputFileForMyOptions()",
-                      "m_allOptionsMap variable is NULL");
-  po::store(po::parse_config_file(*ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
+  queso_require_msg(m_allOptionsMap, "m_allOptionsMap variable is NULL");
+  boost::program_options::store(boost::program_options::parse_config_file(*ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "in BaseEnv::scanInputFileForMyOptions(), after store(a)" << std::endl;
 #endif
-  po::notify(*m_allOptionsMap);
+  boost::program_options::notify(*m_allOptionsMap);
 
   //ifs.close();
   delete ifs;
@@ -435,31 +395,22 @@ BaseEnvironment::scanInputFileForMyOptions(const po::options_description& option
 unsigned int
 BaseEnvironment::displayVerbosity() const
 {
-  UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::displayVerbosity()",
-                      "m_optionsObj variable is NULL");
-  return m_optionsObj->m_ov.m_displayVerbosity;
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
+  return m_optionsObj->m_displayVerbosity;
 }
 //-------------------------------------------------------
 unsigned int
 BaseEnvironment::syncVerbosity() const
 {
-  UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::displayVerbosity()",
-                      "m_optionsObj variable is NULL");
-  return m_optionsObj->m_ov.m_syncVerbosity;
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
+  return m_optionsObj->m_syncVerbosity;
 }
 //-------------------------------------------------------
 unsigned int
 BaseEnvironment::checkingLevel() const
 {
-  UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
-                      m_worldRank,
-                      "BaseEnvironment::checkingLevel()",
-                      "m_optionsObj variable is NULL");
-  return m_optionsObj->m_ov.m_checkingLevel;
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
+  return m_optionsObj->m_checkingLevel;
 }
 //-------------------------------------------------------
 const RngBase*
@@ -490,19 +441,19 @@ BaseEnvironment::basicPdfs() const
 std::string
 BaseEnvironment::platformName() const
 {
-  return m_optionsObj->m_ov.m_platformName;
+  return m_optionsObj->m_platformName;
 }
 //-------------------------------------------------------
 std::string
 BaseEnvironment::identifyingString() const
 {
-  return m_optionsObj->m_ov.m_identifyingString;
+  return m_optionsObj->m_identifyingString;
 }
 //-------------------------------------------------------
 void
-BaseEnvironment::resetIdentifyingString(const std::string& newString) const // Yes, const
+BaseEnvironment::resetIdentifyingString(const std::string& newString)
 {
-  m_optionsObj->m_ov.m_identifyingString = newString;
+  m_optionsObj->m_identifyingString = newString;
   return;
 }
 //-------------------------------------------------------
@@ -605,10 +556,7 @@ BaseEnvironment::openOutputFile(
                                 << ": returned from CheckFilePath() with irtrn = " << irtrn
                                 << std::endl;
       }
-      UQ_FATAL_TEST_MACRO(irtrn < 0,
-                          m_worldRank,
-                          "BaseEnvironment::openOutputFile()",
-                          "unable to verify output path");
+      queso_require_greater_equal_msg(irtrn, 0, "unable to verify output path");
 
       if (writeOver) {
         //////////////////////////////////////////////////////////////
@@ -619,16 +567,10 @@ BaseEnvironment::openOutputFile(
                                                 std::ofstream::out | std::ofstream::trunc);
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_worldRank,
-                              "BaseEnvironment::openOutputFile(), writeOver=true",
-                              "hdf file type not supported yet");
+          queso_error_msg("hdf file type not supported yet");
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_worldRank,
-                              "BaseEnvironment::openOutputFile(), writeOver=true",
-                              "invalid file type");
+          queso_error_msg("invalid file type");
         }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
           *this->subDisplayFile() << "In BaseEnvironment::openOutputFile()"
@@ -657,16 +599,10 @@ BaseEnvironment::openOutputFile(
                                                 std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_worldRank,
-                              "BaseEnvironment::openOutputFile(), writeOver=false",
-                              "hdf file type not supported yet");
+          queso_error_msg("hdf file type not supported yet");
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_worldRank,
-                              "BaseEnvironment::openOutputFile(), writeOver=false",
-                              "invalid file type");
+          queso_error_msg("invalid file type");
         }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
           *this->subDisplayFile() << "In BaseEnvironment::openOutputFile()"
@@ -715,10 +651,7 @@ BaseEnvironment::openOutputFile(
                   << "'"
                   << std::endl;
       }
-      UQ_FATAL_TEST_MACRO((filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()) == false,
-                          this->worldRank(),
-                          "openOutputFile()",
-                          "failed to open output file");
+      queso_require_msg((filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()), "failed to open output file");
     }
     else {
       returnValue = false;
@@ -801,10 +734,7 @@ BaseEnvironment::openUnifiedOutputFile(
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
       int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
-      UQ_FATAL_TEST_MACRO(irtrn < 0,
-                          m_worldRank,
-                          "BaseEnvironment::openUnifiedOutputFile()",
-                          "unable to verify output path");
+      queso_require_greater_equal_msg(irtrn, 0, "unable to verify output path");
 
       if (writeOver) {
         ////////////////////////////////////////////////////////////////
@@ -823,10 +753,7 @@ BaseEnvironment::openUnifiedOutputFile(
         }
 #endif
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_worldRank,
-                              "BaseEnvironment::openUnifiedOutputFile(), writeOver=true",
-                              "invalid file type");
+          queso_error_msg("invalid file type");
         }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
           *this->subDisplayFile() << "In BaseEnvironment::openUnifiedOutputFile()"
@@ -853,17 +780,14 @@ BaseEnvironment::openUnifiedOutputFile(
                                        H5F_ACC_TRUNC,
                                        H5P_DEFAULT,
                                        H5P_DEFAULT);
-          //UQ_FATAL_TEST_MACRO(true,
+
           //                    m_worldRank,
           //                    "BaseEnvironment::openUnifiedOutputFile(), writeOver=false",
           //                    "hdf file type not supported yet");
         }
 #endif
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_worldRank,
-                              "BaseEnvironment::openUnifiedOutputFile(), writeOver=false",
-                              "invalid file type");
+          queso_error_msg("invalid file type");
         }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
           *this->subDisplayFile() << "In BaseEnvironment::openUnifiedOutputFile()"
@@ -899,10 +823,7 @@ BaseEnvironment::openUnifiedOutputFile(
                   << "'"
                   << std::endl;
       }
-      UQ_FATAL_TEST_MACRO((filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()) == false,
-                          this->worldRank(),
-                          "openUnifiedOutputFile()",
-                          "failed to open output file");
+      queso_require_msg((filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()), "failed to open output file");
     //}
   }
 
@@ -970,10 +891,7 @@ BaseEnvironment::openInputFile(
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
       int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
-      UQ_FATAL_TEST_MACRO(irtrn < 0,
-                          m_worldRank,
-                          "BaseEnvironment::openInputFile()",
-                          "unable to verify input path");
+      queso_require_greater_equal_msg(irtrn, 0, "unable to verify input path");
 
       if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
         filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
@@ -984,10 +902,7 @@ BaseEnvironment::openInputFile(
                     << "'"
                     << std::endl;
         }
-        UQ_FATAL_TEST_MACRO((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false),
-                            this->worldRank(),
-                            "BaseEnvironment::openInputFile()",
-                            "file with fileName could not be found");
+        queso_require_msg(!((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)), "file with fileName could not be found");
       }
 #ifdef QUESO_HAS_HDF5
       else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
@@ -997,10 +912,7 @@ BaseEnvironment::openInputFile(
       }
 #endif
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_worldRank,
-                            "BaseEnvironment::openInputFile()",
-                            "invalid file type");
+        queso_error_msg("invalid file type");
       }
     }
     else {
@@ -1071,10 +983,7 @@ BaseEnvironment::openUnifiedInputFile(
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
       int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
-      UQ_FATAL_TEST_MACRO(irtrn < 0,
-                          m_worldRank,
-                          "BaseEnvironment::openUnifiedInputFile()",
-                          "unable to verify input path");
+      queso_require_greater_equal_msg(irtrn, 0, "unable to verify input path");
 
       if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
         filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
@@ -1085,10 +994,7 @@ BaseEnvironment::openUnifiedInputFile(
                     << "'"
                     << std::endl;
         }
-        UQ_FATAL_TEST_MACRO((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false),
-                            this->worldRank(),
-                            "BaseEnvironment::openUnifiedInputFile()",
-                            "file with fileName could not be found");
+        queso_require_msg(!((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)), "file with fileName could not be found");
       }
 #ifdef QUESO_HAS_HDF5
       else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
@@ -1098,10 +1004,7 @@ BaseEnvironment::openUnifiedInputFile(
       }
 #endif
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_worldRank,
-                            "BaseEnvironment::openUnifiedInputFile()",
-                            "invalid file type");
+        queso_error_msg("invalid file type");
       }
     }
     //else {
@@ -1158,10 +1061,7 @@ BaseEnvironment::closeFile(
   }
 #endif
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_worldRank,
-                        "BaseEnvironment::closeFile()",
-                        "invalid file type");
+    queso_error_msg("invalid file type");
   }
 
   return;
@@ -1208,7 +1108,7 @@ FullEnvironment::FullEnvironment(
   RawType_MPI_Comm             inputComm,
   const char*                    passedOptionsInputFileName,
   const char*                    prefix,
-  const EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* alternativeOptionsValues)
   :
   BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
 {
@@ -1220,20 +1120,14 @@ FullEnvironment::FullEnvironment(
   // Initialize "full" communicator -- Not necessarily MPI_COMM_WORLD
   ///////////////////////////////////////////////////////////////////////
   int mpiRC = MPI_Comm_rank(inputComm,&m_worldRank);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      UQ_UNAVAILABLE_RANK,
-                      "FullEnvironment::commonConstructor()",
-                      "failed to get world fullRank()");
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed to get world fullRank()");
 
   m_fullComm = new MpiComm(*this,inputComm);
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
 
   mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      "FullEnvironment::commonConstructor()",
-                      "failed MPI_Comm_group()");
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Comm_group()");
 
   // saving old uncaught exception handler, invoking queso_terminate
   old_terminate_handler = std::set_terminate(queso_terminate_handler);
@@ -1245,18 +1139,33 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   // Read options
   //////////////////////////////////////////////////
-  if (m_optionsInputFileName == "") {
-    m_optionsObj = new EnvironmentOptions(*this,prefix,m_alternativeOptionsValues);
-  }
-  else {
-    m_allOptionsMap  = new po::variables_map();
-    m_allOptionsDesc = new po::options_description("Allowed options");
-    m_optionsObj = new EnvironmentOptions(*this,prefix);
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
 
-    readOptionsInputFile();
+    // If there's an input file, we grab the options from there.  Otherwise the
+    // defaults are used
+    if (m_optionsInputFileName != "") {
+      m_allOptionsMap  = new boost::program_options::variables_map();
+      m_allOptionsDesc = new boost::program_options::options_description("Allowed options");
 
-    m_optionsObj->scanOptionsValues();
+      readOptionsInputFile();
+    }
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
   }
+
+  // If help option was supplied, print info
+  if (m_optionsObj->m_help != "") {
+    // We write to std::cout because subDisplayFile() isn't ready yet?
+    std::cout << (*m_optionsObj) << std::endl;
+  }
+
+  queso_require_equal_to_msg(
+      fullComm().NumProc() % m_optionsObj->m_numSubEnvironments, 0,
+      "total number of processors in environment must be multiple of the specified number of subEnvironments");
 
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In FullEnv, finished scanning options" << std::endl;
@@ -1287,15 +1196,15 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the sub communicators, one for each subEnvironment
   //////////////////////////////////////////////////
-  unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_optionsObj->m_ov.m_numSubEnvironments;
+  unsigned int numRanksPerSubEnvironment = m_fullCommSize/m_optionsObj->m_numSubEnvironments;
 
   m_subId = m_fullRank/numRanksPerSubEnvironment;
   char tmpSubId[16];
   sprintf(tmpSubId,"%u",m_subId);
   m_subIdString = tmpSubId;
 
-  if (m_optionsObj->m_ov.m_subDisplayAllowAll) {
-    m_optionsObj->m_ov.m_subDisplayAllowedSet.insert((unsigned int) m_subId);
+  if (m_optionsObj->m_subDisplayAllowAll) {
+    m_optionsObj->m_subDisplayAllowedSet.insert((unsigned int) m_subId);
   }
 
   std::vector<int> fullRanksOfMySubEnvironment(numRanksPerSubEnvironment,0);
@@ -1304,17 +1213,11 @@ FullEnvironment::FullEnvironment(
   }
 
   mpiRC = MPI_Group_incl(m_fullGroup, (int) numRanksPerSubEnvironment, &fullRanksOfMySubEnvironment[0], &m_subGroup);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      "FullEnvironment::commonConstructor()",
-                      "failed MPI_Group_incl() for a subEnvironment");
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Group_incl() for a subEnvironment");
 
   RawType_MPI_Comm subRawComm;
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_subGroup, &subRawComm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      "FullEnvironment::commonConstructor()",
-                      "failed MPI_Comm_group() for a subEnvironment");
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Comm_group() for a subEnvironment");
   m_subComm = new MpiComm(*this,subRawComm);
   m_subRank     = m_subComm->MyPID();
   m_subCommSize = m_subComm->NumProc();
@@ -1327,33 +1230,27 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the inter0 communicator
   //////////////////////////////////////////////////
-  std::vector<int> fullRanksOfInter0(m_optionsObj->m_ov.m_numSubEnvironments,0);
-  for (unsigned int i = 0; i < m_optionsObj->m_ov.m_numSubEnvironments; ++i) {
+  std::vector<int> fullRanksOfInter0(m_optionsObj->m_numSubEnvironments,0);
+  for (unsigned int i = 0; i < m_optionsObj->m_numSubEnvironments; ++i) {
     fullRanksOfInter0[i] = i * numRanksPerSubEnvironment;
   }
-  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_optionsObj->m_ov.m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      "FullEnvironment::commonConstructor()",
-                      "failed MPI_Group_incl() for inter0");
+  mpiRC = MPI_Group_incl(m_fullGroup, (int) m_optionsObj->m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Group_incl() for inter0");
   RawType_MPI_Comm inter0RawComm;
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_inter0Group, &inter0RawComm);
-  UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
-                      m_worldRank,
-                      "FullEnvironment::commonConstructor()",
-                      "failed MPI_Comm_group() for inter0");
+  queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Comm_group() for inter0");
   if (m_fullRank%numRanksPerSubEnvironment == 0) {
     m_inter0Comm = new MpiComm(*this,inter0RawComm);
     m_inter0Rank     = m_inter0Comm->MyPID();
     m_inter0CommSize = m_inter0Comm->NumProc();
   }
 
-  if (m_optionsObj->m_ov.m_subDisplayAllowAll) {
+  if (m_optionsObj->m_subDisplayAllowAll) {
     // This situation has been already taken care of above
   }
-  else if (m_optionsObj->m_ov.m_subDisplayAllowInter0) {
+  else if (m_optionsObj->m_subDisplayAllowInter0) {
     if (m_inter0Rank >= 0) {
-      m_optionsObj->m_ov.m_subDisplayAllowedSet.insert((unsigned int) m_subId);
+      m_optionsObj->m_subDisplayAllowedSet.insert((unsigned int) m_subId);
     }
   }
 
@@ -1363,8 +1260,8 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   bool openFile = false;
   if ((m_subRank                                               == 0                                              ) &&
-      (m_optionsObj->m_ov.m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE             ) &&
-      (m_optionsObj->m_ov.m_subDisplayAllowedSet.find(m_subId) != m_optionsObj->m_ov.m_subDisplayAllowedSet.end())) {
+      (m_optionsObj->m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE             ) &&
+      (m_optionsObj->m_subDisplayAllowedSet.find(m_subId) != m_optionsObj->m_subDisplayAllowedSet.end())) {
     openFile = true;
   }
 
@@ -1373,11 +1270,8 @@ FullEnvironment::FullEnvironment(
     // Verify parent directory exists (for cases when a user
     // specifies a relative path for the desired output file).
     //////////////////////////////////////////////////////////////////
-    int irtrn = CheckFilePath((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
-    UQ_FATAL_TEST_MACRO(irtrn < 0,
-                        m_worldRank,
-                        "Environment::constructor()",
-                        "unable to verify output path");
+    int irtrn = CheckFilePath((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+    queso_require_greater_equal_msg(irtrn, 0, "unable to verify output path");
   }
 
   ////////////////////////////////////////////////////////////////////
@@ -1389,12 +1283,9 @@ FullEnvironment::FullEnvironment(
     //////////////////////////////////////////////////////////////////
     // Always write over an eventual pre-existing file
     //////////////////////////////////////////////////////////////////
-    m_subDisplayFile = new std::ofstream((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
+    m_subDisplayFile = new std::ofstream((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
                                          std::ofstream::out | std::ofstream::trunc);
-    UQ_FATAL_TEST_MACRO((m_subDisplayFile && m_subDisplayFile->is_open()) == false,
-                        m_worldRank,
-                        "Environment::constructor()",
-                        "failed to open sub screen file");
+    queso_require_msg((m_subDisplayFile && m_subDisplayFile->is_open()), "failed to open sub screen file");
 
     QUESO_version_print(*m_subDisplayFile);
 
@@ -1444,22 +1335,19 @@ FullEnvironment::FullEnvironment(
   //////////////////////////////////////////////////
   // Deal with seed
   //////////////////////////////////////////////////
-  if (m_optionsObj->m_ov.m_rngType == "gsl") {
-    m_rngObject = new RngGsl(m_optionsObj->m_ov.m_seed,m_worldRank);
+  if (m_optionsObj->m_rngType == "gsl") {
+    m_rngObject = new RngGsl(m_optionsObj->m_seed,m_worldRank);
     m_basicPdfs = new BasicPdfsGsl(m_worldRank);
   }
-  else if (m_optionsObj->m_ov.m_rngType == "boost") {
-    m_rngObject = new RngBoost(m_optionsObj->m_ov.m_seed,m_worldRank);
+  else if (m_optionsObj->m_rngType == "boost") {
+    m_rngObject = new RngBoost(m_optionsObj->m_seed,m_worldRank);
     m_basicPdfs = new BasicPdfsBoost(m_worldRank);
   }
   else {
     std::cerr << "In Environment::constructor()"
-              << ": rngType = " << m_optionsObj->m_ov.m_rngType
+              << ": rngType = " << m_optionsObj->m_rngType
               << std::endl;
-    UQ_FATAL_TEST_MACRO(true,
-                        m_worldRank,
-                        "Environment::constructor()",
-                        "the requested 'rngType' is not supported yet");
+    queso_error_msg("the requested 'rngType' is not supported yet");
   }
 
   //////////////////////////////////////////////////

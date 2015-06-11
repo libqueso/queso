@@ -33,13 +33,16 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!\class ConstantScalarFunction
  * \brief A class for handling scalar functions which image is a constant (real number).
  *
  * This class allows the mathematical definition of a scalar function which image set
  * is a constant (real number). */
 
-template<class V,class M>
+template <class V = GslVector, class M = GslMatrix>
 class ConstantScalarFunction : public BaseScalarFunction<V,M> {
 public:
     //! @name Constructor/Destructor methods

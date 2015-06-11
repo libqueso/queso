@@ -212,11 +212,13 @@ dist_exTgaValidationCycle_gsl_DATA +=	${exTgaValidationCycle_gsl_SOURCES}
 ####################
 tga2_gsldir = $(prefix)/examples/validationCycle2
 
-tga2_gsl_DATA = $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_100_K_min.dat
-tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_25_K_min.dat
-tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_50_K_min.dat
-tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_5_K_min.dat
-tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/tgaCycle.inp
+tga2_gslinputdatadir = $(prefix)/examples/validationCycle2/inputData
+
+tga2_gslinputdata_DATA  = $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_100_K_min.dat
+tga2_gslinputdata_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_25_K_min.dat
+tga2_gslinputdata_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_50_K_min.dat
+tga2_gslinputdata_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_5_K_min.dat
+tga2_gsl_DATA  = $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/tgaCycle.inp
 tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/tga_cycle_plot.m
 
 tga2_gsl_PROGRAMS = tga2_gsl
@@ -367,6 +369,12 @@ gpmsa_scalar_SOURCES = gp/scalar/gpmsa_scalar.C
 gpmsa_scalar_LDADD = $(top_builddir)/src/libqueso.la
 gpmsa_scalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar $(QUESO_CPPFLAGS)
 
+dist_gpmsa_scalar_DATA =
+dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}
+dist_gpmsa_scalar_DATA += gp/scalar/dakota_pstudy.dat
+dist_gpmsa_scalar_DATA += gp/scalar/gpmsa_input.txt
+dist_gpmsa_scalar_DATA += gp/scalar/ctf_dat.txt
+
 #######################################
 # Canned Gaussian likelihood examples #
 #######################################
@@ -406,11 +414,32 @@ blockDiagonalCovarianceRandomCoefficients_SOURCES = gaussian_likelihoods/blockDi
 blockDiagonalCovarianceRandomCoefficients_LDADD = $(top_builddir)/src/libqueso.la
 blockDiagonalCovarianceRandomCoefficients_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovarianceRandomCoefficients $(QUESO_CPPFLAGS)
 
-dist_gpmsa_scalar_DATA =
-dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}
+####################################
+# Interpolation Surrogate examples #
+####################################
+interpsurrgdir = $(prefix)/examples/interpolation_surrogate
+
+interpsurrg_PROGRAMS = 4d_interp 4d_interp_read
+
+4d_interp_SOURCES = interpolation_surrogate/4d_interp.C
+4d_interp_LDADD = $(top_builddir)/src/libqueso.la
+4d_interp_CPPFLAGS = $(QUESO_CPPFLAGS)
+
+4d_interp_read_SOURCES = interpolation_surrogate/4d_interp_read.C
+4d_interp_read_LDADD = $(top_builddir)/src/libqueso.la
+4d_interp_read_CPPFLAGS = $(QUESO_CPPFLAGS)
+
+dist_interpsurrg_DATA =
+dist_interpsurrg_DATA += ${4d_interp_SOURCES}
+dist_interpsurrg_DATA += ${4d_interp_read_SOURCES}
+dist_interpsurrg_DATA += interpolation_surrogate/input.in
+dist_interpsurrg_DATA += interpolation_surrogate/4d_interp_data_coarse.dat
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif
+
+runalldir = $(prefix)/examples
+dist_runall_SCRIPTS = run_all.sh
 
 MAINTAINERCLEANFILES = Makefile.in

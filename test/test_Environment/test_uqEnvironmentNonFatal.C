@@ -1,5 +1,6 @@
 /* #include <set> */
 #include <queso/Environment.h>
+#include <queso/EnvironmentOptions.h>
 #include <queso/Defines.h>
 
 #include <mpi.h>

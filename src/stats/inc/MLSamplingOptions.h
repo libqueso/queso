@@ -27,6 +27,7 @@
 
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE "."
 
@@ -34,6 +35,7 @@
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 
+#define UQ_ML_SAMPLING_HELP                                    ""
 #define UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV         0
 #define UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV  UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
@@ -74,20 +76,20 @@ public:
   MLSamplingOptions(const BaseEnvironment& env, const char* prefix);
 
   //! Destructor
-  ~MLSamplingOptions();
+  virtual ~MLSamplingOptions();
   //@}
 
   //! @name I/O methods
   //@{
-  //! It scans the option values from the options input file.
-  void scanOptionsValues();
-
   //!  It prints the option values.
   void print            (std::ostream& os) const;
   //@}
 
   //! Class prefix. (ml)
   std::string            m_prefix;
+
+  //! If non-empty string, options and values are printed to the output file
+  std::string m_help;
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   //! Period of restart output file (level).
@@ -122,14 +124,9 @@ public:
   std::set<unsigned int> m_dataOutputAllowedSet;
 
 private:
-  //! Defines the options for the Multilevel generator of samples as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
-
-  //! Gets the sequence options defined to the Multilevel algorithm.
-  void   getMyOptionValues(po::options_description& optionsDesc);
-
   const BaseEnvironment& m_env;
-  po::options_description*      m_optionsDesc;
+
+  BoostInputOptionsParser * m_parser;
 
   std::string                   m_option_help;
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
@@ -146,9 +143,13 @@ private:
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowAll;
   std::string                   m_option_dataOutputAllowedSet;
+
+  void checkOptions(const BaseEnvironment * env);
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const MLSamplingOptions & obj);
 };
 
-std::ostream& operator<<(std::ostream& os, const MLSamplingOptions& obj);
 
 }  // End namespace QUESO
 

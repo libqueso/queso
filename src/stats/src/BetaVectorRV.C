@@ -67,15 +67,9 @@ BetaVectorRV<V,M>::BetaVectorRV(
          << std::endl;
 
  // if at least one of the min values > 1 then exit
-    UQ_FATAL_TEST_MACRO(biggerOfMinValues > 1,
-                      m_env.worldRank(),
-                      "In BetaVectorRV<V,M>::constructor()",
-                      "invalid input: Beta distribution is only defined in [0, 1], and max(m_minValues)>1");
+    queso_require_less_equal_msg(biggerOfMinValues, 1, "invalid input: Beta distribution is only defined in [0, 1], and max(m_minValues)>1");
  // if at least one of the max values < 0 then exit
-    UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0, //biggerOfMaxValues
-                      m_env.worldRank(),
-                      "In BetaVectorRV<V,M>::constructor()",
-                      "invalid input: Beta distribution is only defined in [0, 1], and min(m_maxValues)<0");
+    queso_require_greater_equal_msg(smallerOfMaxValues, 0, "invalid input: Beta distribution is only defined in [0, 1], and min(m_maxValues)<0");
  }
   // end kemelli 2013-April-22 --------------------------
 

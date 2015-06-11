@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.52.0], [queso-users@googlegroups.com])
+AC_INIT([queso], [0.53.0], [queso-users@googlegroups.com])
 PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
 AC_SUBST([PACKAGE_DESCRIPTION])
 PACKAGE_URL="https://github.com/libqueso/queso"
@@ -17,6 +17,7 @@ AX_PREFIX_CONFIG_H(config_queso.h,QUESO,config_queso.h.tmp)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CANONICAL_TARGET()
 AM_INIT_AUTOMAKE([color-tests subdir-objects])
+AM_SILENT_RULES(yes)  # use silent rules where available - automake 1.11
 
 # Release versioning
 
@@ -122,6 +123,7 @@ AC_CACHE_SAVE
 AC_LANG([C++])
 BOOST_REQUIRE([1.35])
 BOOST_PROGRAM_OPTIONS
+BOOST_FIND_HEADER([boost/scoped_ptr.hpp])
 AC_CACHE_SAVE
 
 # Check for GLPK (optional)
@@ -158,7 +160,7 @@ DX_CHI_FEATURE(OFF)
 DX_MAN_FEATURE(OFF)
 DX_RTF_FEATURE(OFF)
 DX_XML_FEATURE(OFF)
-DX_PDF_FEATURE(ON)
+DX_PDF_FEATURE(OFF)
 DX_PS_FEATURE(OFF)
 
 DX_INIT_DOXYGEN([queso],[doxygen/queso.dox],[docs])
@@ -194,7 +196,6 @@ AC_CONFIG_FILES([
   test/t04_bimodal/Makefile
   test/gsl_tests/Makefile
   test/gsl_tests/input
-  test/test_Environment/copy_env
   test/test_infinite/inf_options
   test/test_Regression/GaussianMean1DRegression_options
   test/test_Regression/gpmsa_cobra_input.txt
@@ -209,10 +210,14 @@ AC_CONFIG_FILES([
   test/test_Regression/test_jeffreys_samples.m
   test/test_Regression/adaptedcov_input.txt
   test/test_gaussian_likelihoods/queso_input.txt
+  test/test_InterpolationSurrogate/queso_input.txt
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
   test/test_gaussian_likelihoods/gaussian_consistency_input.txt
+  test/test_InputOptionsParser/test_options_good.txt
+  test/test_InputOptionsParser/test_options_bad.txt
+  test/test_InputOptionsParser/test_options_default.txt
 ])
 
 AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh

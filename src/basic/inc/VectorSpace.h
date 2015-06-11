@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class VectorSpace
  * \brief A class representing a vector space.
@@ -40,15 +43,12 @@ namespace QUESO {
  * respectively. Currently (as of version 0.46.0) QUESO has matrix and vector classes
  * implemented using either GSL or Trilinos-Teuchos libraries. */
 
-template <class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class VectorSpace : public VectorSet<V,M>
 {
 public:
   //! @name Constructor/Destructor methods
   //@{
-
-  //! Default constructor
-  VectorSpace();
 
   //! Shaped constructor.
   /*! Construct a vector space with QUESO environment \c env and of dimension \c dimGlobalValue.*/
@@ -163,6 +163,10 @@ protected:
 
   //! A vector of all elements equal to zero.
   V*                             m_zeroVector;
+
+private:
+  //! Default constructor
+  VectorSpace();
 };
 
 }  // End namespace QUESO

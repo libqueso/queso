@@ -32,16 +32,16 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Uniform class [R-04]
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class UniformVectorRealizer
  * \brief A class for handling sampling from a Uniform probability density distribution.
  *
  * This class handles sampling from a uniform probability density distribution.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class UniformVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 

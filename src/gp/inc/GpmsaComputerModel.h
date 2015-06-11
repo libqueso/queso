@@ -45,14 +45,15 @@
 
 namespace QUESO {
 
-template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
+class GslVector;
+class GslMatrix;
+
+template <class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector,
+         class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix,
+         class Q_V = GslVector, class Q_M = GslMatrix>
 class GpmsaComputerModel
 {
 public:
-  //*******************************************************************************
-  // The following routines are in GpmsaComputerModel2.h
-  //*******************************************************************************
-
   GpmsaComputerModel(const char*                                              prefix,
                             const GcmOptionsValues*                           alternativeOptionsValues, // dakota
                             const SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
@@ -100,10 +101,6 @@ public:
                                                                                    const P_V& newParameterVec,
                                                                                          Q_V& simulationOutputMeanVec);
 
-  //*******************************************************************************
-  // The following routines are in GpmsaComputerModel3.h
-  //*******************************************************************************
-
   const VectorSpace    <P_V,P_M>& totalSpace                               () const;
   const VectorSpace    <P_V,P_M>& unique_vu_space                          () const;
   const BaseVectorRV   <P_V,P_M>& totalPriorRv                             () const;
@@ -135,10 +132,6 @@ private:
                                                                                          P_V*  gradVector,
                                                                                          P_M*  hessianMatrix,
                                                                                          P_V*  hessianEffect);
-
-  //*******************************************************************************
-  // The following routines are in GpmsaComputerModel4.h
-  //*******************************************************************************
 
         // This routine is called by likelihoodRoutine()
         // This routine is called by predictVUsAtGridPoint()
@@ -197,9 +190,6 @@ private:
                                                                                    const P_V&                      input_8thetaVec,
                                                                                          unsigned int              outerCounter);
 
-  //*******************************************************************************
-  // The following routines are in GpmsaComputerModel5.h
-  //*******************************************************************************
         void                             fillR_formula2_for_Sigma_v               (const std::vector<const S_V* >& xVecs, // ppp: does multiple Gs affect this routine?
                                                                                    const P_V&                      rho_v_vec,
                                                                                          D_M&                      Rmat,
@@ -255,8 +245,7 @@ private:
                                                                                          unsigned int              outerCounter);
 
   const BaseEnvironment&                                         m_env;
-        GcmOptionsValues                                         m_alternativeOptionsValues;
-        GpmsaComputerModelOptions*                               m_optionsObj;
+  const GcmOptionsValues*                                        m_optionsObj;
         FilePtrSetStruct                                              m_dataOutputFilePtrSet;
 
         GcmSimulationInfo     <S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_s;

@@ -32,9 +32,8 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Generic class
-//*****************************************************
+class GslVector;
+class GslMatrix;
 
 /*!\class GenericVectorFunction
  * \brief A class for handling generic vector functions.
@@ -44,7 +43,7 @@ namespace QUESO {
  * BaseVectorFunction.
  */
 
-template<class P_V,class P_M,class Q_V,class Q_M>
+template <class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class GenericVectorFunction : public BaseVectorFunction<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods

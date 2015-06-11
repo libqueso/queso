@@ -290,10 +290,7 @@ GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::GcmExperimentInfo(
                             << ", sumDims = "         << sumDims
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(sumDims != m_v_size,
-                      m_env.worldRank(),
-                      "GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
-                      "'sumDims' and 'm_v_size' should be equal");
+  queso_require_equal_to_msg(sumDims, m_v_size, "'sumDims' and 'm_v_size' should be equal");
 
   //********************************************************************************
   // Instantiate 'v_hat_v_asterisk' matrices
@@ -311,14 +308,8 @@ GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::GcmExperimentInfo(
                             << ": finished instantiating the m_Smat_v_hat_v_asterisk_i matrices"
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(sumNumRows != m_v_size,
-                      m_env.worldRank(),
-                      "GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
-                      "'sumNumRows' and 'm_v_size' should be equal");
-  UQ_FATAL_TEST_MACRO(sumNumCols != m_paper_p_delta,
-                      m_env.worldRank(),
-                      "GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
-                      "'sumNumCols' and 'm_paper_p_delta' should be equal");
+  queso_require_equal_to_msg(sumNumRows, m_v_size, "'sumNumRows' and 'm_v_size' should be equal");
+  queso_require_equal_to_msg(sumNumCols, m_paper_p_delta, "'sumNumCols' and 'm_paper_p_delta' should be equal");
 
   //********************************************************************************
   // Display information
@@ -357,20 +348,11 @@ GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::GcmExperimentInfo(
   //********************************************************************************
   // Make checks
   //********************************************************************************
-  UQ_FATAL_TEST_MACRO(experimentStorage.yVec_transformed().sizeLocal() != m_paper_n_y,
-                      m_env.worldRank(),
-                      "GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
-                      "incompatible calculations for 'y' vector size");
+  queso_require_equal_to_msg(experimentStorage.yVec_transformed().sizeLocal(), m_paper_n_y, "incompatible calculations for 'y' vector size");
 
-  UQ_FATAL_TEST_MACRO(m_paper_n != m_paper_n_ys_transformed.size(),
-                      m_env.worldRank(),
-                      "GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
-                      "'m_paper_n' and 'm_paper_n_ys_transformed.size()' should be equal");
+  queso_require_equal_to_msg(m_paper_n, m_paper_n_ys_transformed.size(), "'m_paper_n' and 'm_paper_n_ys_transformed.size()' should be equal");
 
-  UQ_FATAL_TEST_MACRO(m_paper_F != m_paper_Gs.size(),
-                      m_env.worldRank(),
-                      "GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
-                      "'m_paper_F' and 'm_paper_Gs.size()' should be equal");
+  queso_require_equal_to_msg(m_paper_F, m_paper_Gs.size(), "'m_paper_F' and 'm_paper_Gs.size()' should be equal");
 
   unsigned int sumGs = 0;
   for (unsigned int i = 0; i < m_paper_F; ++i) {
@@ -386,10 +368,7 @@ GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::GcmExperimentInfo(
                             << ": sumGs = " << sumGs
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(m_paper_p_delta != sumGs,
-                      m_env.worldRank(),
-                      "GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
-                      "'m_paper_p_delta' and 'sumGs' should be equal");
+  queso_require_equal_to_msg(m_paper_p_delta, sumGs, "'m_paper_p_delta' and 'sumGs' should be equal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Leaving GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"

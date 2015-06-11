@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <algorithm>
 #include <queso/AsciiTable.h>
 
 namespace QUESO {
@@ -91,10 +92,7 @@ AsciiTable<V,M>::readColumnsFromFile()
   unsigned int maxCharsPerLine = 512;
 
   std::ifstream ifs(m_fileName.c_str());
-  UQ_FATAL_TEST_MACRO(ifs.is_open() == false,
-                      m_env.worldRank(),
-                      "AsciiTable<V,M>::readColumnsFromFile()",
-                      "file was not found");
+  queso_require_msg(ifs.is_open(), "file was not found");
 
   // Determine number of lines
   unsigned int numLines = std::count(std::istreambuf_iterator<char>(ifs),
@@ -109,10 +107,7 @@ AsciiTable<V,M>::readColumnsFromFile()
   std::string tempString;
   while ((lineId < numLines) && (ifs.eof() == false)) {
     iRC = MiscReadStringAndDoubleFromFile(ifs,tempString,NULL);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.worldRank(),
-                        "AsciiTable<V,M>::readColumnsFromFile()",
-                        "failed reading during the determination of the number of valid lines");
+    queso_require_msg(!(iRC), "failed reading during the determination of the number of valid lines");
     //*m_env.subDisplayFile() << "lineId = "          << lineId
     //                        << ", numValidLines = " << numValidLines
     //                        << ", tempString = "    << tempString
@@ -121,17 +116,11 @@ AsciiTable<V,M>::readColumnsFromFile()
     lineId++;
     ifs.ignore(maxCharsPerLine,'\n');
   }
-  UQ_FATAL_TEST_MACRO(lineId != numLines,
-                      m_env.worldRank(),
-                      "AsciiTable<V,M>::readColumnsFromFile()",
-                      "the first number of lines read is nonconsistent");
+  queso_require_equal_to_msg(lineId, numLines, "the first number of lines read is nonconsistent");
   if (m_numRows != numValidLines) {
     char errorExplanation[512];
     sprintf(errorExplanation,"number of valid lines (%u) in ASCII table file does not match number of rows (%u)",numValidLines,m_numRows);
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "AsciiTable<V,M>::readColumnsFromFile()",
-                        errorExplanation);
+    queso_error_msg(errorExplanation);
   }
 
   if (m_env.subDisplayFile()) {
@@ -171,10 +160,7 @@ AsciiTable<V,M>::readColumnsFromFile()
     bool endOfLineAchieved = false;
 
     iRC = MiscReadCharsAndDoubleFromFile(ifs, tmpString, NULL, endOfLineAchieved);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.worldRank(),
-                        "AsciiTable<V,M>::readColumnsFromFile()",
-                        "failed reading a first column during the valid lines reading loop");
+    queso_require_msg(!(iRC), "failed reading a first column during the valid lines reading loop");
 
     lineId++;
     if (tmpString[0] == '#') {
@@ -189,10 +175,7 @@ AsciiTable<V,M>::readColumnsFromFile()
     if (validLineId >= numValidLines) {
       char errorExplanation[512];
       sprintf(errorExplanation,"validLineId (%u) got too large during reading of ASCII table file",validLineId);
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "AsciiTable<V,M>::readColumnsFromFile()",
-                          errorExplanation);
+      queso_error_msg(errorExplanation);
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
@@ -203,17 +186,11 @@ AsciiTable<V,M>::readColumnsFromFile()
     }
 
     for (unsigned int j=1; j < m_numCols; ++j) {
-      UQ_FATAL_TEST_MACRO(endOfLineAchieved,
-                          m_env.worldRank(),
-                          "AsciiTable<V,M>::readColumnsFromFile()",
-                          "failed reading all columns in a valid line");
+      queso_require_msg(!(endOfLineAchieved), "failed reading all columns in a valid line");
       if (m_colIsString[j]) {
         DistArray<std::string>& arrayOfStrings = *m_stringColumns[j];
         iRC = MiscReadCharsAndDoubleFromFile(ifs, arrayOfStrings(validLineId,0), NULL, endOfLineAchieved);
-        UQ_FATAL_TEST_MACRO(iRC,
-                            m_env.worldRank(),
-                            "AsciiTable<V,M>::readColumnsFromFile()",
-                            "failed reading a string column in a valid line");
+        queso_require_msg(!(iRC), "failed reading a string column in a valid line");
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
           *m_env.subDisplayFile() << "Just read a string: table[" << validLineId
                                   << ","                          << j
@@ -223,10 +200,7 @@ AsciiTable<V,M>::readColumnsFromFile()
       }
       else {
         iRC = MiscReadCharsAndDoubleFromFile(ifs, tmpString, &(*m_doubleColumns[j])[validLineId], endOfLineAchieved);
-        UQ_FATAL_TEST_MACRO(iRC,
-                            m_env.worldRank(),
-                            "AsciiTable<V,M>::readColumnsFromFile()",
-                            "failed reading a double column in a valid line");
+        queso_require_msg(!(iRC), "failed reading a double column in a valid line");
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
           *m_env.subDisplayFile() << "Just read a double: table[" << validLineId
                                   << ","                          << j
@@ -240,14 +214,8 @@ AsciiTable<V,M>::readColumnsFromFile()
     validLineId++;
   }
 
-  UQ_FATAL_TEST_MACRO(lineId != numLines,
-                      m_env.worldRank(),
-                      "AsciiTable<V,M>::readColumnsFromFile()",
-                      "the second number of lines read is not consistent");
-  UQ_FATAL_TEST_MACRO(validLineId != numValidLines,
-                      m_env.worldRank(),
-                      "AsciiTable<V,M>::readColumnsFromFile()",
-                      "the number of valid lines just read is not consistent");
+  queso_require_equal_to_msg(lineId, numLines, "the second number of lines read is not consistent");
+  queso_require_equal_to_msg(validLineId, numValidLines, "the number of valid lines just read is not consistent");
 
   if (m_env.displayVerbosity() >= 5) {
     if (m_env.subDisplayFile()) {
@@ -281,15 +249,9 @@ template <class V, class M>
 const DistArray<std::string>&
 AsciiTable<V,M>::stringColumn(unsigned int j) const
 {
-  UQ_FATAL_TEST_MACRO(j >= m_numCols,
-                      m_env.worldRank(),
-                      "AsciiTable<V,M>::stringColumn()",
-                      "invalid j");
+  queso_require_less_msg(j, m_numCols, "invalid j");
 
-  UQ_FATAL_TEST_MACRO(m_stringColumns[j] == NULL,
-                      m_env.worldRank(),
-                      "AsciiTable<V,M>::stringColumn()",
-                      "string column is not ready");
+  queso_require_msg(m_stringColumns[j], "string column is not ready");
 
   return *m_stringColumns[j];
 }
@@ -298,15 +260,9 @@ template <class V, class M>
 const V&
 AsciiTable<V,M>::doubleColumn(unsigned int j) const
 {
-  UQ_FATAL_TEST_MACRO(j >= m_numCols,
-                      m_env.worldRank(),
-                      "AsciiTable<V,M>::doubleColumn()",
-                      "invalid j");
+  queso_require_less_msg(j, m_numCols, "invalid j");
 
-  UQ_FATAL_TEST_MACRO(m_doubleColumns[j] == NULL,
-                      m_env.worldRank(),
-                      "AsciiTable<V,M>::doubleColumn()",
-                      "double column is not ready");
+  queso_require_msg(m_doubleColumns[j], "double column is not ready");
 
   return *m_doubleColumns[j];
 }
@@ -317,14 +273,8 @@ void
 AsciiTable<V,M>::print(std::ostream& os) const
 {
   for (unsigned int j = 0; j < m_numCols; ++j) {
-    UQ_FATAL_TEST_MACRO((m_stringColumns[j] != NULL) && (m_doubleColumns[j] != NULL),
-                        m_env.worldRank(),
-                        "AsciiTable<V,M>::print()",
-                        "column is not null on both possible ways");
-    UQ_FATAL_TEST_MACRO((m_stringColumns[j] == NULL) && (m_doubleColumns[j] == NULL),
-                        m_env.worldRank(),
-                        "AsciiTable<V,M>::print()",
-                        "column is null on both possible ways");
+    if ((m_stringColumns[j] != NULL)) queso_require_msg(!(m_doubleColumns[j]), "column is not null on both possible ways");
+    if ((m_stringColumns[j] == NULL)) queso_require_msg(m_doubleColumns[j], "column is null on both possible ways");
 
     os << "\nContents of table '" << m_fileName
        << "', column "            << j

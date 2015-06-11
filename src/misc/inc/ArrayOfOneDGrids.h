@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!\file ArrayOfOneDGrids.h
  * \brief Class to accommodate arrays of one-dimensional grid.
  *
@@ -40,7 +43,7 @@ namespace QUESO {
  * and MDF of vector functions (refer to BaseVectorCdf, BaseVectorMdf, and
  * derived classes).
  */
-template <class V, class M>
+template<class V = GslVector, class M = GslMatrix>
 class ArrayOfOneDGrids
 {
 public:

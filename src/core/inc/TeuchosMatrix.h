@@ -56,11 +56,7 @@ public:
    //! @name Constructor/Destructor methods
   //@{
 
-  //! Default Constructor
-  /*! Creates an empty matrix vector of no dimension. It should not be used by user.*/
-  TeuchosMatrix();
-
-   //! Shaped Constructor: creates a shaped matrix with \c numCols columns.
+  //! Shaped Constructor: creates a shaped matrix with \c numCols columns.
   TeuchosMatrix(const BaseEnvironment& env,
                        const Map&             map,
                        unsigned int                  numCols);
@@ -330,6 +326,9 @@ TeuchosVector& x) internally.*/
 //@}
 
 private:
+  //! Default Constructor
+  /*! Creates an empty matrix vector of no dimension. It should not be used by user.*/
+  TeuchosMatrix();
 
   //! In this function \c this matrix receives a copy of matrix \c src.
   void              copy                      (const TeuchosMatrix& src);

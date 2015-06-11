@@ -32,9 +32,9 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Wigner class [R-09]
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class WignerVectorRealizer
  * \brief A class for handling sampling from a Wigner probability density distribution.
@@ -45,7 +45,7 @@ namespace QUESO {
  * \todo: The method WignerVectorRealizer:realization() is not yet available,
  * thus this class does  nothing. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class WignerVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   //! @name Constructor/Destructor methods

@@ -31,13 +31,16 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // TK with scaled cov matrix
 //*****************************************************
 /*! \class ScaledCovMatrixTKGroup
  *  \brief This class allows the representation of a transition kernel with a scaled covariance matrix. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class ScaledCovMatrixTKGroup : public BaseTKGroup<V,M> {
 public:
   //! @name Constructor/Destructor methods

@@ -22,6 +22,9 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <boost/program_options.hpp>
+
+#include <queso/Defines.h>
 #include <queso/StatisticalForwardProblemOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -34,16 +37,74 @@ namespace QUESO {
 // Default constructor -----------------------------
 SfpOptionsValues::SfpOptionsValues()
   :
-  m_computeSolution     (UQ_SFP_COMPUTE_SOLUTION_ODV     ),
-  m_computeCovariances  (UQ_SFP_COMPUTE_COVARIANCES_ODV  ),
-  m_computeCorrelations (UQ_SFP_COMPUTE_CORRELATIONS_ODV ),
-  m_dataOutputFileName  (UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV)
-//m_dataOutputAllowedSet(),
+    m_prefix                     ("fp_"),
+    m_help(UQ_SFP_HELP),
+    m_computeSolution     (UQ_SFP_COMPUTE_SOLUTION_ODV     ),
+    m_computeCovariances  (UQ_SFP_COMPUTE_COVARIANCES_ODV  ),
+    m_computeCorrelations (UQ_SFP_COMPUTE_CORRELATIONS_ODV ),
+    m_dataOutputFileName  (UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV),
+    //m_dataOutputAllowedSet(),
+    m_parser(NULL),
+    m_option_help                (m_prefix + "help"                ),
+    m_option_computeSolution     (m_prefix + "computeSolution"     ),
+    m_option_computeCovariances  (m_prefix + "computeCovariances"  ),
+    m_option_computeCorrelations (m_prefix + "computeCorrelations" ),
+    m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
+    m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
 #ifdef UQ_SFP_READS_SOLVER_OPTION
-  m_solverString        (UQ_SFP_SOLVER_ODV               ),
+    m_option_solver              (m_prefix + "solver"              ),
+    m_solverString        (UQ_SFP_SOLVER_ODV               )
 #endif
 {
 }
+
+SfpOptionsValues::SfpOptionsValues(const BaseEnvironment * env, const char *
+    prefix)
+  :
+    m_prefix                     ((std::string)(prefix) + "fp_"),
+    m_help(UQ_SFP_HELP),
+    m_computeSolution     (UQ_SFP_COMPUTE_SOLUTION_ODV     ),
+    m_computeCovariances  (UQ_SFP_COMPUTE_COVARIANCES_ODV  ),
+    m_computeCorrelations (UQ_SFP_COMPUTE_CORRELATIONS_ODV ),
+    m_dataOutputFileName  (UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV),
+    //m_dataOutputAllowedSet(),
+    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
+    m_option_help                (m_prefix + "help"                ),
+    m_option_computeSolution     (m_prefix + "computeSolution"     ),
+    m_option_computeCovariances  (m_prefix + "computeCovariances"  ),
+    m_option_computeCorrelations (m_prefix + "computeCorrelations" ),
+    m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
+    m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+    m_option_solver              (m_prefix + "solver"              ),
+    m_solverString        (UQ_SFP_SOLVER_ODV               )
+#endif
+{
+  m_parser->registerOption<std::string>(m_option_help,                 UQ_SFP_HELP,                        "produce help message for statistical forward problem");
+  m_parser->registerOption<bool       >(m_option_computeSolution,      UQ_SFP_COMPUTE_SOLUTION_ODV       , "compute solution process"                            );
+  m_parser->registerOption<bool       >(m_option_computeCovariances,   UQ_SFP_COMPUTE_COVARIANCES_ODV    , "compute pq covariances"                              );
+  m_parser->registerOption<bool       >(m_option_computeCorrelations,  UQ_SFP_COMPUTE_CORRELATIONS_ODV   , "compute pq correlations"                             );
+  m_parser->registerOption<std::string>(m_option_dataOutputFileName,   UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV  , "name of data output file"                            );
+  m_parser->registerOption<std::string>(m_option_dataOutputAllowedSet, UQ_SFP_DATA_OUTPUT_ALLOWED_SET_ODV, "subEnvs that will write to data output file"         );
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+  m_parser->registerOption<std::string>(m_option_solver,               UQ_SFP_SOLVER_ODV                 , "algorithm for propagation"                           );
+#endif
+
+  m_parser->scanInputFile();
+
+  m_parser->getOption<std::string>(m_option_help,                 m_help);
+  m_parser->getOption<bool       >(m_option_computeSolution,      m_computeSolution);
+  m_parser->getOption<bool       >(m_option_computeCovariances,   m_computeCovariances);
+  m_parser->getOption<bool       >(m_option_computeCorrelations,  m_computeCorrelations);
+  m_parser->getOption<std::string>(m_option_dataOutputFileName,   m_dataOutputFileName);
+  m_parser->getOption<std::set<unsigned int> >(m_option_dataOutputAllowedSet, m_dataOutputAllowedSet);
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+  m_parser->getOption<std::string>(m_option_solver,               m_solver);
+#endif
+
+  checkOptions();
+}
+
 // Copy constructor----------------------------------
 SfpOptionsValues::SfpOptionsValues(const SfpOptionsValues& src)
 {
@@ -60,6 +121,13 @@ SfpOptionsValues::operator=(const SfpOptionsValues& rhs)
   this->copy(rhs);
   return *this;
 }
+
+void
+SfpOptionsValues::checkOptions()
+{
+  // Do nothing
+}
+
 // Private methods-----------------------------------
 void
 SfpOptionsValues::copy(const SfpOptionsValues& src)
@@ -78,6 +146,25 @@ SfpOptionsValues::copy(const SfpOptionsValues& src)
   return;
 }
 
+std::ostream &
+operator<<(std::ostream & os, const SfpOptionsValues & obj)
+{
+  os << (*(obj.m_parser)) << std::endl;
+
+  os <<         obj.m_option_computeSolution      << " = " << obj.m_computeSolution
+     << "\n" << obj.m_option_computeCovariances   << " = " << obj.m_computeCovariances
+     << "\n" << obj.m_option_computeCorrelations  << " = " << obj.m_computeCorrelations
+     << "\n" << obj.m_option_dataOutputFileName   << " = " << obj.m_dataOutputFileName;
+  os << "\n" << obj.m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = obj.m_dataOutputAllowedSet.begin(); setIt != obj.m_dataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+       << "\n" << obj.m_option_solver << " = " << obj.m_solverString
+#endif
+  os << std::endl;
+  return os;
+}
 
 // --------------------------------------------------
 // StatisticalForwardProblemOptions-----------
@@ -91,7 +178,7 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
   m_ov                         (),
   m_prefix                     ((std::string)(prefix) + "fp_"   ),
   m_env                        (env),
-  m_optionsDesc                (new po::options_description("Statistical Forward Problem options")),
+  m_optionsDesc                (new boost::program_options::options_description("Statistical Forward Problem options")),
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_computeCovariances  (m_prefix + "computeCovariances"  ),
@@ -102,10 +189,9 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
   m_option_solver              (m_prefix + "solver"              )
 #endif
 {
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
-                      m_env.worldRank(),
-                      "StatisticalForwardProblemOptions::constructor(1)",
-                      "this constructor is incompatible with the absence of an options input file");
+  queso_deprecated();
+
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the absence of an options input file");
 }
 
 StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
@@ -127,10 +213,9 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
   m_option_solver              (m_prefix + "solver"              )
 #endif
 {
-  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
-                      m_env.worldRank(),
-                      "StatisticalForwardProblemOptions::constructor(2)",
-                      "this constructor is incompatible with the existence of an options input file");
+  queso_deprecated();
+
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In StatisticalForwardProblemOptions::constructor(2)"
@@ -143,6 +228,8 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
 // Destructor --------------------------------------
 StatisticalForwardProblemOptions::~StatisticalForwardProblemOptions()
 {
+  queso_deprecated();
+
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
@@ -150,10 +237,9 @@ StatisticalForwardProblemOptions::~StatisticalForwardProblemOptions()
 void
 StatisticalForwardProblemOptions::scanOptionsValues()
 {
-  UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
-                      m_env.worldRank(),
-                      "StatisticalForwardProblemOptions::scanOptionsValues()",
-                      "m_optionsDesc variable is NULL");
+  queso_deprecated();
+
+  queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
@@ -173,6 +259,8 @@ StatisticalForwardProblemOptions::scanOptionsValues()
 void
 StatisticalForwardProblemOptions::print(std::ostream& os) const
 {
+  queso_deprecated();
+
   os <<         m_option_computeSolution      << " = " << m_ov.m_computeSolution
      << "\n" << m_option_computeCovariances   << " = " << m_ov.m_computeCovariances
      << "\n" << m_option_computeCorrelations  << " = " << m_ov.m_computeCorrelations
@@ -191,17 +279,19 @@ StatisticalForwardProblemOptions::print(std::ostream& os) const
 
 // Private methods ---------------------------------
 void
-StatisticalForwardProblemOptions::defineMyOptions(po::options_description& optionsDesc) const
+StatisticalForwardProblemOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
+  queso_deprecated();
+
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                              "produce help message for statistical forward problem")
-    (m_option_computeSolution.c_str(),      po::value<bool       >()->default_value(UQ_SFP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
-    (m_option_computeCovariances.c_str(),   po::value<bool       >()->default_value(UQ_SFP_COMPUTE_COVARIANCES_ODV    ), "compute pq covariances"                              )
-    (m_option_computeCorrelations.c_str(),  po::value<bool       >()->default_value(UQ_SFP_COMPUTE_CORRELATIONS_ODV   ), "compute pq correlations"                             )
-    (m_option_dataOutputFileName.c_str(),   po::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file"                            )
-    (m_option_dataOutputAllowedSet.c_str(), po::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file"         )
+    (m_option_computeSolution.c_str(),      boost::program_options::value<bool       >()->default_value(UQ_SFP_COMPUTE_SOLUTION_ODV       ), "compute solution process"                            )
+    (m_option_computeCovariances.c_str(),   boost::program_options::value<bool       >()->default_value(UQ_SFP_COMPUTE_COVARIANCES_ODV    ), "compute pq covariances"                              )
+    (m_option_computeCorrelations.c_str(),  boost::program_options::value<bool       >()->default_value(UQ_SFP_COMPUTE_CORRELATIONS_ODV   ), "compute pq correlations"                             )
+    (m_option_dataOutputFileName.c_str(),   boost::program_options::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file"                            )
+    (m_option_dataOutputAllowedSet.c_str(), boost::program_options::value<std::string>()->default_value(UQ_SFP_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file"         )
 #ifdef UQ_SFP_READS_SOLVER_OPTION
-    (m_option_solver.c_str(),               po::value<std::string>()->default_value(UQ_SFP_SOLVER_ODV                 ), "algorithm for propagation"                           )
+    (m_option_solver.c_str(),               boost::program_options::value<std::string>()->default_value(UQ_SFP_SOLVER_ODV                 ), "algorithm for propagation"                           )
 #endif
   ;
 
@@ -209,8 +299,10 @@ StatisticalForwardProblemOptions::defineMyOptions(po::options_description& optio
 }
 //--------------------------------------------------
 void
-StatisticalForwardProblemOptions::getMyOptionValues(po::options_description& optionsDesc)
+StatisticalForwardProblemOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
 {
+  queso_deprecated();
+
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -219,19 +311,19 @@ StatisticalForwardProblemOptions::getMyOptionValues(po::options_description& opt
   }
 
   if (m_env.allOptionsMap().count(m_option_computeSolution)) {
-    m_ov.m_computeSolution = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeSolution]).as<bool>();
+    m_ov.m_computeSolution = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_computeSolution]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_computeCovariances)) {
-    m_ov.m_computeCovariances = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeCovariances]).as<bool>();
+    m_ov.m_computeCovariances = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_computeCovariances]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_computeCorrelations)) {
-    m_ov.m_computeCorrelations = ((const po::variable_value&) m_env.allOptionsMap()[m_option_computeCorrelations]).as<bool>();
+    m_ov.m_computeCorrelations = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_computeCorrelations]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
-    m_ov.m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+    m_ov.m_dataOutputFileName = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet)) {
@@ -249,7 +341,7 @@ StatisticalForwardProblemOptions::getMyOptionValues(po::options_description& opt
 
 #ifdef UQ_SFP_READS_SOLVER_OPTION
   if (m_env.allOptionsMap().count(m_option_solver)) {
-    m_ov.m_solverString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_solver]).as<std::string>();
+    m_ov.m_solverString = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_solver]).as<std::string>();
   }
 #endif
 
@@ -262,6 +354,8 @@ StatisticalForwardProblemOptions::getMyOptionValues(po::options_description& opt
 
 std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblemOptions& obj)
 {
+  queso_deprecated();
+
   obj.print(os);
 
   return os;

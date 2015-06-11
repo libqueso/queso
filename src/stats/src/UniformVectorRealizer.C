@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <limits>
 #include <queso/UniformVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -60,10 +61,7 @@ UniformVectorRealizer<V,M>::realization(V& nextValues) const
 {
   const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&m_unifiedImageSet);
 
-  UQ_FATAL_TEST_MACRO(imageBox == NULL,
-                      m_env.worldRank(),
-                      "UniformVectorRealizer<V,M>::realization()",
-                      "only box images are supported right now");
+  queso_require_msg(imageBox, "only box images are supported right now");
 
   nextValues.cwSetUniform(imageBox->minValues(),imageBox->maxValues());
   return;

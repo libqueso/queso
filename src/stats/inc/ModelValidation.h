@@ -29,6 +29,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file ModelValidation.h
  * \brief A templated class for model validation of the example validationPyramid.
  *
@@ -38,7 +41,7 @@ namespace QUESO {
  * Its derived class exPhysics1Validation enables comparison between the calibration
  * and validate stages. */
 
-template <class P_V,class P_M,class Q_V,class Q_M>
+template <class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class ModelValidation
 {
 public:

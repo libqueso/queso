@@ -50,25 +50,13 @@ ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::ExponentialMatrixCovarianc
 
   unsigned int matrixOrder = m_imageSet.vectorSpace().dimLocal();
 
-  UQ_FATAL_TEST_MACRO(m_sigmas->numRowsLocal() != matrixOrder,
-                      m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::Constructor()",
-                      "m_sigmas has invalid number of rows");
+  queso_require_equal_to_msg(m_sigmas->numRowsLocal(), matrixOrder, "m_sigmas has invalid number of rows");
 
-  UQ_FATAL_TEST_MACRO(m_sigmas->numCols() != matrixOrder,
-                      m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::Constructor()",
-                      "m_sigmas has invalid number of columns");
+  queso_require_equal_to_msg(m_sigmas->numCols(), matrixOrder, "m_sigmas has invalid number of columns");
 
-  UQ_FATAL_TEST_MACRO(m_as->numRowsLocal() != matrixOrder,
-                      m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::Constructor()",
-                      "m_as has invalid number of rows");
+  queso_require_equal_to_msg(m_as->numRowsLocal(), matrixOrder, "m_as has invalid number of rows");
 
-  UQ_FATAL_TEST_MACRO(m_as->numCols() != matrixOrder,
-                      m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::Constructor()",
-                      "m_as has invalid number of columns");
+  queso_require_equal_to_msg(m_as->numCols(), matrixOrder, "m_as has invalid number of columns");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::constructor()"
@@ -107,15 +95,9 @@ ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& domai
 
   unsigned int matrixOrder = m_imageSet.vectorSpace().dimLocal();
 
-  UQ_FATAL_TEST_MACRO(imageMatrix.numRowsLocal() != matrixOrder,
-                      m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
-                      "imageMatrix has invalid number of rows");
+  queso_require_equal_to_msg(imageMatrix.numRowsLocal(), matrixOrder, "imageMatrix has invalid number of rows");
 
-  UQ_FATAL_TEST_MACRO(imageMatrix.numCols() != matrixOrder,
-                      m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
-                      "imageMatrix has invalid number of columns");
+  queso_require_equal_to_msg(imageMatrix.numCols(), matrixOrder, "imageMatrix has invalid number of columns");
 
   double tmpSq = -(domainVector1 - domainVector2).norm2Sq();
 

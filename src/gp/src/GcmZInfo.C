@@ -56,10 +56,7 @@ GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmZInfo(
   //********************************************************************************
   // Make checks
   //********************************************************************************
-  UQ_FATAL_TEST_MACRO(m_z_space.dimLocal() != (s.m_paper_m * s.m_paper_p_eta),
-                      m_env.worldRank(),
-                      "GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)",
-                      "incompatible calculations for 'z' vector size (1)");
+  queso_require_equal_to_msg(m_z_space.dimLocal(), (s.m_paper_m * s.m_paper_p_eta), "incompatible calculations for 'z' vector size (1)");
 
   commonConstructor();
 
@@ -95,10 +92,7 @@ GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmZInfo(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(allOutputsAreScalar == true,
-                      m_env.worldRank(),
-                      "GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)",
-                      "'allOutputsAreScalar' should be false");
+  queso_require_msg(!allOutputsAreScalar, "'allOutputsAreScalar' should be false");
 
   m_Zvec_hat.cwSetConcatenated(jj.m_Zvec_hat_vu,s.m_Zvec_hat_w);
 
@@ -127,34 +121,19 @@ GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmZInfo(
                               << std::endl;
     }
 
-    UQ_FATAL_TEST_MACRO(m_Cmat_rank != (jj.m_Bmat_rank + s.m_Kmat_rank),
-                        m_env.worldRank(),
-                        "GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)",
-                        "'m_Cmat_rank' should be the sum of 'B' and 'K' ranks");
+    queso_require_equal_to_msg(m_Cmat_rank, (jj.m_Bmat_rank + s.m_Kmat_rank), "'m_Cmat_rank' should be the sum of 'B' and 'K' ranks");
 
-    UQ_FATAL_TEST_MACRO(m_Cmat->numRowsLocal() <= m_Cmat->numCols(),
-                        m_env.worldRank(),
-                        "GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)",
-                        "'m_Cmat' should be a 'vertical' rectangular matrix");
+    queso_require_greater_msg(m_Cmat->numRowsLocal(), m_Cmat->numCols(), "'m_Cmat' should be a 'vertical' rectangular matrix");
 
-    UQ_FATAL_TEST_MACRO(m_Cmat->numCols() != m_z_space.dimLocal(),
-                        m_env.worldRank(),
-                        "GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)",
-                        "'m_Cmat' has invalid numCols");
+    queso_require_equal_to_msg(m_Cmat->numCols(), m_z_space.dimLocal(), "'m_Cmat' has invalid numCols");
 
-    UQ_FATAL_TEST_MACRO(m_Cmat_rank > m_Cmat->numCols(),
-                        m_env.worldRank(),
-                        "GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)",
-                        "'m_Cmat' has invalid rank");
+    queso_require_less_equal_msg(m_Cmat_rank, m_Cmat->numCols(), "'m_Cmat' has invalid rank");
   }
 
   //********************************************************************************
   // Make checks
   //********************************************************************************
-  UQ_FATAL_TEST_MACRO(m_z_space.dimLocal() != (e.m_paper_n * e.m_paper_p_delta + e.m_paper_n * s.m_paper_p_eta + s.m_paper_m * s.m_paper_p_eta),
-                      m_env.worldRank(),
-                      "GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)",
-                      "incompatible calculations for 'z' vector size (2)");
+  queso_require_equal_to_msg(m_z_space.dimLocal(), (e.m_paper_n * e.m_paper_p_delta + e.m_paper_n * s.m_paper_p_eta + s.m_paper_m * s.m_paper_p_eta), "incompatible calculations for 'z' vector size (2)");
 
   commonConstructor();
 
@@ -190,20 +169,14 @@ GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmZInfo(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(allOutputsAreScalar == false,
-                      m_env.worldRank(),
-                      "GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(3)",
-                      "'allOutputsAreScalar' should be true");
+  queso_require_msg(allOutputsAreScalar, "'allOutputsAreScalar' should be true");
 
   //m_Zvec_hat.cwSetConcatenated(e.m_Zvec_hat_v,s.m_Zvec_hat_w); // ppp
 
   //********************************************************************************
   // Make checks
   //********************************************************************************
-  UQ_FATAL_TEST_MACRO(m_z_space.dimLocal() != (e.m_paper_n * e.m_paper_p_delta + e.m_paper_n * s.m_paper_p_eta + s.m_paper_m * s.m_paper_p_eta),
-                      m_env.worldRank(),
-                      "GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(3)",
-                      "incompatible calculations for 'z' vector size (2)");
+  queso_require_equal_to_msg(m_z_space.dimLocal(), (e.m_paper_n * e.m_paper_p_delta + e.m_paper_n * s.m_paper_p_eta + s.m_paper_m * s.m_paper_p_eta), "incompatible calculations for 'z' vector size (2)");
 
   commonConstructor();
 

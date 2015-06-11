@@ -42,8 +42,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   // Handle case of no experiments, that is, experiment pointers == NULL? (todo)
   :
   m_env                     (simulationStorage.env()),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL),
+  m_optionsObj              (alternativeOptionsValues),
   m_s                       (NULL),
   m_e                       (NULL),
   m_j                       (NULL),
@@ -73,10 +72,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
       (thetaPriorRv      == NULL)) {
     // Ok
     if (m_allOutputsAreScalar) {
-      UQ_FATAL_TEST_MACRO((simulationModel.numBasis() != 1),
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                          "inconsistent numBasis (1)");
+      queso_require_equal_to_msg(simulationModel.numBasis(), 1, "inconsistent numBasis (1)");
     }
   }
   else if ((experimentStorage != NULL) &&
@@ -87,17 +83,11 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
       m_allOutputsAreScalar = m_allOutputsAreScalar && (experimentStorage->n_ys_transformed()[i] == 1);
     }
     if (m_allOutputsAreScalar) {
-      UQ_FATAL_TEST_MACRO((simulationModel.numBasis() != 1) || (experimentModel->numBasis() != 1),
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                          "inconsistent numBasis (2)");
+      queso_require_msg(!((simulationModel.numBasis() != 1) || (experimentModel->numBasis() != 1)), "inconsistent numBasis (2)");
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                        "inconsistent experimental information");
+    queso_error_msg("inconsistent experimental information");
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
@@ -112,17 +102,16 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   //********************************************************************************
   // Handle options
   //********************************************************************************
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new GpmsaComputerModelOptions(m_env,prefix,m_alternativeOptionsValues);
-  }
-  else {
-    //std::cout << "In GpmsaComputerModel constructor: scanning options from file..." << std::endl;
-    m_optionsObj = new GpmsaComputerModelOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    GcmOptionsValues * tempOptions = new GcmOptionsValues(&m_env, prefix);
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
   }
 
-  m_formCMatrix = m_formCMatrix && m_optionsObj->m_ov.m_formCMatrix;
+  m_formCMatrix = m_formCMatrix && m_optionsObj->m_formCMatrix;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
@@ -134,17 +123,14 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   //********************************************************************************
   // Open output file // todo_r: is this necessary???
   //********************************************************************************
-  if ((m_optionsObj->m_ov.m_dataOutputFileName                       != "."                                            ) &&
-      (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end())) {
-    m_env.openOutputFile(m_optionsObj->m_ov.m_dataOutputFileName,
+  if ((m_optionsObj->m_dataOutputFileName                       != "."                                            ) &&
+      (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end())) {
+    m_env.openOutputFile(m_optionsObj->m_dataOutputFileName,
                          UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
-                         m_optionsObj->m_ov.m_dataOutputAllowedSet,
+                         m_optionsObj->m_dataOutputAllowedSet,
                          false,
                          m_dataOutputFilePtrSet);
-    UQ_FATAL_TEST_MACRO(m_dataOutputFilePtrSet.ofsVar == NULL,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                        "data output file could not be created");
+    queso_require_msg(m_dataOutputFilePtrSet.ofsVar, "data output file could not be created");
   }
 
   //********************************************************************************
@@ -181,7 +167,12 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   // --> \Sigma_u,w_i = (1/\lambda_w_i).R(...) is n x m, i = 1,...,p_eta
   // --> \Sigma_u,w is (n.p_eta) x (m.p_eta)
   //********************************************************************************
-  m_s = new GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
+
+  // These old options are deprecated.  We do this to preserve backwards
+  // compatibility.
+  GpmsaComputerModelOptions * gpmsaComputerModelOptions =
+    new GpmsaComputerModelOptions(m_env, prefix, *m_optionsObj);
+  m_s = new GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,
                                                               m_allOutputsAreScalar, // csri (new GcmSimulationInfo)
                                                               simulationStorage,
                                                               simulationModel);
@@ -195,10 +186,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   }
 
   if (m_thereIsExperimentalData) {
-    UQ_FATAL_TEST_MACRO(simulationStorage.scenarioSpace().dimLocal() != experimentStorage->scenarioSpace().dimLocal(),
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                        "inconsistent dimension of scenario space");
+    queso_require_equal_to_msg(simulationStorage.scenarioSpace().dimLocal(), experimentStorage->scenarioSpace().dimLocal(), "inconsistent dimension of scenario space");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
@@ -206,7 +194,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
                               << std::endl;
     }
 
-    m_e = new GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>(*m_optionsObj,
+    m_e = new GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>(*gpmsaComputerModelOptions,
                                                                 m_allOutputsAreScalar, // csri (new GcmExperimentInfo)
                                                                 *experimentStorage,
                                                                 *experimentModel,
@@ -217,7 +205,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
                               << std::endl;
     }
 
-    m_j = new GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
+    m_j = new GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,
                                                                    m_allOutputsAreScalar, // csri
                                                                    *m_s,
                                                                    *m_e);
@@ -304,7 +292,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
       //**********************************************************************************
       // 'm_Cmat' is rank difficient
       //**********************************************************************************
-      if (m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC) {
+      if (m_optionsObj->m_useTildeLogicForRankDefficientC) {
         //********************************************************************************
         // Use tilde logic
         //********************************************************************************
@@ -314,25 +302,22 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
           // Tilde situation: form 'm_vu_tilde_space'
           // Tilde situation: form 'm_Lbmat'
           //******************************************************************************
-          m_jt = new GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_e,*m_j);
+          m_jt = new GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,*m_e,*m_j);
 
           //******************************************************************************
           // Tilde situation: form 'm_Kmat_tilde'
           // Tilde situation: form 'm_w_tilde_space'
           // Tilde situation: form 'm_Lkmat'
           //******************************************************************************
-           m_st = new GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_s);
+           m_st = new GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,*m_s);
 
           //******************************************************************************
           // Tilde situation: form 'm_Cmat_tilde'
           //******************************************************************************
-          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_j,*m_z,*m_st,*m_jt);
+          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,*m_j,*m_z,*m_st,*m_jt);
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.worldRank(),
-                              "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                              "incomplete code for the situation 'm_useTildeLogicForRankDefficientC == true' and 'm_thereIsExperimentalData == false'");
+          queso_error_msg("incomplete code for the situation 'm_useTildeLogicForRankDefficientC == true' and 'm_thereIsExperimentalData == false'");
         }
       } // if (m_useTildeLogicForRankDefficientC)
       else {
@@ -343,13 +328,10 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
           //******************************************************************************
           // Naive formation of 'm_Cmat_tilde'
           //******************************************************************************
-          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_j,*m_z);
+          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*gpmsaComputerModelOptions,*m_j,*m_z);
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.worldRank(),
-                              "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                              "incomplete code for the situation 'm_useTildeLogicForRankDefficientC == false' and 'm_thereIsExperimentalData == false'");
+          queso_error_msg("incomplete code for the situation 'm_useTildeLogicForRankDefficientC == false' and 'm_thereIsExperimentalData == false'");
         }
       }
     } // if (m_cMatIsRankDefficient)
@@ -375,7 +357,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
     }
     else {
       // Ok. No experimental data. There is nothing extra to be done // checar
-      //UQ_FATAL_TEST_MACRO(true,
+
       //                    m_env.worldRank(),
       //                    "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
       //                    "incomplete code for the situation 'm_thereIsExperimentalData == false'");
@@ -387,7 +369,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   //********************************************************************************
   // Generate prior sequence
   //********************************************************************************
-  if (m_optionsObj->m_ov.m_priorSeqNumSamples > 0) {
+  if (m_optionsObj->m_priorSeqNumSamples > 0) {
     this->generatePriorSeq();
   }
 
@@ -416,6 +398,9 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   }
 
   this->memoryCheck(3);
+
+  // Done with the old options now, so deallocate
+  delete gpmsaComputerModelOptions;
 
   //********************************************************************************
   // Leave constructor
@@ -475,20 +460,11 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropoli
   m_env.fullComm().Barrier();
   m_env.fullComm().syncPrintDebugMsg("Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",1,3000000);
 
-  UQ_FATAL_TEST_MACRO(m_t->m_totalPriorRv.imageSet().vectorSpace().dimLocal() != totalInitialValues.sizeLocal(),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",
-                      "'m_totalPriorRv' and 'totalInitialValues' should have equal dimensions");
+  queso_require_equal_to_msg(m_t->m_totalPriorRv.imageSet().vectorSpace().dimLocal(), totalInitialValues.sizeLocal(), "'m_totalPriorRv' and 'totalInitialValues' should have equal dimensions");
 
   if (totalInitialProposalCovMatrix) {
-    UQ_FATAL_TEST_MACRO(m_t->m_totalPriorRv.imageSet().vectorSpace().dimLocal() != totalInitialProposalCovMatrix->numRowsLocal(),
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",
-                        "'m_totalPriorRv' and 'totalInitialProposalCovMatrix' should have equal dimensions");
-    UQ_FATAL_TEST_MACRO(totalInitialProposalCovMatrix->numCols() != totalInitialProposalCovMatrix->numRowsGlobal(),
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",
-                        "'totalInitialProposalCovMatrix' should be a square matrix");
+    queso_require_equal_to_msg(m_t->m_totalPriorRv.imageSet().vectorSpace().dimLocal(), totalInitialProposalCovMatrix->numRowsLocal(), "'m_totalPriorRv' and 'totalInitialProposalCovMatrix' should have equal dimensions");
+    queso_require_equal_to_msg(totalInitialProposalCovMatrix->numCols(), totalInitialProposalCovMatrix->numRowsGlobal(), "'totalInitialProposalCovMatrix' should be a square matrix");
   }
 
 #if 0
@@ -782,70 +758,37 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(newScenarioVec.sizeLocal() != m_s->m_paper_p_x,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'newScenarioVec'");
+  queso_require_equal_to_msg(newScenarioVec.sizeLocal(), m_s->m_paper_p_x, "invalid 'newScenarioVec'");
 
-  UQ_FATAL_TEST_MACRO(newParameterVec.sizeLocal() != m_s->m_paper_p_t,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'newParameterVec'");
+  queso_require_equal_to_msg(newParameterVec.sizeLocal(), m_s->m_paper_p_t, "invalid 'newParameterVec'");
 
-  UQ_FATAL_TEST_MACRO(vuMeanVec.sizeLocal() != (m_e->m_paper_p_delta+m_s->m_paper_p_eta),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'vuMeanVec'");
+  queso_require_equal_to_msg(vuMeanVec.sizeLocal(), (m_e->m_paper_p_delta+m_s->m_paper_p_eta), "invalid 'vuMeanVec'");
 
-  UQ_FATAL_TEST_MACRO(vuCovMatrix.numRowsLocal() != (m_e->m_paper_p_delta + m_s->m_paper_p_eta),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'vuCovMatrix.numRowsLocal()'");
+  queso_require_equal_to_msg(vuCovMatrix.numRowsLocal(), (m_e->m_paper_p_delta + m_s->m_paper_p_eta), "invalid 'vuCovMatrix.numRowsLocal()'");
 
-  UQ_FATAL_TEST_MACRO(vuCovMatrix.numCols() != (m_e->m_paper_p_delta + m_s->m_paper_p_eta),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'vuCovMatrix.numCols()'");
+  queso_require_equal_to_msg(vuCovMatrix.numCols(), (m_e->m_paper_p_delta + m_s->m_paper_p_eta), "invalid 'vuCovMatrix.numCols()'");
 
-  UQ_FATAL_TEST_MACRO(vMeanVec.sizeLocal() != m_e->m_paper_p_delta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'vMeanVec'");
+  queso_require_equal_to_msg(vMeanVec.sizeLocal(), m_e->m_paper_p_delta, "invalid 'vMeanVec'");
 
-  UQ_FATAL_TEST_MACRO(vCovMatrix.numRowsLocal() != m_e->m_paper_p_delta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'vCovMatrix.numRowsLocal()'");
+  queso_require_equal_to_msg(vCovMatrix.numRowsLocal(), m_e->m_paper_p_delta, "invalid 'vCovMatrix.numRowsLocal()'");
 
-  UQ_FATAL_TEST_MACRO(vCovMatrix.numCols() != m_e->m_paper_p_delta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'vCovMatrix.numCols()'");
+  queso_require_equal_to_msg(vCovMatrix.numCols(), m_e->m_paper_p_delta, "invalid 'vCovMatrix.numCols()'");
 
-  UQ_FATAL_TEST_MACRO(uMeanVec.sizeLocal() != m_s->m_paper_p_eta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'uMeanVec'");
+  queso_require_equal_to_msg(uMeanVec.sizeLocal(), m_s->m_paper_p_eta, "invalid 'uMeanVec'");
 
-  UQ_FATAL_TEST_MACRO(uCovMatrix.numRowsLocal() != m_s->m_paper_p_eta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'uCovMatrix.numRowsLocal()'");
+  queso_require_equal_to_msg(uCovMatrix.numRowsLocal(), m_s->m_paper_p_eta, "invalid 'uCovMatrix.numRowsLocal()'");
 
-  UQ_FATAL_TEST_MACRO(uCovMatrix.numCols() != m_s->m_paper_p_eta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                      "invalid 'uCovMatrix.numCols()'");
+  queso_require_equal_to_msg(uCovMatrix.numCols(), m_s->m_paper_p_eta, "invalid 'uCovMatrix.numCols()'");
 
-  if (m_optionsObj->m_ov.m_predVUsBySamplingRVs) {
+  if (m_optionsObj->m_predVUsBySamplingRVs) {
   }
 
-  if (m_optionsObj->m_ov.m_predVUsBySummingRVs) {
-    unsigned int numSamples = (unsigned int) ((double) m_t->m_totalPostRv.realizer().subPeriod())/((double) m_optionsObj->m_ov.m_predLag);
+  if (m_optionsObj->m_predVUsBySummingRVs) {
+    unsigned int numSamples = (unsigned int) ((double) m_t->m_totalPostRv.realizer().subPeriod())/((double) m_optionsObj->m_predLag);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
                               << ": m_t->m_totalPostRv.realizer().subPeriod() = " << m_t->m_totalPostRv.realizer().subPeriod()
-                              << ", m_optionsObj->m_ov.m_predLag = "              << m_optionsObj->m_ov.m_predLag
+                              << ", m_optionsObj->m_predLag = "              << m_optionsObj->m_predLag
                               << std::endl;
     }
 
@@ -873,7 +816,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       m_j->m_predVU_counter++;
 
       if (sampleId > 0) {
-        for (unsigned int i = 1; i < m_optionsObj->m_ov.m_predLag; ++i) { // Yes, '1'
+        for (unsigned int i = 1; i < m_optionsObj->m_predLag; ++i) { // Yes, '1'
           m_t->m_totalPostRv.realizer().realization(totalSample);
         }
       }
@@ -896,10 +839,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       currPosition += m_e->m_tmp_7rhoVVec.sizeLocal();
       totalSample.cwExtract(currPosition,m_e->m_tmp_8thetaVec);     // Application specific
       currPosition += m_e->m_tmp_8thetaVec.sizeLocal();
-      UQ_FATAL_TEST_MACRO(currPosition != totalSample.sizeLocal(),
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                          "'currPosition' and 'totalSample.sizeLocal()' should be equal");
+      queso_require_equal_to_msg(currPosition, totalSample.sizeLocal(), "'currPosition' and 'totalSample.sizeLocal()' should be equal");
 
       //********************************************************************************
       // Submatrix (1,1): Compute '\Sigma_z_hat' matrix
@@ -934,10 +874,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
                                 << ", m_e->m_tmp_7rhoVVec.sizeLocal() = "        << m_e->m_tmp_7rhoVVec.sizeLocal()        //  1
                                 << std::endl;
       }
-      UQ_FATAL_TEST_MACRO((m_e->m_Smat_v_hat_v_asterisk_is.size() * m_e->m_tmp_rho_v_vec.sizeLocal()) != m_e->m_tmp_7rhoVVec.sizeLocal(),
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                          "invalid size for 'v' variables");
+      queso_require_equal_to_msg((m_e->m_Smat_v_hat_v_asterisk_is.size() * m_e->m_tmp_rho_v_vec.sizeLocal()), m_e->m_tmp_7rhoVVec.sizeLocal(), "invalid size for 'v' variables");
       unsigned int initialPos = 0;
       for (unsigned int i = 0; i < m_e->m_Smat_v_hat_v_asterisk_is.size(); ++i) {
         m_e->m_tmp_7rhoVVec.cwExtract(initialPos,m_e->m_tmp_rho_v_vec);
@@ -1025,14 +962,8 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       //********************************************************************************
       // Submatrix (2,2): Compute '\Sigma_v_asterisk_v_asterisk' matrix
       //********************************************************************************
-      UQ_FATAL_TEST_MACRO(m_e->m_Smat_v_asterisk_v_asterisk.numRowsLocal() != m_e->m_paper_p_delta,
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                          "invalid 'm_Smat_v_asterisk_v_asterisk.numRowsLocal()'");
-      UQ_FATAL_TEST_MACRO(m_e->m_tmp_6lambdaVVec.sizeLocal() != m_e->m_paper_p_delta,
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                          "invalid 'm_tmp_6lambdaVVec.sizeLocal()'");
+      queso_require_equal_to_msg(m_e->m_Smat_v_asterisk_v_asterisk.numRowsLocal(), m_e->m_paper_p_delta, "invalid 'm_Smat_v_asterisk_v_asterisk.numRowsLocal()'");
+      queso_require_equal_to_msg(m_e->m_tmp_6lambdaVVec.sizeLocal(), m_e->m_paper_p_delta, "invalid 'm_tmp_6lambdaVVec.sizeLocal()'");
 
       m_e->m_Smat_v_asterisk_v_asterisk.cwSet(0.);
       for (unsigned int i = 0; i < m_e->m_paper_p_delta; ++i) {
@@ -1042,14 +973,8 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       //********************************************************************************
       // Submatrix (3,3): Compute '\Sigma_u_asterisk_u_asterisk' matrix
       //********************************************************************************
-      UQ_FATAL_TEST_MACRO(m_j->m_Smat_u_asterisk_u_asterisk.numRowsLocal() != m_s->m_paper_p_eta,
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                          "invalid 'm_Smat_u_asterisk_u_asterisk.numRowsLocal()'");
-      UQ_FATAL_TEST_MACRO(m_s->m_tmp_2lambdaWVec.sizeLocal() != m_s->m_paper_p_eta,
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
-                          "invalid 'm_tmp_2lambdaWVec.sizeLocal()'");
+      queso_require_equal_to_msg(m_j->m_Smat_u_asterisk_u_asterisk.numRowsLocal(), m_s->m_paper_p_eta, "invalid 'm_Smat_u_asterisk_u_asterisk.numRowsLocal()'");
+      queso_require_equal_to_msg(m_s->m_tmp_2lambdaWVec.sizeLocal(), m_s->m_paper_p_eta, "invalid 'm_tmp_2lambdaWVec.sizeLocal()'");
 
       m_j->m_Smat_u_asterisk_u_asterisk.cwSet(0.);
       for (unsigned int i = 0; i < m_s->m_paper_p_eta; ++i) {
@@ -1120,7 +1045,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
     mean_of_unique_vu_covMatrices *= (1./(double) numSamples);
   }
 
-  if (m_optionsObj->m_ov.m_predVUsAtKeyPoints) {
+  if (m_optionsObj->m_predVUsAtKeyPoints) {
   }
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
@@ -1156,43 +1081,28 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(newScenarioVec.sizeLocal() != m_s->m_paper_p_x,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
-                      "invalid 'newScenarioVec'");
+  queso_require_equal_to_msg(newScenarioVec.sizeLocal(), m_s->m_paper_p_x, "invalid 'newScenarioVec'");
 
-  UQ_FATAL_TEST_MACRO(newParameterVec.sizeLocal() != m_s->m_paper_p_t,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
-                      "invalid 'newParameterVec'");
+  queso_require_equal_to_msg(newParameterVec.sizeLocal(), m_s->m_paper_p_t, "invalid 'newParameterVec'");
 
-  UQ_FATAL_TEST_MACRO(wMeanVec.sizeLocal() != m_s->m_paper_p_eta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
-                      "invalid 'wMeanVec'");
+  queso_require_equal_to_msg(wMeanVec.sizeLocal(), m_s->m_paper_p_eta, "invalid 'wMeanVec'");
 
-  UQ_FATAL_TEST_MACRO(wCovMatrix.numRowsLocal() != m_s->m_paper_p_eta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
-                      "invalid 'wCovMatrix.numRowsLocal()'");
+  queso_require_equal_to_msg(wCovMatrix.numRowsLocal(), m_s->m_paper_p_eta, "invalid 'wCovMatrix.numRowsLocal()'");
 
-  UQ_FATAL_TEST_MACRO(wCovMatrix.numCols() != m_s->m_paper_p_eta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
-                      "invalid 'wCovMatrix.numCols()'");
+  queso_require_equal_to_msg(wCovMatrix.numCols(), m_s->m_paper_p_eta, "invalid 'wCovMatrix.numCols()'");
 
-  if (m_optionsObj->m_ov.m_predWsBySamplingRVs) {
+  if (m_optionsObj->m_predWsBySamplingRVs) {
   }
 
-  if (m_optionsObj->m_ov.m_predWsBySummingRVs) {
-    unsigned int numSamples = (unsigned int) ((double) m_t->m_totalPostRv.realizer().subPeriod())/((double) m_optionsObj->m_ov.m_predLag);
+  if (m_optionsObj->m_predWsBySummingRVs) {
+    unsigned int numSamples = (unsigned int) ((double) m_t->m_totalPostRv.realizer().subPeriod())/((double) m_optionsObj->m_predLag);
     if (forcingSampleVecForDebug) {
       numSamples = 1;
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                               << ": m_t->m_totalPostRv.realizer().subPeriod() = " << m_t->m_totalPostRv.realizer().subPeriod()
-                              << ", m_optionsObj->m_ov.m_predLag = "              << m_optionsObj->m_ov.m_predLag
+                              << ", m_optionsObj->m_predLag = "              << m_optionsObj->m_predLag
                               << ", numSamples = "                                << numSamples
                               << std::endl;
     }
@@ -1210,7 +1120,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
       m_s->m_predW_counter++;
 
       if (sampleId > 0) {
-        for (unsigned int i = 1; i < m_optionsObj->m_ov.m_predLag; ++i) { // Yes, '1'
+        for (unsigned int i = 1; i < m_optionsObj->m_predLag; ++i) { // Yes, '1'
           m_t->m_totalPostRv.realizer().realization(totalSample);
         }
       }
@@ -1236,10 +1146,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
       currPosition += m_e->m_tmp_7rhoVVec.sizeLocal();
       totalSample.cwExtract(currPosition,m_e->m_tmp_8thetaVec);     // Application specific
       currPosition += m_e->m_tmp_8thetaVec.sizeLocal();
-      UQ_FATAL_TEST_MACRO(currPosition != totalSample.sizeLocal(),
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
-                          "'currPosition' and 'totalSample.sizeLocal()' should be equal");
+      queso_require_equal_to_msg(currPosition, totalSample.sizeLocal(), "'currPosition' and 'totalSample.sizeLocal()' should be equal");
 
       //********************************************************************************
       // Submatrix (1,1): Compute '\Sigma_w_hat' matrix
@@ -1301,14 +1208,8 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
       //********************************************************************************
       // Submatrix (2,2): Compute '\Sigma_w_asterisk_w_asterisk' matrix
       //********************************************************************************
-      UQ_FATAL_TEST_MACRO(m_s->m_Smat_w_asterisk_w_asterisk.numRowsLocal() != m_s->m_paper_p_eta,
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
-                          "invalid 'm_Smat_w_asterisk_w_asterisk.numRowsLocal()'");
-      UQ_FATAL_TEST_MACRO(m_s->m_tmp_2lambdaWVec.sizeLocal() != m_s->m_paper_p_eta,
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
-                          "invalid 'm_tmp_2lambdaWVec.sizeLocal()'");
+      queso_require_equal_to_msg(m_s->m_Smat_w_asterisk_w_asterisk.numRowsLocal(), m_s->m_paper_p_eta, "invalid 'm_Smat_w_asterisk_w_asterisk.numRowsLocal()'");
+      queso_require_equal_to_msg(m_s->m_tmp_2lambdaWVec.sizeLocal(), m_s->m_paper_p_eta, "invalid 'm_tmp_2lambdaWVec.sizeLocal()'");
 
       m_s->m_Smat_w_asterisk_w_asterisk.cwSet(0.);
       for (unsigned int i = 0; i < m_s->m_paper_p_eta; ++i) {
@@ -1393,7 +1294,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
     }
   }
 
-  if (m_optionsObj->m_ov.m_predWsAtKeyPoints) {
+  if (m_optionsObj->m_predWsAtKeyPoints) {
   }
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
@@ -1424,30 +1325,15 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(newScenarioVec.sizeLocal() != m_s->m_paper_p_x,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
-                      "invalid 'newScenarioVec'");
+  queso_require_equal_to_msg(newScenarioVec.sizeLocal(), m_s->m_paper_p_x, "invalid 'newScenarioVec'");
 
-  UQ_FATAL_TEST_MACRO((newKmat_interp.numRowsLocal() != m_s->m_paper_n_eta) || (newKmat_interp.numCols() != m_s->m_paper_p_eta),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
-                      "invalid 'newKmat_interp'");
+  queso_require_msg(!((newKmat_interp.numRowsLocal() != m_s->m_paper_n_eta) || (newKmat_interp.numCols() != m_s->m_paper_p_eta)), "invalid 'newKmat_interp'");
 
-  UQ_FATAL_TEST_MACRO((newDmat.numRowsLocal() != m_s->m_paper_n_eta) || (newDmat.numCols() != m_e->m_paper_p_delta),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
-                      "invalid 'newDmat'");
+  queso_require_msg(!((newDmat.numRowsLocal() != m_s->m_paper_n_eta) || (newDmat.numCols() != m_e->m_paper_p_delta)), "invalid 'newDmat'");
 
-  UQ_FATAL_TEST_MACRO(simulationOutputMeanVec.sizeLocal() != m_s->m_paper_n_eta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
-                      "invalid 'simulationOutputMeanVec'");
+  queso_require_equal_to_msg(simulationOutputMeanVec.sizeLocal(), m_s->m_paper_n_eta, "invalid 'simulationOutputMeanVec'");
 
-  UQ_FATAL_TEST_MACRO(discrepancyMeanVec.sizeLocal() != m_s->m_paper_n_eta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
-                      "invalid 'discrepancyMeanVec'");
+  queso_require_equal_to_msg(discrepancyMeanVec.sizeLocal(), m_s->m_paper_n_eta, "invalid 'discrepancyMeanVec'");
 
   P_V vMeanVec  (m_e->m_unique_v_space.zeroVector());
   P_M vCovMatrix(m_e->m_unique_v_space.zeroVector());
@@ -1486,20 +1372,11 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(newScenarioVec.sizeLocal() != m_s->m_paper_p_x,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()",
-                      "invalid 'newScenarioVec'");
+  queso_require_equal_to_msg(newScenarioVec.sizeLocal(), m_s->m_paper_p_x, "invalid 'newScenarioVec'");
 
-  UQ_FATAL_TEST_MACRO(newParameterVec.sizeLocal() != m_s->m_paper_p_t,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()",
-                      "invalid 'newParameterVec'");
+  queso_require_equal_to_msg(newParameterVec.sizeLocal(), m_s->m_paper_p_t, "invalid 'newParameterVec'");
 
-  UQ_FATAL_TEST_MACRO(simulationOutputMeanVec.sizeLocal() != m_s->m_paper_n_eta,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()",
-                      "invalid 'simulationOutputMeanVec'");
+  queso_require_equal_to_msg(simulationOutputMeanVec.sizeLocal(), m_s->m_paper_n_eta, "invalid 'simulationOutputMeanVec'");
 
   P_V wMeanVec  (m_s->m_unique_w_space.zeroVector());
   P_M wCovMatrix(m_s->m_unique_w_space.zeroVector());
@@ -1523,10 +1400,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
 const VectorSpace<P_V,P_M>&
 GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalSpace() const
 {
-  UQ_FATAL_TEST_MACRO(m_t == NULL,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalSpace()",
-                      "m_t is NULL");
+  queso_require_msg(m_t, "m_t is NULL");
   return m_t->m_totalSpace;
 }
 
@@ -1534,10 +1408,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
 const VectorSpace<P_V,P_M>&
 GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::unique_vu_space() const
 {
-  UQ_FATAL_TEST_MACRO(m_j == NULL,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::unique_vu_space()",
-                      "m_j is NULL");
+  queso_require_msg(m_j, "m_j is NULL");
   return m_j->m_unique_vu_space;
 }
 
@@ -1545,10 +1416,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
 const BaseVectorRV<P_V,P_M>&
 GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPriorRv() const
 {
-  UQ_FATAL_TEST_MACRO(m_t == NULL,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPriorRv()",
-                      "m_t is NULL");
+  queso_require_msg(m_t, "m_t is NULL");
   return m_t->m_totalPriorRv;
 }
 
@@ -1556,10 +1424,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
 const GenericVectorRV<P_V,P_M>&
 GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPostRv() const
 {
-  UQ_FATAL_TEST_MACRO(m_t == NULL,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPostRv()",
-                      "m_t is NULL");
+  queso_require_msg(m_t, "m_t is NULL");
   return m_t->m_totalPostRv;
 }
 
@@ -1634,18 +1499,18 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()..."
                             << ": m_optionsObj->m_prefix.c_str() = "          << m_optionsObj->m_prefix.c_str()
-                            << ", m_optionsObj->m_ov.m_priorSeqNumSamples = " << m_optionsObj->m_ov.m_priorSeqNumSamples
+                            << ", m_optionsObj->m_priorSeqNumSamples = " << m_optionsObj->m_priorSeqNumSamples
                             << std::endl;
   }
 
-  SequenceOfVectors<P_V,P_M> priorSeq(m_t->m_totalSpace,m_optionsObj->m_ov.m_priorSeqNumSamples,m_optionsObj->m_prefix+"priorSeq");
+  SequenceOfVectors<P_V,P_M> priorSeq(m_t->m_totalSpace,m_optionsObj->m_priorSeqNumSamples,m_optionsObj->m_prefix+"priorSeq");
   P_V totalSample(m_t->m_totalSpace.zeroVector());
-  for (unsigned int sampleId = 0; sampleId < m_optionsObj->m_ov.m_priorSeqNumSamples; ++sampleId) {
+  for (unsigned int sampleId = 0; sampleId < m_optionsObj->m_priorSeqNumSamples; ++sampleId) {
     m_t->m_totalPriorRv.realizer().realization(totalSample);
     priorSeq.setPositionValues(sampleId,totalSample);
   }
-  priorSeq.unifiedWriteContents(m_optionsObj->m_ov.m_priorSeqDataOutputFileName,
-                                m_optionsObj->m_ov.m_priorSeqDataOutputFileType);
+  priorSeq.unifiedWriteContents(m_optionsObj->m_priorSeqDataOutputFileName,
+                                m_optionsObj->m_priorSeqDataOutputFileType);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()..."
@@ -1713,20 +1578,23 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
   //********************************************************************************
   // Total values = (\lambda_eta[1],\lambda_w[p_eta],\rho_w[(p_x+p_t).p_eta],\lambda_y[1],\lambda_v[F],\rho_v[F.p_x],\theta)
   //********************************************************************************
-  UQ_FATAL_TEST_MACRO((m_s->m_1lambdaEtaSpace.dimLocal() != 1                                                       ) ||
-                      (m_s->m_2lambdaWSpace.dimLocal()   != m_s->m_paper_p_eta                                      ) ||
-                      (m_s->m_3rhoWSpace.dimLocal()      != (m_s->m_paper_p_eta*(m_s->m_paper_p_x+m_s->m_paper_p_t))) ||
-                      (m_s->m_4lambdaSSpace.dimLocal()   != m_s->m_paper_p_eta                                      ),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
-                      "inconsistent 'm_s' space dimensions");
+  queso_require_equal_to(m_s->m_1lambdaEtaSpace.dimLocal(), 1);
+
+  queso_require_equal_to(m_s->m_2lambdaWSpace.dimLocal(),
+                         m_s->m_paper_p_eta);
+
+  queso_require_equal_to(m_s->m_3rhoWSpace.dimLocal(),
+                         (m_s->m_paper_p_eta*(m_s->m_paper_p_x+m_s->m_paper_p_t)));
+  queso_require_equal_to(m_s->m_4lambdaSSpace.dimLocal(), m_s->m_paper_p_eta);
+
   if (m_thereIsExperimentalData) {
-    UQ_FATAL_TEST_MACRO((m_e->m_5lambdaYSpace.dimLocal() != 1                                ) ||
-                        (m_e->m_6lambdaVSpace.dimLocal() != m_e->m_paper_F                   ) ||
-                        (m_e->m_7rhoVSpace.dimLocal()    != (m_e->m_paper_F*m_s->m_paper_p_x)),
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
-                        "inconsistent 'm_e' space dimensions");
+    queso_require_equal_to(m_e->m_5lambdaYSpace.dimLocal(), 1);
+
+    queso_require_equal_to(m_e->m_6lambdaVSpace.dimLocal(),
+                           m_e->m_paper_F);
+
+    queso_require_equal_to(m_e->m_7rhoVSpace.dimLocal(),
+                           m_e->m_paper_F*m_s->m_paper_p_x);
   }
 
   this->memoryCheck(50);
@@ -1751,10 +1619,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     totalValues.cwExtract(currPosition,m_e->m_tmp_8thetaVec);     // Application specific
     currPosition += m_e->m_tmp_8thetaVec.sizeLocal();
   }
-  UQ_FATAL_TEST_MACRO(currPosition != totalValues.sizeLocal(),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
-                      "'currPosition' and 'totalValues.sizeLocal()' should be equal");
+  queso_require_equal_to_msg(currPosition, totalValues.sizeLocal(), "'currPosition' and 'totalValues.sizeLocal()' should be equal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
@@ -1784,7 +1649,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
   bool here_6_repeats = false;
   bool here_7_repeats = false;
   bool here_8_repeats = false;
-  if ((m_optionsObj->m_ov.m_checkAgainstPreviousSample) &&
+  if ((m_optionsObj->m_checkAgainstPreviousSample) &&
       (m_like_counter == 1                            )) {
     here_1_repeats = (m_s->m_like_previous1 == m_s->m_tmp_1lambdaEtaVec);
     here_2_repeats = (m_s->m_like_previous2 == m_s->m_tmp_2lambdaWVec);
@@ -1835,7 +1700,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
 
     this->memoryCheck(57);
 
-    if (m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC) {
+    if (m_optionsObj->m_useTildeLogicForRankDefficientC) {
       //********************************************************************************
       // Compute '\Sigma_z_tilde_hat' matrix
       //********************************************************************************
@@ -1919,11 +1784,8 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
 
       this->memoryCheck(62);
     }
-    else { // if (m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC)
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)",
-                          "incomplete code for situation 'm_useTildeLogicForRankDefficientC == false'");
+    else { // if (m_optionsObj->m_useTildeLogicForRankDefficientC)
+      queso_error_msg("incomplete code for situation 'm_useTildeLogicForRankDefficientC == false'");
     }
   }
   else { // if (m_formCMatrix) && (m_cMatIsRankDefficient)
@@ -1963,10 +1825,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
                             m_like_counter);
     }
     else {
-      UQ_FATAL_TEST_MACRO(true, // (m_thereIsExperimentalData == false)
-                          m_env.worldRank(),
-                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)",
-                          "incomplete code for situation 'm_thereIsExperimentalData == false'");
+      queso_error_msg("incomplete code for situation 'm_thereIsExperimentalData == false'");
 
       this->formSigma_z_hat(m_s->m_tmp_1lambdaEtaVec,
                             m_s->m_tmp_2lambdaWVec,
@@ -2146,16 +2005,14 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
                             << ", outerCounter = " << outerCounter
                             << ": m_formCMatrix = "                                        << m_formCMatrix
-                            << ", m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC
+                            << ", m_optionsObj->m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_useTildeLogicForRankDefficientC
                             << ", m_Cmat = "                                               << m_z->m_Cmat
                             << ", m_cMatIsRankDefficient = "                               << m_cMatIsRankDefficient
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC == true),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)",
-                      "'m_useTildeLogicForRankDefficientC' should be 'false'");
+  queso_require_msg(!m_optionsObj->m_useTildeLogicForRankDefficientC,
+                    "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
   // Form '\Sigma_z' matrix
@@ -2199,7 +2056,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   std::set<unsigned int> tmpSet;
   tmpSet.insert(m_env.subId());
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_z->m_tmp_Smat_z.subWriteContents("Sigma_z",
           "mat_Sigma_z",
           "m",
@@ -2248,7 +2105,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_z->m_tmp_Smat_extra.subWriteContents("Sigma_extra",
           "mat_Sigma_extra",
           "m",
@@ -2278,7 +2135,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_z->m_tmp_Smat_z_hat.subWriteContents("Sigma_z_hat",
           "mat_Sigma_z_hat",
           "m",
@@ -2309,16 +2166,14 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
                             << ", outerCounter = " << outerCounter
                             << ": m_formCMatrix = "                                        << m_formCMatrix
-                            << ", m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC
+                            << ", m_optionsObj->m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_useTildeLogicForRankDefficientC
                             << ", m_Cmat = "                                               << m_z->m_Cmat
                             << ", m_cMatIsRankDefficient = "                               << m_cMatIsRankDefficient
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC == true),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)",
-                      "'m_useTildeLogicForRankDefficientC' should be 'false'");
+  queso_require_msg(!m_optionsObj->m_useTildeLogicForRankDefficientC,
+                    "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
   // Form '\Sigma_z' matrix
@@ -2444,31 +2299,19 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
     *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                             << ", outerCounter = " << outerCounter
                             << ": m_formCMatrix = "                                        << m_formCMatrix
-                            << ", m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC
+                            << ", m_optionsObj->m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_useTildeLogicForRankDefficientC
                             << ", m_Cmat = "                                               << m_z->m_Cmat
                             << ", m_cMatIsRankDefficient = "                               << m_cMatIsRankDefficient
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_formCMatrix == false,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
-                      "'m_Cmat' should have been requested");
+  queso_require_msg(m_formCMatrix, "'m_Cmat' should have been requested");
 
-  UQ_FATAL_TEST_MACRO(m_z->m_Cmat == NULL,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
-                      "'m_Cmat' should have been formed");
+  queso_require_msg(m_z->m_Cmat, "'m_Cmat' should have been formed");
 
-  UQ_FATAL_TEST_MACRO(m_cMatIsRankDefficient == false,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
-                      "'m_Cmat' should be rank defficient");
+  queso_require_msg(m_cMatIsRankDefficient, "'m_Cmat' should be rank defficient");
 
-  UQ_FATAL_TEST_MACRO((m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC == false),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
-                      "'m_useTildeLogicForRankDefficientC' should be 'true'");
+  queso_require_msg(m_optionsObj->m_useTildeLogicForRankDefficientC, "'m_useTildeLogicForRankDefficientC' should be 'true'");
 
   //********************************************************************************
   // Form '\Sigma_z' matrix
@@ -2668,7 +2511,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_e->m_Smat_v.subWriteContents("Sigma_v",
                                      "mat_Sigma_v",
                                      "m",
@@ -2705,7 +2548,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_j->m_Smat_u.subWriteContents("Sigma_u",
                                      "mat_Sigma_u",
                                      "m",
@@ -2781,7 +2624,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_s->m_Smat_w.subWriteContents("Sigma_w",
                                      "mat_Sigma_w",
                                      "m",
@@ -2817,7 +2660,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_j->m_Smat_uw.subWriteContents("Sigma_uw",
                                       "mat_Sigma_uw",
                                       "m",
@@ -2944,7 +2787,7 @@ void
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_e->m_Smat_v.subWriteContents("Sigma_v",
                                      "mat_Sigma_v",
                                      "m",
@@ -2980,7 +2823,7 @@ void
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_j->m_Smat_u.subWriteContents("Sigma_u",
                                      "mat_Sigma_u",
                                      "m",
@@ -3017,7 +2860,7 @@ void
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_s->m_Smat_w.subWriteContents("Sigma_w",
                                      "mat_Sigma_w",
                                      "m",
@@ -3053,7 +2896,7 @@ void
   }
 
   if (outerCounter == 1) {
-    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+    if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
       m_j->m_Smat_uw.subWriteContents("Sigma_uw",
                                       "mat_Sigma_uw",
                                       "m",
@@ -3180,28 +3023,13 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(xVecs.size() != m_e->m_paper_n,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
-                      "xVecs.size() is wrong");
+  queso_require_equal_to_msg(xVecs.size(), m_e->m_paper_n, "xVecs.size() is wrong");
   for (unsigned int i = 0; i < xVecs.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(xVecs[i]->sizeLocal() != m_s->m_paper_p_x,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
-                        "xVecs[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(xVecs[i]->sizeLocal(), m_s->m_paper_p_x, "xVecs[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO((rho_v_vec.sizeLocal() == 0) || (rho_v_vec.sizeLocal() > m_s->m_paper_p_x), // Should be equal to m_Gs[i], for some 'i'
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
-                      "rho_v_vec.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_e->m_paper_n,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
-                      "Rmat.numRowsLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numCols() != m_e->m_paper_n,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
-                      "Rmat.numCols() is wrong");
+  queso_require_msg(!((rho_v_vec.sizeLocal() == 0) || (rho_v_vec.sizeLocal() > m_s->m_paper_p_x)), "rho_v_vec.sizeLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numRowsLocal(), m_e->m_paper_n, "Rmat.numRowsLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numCols(), m_e->m_paper_n, "Rmat.numCols() is wrong");
 
   S_V vecI(*(xVecs[0]));
   S_V vecJ(*(xVecs[0]));
@@ -3261,32 +3089,14 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(xVecs.size() != m_e->m_paper_n,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
-                      "xVecs.size() is wrong");
+  queso_require_equal_to_msg(xVecs.size(), m_e->m_paper_n, "xVecs.size() is wrong");
   for (unsigned int i = 0; i < xVecs.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(xVecs[i]->sizeLocal() != m_s->m_paper_p_x,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
-                        "xVecs[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(xVecs[i]->sizeLocal(), m_s->m_paper_p_x, "xVecs[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(tVec.sizeLocal() != m_s->m_paper_p_t,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
-                      "tVec.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
-                      "rho_w_vec.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_e->m_paper_n,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
-                      "Rmat.numRowsLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numCols() != m_e->m_paper_n,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
-                      "Rmat.numCols() is wrong");
+  queso_require_equal_to_msg(tVec.sizeLocal(), m_s->m_paper_p_t, "tVec.sizeLocal() is wrong");
+  queso_require_equal_to_msg(rho_w_vec.sizeLocal(), (m_s->m_paper_p_x+m_s->m_paper_p_t), "rho_w_vec.sizeLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numRowsLocal(), m_e->m_paper_n, "Rmat.numRowsLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numCols(), m_e->m_paper_n, "Rmat.numCols() is wrong");
 
   S_V vecI(*(xVecs[0]));
   S_V vecJ(*(xVecs[0]));
@@ -3326,38 +3136,17 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(xVecs.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
-                      "xVecs.size() is wrong");
+  queso_require_equal_to_msg(xVecs.size(), m_s->m_paper_m, "xVecs.size() is wrong");
   for (unsigned int i = 0; i < xVecs.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(xVecs[i]->sizeLocal() != m_s->m_paper_p_x,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
-                        "xVecs[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(xVecs[i]->sizeLocal(), m_s->m_paper_p_x, "xVecs[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(tVecs.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
-                      "tVecs.size() is wrong");
+  queso_require_equal_to_msg(tVecs.size(), m_s->m_paper_m, "tVecs.size() is wrong");
   for (unsigned int i = 0; i < tVecs.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(tVecs[i]->sizeLocal() != m_s->m_paper_p_t,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
-                        "tVecs[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(tVecs[i]->sizeLocal(), m_s->m_paper_p_t, "tVecs[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
-                      "rho_w_vec.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
-                      "Rmat.numRowsLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numCols() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
-                      "Rmat.numCols() is wrong");
+  queso_require_equal_to_msg(rho_w_vec.sizeLocal(), (m_s->m_paper_p_x+m_s->m_paper_p_t), "rho_w_vec.sizeLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numRowsLocal(), m_s->m_paper_m, "Rmat.numRowsLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numCols(), m_s->m_paper_m, "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs[0]));
   S_V xVecJ(*(xVecs[0]));
@@ -3407,52 +3196,22 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(xVecs1.size() != m_e->m_paper_n,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
-                      "xVecs1.size() is wrong");
+  queso_require_equal_to_msg(xVecs1.size(), m_e->m_paper_n, "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
-                        "xVecs1[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(xVecs1[i]->sizeLocal(), m_s->m_paper_p_x, "xVecs1[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(tVec1.sizeLocal() != m_s->m_paper_p_t,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
-                      "tVec1.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(xVecs2.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
-                      "xVecs2.size() is wrong");
+  queso_require_equal_to_msg(tVec1.sizeLocal(), m_s->m_paper_p_t, "tVec1.sizeLocal() is wrong");
+  queso_require_equal_to_msg(xVecs2.size(), m_s->m_paper_m, "xVecs2.size() is wrong");
   for (unsigned int i = 0; i < xVecs2.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(xVecs2[i]->sizeLocal() != m_s->m_paper_p_x,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
-                        "xVecs2[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(xVecs2[i]->sizeLocal(), m_s->m_paper_p_x, "xVecs2[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(tVecs2.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
-                      "tVecs2.size() is wrong");
+  queso_require_equal_to_msg(tVecs2.size(), m_s->m_paper_m, "tVecs2.size() is wrong");
   for (unsigned int i = 0; i < tVecs2.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(tVecs2[i]->sizeLocal() != m_s->m_paper_p_t,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
-                        "tVecs2[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(tVecs2[i]->sizeLocal(), m_s->m_paper_p_t, "tVecs2[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
-                      "rho_w_vec.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_e->m_paper_n,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
-                      "Rmat.numRowsLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numCols() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
-                      "Rmat.numCols() is wrong");
+  queso_require_equal_to_msg(rho_w_vec.sizeLocal(), (m_s->m_paper_p_x+m_s->m_paper_p_t), "rho_w_vec.sizeLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numRowsLocal(), m_e->m_paper_n, "Rmat.numRowsLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numCols(), m_s->m_paper_m, "Rmat.numCols() is wrong");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
     *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()"
@@ -3508,46 +3267,19 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(xVecs1.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
-                      "xVecs1.size() is wrong");
+  queso_require_equal_to_msg(xVecs1.size(), m_s->m_paper_m, "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
-                        "xVecs1[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(xVecs1[i]->sizeLocal(), m_s->m_paper_p_x, "xVecs1[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(tVecs1.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
-                      "tVecs1.size() is wrong");
+  queso_require_equal_to_msg(tVecs1.size(), m_s->m_paper_m, "tVecs1.size() is wrong");
   for (unsigned int i = 0; i < tVecs1.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(tVecs1[i]->sizeLocal() != m_s->m_paper_p_t,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
-                        "tVecs1[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(tVecs1[i]->sizeLocal(), m_s->m_paper_p_t, "tVecs1[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(xVec2.sizeLocal() != m_s->m_paper_p_x,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
-                      "xVec2.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(tVec2.sizeLocal() != m_s->m_paper_p_t,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
-                      "tVec2.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO((rho_v_vec.sizeLocal() == 0) || (rho_v_vec.sizeLocal() > m_s->m_paper_p_x), // Should be equal to m_Gs[i], for some 'i'
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
-                      "rho_v_vec.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_e->m_paper_n,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
-                      "Rmat.numRowsLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numCols() != 1,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
-                      "Rmat.numCols() is wrong");
+  queso_require_equal_to_msg(xVec2.sizeLocal(), m_s->m_paper_p_x, "xVec2.sizeLocal() is wrong");
+  queso_require_equal_to_msg(tVec2.sizeLocal(), m_s->m_paper_p_t, "tVec2.sizeLocal() is wrong");
+  queso_require_msg(!((rho_v_vec.sizeLocal() == 0) || (rho_v_vec.sizeLocal() > m_s->m_paper_p_x)), "rho_v_vec.sizeLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numRowsLocal(), m_e->m_paper_n, "Rmat.numRowsLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numCols(), 1, "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs1[0]));
   S_V xVecJ(xVec2);
@@ -3592,46 +3324,19 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(xVecs1.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
-                      "xVecs1.size() is wrong");
+  queso_require_equal_to_msg(xVecs1.size(), m_s->m_paper_m, "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
-                        "xVecs1[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(xVecs1[i]->sizeLocal(), m_s->m_paper_p_x, "xVecs1[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(tVecs1.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
-                      "tVecs1.size() is wrong");
+  queso_require_equal_to_msg(tVecs1.size(), m_s->m_paper_m, "tVecs1.size() is wrong");
   for (unsigned int i = 0; i < tVecs1.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(tVecs1[i]->sizeLocal() != m_s->m_paper_p_t,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
-                        "tVecs1[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(tVecs1[i]->sizeLocal(), m_s->m_paper_p_t, "tVecs1[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(xVec2.sizeLocal() != m_s->m_paper_p_x,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
-                      "xVec2.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(tVec2.sizeLocal() != m_s->m_paper_p_t,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
-                      "tVec2.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
-                      "rho_w_vec.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
-                      "Rmat.numRowsLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numCols() != 1,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
-                      "Rmat.numCols() is wrong");
+  queso_require_equal_to_msg(xVec2.sizeLocal(), m_s->m_paper_p_x, "xVec2.sizeLocal() is wrong");
+  queso_require_equal_to_msg(tVec2.sizeLocal(), m_s->m_paper_p_t, "tVec2.sizeLocal() is wrong");
+  queso_require_equal_to_msg(rho_w_vec.sizeLocal(), (m_s->m_paper_p_x+m_s->m_paper_p_t), "rho_w_vec.sizeLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numRowsLocal(), m_s->m_paper_m, "Rmat.numRowsLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numCols(), 1, "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs1[0]));
   S_V xVecJ(xVec2);
@@ -3680,46 +3385,19 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
-  UQ_FATAL_TEST_MACRO(xVecs1.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
-                      "xVecs1.size() is wrong");
+  queso_require_equal_to_msg(xVecs1.size(), m_s->m_paper_m, "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
-                        "xVecs1[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(xVecs1[i]->sizeLocal(), m_s->m_paper_p_x, "xVecs1[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(tVecs1.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
-                      "tVecs1.size() is wrong");
+  queso_require_equal_to_msg(tVecs1.size(), m_s->m_paper_m, "tVecs1.size() is wrong");
   for (unsigned int i = 0; i < tVecs1.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(tVecs1[i]->sizeLocal() != m_s->m_paper_p_t,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
-                        "tVecs1[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(tVecs1[i]->sizeLocal(), m_s->m_paper_p_t, "tVecs1[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(xVec2.sizeLocal() != m_s->m_paper_p_x,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
-                      "xVec2.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(tVec2.sizeLocal() != m_s->m_paper_p_t,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
-                      "tVec2.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
-                      "rho_w_vec.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
-                      "Rmat.numRowsLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numCols() != 1,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
-                      "Rmat.numCols() is wrong");
+  queso_require_equal_to_msg(xVec2.sizeLocal(), m_s->m_paper_p_x, "xVec2.sizeLocal() is wrong");
+  queso_require_equal_to_msg(tVec2.sizeLocal(), m_s->m_paper_p_t, "tVec2.sizeLocal() is wrong");
+  queso_require_equal_to_msg(rho_w_vec.sizeLocal(), (m_s->m_paper_p_x+m_s->m_paper_p_t), "rho_w_vec.sizeLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numRowsLocal(), m_s->m_paper_m, "Rmat.numRowsLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numCols(), 1, "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs1[0]));
   S_V xVecJ(xVec2);
@@ -3769,46 +3447,19 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(xVecs1.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
-                      "xVecs1.size() is wrong");
+  queso_require_equal_to_msg(xVecs1.size(), m_s->m_paper_m, "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
-                        "xVecs1[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(xVecs1[i]->sizeLocal(), m_s->m_paper_p_x, "xVecs1[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(tVecs1.size() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
-                      "tVecs1.size() is wrong");
+  queso_require_equal_to_msg(tVecs1.size(), m_s->m_paper_m, "tVecs1.size() is wrong");
   for (unsigned int i = 0; i < tVecs1.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(tVecs1[i]->sizeLocal() != m_s->m_paper_p_t,
-                        m_env.worldRank(),
-                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
-                        "tVecs1[i]->sizeLocal() is wrong");
+    queso_require_equal_to_msg(tVecs1[i]->sizeLocal(), m_s->m_paper_p_t, "tVecs1[i]->sizeLocal() is wrong");
   }
-  UQ_FATAL_TEST_MACRO(xVec2.sizeLocal() != m_s->m_paper_p_x,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
-                      "xVec2.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(tVec2.sizeLocal() != m_s->m_paper_p_t,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
-                      "tVec2.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
-                      "rho_w_vec.sizeLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_s->m_paper_m,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
-                      "Rmat.numRowsLocal() is wrong");
-  UQ_FATAL_TEST_MACRO(Rmat.numCols() != 1,
-                      m_env.worldRank(),
-                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
-                      "Rmat.numCols() is wrong");
+  queso_require_equal_to_msg(xVec2.sizeLocal(), m_s->m_paper_p_x, "xVec2.sizeLocal() is wrong");
+  queso_require_equal_to_msg(tVec2.sizeLocal(), m_s->m_paper_p_t, "tVec2.sizeLocal() is wrong");
+  queso_require_equal_to_msg(rho_w_vec.sizeLocal(), (m_s->m_paper_p_x+m_s->m_paper_p_t), "rho_w_vec.sizeLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numRowsLocal(), m_s->m_paper_m, "Rmat.numRowsLocal() is wrong");
+  queso_require_equal_to_msg(Rmat.numCols(), 1, "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs1[0]));
   S_V xVecJ(xVec2);

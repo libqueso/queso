@@ -32,13 +32,16 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!\file AsciiTable.h
  * \brief Class to read ASCII values from a table.
  *
  * \class AsciiTable
  * \brief Class for reading ASCII values from a table in a file.*/
 
-template <class V, class M>
+template<class V = GslVector, class M = GslMatrix>
 class AsciiTable
 {
 public:

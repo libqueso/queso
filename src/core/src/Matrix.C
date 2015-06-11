@@ -27,18 +27,6 @@
 
 namespace QUESO {
 
-// Default constructor ------------------------------
-Matrix::Matrix()
-  :
-  m_env(*(new EmptyEnvironment())                                               ),
-  m_map(*(new Map( 1,0,*(new MpiComm(m_env,RawValue_MPI_COMM_SELF)) ) )) // avoid using MPI_COMM_WORLD
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "Matrix::constructor(), default",
-                      "should not be used by user");
-}
-
 // Shaped constructor --------------------------------
 Matrix::Matrix(const BaseEnvironment& env, const Map& map)
   :
@@ -49,66 +37,9 @@ Matrix::Matrix(const BaseEnvironment& env, const Map& map)
 {
 }
 
-// Copy constructor -----------------------------------
-Matrix::Matrix(const Matrix& rhs)
-  :
-  m_env(rhs.m_env),
-  m_map(rhs.m_map)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.worldRank(),
-                      "Matrix::constructor(), copy",
-                      "code should not execute through here");
-}
-
 // Destructor ---------------------------------------
 Matrix::~Matrix()
 {
-}
-
-// Set methods --------------------------------------
-Matrix&
-Matrix::operator= (const Matrix& rhs)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.worldRank(),
-                      "Matrix::operator=()",
-                      "code should not execute through here");
-  return *this;
-}
-
-// --------------------------------------------------
-Matrix&
-Matrix::operator*=(double a)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.worldRank(),
-                      "Matrix::operator*=()",
-                      "code should not execute through here");
-  double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
-  return *this;
-}
-
-// --------------------------------------------------
-Matrix&
-Matrix::operator+=(const Matrix& rhs)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.worldRank(),
-                      "Matrix::operator+=()",
-                      "code should not execute through here");
-  return *this;
-}
-
-// --------------------------------------------------
-Matrix&
-Matrix::operator-=(const Matrix& rhs)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.worldRank(),
-                      "Matrix::operator-=()",
-                      "code should not execute through here");
-  return *this;
 }
 
 // Environment and Map methods ----------------------
@@ -165,7 +96,7 @@ Matrix::getInDebugMode() const
 
 // --------------------------------------------------
 void
-Matrix::copy(const Matrix& src)
+Matrix::base_copy(const Matrix& src)
 {
   //m_env = src.env;
   //m_map = src.map;

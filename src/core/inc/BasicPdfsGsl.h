@@ -45,9 +45,6 @@ class BasicPdfsGsl : public BasicPdfsBase
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor.
-  BasicPdfsGsl();
-
   //! Constructor.
   BasicPdfsGsl(int worldRank);
 
@@ -64,6 +61,10 @@ public:
   double gammaPdfActualValue(double x, double a,     double b   ) const;
   //@}
 protected:
+
+private:
+  //! Default constructor.
+  BasicPdfsGsl();
 };
 
 }  // End namespace QUESO

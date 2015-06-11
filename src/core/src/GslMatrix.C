@@ -32,17 +32,6 @@
 
 namespace QUESO {
 
-// Default constructor -------------------------------------------------
-GslMatrix::GslMatrix()
-  :
-  Matrix()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "GslMatrix::constructor(), default",
-                      "should not be used by user");
-}
-
 GslMatrix::GslMatrix( // can be a rectangular matrix
   const BaseEnvironment& env,
   const Map&             map,
@@ -63,10 +52,7 @@ GslMatrix::GslMatrix( // can be a rectangular matrix
   m_signum       (0),
   m_isSingular   (false)
 {
-  UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.worldRank(),
-                      "GslMatrix::constructor()",
-                      "null matrix generated");
+  queso_require_msg(m_mat, "null matrix generated");
 }
 
 // Shaped constructor --------------------------------------------------
@@ -90,10 +76,7 @@ GslMatrix::GslMatrix( // square matrix
   m_signum       (0),
   m_isSingular   (false)
 {
-  UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.worldRank(),
-                      "GslMatrix::constructor(), eye",
-                      "null matrix generated");
+  queso_require_msg(m_mat, "null matrix generated");
 
   for (unsigned int i = 0; i < m_mat->size1; ++i) {
     (*this)(i,i) = diagValue;
@@ -119,10 +102,7 @@ GslMatrix::GslMatrix( // square matrix
   m_signum       (0),
   m_isSingular   (false)
 {
-  UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.worldRank(),
-                      "GslMatrix::constructor(), eye",
-                      "null matrix generated");
+  queso_require_msg(m_mat, "null matrix generated");
 
   for (unsigned int i = 0; i < m_mat->size1; ++i) {
     (*this)(i,i) = diagValue;
@@ -146,10 +126,7 @@ GslMatrix::GslMatrix(const GslVector& v) // square matrix
   m_signum       (0),
   m_isSingular   (false)
 {
-  UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.worldRank(),
-                      "GslMatrix::constructor(), from vector",
-                      "null matrix generated");
+  queso_require_msg(m_mat, "null matrix generated");
 
   unsigned int dim = v.sizeLocal();
   for (unsigned int i = 0; i < dim; ++i) {
@@ -175,11 +152,8 @@ GslMatrix::GslMatrix(const GslMatrix& B) // can be a rectangular matrix
   m_signum       (0),
   m_isSingular   (false)
 {
-  UQ_FATAL_TEST_MACRO((m_mat == NULL),
-                      m_env.worldRank(),
-                      "GslMatrix::constructor(), copy",
-                      "null vector generated");
-  this->Matrix::copy(B);
+  queso_require_msg(m_mat, "null vector generated");
+  this->Matrix::base_copy(B);
   this->copy(B);
 }
 
@@ -205,10 +179,7 @@ GslMatrix::operator*=(double a)
   this->resetLU();
   int iRC;
   iRC = gsl_matrix_scale(m_mat,a);
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "GslMatrix::operator*=()",
-                    "scaling failed");
+  queso_require_msg(!(iRC), "scaling failed");
   return *this;
 }
 
@@ -227,10 +198,7 @@ GslMatrix::operator+=(const GslMatrix& rhs)
   this->resetLU();
   int iRC;
   iRC = gsl_matrix_add(m_mat,rhs.m_mat);
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "GslMatrix::operator+=()",
-                    "failed");
+  queso_require_msg(!(iRC), "failed");
 
   return *this;
 }
@@ -241,10 +209,7 @@ GslMatrix::operator-=(const GslMatrix& rhs)
   this->resetLU();
   int iRC;
   iRC = gsl_matrix_sub(m_mat,rhs.m_mat);
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "GslMatrix::operator-=()",
-                    "failed");
+  queso_require_msg(!(iRC), "failed");
 
   return *this;
 }
@@ -262,14 +227,8 @@ GslMatrix::operator()(unsigned int i, unsigned int j)
               << ", m_mat->size1 = " << m_mat->size1
               << ", m_mat->size2 = " << m_mat->size2
               << std::endl;
-    UQ_FATAL_TEST_MACRO(i >= m_mat->size1,
-                        m_env.worldRank(),
-                        "GslMatrix::operator(i,j)",
-                        "i is too large");
-    UQ_FATAL_TEST_MACRO(j >= m_mat->size2,
-                        m_env.worldRank(),
-                        "GslMatrix::operator(i,j)",
-                        "j is too large");
+    queso_require_less_msg(i, m_mat->size1, "i is too large");
+    queso_require_less_msg(j, m_mat->size2, "j is too large");
   }
   return *gsl_matrix_ptr(m_mat,i,j);
 }
@@ -277,27 +236,19 @@ GslMatrix::operator()(unsigned int i, unsigned int j)
 const double&
 GslMatrix::operator()(unsigned int i, unsigned int j) const
 {
-  UQ_FATAL_TEST_MACRO(i >= m_mat->size1,
-                      m_env.worldRank(),
-                      "GslMatrix::operator(i,j) const",
-                      "i is too large");
-  UQ_FATAL_TEST_MACRO(j >= m_mat->size2,
-                      m_env.worldRank(),
-                      "GslMatrix::operator(i,j) const",
-                      "j is too large");
+  queso_require_less_msg(i, m_mat->size1, "i is too large");
+  queso_require_less_msg(j, m_mat->size2, "j is too large");
   return *gsl_matrix_const_ptr(m_mat,i,j);
 }
 
 void
 GslMatrix::copy(const GslMatrix& src)
 {
+  // FIXME - should we be calling Matrix::base_copy here? - RHS
   this->resetLU();
   int iRC;
   iRC = gsl_matrix_memcpy(this->m_mat, src.m_mat);
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "GslMatrix::copy()",
-                    "failed");
+  queso_require_msg(!(iRC), "failed");
 
   return;
 }
@@ -438,25 +389,13 @@ GslMatrix::cwSet(
   unsigned int            initialTargetColId,
   const GslMatrix& mat)
 {
-  UQ_FATAL_TEST_MACRO(initialTargetRowId >= this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "GslMatrix::cwSet()",
-                      "invalid initialTargetRowId");
+  queso_require_less_msg(initialTargetRowId, this->numRowsLocal(), "invalid initialTargetRowId");
 
-  UQ_FATAL_TEST_MACRO((initialTargetRowId + mat.numRowsLocal()) > this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "GslMatrix::cwSet()",
-                      "invalid vec.numRowsLocal()");
+  queso_require_less_equal_msg((initialTargetRowId + mat.numRowsLocal()), this->numRowsLocal(), "invalid vec.numRowsLocal()");
 
-  UQ_FATAL_TEST_MACRO(initialTargetColId >= this->numCols(),
-                      m_env.worldRank(),
-                      "GslMatrix::cwSet()",
-                      "invalid initialTargetColId");
+  queso_require_less_msg(initialTargetColId, this->numCols(), "invalid initialTargetColId");
 
-  UQ_FATAL_TEST_MACRO((initialTargetColId + mat.numCols()) > this->numCols(),
-                      m_env.worldRank(),
-                      "GslMatrix::cwSet()",
-                      "invalid vec.numCols()");
+  queso_require_less_equal_msg((initialTargetColId + mat.numCols()), this->numCols(), "invalid vec.numCols()");
 
   for (unsigned int i = 0; i < mat.numRowsLocal(); ++i) {
     for (unsigned int j = 0; j < mat.numCols(); ++j) {
@@ -473,25 +412,13 @@ GslMatrix::cwExtract(
   unsigned int      initialTargetColId,
   GslMatrix& mat) const
 {
-  UQ_FATAL_TEST_MACRO(initialTargetRowId >= this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "GslMatrix::cwExtract()",
-                      "invalid initialTargetRowId");
+  queso_require_less_msg(initialTargetRowId, this->numRowsLocal(), "invalid initialTargetRowId");
 
-  UQ_FATAL_TEST_MACRO((initialTargetRowId + mat.numRowsLocal()) > this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "GslMatrix::cwExtract()",
-                      "invalid vec.numRowsLocal()");
+  queso_require_less_equal_msg((initialTargetRowId + mat.numRowsLocal()), this->numRowsLocal(), "invalid vec.numRowsLocal()");
 
-  UQ_FATAL_TEST_MACRO(initialTargetColId >= this->numCols(),
-                      m_env.worldRank(),
-                      "GslMatrix::cwExtract()",
-                      "invalid initialTargetColId");
+  queso_require_less_msg(initialTargetColId, this->numCols(), "invalid initialTargetColId");
 
-  UQ_FATAL_TEST_MACRO((initialTargetColId + mat.numCols()) > this->numCols(),
-                      m_env.worldRank(),
-                      "GslMatrix::cwExtract()",
-                      "invalid vec.numCols()");
+  queso_require_less_equal_msg((initialTargetColId + mat.numCols()), this->numCols(), "invalid vec.numCols()");
 
   for (unsigned int i = 0; i < mat.numRowsLocal(); ++i) {
     for (unsigned int j = 0; j < mat.numCols(); ++j) {
@@ -535,20 +462,11 @@ GslMatrix::svd(GslMatrix& matU, GslVector& vecS, GslMatrix& matVt) const
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((matU.numRowsLocal() != nRows) || (matU.numCols() != nCols),
-                      m_env.worldRank(),
-                      "GslMatrix::svd()",
-                      "invalid matU");
+  queso_require_msg(!((matU.numRowsLocal() != nRows) || (matU.numCols() != nCols)), "invalid matU");
 
-  UQ_FATAL_TEST_MACRO((vecS.sizeLocal() != nCols), //std::min(nRows,nRows)),
-                      m_env.worldRank(),
-                      "GslMatrix::svd()",
-                      "invalid vecS");
+  queso_require_equal_to_msg(vecS.sizeLocal(), nCols, "invalid vecS");
 
-  UQ_FATAL_TEST_MACRO((matVt.numRowsLocal() != nCols) || (matVt.numCols() != nCols),
-                      m_env.worldRank(),
-                      "GslMatrix::svd()",
-                      "invalid matVt");
+  queso_require_msg(!((matVt.numRowsLocal() != nCols) || (matVt.numCols() != nCols)), "invalid matVt");
 
   int iRC = internalSvd();
 
@@ -565,15 +483,9 @@ GslMatrix::svdSolve(const GslVector& rhsVec, GslVector& solVec) const
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((rhsVec.sizeLocal() != nRows),
-                      m_env.worldRank(),
-                      "GslMatrix::svdSolve()",
-                      "invalid rhsVec");
+  queso_require_equal_to_msg(rhsVec.sizeLocal(), nRows, "invalid rhsVec");
 
-  UQ_FATAL_TEST_MACRO((solVec.sizeLocal() != nCols),
-                      m_env.worldRank(),
-                      "GslMatrix::svdSolve()",
-                      "invalid solVec");
+  queso_require_equal_to_msg(solVec.sizeLocal(), nCols, "invalid solVec");
 
   int iRC = internalSvd();
 
@@ -602,20 +514,11 @@ GslMatrix::svdSolve(const GslMatrix& rhsMat, GslMatrix& solMat) const
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((rhsMat.numRowsLocal() != nRows),
-                      m_env.worldRank(),
-                      "GslMatrix::svdSolve()",
-                      "invalid rhsMat");
+  queso_require_equal_to_msg(rhsMat.numRowsLocal(), nRows, "invalid rhsMat");
 
-  UQ_FATAL_TEST_MACRO((solMat.numRowsLocal() != nCols),
-                      m_env.worldRank(),
-                      "GslMatrix::svdSolve()",
-                      "invalid solMat");
+  queso_require_equal_to_msg(solMat.numRowsLocal(), nCols, "invalid solMat");
 
-  UQ_FATAL_TEST_MACRO((rhsMat.numCols() != solMat.numCols()),
-                      m_env.worldRank(),
-                      "GslMatrix::svdSolve()",
-                      "rhsMat and solMat are not compatible");
+  queso_require_equal_to_msg(rhsMat.numCols(), solMat.numCols(), "rhsMat and solMat are not compatible");
 
   GslVector rhsVec(m_env,rhsMat.map());
   GslVector solVec(m_env,solMat.map());
@@ -658,10 +561,7 @@ GslMatrix::internalSvd() const
   if (m_svdColMap == NULL) {
     unsigned int nRows = this->numRowsLocal();
     unsigned int nCols = this->numCols();
-    UQ_FATAL_TEST_MACRO(nRows < nCols,
-                        m_env.worldRank(),
-                        "GslMatrix::internalSvd()",
-                        "GSL only supports cases where nRows >= nCols");
+    queso_require_greater_equal_msg(nRows, nCols, "GSL only supports cases where nRows >= nCols");
 
     m_svdColMap = new Map(this->numCols(),0,this->map().Comm()); // see 'VectorSpace<.,.>::newMap()' in src/basic/src/GslVectorSpace.C
     m_svdUmat   = new GslMatrix(*this); // Yes, 'this'
@@ -718,10 +618,7 @@ GslMatrix::zeroLower(bool includeDiagonal)
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                      m_env.worldRank(),
-                      "GslMatrix::zeroLower()",
-                      "routine works only for square matrices");
+  queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
 
   this->resetLU();
 
@@ -749,10 +646,7 @@ GslMatrix::zeroUpper(bool includeDiagonal)
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                      m_env.worldRank(),
-                      "GslMatrix::zeroUpper()",
-                      "routine works only for square matrices");
+  queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
 
   this->resetLU();
 
@@ -826,10 +720,7 @@ GslMatrix::transpose() const
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                      m_env.worldRank(),
-                      "GslMatrix::transpose()",
-                      "routine works only for square matrices");
+  queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
 
   GslMatrix mat(m_env,m_map,nCols);
   for (unsigned int row = 0; row < nRows; ++row) {
@@ -847,10 +738,7 @@ GslMatrix::inverse() const
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                      m_env.worldRank(),
-                      "GslMatrix::inverse()",
-                      "matrix is not square");
+  queso_require_equal_to_msg(nRows, nCols, "matrix is not square");
 
   if (m_inverse == NULL) {
     m_inverse = new GslMatrix(m_env,m_map,nCols);
@@ -898,22 +786,10 @@ GslMatrix::fillWithBlocksDiagonally(
     sumNumRowsLocals += matrices[i]->numRowsLocal();
     sumNumCols       += matrices[i]->numCols();
   }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + sumNumRowsLocals),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksDiagonally(const)",
-                      "too big number of rows");
-  UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + sumNumRowsLocals)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksDiagonally(const)",
-                      "inconsistent number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + sumNumCols),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksDiagonally(const)",
-                      "too big number of cols");
-  UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + sumNumCols)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksDiagonally(const)",
-                      "inconsistent number of cols");
+  queso_require_greater_equal_msg(this->numRowsLocal(), (initialTargetRowId + sumNumRowsLocals), "too big number of rows");
+  if (checkForExactNumRowsMatching) queso_require_equal_to_msg(this->numRowsLocal(), (initialTargetRowId + sumNumRowsLocals), "inconsistent number of rows");
+  queso_require_greater_equal_msg(this->numCols(), (initialTargetColId + sumNumCols), "too big number of cols");
+  if (checkForExactNumColsMatching) queso_require_equal_to_msg(this->numCols(), (initialTargetColId + sumNumCols), "inconsistent number of cols");
 
   unsigned int cumulativeRowId = 0;
   unsigned int cumulativeColId = 0;
@@ -946,22 +822,10 @@ GslMatrix::fillWithBlocksDiagonally(
     sumNumRowsLocals += matrices[i]->numRowsLocal();
     sumNumCols       += matrices[i]->numCols();
   }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + sumNumRowsLocals),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksDiagonally()",
-                      "too big number of rows");
-  UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + sumNumRowsLocals)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksDiagonally()",
-                      "inconsistent number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + sumNumCols),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksDiagonally()",
-                      "too big number of cols");
-  UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + sumNumCols)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksDiagonally()",
-                      "inconsistent number of cols");
+  queso_require_greater_equal_msg(this->numRowsLocal(), (initialTargetRowId + sumNumRowsLocals), "too big number of rows");
+  if (checkForExactNumRowsMatching) queso_require_equal_to_msg(this->numRowsLocal(), (initialTargetRowId + sumNumRowsLocals), "inconsistent number of rows");
+  queso_require_greater_equal_msg(this->numCols(), (initialTargetColId + sumNumCols), "too big number of cols");
+  if (checkForExactNumColsMatching) queso_require_equal_to_msg(this->numCols(), (initialTargetColId + sumNumCols), "inconsistent number of cols");
 
   unsigned int cumulativeRowId = 0;
   unsigned int cumulativeColId = 0;
@@ -990,24 +854,12 @@ GslMatrix::fillWithBlocksHorizontally(
 {
   unsigned int sumNumCols = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + matrices[i]->numRowsLocal()),
-                        m_env.worldRank(),
-                        "GslMatrix::fillWithBlocksHorizontally(const)",
-                        "too big number of rows");
-    UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + matrices[i]->numRowsLocal())),
-                        m_env.worldRank(),
-                        "GslMatrix::fillWithBlocksHorizontally(const)",
-                        "inconsistent number of rows");
+    queso_require_greater_equal_msg(this->numRowsLocal(), (initialTargetRowId + matrices[i]->numRowsLocal()), "too big number of rows");
+    if (checkForExactNumRowsMatching) queso_require_equal_to_msg(this->numRowsLocal(), (initialTargetRowId + matrices[i]->numRowsLocal()), "inconsistent number of rows");
     sumNumCols += matrices[i]->numCols();
   }
-  UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + sumNumCols),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksHorizontally(const)",
-                      "too big number of cols");
-  UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + sumNumCols)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksHorizontally(const)",
-                      "inconsistent number of cols");
+  queso_require_greater_equal_msg(this->numCols(), (initialTargetColId + sumNumCols), "too big number of cols");
+  if (checkForExactNumColsMatching) queso_require_equal_to_msg(this->numCols(), (initialTargetColId + sumNumCols), "inconsistent number of cols");
 
   unsigned int cumulativeColId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -1034,24 +886,12 @@ GslMatrix::fillWithBlocksHorizontally(
 {
   unsigned int sumNumCols = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + matrices[i]->numRowsLocal()),
-                        m_env.worldRank(),
-                        "GslMatrix::fillWithBlocksHorizontally()",
-                        "too big number of rows");
-    UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + matrices[i]->numRowsLocal())),
-                        m_env.worldRank(),
-                        "GslMatrix::fillWithBlocksHorizontally()",
-                        "inconsistent number of rows");
+    queso_require_greater_equal_msg(this->numRowsLocal(), (initialTargetRowId + matrices[i]->numRowsLocal()), "too big number of rows");
+    if (checkForExactNumRowsMatching) queso_require_equal_to_msg(this->numRowsLocal(), (initialTargetRowId + matrices[i]->numRowsLocal()), "inconsistent number of rows");
     sumNumCols += matrices[i]->numCols();
   }
-  UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + sumNumCols),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksHorizontally()",
-                      "too big number of cols");
-  UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + sumNumCols)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksHorizontally()",
-                      "inconsistent number of cols");
+  queso_require_greater_equal_msg(this->numCols(), (initialTargetColId + sumNumCols), "too big number of cols");
+  if (checkForExactNumColsMatching) queso_require_equal_to_msg(this->numCols(), (initialTargetColId + sumNumCols), "inconsistent number of cols");
 
   unsigned int cumulativeColId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -1078,24 +918,12 @@ GslMatrix::fillWithBlocksVertically( // checar
 {
   unsigned int sumNumRows = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + matrices[i]->numCols()),
-                        m_env.worldRank(),
-                        "GslMatrix::fillWithBlocksVertically(const)",
-                        "too big number of cols");
-    UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + matrices[i]->numCols())),
-                        m_env.worldRank(),
-                        "GslMatrix::fillWithBlocksVertically(const)",
-                        "inconsistent number of cols");
+    queso_require_greater_equal_msg(this->numCols(), (initialTargetColId + matrices[i]->numCols()), "too big number of cols");
+    if (checkForExactNumColsMatching) queso_require_equal_to_msg(this->numCols(), (initialTargetColId + matrices[i]->numCols()), "inconsistent number of cols");
     sumNumRows += matrices[i]->numRowsLocal();
   }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + sumNumRows),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksVertically(const)",
-                      "too big number of rows");
-  UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + sumNumRows)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksVertically(const)",
-                      "inconsistent number of rows");
+  queso_require_greater_equal_msg(this->numRowsLocal(), (initialTargetRowId + sumNumRows), "too big number of rows");
+  if (checkForExactNumRowsMatching) queso_require_equal_to_msg(this->numRowsLocal(), (initialTargetRowId + sumNumRows), "inconsistent number of rows");
 
   unsigned int cumulativeRowId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -1122,24 +950,12 @@ GslMatrix::fillWithBlocksVertically( // checar
 {
   unsigned int sumNumRows = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + matrices[i]->numCols()),
-                        m_env.worldRank(),
-                        "GslMatrix::fillWithBlocksVertically()",
-                        "too big number of cols");
-    UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + matrices[i]->numCols())),
-                        m_env.worldRank(),
-                        "GslMatrix::fillWithBlocksVertically()",
-                        "inconsistent number of cols");
+    queso_require_greater_equal_msg(this->numCols(), (initialTargetColId + matrices[i]->numCols()), "too big number of cols");
+    if (checkForExactNumColsMatching) queso_require_equal_to_msg(this->numCols(), (initialTargetColId + matrices[i]->numCols()), "inconsistent number of cols");
     sumNumRows += matrices[i]->numRowsLocal();
   }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + sumNumRows),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksVertically()",
-                      "too big number of rows");
-  UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + sumNumRows)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithBlocksVertically()",
-                      "inconsistent number of rows");
+  queso_require_greater_equal_msg(this->numRowsLocal(), (initialTargetRowId + sumNumRows), "too big number of rows");
+  if (checkForExactNumRowsMatching) queso_require_equal_to_msg(this->numRowsLocal(), (initialTargetRowId + sumNumRows), "inconsistent number of rows");
 
   unsigned int cumulativeRowId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -1165,22 +981,10 @@ GslMatrix::fillWithTensorProduct(
   bool                    checkForExactNumRowsMatching,
   bool                    checkForExactNumColsMatching)
 {
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + (mat1.numRowsLocal() * mat2.numRowsLocal())),
-                      m_env.worldRank(),
-                      "GslMatrix::fillTensorProduct(mat and mat)",
-                      "too big number of rows");
-  UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + (mat1.numRowsLocal() * mat2.numRowsLocal()))),
-                      m_env.worldRank(),
-                      "GslMatrix::fillTensorProduct(mat and mat)",
-                      "inconsistent number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + (mat1.numCols() * mat2.numCols())),
-                      m_env.worldRank(),
-                      "GslMatrix::fillTensorProduct(mat and mat)",
-                      "too big number of columns");
-  UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + (mat1.numCols() * mat2.numCols()))),
-                      m_env.worldRank(),
-                      "GslMatrix::fillTensorProduct(mat and mat)",
-                      "inconsistent number of columns");
+  queso_require_greater_equal_msg(this->numRowsLocal(), (initialTargetRowId + (mat1.numRowsLocal() * mat2.numRowsLocal())), "too big number of rows");
+  if (checkForExactNumRowsMatching) queso_require_equal_to_msg(this->numRowsLocal(), (initialTargetRowId + (mat1.numRowsLocal() * mat2.numRowsLocal())), "inconsistent number of rows");
+  queso_require_greater_equal_msg(this->numCols(), (initialTargetColId + (mat1.numCols() * mat2.numCols())), "too big number of columns");
+  if (checkForExactNumColsMatching) queso_require_equal_to_msg(this->numCols(), (initialTargetColId + (mat1.numCols() * mat2.numCols())), "inconsistent number of columns");
 
   for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
     for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
@@ -1207,22 +1011,10 @@ GslMatrix::fillWithTensorProduct(
   bool                    checkForExactNumRowsMatching,
   bool                    checkForExactNumColsMatching)
 {
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + (mat1.numRowsLocal() * vec2.sizeLocal())),
-                      m_env.worldRank(),
-                      "GslMatrix::fillTensorProduct(mat and vec)",
-                      "too big number of rows");
-  UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + (mat1.numRowsLocal() * vec2.sizeLocal()))),
-                      m_env.worldRank(),
-                      "GslMatrix::fillTensorProduct(mat and vec)",
-                      "inconsistent number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + (mat1.numCols() * 1)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillTensorProduct(mat and vec)",
-                      "too big number of columns");
-  UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + (mat1.numCols() * 1))),
-                      m_env.worldRank(),
-                      "GslMatrix::fillTensorProduct(mat and vec)",
-                      "inconsistent number of columns");
+  queso_require_greater_equal_msg(this->numRowsLocal(), (initialTargetRowId + (mat1.numRowsLocal() * vec2.sizeLocal())), "too big number of rows");
+  if (checkForExactNumRowsMatching) queso_require_equal_to_msg(this->numRowsLocal(), (initialTargetRowId + (mat1.numRowsLocal() * vec2.sizeLocal())), "inconsistent number of rows");
+  queso_require_greater_equal_msg(this->numCols(), (initialTargetColId + (mat1.numCols() * 1)), "too big number of columns");
+  if (checkForExactNumColsMatching) queso_require_equal_to_msg(this->numCols(), (initialTargetColId + (mat1.numCols() * 1)), "inconsistent number of columns");
 
   for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
     for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
@@ -1251,22 +1043,10 @@ GslMatrix::fillWithTranspose(
 {
   unsigned int nRows = mat.numRowsLocal();
   unsigned int nCols = mat.numCols();
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + nCols),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithTranspose()",
-                      "too big number of rows");
-  UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + nCols)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithTranspose()",
-                      "inconsistent number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + nRows),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithTranspose()",
-                      "too big number of cols");
-  UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + nRows)),
-                      m_env.worldRank(),
-                      "GslMatrix::fillWithTranspose()",
-                      "inconsistent number of cols");
+  queso_require_greater_equal_msg(this->numRowsLocal(), (initialTargetRowId + nCols), "too big number of rows");
+  if (checkForExactNumRowsMatching) queso_require_equal_to_msg(this->numRowsLocal(), (initialTargetRowId + nCols), "inconsistent number of rows");
+  queso_require_greater_equal_msg(this->numCols(), (initialTargetColId + nRows), "too big number of cols");
+  if (checkForExactNumColsMatching) queso_require_equal_to_msg(this->numCols(), (initialTargetColId + nRows), "inconsistent number of cols");
 
   for (unsigned int row = 0; row < nRows; ++row) {
     for (unsigned int col = 0; col < nCols; ++col) {
@@ -1398,10 +1178,7 @@ GslVector
 GslMatrix::multiply(
   const GslVector& x) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslMatrix::multiply(), return vector",
-                      "matrix and vector have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), x.sizeLocal(), "matrix and vector have incompatible sizes");
 
   GslVector y(m_env,m_map);
   this->multiply(x,y);
@@ -1414,15 +1191,9 @@ GslMatrix::multiply(
   const GslVector& x,
         GslVector& y) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslMatrix::multiply(), vector return void",
-                      "matrix and x have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), x.sizeLocal(), "matrix and x have incompatible sizes");
 
-  UQ_FATAL_TEST_MACRO((this->numRowsLocal() != y.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslMatrix::multiply(), vector return void",
-                      "matrix and y have incompatible sizes");
+  queso_require_equal_to_msg(this->numRowsLocal(), y.sizeLocal(), "matrix and y have incompatible sizes");
 
   unsigned int sizeX = this->numCols();
   unsigned int sizeY = this->numRowsLocal();
@@ -1441,10 +1212,7 @@ GslVector
 GslMatrix::invertMultiply(
   const GslVector& b) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslMatrix::invertMultiply(), return vector",
-                      "matrix and rhs have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), b.sizeLocal(), "matrix and rhs have incompatible sizes");
 
   GslVector x(m_env,m_map);
   this->invertMultiply(b,x);
@@ -1457,40 +1225,22 @@ GslMatrix::invertMultiply(
   const GslVector& b,
         GslVector& x) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslMatrix::invertMultiply(), return void",
-                      "matrix and rhs have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), b.sizeLocal(), "matrix and rhs have incompatible sizes");
 
-  UQ_FATAL_TEST_MACRO((x.sizeLocal() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslMatrix::invertMultiply(), return void",
-                      "solution and rhs have incompatible sizes");
+  queso_require_equal_to_msg(x.sizeLocal(), b.sizeLocal(), "solution and rhs have incompatible sizes");
 
   int iRC;
   if (m_LU == NULL) {
-    UQ_FATAL_TEST_MACRO((m_permutation != NULL),
-                        m_env.worldRank(),
-                        "GslMatrix::invertMultiply()",
-                        "m_permutation should be NULL");
+    queso_require_msg(!(m_permutation), "m_permutation should be NULL");
 
     m_LU = gsl_matrix_calloc(this->numRowsLocal(),this->numCols());
-    UQ_FATAL_TEST_MACRO((m_LU == NULL),
-                        m_env.worldRank(),
-                        "GslMatrix::invertMultiply()",
-                        "gsl_matrix_calloc() failed");
+    queso_require_msg(m_LU, "gsl_matrix_calloc() failed");
 
     iRC = gsl_matrix_memcpy(m_LU, m_mat);
-    UQ_FATAL_RC_MACRO(iRC,
-                      m_env.worldRank(),
-                      "GslMatrix::invertMultiply()",
-                      "gsl_matrix_memcpy() failed");
+    queso_require_msg(!(iRC), "gsl_matrix_memcpy() failed");
 
     m_permutation = gsl_permutation_calloc(numCols());
-    UQ_FATAL_TEST_MACRO((m_permutation == NULL),
-                        m_env.worldRank(),
-                        "GslMatrix::invertMultiply()",
-                        "gsl_permutation_calloc() failed");
+    queso_require_msg(m_permutation, "gsl_permutation_calloc() failed");
 
     if (m_inDebugMode) {
       std::cout << "In GslMatrix::invertMultiply()"
@@ -1521,10 +1271,7 @@ GslMatrix::invertMultiply(
                               << ", IRC = " << iRC
                               << std::endl;
     }
-    UQ_FATAL_RC_MACRO(iRC,
-                      m_env.worldRank(),
-                      "GslMatrix::invertMultiply()",
-                      "gsl_linalg_LU_decomp() failed");
+    queso_require_msg(!(iRC), "gsl_linalg_LU_decomp() failed");
 
     if (m_inDebugMode) {
       std::cout << "In GslMatrix::invertMultiply()"
@@ -1557,8 +1304,8 @@ GslMatrix::invertMultiply(
                             << ", IRC = " << iRC
                             << std::endl;
   }
-  // prudenci, 2012-09-26: commented the 'UQ_FATAL_RC_MACRO' below
-  //UQ_FATAL_RC_MACRO(iRC,
+
+
   //                  m_env.worldRank(),
   //                  "GslMatrix::invertMultiply()",
   //                  "gsl_linalg_LU_solve() failed");
@@ -1586,19 +1333,13 @@ GslMatrix::invertMultiply(const GslMatrix& B) const
 void
 GslMatrix::invertMultiply(const GslMatrix& B, GslMatrix& X) const
 {
-
   // Sanity Checks
-  UQ_FATAL_RC_MACRO(((B.numRowsLocal() != X.numRowsLocal()) ||
-		     (B.numCols()      != X.numCols()     )),
-                    m_env.worldRank(),
-		    "GslMatrix::invertMultiply()",
-		    "Matrices B and X are incompatible");
-
-
-  UQ_FATAL_RC_MACRO((this->numRowsLocal() != X.numRowsLocal()),
-                    m_env.worldRank(),
-		    "GslMatrix::invertMultiply()",
-		    "This and X matrices are incompatible");
+  queso_require_equal_to_msg(B.numRowsLocal(), X.numRowsLocal(),
+		             "Matrices B and X are incompatible");
+  queso_require_equal_to_msg(B.numCols(),      X.numCols(),
+		             "Matrices B and X are incompatible");
+  queso_require_equal_to_msg(this->numRowsLocal(), X.numRowsLocal(),
+                             "This and X matrices are incompatible");
 
   // Some local variables used within the loop.
   GslVector b(m_env, m_map);
@@ -1622,10 +1363,7 @@ GslVector
 GslMatrix::invertMultiplyForceLU(
   const GslVector& b) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslMatrix::invertMultiply(), return vector",
-                      "matrix and rhs have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), b.sizeLocal(), "matrix and rhs have incompatible sizes");
 
   GslVector x(m_env,m_map);
   this->invertMultiplyForceLU(b,x);
@@ -1638,56 +1376,32 @@ GslMatrix::invertMultiplyForceLU(
   const GslVector& b,
         GslVector& x) const
 {
-  UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslMatrix::invertMultiplyForceLU(), return void",
-                      "matrix and rhs have incompatible sizes");
+  queso_require_equal_to_msg(this->numCols(), b.sizeLocal(), "matrix and rhs have incompatible sizes");
 
-  UQ_FATAL_TEST_MACRO((x.sizeLocal() != b.sizeLocal()),
-                      m_env.worldRank(),
-                      "GslMatrix::invertMultiplyForceLU(), return void",
-                      "solution and rhs have incompatible sizes");
+  queso_require_equal_to_msg(x.sizeLocal(), b.sizeLocal(), "solution and rhs have incompatible sizes");
 
   int iRC;
 
   if ( m_LU == NULL ) {
-    UQ_FATAL_TEST_MACRO((m_permutation != NULL),
-                        m_env.worldRank(),
-                        "GslMatrix::invertMultiplyForceLU()",
-                        "m_permutation should be NULL");
+    queso_require_msg(!(m_permutation), "m_permutation should be NULL");
     m_LU = gsl_matrix_calloc(this->numRowsLocal(),this->numCols());
   }
-  UQ_FATAL_TEST_MACRO((m_LU == NULL),
-		      m_env.worldRank(),
-		      "GslMatrix::invertMultiplyForceLU()",
-		      "gsl_matrix_calloc() failed");
+  queso_require_msg(m_LU, "gsl_matrix_calloc() failed");
 
   iRC = gsl_matrix_memcpy(m_LU, m_mat);
-  UQ_FATAL_RC_MACRO(iRC,
-		    m_env.worldRank(),
-		    "GslMatrix::invertMultiplyForceLU()",
-		    "gsl_matrix_memcpy() failed");
+  queso_require_msg(!(iRC), "gsl_matrix_memcpy() failed");
 
   if( m_permutation == NULL ) m_permutation = gsl_permutation_calloc(numCols());
-  UQ_FATAL_TEST_MACRO((m_permutation == NULL),
-		      m_env.worldRank(),
-		      "GslMatrix::invertMultiplyForceLU()",
-		      "gsl_permutation_calloc() failed");
+  queso_require_msg(m_permutation, "gsl_permutation_calloc() failed");
 
   iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum);
-  UQ_FATAL_RC_MACRO(iRC,
-		    m_env.worldRank(),
-		    "GslMatrix::invertMultiplyForceLU()",
-		    "gsl_linalg_LU_decomp() failed");
+  queso_require_msg(!(iRC), "gsl_linalg_LU_decomp() failed");
 
   iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data());
   if (iRC != 0) {
     m_isSingular = true;
   }
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "GslMatrix::invertMultiplyForceLU()",
-                    "gsl_linalg_LU_solve() failed");
+  queso_require_msg(!(iRC), "gsl_linalg_LU_solve() failed");
 
   return;
 }
@@ -1697,16 +1411,10 @@ GslMatrix::eigen(GslVector& eigenValues, GslMatrix* eigenVectors) const
 {
   unsigned int n = eigenValues.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "GslMatrix::eigen()",
-                      "invalid input vector size");
+  queso_require_not_equal_to_msg(n, 0, "invalid input vector size");
 
   if (eigenVectors) {
-    UQ_FATAL_TEST_MACRO((eigenValues.sizeLocal() != eigenVectors->numRowsLocal()),
-                        env().fullRank(),
-                        "GslVector::eigen()",
-                        "different input vector sizes");
+    queso_require_equal_to_msg(eigenValues.sizeLocal(), eigenVectors->numRowsLocal(), "different input vector sizes");
   }
 
   if (eigenVectors == NULL) {
@@ -1731,10 +1439,7 @@ GslMatrix::largestEigen(double& eigenValue, GslVector& eigenVector) const
   // Sanity Checks
   unsigned int n = eigenVector.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "GslMatrix::largestEigen()",
-                      "invalid input vector size");
+  queso_require_not_equal_to_msg(n, 0, "invalid input vector size");
 
   /* The following notation is used:
      z = vector used in iteration that ends up being the eigenvector corresponding to the
@@ -1790,10 +1495,7 @@ GslMatrix::largestEigen(double& eigenValue, GslVector& eigenVector) const
   // to this effect.
   // TODO: We know we failed at this point - need a way to not need a test
   // TODO: Just specify the error.
-  UQ_FATAL_TEST_MACRO((residual >= tolerance),
-                      env().fullRank(),
-                      "GslMatrix::largestEigen()",
-                      "Maximum num iterations exceeded");
+  queso_require_less_msg(residual, tolerance, "Maximum num iterations exceeded");
 
 
   return;
@@ -1805,10 +1507,7 @@ GslMatrix::smallestEigen(double& eigenValue, GslVector& eigenVector) const
   // Sanity Checks
   unsigned int n = eigenVector.sizeLocal();
 
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "GslMatrix::smallestEigen()",
-                      "invalid input vector size");
+  queso_require_not_equal_to_msg(n, 0, "invalid input vector size");
 
   /* The following notation is used:
      z = vector used in iteration that ends up being the eigenvector corresponding to the
@@ -1868,10 +1567,7 @@ GslMatrix::smallestEigen(double& eigenValue, GslVector& eigenVector) const
   // to this effect.
   // TODO: We know we failed at this point - need a way to not need a test
   // TODO: Just specify the error.
-  UQ_FATAL_TEST_MACRO((residual >= tolerance),
-                      env().fullRank(),
-                      "GslMatrix::smallestEigen()",
-                      "Maximum num iterations exceeded");
+  queso_require_less_msg(residual, tolerance, "Maximum num iterations exceeded");
 
   return;
 }
@@ -1880,24 +1576,15 @@ void
 GslMatrix::getColumn(unsigned int column_num, GslVector& column) const
 {
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
-                      env().fullRank(),
-                      "GslMatrix::getColumn",
-                      "Specified row number not within range");
+  queso_require_less_msg(column_num, this->numCols(), "Specified row number not within range");
 
-  UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "GslMatrix::getColumn",
-                      "column vector not same size as this matrix");
+  queso_require_equal_to_msg(column.sizeLocal(), this->numRowsLocal(), "column vector not same size as this matrix");
 
   // Temporary working vector
   gsl_vector* gsl_column = gsl_vector_alloc( column.sizeLocal() );
 
   int error_code = gsl_matrix_get_col( gsl_column, m_mat, column_num );
-  UQ_FATAL_RC_MACRO( (error_code != 0),
-		     env().fullRank(),
-		     "GslMatrix::getColumn()",
-		     "gsl_matrix_get_col failed");
+  queso_require_equal_to_msg(error_code, 0, "gsl_matrix_get_col failed");
 
   // Copy column from gsl matrix into our GslVector object
   for( unsigned int i = 0; i < column.sizeLocal(); ++i )
@@ -1915,24 +1602,15 @@ void
 GslMatrix::getRow(unsigned int row_num, GslVector& row) const
 {
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
-                      env().fullRank(),
-                      "GslMatrix::getRow",
-                      "Specified row number not within range");
+  queso_require_less_msg(row_num, this->numRowsLocal(), "Specified row number not within range");
 
-  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numCols()),
-                      env().fullRank(),
-                      "GslMatrix::getRow",
-                      "row vector not same size as this matrix");
+  queso_require_equal_to_msg(row.sizeLocal(), this->numCols(), "row vector not same size as this matrix");
 
   // Temporary working vector
   gsl_vector* gsl_row = gsl_vector_alloc( row.sizeLocal() );
 
   int error_code = gsl_matrix_get_row( gsl_row, m_mat, row_num );
-  UQ_FATAL_RC_MACRO( (error_code != 0),
-		     env().fullRank(),
-		     "GslMatrix::getRow()",
-		     "gsl_matrix_get_row failed");
+  queso_require_equal_to_msg(error_code, 0, "gsl_matrix_get_row failed");
 
   // Copy row from gsl matrix into our GslVector object
   for( unsigned int i = 0; i < row.sizeLocal(); ++i )
@@ -1977,23 +1655,14 @@ GslMatrix::setRow(unsigned int row_num, const GslVector& row)
 {
   this->resetLU();
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
-                      env().fullRank(),
-                      "GslMatrix::setRow",
-                      "Specified row number not within range");
+  queso_require_less_msg(row_num, this->numRowsLocal(), "Specified row number not within range");
 
-  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numCols()),
-                      env().fullRank(),
-                      "GslMatrix::setRow",
-                      "row vector not same size as this matrix");
+  queso_require_equal_to_msg(row.sizeLocal(), this->numCols(), "row vector not same size as this matrix");
 
   gsl_vector* gsl_row = row.data();
 
   int error_code = gsl_matrix_set_row( m_mat, row_num, gsl_row );
-  UQ_FATAL_RC_MACRO( (error_code != 0),
-		     env().fullRank(),
-		     "GslMatrix::setRow()",
-		     "gsl_matrix_set_row failed");
+  queso_require_equal_to_msg(error_code, 0, "gsl_matrix_set_row failed");
 
   return;
 }
@@ -2003,23 +1672,14 @@ GslMatrix::setColumn(unsigned int column_num, const GslVector& column)
 {
   this->resetLU();
   // Sanity checks
-  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
-                      env().fullRank(),
-                      "GslMatrix::setColumn",
-                      "Specified column number not within range");
+  queso_require_less_msg(column_num, this->numCols(), "Specified column number not within range");
 
-  UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "GslMatrix::setColumn",
-                      "column vector not same size as this matrix");
+  queso_require_equal_to_msg(column.sizeLocal(), this->numRowsLocal(), "column vector not same size as this matrix");
 
   gsl_vector* gsl_column = column.data();
 
   int error_code = gsl_matrix_set_col( m_mat, column_num, gsl_column );
-  UQ_FATAL_RC_MACRO( (error_code != 0),
-		     env().fullRank(),
-		     "GslMatrix::setColumn()",
-		     "gsl_matrix_set_col failed");
+  queso_require_equal_to_msg(error_code, 0, "gsl_matrix_set_col failed");
 
   return;
 }
@@ -2073,25 +1733,13 @@ GslMatrix::matlabLinearInterpExtrap(
   const GslMatrix& y1Mat,
   const GslVector& x2Vec)
 {
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
-                      m_env.worldRank(),
-                      "GslMatrix::matlabLinearInterpExtrap()",
-                      "invalid 'x1' size");
+  queso_require_greater_msg(x1Vec.sizeLocal(), 1, "invalid 'x1' size");
 
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Mat.numRowsLocal(),
-                      m_env.worldRank(),
-                      "GslMatrix::matlabLinearInterpExtrap()",
-                      "invalid 'x1' and 'y1' sizes");
+  queso_require_equal_to_msg(x1Vec.sizeLocal(), y1Mat.numRowsLocal(), "invalid 'x1' and 'y1' sizes");
 
-  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "GslMatrix::matlabLinearInterpExtrap()",
-                      "invalid 'x2' and 'this' sizes");
+  queso_require_equal_to_msg(x2Vec.sizeLocal(), this->numRowsLocal(), "invalid 'x2' and 'this' sizes");
 
-  UQ_FATAL_TEST_MACRO(y1Mat.numCols() != this->numCols(),
-                      m_env.worldRank(),
-                      "GslMatrix::matlabLinearInterpExtrap()",
-                      "invalid 'y1' and 'this' sizes");
+  queso_require_equal_to_msg(y1Mat.numCols(), this->numCols(), "invalid 'y1' and 'this' sizes");
 
   GslVector y1Vec(x1Vec);
   GslVector y2Vec(x2Vec);
@@ -2146,15 +1794,9 @@ GslMatrix::subWriteContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "GslMatrix::subWriteContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
-  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.worldRank(),
-                      "GslMatrix::subWriteContents()",
-                      "implemented just for sequential vectors for now");
+  queso_require_less_equal_msg(this->numOfProcsForStorage(), 1, "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openOutputFile(fileName,
@@ -2191,15 +1833,9 @@ GslMatrix::subReadContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds)
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "GslMatrix::subReadContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
-  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
-                      m_env.worldRank(),
-                      "GslMatrix::subReadContents()",
-                      "implemented just for sequential vectors for now");
+  queso_require_less_equal_msg(this->numOfProcsForStorage(), 1, "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openInputFile(fileName,
@@ -2226,10 +1862,7 @@ GslMatrix::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
-    UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.worldRank(),
-                        "GslMatrix::subReadContents()",
-                        "string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, "=", "string should be the '=' sign");
 
     // Read 'zeros(n_rows,n_cols)' string
     *filePtrSet.ifsVar >> tmpString;
@@ -2240,10 +1873,7 @@ GslMatrix::subReadContents(
     char nRowsString[tmpString.size()-posInTmpString+1];
     unsigned int posInRowsString = 0;
     do {
-      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.worldRank(),
-                          "GslMatrix::subReadContents()",
-                          "symbol ',' not found in first line of file");
+      queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ',' not found in first line of file");
       nRowsString[posInRowsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ',');
     nRowsString[posInRowsString] = '\0';
@@ -2253,10 +1883,7 @@ GslMatrix::subReadContents(
     char nColsString[tmpString.size()-posInTmpString+1];
     unsigned int posInColsString = 0;
     do {
-      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                          m_env.worldRank(),
-                          "GslMatrix::subReadContents()",
-                          "symbol ')' not found in first line of file");
+      queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ')' not found in first line of file");
       nColsString[posInColsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ')');
     nColsString[posInColsString] = '\0';
@@ -2275,16 +1902,10 @@ GslMatrix::subReadContents(
     }
 
     // Check if [num of rows in file] == [requested matrix row size]
-    UQ_FATAL_TEST_MACRO(numRowsInFile != nRowsLocal,
-                        m_env.worldRank(),
-                        "GslMatrix::subReadContents()",
-                        "size of vec in file is not big enough");
+    queso_require_equal_to_msg(numRowsInFile, nRowsLocal, "size of vec in file is not big enough");
 
     // Check if [num of cols in file] == [num cols in current matrix]
-    UQ_FATAL_TEST_MACRO(numColsInFile != nCols,
-                        m_env.worldRank(),
-                        "GslMatrix::subReadContents()",
-                        "number of parameters of vec in file is different than number of parameters in this vec object");
+    queso_require_equal_to_msg(numColsInFile, nCols, "number of parameters of vec in file is different than number of parameters in this vec object");
 
     // Code common to any core in a communicator
     unsigned int maxCharsPerLine = 64*nCols; // Up to about 60 characters to represent each parameter value
@@ -2310,10 +1931,7 @@ GslMatrix::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-    UQ_FATAL_TEST_MACRO(tmpString != "=",
-                        m_env.worldRank(),
-                        "GslMatrix::subReadContents()",
-                        "in core 0, string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, "=", "in core 0, string should be the '=' sign");
 
     // Take into account the ' [' portion
     std::streampos tmpPos = filePtrSet.ifsVar->tellg();
@@ -2370,10 +1988,7 @@ GslMatrix operator*(const GslMatrix& m1, const GslMatrix& m2)
   unsigned int m2Rows = m2.numRowsLocal();
   unsigned int m2Cols = m2.numCols();
 
-  UQ_FATAL_TEST_MACRO((m1Cols != m2Rows),
-                      m1.env().worldRank(),
-                      "GslMatrix operator*(matrix,matrix)",
-                      "different sizes m1Cols and m2Rows");
+  queso_require_equal_to_msg(m1Cols, m2Rows, "different sizes m1Cols and m2Rows");
 
   GslMatrix mat(m1.env(),m1.map(),m2Cols);
 
@@ -2430,15 +2045,9 @@ GslMatrix leftDiagScaling(const GslVector& vec, const GslMatrix& mat)
   unsigned int mRows = mat.numRowsLocal();
   unsigned int mCols = mat.numCols();
 
-  UQ_FATAL_TEST_MACRO((vSize != mRows),
-                      mat.env().worldRank(),
-                      "GslMatrix leftDiagScaling(vector,matrix)",
-                      "size of vector is different from the number of rows in matrix");
+  queso_require_equal_to_msg(vSize, mRows, "size of vector is different from the number of rows in matrix");
 
-  UQ_FATAL_TEST_MACRO((mCols != mRows),
-                      mat.env().worldRank(),
-                      "GslMatrix leftDiagScaling(vector,matrix)",
-                      "routine currently works for square matrices only");
+  queso_require_equal_to_msg(mCols, mRows, "routine currently works for square matrices only");
 
   GslMatrix answer(mat);
   for (unsigned int i = 0; i < mRows; ++i) {
@@ -2457,15 +2066,9 @@ GslMatrix rightDiagScaling(const GslMatrix& mat, const GslVector& vec)
   unsigned int mRows = mat.numRowsLocal();
   unsigned int mCols = mat.numCols();
 
-  UQ_FATAL_TEST_MACRO((vSize != mCols),
-                      mat.env().worldRank(),
-                      "GslMatrix rightDiagScaling(matrix,vector)",
-                      "size of vector is different from the number of cols in matrix");
+  queso_require_equal_to_msg(vSize, mCols, "size of vector is different from the number of cols in matrix");
 
-  UQ_FATAL_TEST_MACRO((mCols != mRows),
-                      mat.env().worldRank(),
-                      "GslMatrix rightDiagScaling(matrix,vector)",
-                      "routine currently works for square matrices only");
+  queso_require_equal_to_msg(mCols, mRows, "routine currently works for square matrices only");
 
   GslMatrix answer(mat);
   for (unsigned int j = 0; j < mCols; ++j) {

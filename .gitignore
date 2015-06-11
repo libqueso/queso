@@ -89,6 +89,8 @@ examples/fullCovariance
 examples/blockDiagonalCovariance
 examples/fullCovarianceRandomCoefficient
 examples/blockDiagonalCovarianceRandomCoefficients
+examples/4d_interp
+examples/4d_interp_read
 
 src/core/inc/queso.h
 src/libqueso.la
@@ -115,7 +117,6 @@ test/test_uqEnvironment
 test/test_uqEnvironmentCopy
 test/test_uqEnvironmentEquals
 test/test_uqEnvironmentNonFatal
-test/test_uqEnvironmentOptionsPrint
 test/test_uqGaussianVectorRVClass
 test/test_uqGslMatrix
 test/test_uqGslMatrixConstructorFatal
@@ -188,3 +189,20 @@ test/test_fullCovarianceChain
 test/test_diagonalCovarianceChain
 test/test_scalarCovarianceChain
 test/test_blockDiagonalCovarianceChain
+test/test_BoostInputOptionsParser
+test/test_InputOptionsParser/test_options_good.txt
+test/test_InputOptionsParser/test_options_bad.txt
+test/test_InputOptionsParser/test_options_default.txt
+test/test_NoInputFile
+test/test_InterpolationSurrogate/queso_input.txt
+test/test_output_interp_surrogates
+test/test_write_InterpolationSurrogateBuilder.dat
+test/test_outputNoInputFile
+test/test_1D_LinearLagrangeInterpolationSurrogate
+test/test_2D_LinearLagrangeInterpolationSurrogate
+test/test_3D_LinearLagrangeInterpolationSurrogate
+test/test_4D_LinearLagrangeInterpolationSurrogate
+test/test_InterpolationSurrogateHelper
+test/test_build_InterpolationSurrogateBuilder
+test/test_write_InterpolationSurrogateBuilder_1.dat
+test/test_write_InterpolationSurrogateBuilder_2.dat

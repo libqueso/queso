@@ -60,8 +60,8 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblem(
   m_unifiedSolutionCdf      (NULL),
 #endif
   m_solutionPdf             (NULL),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL)
+  m_optionsObj              (alternativeOptionsValues),
+  m_userDidNotProvideOptions(false)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor()"
@@ -71,24 +71,27 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblem(
                             << std::endl;
   }
 
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new StatisticalForwardProblemOptions(m_env,prefix,m_alternativeOptionsValues);
-  }
-  else {
-    m_optionsObj = new StatisticalForwardProblemOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    SfpOptionsValues * tempOptions = new SfpOptionsValues(&m_env, prefix);
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
+
+    // We do this so we don't delete the user's object in the dtor
+    m_userDidNotProvideOptions = true;
   }
 
-  UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "StatisticalForwardProblem<P_V,P_M>::constructor()",
-                      "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
+  if (m_optionsObj->m_help != "") {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << (*m_optionsObj) << std::endl;
+    }
+  }
 
-  UQ_FATAL_TEST_MACRO(qoiFunction.imageSet().vectorSpace().dimLocal() != qoiRv.imageSet().vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "StatisticalForwardProblem<P_V,P_M>::constructor()",
-                      "'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions");
+  queso_require_equal_to_msg(paramRv.imageSet().vectorSpace().dimLocal(), qoiFunction.domainSet().vectorSpace().dimLocal(), "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
+
+  queso_require_equal_to_msg(qoiFunction.imageSet().vectorSpace().dimLocal(), qoiRv.imageSet().vectorSpace().dimLocal(), "'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions");
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor()"
@@ -140,7 +143,7 @@ template <class P_V,class P_M, class Q_V, class Q_M>
 bool
   StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::computeSolutionFlag() const
 {
-  return m_optionsObj->m_ov.m_computeSolution;
+  return m_optionsObj->m_computeSolution;
 }
 //--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -151,7 +154,7 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   m_env.fullComm().Barrier();
   m_env.fullComm().syncPrintDebugMsg("Entering StatisticalForwardProblem<P_V,P_M>::solveWithMonteCarlo()",1,3000000);
 
-  if (m_optionsObj->m_ov.m_computeSolution == false) {
+  if (m_optionsObj->m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ": avoiding solution, as requested by user"
@@ -269,7 +272,7 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   // Compute (just unified one) correlation matrix, if requested
   P_M* pqCovarianceMatrix  = NULL;
   P_M* pqCorrelationMatrix = NULL;
-  if (m_optionsObj->m_ov.m_computeCovariances || m_optionsObj->m_ov.m_computeCorrelations) {
+  if (m_optionsObj->m_computeCovariances || m_optionsObj->m_computeCorrelations) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ", prefix = " << m_optionsObj->m_prefix
@@ -309,14 +312,14 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                             << ", prefix = "                                        << m_optionsObj->m_prefix
-                            << ": checking necessity of opening data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
+                            << ": checking necessity of opening data output file '" << m_optionsObj->m_dataOutputFileName
                             << "'"
                             << std::endl;
   }
   FilePtrSetStruct filePtrSet;
-  if (m_env.openOutputFile(m_optionsObj->m_ov.m_dataOutputFileName,
+  if (m_env.openOutputFile(m_optionsObj->m_dataOutputFileName,
                            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
-                           m_optionsObj->m_ov.m_dataOutputAllowedSet,
+                           m_optionsObj->m_dataOutputAllowedSet,
                            false,
                            filePtrSet)) {
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
@@ -338,10 +341,7 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
         }
       }
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.worldRank(),
-                            "StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
-                            "unified cdf writing, parallel vectors not supported yet");
+        queso_error_msg("unified cdf writing, parallel vectors not supported yet");
       }
     }
 #endif
@@ -350,7 +350,7 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ", prefix = "                 << m_optionsObj->m_prefix
-                              << ": closed data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
+                              << ": closed data output file '" << m_optionsObj->m_dataOutputFileName
                               << "'"
                               << std::endl;
     }
@@ -389,7 +389,7 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
     return m_qoiRv.subCdf();
   }
 
-  //UQ_FATAL_TEST_MACRO(m_unifiedSolutionCdf == NULL,
+
   //                    m_env.worldRank(),
   //                    "StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf()",
   //                    "variable is NULL");
@@ -404,10 +404,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 
   // Make sure this runs after the forward propagation
   // only then we obtain the actual realizations of the parameters
-  UQ_FATAL_TEST_MACRO(m_paramChain == NULL,
-                      m_env.worldRank(),
-                      (std::string)("StatisticalForwardProblem<V,M,V,M>::getParamChain()"),
-                      "m_paramChain is NULL");
+  queso_require_msg(m_paramChain, "m_paramChain is NULL");
 
   return *m_paramChain;
 

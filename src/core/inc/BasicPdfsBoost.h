@@ -47,9 +47,6 @@ class BasicPdfsBoost : public BasicPdfsBase
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor.
-  BasicPdfsBoost();
-
   //! Constructor.
   BasicPdfsBoost(int worldRank);
 
@@ -67,6 +64,8 @@ public:
   //@}
 
 private:
+  //! Default constructor.
+  BasicPdfsBoost();
 };
 
 }  // End namespace QUESO

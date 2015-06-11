@@ -68,10 +68,6 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
                             << std::endl;
   }
 
-  if (m_env.optionsInputFileName() != "") {
-    this->m_ov->scanOptionsValues();
-  }
-
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In InfiniteDimensionalMCMCSamplerOptions,"
             << " finished scanning options" << std::endl;
@@ -84,10 +80,7 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
     int irtrn = CheckFilePath((this->m_ov->m_dataOutputDirName +
                                (this->m_env).subIdString() +
                                "/test.txt").c_str());
-    UQ_FATAL_TEST_MACRO(irtrn < 0,
-                        (this->m_env).subId(),
-                        "Environment::constructor()",
-                        "unable to verify output path");
+    queso_require_greater_equal_msg(irtrn, 0, "unable to verify output path");
   }
 
   // Only subprocess of subrank 0 creates the output file

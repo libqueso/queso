@@ -175,16 +175,10 @@ void ArrayOfSequences<V,M>::mean(unsigned int initialPos, unsigned int numPos,
   bool bRC = ((0                     <= initialPos                 ) &&
               (0                     <  numPos                     ) &&
               ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::mean()",
-                      "invalid initial position or number of positions");
+  queso_require_msg(bRC, "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == meanVec.size());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::mean()",
-                      "incompatible sizes between meanVec vector and vectors in sequence");
+  queso_require_msg(bRC, "incompatible sizes between meanVec vector and vectors in sequence");
 
   meanVec.cwSet(0.);
   ArrayOfSequences<V,M>* tmp = const_cast<ArrayOfSequences<V,M>*>(this);
@@ -205,22 +199,13 @@ void ArrayOfSequences<V,M>::sampleVariance(unsigned int initialPos,
   bool bRC = ((0                     <= initialPos                 ) &&
               (0                     <  numPos                     ) &&
               ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::sampleVariance()",
-                      "invalid initial position or number of positions");
+  queso_require_msg(bRC, "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == samVec.size());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::sampleVariance()",
-                      "incompatible sizes between samVec vector and vectors in sequence");
+  queso_require_msg(bRC, "incompatible sizes between samVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::sampleVariance()",
-                      "incompatible sizes between meanVec vector and vectors in sequence");
+  queso_require_msg(bRC, "incompatible sizes between meanVec vector and vectors in sequence");
 
   unsigned int loopSize      = numPos;
   unsigned int finalPosPlus1 = initialPos + loopSize;
@@ -251,22 +236,13 @@ void ArrayOfSequences<V,M>::populationVariance(unsigned int initialPos,
   bool bRC = ((0                     <= initialPos                 ) &&
               (0                     <  numPos                     ) &&
               ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::populationVariance()",
-                      "invalid initial position or number of positions");
+  queso_require_msg(bRC, "invalid initial position or number of positions");
 
   bRC = (this->vectorSize() == popVec.size());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::populationVariance()",
-                      "incompatible sizes between popVec vector and vectors in sequence");
+  queso_require_msg(bRC, "incompatible sizes between popVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::populationVariance()",
-                      "incompatible sizes between meanVec vector and vectors in sequence");
+  queso_require_msg(bRC, "incompatible sizes between meanVec vector and vectors in sequence");
 
   unsigned int loopSize      = numPos;
   unsigned int finalPosPlus1 = initialPos + loopSize;
@@ -298,28 +274,16 @@ void ArrayOfSequences<V,M>::autoCovariance(unsigned int initialPos,
   bool bRC = ((0                     <= initialPos                 ) &&
               (0                     <  numPos                     ) &&
               ((initialPos+numPos-1) <= (this->subSequenceSize()-1)));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "VectorSequenceAutoCovariance<V,M>()",
-                      "invalid initial position or number of positions");
+  queso_require_msg(bRC, "invalid initial position or number of positions");
 
   bRC = (numPos > lag);
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "VectorSequenceAutoCovariance<V,M>()",
-                      "lag is too large");
+  queso_require_msg(bRC, "lag is too large");
 
   bRC = (this->vectorSize() == covVec.size());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "VectorSequenceAutoCovariance<V,M>()",
-                      "incompatible sizes between covVec vector and vectors in sequence");
+  queso_require_msg(bRC, "incompatible sizes between covVec vector and vectors in sequence");
 
   bRC = (this->vectorSize() == meanVec.size());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "VectorSequenceAutoCovariance<V,M>()",
-                      "incompatible sizes between meanVec vector and vectors in sequence");
+  queso_require_msg(bRC, "incompatible sizes between meanVec vector and vectors in sequence");
 
   unsigned int loopSize      = numPos - lag;
   unsigned int finalPosPlus1 = initialPos + loopSize;
@@ -390,10 +354,7 @@ void ArrayOfSequences<V,M>::autoCorrViaFft(unsigned int initialPos,
               (0                      <  numPos                 ) &&
               ((initialPos+numPos)    <= this->subSequenceSize()) &&
               (autoCorrsSumVec.size() == this->vectorSize()     ));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::autoCorrViaFft(), for sum",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   ScalarSequence<double> data(m_env,0);
 
@@ -436,10 +397,7 @@ void ArrayOfSequences<V,M>::histogram(unsigned int initialPos,
     std::vector<V*>& quanttsForAllBins) const
 {
 #if 0
-  UQ_FATAL_TEST_MACRO(centersForAllBins.size() != quanttsForAllBins.size(),
-                      sequence[0]->env().worldRank(),
-                      "VectorSequenceHistogram<V,M>()",
-                      "vectors 'centers' and 'quantts' have different sizes");
+  queso_require_equal_to_msg(centersForAllBins.size(), quanttsForAllBins.size(), "vectors 'centers' and 'quantts' have different sizes");
 
   for (unsigned int j = 0; j < quanttsForAllBins.size(); ++j) {
     centersForAllBins[j] = new V(*(sequence[0]));
@@ -599,10 +557,7 @@ void ArrayOfSequences<V,M>::writeContents(std::ofstream& ofsvar) const
 template <class V, class M>
 void ArrayOfSequences<V,M>::unifiedWriteContents(std::ofstream& ofsvar) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::unifiedWriteContents(1)",
-                      "not implemented yet");
+  queso_not_implemented();
   return;
 }
 
@@ -610,10 +565,7 @@ template <class V, class M>
 void ArrayOfSequences<V,M>::unifiedWriteContents(const std::string& fileName,
     const std::string& fileType) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::unifiedWriteContents(2)",
-                      "not implemented yet");
+  queso_not_implemented();
   return;
 }
 
@@ -622,10 +574,7 @@ void ArrayOfSequences<V,M>::unifiedReadContents(const std::string& fileName,
     const std::string& fileType,
     const unsigned int subSequenceSize)
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "ArrayOfSequences<V,M>::unifiedReadContents()",
-                      "not implemented yet");
+  queso_not_implemented();
   return;
 }
 

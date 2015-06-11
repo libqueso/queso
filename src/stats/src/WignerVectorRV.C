@@ -46,10 +46,7 @@ WignerVectorRV<V,M>::WignerVectorRV(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(radius <= 0.,
-                      m_env.worldRank(),
-                      "WignerVectorRV<V,M>::constructor()",
-                      "invalid radius");
+  queso_require_greater_msg(radius, 0., "invalid radius");
 
   m_pdf        = new WignerJointPdf<V,M>(m_prefix.c_str(),
                                                 m_imageSet,

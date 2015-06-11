@@ -53,9 +53,9 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL),
-  m_seedWithMAPEstimator    (false)
+  m_optionsObj              (alternativeOptionsValues),
+  m_seedWithMAPEstimator    (false),
+  m_userDidNotProvideOptions(false)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering Sip" << std::endl;
@@ -68,27 +68,32 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
                             << std::endl;
   }
 
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix,m_alternativeOptionsValues);
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
+
+    // We set this flag so we don't delete the user-created object when it
+    // comes time to deconstruct
+    m_userDidNotProvideOptions = true;
   }
-  else {
-    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
+
+  if (m_optionsObj->m_help != "") {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << (*m_optionsObj) << std::endl;
+    }
   }
+
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In Sip, finished scanning options" << std::endl;
 #endif
 
-  UQ_FATAL_TEST_MACRO(priorRv.imageSet().vectorSpace().dimLocal() != likelihoodFunction.domainSet().vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::constructor()",
-                      "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
+  queso_require_equal_to_msg(priorRv.imageSet().vectorSpace().dimLocal(), likelihoodFunction.domainSet().vectorSpace().dimLocal(), "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
 
-  UQ_FATAL_TEST_MACRO(priorRv.imageSet().vectorSpace().dimLocal() != postRv.imageSet().vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::constructor()",
-                      "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
+  queso_require_equal_to_msg(priorRv.imageSet().vectorSpace().dimLocal(), postRv.imageSet().vectorSpace().dimLocal(), "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving StatisticalInverseProblem<P_V,P_M>::constructor()"
@@ -120,9 +125,9 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL),
-  m_seedWithMAPEstimator    (false)
+  m_optionsObj              (alternativeOptionsValues),
+  m_seedWithMAPEstimator    (false),
+  m_userDidNotProvideOptions(false)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering StatisticalInverseProblem<P_V,P_M>::constructor()"
@@ -132,24 +137,26 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
                             << std::endl;
   }
 
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix,m_alternativeOptionsValues);
-  }
-  else {
-    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
+
+    m_userDidNotProvideOptions = true;
   }
 
-  UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != m_likelihoodFunction.domainSet().vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::constructor()",
-                      "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
+  if (m_optionsObj->m_help != "") {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << (*m_optionsObj) << std::endl;
+    }
+  }
 
-  UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != postRv.imageSet().vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::constructor()",
-                      "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
+  queso_require_equal_to_msg(m_priorRv.imageSet().vectorSpace().dimLocal(), m_likelihoodFunction.domainSet().vectorSpace().dimLocal(), "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
+
+  queso_require_equal_to_msg(m_priorRv.imageSet().vectorSpace().dimLocal(), postRv.imageSet().vectorSpace().dimLocal(), "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving StatisticalInverseProblem<P_V,P_M>::constructor()"
@@ -183,7 +190,10 @@ StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
   if (m_subSolutionMdf  ) delete m_subSolutionMdf;
   if (m_solutionPdf     ) delete m_solutionPdf;
   if (m_solutionDomain  ) delete m_solutionDomain;
-  if (m_optionsObj      ) delete m_optionsObj;
+
+  if (m_optionsObj && m_userDidNotProvideOptions) {
+    delete m_optionsObj;
+  }
 }
 // Statistical methods -----------------------------
 template <class P_V,class P_M>
@@ -199,7 +209,7 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   //std::cout << "proc " << m_env.fullRank() << ", HERE sip 001" << std::endl;
   m_env.fullComm().syncPrintDebugMsg("Entering StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000);
 
-  if (m_optionsObj->m_ov.m_computeSolution == false) {
+  if (m_optionsObj->m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()"
                               << ": avoiding solution, as requested by user"
@@ -213,20 +223,11 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != initialValues.sizeLocal(),
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",
-                      "'m_priorRv' and 'initialValues' should have equal dimensions");
+  queso_require_equal_to_msg(m_priorRv.imageSet().vectorSpace().dimLocal(), initialValues.sizeLocal(), "'m_priorRv' and 'initialValues' should have equal dimensions");
 
   if (initialProposalCovMatrix) {
-    UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != initialProposalCovMatrix->numRowsLocal(),
-                        m_env.worldRank(),
-                        "StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",
-                        "'m_priorRv' and 'initialProposalCovMatrix' should have equal dimensions");
-    UQ_FATAL_TEST_MACRO(initialProposalCovMatrix->numCols() != initialProposalCovMatrix->numRowsGlobal(),
-                        m_env.worldRank(),
-                        "StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",
-                        "'initialProposalCovMatrix' should be a square matrix");
+    queso_require_equal_to_msg(m_priorRv.imageSet().vectorSpace().dimLocal(), initialProposalCovMatrix->numRowsLocal(), "'m_priorRv' and 'initialProposalCovMatrix' should have equal dimensions");
+    queso_require_equal_to_msg(initialProposalCovMatrix->numCols(), initialProposalCovMatrix->numRowsGlobal(), "'initialProposalCovMatrix' should be a square matrix");
   }
 
   if (m_mlSampler       ) delete m_mlSampler;
@@ -307,28 +308,25 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
                                                           *m_subMdfValues);
   m_postRv.setMdf(*m_subSolutionMdf);
 
-  if ((m_optionsObj->m_ov.m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE                    ) &&
-      (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end())) {
+  if ((m_optionsObj->m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE                    ) &&
+      (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end())) {
     if (m_env.subRank() == 0) {
       // Write data output file
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "Opening data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
+        *m_env.subDisplayFile() << "Opening data output file '" << m_optionsObj->m_dataOutputFileName
                                 << "' for calibration problem with problem with prefix = " << m_optionsObj->m_prefix
                                 << std::endl;
       }
 
       // Open file
       // Always write at the end of an eventual pre-existing file
-      std::ofstream* ofsvar = new std::ofstream((m_optionsObj->m_ov.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
+      std::ofstream* ofsvar = new std::ofstream((m_optionsObj->m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::in | std::ofstream::ate);
       if ((ofsvar            == NULL ) ||
           (ofsvar->is_open() == false)) {
         delete ofsvar;
-        ofsvar = new std::ofstream((m_optionsObj->m_ov.m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
+        ofsvar = new std::ofstream((m_optionsObj->m_dataOutputFileName+"_sub"+m_env.subIdString()+".m").c_str(), std::ofstream::out | std::ofstream::trunc);
       }
-      UQ_FATAL_TEST_MACRO((ofsvar && ofsvar->is_open()) == false,
-                          m_env.worldRank(),
-                          "StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",
-                          "failed to open file");
+      queso_require_msg((ofsvar && ofsvar->is_open()), "failed to open file");
 
       m_postRv.mdf().print(*ofsvar);
 
@@ -336,7 +334,7 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
       //ofsvar->close();
       delete ofsvar;
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "Closed data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
+        *m_env.subDisplayFile() << "Closed data output file '" << m_optionsObj->m_dataOutputFileName
                                 << "' for calibration problem with problem with prefix = " << m_optionsObj->m_prefix
                                 << std::endl;
       }
@@ -367,7 +365,7 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
   m_env.fullComm().Barrier();
   m_env.fullComm().syncPrintDebugMsg("Entering StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()",1,3000000);
 
-  if (m_optionsObj->m_ov.m_computeSolution == false) {
+  if (m_optionsObj->m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
       *m_env.subDisplayFile() << "In StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()"
                               << ": avoiding solution, as requested by user"
@@ -457,10 +455,7 @@ template <class P_V,class P_M>
 const BaseVectorSequence<P_V,P_M>&
 StatisticalInverseProblem<P_V,P_M>::chain() const
 {
-  UQ_FATAL_TEST_MACRO(m_chain == NULL,
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::chain()",
-                      "m_chain is NULL");
+  queso_require_msg(m_chain, "m_chain is NULL");
   return *m_chain;
 }
 //--------------------------------------------------
@@ -468,10 +463,7 @@ template <class P_V,class P_M>
 const ScalarSequence<double>&
 StatisticalInverseProblem<P_V,P_M>::logLikelihoodValues() const
 {
-  UQ_FATAL_TEST_MACRO(m_logLikelihoodValues == NULL,
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::logLikelihoodValues()",
-                      "m_logLikelihoodValues is NULL");
+  queso_require_msg(m_logLikelihoodValues, "m_logLikelihoodValues is NULL");
   return *m_logLikelihoodValues;
 }
 //--------------------------------------------------
@@ -479,40 +471,28 @@ template <class P_V,class P_M>
 const ScalarSequence<double>&
 StatisticalInverseProblem<P_V,P_M>::logTargetValues() const
 {
-  UQ_FATAL_TEST_MACRO(m_logTargetValues == NULL,
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::logTargetValues()",
-                      "m_logTargetValues is NULL");
+  queso_require_msg(m_logTargetValues, "m_logTargetValues is NULL");
   return *m_logTargetValues;
 }
 //--------------------------------------------------
 template <class P_V,class P_M>
 double StatisticalInverseProblem<P_V,P_M>::logEvidence() const
 {
-  UQ_FATAL_TEST_MACRO(m_mlSampler == NULL,
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::logEvidence()",
-                      "m_mlSampler is NULL");
+  queso_require_msg(m_mlSampler, "m_mlSampler is NULL");
   return m_mlSampler->logEvidence();
 }
 //--------------------------------------------------
 template <class P_V,class P_M>
 double StatisticalInverseProblem<P_V,P_M>::meanLogLikelihood() const
 {
-  UQ_FATAL_TEST_MACRO(m_mlSampler == NULL,
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::meanLogLikelihood()",
-                      "m_mlSampler is NULL");
+  queso_require_msg(m_mlSampler, "m_mlSampler is NULL");
   return m_mlSampler->meanLogLikelihood();
 }
 //--------------------------------------------------
 template <class P_V,class P_M>
 double StatisticalInverseProblem<P_V,P_M>::eig() const
 {
-  UQ_FATAL_TEST_MACRO(m_mlSampler == NULL,
-                      m_env.worldRank(),
-                      "StatisticalInverseProblem<P_V,P_M>::eig()",
-                      "m_mlSampler is NULL");
+  queso_require_msg(m_mlSampler, "m_mlSampler is NULL");
   return m_mlSampler->eig();
 }
 // I/O methods--------------------------------------

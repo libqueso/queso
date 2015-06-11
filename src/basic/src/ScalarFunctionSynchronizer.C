@@ -239,10 +239,7 @@ double ScalarFunctionSynchronizer<V,M>::callFunction(const V* vecValues,
     } while (stayInRoutine);
   }
   else {
-    UQ_FATAL_TEST_MACRO(vecValues == NULL,
-                        m_env.worldRank(),
-                        "ScalarFunctionSynchronizer<V,M>::callFunction()",
-                        "vecValues should not be NULL");
+    queso_require_msg(vecValues, "vecValues should not be NULL");
 
     m_env.subComm().Barrier();
     result = m_scalarFunction.lnValue(*vecValues,

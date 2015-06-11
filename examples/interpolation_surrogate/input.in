@@ -1,0 +1,12 @@
+###############################################
+# UQ Environment
+###############################################
+env_help                 = 1
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = output/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0
+env_displayVerbosity     = 1000
+env_syncVerbosity        = 0
+env_seed                 = 0
+

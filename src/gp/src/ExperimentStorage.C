@@ -92,10 +92,7 @@ ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_addId >= m_paper_n,
-                      m_env.worldRank(),
-                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::addExperiment()",
-                      "too many adds...");
+  queso_require_less_msg(m_addId, m_paper_n, "too many adds...");
 
   m_scenarioVecs_standard  [m_addId] = &scenarioVec_standard;
   m_dataVecs_transformed   [m_addId] = &dataVec_transformed;
@@ -199,15 +196,9 @@ template<class S_V,class S_M,class D_V,class D_M>
 const S_V&
 ExperimentStorage<S_V,S_M,D_V,D_M>::scenarioVec_standard(unsigned int experimentId) const
 {
-  UQ_FATAL_TEST_MACRO(experimentId >= m_scenarioVecs_standard.size(),
-                      m_env.worldRank(),
-                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_standard()",
-                      "experimentId is too large");
+  queso_require_less_msg(experimentId, m_scenarioVecs_standard.size(), "experimentId is too large");
 
-  UQ_FATAL_TEST_MACRO(m_scenarioVecs_standard[experimentId] == NULL,
-                      m_env.worldRank(),
-                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_standard()",
-                      "vector is NULL");
+  queso_require_msg(m_scenarioVecs_standard[experimentId], "vector is NULL");
 
   return *(m_scenarioVecs_standard[experimentId]);
 }
@@ -216,15 +207,9 @@ template<class S_V,class S_M,class D_V,class D_M>
 const D_V&
 ExperimentStorage<S_V,S_M,D_V,D_M>::dataVec_transformed(unsigned int experimentId) const
 {
-  UQ_FATAL_TEST_MACRO(experimentId >= m_dataVecs_transformed.size(),
-                      m_env.worldRank(),
-                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::dataVec_transformed()",
-                      "experimentId is too large");
+  queso_require_less_msg(experimentId, m_dataVecs_transformed.size(), "experimentId is too large");
 
-  UQ_FATAL_TEST_MACRO(m_dataVecs_transformed[experimentId] == NULL,
-                      m_env.worldRank(),
-                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::dataVec_transformed()",
-                      "vector is NULL");
+  queso_require_msg(m_dataVecs_transformed[experimentId], "vector is NULL");
 
   return *(m_dataVecs_transformed[experimentId]);
 }
@@ -233,10 +218,7 @@ template<class S_V,class S_M,class D_V,class D_M>
 const D_V&
 ExperimentStorage<S_V,S_M,D_V,D_M>::yVec_transformed() const
 {
-  UQ_FATAL_TEST_MACRO(m_yVec_transformed == NULL,
-                      m_env.worldRank(),
-                      "ExprimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::yVec_transformed()",
-                      "'m_yVec_transformed' is NULL");
+  queso_require_msg(m_yVec_transformed, "'m_yVec_transformed' is NULL");
 
   return *m_yVec_transformed;
 }
@@ -245,10 +227,7 @@ template<class S_V,class S_M,class D_V,class D_M>
 const D_M&
 ExperimentStorage<S_V,S_M,D_V,D_M>::Wy() const
 {
-  UQ_FATAL_TEST_MACRO(m_Wy == NULL,
-                      m_env.worldRank(),
-                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wy()",
-                      "'m_Wy' is NULL");
+  queso_require_msg(m_Wy, "'m_Wy' is NULL");
 
   return *m_Wy;
 }

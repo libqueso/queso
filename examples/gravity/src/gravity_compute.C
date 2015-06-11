@@ -88,8 +88,7 @@ void computeGravityAndTraveledDistance(const QUESO::FullEnvironment& env) {
   //------------------------------------------------------
   // SIP Step 1 of 6: Instantiate the parameter space
   //------------------------------------------------------
-  QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix> paramSpace(env,
-      "param_", 1, NULL);
+  QUESO::VectorSpace<> paramSpace(env, "param_", 1, NULL);
 
   //------------------------------------------------------
   // SIP Step 2 of 6: Instantiate the parameter domain
@@ -100,34 +99,28 @@ void computeGravityAndTraveledDistance(const QUESO::FullEnvironment& env) {
   paramMinValues[0] = 8.;
   paramMaxValues[0] = 11.;
 
-  QUESO::BoxSubset<QUESO::GslVector,QUESO::GslMatrix> paramDomain("param_",
-      paramSpace, paramMinValues, paramMaxValues);
+  QUESO::BoxSubset<> paramDomain("param_", paramSpace, paramMinValues,
+      paramMaxValues);
 
   //------------------------------------------------------
   // SIP Step 3 of 6: Instantiate the likelihood function
   // object to be used by QUESO.
   //------------------------------------------------------
-  Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("like_", paramDomain);
+  Likelihood<> lhood("like_", paramDomain);
 
   //------------------------------------------------------
   // SIP Step 4 of 6: Define the prior RV
   //------------------------------------------------------
-  QUESO::UniformVectorRV<QUESO::GslVector,QUESO::GslMatrix> priorRv("prior_",
-      paramDomain);
+  QUESO::UniformVectorRV<> priorRv("prior_", paramDomain);
 
   //------------------------------------------------------
   // SIP Step 5 of 6: Instantiate the inverse problem
   //------------------------------------------------------
-  QUESO::GenericVectorRV<QUESO::GslVector,QUESO::GslMatrix>
-    postRv("post_",  // Extra prefix before the default "rv_" prefix
-           paramSpace);
+  // Extra prefix before the default "rv_" prefix
+  QUESO::GenericVectorRV<> postRv("post_", paramSpace);
 
-  QUESO::StatisticalInverseProblem<QUESO::GslVector,QUESO::GslMatrix>
-    ip("",          // No extra prefix before the default "ip_" prefix
-       NULL,
-       priorRv,
-       lhood,
-       postRv);
+  // No extra prefix before the default "ip_" prefix
+  QUESO::StatisticalInverseProblem<> ip("", NULL, priorRv, lhood, postRv);
 
   //------------------------------------------------------
   // SIP Step 6 of 6: Solve the inverse problem, that is,
@@ -157,8 +150,7 @@ void computeGravityAndTraveledDistance(const QUESO::FullEnvironment& env) {
   // SFP input RV = FIP posterior RV, so SFP parameter space
   // has been already defined.
   //------------------------------------------------------
-  QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix> qoiSpace(env, "qoi_",
-      1, NULL);
+  QUESO::VectorSpace<> qoiSpace(env, "qoi_", 1, NULL);
 
   //------------------------------------------------------
   // SFP Step 2 of 6: Instantiate the parameter domain
@@ -171,8 +163,7 @@ void computeGravityAndTraveledDistance(const QUESO::FullEnvironment& env) {
   // SFP Step 3 of 6: Instantiate the qoi object
   // to be used by QUESO.
   //------------------------------------------------------
-  Qoi<QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix>
-    qoi("qoi_", paramDomain, qoiSpace);
+  Qoi<> qoi("qoi_", paramDomain, qoiSpace);
 
   //------------------------------------------------------
   // SFP Step 4 of 6: Define the input RV
@@ -184,11 +175,9 @@ void computeGravityAndTraveledDistance(const QUESO::FullEnvironment& env) {
   //------------------------------------------------------
   // SFP Step 5 of 6: Instantiate the forward problem
   //------------------------------------------------------
-  QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix> qoiRv("qoi_",
-      qoiSpace);
+  QUESO::GenericVectorRV<> qoiRv("qoi_", qoiSpace);
 
-  QUESO::StatisticalForwardProblem<QUESO::GslVector, QUESO::GslMatrix,
-    QUESO::GslVector, QUESO::GslMatrix> fp("", NULL, postRv, qoi, qoiRv);
+  QUESO::StatisticalForwardProblem<> fp("", NULL, postRv, qoi, qoiRv);
 
   //------------------------------------------------------
   // SFP Step 6 of 6: Solve the forward problem

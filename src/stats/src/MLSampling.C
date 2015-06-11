@@ -76,10 +76,7 @@ void BIP_routine(glp_tree *tree, void *info)
     break;
 
     default:
-      UQ_FATAL_TEST_MACRO(true,
-                          env.worldRank(),
-                          "BIP_routine()",
-                          "invalid glp_ios_readon");
+      queso_error_msg("invalid glp_ios_readon");
     break;
   }
 
@@ -180,10 +177,7 @@ MLSampling<P_V,P_M>::decideOnBalancedChains_all(
                                 "failed MPI.Gather() for first indexes");
 
       if (m_env.inter0Rank() == 0) {
-        UQ_FATAL_TEST_MACRO(allFirstIndexes[0] != indexOfFirstWeight,
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
-                            "failed MPI.Gather() result for first indexes, at proc 0");
+        queso_require_equal_to_msg(allFirstIndexes[0], indexOfFirstWeight, "failed MPI.Gather() result for first indexes, at proc 0");
       }
 
       auxUInt = indexOfLastWeight;
@@ -193,10 +187,7 @@ MLSampling<P_V,P_M>::decideOnBalancedChains_all(
 
       if (m_env.inter0Rank() == 0) { // Yes, '== 0'
         //allLastIndexes[0] = indexOfLastWeight; // FIX ME: really necessary????
-        UQ_FATAL_TEST_MACRO(allLastIndexes[0] != indexOfLastWeight,
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
-                            "failed MPI.Gather() result for last indexes, at proc 0");
+        queso_require_equal_to_msg(allLastIndexes[0], indexOfLastWeight, "failed MPI.Gather() result for last indexes, at proc 0");
       }
     }
 
@@ -217,17 +208,11 @@ MLSampling<P_V,P_M>::decideOnBalancedChains_all(
         }
       }
       for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
-        UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
-                            "wrong indexes");
+        queso_require_equal_to_msg(allFirstIndexes[r+1], (allLastIndexes[r]+1), "wrong indexes");
       }
 
       for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
-        UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
-                            "wrong indexes");
+        queso_require_equal_to_msg(allFirstIndexes[r+1], (allLastIndexes[r]+1), "wrong indexes");
       }
 
       std::vector<unsigned int> origNumChainsPerNode   (Np,0);
@@ -252,10 +237,7 @@ MLSampling<P_V,P_M>::decideOnBalancedChains_all(
                       << ", allFirstIndexes[r] = " << allFirstIndexes[r]
                       << ", allLastIndexes[r] = "  << allLastIndexes[r]
                       << std::endl;
-            UQ_FATAL_TEST_MACRO(true,
-                                m_env.worldRank(),
-                                "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
-                                "wrong indexes or 'r' got too large");
+            queso_error_msg("wrong indexes or 'r' got too large");
           }
         }
         if (unifiedIndexCountersAtProc0Only[i] != 0) {
@@ -438,10 +420,7 @@ MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
                                "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                                "failed MPI.Allreduce() for min");
   //std::cout << m_env.worldRank() << ", minRatio = " << minRatio << std::endl;
-  UQ_FATAL_TEST_MACRO(minRatio != finalRatioOfPosPerNode,
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
-                      "failed minRatio sanity check");
+  queso_require_equal_to_msg(minRatio, finalRatioOfPosPerNode, "failed minRatio sanity check");
 
   double maxRatio = 0.;
   auxBuf[0] = finalRatioOfPosPerNode;
@@ -449,10 +428,7 @@ MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
                                "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                                "failed MPI.Allreduce() for max");
   //std::cout << m_env.worldRank() << ", maxRatio = " << maxRatio << std::endl;
-  UQ_FATAL_TEST_MACRO(maxRatio != finalRatioOfPosPerNode,
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
-                      "failed maxRatio sanity check");
+  queso_require_equal_to_msg(maxRatio, finalRatioOfPosPerNode, "failed maxRatio sanity check");
 
   //////////////////////////////////////////////////////////////////////////
   // Proc 0 now broadcasts the information on 'finalNumChainsPerNode'
@@ -539,14 +515,8 @@ MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(
   //}
 
   // Use 'indexOfFirstWeight' and 'indexOfLastWeight' in order to update 'subNumSamples'
-  UQ_FATAL_TEST_MACRO(indexOfFirstWeight >= unifiedIndexCountersAtAllProcs.size(),
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
-                      "invalid indexOfFirstWeight");
-  UQ_FATAL_TEST_MACRO(indexOfLastWeight >= unifiedIndexCountersAtAllProcs.size(),
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
-                      "invalid indexOfLastWeight");
+  queso_require_less_msg(indexOfFirstWeight, unifiedIndexCountersAtAllProcs.size(), "invalid indexOfFirstWeight");
+  queso_require_less_msg(indexOfLastWeight, unifiedIndexCountersAtAllProcs.size(), "invalid indexOfLastWeight");
   subNumSamples = 0;
   for (unsigned int i = indexOfFirstWeight; i <= indexOfLastWeight; ++i) {
     subNumSamples += unifiedIndexCountersAtAllProcs[i];
@@ -572,7 +542,7 @@ MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(
                                "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                                "failed MPI.Allreduce() for sum");
 
-  //UQ_FATAL_TEST_MACRO(unifiedRequestedNumSamples != sumModifiedSubNumSamples,
+
   //                    m_env.worldRank(),
   //                    "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
   //                    "invalid state");
@@ -635,17 +605,11 @@ MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(
         // Ok
       }
       else {
-        UQ_FATAL_TEST_MACRO(true, // KAUST4
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
-                            "should never get here");
+        queso_error_msg("should never get here");
       }
     }
   }
-  UQ_FATAL_TEST_MACRO(numberOfPositionsToGuaranteeForNode != 0, // subNumSamples, // KAUST4
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
-                      "numberOfPositionsToGuaranteeForNode exited loop with wrong value");
+  queso_require_equal_to_msg(numberOfPositionsToGuaranteeForNode, 0, "numberOfPositionsToGuaranteeForNode exited loop with wrong value");
   // FIX ME: swap trick to save memory
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1292,10 +1256,7 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(coefId != (int) (ne+1),
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                      "invalid final coefId");
+  queso_require_equal_to_msg(coefId, (int) (ne+1), "invalid final coefId");
 
   glp_load_matrix(lp, ne, &iVec[0], &jVec[0], &aVec[0]);
 
@@ -1315,30 +1276,15 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   //////////////////////////////////////////////////////////////////////////
   // Check BIP before solving it
   //////////////////////////////////////////////////////////////////////////
-  UQ_FATAL_TEST_MACRO(glp_get_num_rows(lp) != (int) m, // Not 'm+1'
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                      "invalid number of rows");
+  queso_require_equal_to_msg(glp_get_num_rows(lp), (int) m, "invalid number of rows");
 
-  UQ_FATAL_TEST_MACRO(glp_get_num_cols(lp) != (int) n, // Not 'n+1'
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                      "invalid number of columnss");
+  queso_require_equal_to_msg(glp_get_num_cols(lp), (int) n, "invalid number of columnss");
 
-  UQ_FATAL_TEST_MACRO(glp_get_num_nz(lp) != (int) ne,
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                      "invalid number of nonzero constraint coefficients");
+  queso_require_equal_to_msg(glp_get_num_nz(lp), (int) ne, "invalid number of nonzero constraint coefficients");
 
-  UQ_FATAL_TEST_MACRO(glp_get_num_int(lp) != (int) n, // ????
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                      "invalid number of integer structural variables");
+  queso_require_equal_to_msg(glp_get_num_int(lp), (int) n, "invalid number of integer structural variables");
 
-  UQ_FATAL_TEST_MACRO(glp_get_num_bin(lp) != (int) n,
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                      "invalid number of binary structural variables");
+  queso_require_equal_to_msg(glp_get_num_bin(lp), (int) n, "invalid number of binary structural variables");
 
   //////////////////////////////////////////////////////////////////////////
   // Set initial state
@@ -1360,16 +1306,10 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
       int j = chainId*Np + nodeId + 1;
       int initialState = glp_mip_col_val(lp, j);
       if (nodeId == 0) {
-        UQ_FATAL_TEST_MACRO(initialState != 1,
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                            "for nodeId = 0, initial state should be '1'");
+        queso_require_equal_to_msg(initialState, 1, "for nodeId = 0, initial state should be '1'");
       }
       else {
-        UQ_FATAL_TEST_MACRO(initialState != 0,
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                            "for nodeId > 0, initial state should be '0'");
+        queso_require_equal_to_msg(initialState, 0, "for nodeId > 0, initial state should be '0'");
       }
     }
   }
@@ -1410,10 +1350,7 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(BIP_rc != 0,
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                      "BIP returned rc != 0");
+  queso_require_equal_to_msg(BIP_rc, 0, "BIP returned rc != 0");
 
   //////////////////////////////////////////////////////////////////////////
   // Check BIP status after solution
@@ -1451,24 +1388,15 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
     break;
 
     default:
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                          "BIP has an undefined solution or has no solution");
+      queso_error_msg("BIP has an undefined solution or has no solution");
     break;
   }
 
   for (int i = 1; i <= (int) Nc; ++i) {
-    UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != 1,
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                        "row should have value 1 at solution");
+    queso_require_equal_to_msg(glp_mip_row_val(lp, i), 1, "row should have value 1 at solution");
   }
   for (int i = (Nc+1); i <= (int) (Nc+Np-1); ++i) {
-    UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) > 0,
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                        "row should have value 0 or should be negative at solution");
+    queso_require_less_equal_msg(glp_mip_row_val(lp, i), 0, "row should have value 0 or should be negative at solution");
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -1483,19 +1411,13 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
         // Do nothing
       }
       else if (glp_mip_col_val(lp, j) == 1) {
-        UQ_FATAL_TEST_MACRO(exchangeStdVec[chainId].finalNodeOfInitialPosition != -1, // important
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                            "chain has already been taken care of");
+        queso_require_equal_to_msg(exchangeStdVec[chainId].finalNodeOfInitialPosition, -1, "chain has already been taken care of");
         exchangeStdVec[chainId].finalNodeOfInitialPosition = nodeId;
         finalNumChainsPerNode   [nodeId] += 1;
         finalNumPositionsPerNode[nodeId] += exchangeStdVec[chainId].numberOfPositions;
       }
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                            "control variable should be either '0' or '1'");
+        queso_error_msg("control variable should be either '0' or '1'");
       }
     }
   }
@@ -1538,25 +1460,16 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   //////////////////////////////////////////////////////////////////////////
   // Make sanity checks
   //////////////////////////////////////////////////////////////////////////
-  UQ_FATAL_TEST_MACRO(glp_mip_obj_val(lp) != (double) finalNumPositionsPerNode[0],
-                      m_env.worldRank(),
-                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                      "Invalid objective value");
+  queso_require_equal_to_msg(glp_mip_obj_val(lp), (double) finalNumPositionsPerNode[0], "Invalid objective value");
 
   for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, '1'
-    UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[nodeId-1] < finalNumPositionsPerNode[nodeId],
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                        "Next node should have a number of positions equal or less than the current node");
+    queso_require_greater_equal_msg(finalNumPositionsPerNode[nodeId-1], finalNumPositionsPerNode[nodeId], "Next node should have a number of positions equal or less than the current node");
   }
 
   for (int i = (int) (Nc+1); i <= (int) (Nc+Np-1); ++i) {
     unsigned int nodeId = i - Nc;
     int diff = ((int) finalNumPositionsPerNode[nodeId]) - ((int) finalNumPositionsPerNode[nodeId-1]);
-    UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != diff,
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::solveBIP_proc0()",
-                        "wrong state");
+    queso_require_equal_to_msg(glp_mip_row_val(lp, i), diff, "wrong state");
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -1656,10 +1569,7 @@ MLSampling<P_V,P_M>::justBalance_proc0(
     // FIX ME: swap to save memory
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
       std::sort(vectorOfChainSizesPerNode[nodeId].begin(), vectorOfChainSizesPerNode[nodeId].end());
-      UQ_FATAL_TEST_MACRO(vectorOfChainSizesPerNode[nodeId].size() != currNumChainsPerNode[nodeId],
-                          m_env.worldRank(),
-                          "MLSampling<P_V,P_M>::justBalance_proc0()",
-                          "inconsistent number of chains in node");
+      queso_require_equal_to_msg(vectorOfChainSizesPerNode[nodeId].size(), currNumChainsPerNode[nodeId], "inconsistent number of chains in node");
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -1680,15 +1590,9 @@ MLSampling<P_V,P_M>::justBalance_proc0(
       }
     }
 
-    UQ_FATAL_TEST_MACRO(currMinPosPerNode != currNumPositionsPerNode[currNodeWithLeastPositions],
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::justBalance_proc0()",
-                        "inconsistent currMinPosPerNode");
+    queso_require_equal_to_msg(currMinPosPerNode, currNumPositionsPerNode[currNodeWithLeastPositions], "inconsistent currMinPosPerNode");
 
-    UQ_FATAL_TEST_MACRO(currMaxPosPerNode != currNumPositionsPerNode[currNodeWithMostPositions],
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::justBalance_proc0()",
-                        "inconsistent currMaxPosPerNode");
+    queso_require_equal_to_msg(currMaxPosPerNode, currNumPositionsPerNode[currNodeWithMostPositions], "inconsistent currMaxPosPerNode");
 
     unsigned int numberOfPositionsToMove = vectorOfChainSizesPerNode[currNodeWithMostPositions][0];
 
@@ -1765,15 +1669,9 @@ MLSampling<P_V,P_M>::justBalance_proc0(
     unsigned int newMaxPosPerNode = *std::max_element(newNumPositionsPerNode.begin(), newNumPositionsPerNode.end());
     double newRatioOfPosPerNode = ((double) newMaxPosPerNode ) / ((double) newMinPosPerNode);
 
-    UQ_FATAL_TEST_MACRO(newMinPosPerNode != newNumPositionsPerNode[newNodeWithLeastPositions],
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::justBalance_proc0()",
-                        "inconsistent newMinPosPerNode");
+    queso_require_equal_to_msg(newMinPosPerNode, newNumPositionsPerNode[newNodeWithLeastPositions], "inconsistent newMinPosPerNode");
 
-    UQ_FATAL_TEST_MACRO(newMaxPosPerNode != newNumPositionsPerNode[newNodeWithMostPositions],
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::justBalance_proc0()",
-                        "inconsistent newMaxPosPerNode");
+    queso_require_equal_to_msg(newMaxPosPerNode, newNumPositionsPerNode[newNodeWithMostPositions], "inconsistent newMaxPosPerNode");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::justBalance_proc0()"
@@ -1982,25 +1880,13 @@ MLSampling<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
     //////////////////////////////////////////////////////////////////////////
     // Make sanity checks
     //////////////////////////////////////////////////////////////////////////
-    UQ_FATAL_TEST_MACRO(indexesOfInitialPositionsNodeRHasToReceiveFromMe.size() != numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()],
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
-                        "inconsistent number of initial positions to send to node 'r'");
+    queso_require_equal_to_msg(indexesOfInitialPositionsNodeRHasToReceiveFromMe.size(), numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()], "inconsistent number of initial positions to send to node 'r'");
 
-    UQ_FATAL_TEST_MACRO(finalNumChainsPerNode[r] != (totalNumberOfInitialPositionsNodeRHasToReceive + numberOfInitialPositionsNodeRAlreadyHas),
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
-                        "inconsistent number of chains in node 'r'");
+    queso_require_equal_to_msg(finalNumChainsPerNode[r], (totalNumberOfInitialPositionsNodeRHasToReceive + numberOfInitialPositionsNodeRAlreadyHas), "inconsistent number of chains in node 'r'");
 
-    UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[r] != (totalSumOfChainLenghtsNodeRHasToInherit + sumOfChainLenghtsNodeRAlreadyHas),
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
-                        "inconsistent sum of chain lenghts in node 'r'");
+    queso_require_equal_to_msg(finalNumPositionsPerNode[r], (totalSumOfChainLenghtsNodeRHasToInherit + sumOfChainLenghtsNodeRAlreadyHas), "inconsistent sum of chain lenghts in node 'r'");
 
-    UQ_FATAL_TEST_MACRO(totalNumberOfInitialPositionsNodeRHasToReceive != totalNumberOfChainLenghtsNodeRHasToInherit,
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
-                        "inconsistent on total number of initial positions to receive in node 'r'");
+    queso_require_equal_to_msg(totalNumberOfInitialPositionsNodeRHasToReceive, totalNumberOfChainLenghtsNodeRHasToInherit, "inconsistent on total number of initial positions to receive in node 'r'");
 
     // Optimize use of memory (FIX ME: don't need to use swap here ????)
     indexesOfInitialPositionsNodeRHasToReceiveFromMe.resize(numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()]);
@@ -2134,18 +2020,9 @@ MLSampling<P_V,P_M>::checkpointML(
   unsigned int quantity2 = currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
   unsigned int quantity3 = currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
   if (m_env.inter0Rank() >= 0) {
-    UQ_FATAL_TEST_MACRO(m_logEvidenceFactors.size() != m_currLevel,
-                        m_env.fullRank(),
-                        "MLSampling<P_V,P_M>::checkpointML()",
-                        "number of evidence factors is not consistent");
-    UQ_FATAL_TEST_MACRO(quantity1 != quantity2,
-                        m_env.fullRank(),
-                        "MLSampling<P_V,P_M>::checkpointML()",
-                        "quantity2 is not consistent");
-    UQ_FATAL_TEST_MACRO(quantity1 != quantity3,
-                        m_env.fullRank(),
-                        "MLSampling<P_V,P_M>::checkpointML()",
-                        "quantity3 is not consistent");
+    queso_require_equal_to_msg(m_logEvidenceFactors.size(), m_currLevel, "number of evidence factors is not consistent");
+    queso_require_equal_to_msg(quantity1, quantity2, "quantity2 is not consistent");
+    queso_require_equal_to_msg(quantity1, quantity3, "quantity3 is not consistent");
   }
 
   if (m_env.fullRank() == 0) {
@@ -2270,10 +2147,7 @@ MLSampling<P_V,P_M>::restartML(
     // Read all values
     //******************************************************************************
     *ifsVar >> m_currLevel; // 1
-    UQ_FATAL_TEST_MACRO(numLines != (ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA + m_currLevel),
-                        m_env.fullRank(),
-                        "MLSampling<P_V,P_M>::restartML()",
-                        "number of lines read is different than pre-established number of lines in control file");
+    queso_require_equal_to_msg(numLines, (ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA + m_currLevel), "number of lines read is different than pre-established number of lines in control file");
 
     m_logEvidenceFactors.clear();
     m_logEvidenceFactors.resize(m_currLevel,0.);
@@ -2285,10 +2159,7 @@ MLSampling<P_V,P_M>::restartML(
       *ifsVar >> m_logEvidenceFactors[i];
     }
     *ifsVar >> checkingString; // 6 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
-    UQ_FATAL_TEST_MACRO(checkingString != "COMPLETE",
-                        m_env.fullRank(),
-                        "MLSampling<P_V,P_M>::restartML()",
-                        "control txt input file is not complete");
+    queso_require_equal_to_msg(checkingString, "COMPLETE", "control txt input file is not complete");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "Restart input file has the following information:"
@@ -2362,18 +2233,9 @@ MLSampling<P_V,P_M>::restartML(
   //******************************************************************************
   // Process read data in all MPI nodes now
   //******************************************************************************
-  UQ_FATAL_TEST_MACRO(vectorSpaceDim != m_vectorSpace.dimGlobal(),
-                      m_env.fullRank(),
-                      "MLSampling<P_V,P_M>::restartML()",
-                      "read vector space dimension is not consistent");
-  UQ_FATAL_TEST_MACRO((currExponent < 0.) || (currExponent > 1.),
-                      m_env.fullRank(),
-                      "MLSampling<P_V,P_M>::restartML()",
-                      "read currExponent is not consistent");
-  UQ_FATAL_TEST_MACRO((quantity1 % m_env.numSubEnvironments()) != 0,
-                      m_env.fullRank(),
-                      "MLSampling<P_V,P_M>::restartML()",
-                      "read size of chain should be a multiple of the number of subenvironments");
+  queso_require_equal_to_msg(vectorSpaceDim, m_vectorSpace.dimGlobal(), "read vector space dimension is not consistent");
+  queso_require_msg(!((currExponent < 0.) || (currExponent > 1.)), "read currExponent is not consistent");
+  queso_require_equal_to_msg((quantity1 % m_env.numSubEnvironments()), 0, "read size of chain should be a multiple of the number of subenvironments");
   unsigned int subSequenceSize = 0;
   subSequenceSize = ((double) quantity1) / ((double) m_env.numSubEnvironments());
 
@@ -2558,10 +2420,7 @@ MLSampling<P_V,P_M>::generateSequence_Level0_all(
 
     } // KAUST
 
-    UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != currOptions.m_rawChainSize), // Ok to use rawChainSize
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::generateSequence()",
-                        "currChain (first one) has been generated with invalid size");
+    queso_require_equal_to_msg(currChain.subSequenceSize(), currOptions.m_rawChainSize, "currChain (first one) has been generated with invalid size");
 
     double levelRunTime = MiscGetEllapsedSeconds(&timevalLevel);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -2706,15 +2565,9 @@ MLSampling<P_V,P_M>::generateSequence_Step02_inter0(
                                 << std::endl;
       }
 
-      UQ_FATAL_TEST_MACRO((prevChain.subSequenceSize() != prevLogLikelihoodValues.subSequenceSize()),
-                          m_env.worldRank(),
-                          "MLSampling<P_V,P_M>::generateSequence()",
-                          "different sizes between previous chain and previous sequence of likelihood values");
+      queso_require_equal_to_msg(prevChain.subSequenceSize(), prevLogLikelihoodValues.subSequenceSize(), "different sizes between previous chain and previous sequence of likelihood values");
 
-      UQ_FATAL_TEST_MACRO((prevChain.subSequenceSize() != prevLogTargetValues.subSequenceSize()),
-                          m_env.worldRank(),
-                          "MLSampling<P_V,P_M>::generateSequence()",
-                          "different sizes between previous chain and previous sequence of target values");
+      queso_require_equal_to_msg(prevChain.subSequenceSize(), prevLogTargetValues.subSequenceSize(), "different sizes between previous chain and previous sequence of target values");
 
       // Set 'indexOfFirstWeight' and 'indexOfLastWeight' // KAUST
       indexOfFirstWeight = 0;
@@ -2928,11 +2781,8 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
 
         effectiveSampleSize = 1./effectiveSampleSize;
         nowEffectiveSizeRatio = effectiveSampleSize/((double) weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1));
-        UQ_FATAL_TEST_MACRO((nowEffectiveSizeRatio > (1.+1.e-8)),
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::generateSequence()",
-                            "effective sample size ratio cannot be > 1");
-        //UQ_FATAL_TEST_MACRO((nowEffectiveSizeRatio < (1.-1.e-8)),
+        queso_require_less_equal_msg(nowEffectiveSizeRatio, (1.+1.e-8), "effective sample size ratio cannot be > 1");
+
         //                    m_env.worldRank(),
         //                    "MLSampling<P_V,P_M>::generateSequence()",
         //                    "effective sample size ratio cannot be < 1");
@@ -3224,10 +3074,7 @@ MLSampling<P_V,P_M>::generateSequence_Step05_inter0(
 
       unsigned int auxUnifiedSize = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
       if (m_env.inter0Rank() == 0) {
-        UQ_FATAL_TEST_MACRO(unifiedIndexCountersAtProc0Only.size() != auxUnifiedSize,
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::generateSequence()",
-                            "wrong output from sampleIndexesAtProc0() in step 5");
+        queso_require_equal_to_msg(unifiedIndexCountersAtProc0Only.size(), auxUnifiedSize, "wrong output from sampleIndexesAtProc0() in step 5");
       }
 
   double stepRunTime = MiscGetEllapsedSeconds(&timevalStep);
@@ -3462,10 +3309,7 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
           nowRejectionRateIsBelowRange = false;
         }
         else {
-          UQ_FATAL_TEST_MACRO(true,
-                              m_env.worldRank(),
-                              "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
-                              "nowRejectionRate should be out of the requested range at this point of the logic");
+          queso_error_msg("nowRejectionRate should be out of the requested range at this point of the logic");
         }
 
         if (m_env.inter0Rank() >= 0) { // KAUST
@@ -3508,10 +3352,7 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
                 etas[1] = std::max(beforeEta,nowEta);
               }
               else {
-                UQ_FATAL_TEST_MACRO(true,
-                                    m_env.worldRank(),
-                                    "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
-                                    "before and now range flags are inconsistent");
+                queso_error_msg("before and now range flags are inconsistent");
               }
             } // if (useMiddlePointLogicForEta == false)
 
@@ -3602,10 +3443,7 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
 
           unsigned int auxUnifiedSize = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
           if (m_env.inter0Rank() == 0) {
-            UQ_FATAL_TEST_MACRO(nowUnifiedIndexCountersAtProc0Only.size() != auxUnifiedSize,
-                                m_env.worldRank(),
-                                "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
-                                "wrong output from sampleIndexesAtProc0() in step 9");
+            queso_require_equal_to_msg(nowUnifiedIndexCountersAtProc0Only.size(), auxUnifiedSize, "wrong output from sampleIndexesAtProc0() in step 9");
           }
 
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -3726,10 +3564,7 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
         currOptions->m_amAdaptInterval       = savedAmAdaptInterval;
 
         for (unsigned int i = 0; i < nowBalLinkControl.balLinkedChains.size(); ++i) {
-          UQ_FATAL_TEST_MACRO(nowBalLinkControl.balLinkedChains[i].initialPosition == NULL,
-                              m_env.worldRank(),
-                              "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
-                              "Initial position pointer in step 9 should not be NULL");
+          queso_require_msg(nowBalLinkControl.balLinkedChains[i].initialPosition, "Initial position pointer in step 9 should not be NULL");
           delete nowBalLinkControl.balLinkedChains[i].initialPosition;
           nowBalLinkControl.balLinkedChains[i].initialPosition = NULL;
         }
@@ -4118,10 +3953,7 @@ MLSampling<P_V,P_M>::generateSequence_Step11_inter0(
     //std::cout << "unifiedGeneratedNumSamples = "   << unifiedGeneratedNumSamples
     //          << ", unifiedRequestedNumSamples = " << unifiedRequestedNumSamples
     //          << std::endl;
-    UQ_FATAL_TEST_MACRO(unifiedGeneratedNumSamples != unifiedRequestedNumSamples,
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::generateSequence()",
-                        "currChain (linked one) has been generated with invalid size");
+    queso_require_equal_to_msg(unifiedGeneratedNumSamples, unifiedRequestedNumSamples, "currChain (linked one) has been generated with invalid size");
   }
 
   // Compute unified number of rejections
@@ -4168,8 +4000,6 @@ MLSampling<P_V,P_M>::MLSampling(
     *m_env.subDisplayFile() << "Entering MLSampling<P_V,P_M>::constructor()"
                             << std::endl;
   }
-
-  m_options.scanOptionsValues();
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving MLSampling<P_V,P_M>::constructor()"
@@ -4763,10 +4593,7 @@ MLSampling<P_V,P_M>::generateSequence(
       delete unifiedCovMatrix;
 
       for (unsigned int i = 0; i < balancedLinkControl->balLinkedChains.size(); ++i) {
-        UQ_FATAL_TEST_MACRO(balancedLinkControl->balLinkedChains[i].initialPosition == NULL,
-                            m_env.worldRank(),
-                            "MLSampling<P_V,P_M>::generateSequence()",
-                            "Initial position pointer in step 9 should not be NULL");
+        queso_require_msg(balancedLinkControl->balLinkedChains[i].initialPosition, "Initial position pointer in step 9 should not be NULL");
         delete balancedLinkControl->balLinkedChains[i].initialPosition;
         balancedLinkControl->balLinkedChains[i].initialPosition = NULL;
       }
@@ -4903,7 +4730,7 @@ MLSampling<P_V,P_M>::generateSequence(
     }
   } // end of level while
 
-  //UQ_FATAL_TEST_MACRO((currExponent < 1.),
+
   //                    m_env.worldRank(),
   //                    "MLSampling<P_V,P_M>::generateSequence()",
   //                    "exponent has not achieved value '1' even after exiting level loop");
@@ -4913,10 +4740,7 @@ MLSampling<P_V,P_M>::generateSequence(
   // ln( \pi(D|M) ) = E[ln( \pi(D|\theta,M) )] - E[ln( \pi(\theta|D,M) / \pi(\theta|M) )]
   //***********************************************************
   if (m_env.inter0Rank() >= 0) { // KAUST
-    UQ_FATAL_TEST_MACRO((m_currLevel != m_logEvidenceFactors.size()),
-                        m_env.worldRank(),
-                        "MLSampling<P_V,P_M>::generateSequence()",
-                        "invalid m_currLevel at the exit of the level loop");
+    queso_require_equal_to_msg(m_currLevel, m_logEvidenceFactors.size(), "invalid m_currLevel at the exit of the level loop");
     m_logEvidence = 0.;
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
       m_logEvidence += m_logEvidenceFactors[i];

@@ -25,6 +25,7 @@
 #define UQ_INFMCMC_OPTIONS_H
 
 #include <queso/Environment.h>
+#include <queso/BoostInputOptionsParser.h>
 
 namespace QUESO {
 
@@ -43,10 +44,7 @@ public:
   InfiniteDimensionalMCMCSamplerOptions(const BaseEnvironment& env, const char* prefix);
 
   //! Destructor
- ~InfiniteDimensionalMCMCSamplerOptions();
-
-  //! Scans the input file for options prefixed with \c prefix
-  void scanOptionsValues();
+  virtual ~InfiniteDimensionalMCMCSamplerOptions();
 
   //! Prints \c this to \c os
   void print(std::ostream& os) const;
@@ -80,21 +78,22 @@ public:
   const BaseEnvironment& env() const;
 
 private:
-  void defineMyOptions(po::options_description& optionsDesc) const;
-  void getMyOptionValues(po::options_description& optionsDesc);
+  BoostInputOptionsParser * m_parser;
 
   const BaseEnvironment& m_env;
 
-  po::options_description* m_optionsDesc;
   std::string m_option_help;
   std::string m_option_dataOutputDirName;
   std::string m_option_dataOutputFileName;
   std::string m_option_num_iters;
   std::string m_option_save_freq;
   std::string m_option_rwmh_step;
-};
 
-std::ostream& operator<<(std::ostream& os, const InfiniteDimensionalMCMCSamplerOptions & opts);
+  void checkOptions();
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const InfiniteDimensionalMCMCSamplerOptions & opts);
+};
 
 }  // End namespace QUESO
 

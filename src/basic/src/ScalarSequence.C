@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <algorithm>
 #include <queso/ScalarSequence.h>
 
 namespace QUESO {
@@ -73,10 +74,7 @@ ScalarSequence<T>::operator[](unsigned int posId) const
               << ", this->subSequenceSize() = " << this->subSequenceSize()
               << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
-                      m_env.worldRank(),
-                      "ScalarSequences<T>::operator[] const",
-                      "posId > subSequenceSize()");
+  queso_require_less_msg(posId, this->subSequenceSize(), "posId > subSequenceSize()");
 
   return m_seq[posId];
 }
@@ -91,10 +89,7 @@ ScalarSequence<T>::operator[](unsigned int posId)
               << ", this->subSequenceSize() = " << this->subSequenceSize()
               << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((posId >= this->subSequenceSize()),
-                      m_env.worldRank(),
-                      "ScalarSequences<T>::operator[]",
-                      "posId > subSequenceSize()");
+  queso_require_less_msg(posId, this->subSequenceSize(), "posId > subSequenceSize()");
 
   deleteStoredScalars();
 
@@ -167,10 +162,7 @@ ScalarSequence<T>::unifiedSequenceSize(bool useOnlyInter0Comm) const
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedSequenceSize()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   return unifiedNumSamples;
@@ -198,10 +190,7 @@ ScalarSequence<T>::resetValues(unsigned int initialPos, unsigned int numPos)
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequences<T>::resetValues()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   for (unsigned int j = 0; j < numPos; ++j) {
     m_seq[initialPos+j] = 0.;
@@ -221,10 +210,7 @@ ScalarSequence<T>::erasePositions(unsigned int initialPos, unsigned int numPos)
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequences<T>::erasePositions()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   seqScalarPositionIteratorTypedef posIteratorBegin = m_seq.begin();
   if (initialPos < this->subSequenceSize()) std::advance(posIteratorBegin,initialPos);
@@ -237,10 +223,7 @@ ScalarSequence<T>::erasePositions(unsigned int initialPos, unsigned int numPos)
 
   unsigned int oldSequenceSize = this->subSequenceSize();
   m_seq.erase(posIteratorBegin,posIteratorEnd);
-  UQ_FATAL_TEST_MACRO((oldSequenceSize - numPos) != this->subSequenceSize(),
-                      m_env.worldRank(),
-                      "ScalarSequences<T>::erasePositions()",
-                      "(oldSequenceSize - numPos) != this->subSequenceSize()");
+  queso_require_equal_to_msg((oldSequenceSize - numPos), this->subSequenceSize(), "(oldSequenceSize - numPos) != this->subSequenceSize()");
 
   deleteStoredScalars();
 
@@ -274,10 +257,7 @@ ScalarSequence<T>::getUnifiedContentsAtProc0Only(
                                 "failed MPI.Gather()");
       if (m_env.inter0Rank() == 0) {
         //recvcnts[0] = (int) this->subSequenceSize(); // FIX ME: really necessary????
-        UQ_FATAL_TEST_MACRO(recvcnts[0] != (int) this->subSequenceSize(),
-                            m_env.worldRank(),
-                            "ScalarSequence<T>::getUnifiedContentsAtProc0Only()",
-                            "failed MPI.Gather() result at proc 0");
+        queso_require_equal_to_msg(recvcnts[0], (int) this->subSequenceSize(), "failed MPI.Gather() result at proc 0");
       }
 
       std::vector<int> displs(m_env.inter0Comm().NumProc(),0);
@@ -350,10 +330,7 @@ ScalarSequence<T>::getUnifiedContentsAtProc0Only(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::getUnifiedContentsAtProc0Only()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   return;
@@ -720,10 +697,7 @@ ScalarSequence<T>::unifiedUniformlySampledCdf(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedUniformlySampledCdf()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -884,10 +858,7 @@ ScalarSequence<T>::subMeanExtra(
                               << std::endl;
     }
   }
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subMeanExtra()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
   T tmpSum = 0.;
@@ -918,10 +889,7 @@ ScalarSequence<T>::unifiedMeanExtra(
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
                   (0                   <  numPos                 ) &&
                   ((initialPos+numPos) <= this->subSequenceSize()));
-      UQ_FATAL_TEST_MACRO(bRC == false,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedMeanExtra()",
-                          "invalid input data");
+      queso_require_msg(bRC, "invalid input data");
 
       unsigned int finalPosPlus1 = initialPos + numPos;
       T localSum = 0.;
@@ -971,10 +939,7 @@ ScalarSequence<T>::unifiedMeanExtra(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedMeanExtra()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -1009,10 +974,7 @@ ScalarSequence<T>::subMedianExtra(
                               << std::endl;
     }
   }
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subMedianExtra()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   ScalarSequence sortedSequence(m_env,0,"");
   sortedSequence.resizeSequence(numPos);
@@ -1048,10 +1010,7 @@ ScalarSequence<T>::unifiedMedianExtra( // rr0
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
                   (0                   <  numPos                 ) &&
                   ((initialPos+numPos) <= this->subSequenceSize()));
-      UQ_FATAL_TEST_MACRO(bRC == false,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedMedianExtra()",
-                          "invalid input data");
+      queso_require_msg(bRC, "invalid input data");
 
       ScalarSequence unifiedSortedSequence(m_env,0,"");
       this->unifiedSort(useOnlyInter0Comm,
@@ -1070,10 +1029,7 @@ ScalarSequence<T>::unifiedMedianExtra( // rr0
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedMedianExtra()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -1093,10 +1049,7 @@ ScalarSequence<T>::subSampleVarianceExtra(
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subSampleVarianceExtra()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
   T diff;
@@ -1133,10 +1086,7 @@ ScalarSequence<T>::unifiedSampleVarianceExtra(
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
                   (0                   <  numPos                 ) &&
                   ((initialPos+numPos) <= this->subSequenceSize()));
-      UQ_FATAL_TEST_MACRO(bRC == false,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedSampleVarianceExtra()",
-                          "invalid input data");
+      queso_require_msg(bRC, "invalid input data");
 
       unsigned int finalPosPlus1 = initialPos + numPos;
       T diff;
@@ -1165,10 +1115,7 @@ ScalarSequence<T>::unifiedSampleVarianceExtra(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedSampleVarianceExtra()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -1188,10 +1135,7 @@ ScalarSequence<T>::subSampleStd(
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subSampleStd()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
   T diff;
@@ -1229,10 +1173,7 @@ ScalarSequence<T>::unifiedSampleStd(
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
                   (0                   <  numPos                 ) &&
                   ((initialPos+numPos) <= this->subSequenceSize()));
-      UQ_FATAL_TEST_MACRO(bRC == false,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedSampleStd()",
-                          "invalid input data");
+      queso_require_msg(bRC, "invalid input data");
 
       unsigned int finalPosPlus1 = initialPos + numPos;
       T diff;
@@ -1262,10 +1203,7 @@ ScalarSequence<T>::unifiedSampleStd(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedSampleStd()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -1285,10 +1223,7 @@ ScalarSequence<T>::subPopulationVariance(
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subPopulationVariance()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
   T diff;
@@ -1325,10 +1260,7 @@ ScalarSequence<T>::unifiedPopulationVariance(
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
                   (0                   <  numPos                 ) &&
                   ((initialPos+numPos) <= this->subSequenceSize()));
-      UQ_FATAL_TEST_MACRO(bRC == false,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedPopulationVariance()",
-                          "invalid input data");
+      queso_require_msg(bRC, "invalid input data");
 
       unsigned int finalPosPlus1 = initialPos + numPos;
       T diff;
@@ -1357,10 +1289,7 @@ ScalarSequence<T>::unifiedPopulationVariance(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedPopulationVariance()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -1380,10 +1309,7 @@ ScalarSequence<T>::autoCovariance(
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()) &&
               (lag                 <  numPos                 )); // lag should not be too large
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::autoCovariance()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int loopSize      = numPos - lag;
   unsigned int finalPosPlus1 = initialPos + loopSize;
@@ -1412,10 +1338,7 @@ ScalarSequence<T>::autoCorrViaDef(
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()) &&
               (lag                 <  numPos                 )); // lag should not be too large
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::autoCorrViaDef()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   T meanValue = this->subMeanExtra(initialPos,
                                    numPos);
@@ -1590,10 +1513,7 @@ ScalarSequence<T>::subMinMaxExtra(
   T&           minValue,
   T&           maxValue) const
 {
-  UQ_FATAL_TEST_MACRO((initialPos+numPos) > this->subSequenceSize(),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subMinMaxExtra()",
-                      "invalid input");
+  queso_require_less_equal_msg((initialPos+numPos), this->subSequenceSize(), "invalid input");
 
   seqScalarPositionConstIteratorTypedef pos1 = m_seq.begin();
   std::advance(pos1,initialPos);
@@ -1602,10 +1522,7 @@ ScalarSequence<T>::subMinMaxExtra(
   std::advance(pos2,initialPos+numPos);
 
   if ((initialPos+numPos) == this->subSequenceSize()) {
-    UQ_FATAL_TEST_MACRO(pos2 != m_seq.end(),
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::subMinMaxExtra()",
-                        "invalid state");
+    queso_require_msg(!(pos2 != m_seq.end()), "invalid state");
   }
 
   seqScalarPositionConstIteratorTypedef pos;
@@ -1680,10 +1597,7 @@ ScalarSequence<T>::unifiedMinMaxExtra(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedMinMaxExtra()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -1700,15 +1614,9 @@ ScalarSequence<T>::subHistogram(
   std::vector<T>&            centers,
   std::vector<unsigned int>& bins) const
 {
-  UQ_FATAL_TEST_MACRO(centers.size() != bins.size(),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subHistogram()",
-                      "vectors 'centers' and 'bins' have different sizes");
+  queso_require_equal_to_msg(centers.size(), bins.size(), "vectors 'centers' and 'bins' have different sizes");
 
-  UQ_FATAL_TEST_MACRO(bins.size() < 3,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subHistogram()",
-                      "number of 'bins' is too small: should be at least 3");
+  queso_require_greater_equal_msg(bins.size(), 3, "number of 'bins' is too small: should be at least 3");
 
   if (initialPos) {}; // just to remove compiler warning
 
@@ -1766,15 +1674,9 @@ ScalarSequence<T>::unifiedHistogram(
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
-      UQ_FATAL_TEST_MACRO(unifiedCenters.size() != unifiedBins.size(),
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedHistogram()",
-                          "vectors 'unifiedCenters' and 'unifiedBins' have different sizes");
+      queso_require_equal_to_msg(unifiedCenters.size(), unifiedBins.size(), "vectors 'unifiedCenters' and 'unifiedBins' have different sizes");
 
-      UQ_FATAL_TEST_MACRO(unifiedBins.size() < 3,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedHistogram()",
-                          "number of 'unifiedBins' is too small: should be at least 3");
+      queso_require_greater_equal_msg(unifiedBins.size(), 3, "number of 'unifiedBins' is too small: should be at least 3");
 
       for (unsigned int j = 0; j < unifiedBins.size(); ++j) {
         unifiedCenters[j] = 0.;
@@ -1832,10 +1734,7 @@ ScalarSequence<T>::unifiedHistogram(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedHistogram()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -1852,10 +1751,7 @@ ScalarSequence<T>::subBasicHistogram(
   UniformOneDGrid<T>*& gridValues,
   std::vector<unsigned int>&  bins) const
 {
-  UQ_FATAL_TEST_MACRO(bins.size() < 3,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subBasicHistogram()",
-                      "number of 'bins' is too small: should be at least 3");
+  queso_require_greater_equal_msg(bins.size(), 3, "number of 'bins' is too small: should be at least 3");
 
   for (unsigned int j = 0; j < bins.size(); ++j) {
     bins[j] = 0;
@@ -1897,10 +1793,7 @@ ScalarSequence<T>::subWeightHistogram(
   UniformOneDGrid<T>*& gridValues,
   std::vector<unsigned int>&  bins) const
 {
-  UQ_FATAL_TEST_MACRO(bins.size() < 3,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subWeightHistogram()",
-                      "number of 'bins' is too small: should be at least 3");
+  queso_require_greater_equal_msg(bins.size(), 3, "number of 'bins' is too small: should be at least 3");
 
   for (unsigned int j = 0; j < bins.size(); ++j) {
     bins[j] = 0;
@@ -1942,10 +1835,7 @@ ScalarSequence<T>::subWeightHistogram(
   std::vector<T>&            gridValues,
   std::vector<unsigned int>& bins) const
 {
-  UQ_FATAL_TEST_MACRO(bins.size() < 3,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subWeightHistogram()",
-                      "number of 'bins' is too small: should be at least 3");
+  queso_require_greater_equal_msg(bins.size(), 3, "number of 'bins' is too small: should be at least 3");
 
   for (unsigned int j = 0; j < bins.size(); ++j) {
     bins[j] = 0;
@@ -2078,10 +1968,7 @@ ScalarSequence<T>::unifiedSort(
                                    "ScalarSequence<T>::unifiedSort()",
                                    "failed MPI.Allreduce() for data size");
 
-      UQ_FATAL_TEST_MACRO(sumOfNumPos != unifiedDataSize,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedSort()",
-                          "incompatible unified sizes");
+      queso_require_equal_to_msg(sumOfNumPos, unifiedDataSize, "incompatible unified sizes");
 
       unifiedSortedSequence.resizeSequence(unifiedDataSize);
       m_env.inter0Comm().Bcast((void *) &unifiedSortedSequence.rawData()[0], (int) unifiedDataSize, RawValue_MPI_DOUBLE, 0,
@@ -2104,10 +1991,7 @@ ScalarSequence<T>::unifiedSort(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedSort()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -2119,10 +2003,7 @@ template <class T>
 T
 ScalarSequence<T>::subInterQuantileRange(unsigned int initialPos) const
 {
-  UQ_FATAL_TEST_MACRO(initialPos >= this->subSequenceSize(),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subInterQuantileRange()",
-                      "'initialPos' is too big");
+  queso_require_less_msg(initialPos, this->subSequenceSize(), "'initialPos' is too big");
 
   ScalarSequence sortedSequence(m_env,0,"");
   this->subSort(initialPos,
@@ -2131,10 +2012,7 @@ ScalarSequence<T>::subInterQuantileRange(unsigned int initialPos) const
   // The test above guarantees that 'dataSize >= 1'
   unsigned int dataSize = this->subSequenceSize() - initialPos;
 
-  UQ_FATAL_TEST_MACRO(dataSize != sortedSequence.subSequenceSize(),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subInterQuantileRange()",
-                      "inconsistent size variables");
+  queso_require_equal_to_msg(dataSize, sortedSequence.subSequenceSize(), "inconsistent size variables");
 
   bool everythingOk = true;
 
@@ -2264,10 +2142,7 @@ ScalarSequence<T>::unifiedInterQuantileRange(
                                    "ScalarSequence<T>::unifiedInterQuantileRange()",
                                    "failed MPI.Allreduce() for data size");
 
-      UQ_FATAL_TEST_MACRO(sumOfLocalSizes != unifiedDataSize,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedInterQuantileRange()",
-                          "incompatible unified sizes");
+      queso_require_equal_to_msg(sumOfLocalSizes, unifiedDataSize, "incompatible unified sizes");
 
       unsigned int pos1 = (unsigned int) ( (((double) unifiedDataSize) + 1.)*1./4. - 1. );
       unsigned int pos3 = (unsigned int) ( (((double) unifiedDataSize) + 1.)*3./4. - 1. );
@@ -2320,10 +2195,7 @@ ScalarSequence<T>::unifiedInterQuantileRange(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedInterQuantileRange()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -2339,10 +2211,7 @@ ScalarSequence<T>::subScaleForKde(
   unsigned int kdeDimension) const
 {
   bool bRC = (initialPos < this->subSequenceSize());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<V>::subScaleForKde()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int dataSize = this->subSequenceSize() - initialPos;
 
@@ -2394,10 +2263,7 @@ ScalarSequence<T>::unifiedScaleForKde(
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       bool bRC = (initialPos <  this->subSequenceSize());
-      UQ_FATAL_TEST_MACRO(bRC == false,
-                          m_env.worldRank(),
-                          "ScalarSequence<V>::unifiedScaleForKde()",
-                          "invalid input data");
+      queso_require_msg(bRC, "invalid input data");
 
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
 
@@ -2440,10 +2306,7 @@ ScalarSequence<T>::unifiedScaleForKde(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedScaleForKde()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -2462,10 +2325,7 @@ ScalarSequence<T>::subGaussian1dKde(
   bool bRC = ((initialPos                 <  this->subSequenceSize()   ) &&
               (0                          <  evaluationPositions.size()) &&
               (evaluationPositions.size() == densityValues.size()      ));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<V>::subGaussian1dKde()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int dataSize = this->subSequenceSize() - initialPos;
   unsigned int numEvals = evaluationPositions.size();
@@ -2507,10 +2367,7 @@ ScalarSequence<T>::unifiedGaussian1dKde(
       bool bRC = ((initialPos                        <  this->subSequenceSize()          ) &&
                   (0                                 <  unifiedEvaluationPositions.size()) &&
                   (unifiedEvaluationPositions.size() == unifiedDensityValues.size()      ));
-      UQ_FATAL_TEST_MACRO(bRC == false,
-                          m_env.worldRank(),
-                          "ScalarSequence<V>::unifiedGaussian1dKde()",
-                          "invalid input data");
+      queso_require_msg(bRC, "invalid input data");
 
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
       unsigned int unifiedDataSize = 0;
@@ -2559,10 +2416,7 @@ ScalarSequence<T>::unifiedGaussian1dKde(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedGaussian1dKde()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -2622,10 +2476,7 @@ ScalarSequence<T>::brooksGelmanConvMeasure(
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::brooksGelmanConvMeasure()",
-                          "not implemented yet");
+      queso_not_implemented();
     }
     else {
       // Node not in the 'inter0' communicator
@@ -2633,10 +2484,7 @@ ScalarSequence<T>::brooksGelmanConvMeasure(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::brooksGelmanConvMeasure()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //m_env.fullComm().Barrier();
@@ -2651,15 +2499,9 @@ ScalarSequence<T>::append(
   unsigned int                    srcInitialPos,
   unsigned int                    srcNumPos)
 {
-  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (srcInitialPos+1)),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::append()",
-                      "srcInitialPos is too big");
+  queso_require_greater_equal_msg(src.subSequenceSize(), (srcInitialPos+1), "srcInitialPos is too big");
 
-  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (srcInitialPos+srcNumPos)),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::append()",
-                      "srcNumPos is too big");
+  queso_require_greater_equal_msg(src.subSequenceSize(), (srcInitialPos+srcNumPos), "srcNumPos is too big");
 
   deleteStoredScalars();
   unsigned int currentSize = this->subSequenceSize();
@@ -2677,10 +2519,7 @@ ScalarSequence<T>::subPositionsOfMaximum(
   const ScalarSequence<T>& subCorrespondingScalarValues,
   ScalarSequence<T>&       subPositionsOfMaximum)
 {
-  UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.subSequenceSize() != this->subSequenceSize(),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subPositionsOfMaximum()",
-                      "invalid input");
+  queso_require_equal_to_msg(subCorrespondingScalarValues.subSequenceSize(), this->subSequenceSize(), "invalid input");
 
   T subMaxValue = subCorrespondingScalarValues.subMaxPlain();
   unsigned int iMax = subCorrespondingScalarValues.subSequenceSize();
@@ -2710,10 +2549,7 @@ ScalarSequence<T>::unifiedPositionsOfMaximum( // rr0
   const ScalarSequence<T>& subCorrespondingScalarValues,
   ScalarSequence<T>&       unifiedPositionsOfMaximum)
 {
-  UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.subSequenceSize() != this->subSequenceSize(),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::unifiedPositionsOfMaximum()",
-                      "invalid input");
+  queso_require_equal_to_msg(subCorrespondingScalarValues.subSequenceSize(), this->subSequenceSize(), "invalid input");
 
   T maxValue = subCorrespondingScalarValues.subMaxPlain();
   unsigned int iMax = subCorrespondingScalarValues.subSequenceSize();
@@ -2746,10 +2582,7 @@ ScalarSequence<T>::subWriteContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subWriteContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
   FilePtrSetStruct filePtrSet;
   if (m_env.openOutputFile(fileName,
@@ -2954,10 +2787,7 @@ ScalarSequence<T>::unifiedWriteContents(
               }
             }
             else {
-              UQ_FATAL_TEST_MACRO(true,
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedWriteContents()",
-                                  "hdf file type not supported for multiple sub-environments yet");
+              queso_error_msg("hdf file type not supported for multiple sub-environments yet");
             }
           }
 #endif
@@ -2982,10 +2812,7 @@ ScalarSequence<T>::unifiedWriteContents(
         // Do nothing
       }
       else {
-        UQ_FATAL_TEST_MACRO(true,
-                            m_env.worldRank(),
-                            "ScalarSequence<T>::unifiedWriteContents(), final",
-                            "invalid file type");
+        queso_error_msg("invalid file type");
       }
     }
   } // if (m_env.inter0Rank() >= 0)
@@ -3078,10 +2905,7 @@ ScalarSequence<T>::unifiedReadContents(
               // Read '=' sign
               *unifiedFilePtrSet.ifsVar >> tmpString;
           //std::cout << "Just read '" << tmpString << "'" << std::endl;
-              UQ_FATAL_TEST_MACRO(tmpString != "=",
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedReadContents()",
-                                  "string should be the '=' sign");
+              queso_require_equal_to_msg(tmpString, "=", "string should be the '=' sign");
 
               // Read 'zeros(n_positions,n_params)' string
               *unifiedFilePtrSet.ifsVar >> tmpString;
@@ -3093,10 +2917,7 @@ ScalarSequence<T>::unifiedReadContents(
         std::string nPositionsString((size_t) (tmpString.size()-posInTmpString+1),' ');
               unsigned int posInPositionsString = 0;
               do {
-                UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                                    m_env.worldRank(),
-                                    "ScalarSequence<T>::unifiedReadContents()",
-                                    "symbol ',' not found in first line of file");
+                queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ',' not found in first line of file");
                 nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
               } while (tmpString[posInTmpString] != ',');
               nPositionsString[posInPositionsString] = '\0';
@@ -3107,10 +2928,7 @@ ScalarSequence<T>::unifiedReadContents(
         std::string nParamsString((size_t) (tmpString.size()-posInTmpString+1),' ');
               unsigned int posInParamsString = 0;
               do {
-                UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
-                                    m_env.worldRank(),
-                                    "ScalarSequence<T>::unifiedReadContents()",
-                                    "symbol ')' not found in first line of file");
+                queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ')' not found in first line of file");
                 nParamsString[posInParamsString++] = tmpString[posInTmpString++];
               } while (tmpString[posInTmpString] != ')');
               nParamsString[posInParamsString] = '\0';
@@ -3128,16 +2946,10 @@ ScalarSequence<T>::unifiedReadContents(
               }
 
               // Check if [size of chain in file] >= [requested unified sequence size]
-              UQ_FATAL_TEST_MACRO(sizeOfChainInFile < unifiedReadSize,
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedReadContents()",
-                                  "size of chain in file is not big enough");
+              queso_require_greater_equal_msg(sizeOfChainInFile, unifiedReadSize, "size of chain in file is not big enough");
 
               // Check if [num params in file] == [num params in current chain]
-              UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedReadContents()",
-                                  "number of parameters of chain in file is different than number of parameters in this chain object");
+              queso_require_equal_to_msg(numParamsInFile, numParams, "number of parameters of chain in file is different than number of parameters in this chain object");
             } // if (r == 0)
 
             // Code common to any core in 'inter0Comm', including core of rank 0
@@ -3161,10 +2973,7 @@ ScalarSequence<T>::unifiedReadContents(
               // Read '=' sign
               *unifiedFilePtrSet.ifsVar >> tmpString;
         //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-              UQ_FATAL_TEST_MACRO(tmpString != "=",
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedReadContents()",
-                                  "in core 0, string should be the '=' sign");
+              queso_require_equal_to_msg(tmpString, "=", "in core 0, string should be the '=' sign");
 
               // Take into account the ' [' portion
         std::streampos tmpPos = unifiedFilePtrSet.ifsVar->tellg();
@@ -3188,16 +2997,10 @@ ScalarSequence<T>::unifiedReadContents(
                                        H5P_DEFAULT); // Dataset access property list
               hid_t datatype  = H5Dget_type(dataset);
               H5T_class_t t_class = H5Tget_class(datatype);
-              UQ_FATAL_TEST_MACRO(t_class != H5T_FLOAT,
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedReadContents()",
-                                  "t_class is not H5T_DOUBLE");
+              queso_require_equal_to_msg(t_class, H5T_FLOAT, "t_class is not H5T_DOUBLE");
               hid_t dataspace = H5Dget_space(dataset);
               int   rank      = H5Sget_simple_extent_ndims(dataspace);
-              UQ_FATAL_TEST_MACRO(rank != 2,
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedReadContents()",
-                                  "hdf rank is not 2");
+              queso_require_equal_to_msg(rank, 2, "hdf rank is not 2");
               hsize_t dims_in[2];
               int     status_n;
               status_n  = H5Sget_simple_extent_dims(dataspace, dims_in, NULL);
@@ -3206,14 +3009,8 @@ ScalarSequence<T>::unifiedReadContents(
               //          << ": dims_in[0] = " << dims_in[0]
               //          << ", dims_in[1] = " << dims_in[1]
               //          << std::endl;
-              UQ_FATAL_TEST_MACRO(dims_in[0] != numParams,
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedReadContents()",
-                                  "dims_in[0] is not equal to 'numParams'");
-              UQ_FATAL_TEST_MACRO(dims_in[1] < subReadSize,
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedReadContents()",
-                                  "dims_in[1] is smaller that requested 'subReadSize'");
+              queso_require_equal_to_msg(dims_in[0], numParams, "dims_in[0] is not equal to 'numParams'");
+              queso_require_greater_equal_msg(dims_in[1], subReadSize, "dims_in[1] is smaller that requested 'subReadSize'");
 
               struct timeval timevalBegin;
               int iRC = UQ_OK_RC;
@@ -3270,18 +3067,12 @@ ScalarSequence<T>::unifiedReadContents(
               }
             }
             else {
-              UQ_FATAL_TEST_MACRO(true,
-                                  m_env.worldRank(),
-                                  "ScalarSequence<T>::unifiedReadContents()",
-                                  "hdf file type not supported for multiple sub-environments yet");
+              queso_error_msg("hdf file type not supported for multiple sub-environments yet");
             }
           }
 #endif
           else {
-            UQ_FATAL_TEST_MACRO(true,
-                                m_env.worldRank(),
-                                "ScalarSequence<T>::unifiedReadContents()",
-                                "invalid file type");
+            queso_error_msg("invalid file type");
           }
           m_env.closeFile(unifiedFilePtrSet,fileType);
         } // if (m_env.openUnifiedInputFile())
@@ -3587,10 +3378,7 @@ ScalarSequence<T>::subMeanCltStd(
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subMeanCltStd()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
   T diff;
@@ -3629,10 +3417,7 @@ ScalarSequence<T>::unifiedMeanCltStd(
       bool bRC = ((initialPos          <  this->subSequenceSize()) &&
                   (0                   <  numPos                 ) &&
                   ((initialPos+numPos) <= this->subSequenceSize()));
-      UQ_FATAL_TEST_MACRO(bRC == false,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedMeanCltStd()",
-                          "invalid input data");
+      queso_require_msg(bRC, "invalid input data");
 
       unsigned int finalPosPlus1 = initialPos + numPos;
       T diff;
@@ -3663,10 +3448,7 @@ ScalarSequence<T>::unifiedMeanCltStd(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedMeanCltStd()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
  //m_env.fullComm().Barrier();
 
@@ -3681,10 +3463,7 @@ ScalarSequence<T>::bmm(
 {
   bool bRC = ((initialPos          <  this->subSequenceSize()            ) &&
               (batchLength         < (this->subSequenceSize()-initialPos)));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequences<T>::bmm()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int numberOfBatches = (this->subSequenceSize() - initialPos)/batchLength;
   ScalarSequence<T> batchMeans(m_env,numberOfBatches,"");
@@ -3724,10 +3503,7 @@ ScalarSequence<T>::psd(
               (hopSizeRatio       != 0.                                            ) &&
               (numBlocks          <          (this->subSequenceSize() - initialPos)) &&
               (fabs(hopSizeRatio) < (double) (this->subSequenceSize() - initialPos)));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::psd()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int dataSize = this->subSequenceSize() - initialPos;
 
@@ -3748,10 +3524,7 @@ ScalarSequence<T>::psd(
     hopSize = (unsigned int) ( ((double) blockSize) * (-hopSizeRatio) );
   }
   else if (hopSizeRatio == 0.) {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::psd()",
-                        "hopSizeRatio == 0");
+    queso_error_msg("hopSizeRatio == 0");
   }
   else if (hopSizeRatio < 1.) {
     double tmp = ((double) dataSize)/(( ((double) numBlocks) - 1. )*hopSizeRatio + 1.);
@@ -3775,10 +3548,7 @@ ScalarSequence<T>::psd(
   //                          << ", numberOfDiscardedDataElements = " << numberOfDiscardedDataElements
   //                          << std::endl;
   //}
-  UQ_FATAL_TEST_MACRO(numberOfDiscardedDataElements < 0.,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::psd()",
-                      "eventual extra space for last block should not be negative");
+  queso_require_greater_equal_msg(numberOfDiscardedDataElements, 0., "eventual extra space for last block should not be negative");
 
   double tmp = log((double) blockSize)/log(2.);
   double fractionalPart = tmp - ((double) ((unsigned int) tmp));
@@ -3818,10 +3588,7 @@ ScalarSequence<T>::psd(
     unsigned int initialDataPos = initialPos + blockId*hopSize;
     for (unsigned int j = 0; j < blockSize; ++j) {
       unsigned int dataPos = initialDataPos + j;
-      UQ_FATAL_TEST_MACRO(dataPos >= dataSize,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::psd()",
-                          "too large position to be accessed in data");
+      queso_require_less_msg(dataPos, dataSize, "too large position to be accessed in data");
       blockData[j] = MiscHammingWindow(blockSize-1,j) * ( m_seq[dataPos] - meanValue ); // IMPORTANT
     }
 
@@ -3917,10 +3684,7 @@ T
 ScalarSequence<T>::meanStacc(
   unsigned int initialPos) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::meanStacc()",
-                      "not implemented yet"); // ERNESTO
+  queso_not_implemented(); // ERNESTO
 
   double value = 0.;
 
@@ -3936,15 +3700,9 @@ ScalarSequence<T>::subCdfPercentageRange(
   T&           lowerValue,
   T&           upperValue) const
 {
-  UQ_FATAL_TEST_MACRO((initialPos+numPos) > this->subSequenceSize(),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subCdfPercetangeRange()",
-                      "invalid input");
+  queso_require_less_equal_msg((initialPos+numPos), this->subSequenceSize(), "invalid input");
 
-  UQ_FATAL_TEST_MACRO((range < 0) || (range > 1.),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subCdfPercetangeRange()",
-                      "invalid 'range' value");
+  queso_require_msg(!((range < 0) || (range > 1.)), "invalid 'range' value");
 
   ScalarSequence<T> sortedSequence(m_env,0,"");;
   sortedSequence.resizeSequence(numPos);
@@ -3961,10 +3719,7 @@ ScalarSequence<T>::subCdfPercentageRange(
   if (upperId == numPos) {
     upperId = upperId-1;
   }
-  UQ_FATAL_TEST_MACRO(upperId >= numPos,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subCdfPercetangeRange()",
-                      "'upperId' got too big");
+  queso_require_less_msg(upperId, numPos, "'upperId' got too big");
   upperValue = sortedSequence[upperId];
 
   return;
@@ -3990,22 +3745,13 @@ ScalarSequence<T>::unifiedCdfPercentageRange(
 
   // As of 07/Feb/2011, this routine does *not* require sub sequences to have equal size. Good.
 
-  UQ_FATAL_TEST_MACRO((initialPos+numPos) > this->subSequenceSize(),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::unifiedCdfPercetangeRange()",
-                      "invalid input");
+  queso_require_less_equal_msg((initialPos+numPos), this->subSequenceSize(), "invalid input");
 
-  UQ_FATAL_TEST_MACRO((range < 0) || (range > 1.),
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::unifiedCdfPercetangeRange()",
-                      "invalid 'range' value");
+  queso_require_msg(!((range < 0) || (range > 1.)), "invalid 'range' value");
 
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "ScalarSequence<T>::unifiedCdfPercentageRange()",
-                          "code not implemented yet");
+      queso_error_msg("code not implemented yet");
     }
     else {
       // Node not in the 'inter0' communicator
@@ -4016,10 +3762,7 @@ ScalarSequence<T>::unifiedCdfPercentageRange(
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "ScalarSequence<T>::unifiedCdfPercentageRange()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
   //m_env.fullComm().Barrier();
 
@@ -4035,15 +3778,9 @@ ScalarSequence<T>::subCdfStacc(
   std::vector<double>&            cdfStaccValuesLow,
   const ScalarSequence<T>& sortedDataValues) const
 {
-  UQ_FATAL_TEST_MACRO(false,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subCdfStacc()",
-                      "not implemented yet"); // Joseph
+  queso_require_msg(!(false), "not implemented yet"); // Joseph
   bool bRC = (initialPos                 <  this->subSequenceSize()  );
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<V>::subGaussianKDE()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int numPoints = subSequenceSize()-initialPos;
   double       auxNumPoints = numPoints;
@@ -4119,18 +3856,12 @@ ScalarSequence<T>::subCdfStacc(
   const std::vector<T>& evaluationPositions,
   std::vector<double>&  cdfStaccValues) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "ScalarSequence<T>::subCdfStacc()",
-                      "not implemented yet");
+  queso_not_implemented();
 
   bool bRC = ((initialPos                 <  this->subSequenceSize()   ) &&
               (0                          <  evaluationPositions.size()) &&
               (evaluationPositions.size() == cdfStaccValues.size()     ));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "ScalarSequence<V>::subCdfStacc()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   // For Joseph:
   // Maybe sort first
@@ -4172,10 +3903,7 @@ ComputeSubGaussian2dKde(const ScalarSequence<T>& scalarSeq1,
                           const std::vector<T>&           evaluationPositions2,
                           std::vector<double>&            densityValues)
 {
-  UQ_FATAL_TEST_MACRO(initialPos != 0,
-                      scalarSeq1.env().worldRank(),
-                      "ComputeSubGaussian2dKde()",
-                      "not implemented yet for initialPos != 0");
+  queso_require_equal_to_msg(initialPos, 0, "not implemented yet for initialPos != 0");
 
   double covValue  = 0.;
   double corrValue = 0.;
@@ -4190,10 +3918,7 @@ ComputeSubGaussian2dKde(const ScalarSequence<T>& scalarSeq1,
               (0                            <  evaluationPositions1.size() ) &&
               (evaluationPositions1.size()  == evaluationPositions2.size() ) &&
               (evaluationPositions1.size()  == densityValues.size()        ));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      scalarSeq1.env().worldRank(),
-                      "ComputeSubGaussian2dKde()",
-                      "invalid input data");
+  queso_require_msg(bRC, "invalid input data");
 
   unsigned int dataSize = scalarSeq1.subSequenceSize() - initialPos;
   unsigned int numEvals = evaluationPositions1.size();
@@ -4207,7 +3932,7 @@ ComputeSubGaussian2dKde(const ScalarSequence<T>& scalarSeq1,
               << ": WARNING, r = " << r
               << std::endl;
   }
-  //UQ_FATAL_TEST_MACRO(r < 0.,
+
   //                    scalarSeq1.env().worldRank(),
   //                    "ComputeSubGaussian2dKde()",
   //                    "negative r");
@@ -4253,10 +3978,7 @@ ComputeUnifiedGaussian2dKde(bool                            useOnlyInter0Comm,  
 
   if (useOnlyInter0Comm) {
     if (scalarSeq1.env().inter0Rank() >= 0) {
-      UQ_FATAL_TEST_MACRO(true,
-                          scalarSeq1.env().worldRank(),
-                          "ComputeUnifiedGaussian2dKde()",
-                          "inter0 case not supported yet");
+      queso_error_msg("inter0 case not supported yet");
     }
     else {
       // Node not in the 'inter0' communicator
@@ -4271,10 +3993,7 @@ ComputeUnifiedGaussian2dKde(bool                            useOnlyInter0Comm,  
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO(true,
-                        scalarSeq1.env().worldRank(),
-                        "ComputeUnifiedGaussian2dKde()",
-                        "parallel vectors not supported yet");
+    queso_error_msg("parallel vectors not supported yet");
   }
 
   //scalarSeq1.env().fullComm().Barrier();
@@ -4294,10 +4013,7 @@ ComputeCovCorrBetweenScalarSequences(
   // Check input data consistency
   const BaseEnvironment& env = subPSeq.env();
 
-  UQ_FATAL_TEST_MACRO((subNumSamples > subPSeq.subSequenceSize()) || (subNumSamples > subQSeq.subSequenceSize()),
-                      env.worldRank(),
-                      "ComputeCovCorrBetweenScalarSequences()",
-                      "subNumSamples is too large");
+  queso_require_msg(!((subNumSamples > subPSeq.subSequenceSize()) || (subNumSamples > subQSeq.subSequenceSize())), "subNumSamples is too large");
 
   // For both P and Q vector sequences: fill them
   T tmpP = 0.;
@@ -4347,7 +4063,7 @@ ComputeCovCorrBetweenScalarSequences(
                 << ": computed correlation is out of range, corrValue = " << corrValue
                 << std::endl;
     }
-    //UQ_FATAL_TEST_MACRO((corrValue < -1.) || (corrValue > 1.),
+
     //                    env.worldRank(),
     //                    "ComputeCovCorrBetweenScalarSequences()",
     //                    "computed correlation is out of range");

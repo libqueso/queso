@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
 // Need an artificial block here because libmesh needs to
 // call PetscFinalize before we call MPI_Finalize
-#ifdef LIBMESH_HAVE_SLEPC
+#if defined(LIBMESH_HAVE_SLEPC) && defined(QUESO_HAVE_HDF5)
 {
   libMesh::LibMeshInit init(argc, argv);
 

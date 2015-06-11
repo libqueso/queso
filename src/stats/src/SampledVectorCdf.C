@@ -72,10 +72,7 @@ SampledVectorCdf<V,M>::values(
   const V& paramValues,
         V& cdfVec) const
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "SampledVectorCdf<V,M>::cdfVec()",
-                      "incomplete code");
+  queso_error_msg("incomplete code");
   return;
 }
 // --------------------------------------------------
@@ -83,10 +80,7 @@ template<class V, class M>
 const BaseScalarCdf<double>&
 SampledVectorCdf<V,M>::cdf(unsigned int rowId) const
 {
-  UQ_FATAL_TEST_MACRO(rowId >= m_pdfSupport.vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "SampledVectorCdf<T>::cdf()",
-                      "rowId is out of range");
+  queso_require_less_msg(rowId, m_pdfSupport.vectorSpace().dimLocal(), "rowId is out of range");
 
   SampledVectorCdf<V,M>* tmp = const_cast<SampledVectorCdf<V,M>*>(this);
   return *(tmp->m_cdfs(rowId,0));
@@ -114,10 +108,7 @@ SampledVectorCdf<V,M>::subWriteContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
-  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
-                      m_env.worldRank(),
-                      "SampledVectorCdf<V,M>::subWriteContents()",
-                      "unexpected subRank");
+  queso_require_greater_equal_msg(m_env.subRank(), 0, "unexpected subRank");
 
   SampledVectorCdf<V,M>* tmp = const_cast<SampledVectorCdf<V,M>*>(this);
   char compId[16+1];

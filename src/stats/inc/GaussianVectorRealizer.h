@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Gaussian class [R-03]
 //*****************************************************
@@ -41,7 +44,7 @@ namespace QUESO {
  *
  * This class handles sampling from a Gaussian probability density distribution.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GaussianVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 

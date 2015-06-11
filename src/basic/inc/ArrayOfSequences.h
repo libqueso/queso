@@ -29,6 +29,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file uqArrayOfSequences.h
  * \brief A templated class for handling samples of scalar sequences
  *
@@ -40,7 +43,7 @@ namespace QUESO {
  * means, correlation and covariance matrices. It is derived from and implements
  * BaseVectorSequence<V,M>.*/
 
-template <class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class ArrayOfSequences : public BaseVectorSequence<V,M>
 {
 public:

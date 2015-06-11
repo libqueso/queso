@@ -64,10 +64,7 @@ UniformJointPdf<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "UniformJointPdf<V,M>::actualValue()",
-                      "invalid input");
+  queso_require_equal_to_msg(domainVector.sizeLocal(), this->m_domainSet.vectorSpace().dimLocal(), "invalid input");
 
   if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
   if (hessianMatrix) *hessianMatrix *= 0.;

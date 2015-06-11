@@ -27,17 +27,6 @@
 
 namespace QUESO {
 
-// Default constructor ------------------------------
-RngBoost::RngBoost()
-  :
-  RngBase()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "RngBoost::constructor(), default",
-                      "should not be used by user");
-}
-
 //! Constructor with seed ---------------------------
 RngBoost::RngBoost(int seed, int worldRank)
   :
@@ -46,7 +35,7 @@ RngBoost::RngBoost(int seed, int worldRank)
 {
   resetSeed(seed);
 //TODO Find a suitable test for here; Kemelli todo
-//   UQ_FATAL_TEST_MACRO(true,
+
 //                       m_worldRank,
 //                       "RngBoos::constructor()",
 //                       "Kemelli todo: boost rng");

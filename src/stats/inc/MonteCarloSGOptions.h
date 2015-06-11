@@ -27,10 +27,12 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_MOC_SG_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
+#define UQ_MOC_SG_HELP                             ""
 #define UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV        UQ_MOC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV      ""
 
@@ -51,9 +53,15 @@
 #define UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV           0
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
+
 namespace QUESO {
 
-/*! \file uqMonteCarloSGOptions.h
+/*! \file MonteCarloSGOptions.h
     \brief Classes to allow options to be passed to a Monte Carlo sequence generator.
 */
 
@@ -72,17 +80,23 @@ public:
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   McOptionsValues            (const SsOptionsValues* alternativePSsOptionsValues,
                                      const SsOptionsValues* alternativeQSsOptionsValues);
+  McOptionsValues            (const SsOptionsValues* alternativePSsOptionsValues,
+                                     const SsOptionsValues* alternativeQSsOptionsValues,
+                                     const BaseEnvironment * env, const char * prefix);
 #else
   //! Default constructor.
   /*! Assigns the default suite of options to the Monte Carlo sequence generator.*/
   McOptionsValues            ();
+
+  //! Prefix constructor for reading input options from a file
+  McOptionsValues(const BaseEnvironment * env, const char * prefix);
 #endif
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
   McOptionsValues            (const McOptionsValues& src);
 
   //! Destructor
-  ~McOptionsValues            ();
+  virtual ~McOptionsValues            ();
   //@}
 
   //! @name Set methods
@@ -90,6 +104,11 @@ public:
   //! Assignment operator; it copies \c rhs to \c this.
   McOptionsValues& operator= (const McOptionsValues& rhs);
   //@}
+
+  std::string                        m_prefix;
+
+  //! If non-empty string, print options and values to output file
+  std::string                        m_help;
 
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
@@ -116,8 +135,40 @@ public:
 #endif
 
 private:
+  BoostInputOptionsParser * m_parser;
+
+  std::string                   m_option_help;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowedSet;
+
+  std::string                   m_option_pseq_dataOutputPeriod;
+  std::string                   m_option_pseq_dataOutputFileName;
+  std::string                   m_option_pseq_dataOutputFileType;
+  std::string                   m_option_pseq_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  std::string                   m_option_pseq_computeStats;
+#endif
+
+  std::string                   m_option_qseq_dataInputFileName;
+  std::string                   m_option_qseq_dataInputFileType;
+  std::string                   m_option_qseq_size;
+  std::string                   m_option_qseq_displayPeriod;
+  std::string                   m_option_qseq_measureRunTimes;
+  std::string                   m_option_qseq_dataOutputPeriod;
+  std::string                   m_option_qseq_dataOutputFileName;
+  std::string                   m_option_qseq_dataOutputFileType;
+  std::string                   m_option_qseq_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  std::string                   m_option_qseq_computeStats;
+#endif
+
   //! Copies the option values from \c src to \c this.
   void copy(const McOptionsValues& src);
+
+  void checkOptions();
+
+  friend std::ostream & operator<<(std::ostream & os,
+      const McOptionsValues & obj);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   friend class MonteCarloSGOptions;
@@ -174,13 +225,13 @@ public:
 
 private:
   //! Defines the options for the Monte Carlo sequence generator as the default options.
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the sequence options.
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
   std::string                   m_option_dataOutputFileName;

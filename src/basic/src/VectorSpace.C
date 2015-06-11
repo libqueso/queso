@@ -33,17 +33,6 @@
 
 namespace QUESO {
 
-// Default constructor
-template <class V, class M>
-VectorSpace<V,M>::VectorSpace()
-  : VectorSet<V,M>()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "VectorSpace<V,M>::constructor(), default",
-                      "should not be used by user");
-}
-
 // Shaped constructor
 template <class V, class M>
 VectorSpace<V,M>::VectorSpace(const BaseEnvironment& env, const char* prefix,
@@ -77,10 +66,7 @@ VectorSpace<V,M>::VectorSpace(const BaseEnvironment& env, const char* prefix,
               << ", m_dimGlobal = "                << m_dimGlobal
               << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((m_zeroVector->sizeGlobal() != m_dimGlobal),
-                      m_env.worldRank(),
-                      "VectorSpace<V,M>::constructor(1)",
-                      "global size of 'm_zeroVector' is not equal to m_dimGlobal");
+  queso_require_equal_to_msg(m_zeroVector->sizeGlobal(), m_dimGlobal, "global size of 'm_zeroVector' is not equal to m_dimGlobal");
 
   if (m_zeroVector->sizeLocal() != m_dimLocal) {
     std::cerr << "In VectorSpace<V,M>::constructor(1)"
@@ -89,16 +75,10 @@ VectorSpace<V,M>::VectorSpace(const BaseEnvironment& env, const char* prefix,
               << ", m_dimLocal = "                << m_dimLocal
               << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((m_zeroVector->sizeLocal() != m_dimLocal),
-                      m_env.worldRank(),
-                      "VectorSpace<V,M>::constructor(1)",
-                      "local size of 'm_zeroVector' is not equal to m_dimLocal");
+  queso_require_equal_to_msg(m_zeroVector->sizeLocal(), m_dimLocal, "local size of 'm_zeroVector' is not equal to m_dimLocal");
 
   if (componentsNamesVec != NULL) {
-    UQ_FATAL_TEST_MACRO((componentsNamesVec->size() != (size_t) m_dimGlobal),
-                        m_env.worldRank(),
-                        "VectorSpace<V,M>::constructor(1)",
-                        "global size of 'componentsNames' is not equal to m_dimGlobal");
+    queso_require_equal_to_msg(componentsNamesVec->size(), (size_t) m_dimGlobal, "global size of 'componentsNames' is not equal to m_dimGlobal");
 
     m_componentsNamesArray = new DistArray<std::string>(*m_map,1);
     unsigned int myFirstId = this->globalIdOfFirstComponent();
@@ -106,14 +86,8 @@ VectorSpace<V,M>::VectorSpace(const BaseEnvironment& env, const char* prefix,
       (*m_componentsNamesArray)(i,0) = (*componentsNamesVec)[myFirstId+i];
     }
 
-    UQ_FATAL_TEST_MACRO((m_componentsNamesArray->GlobalLength() != (int) m_dimGlobal),
-                        m_env.worldRank(),
-                        "VectorSpace<V,M>::constructor(1)",
-                        "global size of 'm_componentsNamesArray' is not equal to m_dimGlobal");
-    UQ_FATAL_TEST_MACRO((m_componentsNamesArray->MyLength() != (int) m_dimLocal),
-                        m_env.worldRank(),
-                        "VectorSpace<V,M>::constructor(1)",
-                        "local size of 'm_componentsNamesArray' is not equal to m_dimLocal");
+    queso_require_equal_to_msg(m_componentsNamesArray->GlobalLength(), (int) m_dimGlobal, "global size of 'm_componentsNamesArray' is not equal to m_dimGlobal");
+    queso_require_equal_to_msg(m_componentsNamesArray->MyLength(), (int) m_dimLocal, "local size of 'm_componentsNamesArray' is not equal to m_dimLocal");
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
@@ -182,10 +156,7 @@ const BaseEnvironment& VectorSpace<V,M>::env() const
 template <class V, class M>
 const Map& VectorSpace<V,M>::map() const
 {
-  UQ_FATAL_TEST_MACRO(m_map == NULL,
-                      m_env.worldRank(),
-                      "VectorSpace<V,M>::map()",
-                      "m_map is still NULL");
+  queso_require_msg(m_map, "m_map is still NULL");
   return *m_map;
 }
 
@@ -217,10 +188,7 @@ unsigned int VectorSpace<V,M>::globalIdOfFirstComponent() const
 template<class V, class M>
 const V& VectorSpace<V,M>::zeroVector() const
 {
-  UQ_FATAL_TEST_MACRO(m_zeroVector == NULL,
-                      m_env.worldRank(),
-                      "VectorSpace<V,M>::zeroVector()",
-                      "m_zeroVector is still NULL");
+  queso_require_msg(m_zeroVector, "m_zeroVector is still NULL");
   return *m_zeroVector;
 }
 
@@ -305,10 +273,7 @@ const std::string& VectorSpace<V,M>::localComponentName(
 {
   if (m_componentsNamesArray == NULL) return m_emptyComponentName;
 
-  UQ_FATAL_TEST_MACRO(localComponentId > m_dimLocal,
-                      m_env.worldRank(),
-                      "VectorSpace<V,M>::localComponentName()",
-                      "localComponentId is too big");
+  queso_require_less_equal_msg(localComponentId, m_dimLocal, "localComponentId is too big");
 
 //return (*(const_cast<DistArray<std::string>*>(m_componentsNamesArray)))(localComponentId,0);
   return (*m_componentsNamesArray)(localComponentId,0);

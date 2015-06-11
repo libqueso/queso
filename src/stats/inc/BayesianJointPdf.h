@@ -36,16 +36,16 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Bayesian probability density class [PDF-02]
-//*****************************************************
+class GslVector;
+class GslMatrix;
+
 /*!
  * \class BayesianJointPdf
  * \brief A class for handling Bayesian joint PDFs.
  *
  * This class allows the mathematical definition of a Bayesian Joint PDF.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BayesianJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods

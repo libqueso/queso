@@ -32,16 +32,6 @@
 
 namespace QUESO {
 
-template<typename T>
-DistArray<T>::DistArray()
-  : m_Map()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "DistArray<T>::constructor()",
-                      "should not be called");
-}
-
 // Constructor for a given inputMap and inputRowSize.
 template<typename T>
 DistArray<T>::DistArray(const Map& inputMap, const int inputRowSize)

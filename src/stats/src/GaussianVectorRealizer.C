@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <limits>
 #include <queso/GaussianVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -131,10 +132,7 @@ GaussianVectorRealizer<V,M>::realization(V& nextValues) const
       nextValues = (*m_unifiedLawExpVector) + (*m_matU)*( (*m_vecSsqrt) * ((*m_matVt)*iidGaussianVector) );
     }
     else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "GaussianVectorRealizer<V,M>::realization()",
-                          "inconsistent internal state");
+      queso_error_msg("inconsistent internal state");
     }
 
     outOfSupport = !(this->m_unifiedImageSet.contains(nextValues));

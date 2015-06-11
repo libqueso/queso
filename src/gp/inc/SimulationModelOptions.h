@@ -26,8 +26,7 @@
 #define UQ_SIMULATION_MODEL_OPTIONS_H
 
 #include <queso/Environment.h>
-
-////////////////////////////////////////////////////////////////////////////////////////////
+#include <queso/BoostInputOptionsParser.h>
 
 #define UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE "."
 
@@ -47,34 +46,59 @@
 #define UQ_SIMULATION_MODEL_A_S_ODV                          0.
 #define UQ_SIMULATION_MODEL_B_S_ODV                          0.
 
-////////////////////////////////////////////////////////////////////////////////////////////
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
 
 namespace QUESO {
 
 class SmOptionsValues
 {
 public:
-  SmOptionsValues            ();
-  SmOptionsValues            (const SmOptionsValues& src);
-  SmOptionsValues& operator= (const SmOptionsValues& rhs);
- ~SmOptionsValues            ();
+  SmOptionsValues();
+  SmOptionsValues(const BaseEnvironment * env, const char * prefix);
+  SmOptionsValues(const SmOptionsValues& src);
+  SmOptionsValues& operator=(const SmOptionsValues& rhs);
+  virtual ~SmOptionsValues();
 
-  std::string            m_dataOutputFileName;
-  bool                   m_dataOutputAllowAll;
+  std::string m_prefix;
+
+  std::string m_dataOutputFileName;
+  bool m_dataOutputAllowAll;
   std::set<unsigned int> m_dataOutputAllowedSet;
-  unsigned int           m_p_eta;
-  double                 m_zeroRelativeSingularValue;
-  double                 m_cdfThresholdForPEta;
-  double                 m_a_w;
-  double                 m_b_w;
-  double                 m_a_rho_w;
-  double                 m_b_rho_w;
-  double                 m_a_eta;
-  double                 m_b_eta;
-  double                 m_a_s;
-  double                 m_b_s;
+  unsigned int m_p_eta;
+  double m_zeroRelativeSingularValue;
+  double m_cdfThresholdForPEta;
+  double m_a_w;
+  double m_b_w;
+  double m_a_rho_w;
+  double m_b_rho_w;
+  double m_a_eta;
+  double m_b_eta;
+  double m_a_s;
+  double m_b_s;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
+  std::string m_option_help;
+  std::string m_option_dataOutputFileName;
+  std::string m_option_dataOutputAllowAll;
+  std::string m_option_dataOutputAllowedSet;
+  std::string m_option_p_eta;
+  std::string m_option_zeroRelativeSingularValue;
+  std::string m_option_cdfThresholdForPEta;
+  std::string m_option_a_w;
+  std::string m_option_b_w;
+  std::string m_option_a_rho_w;
+  std::string m_option_b_rho_w;
+  std::string m_option_a_eta;
+  std::string m_option_b_eta;
+  std::string m_option_a_s;
+  std::string m_option_b_s;
+
   void copy(const SmOptionsValues& src);
 };
 
@@ -94,12 +118,12 @@ public:
   std::string                   m_prefix;
 
 private:
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
 
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
   std::string                   m_option_help;
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowAll;

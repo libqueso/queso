@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Generic class [R-01]
 //*****************************************************
@@ -44,7 +47,7 @@ namespace QUESO {
  * density distribution. This is the class that handles generic sampling, used,
  * for example, to sample, posterior PDFs (the solution of a Bayesian problem).*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GenericVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 

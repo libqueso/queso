@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*!
  * \file MonteCarloSG.h
  * \brief A templated class that implements a Monte Carlo generator of samples.
@@ -45,7 +48,7 @@ namespace QUESO {
  * variables are defined and set by running 'grep zeros <OUTPUT FILE NAME>' after the solution
  * procedures ends. The names of the variables are self explanatory. */
 
-template <class P_V,class P_M,class Q_V,class Q_M>
+template <class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class MonteCarloSG
 {
 public:
@@ -127,8 +130,9 @@ private:
   unsigned int                                              m_numPsNotSubWritten;
   unsigned int                                              m_numQsNotSubWritten;
 
-  McOptionsValues                                    m_alternativeOptionsValues;
-  MonteCarloSGOptions*                               m_optionsObj;
+  const McOptionsValues *                            m_optionsObj;
+
+  bool m_userDidNotProvideOptions;
 };
 
 }  // End namespace QUESO

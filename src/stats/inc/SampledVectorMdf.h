@@ -33,6 +33,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Sampled marginal density function class
 //*****************************************************
@@ -43,7 +46,7 @@ namespace QUESO {
  * This class implements a sampled vector marginal density function (MDF), given
  * the grid points where it will be sampled and it returns its values.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class SampledVectorMdf : public BaseVectorMdf<V,M> {
 public:
   //! @name Constructor/Destructor methods

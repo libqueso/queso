@@ -1,0 +1,7 @@
+int = -2
+unsigned_int = 2
+double = -2.0
+bool = false
+std_string = hello
+set_unsigned_int = 2 3 4
+vector_double = -2.0 3.0 4.0

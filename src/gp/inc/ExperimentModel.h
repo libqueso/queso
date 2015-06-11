@@ -32,7 +32,10 @@
 
 namespace QUESO {
 
-template <class S_V,class S_M,class D_V,class D_M>
+class GslVector;
+class GslMatrix;
+
+template <class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix>
 class ExperimentModel
 {
 public:
@@ -62,18 +65,18 @@ public:
 
 private:
   // Private variables
-  const BaseEnvironment&           m_env;
-        EmOptionsValues            m_alternativeOptionsValues;
-        ExperimentModelOptions*    m_optionsObj;
+  const BaseEnvironment & m_env;
+  const EmOptionsValues * m_optionsObj;
+  ExperimentModelOptions * m_experimentModelOptions;
 
-        unsigned int                      m_paper_p_x;
-        unsigned int                      m_paper_n;
-        unsigned int                      m_paper_p_delta;
-        unsigned int                      m_paper_n_y;
-        std::vector<D_M* >                m_Dmats;          // NOT to be deleted on destructor
-        std::vector<D_M* >                m_Kmats_interp;   // NOT to be deleted on destructor
-        VectorSpace<D_V,D_M>*      m_n_y_space;      // to be deleted on destructor
-        D_M*                              m_Dmat_BlockDiag; // to be deleted on destructor
+  unsigned int m_paper_p_x;
+  unsigned int m_paper_n;
+  unsigned int m_paper_p_delta;
+  unsigned int m_paper_n_y;
+  std::vector<D_M* > m_Dmats;          // NOT to be deleted on destructor
+  std::vector<D_M* > m_Kmats_interp;   // NOT to be deleted on destructor
+  VectorSpace<D_V,D_M>* m_n_y_space;      // to be deleted on destructor
+  D_M* m_Dmat_BlockDiag; // to be deleted on destructor
 };
 
 }  // End namespace QUESO

@@ -1,5 +1,6 @@
 #include <mpi.h>
 #include <queso/Environment.h>
+#include <queso/EnvironmentOptions.h>
 #include <queso/MpiComm.h>
 #include <queso/Map.h>
 #include <queso/DistArray.h>

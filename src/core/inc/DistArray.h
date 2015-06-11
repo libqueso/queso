@@ -52,16 +52,12 @@ namespace QUESO {
     each node. RowSize is constant for all elements.
 */
 
-template<typename T>
+template <typename T>
 class DistArray
 {
 public:
-
-    //! @name Constructor/Destructor methods
+  //! @name Constructor/Destructor methods
   //@{
-
-  //! Default constructor. Do not call this directly.
-  DistArray();
 
   //! Constructor for a given inputMap and inputRowSize.
   DistArray(const Map& inputMap,
@@ -112,9 +108,11 @@ public:
   //@}
 
 private:
-//! Copies the array.
+  //! Default constructor. Do not call this directly.
+  DistArray();
 
-        void copy        (const DistArray<T>& src);
+  //! Copies the array.
+  void copy        (const DistArray<T>& src);
 
   Map                   m_Map;
 #ifdef QUESO_HAS_TRILINOS

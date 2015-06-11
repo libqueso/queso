@@ -26,25 +26,31 @@
 #define UQ_ENVIRONMENT_H
 
 #include <queso/Defines.h>
-namespace QUESO {
-  class EnvironmentOptions;
-}  // End namespace QUESO
-
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
 #include <queso/MpiComm.h>
 #ifdef QUESO_HAS_HDF5
 #include <hdf5.h>
 #endif
-#include <boost/program_options.hpp>
-namespace po = boost::program_options;
 #include <iostream>
 #include <fstream>
 
 #include <queso/RngBase.h>
 #include <queso/BasicPdfsBase.h>
 
+// Forward declarations
+namespace boost {
+  namespace program_options {
+    class options_description;
+    class variables_map;
+    }
+}
+
 namespace QUESO {
+
+// Forward declarations
+class EnvironmentOptions;
+class EnvOptionsValues;
 
 
   /*! queso_terminate_handler
@@ -189,22 +195,13 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor.
-  BaseEnvironment(const char* passedOptionsInputFileName, const EnvOptionsValues* alternativeOptionsValues);
-
-  //! Copy constructor. It should not be used be the user.
-  BaseEnvironment(const BaseEnvironment& obj);
+  BaseEnvironment(const char* passedOptionsInputFileName, EnvOptionsValues* alternativeOptionsValues);
 
   //! Destructor
   /*! It deallocates memory and does other cleanup for the class object and its class members when
    * the object is destroyed. It displays the total run time of the combo QUESO + application using
      the function gettimeofday() from a struct timeval (as specified in <sys/time.h>). */
   virtual ~BaseEnvironment();
-  //@}
-
-  //! @name Set methods
-  //@{
-  //! Assignment operator. It should not be used be the user.
-  BaseEnvironment& operator= (const BaseEnvironment& rhs);
   //@}
 
   //! @name Environment, Communicator and Options Input File methods
@@ -264,18 +261,18 @@ public:
 
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
-  const po::options_description& allOptionsDesc () const;
+  const boost::program_options::options_description& allOptionsDesc () const;
 #endif
 
-  //! Access function to private attribute m_allOptionsMap. It is an instance of po::variables_map(), which
+  //! Access function to private attribute m_allOptionsMap. It is an instance of boost::program_options::variables_map(), which
   //! allows concrete variables to map which store variables in real map.
-  po::variables_map&      allOptionsMap () const;
+  boost::program_options::variables_map&      allOptionsMap () const;
 
 
   //! This method scans the input file provided by the user to QUESO.
   /*! It checks if no input file is passed and updates the private attribute m_allOptionsDesc, which
    * keeps all the options.*/
-  void    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
+  void    scanInputFileForMyOptions(const boost::program_options::options_description& optionsDesc) const;
 
   //! Access function to private attribute m_displayVerbosity. It manages how much information will be
   //! release during the use of the QUESO library.
@@ -306,7 +303,7 @@ public:
   std::string identifyingString () const;
 
   //! Reset private attribute m_identifyingString with the value \c newString.
-  void    resetIdentifyingString(const std::string& newString) const; // Yes, const
+  void    resetIdentifyingString(const std::string& newString);
 
   //! //TODO Not implemented? it is called in examples/validationCycle/tests_old/results_5_25/uqTgaEx4.h.
   bool    isThereInputFile      () const;
@@ -360,8 +357,8 @@ protected:
 
   std::string		     m_optionsInputFileName;
   mutable bool       	     m_optionsInputFileAccessState; // Yes, 'mutable'
-  po::options_description*   m_allOptionsDesc;
-  po::variables_map* 	     m_allOptionsMap;
+  boost::program_options::options_description*   m_allOptionsDesc;
+  boost::program_options::variables_map* 	     m_allOptionsMap;
 
   unsigned int               m_subId;
   std::string 		     m_subIdString;
@@ -383,8 +380,7 @@ protected:
   struct timeval             m_timevalBegin;
   mutable bool       	     m_exceptionalCircumstance;
 
-  EnvOptionsValues    m_alternativeOptionsValues;
-  EnvironmentOptions* m_optionsObj;
+  EnvOptionsValues * m_optionsObj;
 };
 
 //*****************************************************
@@ -424,7 +420,7 @@ public:
   //! Default constructor.
   /*! It initializes the full communicator, reads the options, deals with multiple sub-environments,
    * e.g. dealing with sub/self/inter0-communicators, handles path for output files. */
-  FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const EnvOptionsValues* alternativeOptionsValues);
+  FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* alternativeOptionsValues);
 
   //! Destructor
  ~FullEnvironment();

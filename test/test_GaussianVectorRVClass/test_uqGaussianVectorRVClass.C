@@ -2,6 +2,7 @@
 #include <string.h>
 #include <cmath>
 #include <queso/Environment.h>
+#include <queso/EnvironmentOptions.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSpace.h>

@@ -80,10 +80,7 @@ bool ConcatenationSubset<V,M>::contains(const V& vec) const
     cummulativeSize += vecs[i]->sizeLocal();
   }
 
-  UQ_FATAL_TEST_MACRO(vec.sizeLocal() != cummulativeSize,
-                      m_env.worldRank(),
-                      "ConcatenationSubset<V,M>::contains()",
-                      "incompatible vector sizes");
+  queso_require_equal_to_msg(vec.sizeLocal(), cummulativeSize, "incompatible vector sizes");
 
   for (unsigned int i = 0; i < m_sets.size(); ++i) {
     result = result && m_sets[i]->contains(*(vecs[i]));

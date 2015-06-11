@@ -32,13 +32,9 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Classes to accommodate a marginal density function
-//*****************************************************
+class GslVector;
+class GslMatrix;
 
-//*****************************************************
-// Base class
-//*****************************************************
 /*! \file VectorMdf.h
  * \brief Classes to accommodate a marginal density function of a vector RV.
  *
@@ -52,7 +48,7 @@ namespace QUESO {
  * the marginal distribution of \f$ X_i \f$.
  * This class handles MDFs of a vector RV.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class BaseVectorMdf {
 public:
   //! @name Constructor/Destructor methods

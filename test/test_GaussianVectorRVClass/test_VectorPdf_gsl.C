@@ -1,3 +1,5 @@
+#include <queso/Environment.h>
+#include <queso/EnvironmentOptions.h>
 #include <queso/VectorSpace.h>
 #include <queso/GaussianJointPdf.h>
 #include <queso/GslMatrix.h>

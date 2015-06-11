@@ -35,8 +35,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
   const SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulStorage)
   :
   m_env                     (simulStorage.env()),
-  m_alternativeOptionsValues(),
-  m_optionsObj              (NULL),
+  m_optionsObj              (alternativeOptionsValues),
   m_paper_p_x               (simulStorage.scenarioSpace().dimLocal()),
   m_paper_p_t               (simulStorage.parameterSpace().dimLocal()),
   m_paper_m                 (simulStorage.numSimulations()),
@@ -99,34 +98,26 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
                             << std::endl;
   }
 
-  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
-  if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new SimulationModelOptions(m_env,prefix,m_alternativeOptionsValues);
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    SmOptionsValues * tempOptions = new SmOptionsValues(&m_env, prefix);
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
   }
-  else {
-    m_optionsObj = new SimulationModelOptions(m_env,prefix);
-    m_optionsObj->scanOptionsValues();
-  }
 
-  UQ_FATAL_TEST_MACRO(m_paper_p_eta > m_paper_m,
-                      m_env.worldRank(),
-                      "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'m_paper_p_eta' cannot be bigger than 'm_paper_m'");
+  // We'll need to remove this later
+  m_simulationModelOptions = new SimulationModelOptions(m_env, prefix);
 
-  UQ_FATAL_TEST_MACRO(m_paper_p_eta > m_paper_n_eta,
-                      m_env.worldRank(),
-                      "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "'m_paper_p_eta' cannot be bigger than 'm_paper_n_eta'");
 
-  UQ_FATAL_TEST_MACRO(m_paper_m != simulStorage.xs_asterisks_original().size(),
-                      m_env.worldRank(),
-                      "SimulationModel<S_V,S_M,D_V,D_M>::constructor()",
-                      "invalid m_paper_m (1)");
+  queso_require_less_equal_msg(m_paper_p_eta, m_paper_m, "'m_paper_p_eta' cannot be bigger than 'm_paper_m'");
 
-  UQ_FATAL_TEST_MACRO(m_paper_m != simulStorage.ts_asterisks_original().size(),
-                      m_env.worldRank(),
-                      "SimulationModel<S_V,S_M,D_V,D_M>::constructor()",
-                      "invalid m_paper_m (2)");
+  queso_require_less_equal_msg(m_paper_p_eta, m_paper_n_eta, "'m_paper_p_eta' cannot be bigger than 'm_paper_n_eta'");
+
+  queso_require_equal_to_msg(m_paper_m, simulStorage.xs_asterisks_original().size(), "invalid m_paper_m (1)");
+
+  queso_require_equal_to_msg(m_paper_m, simulStorage.ts_asterisks_original().size(), "invalid m_paper_m (2)");
 
   //***********************************************************************
   // Standardize 'xs_asterisks_original'
@@ -296,10 +287,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     m_etaSeq_chunkMeans[chunkId] /= ((double) (m_paper_m * simulStorage.chunkSizes()[chunkId]));
     cumulativeSize += simulStorage.chunkSizes()[chunkId];
   }
-  UQ_FATAL_TEST_MACRO(cumulativeSize != m_paper_n_eta,
-                      m_env.worldRank(),
-                      "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "inconsistency in 'cumulativeSize' (1)");
+  queso_require_equal_to_msg(cumulativeSize, m_paper_n_eta, "inconsistency in 'cumulativeSize' (1)");
 
   cumulativeSize = 0;
   for (unsigned int chunkId = 0; chunkId < m_etaSeq_chunkStds.size(); ++chunkId) {
@@ -314,10 +302,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     m_etaSeq_chunkStds[chunkId] = sqrt( m_etaSeq_chunkStds[chunkId] / ((double) (m_paper_m * simulStorage.chunkSizes()[chunkId] - 1)) );
     cumulativeSize += simulStorage.chunkSizes()[chunkId];
   }
-  UQ_FATAL_TEST_MACRO(cumulativeSize != m_paper_n_eta,
-                      m_env.worldRank(),
-                      "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "inconsistency in 'cumulativeSize' (2)");
+  queso_require_equal_to_msg(cumulativeSize, m_paper_n_eta, "inconsistency in 'cumulativeSize' (2)");
 
   for (unsigned int i = 0; i < m_paper_m; ++i) {
     m_etaSeq_transformed.getPositionValues(i,tmpEtaVec);
@@ -328,10 +313,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
       }
       cumulativeSize += simulStorage.chunkSizes()[chunkId];
     }
-    UQ_FATAL_TEST_MACRO(cumulativeSize != m_paper_n_eta,
-                        m_env.worldRank(),
-                        "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                        "inconsistency in 'cumulativeSize' (3)");
+    queso_require_equal_to_msg(cumulativeSize, m_paper_n_eta, "inconsistency in 'cumulativeSize' (3)");
     m_etaSeq_transformed.setPositionValues(i,tmpEtaVec);
   }
 #else
@@ -413,10 +395,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     cumulativeEtaVecPosition += tmpEtaVec.sizeLocal();
     m_etaMat_transformed.setColumn(i,tmpEtaVec);
   }
-  UQ_FATAL_TEST_MACRO(cumulativeEtaVecPosition != m_etaVec_transformed.sizeLocal(),
-                      m_env.worldRank(),
-                      "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "inconsistency in the assemble of 'm_etaVec_transformed'");
+  queso_require_equal_to_msg(cumulativeEtaVecPosition, m_etaVec_transformed.sizeLocal(), "inconsistency in the assemble of 'm_etaVec_transformed'");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()";
@@ -468,10 +447,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
                               << "\n iRC from m_etaMat_transformed.svd(1) = " << iRC
                               << std::endl;
     }
-    UQ_FATAL_TEST_MACRO(iRC != 0,
-                        m_env.worldRank(),
-                        "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                        "svd(1) failed");
+    queso_require_equal_to_msg(iRC, 0, "svd(1) failed");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
@@ -493,8 +469,8 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     m_paper_p_eta = computePEta(svdS_vec);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
-                              << ", m_optionsObj->m_ov.m_cdfThresholdForPEta = "       << m_optionsObj->m_ov.m_cdfThresholdForPEta
-                              << ", m_optionsObj->m_ov.m_zeroRelativeSingularValue = " << m_optionsObj->m_ov.m_zeroRelativeSingularValue
+                              << ", m_optionsObj->m_cdfThresholdForPEta = "       << m_optionsObj->m_cdfThresholdForPEta
+                              << ", m_optionsObj->m_zeroRelativeSingularValue = " << m_optionsObj->m_zeroRelativeSingularValue
                               << ": m_paper_p_eta(1) = "                               << m_paper_p_eta
                               << std::endl;
     }
@@ -559,10 +535,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
                               << "\n iRC from m_etaMat_transformed.svd(2) = " << iRC
                               << std::endl;
     }
-    UQ_FATAL_TEST_MACRO(iRC != 0,
-                        m_env.worldRank(),
-                        "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                        "svd(2) failed");
+    queso_require_equal_to_msg(iRC, 0, "svd(2) failed");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
@@ -584,8 +557,8 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     m_paper_p_eta = computePEta(svdS_vec);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
-                              << ", m_optionsObj->m_ov.m_cdfThresholdForPEta = "       << m_optionsObj->m_ov.m_cdfThresholdForPEta
-                              << ", m_optionsObj->m_ov.m_zeroRelativeSingularValue = " << m_optionsObj->m_ov.m_zeroRelativeSingularValue
+                              << ", m_optionsObj->m_cdfThresholdForPEta = "       << m_optionsObj->m_cdfThresholdForPEta
+                              << ", m_optionsObj->m_zeroRelativeSingularValue = " << m_optionsObj->m_zeroRelativeSingularValue
                               << ": m_paper_p_eta(2) = "                               << m_paper_p_eta
                               << std::endl;
     }
@@ -644,7 +617,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
 
   std::set<unsigned int> tmpSet;
   tmpSet.insert(m_env.subId());
-  if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+  if (m_optionsObj->m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_dataOutputAllowedSet.end()) {
     m_Kmat_eta->subWriteContents("Kmat_eta",
                                  "mat_K_eta",
                                  "m",
@@ -754,12 +727,12 @@ unsigned int
 SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::computePEta(const Q_V& svdS_vec)
 {
   unsigned int result = 0;
-  if (m_optionsObj->m_ov.m_cdfThresholdForPEta <= 0.) {
-    result = m_optionsObj->m_ov.m_p_eta;
+  if (m_optionsObj->m_cdfThresholdForPEta <= 0.) {
+    result = m_optionsObj->m_p_eta;
   }
-  else if (m_optionsObj->m_ov.m_cdfThresholdForPEta >= 1.) {
+  else if (m_optionsObj->m_cdfThresholdForPEta >= 1.) {
     for (unsigned int i = 0; i < svdS_vec.sizeLocal(); ++i) {
-      if ((svdS_vec[i]/svdS_vec[0]) > m_optionsObj->m_ov.m_zeroRelativeSingularValue) {
+      if ((svdS_vec[i]/svdS_vec[0]) > m_optionsObj->m_zeroRelativeSingularValue) {
         result++;
       }
     }
@@ -781,7 +754,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::computePEta(const Q_V& svdS_vec)
       auxCumSum[i] = auxCumSum[i-1] + auxVec[i];
     }
     for (unsigned int i = 0; i < auxVec.sizeLocal(); ++i) {
-      if (auxCumSum[i] < m_optionsObj->m_ov.m_cdfThresholdForPEta) {
+      if (auxCumSum[i] < m_optionsObj->m_cdfThresholdForPEta) {
         result++;
       }
     }
@@ -838,10 +811,7 @@ template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 double
 SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_chunkStd(unsigned int chunkId) const
 {
-  UQ_FATAL_TEST_MACRO(chunkId > m_etaSeq_chunkStds.size(),
-                      m_env.worldRank(),
-                      "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_chunkStd()",
-                      "'chunkId' is too big");
+  queso_require_less_equal_msg(chunkId, m_etaSeq_chunkStds.size(), "'chunkId' is too big");
 
   return m_etaSeq_chunkStds[chunkId];
 }
@@ -892,7 +862,10 @@ template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const SimulationModelOptions&
 SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::optionsObj() const
 {
-  return *m_optionsObj;
+  // This method returns the old SimulationModelOptions object.  We're using
+  // the new SmOptionsValues so this method is deprecated.
+  queso_deprecated();
+  return *m_simulationModelOptions;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>

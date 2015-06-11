@@ -37,6 +37,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Gamma class [RV-06]
 //*****************************************************
@@ -55,7 +58,7 @@ namespace QUESO {
  * The parameters \b a and \b b must all be positive, and the values \c x  must lie on the
  * interval \f$ (0, \infty)\f$. */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GammaVectorRV : public BaseVectorRV<V,M> {
 public:
 

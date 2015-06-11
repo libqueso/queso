@@ -14,6 +14,11 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
     const std::vector<QUESO::GslVector *> & experimentScenarios,
     const std::vector<QUESO::GslVector *> & experimentOutputs) {
   FILE * fp_in = fopen("gp/scalar/dakota_pstudy.dat", "r");
+  if (!fp_in)
+    fp_in = fopen("dakota_pstudy.dat", "r");
+  if (!fp_in)
+    queso_error_msg("Cannot find dakota_pstudy.dat");
+
   unsigned int i, id, size = 512;
   double k_tmasl, k_tmoml, k_tnrgl, k_xkwlx, k_cd, pressure;
   char line[size];
@@ -59,6 +64,11 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
 
   // Read in experimental data
   fp_in = fopen("gp/scalar/ctf_dat.txt", "r");
+  if (!fp_in)
+    fp_in = fopen("ctf_dat.txt", "r");
+  if (!fp_in)
+    queso_error_msg("Cannot find ctf_dat.txt");
+
   i = 0;
   while (fscanf(fp_in, "%lf\n", &pressure) != EOF) {
     (*(experimentOutputs[i]))[0] = pressure;

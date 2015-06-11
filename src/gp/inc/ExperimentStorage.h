@@ -29,7 +29,10 @@
 
 namespace QUESO {
 
-template <class S_V,class S_M,class D_V,class D_M>
+class GslVector;
+class GslMatrix;
+
+template <class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix>
 class ExperimentStorage
 {
 public:

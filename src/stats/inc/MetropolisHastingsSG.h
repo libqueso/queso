@@ -39,6 +39,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //--------------------------------------------------
 // MHRawChainInfoStruct --------------------------
 //--------------------------------------------------
@@ -116,7 +119,7 @@ struct MHRawChainInfoStruct
  * are defined and set by running 'grep zeros <OUTPUT FILE NAME>' after the solution procedures ends.
  * The names of the variables are self explanatory. */
 
-template <class P_V,class P_M>
+template <class P_V = GslVector, class P_M = GslMatrix>
 class MetropolisHastingsSG
 {
 public:
@@ -232,6 +235,10 @@ private:
                                    ScalarSequence<double>*      workingLogLikelihoodValues,
                                    ScalarSequence<double>*      workingLogTargetValues);
 
+  //! Adaptive Metropolis method that deals with adapting the proposal covariance matrix
+  void adapt(unsigned int positionId,
+      BaseVectorSequence<P_V, P_M> & workingChain);
+
   //! This method reads the chain contents.
   void   readFullChain            (const std::string&                  inputFileName,
                                    const std::string&                  inputFileType,
@@ -294,14 +301,17 @@ private:
 
   MHRawChainInfoStruct m_rawChainInfo;
 
-  MhOptionsValues m_alternativeOptionsValues;
-  MetropolisHastingsSGOptions * m_optionsObj;
+  const MhOptionsValues * m_optionsObj;
+  MetropolisHastingsSGOptions * m_oldOptions;
+
 	bool m_computeInitialPriorAndLikelihoodValues;
 	double m_initialLogPriorValue;
 	double m_initialLogLikelihoodValue;
 
   void transformInitialCovMatrixToGaussianSpace(const BoxSubset<P_V, P_M> &
       boxSubset);
+
+  bool m_userDidNotProvideOptions;
 };
 
 }  // End namespace QUESO

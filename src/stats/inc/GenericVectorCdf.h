@@ -34,6 +34,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Generic cumulative distribution function class
 //*****************************************************
@@ -43,7 +46,7 @@ namespace QUESO {
  *
  * This class \b will implement a generic vector cumulative distribution function (CDF).*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GenericVectorCdf : public BaseVectorCdf<V,M> {
 public:
     //! @name Constructor/Destructor methods

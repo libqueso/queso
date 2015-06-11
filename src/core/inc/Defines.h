@@ -94,88 +94,34 @@ const int UQ_MATRIX_SVD_FAILED_RC          = -11;
     \brief Definitions and a class to provide default options to  pass to a QUESO environment.
 */
 
-/*! \class EnvOptionsValues
- *  \brief This class provides a suite options one can pass to a QUESO environment.
- *
- *  QUESO expects the user to provide an input file with environment options for the library variables.
- *  If no input file, a collection of default values is assigned to some of the variables. The class
- *  EnvOptionsValues is responsible for this task.
- */
+// Macros
 
-class EnvOptionsValues
-{
-public:
-    //! @name Constructor/Destructor methods
-  //@{
-  //! Default constructor
-  EnvOptionsValues            ();
+// The following code is a copy-pasta from libmesh.  The same licence applies,
+// so we're good here.
+//
+// The queso_do_once macro helps us avoid redundant repeated
+// repetitions of the same warning messages
+#undef queso_do_once
+#define queso_do_once(do_this)             \
+  do {                                     \
+    static bool did_this_already = false;  \
+    if (!did_this_already) {               \
+      did_this_already = true;             \
+      do_this;                             \
+    } } while (0)
 
-  //! Copy constructor
-  EnvOptionsValues            (const EnvOptionsValues& src);
+// The queso_warning macro outputs a file/line/time stamped warning
+// message, if warnings are enabled.
+#define queso_warning(message)         \
+  queso_do_once(std::cerr << message  \
+                << __FILE__ << ", line " << __LINE__ << ", compiled " << __DATE__ << " at " << __TIME__ << " ***" << std::endl;)
 
-  //! Destructor
-  ~EnvOptionsValues            ();
-  //@}
+// The queso_deprecated macro warns that you are using obsoleted code
+#define queso_deprecated()  \
+  queso_warning("*** Warning, this code is deprecated and likely to be removed in future library versions:  ");
 
-   //! @name Set methods
-  //@{
-  //! Operator for copying the options of an environment.
-  EnvOptionsValues& operator= (const EnvOptionsValues& rhs);
- //@}
-
-  //! @name Attributes
- //! Number of sub-environments.
-  unsigned int           m_numSubEnvironments;
-
-  //! Output filename for sub-screen writing.
-  std::string            m_subDisplayFileName;
-
-  //! Allows (or not) all sub-environments to write to output file.
-  bool                   m_subDisplayAllowAll;
-
-  //! Allows (or not) all inter0 nodes to write to output file
-  bool                   m_subDisplayAllowInter0;
-
-  //! Sub-environments that will write to output.
-  std::set<unsigned int> m_subDisplayAllowedSet;
-
-  //! Verbosity.
-  unsigned int           m_displayVerbosity;
-
-  //! Synchronized verbosity.
-  unsigned int           m_syncVerbosity;
-
-  //! Checking level
-  unsigned int           m_checkingLevel;
-
-  //! Type of the random number generator.
-  std::string            m_rngType;
-
-  //! Seed of the random number generator.
-  /*! If env_seed = -z, with z>=1, then each processor sets the seed to value MPI_RANK + z.
-   It is crucial that \verb+env_seed+ takes a \underline{negative} value, otherwise all chain samples are going to be the same.*/
-  int                    m_seed;
-
-  //! Platform name.
-  std::string            m_platformName;
-
-  //! Identifying string.
-  std::string            m_identifyingString;
-
-  //! Number of debug parameters.
-  unsigned int           m_numDebugParams;
-
-  //! Debug parameters
-  std::vector<double>    m_debugParams;
-  //@}
-
-private:
-  //! Makes an exact copy of an existing EnvOptionsValues instance.
-  void copy(const EnvOptionsValues& src);
-};
-
-//! Macros
 #define UQ_RC_MACRO(macroIRc,givenRank,where,what,retValue) \
+  queso_deprecated();                                       \
   if (macroIRc) {                                           \
     int macroRank = givenRank;                              \
     if (macroRank < 0) {                                    \
@@ -191,6 +137,7 @@ private:
   }
 
 #define UQ_TEST_MACRO(test,givenRank,where,what,retValue) \
+  queso_deprecated();                                     \
   if (test) {                                             \
     int macroRank = givenRank;                            \
     if (macroRank < 0) {                                  \
@@ -205,6 +152,7 @@ private:
   }
 
 #define UQ_FATAL_RC_MACRO(macroIRc,givenRank,where,what) \
+  queso_deprecated();                                    \
   if (macroIRc) {                                        \
     int macroRank = givenRank;                           \
     if (macroRank < 0) {                                 \
@@ -221,6 +169,7 @@ private:
   }
 
 #define UQ_FATAL_TEST_MACRO(test,givenRank,where,what)  \
+  queso_deprecated();                                   \
   if (test) {                                           \
     int macroRank = givenRank;                          \
     if (macroRank < 0) {                                \

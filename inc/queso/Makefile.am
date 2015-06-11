@@ -27,9 +27,11 @@ BUILT_SOURCES += VectorSequence.h
 BUILT_SOURCES += VectorSet.h
 BUILT_SOURCES += VectorSpace.h
 BUILT_SOURCES += VectorSubset.h
+BUILT_SOURCES += BaseInputOptionsParser.h
 BUILT_SOURCES += BasicPdfsBase.h
 BUILT_SOURCES += BasicPdfsBoost.h
 BUILT_SOURCES += BasicPdfsGsl.h
+BUILT_SOURCES += BoostInputOptionsParser.h
 BUILT_SOURCES += Defines.h
 BUILT_SOURCES += DistArray.h
 BUILT_SOURCES += Environment.h
@@ -57,6 +59,7 @@ BUILT_SOURCES += OptimizerMonitor.h
 BUILT_SOURCES += RngBase.h
 BUILT_SOURCES += RngBoost.h
 BUILT_SOURCES += RngGsl.h
+BUILT_SOURCES += ScopedPtr.h
 BUILT_SOURCES += TeuchosMatrix.h
 BUILT_SOURCES += TeuchosVector.h
 BUILT_SOURCES += Vector.h
@@ -91,6 +94,7 @@ BUILT_SOURCES += Fft.h
 BUILT_SOURCES += Miscellaneous.h
 BUILT_SOURCES += OneDGrid.h
 BUILT_SOURCES += StdOneDGrid.h
+BUILT_SOURCES += StreamUtilities.h
 BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += BayesianJointPdf.h
 BUILT_SOURCES += BetaJointPdf.h
@@ -177,6 +181,16 @@ BUILT_SOURCES += VectorRealizer.h
 BUILT_SOURCES += WignerJointPdf.h
 BUILT_SOURCES += WignerVectorRV.h
 BUILT_SOURCES += WignerVectorRealizer.h
+BUILT_SOURCES += InterpolationSurrogateBase.h
+BUILT_SOURCES += InterpolationSurrogateBuilder.h
+BUILT_SOURCES += InterpolationSurrogateData.h
+BUILT_SOURCES += InterpolationSurrogateDataSet.h
+BUILT_SOURCES += InterpolationSurrogateHelper.h
+BUILT_SOURCES += InterpolationSurrogateIOASCII.h
+BUILT_SOURCES += InterpolationSurrogateIOBase.h
+BUILT_SOURCES += LinearLagrangeInterpolationSurrogate.h
+BUILT_SOURCES += SurrogateBase.h
+BUILT_SOURCES += SurrogateBuilderBase.h
 BUILT_SOURCES += config_queso.h
 BUILT_SOURCES += queso.h
 
@@ -226,11 +240,15 @@ VectorSpace.h: $(top_srcdir)/src/basic/inc/VectorSpace.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 VectorSubset.h: $(top_srcdir)/src/basic/inc/VectorSubset.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BaseInputOptionsParser.h: $(top_srcdir)/src/core/inc/BaseInputOptionsParser.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsBase.h: $(top_srcdir)/src/core/inc/BasicPdfsBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsBoost.h: $(top_srcdir)/src/core/inc/BasicPdfsBoost.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsGsl.h: $(top_srcdir)/src/core/inc/BasicPdfsGsl.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BoostInputOptionsParser.h: $(top_srcdir)/src/core/inc/BoostInputOptionsParser.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Defines.h: $(top_srcdir)/src/core/inc/Defines.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -285,6 +303,8 @@ RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 RngBoost.h: $(top_srcdir)/src/core/inc/RngBoost.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngGsl.h: $(top_srcdir)/src/core/inc/RngGsl.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ScopedPtr.h: $(top_srcdir)/src/core/inc/ScopedPtr.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TeuchosMatrix.h: $(top_srcdir)/src/core/inc/TeuchosMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -353,6 +373,8 @@ Miscellaneous.h: $(top_srcdir)/src/misc/inc/Miscellaneous.h
 OneDGrid.h: $(top_srcdir)/src/misc/inc/OneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 StdOneDGrid.h: $(top_srcdir)/src/misc/inc/StdOneDGrid.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+StreamUtilities.h: $(top_srcdir)/src/misc/inc/StreamUtilities.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformOneDGrid.h: $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -525,6 +547,26 @@ WignerJointPdf.h: $(top_srcdir)/src/stats/inc/WignerJointPdf.h
 WignerVectorRV.h: $(top_srcdir)/src/stats/inc/WignerVectorRV.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 WignerVectorRealizer.h: $(top_srcdir)/src/stats/inc/WignerVectorRealizer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateBase.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateBuilder.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateBuilder.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateData.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateData.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateDataSet.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateDataSet.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateHelper.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateHelper.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateIOASCII.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateIOASCII.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InterpolationSurrogateIOBase.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateIOBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+LinearLagrangeInterpolationSurrogate.h: $(top_srcdir)/src/surrogates/inc/LinearLagrangeInterpolationSurrogate.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+SurrogateBase.h: $(top_srcdir)/src/surrogates/inc/SurrogateBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+SurrogateBuilderBase.h: $(top_srcdir)/src/surrogates/inc/SurrogateBuilderBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 config_queso.h: $(top_builddir)/config_queso.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

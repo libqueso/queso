@@ -37,6 +37,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file StatisticalInverseProblem.h
     \brief Class to solve a Statistical Inverse Problem
 */
@@ -77,7 +80,7 @@ namespace QUESO {
  * value the routine is actually computing, so that the 'scalar function' class can properly
  * implements both class operations 'actualValue()' and 'minus2LnValue()'*/
 
-template <class P_V,class P_M>
+template <class P_V = GslVector, class P_M = GslMatrix>
 class StatisticalInverseProblem
 {
 public:
@@ -228,8 +231,7 @@ private:
         ScalarSequence      <double>*    m_logLikelihoodValues;
         ScalarSequence      <double>*    m_logTargetValues;
 
-        SipOptionsValues                  m_alternativeOptionsValues;
-        StatisticalInverseProblemOptions* m_optionsObj;
+        const SipOptionsValues * m_optionsObj;
 
         bool                              m_seedWithMAPEstimator;
 
@@ -237,6 +239,8 @@ private:
         ArrayOfOneDGrids    <P_V,P_M>*   m_subMdfGrids;
         ArrayOfOneDTables   <P_V,P_M>*   m_subMdfValues;
 #endif
+
+  bool m_userDidNotProvideOptions;
 };
 
 }  // End namespace QUESO

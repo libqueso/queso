@@ -27,19 +27,6 @@
 
 namespace QUESO {
 
-// Default constructor ------------------------------
-
-Vector::Vector()
-  :
-  m_env(*(new EmptyEnvironment())                                               ),
-  m_map(*(new Map( 1,0,*(new MpiComm(m_env,RawValue_MPI_COMM_SELF)) ) )) // avoid using MPI_COMM_WORLD
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "Vector::constructor(), default",
-                      "should not be used by user");
-}
-
 // Shaped constructor --------------------------------
 Vector::Vector(const BaseEnvironment& env, const Map& map)
   :
@@ -57,78 +44,9 @@ Vector::Vector(const BaseEnvironment& env, const Map& map)
   //std::cout << "Leaving Vector::constructor(env,map)" << std::endl;
 }
 
-// Copy constructor -----------------------------------
-Vector::Vector(const Vector& rhs)
-  :
-  m_env(rhs.m_env),
-  m_map(rhs.m_map)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.worldRank(),
-                      "Vector::constructor(), copy",
-                      "code should not execute through here");
-}
-
 // Destructor ---------------------------------------
 Vector::~Vector()
 {
-}
-
-// Set methods --------------------------------------
-Vector&
-Vector::operator=(const Vector& rhs)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.worldRank(),
-                      "Vector::operator=()",
-                      "code should not execute through here");
-  return *this;
-}
-
-// --------------------------------------------------
-Vector&
-Vector::operator*=(double a)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.worldRank(),
-                      "Vector::operator*=()",
-                      "code should not execute through here");
-  double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
-  return *this;
-}
-
-// --------------------------------------------------
-Vector&
-Vector::operator/=(double a)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      m_env.worldRank(),
-                      "Vector::operator/=()",
-                      "code should not execute through here");
-  double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
-  return *this;
-}
-
-// --------------------------------------------------
-Vector&
-Vector::operator+=(const Vector& rhs)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.worldRank(),
-                      "Vector::operator+=()",
-                      "code should not execute through here");
-  return *this;
-}
-
-// --------------------------------------------------
-Vector&
-Vector::operator-=(const Vector& rhs)
-{
-  UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
-                      rhs.m_env.worldRank(),
-                      "Vector::operator-=()",
-                      "code should not execute through here");
-  return *this;
 }
 
 // Environment and Map methods ----------------------
@@ -180,7 +98,7 @@ Vector::getPrintScientific() const
 }
 // --------------------------------------------------
 void
-Vector::copy(const Vector& src)
+Vector::base_copy(const Vector& src)
 {
   //m_env               = src.env;
   //m_map               = src.map; // prudenci 2010-06-17

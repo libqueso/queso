@@ -21,10 +21,11 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Environment.h>
+#include <queso/BoostInputOptionsParser.h>
+
 #ifndef UQ_GPMSA_OPTIONS_H
 #define UQ_GPMSA_OPTIONS_H
-
-#include <queso/Environment.h>
 
 namespace QUESO {
 
@@ -43,16 +44,16 @@ public:
   GPMSAOptions(const BaseEnvironment& env, const char* prefix);
 
   //! Destructor
- ~GPMSAOptions();
-
-  //! Scans the input file for options prefixed with \c prefix
-  void scanOptionsValues();
+  virtual ~GPMSAOptions();
 
   //! Prints \c this to \c os
   void print(std::ostream& os) const;
 
   //! The prefix to look for in the input file
   std::string m_prefix;
+
+  //! If this string is non-empty, print the options object to the output file
+  std::string m_help;
 
   //! The shape parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionShape;
@@ -87,19 +88,13 @@ public:
   //! The scale parameter for the Gamma hyperprior for the emulator data precision
   double m_emulatorDataPrecisionScale;
 
-  friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj)
-  {
-    obj.print(os);
-    return os;
-  }
+  friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj);
 
 private:
-  void defineMyOptions(po::options_description& optionsDesc) const;
-  void getMyOptionValues(po::options_description& optionsDesc);
-
   const BaseEnvironment& m_env;
 
-  po::options_description* m_optionsDesc;
+  BoostInputOptionsParser * m_parser;
+
   std::string m_option_help;
   std::string m_option_emulatorPrecisionShape;
   std::string m_option_emulatorPrecisionScale;
@@ -111,6 +106,8 @@ private:
   std::string m_option_discrepancyCorrelationStrengthBeta;
   std::string m_option_emulatorDataPrecisionShape;
   std::string m_option_emulatorDataPrecisionScale;
+
+  void checkOptions();
 };
 
 }  // End namespace QUESO

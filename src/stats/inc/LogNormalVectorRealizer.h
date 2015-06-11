@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // LogNormal class [R-10]
 //*****************************************************
@@ -42,7 +45,7 @@ namespace QUESO {
  * This class handles sampling from a Log-Normal probability density distribution, of
  * mean and variance given.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class LogNormalVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
     //! @name Constructor/Destructor methods

@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <limits>
+
 #include <queso/GammaVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -81,12 +83,9 @@ GammaVectorRealizer<V,M>::realization(V& nextValues) const
          << std::endl;
 
 
-    UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
-                      m_env.worldRank(),
-                      "GammaVectorRealizer<V,M>::realization()",
-                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");
+    queso_require_greater_equal_msg(smallerOfMaxValues, 0, "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");
 
- //  UQ_FATAL_TEST_MACRO(biggerOfMaxValues < 0,
+
  //                     m_env.worldRank(),
  //                     "GammaVectorRealizer<V,M>::realization()",
  //                     "invalid input: Gamma distribution is only defined in (0, infinity). ");

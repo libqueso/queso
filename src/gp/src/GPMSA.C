@@ -281,10 +281,6 @@ GPMSAFactory<V, M>::GPMSAFactory(
     this->m_opts = new GPMSAOptions(this->m_env, "");
   }
 
-  if (this->m_env.optionsInputFileName() != "") {
-    this->m_opts->scanOptionsValues();
-  }
-
   this->setUpHyperpriors();
   this->m_constructedGP = false;
 }
@@ -342,15 +338,9 @@ const V &
 GPMSAFactory<V, M>::simulationScenario(
     unsigned int simulationId) const
 {
-  UQ_FATAL_TEST_MACRO(simulationId >= m_simulationScenarios.size(),
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::scenarioVec_original()",
-                      "simulationId is too large");
+  queso_require_less_msg(simulationId, m_simulationScenarios.size(), "simulationId is too large");
 
-  UQ_FATAL_TEST_MACRO(m_simulationScenarios[simulationId] == NULL,
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::scenarioVec_original()",
-                      "vector is NULL");
+  queso_require_msg(m_simulationScenarios[simulationId], "vector is NULL");
 
   return *(this->m_simulationScenarios[simulationId]);
 }
@@ -367,15 +357,9 @@ const V &
 GPMSAFactory<V, M>::simulationParameter(
     unsigned int simulationId) const
 {
-  UQ_FATAL_TEST_MACRO(simulationId >= m_simulationParameters.size(),
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::parameterVec_original()",
-                      "simulationId is too large");
+  queso_require_less_msg(simulationId, m_simulationParameters.size(), "simulationId is too large");
 
-  UQ_FATAL_TEST_MACRO(m_simulationParameters[simulationId] == NULL,
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::parameterVec_original()",
-                      "vector is NULL");
+  queso_require_msg(m_simulationParameters[simulationId], "vector is NULL");
 
   return *(this->m_simulationParameters[simulationId]);
 }
@@ -392,15 +376,9 @@ const V &
 GPMSAFactory<V, M>::simulationOutput(
     unsigned int simulationId) const
 {
-  UQ_FATAL_TEST_MACRO(simulationId >= m_simulationOutputs.size(),
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::outputVec_original()",
-                      "simulationId is too large");
+  queso_require_less_msg(simulationId, m_simulationOutputs.size(), "simulationId is too large");
 
-  UQ_FATAL_TEST_MACRO(m_simulationOutputs[simulationId] == NULL,
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::outputVec_original()",
-                      "vector is NULL");
+  queso_require_msg(m_simulationOutputs[simulationId], "vector is NULL");
 
   return *(this->m_simulationOutputs[simulationId]);
 }
@@ -417,15 +395,9 @@ const V &
 GPMSAFactory<V, M>::experimentScenario(
     unsigned int experimentId) const
 {
-  UQ_FATAL_TEST_MACRO(experimentId >= (this->m_experimentScenarios).size(),
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::experimentScenario()",
-                      "experimentId is too large");
+  queso_require_less_msg(experimentId, (this->m_experimentScenarios).size(), "experimentId is too large");
 
-  UQ_FATAL_TEST_MACRO(this->m_experimentScenarios[experimentId] == NULL,
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::experimentScenario()",
-                      "vector is NULL");
+  queso_require_msg(this->m_experimentScenarios[experimentId], "vector is NULL");
 
   return *(this->m_experimentScenarios[experimentId]);
 }
@@ -442,15 +414,9 @@ const V &
 GPMSAFactory<V, M>::experimentOutput(
     unsigned int experimentId) const
 {
-  UQ_FATAL_TEST_MACRO(experimentId >= (this->m_experimentOutputs).size(),
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::experimentOutput()",
-                      "experimentId is too large");
+  queso_require_less_msg(experimentId, (this->m_experimentOutputs).size(), "experimentId is too large");
 
-  UQ_FATAL_TEST_MACRO(this->m_experimentOutputs[experimentId] == NULL,
-                      m_env.worldRank(),
-                      "GPMSAFactory<V, M>::experimentOutput()",
-                      "vector is NULL");
+  queso_require_msg(this->m_experimentOutputs[experimentId], "vector is NULL");
 
   return *(this->m_experimentOutputs[experimentId]);
 }
@@ -489,10 +455,7 @@ GPMSAFactory<V, M>::addSimulation(V & simulationScenario,
                                             V & simulationParameter,
                                             V & simulationOutput)
 {
-  UQ_FATAL_TEST_MACRO(this->m_numSimulationAdds >= this->m_numSimulations,
-                      this->m_env.worldRank(),
-                      "GPMSAFactory<V, M>::addSimulation()",
-                      "too many simulation adds...");
+  queso_require_less_msg(this->m_numSimulationAdds, this->m_numSimulations, "too many simulation adds...");
 
   this->m_simulationScenarios[this->m_numSimulationAdds] = &simulationScenario;
   this->m_simulationParameters[this->m_numSimulationAdds] = &simulationParameter;
@@ -541,10 +504,7 @@ GPMSAFactory<V, M>::addExperiments(
     const std::vector<V *> & experimentOutputs,
     const M * experimentErrors)
 {
-  UQ_FATAL_TEST_MACRO(experimentScenarios.size() > this->m_numExperiments,
-                      this->m_env.worldRank(),
-                      "GPMSAFactory<V, M>::addExperiment()",
-                      "too many experiments...");
+  queso_require_less_equal_msg(experimentScenarios.size(), this->m_numExperiments, "too many experiments...");
 
   for (unsigned int i = 0; i < this->m_experimentScenarios.size(); i++) {
     this->m_experimentScenarios[i] = experimentScenarios[i];

@@ -101,15 +101,9 @@ LogNormalJointPdf<V,M>::actualValue(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "LogNormalJointPdf<V,M>::actualValue()",
-                      "invalid input");
+  queso_require_equal_to_msg(domainVector.sizeLocal(), this->m_domainSet.vectorSpace().dimLocal(), "invalid input");
 
-  UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
-                      m_env.worldRank(),
-                      "LogNormalJointPdf<V,M>::actualValue()",
-                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = 0.;
 
@@ -153,10 +147,7 @@ LogNormalJointPdf<V,M>::lnValue(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
-                      m_env.worldRank(),
-                      "LogNormalJointPdf<V,M>::lnValue()",
-                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   if (domainDirection) {}; // just to remove compiler warning
 
@@ -185,10 +176,7 @@ LogNormalJointPdf<V,M>::lnValue(
       }
     }
     else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "LogNormalJointPdf<V,M>::lnValue()",
-                          "situation with a non-diagonal covariance matrix makes no sense");
+      queso_error_msg("situation with a non-diagonal covariance matrix makes no sense");
     }
     returnValue += m_logOfNormalizationFactor; // [PDF-10]
   }

@@ -30,6 +30,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file uqVectorSet.h
  * \brief A templated class for handling sets.
  *
@@ -45,16 +48,12 @@ namespace QUESO {
 template <class V, class M>
 class VectorSpace;
 
-template <class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class VectorSet
 {
 public:
   //! @name Constructor/Destructor methods.
   //@{
-  //! Default Constructor
-  /*! It should not be used by the user.*/
-  VectorSet();
-
   //! Shaped constructor.
   /*! Creates a vector set given an environment, a identifying prefix and a volume.*/
   VectorSet(const BaseEnvironment& env, const char* prefix, double volume);
@@ -99,6 +98,11 @@ protected:
   const BaseEnvironment& m_env;
         std::string             m_prefix;
         double                  m_volume;
+
+private:
+  //! Default Constructor
+  /*! It should not be used by the user.*/
+  VectorSet();
 };
 
 }  // End namespace QUESO

@@ -32,6 +32,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // InverseGamma class [R-07]
 //*****************************************************
@@ -42,7 +45,7 @@ namespace QUESO {
  * This class handles sampling from an Inverse Gamma probability density distribution, of
  * parameters \c alpha and \c beta.*/
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class InverseGammaVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   //! @name Constructor/Destructor methods

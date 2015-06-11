@@ -44,7 +44,7 @@ namespace QUESO {
  * m_sampledCdfGrid is an object of the class SampledScalarCdf<T>, so all members of this
  * class are implemented using the members of SampledScalarCdf<T>.*/
 
-template<class T>
+template <class T>
 class StdScalarCdf : public BaseScalarCdf<T> {
 public:
   //! @name Constructor/Destructor methods

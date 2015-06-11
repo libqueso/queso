@@ -36,6 +36,8 @@ FiniteDistribution::FiniteDistribution(
   m_prefix ((std::string)(prefix)+"fd_"),
   m_weights(inpWeights.size(),0.)
 {
+  queso_deprecated();
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering FiniteDistribution::constructor()"
                             << ": prefix = " << m_prefix
@@ -60,10 +62,7 @@ FiniteDistribution::FiniteDistribution(
                   << ": sumCheck - 1 = " << sumCheck - 1.
                   << std::endl;
       }
-      UQ_FATAL_TEST_MACRO((sumCheck - 1) > 1.e-8,
-                          m_env.worldRank(),
-                          "FiniteDistribution::constructor()",
-                          "weights sum is too bigger than 1.");
+      queso_require_less_equal_msg((sumCheck - 1), 1.e-8, "weights sum is too bigger than 1.");
 
       if (sumCheck > 1.) sumCheck = 1.;
       m_weights[j] = inpWeights[i];
@@ -89,10 +88,7 @@ FiniteDistribution::FiniteDistribution(
               << ": 1 - sumCheck = " << 1. - sumCheck
               << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((1 - sumCheck) > 1.e-8,
-                      m_env.worldRank(),
-                      "FiniteDistribution::constructor()",
-                      "weights sum is too smaller than 1.");
+  queso_require_less_equal_msg((1 - sumCheck), 1.e-8, "weights sum is too smaller than 1.");
 
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
@@ -105,15 +101,9 @@ FiniteDistribution::FiniteDistribution(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((inpWeights.size() != (m_weights.size()+numOfZeroWeights+numRareCases)),
-                      m_env.worldRank(),
-                      "FiniteDistribution::constructor()",
-                      "number of input weights was not conserved");
+  queso_require_equal_to_msg(inpWeights.size(), (m_weights.size()+numOfZeroWeights+numRareCases), "number of input weights was not conserved");
 
-  UQ_FATAL_TEST_MACRO((m_map.size() != m_weights.size()),
-                      m_env.worldRank(),
-                      "FiniteDistribution::constructor()",
-                      "map and inpWeights have different sizes");
+  queso_require_equal_to_msg(m_map.size(), m_weights.size(), "map and inpWeights have different sizes");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving FiniteDistribution::constructor()"
@@ -124,6 +114,8 @@ FiniteDistribution::FiniteDistribution(
 // Destructor ---------------------------------------
 FiniteDistribution::~FiniteDistribution()
 {
+  queso_deprecated();
+
   m_map.empty();
   m_weights.clear();
 }
@@ -131,25 +123,28 @@ FiniteDistribution::~FiniteDistribution()
 const BaseEnvironment&
 FiniteDistribution::env() const
 {
+  queso_deprecated();
+
   return m_env;
 }
 // Stats methods-------------------------------------
 const std::vector<double>&
 FiniteDistribution::weights() const
 {
+  queso_deprecated();
+
   return m_weights;
 }
 //---------------------------------------------------
 unsigned int
 FiniteDistribution::sample() const
 {
+  queso_deprecated();
+
   unsigned int result = 0;
 
   double aux = m_env.rngObject()->uniformSample();
-  UQ_FATAL_TEST_MACRO((aux < 0) || (aux > 1.),
-                      m_env.worldRank(),
-                      "FiniteDistribution::sample()",
-                      "invalid uniform");
+  queso_require_msg(!((aux < 0) || (aux > 1.)), "invalid uniform");
 
   if (aux == 0.) {
     result = 0;
@@ -174,10 +169,7 @@ FiniteDistribution::sample() const
               << ", result = "       << result
               << std::endl;
   }
-  UQ_FATAL_TEST_MACRO((result >= m_map.size()),
-                      m_env.worldRank(),
-                      "FiniteDistribution::sample()",
-                      "invalid result");
+  queso_require_less_msg(result, m_map.size(), "invalid result");
 #endif
 
   return result;

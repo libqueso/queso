@@ -78,6 +78,8 @@ libqueso_la_SOURCES += core/src/DistArray.C
 libqueso_la_SOURCES += core/src/Optimizer.C
 libqueso_la_SOURCES += core/src/GslOptimizer.C
 libqueso_la_SOURCES += core/src/OptimizerMonitor.C
+libqueso_la_SOURCES += core/src/BaseInputOptionsParser.C
+libqueso_la_SOURCES += core/src/BoostInputOptionsParser.C
 
 
 # Sources that need libmesh
@@ -118,6 +120,7 @@ libqueso_la_SOURCES += misc/src/CovCond.C
 libqueso_la_SOURCES += misc/src/AsciiTable.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDTables.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDGrids.C
+libqueso_la_SOURCES += misc/src/StreamUtilities.C
 
 # Sources from misc/src withn gsl conditional
 
@@ -245,6 +248,16 @@ libqueso_la_SOURCES += stats/src/GaussianLikelihoodFullCovarianceRandomCoefficie
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.C
 
+# Sources from surrogates/src
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateData.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateDataSet.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBase.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateHelper.C
+libqueso_la_SOURCES += surrogates/src/LinearLagrangeInterpolationSurrogate.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBuilder.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOBase.C
+libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOASCII.C
+
 # Sources from gp/src
 
 libqueso_la_SOURCES += gp/src/ExperimentModel.C
@@ -293,6 +306,8 @@ libqueso_include_HEADERS += core/inc/Vector.h
 libqueso_include_HEADERS += core/inc/Optimizer.h
 libqueso_include_HEADERS += core/inc/GslOptimizer.h
 libqueso_include_HEADERS += core/inc/OptimizerMonitor.h
+libqueso_include_HEADERS += core/inc/BaseInputOptionsParser.h
+libqueso_include_HEADERS += core/inc/BoostInputOptionsParser.h
 
 # Headers that need libmesh
 libqueso_include_HEADERS += core/inc/FunctionBase.h
@@ -307,6 +322,7 @@ libqueso_include_HEADERS += core/inc/InfiniteDimensionalMCMCSamplerOptions.h
 libqueso_include_HEADERS += core/inc/InfiniteDimensionalLikelihoodBase.h
 libqueso_include_HEADERS += core/inc/FunctionOperatorBuilder.h
 libqueso_include_HEADERS += core/inc/GslBlockMatrix.h
+libqueso_include_HEADERS += core/inc/ScopedPtr.h
 
 # Headers to install from misc/inc
 
@@ -322,6 +338,7 @@ libqueso_include_HEADERS += misc/inc/Miscellaneous.h
 libqueso_include_HEADERS += misc/inc/OneDGrid.h
 libqueso_include_HEADERS += misc/inc/UniformOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StdOneDGrid.h
+libqueso_include_HEADERS += misc/inc/StreamUtilities.h
 
 # Headers to install from basic/inc
 
@@ -434,6 +451,18 @@ libqueso_include_HEADERS += stats/inc/GaussianLikelihoodFullCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodFullCovarianceRandomCoefficient.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
+
+# Headers to install from surrogates/inc
+libqueso_include_HEADERS += surrogates/inc/SurrogateBase.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateData.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateDataSet.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBase.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateHelper.h
+libqueso_include_HEADERS += surrogates/inc/LinearLagrangeInterpolationSurrogate.h
+libqueso_include_HEADERS += surrogates/inc/SurrogateBuilderBase.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBuilder.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOBase.h
+libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOASCII.h
 
 # Headers to install from gp/inc
 

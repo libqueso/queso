@@ -29,6 +29,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 /*! \file VectorFunctionSynchronizer.h
  * \brief Class for synchronizing the calls of vector-valued functions
  *
@@ -39,7 +42,7 @@ namespace QUESO {
  * functions. This means that all processes must reach a point in their code before they
  * can all begin executing again. */
 
-template <class P_V, class P_M, class Q_V, class Q_M>
+template <class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix>
 class VectorFunctionSynchronizer
 {
 public:

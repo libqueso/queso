@@ -26,6 +26,7 @@
 #define UQ_GCM_OPTIONS_H
 
 #include <queso/Environment.h>
+#include <queso/BoostInputOptionsParser.h>
 #include <queso/SequenceStatisticalOptions.h>
 
 #define UQ_GCM_FILENAME_FOR_NO_FILE "."
@@ -53,15 +54,24 @@
 #define UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV                1
 #define UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                 0
 
+namespace boost {
+  namespace program_options {
+    class options_description;
+  }
+}
+
 namespace QUESO {
 
 class GcmOptionsValues
 {
 public:
   GcmOptionsValues            ();
+  GcmOptionsValues(const BaseEnvironment * env, const char * prefix);
   GcmOptionsValues            (const GcmOptionsValues& src);
   GcmOptionsValues& operator= (const GcmOptionsValues& rhs);
- ~GcmOptionsValues            ();
+  virtual ~GcmOptionsValues            ();
+
+  std::string m_prefix;
 
   bool                   m_checkAgainstPreviousSample;
   std::string            m_dataOutputFileName;
@@ -87,6 +97,30 @@ public:
   //MhOptionsValues m_mhOptionsValues;
 
 private:
+  BoostInputOptionsParser * m_parser;
+
+  std::string                   m_option_help;
+  std::string                   m_option_checkAgainstPreviousSample;
+  std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowAll;
+  std::string                   m_option_dataOutputAllowedSet;
+  std::string                   m_option_priorSeqNumSamples;
+  std::string                   m_option_priorSeqDataOutputFileName;
+  std::string                   m_option_priorSeqDataOutputFileType;
+  std::string                   m_option_priorSeqDataOutputAllowAll;
+  std::string                   m_option_priorSeqDataOutputAllowedSet;
+  std::string                   m_option_nuggetValueForBtWyB;
+  std::string                   m_option_nuggetValueForBtWyBInv;
+  std::string                   m_option_formCMatrix;
+  std::string                   m_option_useTildeLogicForRankDefficientC;
+  std::string                   m_option_predLag;
+  std::string                   m_option_predVUsBySamplingRVs;
+  std::string                   m_option_predVUsBySummingRVs;
+  std::string                   m_option_predVUsAtKeyPoints;
+  std::string                   m_option_predWsBySamplingRVs;
+  std::string                   m_option_predWsBySummingRVs;
+  std::string                   m_option_predWsAtKeyPoints;
+
   void copy(const GcmOptionsValues& src);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -113,12 +147,12 @@ public:
   std::string                        m_prefix;
 
 private:
-  void   defineMyOptions  (po::options_description& optionsDesc) const;
-  void   getMyOptionValues(po::options_description& optionsDesc);
+  void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
+  void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
   const BaseEnvironment& m_env;
 
-  po::options_description*      m_optionsDesc;
+  boost::program_options::options_description*      m_optionsDesc;
   std::string                   m_option_help;
   std::string                   m_option_checkAgainstPreviousSample;
   std::string                   m_option_dataOutputFileName;

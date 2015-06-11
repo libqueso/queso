@@ -6,7 +6,7 @@
 #include <queso/ScalarFunction.h>
 #include <queso/VectorSet.h>
 
-template<class V, class M>
+template<class V = QUESO::GslVector, class M = QUESO::GslMatrix>
 class Likelihood : public QUESO::BaseScalarFunction<V, M>
 {
 public:
@@ -41,8 +41,7 @@ int main(int argc, char ** argv) {
 
   QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
 
-  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
-      "param_", 1, NULL);
+  QUESO::VectorSpace<> paramSpace(env, "param_", 1, NULL);
 
   QUESO::GslVector paramMins(paramSpace.zeroVector());
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
@@ -52,19 +51,15 @@ int main(int argc, char ** argv) {
   paramMins.cwSet(min_val);
   paramMaxs.cwSet(max_val);
 
-  QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix> paramDomain("param_",
-      paramSpace, paramMins, paramMaxs);
+  QUESO::BoxSubset<> paramDomain("param_", paramSpace, paramMins, paramMaxs);
 
-  QUESO::UniformVectorRV<QUESO::GslVector, QUESO::GslMatrix> priorRv("prior_",
-      paramDomain);
+  QUESO::UniformVectorRV<> priorRv("prior_", paramDomain);
 
-  Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain);
+  Likelihood<> lhood("llhd_", paramDomain);
 
-  QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix>
-    postRv("post_", paramSpace);
+  QUESO::GenericVectorRV<> postRv("post_", paramSpace);
 
-  QUESO::StatisticalInverseProblem<QUESO::GslVector, QUESO::GslMatrix>
-    ip("", NULL, priorRv, lhood, postRv);
+  QUESO::StatisticalInverseProblem<> ip("", NULL, priorRv, lhood, postRv);
 
   QUESO::GslVector paramInitials(paramSpace.zeroVector());
   paramInitials[0] = 0.0;

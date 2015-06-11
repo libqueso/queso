@@ -34,10 +34,7 @@ Fft<std::complex<double> >::forward(
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& forwardResult)
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "Fft<complex>::forward()",
-                      "not implemented yet");
+  queso_not_implemented();
 
   std::complex<double> z = data[0]; z += 0.; // just to avoid icpc warnings
   unsigned int         f = fftSize; f += 1;  // just to avoid icpc warnings

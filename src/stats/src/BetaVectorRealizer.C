@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <limits>
+
 #include <queso/BetaVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>

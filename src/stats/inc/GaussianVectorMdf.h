@@ -33,6 +33,9 @@
 
 namespace QUESO {
 
+class GslVector;
+class GslMatrix;
+
 //*****************************************************
 // Gaussian marginal density function class
 //*****************************************************
@@ -43,7 +46,7 @@ namespace QUESO {
  * This class \b will implement a Gaussian vector marginal density function function (MDF).
  * \todo: Implement me! */
 
-template<class V, class M>
+template <class V = GslVector, class M = GslMatrix>
 class GaussianVectorMdf : public BaseVectorMdf<V,M> {
 public:
     //! @name Constructor/Destructor methods
