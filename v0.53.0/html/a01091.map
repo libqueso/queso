@@ -1,0 +1,5 @@
+<map id="ANNpointSet" name="ANNpointSet">
+<area shape="rect" id="node3" href="$a00012.html" title="ANNbruteForce" alt="" coords="5,83,131,112"/>
+<area shape="rect" id="node5" href="$a00016.html" title="ANNkd_tree" alt="" coords="155,83,256,112"/>
+<area shape="rect" id="node7" href="$a00011.html" title="ANNbd_tree" alt="" coords="153,160,257,189"/>
+</map>

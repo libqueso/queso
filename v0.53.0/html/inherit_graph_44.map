@@ -1,0 +1,20 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$a00047.html" title="A templated base class for handling vector RV. " alt="" coords="7,559,183,606"/>
+<area shape="rect" id="node3" href="$a00055.html" title="QUESO::BetaVectorRV\l\&lt; P_V, P_M \&gt;" alt="" coords="264,5,440,51"/>
+<area shape="rect" id="node5" href="$a00060.html" title="QUESO::ConcatenatedVector\lRV\&lt; P_V, P_M \&gt;" alt="" coords="241,74,463,121"/>
+<area shape="rect" id="node7" href="$a00088.html" title="QUESO::GammaVectorRV\l\&lt; P_V, P_M \&gt;" alt="" coords="255,143,449,190"/>
+<area shape="rect" id="node9" href="$a00100.html" title="QUESO::GaussianVectorRV\l\&lt; Q_V, Q_M \&gt;" alt="" coords="251,213,453,259"/>
+<area shape="rect" id="node11" href="$a00120.html" title="QUESO::GenericVectorRV\l\&lt; P_V, P_M \&gt;" alt="" coords="255,282,449,329"/>
+<area shape="rect" id="node13" href="$a00120.html" title="QUESO::GenericVectorRV\l\&lt; Q_V, Q_M \&gt;" alt="" coords="255,351,449,398"/>
+<area shape="rect" id="node15" href="$a00055.html" title="A class representing a vector RV constructed via Beta distribution. " alt="" coords="264,421,440,467"/>
+<area shape="rect" id="node17" href="$a00060.html" title="A class representing concatenated vector RVs. " alt="" coords="241,490,463,537"/>
+<area shape="rect" id="node19" href="$a00088.html" title="A class representing a vector RV constructed via Gamma distribution. " alt="" coords="255,559,449,606"/>
+<area shape="rect" id="node21" href="$a00100.html" title="A class representing a Gaussian vector RV. " alt="" coords="251,629,453,675"/>
+<area shape="rect" id="node23" href="$a00120.html" title="A templated class for handling generic vector RVs. " alt="" coords="255,698,449,745"/>
+<area shape="rect" id="node25" href="$a00145.html" title="A class representing a vector RV constructed via Inverse Gamma distribution. " alt="" coords="239,767,465,814"/>
+<area shape="rect" id="node27" href="$a00148.html" title="A class representing a (transformed) Gaussian vector RV with bounds. " alt="" coords="233,837,471,883"/>
+<area shape="rect" id="node29" href="$a00151.html" title="A class representing a jeffreys vector RV. " alt="" coords="255,906,449,953"/>
+<area shape="rect" id="node31" href="$a00159.html" title="A class representing a LogNormal vector RV. " alt="" coords="245,975,459,1022"/>
+<area shape="rect" id="node33" href="$a00222.html" title="A class representing a uniform vector RV. " alt="" coords="255,1045,449,1091"/>
+<area shape="rect" id="node35" href="$a00234.html" title="A class representing a vector RV constructed via Wigner distribution. " alt="" coords="257,1114,447,1161"/>
+</map>
