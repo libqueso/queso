@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00173.html" title="Class for vector operations (virtual). " alt="" coords="5,5,131,35"/>
-<area shape="rect" id="node3" href="$a00095.html" title="Class for vector operations using GSL library. " alt="" coords="180,5,324,35"/>
+<area shape="rect" id="node3" href="$a00156.html" title="QUESO::LogicError" alt="" coords="169,5,316,35"/>
+<area shape="rect" id="node5" href="$a00176.html" title="QUESO::NotImplemented" alt="" coords="145,59,340,88"/>
 </map>

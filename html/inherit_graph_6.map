@@ -1,8 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00017.html" title="Base class for one&#45;dimensional quadrature rules (numerical integration of functions). " alt="" coords="5,112,216,141"/>
-<area shape="rect" id="node3" href="$a00069.html" title="Class for Hermite&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="264,5,555,35"/>
-<area shape="rect" id="node5" href="$a00082.html" title="Class for one&#45;dimensional generic quadrature rules (numerical integration of functions). " alt="" coords="296,59,523,88"/>
-<area shape="rect" id="node7" href="$a00168.html" title="Class for Legendre&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="264,112,555,141"/>
-<area shape="rect" id="node9" href="$a00179.html" title="Class for second type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="293,165,525,211"/>
-<area shape="rect" id="node11" href="$a00180.html" title="Class for first type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="269,234,549,281"/>
+<area shape="rect" id="node1" href="$a00021.html" title="ANNpointSet" alt="" coords="5,32,115,61"/>
+<area shape="rect" id="node3" href="$a00012.html" title="ANNbruteForce" alt="" coords="164,5,289,35"/>
+<area shape="rect" id="node5" href="$a00016.html" title="ANNkd_tree" alt="" coords="176,59,277,88"/>
+<area shape="rect" id="node7" href="$a00011.html" title="ANNbd_tree" alt="" coords="339,59,443,88"/>
 </map>

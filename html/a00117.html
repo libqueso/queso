@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: QUESO::LogNormalVectorRV&lt; V, M &gt; Class Template Reference</title>
+<title>queso-0.53.0: QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -45,120 +45,100 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00500.html">QUESO</a></li><li class="navelem"><a class="el" href="a00117.html">LogNormalVectorRV</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00117.html">GenericVectorFunction</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="a01146.html">List of all members</a>  </div>
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="a01117.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::LogNormalVectorRV&lt; V, M &gt; Class Template Reference</div>  </div>
+<div class="title">QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A class representing a LogNormal vector RV.  
+<p>A class for handling generic vector functions.  
  <a href="a00117.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00376_source.html">LogNormalVectorRV.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00247_source.html">GenericVectorFunction.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::LogNormalVectorRV&lt; V, M &gt;:</div>
+Inheritance diagram for QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01147.png" border="0" usemap="#_q_u_e_s_o_1_1_log_normal_vector_r_v_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_log_normal_vector_r_v_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_log_normal_vector_r_v_3_01_v_00_01_m_01_4_inherit__map">
-<area shape="rect" id="node2" href="a00032.html" title="A templated base class for handling vector RV. " alt="" coords="24,6,200,53"/></map>
+<div class="center"><img src="a01118.png" border="0" usemap="#_q_u_e_s_o_1_1_generic_vector_function_3_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_generic_vector_function_3_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_inherit__map" id="_q_u_e_s_o_1_1_generic_vector_function_3_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_inherit__map">
+<area shape="rect" id="node2" href="a00044.html" title="A templated (base) class for handling vector functions. " alt="" coords="15,6,231,53"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for QUESO::LogNormalVectorRV&lt; V, M &gt;:</div>
+Collaboration diagram for QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01148.png" border="0" usemap="#_q_u_e_s_o_1_1_log_normal_vector_r_v_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_log_normal_vector_r_v_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_log_normal_vector_r_v_3_01_v_00_01_m_01_4_coll__map">
-<area shape="rect" id="node2" href="a00032.html" title="A templated base class for handling vector RV. " alt="" coords="827,5,1003,51"/><area shape="rect" id="node4" href="a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,168,648,197"/><area shape="rect" id="node10" href="a00052.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,257,1024,287"/><area shape="rect" id="node16" href="a00132.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,137,988,167"/><area shape="rect" id="node6" href="a00034.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,120,195,149"/><area shape="rect" id="node8" href="a00139.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,173,175,203"/><area shape="rect" id="node13" href="a00053.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,283,205,312"/></map>
+<div class="center"><img src="a01119.png" border="0" usemap="#_q_u_e_s_o_1_1_generic_vector_function_3_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_generic_vector_function_3_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_coll__map" id="_q_u_e_s_o_1_1_generic_vector_function_3_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_coll__map">
+<area shape="rect" id="node2" href="a00044.html" title="A templated (base) class for handling vector functions. " alt="" coords="65,558,281,605"/><area shape="rect" id="node4" href="a00227.html" title="QUESO::VectorSet\&lt; Q\l_V, Q_M \&gt;" alt="" coords="87,443,260,490"/><area shape="rect" id="node6" href="a00032.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="177,296,377,325"/><area shape="rect" id="node18" href="a00175.html" title="The QUESO MPI Communicator Class. " alt="" coords="284,452,431,481"/><area shape="rect" id="node22" href="a00227.html" title="QUESO::VectorSet\&lt; P\l_V, P_M \&gt;" alt="" coords="455,443,628,490"/><area shape="rect" id="node8" href="a00049.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="5,200,184,229"/><area shape="rect" id="node10" href="a00183.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="208,200,347,229"/><area shape="rect" id="node12" href="a00070.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="371,200,571,229"/><area shape="rect" id="node14" href="a00056.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="368,86,573,133"/><area shape="rect" id="node16" href="a00034.html" title="QUESO::BaseInputOptionsParser" alt="" coords="349,5,592,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:ae2fa33feed7a961777ff4122353d77d1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00117.html#ae2fa33feed7a961777ff4122353d77d1">LogNormalVectorRV</a> (const char *prefix, const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00032.html#aa4dd2f036228eac1f945bacc7147a922">imageSet</a>, const V &amp;lawExpVector, const V &amp;lawVarVector)</td></tr>
-<tr class="memdesc:ae2fa33feed7a961777ff4122353d77d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#ae2fa33feed7a961777ff4122353d77d1">More...</a><br/></td></tr>
-<tr class="separator:ae2fa33feed7a961777ff4122353d77d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a821437ffc879715f63f5b6628877bb98"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00117.html#a821437ffc879715f63f5b6628877bb98">~LogNormalVectorRV</a> ()</td></tr>
-<tr class="memdesc:a821437ffc879715f63f5b6628877bb98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#a821437ffc879715f63f5b6628877bb98">More...</a><br/></td></tr>
-<tr class="separator:a821437ffc879715f63f5b6628877bb98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">I/O methods</div></td></tr>
-<tr class="memitem:a150a212058169e2b708e82c8faff61eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00117.html#a150a212058169e2b708e82c8faff61eb">print</a> (std::ostream &amp;os) const </td></tr>
-<tr class="memdesc:a150a212058169e2b708e82c8faff61eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Prints the vector RV.  <a href="#a150a212058169e2b708e82c8faff61eb">More...</a><br/></td></tr>
-<tr class="separator:a150a212058169e2b708e82c8faff61eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00032"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00032')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00032.html">QUESO::BaseVectorRV&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a2254158741e63815277dd40541780015 inherit pub_methods_a00032"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a2254158741e63815277dd40541780015">BaseVectorRV</a> (const char *prefix, const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00032.html#aa4dd2f036228eac1f945bacc7147a922">imageSet</a>)</td></tr>
-<tr class="memdesc:a2254158741e63815277dd40541780015 inherit pub_methods_a00032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a2254158741e63815277dd40541780015">More...</a><br/></td></tr>
-<tr class="separator:a2254158741e63815277dd40541780015 inherit pub_methods_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a57ee3ddec5b40ed0ad262f7482b0ae inherit pub_methods_a00032"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a4a57ee3ddec5b40ed0ad262f7482b0ae">~BaseVectorRV</a> ()</td></tr>
-<tr class="memdesc:a4a57ee3ddec5b40ed0ad262f7482b0ae inherit pub_methods_a00032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#a4a57ee3ddec5b40ed0ad262f7482b0ae">More...</a><br/></td></tr>
-<tr class="separator:a4a57ee3ddec5b40ed0ad262f7482b0ae inherit pub_methods_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5bf8486b3bacb46b9d4ecba513fd37b inherit pub_methods_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00018.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#ad5bf8486b3bacb46b9d4ecba513fd37b">env</a> () const </td></tr>
-<tr class="memdesc:ad5bf8486b3bacb46b9d4ecba513fd37b inherit pub_methods_a00032"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00500.html">QUESO</a> environment; access to private attribute m_env.  <a href="#ad5bf8486b3bacb46b9d4ecba513fd37b">More...</a><br/></td></tr>
-<tr class="separator:ad5bf8486b3bacb46b9d4ecba513fd37b inherit pub_methods_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4dd2f036228eac1f945bacc7147a922 inherit pub_methods_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#aa4dd2f036228eac1f945bacc7147a922">imageSet</a> () const </td></tr>
-<tr class="memdesc:aa4dd2f036228eac1f945bacc7147a922 inherit pub_methods_a00032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Image set of the vector RV; access to private attribute m_imageSet.  <a href="#aa4dd2f036228eac1f945bacc7147a922">More...</a><br/></td></tr>
-<tr class="separator:aa4dd2f036228eac1f945bacc7147a922 inherit pub_methods_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3206740e05e0c64a88273029e963b185 inherit pub_methods_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00020.html">BaseJointPdf</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a3206740e05e0c64a88273029e963b185">pdf</a> () const </td></tr>
-<tr class="memdesc:a3206740e05e0c64a88273029e963b185 inherit pub_methods_a00032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Posterior Density Function of the vector RV; access to private attribute m_pdf.  <a href="#a3206740e05e0c64a88273029e963b185">More...</a><br/></td></tr>
-<tr class="separator:a3206740e05e0c64a88273029e963b185 inherit pub_methods_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea4b01eef0baf36944d14459a7b9ccf4 inherit pub_methods_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00031.html">BaseVectorRealizer</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#aea4b01eef0baf36944d14459a7b9ccf4">realizer</a> () const </td></tr>
-<tr class="memdesc:aea4b01eef0baf36944d14459a7b9ccf4 inherit pub_methods_a00032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a realization (sample) of the PDF of this vector RV; access to private attribute m_realizer.  <a href="#aea4b01eef0baf36944d14459a7b9ccf4">More...</a><br/></td></tr>
-<tr class="separator:aea4b01eef0baf36944d14459a7b9ccf4 inherit pub_methods_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a905586dc1529a3ae7dd7f04313ca9e8a inherit pub_methods_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00028.html">BaseVectorCdf</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a905586dc1529a3ae7dd7f04313ca9e8a">subCdf</a> () const </td></tr>
-<tr class="memdesc:a905586dc1529a3ae7dd7f04313ca9e8a inherit pub_methods_a00032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the Cumulative Distribution Function of this vector RV, considering only the sub-sequence of data; access to private attribute m_subCdf.  <a href="#a905586dc1529a3ae7dd7f04313ca9e8a">More...</a><br/></td></tr>
-<tr class="separator:a905586dc1529a3ae7dd7f04313ca9e8a inherit pub_methods_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a045a14e1ee948ac3162199a06606ce80 inherit pub_methods_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00028.html">BaseVectorCdf</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a045a14e1ee948ac3162199a06606ce80">unifiedCdf</a> () const </td></tr>
-<tr class="memdesc:a045a14e1ee948ac3162199a06606ce80 inherit pub_methods_a00032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the Cumulative Distribution Function of this vector RV, considering the unified sequence of data; access to private attribute m_unifiedCdf.  <a href="#a045a14e1ee948ac3162199a06606ce80">More...</a><br/></td></tr>
-<tr class="separator:a045a14e1ee948ac3162199a06606ce80 inherit pub_methods_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81f6ade1c28022b813d1276f2c217404 inherit pub_methods_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00030.html">BaseVectorMdf</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a81f6ade1c28022b813d1276f2c217404">mdf</a> () const </td></tr>
-<tr class="memdesc:a81f6ade1c28022b813d1276f2c217404 inherit pub_methods_a00032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the Mass Density Function of this vector RV; access to private attribute m_mdf.  <a href="#a81f6ade1c28022b813d1276f2c217404">More...</a><br/></td></tr>
-<tr class="separator:a81f6ade1c28022b813d1276f2c217404 inherit pub_methods_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7225557182bd694de55618dff4322d3a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00117.html#a7225557182bd694de55618dff4322d3a">GenericVectorFunction</a> (const char *prefix, const <a class="el" href="a00227.html">VectorSet</a>&lt; P_V, P_M &gt; &amp;<a class="el" href="a00044.html#af77b709d473f253e5c56aa620d5f3cb0">domainSet</a>, const <a class="el" href="a00227.html">VectorSet</a>&lt; Q_V, Q_M &gt; &amp;<a class="el" href="a00044.html#aa3a070a86f7099f53a669f1aab547619">imageSet</a>, <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>(*routinePtr)(const P_V &amp;domainVector, const P_V *domainDirection, const <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *functionDataPtr, Q_V &amp;imageVector, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *gradVectors, <a class="el" href="a00066.html">DistArray</a>&lt; P_M * &gt; *hessianMatrices, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *hessianEffects), const <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *functionDataPtr)</td></tr>
+<tr class="memdesc:a7225557182bd694de55618dff4322d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a7225557182bd694de55618dff4322d3a">More...</a><br/></td></tr>
+<tr class="separator:a7225557182bd694de55618dff4322d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab125a1b6d18f7912e70d19bd80f72175"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00117.html#ab125a1b6d18f7912e70d19bd80f72175">~GenericVectorFunction</a> ()</td></tr>
+<tr class="memdesc:ab125a1b6d18f7912e70d19bd80f72175"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#ab125a1b6d18f7912e70d19bd80f72175">More...</a><br/></td></tr>
+<tr class="separator:ab125a1b6d18f7912e70d19bd80f72175"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Mathematical method</div></td></tr>
+<tr class="memitem:afcc099493262b90cdace65f24bb6b98d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00117.html#afcc099493262b90cdace65f24bb6b98d">compute</a> (const P_V &amp;domainVector, const P_V *domainDirection, Q_V &amp;imageVector, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *gradVectors, <a class="el" href="a00066.html">DistArray</a>&lt; P_M * &gt; *hessianMatrices, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *hessianEffects) const </td></tr>
+<tr class="memdesc:afcc099493262b90cdace65f24bb6b98d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the protected member <code>*m_routinePtr</code>(), in order to calculate the image vector <code>imageVector</code>.  <a href="#afcc099493262b90cdace65f24bb6b98d">More...</a><br/></td></tr>
+<tr class="separator:afcc099493262b90cdace65f24bb6b98d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00044"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00044')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00044.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td></tr>
+<tr class="memitem:a6f819f1f9adcf13e9ed4a35542aeff20 inherit pub_methods_a00044"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#a6f819f1f9adcf13e9ed4a35542aeff20">BaseVectorFunction</a> (const char *prefix, const <a class="el" href="a00227.html">VectorSet</a>&lt; P_V, P_M &gt; &amp;<a class="el" href="a00044.html#af77b709d473f253e5c56aa620d5f3cb0">domainSet</a>, const <a class="el" href="a00227.html">VectorSet</a>&lt; Q_V, Q_M &gt; &amp;<a class="el" href="a00044.html#aa3a070a86f7099f53a669f1aab547619">imageSet</a>)</td></tr>
+<tr class="memdesc:a6f819f1f9adcf13e9ed4a35542aeff20 inherit pub_methods_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Constructor.  <a href="#a6f819f1f9adcf13e9ed4a35542aeff20">More...</a><br/></td></tr>
+<tr class="separator:a6f819f1f9adcf13e9ed4a35542aeff20 inherit pub_methods_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25e2bf49649abce43b9390d7cfd04164 inherit pub_methods_a00044"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#a25e2bf49649abce43b9390d7cfd04164">~BaseVectorFunction</a> ()</td></tr>
+<tr class="memdesc:a25e2bf49649abce43b9390d7cfd04164 inherit pub_methods_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a25e2bf49649abce43b9390d7cfd04164">More...</a><br/></td></tr>
+<tr class="separator:a25e2bf49649abce43b9390d7cfd04164 inherit pub_methods_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af77b709d473f253e5c56aa620d5f3cb0 inherit pub_methods_a00044"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00227.html">VectorSet</a>&lt; P_V, P_M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#af77b709d473f253e5c56aa620d5f3cb0">domainSet</a> () const </td></tr>
+<tr class="memdesc:af77b709d473f253e5c56aa620d5f3cb0 inherit pub_methods_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the protected attribute <code>m_domainSet:</code> domain set of the vector function. It is an instance of the class <a class="el" href="a00227.html" title="A templated class for handling sets. ">VectorSet</a>.  <a href="#af77b709d473f253e5c56aa620d5f3cb0">More...</a><br/></td></tr>
+<tr class="separator:af77b709d473f253e5c56aa620d5f3cb0 inherit pub_methods_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3a070a86f7099f53a669f1aab547619 inherit pub_methods_a00044"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00227.html">VectorSet</a>&lt; Q_V, Q_M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#aa3a070a86f7099f53a669f1aab547619">imageSet</a> () const </td></tr>
+<tr class="memdesc:aa3a070a86f7099f53a669f1aab547619 inherit pub_methods_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the protected attribute <code>m_imageSet:</code> image set of the vector function/ It is an instance of the class <a class="el" href="a00227.html" title="A templated class for handling sets. ">VectorSet</a>.  <a href="#aa3a070a86f7099f53a669f1aab547619">More...</a><br/></td></tr>
+<tr class="separator:aa3a070a86f7099f53a669f1aab547619 inherit pub_methods_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_a00032"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00032')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00032.html">QUESO::BaseVectorRV&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a556761c50e2d171977ef5f19a63c8c73 inherit pro_attribs_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00018.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a></td></tr>
-<tr class="separator:a556761c50e2d171977ef5f19a63c8c73 inherit pro_attribs_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a030ce3bc9873a9eaf6d8bf452c096ab3 inherit pro_attribs_a00032"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a></td></tr>
-<tr class="separator:a030ce3bc9873a9eaf6d8bf452c096ab3 inherit pro_attribs_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad31872bb4da22d47528cb9d691b3b7ff inherit pro_attribs_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a></td></tr>
-<tr class="separator:ad31872bb4da22d47528cb9d691b3b7ff inherit pro_attribs_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ca926bca6fbcc688be6fc7496449e8e inherit pro_attribs_a00032"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00020.html">BaseJointPdf</a>&lt; V, M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a0ca926bca6fbcc688be6fc7496449e8e">m_pdf</a></td></tr>
-<tr class="separator:a0ca926bca6fbcc688be6fc7496449e8e inherit pro_attribs_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad99bc05293c0fd0a0accb3191fb7119e inherit pro_attribs_a00032"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00031.html">BaseVectorRealizer</a>&lt; V, M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#ad99bc05293c0fd0a0accb3191fb7119e">m_realizer</a></td></tr>
-<tr class="separator:ad99bc05293c0fd0a0accb3191fb7119e inherit pro_attribs_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a1117671c7fa2e572a9484463bee3a5 inherit pro_attribs_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00028.html">BaseVectorCdf</a>&lt; V, M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a1a1117671c7fa2e572a9484463bee3a5">m_subCdf</a></td></tr>
-<tr class="separator:a1a1117671c7fa2e572a9484463bee3a5 inherit pro_attribs_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31a1d44bbb6a7c030ca31a9577904252 inherit pro_attribs_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00028.html">BaseVectorCdf</a>&lt; V, M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a31a1d44bbb6a7c030ca31a9577904252">m_unifiedCdf</a></td></tr>
-<tr class="separator:a31a1d44bbb6a7c030ca31a9577904252 inherit pro_attribs_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a95d0107f66cf9b0ed3ad18a3d738df inherit pro_attribs_a00032"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00030.html">BaseVectorMdf</a>&lt; V, M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a5a95d0107f66cf9b0ed3ad18a3d738df">m_mdf</a></td></tr>
-<tr class="separator:a5a95d0107f66cf9b0ed3ad18a3d738df inherit pro_attribs_a00032"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a1671b1c8c0d4eed14d203823af685a09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00117.html#a1671b1c8c0d4eed14d203823af685a09">m_routinePtr</a> )(const P_V &amp;domainVector, const P_V *domainDirection, const <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *functionDataPtr, Q_V &amp;imageVector, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *gradVectors, <a class="el" href="a00066.html">DistArray</a>&lt; P_M * &gt; *hessianMatrices, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *hessianEffects)</td></tr>
+<tr class="memdesc:a1671b1c8c0d4eed14d203823af685a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Routine defining a vector-valued function.  <a href="#a1671b1c8c0d4eed14d203823af685a09">More...</a><br/></td></tr>
+<tr class="separator:a1671b1c8c0d4eed14d203823af685a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85df3216795107b164913ad339f0f813"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00117.html#a85df3216795107b164913ad339f0f813">m_routineDataPtr</a></td></tr>
+<tr class="separator:a85df3216795107b164913ad339f0f813"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_a00044"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00044')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00044.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td></tr>
+<tr class="memitem:abb5487a1874515b698a3d5ee82490881 inherit pro_attribs_a00044"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#abb5487a1874515b698a3d5ee82490881">m_env</a></td></tr>
+<tr class="separator:abb5487a1874515b698a3d5ee82490881 inherit pro_attribs_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacf92c70a9f6d0a951943aa708b7cfa6 inherit pro_attribs_a00044"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#aacf92c70a9f6d0a951943aa708b7cfa6">m_prefix</a></td></tr>
+<tr class="separator:aacf92c70a9f6d0a951943aa708b7cfa6 inherit pro_attribs_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a485d4d016534371775bb2b00b5a9f4d3 inherit pro_attribs_a00044"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00227.html">VectorSet</a>&lt; P_V, P_M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#a485d4d016534371775bb2b00b5a9f4d3">m_domainSet</a></td></tr>
+<tr class="memdesc:a485d4d016534371775bb2b00b5a9f4d3 inherit pro_attribs_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Domain set of the vector function.  <a href="#a485d4d016534371775bb2b00b5a9f4d3">More...</a><br/></td></tr>
+<tr class="separator:a485d4d016534371775bb2b00b5a9f4d3 inherit pro_attribs_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a442585224e86695e302757c0fad17913 inherit pro_attribs_a00044"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00227.html">VectorSet</a>&lt; Q_V, Q_M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#a442585224e86695e302757c0fad17913">m_imageSet</a></td></tr>
+<tr class="memdesc:a442585224e86695e302757c0fad17913 inherit pro_attribs_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Image set of the vector function.  <a href="#a442585224e86695e302757c0fad17913">More...</a><br/></td></tr>
+<tr class="separator:a442585224e86695e302757c0fad17913 inherit pro_attribs_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class V, class M&gt;<br/>
-class QUESO::LogNormalVectorRV&lt; V, M &gt;</h3>
+<div class="textblock"><h3>template&lt;class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt;<br/>
+class QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</h3>
 
-<p>A class representing a LogNormal vector RV. </p>
-<p>This class allows the user to compute the value of a LogNormal PDF and to generate realizations (samples) from it.<br/>
- The probability density function of a log-normal distribution is: </p>
-<p class="formulaDsp">
-<img class="formulaDsp" alt="\[ f(x|\mu,\sigma) = \frac{1}{x \sigma \sqrt{2 \pi}}\, e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}, x>0 \]" src="form_133.png"/>
-</p>
-<p> where the parameters denoted <img class="formulaInl" alt="$ \mu $" src="form_101.png"/> and <img class="formulaInl" alt="$ \sigma $" src="form_123.png"/> are, respectively, the mean and standard deviation of the variable's natural logarithm; and <code>x&gt;0</code>. </p>
+<p>A class for handling generic vector functions. </p>
+<p>This class allows the mathematical definition of a vector function such as: <img class="formulaInl" alt="$ \mathbf{q}: B \subset R^n \rightarrow R^m $" src="form_5.png"/>. It is derived from <a class="el" href="a00044.html" title="A templated (base) class for handling vector functions. ">BaseVectorFunction</a>. </p>
 
-<p>Definition at line <a class="el" href="a00376_source.html#l00056">56</a> of file <a class="el" href="a00376_source.html">LogNormalVectorRV.h</a>.</p>
+<p>Definition at line <a class="el" href="a00247_source.html#l00047">47</a> of file <a class="el" href="a00247_source.html">GenericVectorFunction.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ae2fa33feed7a961777ff4122353d77d1"></a>
+<a class="anchor" id="a7225557182bd694de55618dff4322d3a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V , class M &gt; </div>
+template&lt;class P_V , class P_M , class Q_V , class Q_M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00117.html">QUESO::LogNormalVectorRV</a>&lt; V, M &gt;::<a class="el" href="a00117.html">LogNormalVectorRV</a> </td>
+          <td class="memname"><a class="el" href="a00117.html">QUESO::GenericVectorFunction</a>&lt; P_V, P_M, Q_V, Q_M &gt;::<a class="el" href="a00117.html">GenericVectorFunction</a> </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>prefix</em>, </td>
@@ -166,20 +146,26 @@ template&lt;class V , class M &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00227.html">VectorSet</a>&lt; P_V, P_M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>domainSet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00227.html">VectorSet</a>&lt; Q_V, Q_M &gt; &amp;&#160;</td>
           <td class="paramname"><em>imageSet</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>lawExpVector</em>, </td>
+          <td class="paramtype"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>(*)(const P_V &amp;domainVector, const P_V *domainDirection, const <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *functionDataPtr, Q_V &amp;imageVector, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *gradVectors, <a class="el" href="a00066.html">DistArray</a>&lt; P_M * &gt; *hessianMatrices, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *hessianEffects)&#160;</td>
+          <td class="paramname"><em>routinePtr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>lawVarVector</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *&#160;</td>
+          <td class="paramname"><em>functionDataPtr</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -189,123 +175,36 @@ template&lt;class V , class M &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
-<p>Construct a LogNormal vector RV with mean <code>lawExpVector</code> and diagonal covariance matrix <code>lawVarVector</code> whose variates live in <code>imageSet</code>. </p>
+<p>Default constructor. </p>
+<p>Instantiates an object of <code>this</code> class given its prefix, domain and a pointer to a routine. This routine plays the role of a vector-valued function, and it is useful, for instance, to calculate the likelihood (and its image set). </p>
 
-<p>Definition at line <a class="el" href="a00461_source.html#l00035">35</a> of file <a class="el" href="a00461_source.html">LogNormalVectorRV.C</a>.</p>
-
-<p>References <a class="el" href="a00274_source.html#l00436">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00496_source.html#l00079">QUESO::BaseVectorRV&lt; V, M &gt;::imageSet()</a>, <a class="el" href="a00411_source.html#l00112">QUESO::BaseVectorRV&lt; V, M &gt;::m_env</a>, <a class="el" href="a00411_source.html#l00114">QUESO::BaseVectorRV&lt; V, M &gt;::m_imageSet</a>, <a class="el" href="a00411_source.html#l00119">QUESO::BaseVectorRV&lt; V, M &gt;::m_mdf</a>, <a class="el" href="a00411_source.html#l00115">QUESO::BaseVectorRV&lt; V, M &gt;::m_pdf</a>, <a class="el" href="a00411_source.html#l00113">QUESO::BaseVectorRV&lt; V, M &gt;::m_prefix</a>, <a class="el" href="a00411_source.html#l00116">QUESO::BaseVectorRV&lt; V, M &gt;::m_realizer</a>, <a class="el" href="a00411_source.html#l00117">QUESO::BaseVectorRV&lt; V, M &gt;::m_subCdf</a>, <a class="el" href="a00411_source.html#l00118">QUESO::BaseVectorRV&lt; V, M &gt;::m_unifiedCdf</a>, <a class="el" href="a00211_source.html#l00088">QUESO::BoxSubset&lt; V, M &gt;::maxValues()</a>, <a class="el" href="a00211_source.html#l00082">QUESO::BoxSubset&lt; V, M &gt;::minValues()</a>, <a class="el" href="a00274_source.html#l00305">QUESO::BaseEnvironment::subDisplayFile()</a>, <a class="el" href="a00237_source.html#l00223">UQ_FATAL_TEST_MACRO</a>, and <a class="el" href="a00274_source.html#l00235">QUESO::BaseEnvironment::worldRank()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  :</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  BaseVectorRV&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;gau&quot;</span>).c_str(),<a class="code" href="a00032.html#aa4dd2f036228eac1f945bacc7147a922">imageSet</a>)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering LogNormalVectorRV&lt;V,M&gt;::constructor() [1]&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00032.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// begin kemelli 2013-April-23 --------------------------</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// LogNormal dist is defined only in (0,inf)</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keyword">const</span> BoxSubset&lt;V,M&gt;* imageBox = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>BoxSubset&lt;V,M&gt;* <span class="keyword">&gt;</span>(&amp;<a class="code" href="a00032.html#aa4dd2f036228eac1f945bacc7147a922">imageSet</a>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">double</span> smallerOfMaxValues = imageBox-&gt;maxValues().getMinValue();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">double</span> smallerOfMinValues = imageBox-&gt;minValues().getMinValue();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; <span class="keywordflow">if</span>( smallerOfMinValues &lt; 0 )</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;   std::cerr &lt;&lt; <span class="stringliteral">&quot;In LogNormalVectorRV&lt;V,M&gt;::constructor()\n&quot;</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;       &lt;&lt; <span class="stringliteral">&quot;LogNormal distribution is only defined in (0, infinity).\n&quot;</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;       &lt;&lt; <span class="stringliteral">&quot;The data provided is: \n&quot;</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;       &lt;&lt; *imageBox</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;         &lt;&lt; <span class="stringliteral">&quot;Sampling will not cover all interval.\n&quot;</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;         &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(smallerOfMaxValues &lt; 0,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                      <a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                      <span class="stringliteral">&quot;LogNormalVectorRealizer&lt;V,M&gt;::constructor()&quot;</span>,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                      <span class="stringliteral">&quot;invalid input: LogNormal distribution is only defined in (0, infinity), and min(m_maxValues)&lt;0&quot;</span>);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">// end kemelli 2013-April-23 --------------------------</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <a class="code" href="a00032.html#a0ca926bca6fbcc688be6fc7496449e8e">m_pdf</a> = <span class="keyword">new</span> LogNormalJointPdf&lt;V,M&gt;(<a class="code" href="a00032.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a>.c_str(),</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                                            <a class="code" href="a00032.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a>,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                                            lawExpVector,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                                            lawVarVector);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  M lowerCholLawCovMatrix(lawVarVector);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">int</span> iRC = lowerCholLawCovMatrix.chol();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  lowerCholLawCovMatrix.zeroUpper(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">if</span> (iRC) {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;In LogNormalVectorRV&lt;V,M&gt;::constructor() [1]: chol failed, will use svd\n&quot;</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      *<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In LogNormalVectorRV&lt;V,M&gt;::constructor() [1]: chol failed; will use svd; lawVarVector contents are\n&quot;</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      *<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; lawVarVector; <span class="comment">// FIX ME: might demand parallelism</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      *<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    M matLaw(lawVarVector);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    M matU  (lawVarVector);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    M matVt (<a class="code" href="a00032.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a>.vectorSpace().zeroVector());</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    V vecS  (<a class="code" href="a00032.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a>.vectorSpace().zeroVector());</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    iRC = matLaw.svd(matU,vecS,matVt);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(iRC,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                        <a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                        <span class="stringliteral">&quot;LogNormalVectorRV&lt;V,M&gt;::constructor() [1]&quot;</span>,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                        <span class="stringliteral">&quot;Cholesky decomposition of covariance matrix failed.&quot;</span>);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    vecS.cwSqrt();</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="a00032.html#ad99bc05293c0fd0a0accb3191fb7119e">m_realizer</a> = <span class="keyword">new</span> LogNormalVectorRealizer&lt;V,M&gt;(<a class="code" href="a00032.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a>.c_str(),</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                                         <a class="code" href="a00032.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a>,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                                                         lawExpVector,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                                                         matU,</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                                                         vecS, <span class="comment">// already square rooted</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                                         matVt);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <a class="code" href="a00032.html#ad99bc05293c0fd0a0accb3191fb7119e">m_realizer</a> = <span class="keyword">new</span> LogNormalVectorRealizer&lt;V,M&gt;(<a class="code" href="a00032.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a>.c_str(),</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                                                        <a class="code" href="a00032.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a>,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                                                        lawExpVector,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                                                        lowerCholLawCovMatrix);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <a class="code" href="a00032.html#a1a1117671c7fa2e572a9484463bee3a5">m_subCdf</a>     = NULL; <span class="comment">// FIX ME: complete code</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <a class="code" href="a00032.html#a31a1d44bbb6a7c030ca31a9577904252">m_unifiedCdf</a> = NULL; <span class="comment">// FIX ME: complete code</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <a class="code" href="a00032.html#a5a95d0107f66cf9b0ed3ad18a3d738df">m_mdf</a>        = NULL; <span class="comment">// FIX ME: complete code</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    *<a class="code" href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving LogNormalVectorRV&lt;V,M&gt;::constructor() [1]&quot;</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00032.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
-<div class="ttc" id="a00032_html_aa4dd2f036228eac1f945bacc7147a922"><div class="ttname"><a href="a00032.html#aa4dd2f036228eac1f945bacc7147a922">QUESO::BaseVectorRV::imageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; imageSet() const </div><div class="ttdoc">Image set of the vector RV; access to private attribute m_imageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00496_source.html#l00079">VectorRV.C:79</a></div></div>
-<div class="ttc" id="a00018_html_a78b57112bbd0e6dd0e8afec00b40ffa7"><div class="ttname"><a href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">QUESO::BaseEnvironment::worldRank</a></div><div class="ttdeci">int worldRank() const </div><div class="ttdoc">Returns the process world rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00235">Environment.C:235</a></div></div>
-<div class="ttc" id="a00032_html_a030ce3bc9873a9eaf6d8bf452c096ab3"><div class="ttname"><a href="a00032.html#a030ce3bc9873a9eaf6d8bf452c096ab3">QUESO::BaseVectorRV::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00113">VectorRV.h:113</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00032_html_a5a95d0107f66cf9b0ed3ad18a3d738df"><div class="ttname"><a href="a00032.html#a5a95d0107f66cf9b0ed3ad18a3d738df">QUESO::BaseVectorRV::m_mdf</a></div><div class="ttdeci">const BaseVectorMdf&lt; V, M &gt; * m_mdf</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00119">VectorRV.h:119</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00032_html_ad31872bb4da22d47528cb9d691b3b7ff"><div class="ttname"><a href="a00032.html#ad31872bb4da22d47528cb9d691b3b7ff">QUESO::BaseVectorRV::m_imageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_imageSet</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00114">VectorRV.h:114</a></div></div>
-<div class="ttc" id="a00032_html_a0ca926bca6fbcc688be6fc7496449e8e"><div class="ttname"><a href="a00032.html#a0ca926bca6fbcc688be6fc7496449e8e">QUESO::BaseVectorRV::m_pdf</a></div><div class="ttdeci">BaseJointPdf&lt; V, M &gt; * m_pdf</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00115">VectorRV.h:115</a></div></div>
-<div class="ttc" id="a00032_html_a1a1117671c7fa2e572a9484463bee3a5"><div class="ttname"><a href="a00032.html#a1a1117671c7fa2e572a9484463bee3a5">QUESO::BaseVectorRV::m_subCdf</a></div><div class="ttdeci">const BaseVectorCdf&lt; V, M &gt; * m_subCdf</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00117">VectorRV.h:117</a></div></div>
-<div class="ttc" id="a00032_html_a31a1d44bbb6a7c030ca31a9577904252"><div class="ttname"><a href="a00032.html#a31a1d44bbb6a7c030ca31a9577904252">QUESO::BaseVectorRV::m_unifiedCdf</a></div><div class="ttdeci">const BaseVectorCdf&lt; V, M &gt; * m_unifiedCdf</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00118">VectorRV.h:118</a></div></div>
-<div class="ttc" id="a00032_html_a556761c50e2d171977ef5f19a63c8c73"><div class="ttname"><a href="a00032.html#a556761c50e2d171977ef5f19a63c8c73">QUESO::BaseVectorRV::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00112">VectorRV.h:112</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00032_html_ad99bc05293c0fd0a0accb3191fb7119e"><div class="ttname"><a href="a00032.html#ad99bc05293c0fd0a0accb3191fb7119e">QUESO::BaseVectorRV::m_realizer</a></div><div class="ttdeci">BaseVectorRealizer&lt; V, M &gt; * m_realizer</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00116">VectorRV.h:116</a></div></div>
+<p>Definition at line <a class="el" href="a00268_source.html#l00033">33</a> of file <a class="el" href="a00268_source.html">GenericVectorFunction.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  :</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;gen&quot;</span>).c_str(),</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                                             <a class="code" href="a00044.html#af77b709d473f253e5c56aa620d5f3cb0">domainSet</a>,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                                             <a class="code" href="a00044.html#aa3a070a86f7099f53a669f1aab547619">imageSet</a>),</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="a00117.html#a1671b1c8c0d4eed14d203823af685a09">m_routinePtr</a>    (routinePtr),</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="a00117.html#a85df3216795107b164913ad339f0f813">m_routineDataPtr</a>(functionDataPtr)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
+<div class="ttc" id="a00117_html_a85df3216795107b164913ad339f0f813"><div class="ttname"><a href="a00117.html#a85df3216795107b164913ad339f0f813">QUESO::GenericVectorFunction::m_routineDataPtr</a></div><div class="ttdeci">const void * m_routineDataPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00247_source.html#l00095">GenericVectorFunction.h:95</a></div></div>
+<div class="ttc" id="a00044_html_aa3a070a86f7099f53a669f1aab547619"><div class="ttname"><a href="a00044.html#aa3a070a86f7099f53a669f1aab547619">QUESO::BaseVectorFunction::imageSet</a></div><div class="ttdeci">const VectorSet&lt; Q_V, Q_M &gt; &amp; imageSet() const </div><div class="ttdoc">Access to the protected attribute m_imageSet: image set of the vector function/ It is an instance of ...</div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00062">VectorFunction.C:62</a></div></div>
+<div class="ttc" id="a00044_html_af77b709d473f253e5c56aa620d5f3cb0"><div class="ttname"><a href="a00044.html#af77b709d473f253e5c56aa620d5f3cb0">QUESO::BaseVectorFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; P_V, P_M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the vector function. It is an instance o...</div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00054">VectorFunction.C:54</a></div></div>
+<div class="ttc" id="a00117_html_a1671b1c8c0d4eed14d203823af685a09"><div class="ttname"><a href="a00117.html#a1671b1c8c0d4eed14d203823af685a09">QUESO::GenericVectorFunction::m_routinePtr</a></div><div class="ttdeci">void(* m_routinePtr)(const P_V &amp;domainVector, const P_V *domainDirection, const void *functionDataPtr, Q_V &amp;imageVector, DistArray&lt; P_V * &gt; *gradVectors, DistArray&lt; P_M * &gt; *hessianMatrices, DistArray&lt; P_V * &gt; *hessianEffects)</div><div class="ttdoc">Routine defining a vector-valued function. </div><div class="ttdef"><b>Definition:</b> <a href="a00247_source.html#l00088">GenericVectorFunction.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a821437ffc879715f63f5b6628877bb98"></a>
+<a class="anchor" id="ab125a1b6d18f7912e70d19bd80f72175"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V , class M &gt; </div>
+template&lt;class P_V , class P_M , class Q_V , class Q_M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00117.html">QUESO::LogNormalVectorRV</a>&lt; V, M &gt;::~<a class="el" href="a00117.html">LogNormalVectorRV</a> </td>
+          <td class="memname"><a class="el" href="a00117.html">QUESO::GenericVectorFunction</a>&lt; P_V, P_M, Q_V, Q_M &gt;::~<a class="el" href="a00117.html">GenericVectorFunction</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -320,38 +219,62 @@ template&lt;class V , class M &gt; </div>
 
 <p>Virtual destructor. </p>
 
-<p>Definition at line <a class="el" href="a00461_source.html#l00126">126</a> of file <a class="el" href="a00461_source.html">LogNormalVectorRV.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;{</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00032.html#a5a95d0107f66cf9b0ed3ad18a3d738df">m_mdf</a>;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00032.html#a31a1d44bbb6a7c030ca31a9577904252">m_unifiedCdf</a>;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00032.html#a1a1117671c7fa2e572a9484463bee3a5">m_subCdf</a>;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00032.html#ad99bc05293c0fd0a0accb3191fb7119e">m_realizer</a>;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00032.html#a0ca926bca6fbcc688be6fc7496449e8e">m_pdf</a>;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}</div>
-<div class="ttc" id="a00032_html_a5a95d0107f66cf9b0ed3ad18a3d738df"><div class="ttname"><a href="a00032.html#a5a95d0107f66cf9b0ed3ad18a3d738df">QUESO::BaseVectorRV::m_mdf</a></div><div class="ttdeci">const BaseVectorMdf&lt; V, M &gt; * m_mdf</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00119">VectorRV.h:119</a></div></div>
-<div class="ttc" id="a00032_html_a0ca926bca6fbcc688be6fc7496449e8e"><div class="ttname"><a href="a00032.html#a0ca926bca6fbcc688be6fc7496449e8e">QUESO::BaseVectorRV::m_pdf</a></div><div class="ttdeci">BaseJointPdf&lt; V, M &gt; * m_pdf</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00115">VectorRV.h:115</a></div></div>
-<div class="ttc" id="a00032_html_a1a1117671c7fa2e572a9484463bee3a5"><div class="ttname"><a href="a00032.html#a1a1117671c7fa2e572a9484463bee3a5">QUESO::BaseVectorRV::m_subCdf</a></div><div class="ttdeci">const BaseVectorCdf&lt; V, M &gt; * m_subCdf</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00117">VectorRV.h:117</a></div></div>
-<div class="ttc" id="a00032_html_a31a1d44bbb6a7c030ca31a9577904252"><div class="ttname"><a href="a00032.html#a31a1d44bbb6a7c030ca31a9577904252">QUESO::BaseVectorRV::m_unifiedCdf</a></div><div class="ttdeci">const BaseVectorCdf&lt; V, M &gt; * m_unifiedCdf</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00118">VectorRV.h:118</a></div></div>
-<div class="ttc" id="a00032_html_ad99bc05293c0fd0a0accb3191fb7119e"><div class="ttname"><a href="a00032.html#ad99bc05293c0fd0a0accb3191fb7119e">QUESO::BaseVectorRV::m_realizer</a></div><div class="ttdeci">BaseVectorRealizer&lt; V, M &gt; * m_realizer</div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00116">VectorRV.h:116</a></div></div>
+<p>Definition at line <a class="el" href="a00268_source.html#l00056">56</a> of file <a class="el" href="a00268_source.html">GenericVectorFunction.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a150a212058169e2b708e82c8faff61eb"></a>
+<a class="anchor" id="afcc099493262b90cdace65f24bb6b98d"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V , class M &gt; </div>
+template&lt;class P_V , class P_M , class Q_V , class Q_M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="a00117.html">QUESO::LogNormalVectorRV</a>&lt; V, M &gt;::print </td>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00117.html">QUESO::GenericVectorFunction</a>&lt; P_V, P_M, Q_V, Q_M &gt;::compute </td>
           <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">const P_V &amp;&#160;</td>
+          <td class="paramname"><em>domainVector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const P_V *&#160;</td>
+          <td class="paramname"><em>domainDirection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Q_V &amp;&#160;</td>
+          <td class="paramname"><em>imageVector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *&#160;</td>
+          <td class="paramname"><em>gradVectors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00066.html">DistArray</a>&lt; P_M * &gt; *&#160;</td>
+          <td class="paramname"><em>hessianMatrices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *&#160;</td>
+          <td class="paramname"><em>hessianEffects</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -361,26 +284,85 @@ template&lt;class V , class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>TODO: Prints the vector RV. </p>
-<dl class="todo"><dt><b><a class="el" href="a00501.html#_todo000038">Todo:</a></b></dt><dd>: implement me! </dd></dl>
+<p>Calls the protected member <code>*m_routinePtr</code>(), in order to calculate the image vector <code>imageVector</code>. </p>
 
-<p>Implements <a class="el" href="a00032.html#a5296b918534e12e5b62ac7cb5d20a1e8">QUESO::BaseVectorRV&lt; V, M &gt;</a>.</p>
+<p>Implements <a class="el" href="a00044.html#a7ecf6f9270dfd96812074c7ab4badd6e">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="a00461_source.html#l00137">137</a> of file <a class="el" href="a00461_source.html">LogNormalVectorRV.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;{</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  os &lt;&lt; <span class="stringliteral">&quot;LogNormalVectorRV&lt;V,M&gt;::print() says, &#39;Please implement me.&#39;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00268_source.html#l00063">63</a> of file <a class="el" href="a00268_source.html">GenericVectorFunction.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">//                    domainVector.env().worldRank(),</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">//                    &quot;GenericVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::compute()&quot;,</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">//                    &quot;this method should not be called in the case of this class&quot;);</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <a class="code" href="a00117.html#a1671b1c8c0d4eed14d203823af685a09">m_routinePtr</a>(domainVector, domainDirection, <a class="code" href="a00117.html#a85df3216795107b164913ad339f0f813">m_routineDataPtr</a>, imageVector, gradVectors, hessianMatrices, hessianEffects);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+<div class="ttc" id="a00117_html_a85df3216795107b164913ad339f0f813"><div class="ttname"><a href="a00117.html#a85df3216795107b164913ad339f0f813">QUESO::GenericVectorFunction::m_routineDataPtr</a></div><div class="ttdeci">const void * m_routineDataPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00247_source.html#l00095">GenericVectorFunction.h:95</a></div></div>
+<div class="ttc" id="a00117_html_a1671b1c8c0d4eed14d203823af685a09"><div class="ttname"><a href="a00117.html#a1671b1c8c0d4eed14d203823af685a09">QUESO::GenericVectorFunction::m_routinePtr</a></div><div class="ttdeci">void(* m_routinePtr)(const P_V &amp;domainVector, const P_V *domainDirection, const void *functionDataPtr, Q_V &amp;imageVector, DistArray&lt; P_V * &gt; *gradVectors, DistArray&lt; P_M * &gt; *hessianMatrices, DistArray&lt; P_V * &gt; *hessianEffects)</div><div class="ttdoc">Routine defining a vector-valued function. </div><div class="ttdef"><b>Definition:</b> <a href="a00247_source.html#l00088">GenericVectorFunction.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a85df3216795107b164913ad339f0f813"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>* <a class="el" href="a00117.html">QUESO::GenericVectorFunction</a>&lt; P_V, P_M, Q_V, Q_M &gt;::m_routineDataPtr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00247_source.html#l00095">95</a> of file <a class="el" href="a00247_source.html">GenericVectorFunction.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1671b1c8c0d4eed14d203823af685a09"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>(* <a class="el" href="a00117.html">QUESO::GenericVectorFunction</a>&lt; P_V, P_M, Q_V, Q_M &gt;::m_routinePtr)(const P_V &amp;domainVector, const P_V *domainDirection, const <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *functionDataPtr, Q_V &amp;imageVector, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *gradVectors, <a class="el" href="a00066.html">DistArray</a>&lt; P_M * &gt; *hessianMatrices, <a class="el" href="a00066.html">DistArray</a>&lt; P_V * &gt; *hessianEffects)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Routine defining a vector-valued function. </p>
+<p>The presence of the parameters <code>gradVectors</code>, <code>hessianMatrices</code> and <code>hessianEffects</code> allows the user to calculate gradient vectors, Hessian matrices and Hessian effects; which can hold important information about her/his statistical application. Used, for instance to define the likelihood. </p>
+
+<p>Definition at line <a class="el" href="a00247_source.html#l00088">88</a> of file <a class="el" href="a00247_source.html">GenericVectorFunction.h</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/stats/inc/<a class="el" href="a00376_source.html">LogNormalVectorRV.h</a></li>
-<li>src/stats/src/<a class="el" href="a00461_source.html">LogNormalVectorRV.C</a></li>
+<li>src/basic/inc/<a class="el" href="a00247_source.html">GenericVectorFunction.h</a></li>
+<li>src/basic/src/<a class="el" href="a00268_source.html">GenericVectorFunction.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:57 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

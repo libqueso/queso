@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/inc/InfiniteDimensionalMCMCSamplerOptions.h Source File</title>
+<title>queso-0.53.0: src/basic/inc/ScalarFunctionSynchronizer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,117 +43,97 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_1df83ded4604fcab59464c552d0ec4a5.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1e11172a4448ab4d7b3d22091261e10c.html">basic</a></li><li class="navelem"><a class="el" href="dir_990ebc7eb5cbf688bd17d58c5e18d0f7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">InfiniteDimensionalMCMCSamplerOptions.h</div>  </div>
+<div class="title">ScalarFunctionSynchronizer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00251.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor,</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifndef UQ_INFMCMC_OPTIONS_H</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_INFMCMC_OPTIONS_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<a href="a00251.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor,</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_SCALAR_FUNCTION_SYNCHRONIZER_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_SCALAR_FUNCTION_SYNCHRONIZER_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/BayesianJointPdf.h&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00099.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00099.html">InfiniteDimensionalMCMCSamplerOptions</a></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00099.html#a75b8f9ff8efcdf810ed966a5e56fdae0">InfiniteDimensionalMCMCSamplerOptions</a>(<span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; <a class="code" href="a00099.html#aa5828e5c03f12f69edb597cfaf2448ce">env</a>, <span class="keyword">const</span> <span class="keywordtype">char</span>* prefix);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; <a class="code" href="a00099.html#a872f635f05e17901ff245b2c231f8e27">~InfiniteDimensionalMCMCSamplerOptions</a>();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00099.html#abc90ff7faaa869f71034fafccf35f434">scanOptionsValues</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00099.html#adf83c39335cefacc35c33770bd020657">print</a>(std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00099.html#a6cb95c7e8adbc6ead99b2cf3fb3aed56">   55</a></span>&#160;  std::string <a class="code" href="a00099.html#a6cb95c7e8adbc6ead99b2cf3fb3aed56">m_prefix</a>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00099.html#a224d09b8aa3f31aa2134338ae2a60018">   65</a></span>&#160;  std::string <a class="code" href="a00099.html#a224d09b8aa3f31aa2134338ae2a60018">m_dataOutputDirName</a>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="a00099.html#a2146a3f4d0f276081484743bf3c5b5aa">   68</a></span>&#160;  std::string <a class="code" href="a00099.html#a2146a3f4d0f276081484743bf3c5b5aa">m_dataOutputFileName</a>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="a00099.html#a65fbd7c98f6e3820206382da50a0133e">   71</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00099.html#a65fbd7c98f6e3820206382da50a0133e">m_num_iters</a>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00099.html#aa477dfa39894194aecbc064e2d11af56">   74</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00099.html#aa477dfa39894194aecbc064e2d11af56">m_save_freq</a>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00099.html#a08b73ed8aa86a07c5ed02394380d0434">   77</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00099.html#a08b73ed8aa86a07c5ed02394380d0434">m_rwmh_step</a>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; <a class="code" href="a00099.html#aa5828e5c03f12f69edb597cfaf2448ce">env</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00099.html#a1feb71de843cebe5e1d7b6e49224986b">defineMyOptions</a>(po::options_description&amp; optionsDesc) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00099.html#ace4a24a8b00672e231ea18e860875c53">getMyOptionValues</a>(po::options_description&amp; optionsDesc);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00192.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00192.html">ScalarFunctionSynchronizer</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="a00192.html#ab016c60ae0ab70f4406fefeb50405acf">ScalarFunctionSynchronizer</a>(<span class="keyword">const</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;</a>&amp; inputFunction,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                    <span class="keyword">const</span> V&amp;                              auxVec);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; <a class="code" href="a00192.html#a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1">~ScalarFunctionSynchronizer</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00192.html#a4618272a8d897dc064a42510039cefcc">domainSet</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00192.html#adcdc70486ac64c11d0e505c4fb590a6b">callFunction</a>(<span class="keyword">const</span> V* vecValues,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                      <span class="keyword">const</span> V* vecDirection,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                            V* gradVector,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                            M* hessianMatrix,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                            V* hessianEffect,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                            <span class="keywordtype">double</span>* extraOutput1,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                            <span class="keywordtype">double</span>* extraOutput2) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="a00192.html#aa77a3d3b53267ef7c731836faaa082fb">   80</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp;         <a class="code" href="a00192.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00192.html#a6b24acdd3185e57cae74e6d5aedb90bf">   81</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;</a>&amp; <a class="code" href="a00192.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00192.html#a0e17d294521cd22b297374ae2ff7f463">   82</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00052.html">BayesianJointPdf&lt;V,M&gt;</a>*   <a class="code" href="a00192.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00192.html#adbd43aee6de557012924f3e18660a4f3">   83</a></span>&#160;  <span class="keyword">const</span> V&amp;                              <a class="code" href="a00192.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="a00099.html#a798627198e7d75723bd48d123835503c">   86</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; <a class="code" href="a00099.html#a798627198e7d75723bd48d123835503c">m_env</a>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="a00099.html#af3c175cdb1ed25be98ccee045b011b1f">   88</a></span>&#160;  po::options_description* <a class="code" href="a00099.html#af3c175cdb1ed25be98ccee045b011b1f">m_optionsDesc</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="a00099.html#a897fdd1438ecdd2cd9efe5b1abad55ba">   89</a></span>&#160;  std::string <a class="code" href="a00099.html#a897fdd1438ecdd2cd9efe5b1abad55ba">m_option_help</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="a00099.html#a75dac93b87f4e93ffef95b35c7382ad2">   90</a></span>&#160;  std::string <a class="code" href="a00099.html#a75dac93b87f4e93ffef95b35c7382ad2">m_option_dataOutputDirName</a>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="a00099.html#a4c405def589baa661b5e76f0ca0ef280">   91</a></span>&#160;  std::string <a class="code" href="a00099.html#a4c405def589baa661b5e76f0ca0ef280">m_option_dataOutputFileName</a>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00099.html#ab27e1a612339e516eb32b326e1dd6ed5">   92</a></span>&#160;  std::string <a class="code" href="a00099.html#ab27e1a612339e516eb32b326e1dd6ed5">m_option_num_iters</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00099.html#ac2ebcd1aff902c0b01fec2366fe775b6">   93</a></span>&#160;  std::string <a class="code" href="a00099.html#ac2ebcd1aff902c0b01fec2366fe775b6">m_option_save_freq</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="a00099.html#aa76584eb25581942458195d26e032578">   94</a></span>&#160;  std::string <a class="code" href="a00099.html#aa76584eb25581942458195d26e032578">m_option_rwmh_step</a>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;std::ostream&amp; <a class="code" href="a00500.html#ae007c2d003b9f75b31b073ececd3120a">operator&lt;&lt;</a>(std::ostream&amp; os, <span class="keyword">const</span> <a class="code" href="a00099.html">InfiniteDimensionalMCMCSamplerOptions</a> &amp; opts);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif // UQ_INFMCMC_OPTIONS_H</span></div>
-<div class="ttc" id="a00099_html_a224d09b8aa3f31aa2134338ae2a60018"><div class="ttname"><a href="a00099.html#a224d09b8aa3f31aa2134338ae2a60018">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_dataOutputDirName</a></div><div class="ttdeci">std::string m_dataOutputDirName</div><div class="ttdoc">Name of the output dir to save infinite dimensional output files to. </div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00065">InfiniteDimensionalMCMCSamplerOptions.h:65</a></div></div>
-<div class="ttc" id="a00099_html_aa76584eb25581942458195d26e032578"><div class="ttname"><a href="a00099.html#aa76584eb25581942458195d26e032578">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_option_rwmh_step</a></div><div class="ttdeci">std::string m_option_rwmh_step</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00094">InfiniteDimensionalMCMCSamplerOptions.h:94</a></div></div>
-<div class="ttc" id="a00099_html_a65fbd7c98f6e3820206382da50a0133e"><div class="ttname"><a href="a00099.html#a65fbd7c98f6e3820206382da50a0133e">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_num_iters</a></div><div class="ttdeci">unsigned int m_num_iters</div><div class="ttdoc">The total number of iterations to do. </div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00071">InfiniteDimensionalMCMCSamplerOptions.h:71</a></div></div>
-<div class="ttc" id="a00500_html_ae007c2d003b9f75b31b073ececd3120a"><div class="ttname"><a href="a00500.html#ae007c2d003b9f75b31b073ececd3120a">QUESO::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const BaseEnvironment &amp;obj)</div></div>
-<div class="ttc" id="a00099_html_aa5828e5c03f12f69edb597cfaf2448ce"><div class="ttname"><a href="a00099.html#aa5828e5c03f12f69edb597cfaf2448ce">QUESO::InfiniteDimensionalMCMCSamplerOptions::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Returns the QUESO environment. </div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00147">InfiniteDimensionalMCMCSamplerOptions.C:147</a></div></div>
-<div class="ttc" id="a00099_html_a2146a3f4d0f276081484743bf3c5b5aa"><div class="ttname"><a href="a00099.html#a2146a3f4d0f276081484743bf3c5b5aa">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_dataOutputFileName</a></div><div class="ttdeci">std::string m_dataOutputFileName</div><div class="ttdoc">Name of the HDF5 output file to store chain statistics. </div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00068">InfiniteDimensionalMCMCSamplerOptions.h:68</a></div></div>
-<div class="ttc" id="a00099_html_a4c405def589baa661b5e76f0ca0ef280"><div class="ttname"><a href="a00099.html#a4c405def589baa661b5e76f0ca0ef280">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_option_dataOutputFileName</a></div><div class="ttdeci">std::string m_option_dataOutputFileName</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00091">InfiniteDimensionalMCMCSamplerOptions.h:91</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00239_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00099_html_a897fdd1438ecdd2cd9efe5b1abad55ba"><div class="ttname"><a href="a00099.html#a897fdd1438ecdd2cd9efe5b1abad55ba">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_option_help</a></div><div class="ttdeci">std::string m_option_help</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00089">InfiniteDimensionalMCMCSamplerOptions.h:89</a></div></div>
-<div class="ttc" id="a00099_html"><div class="ttname"><a href="a00099.html">QUESO::InfiniteDimensionalMCMCSamplerOptions</a></div><div class="ttdoc">This class defines the options that specify the behaviour of the MCMC sampler. </div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00039">InfiniteDimensionalMCMCSamplerOptions.h:39</a></div></div>
-<div class="ttc" id="a00099_html_af3c175cdb1ed25be98ccee045b011b1f"><div class="ttname"><a href="a00099.html#af3c175cdb1ed25be98ccee045b011b1f">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_optionsDesc</a></div><div class="ttdeci">po::options_description * m_optionsDesc</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00088">InfiniteDimensionalMCMCSamplerOptions.h:88</a></div></div>
-<div class="ttc" id="a00099_html_ac2ebcd1aff902c0b01fec2366fe775b6"><div class="ttname"><a href="a00099.html#ac2ebcd1aff902c0b01fec2366fe775b6">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_option_save_freq</a></div><div class="ttdeci">std::string m_option_save_freq</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00093">InfiniteDimensionalMCMCSamplerOptions.h:93</a></div></div>
-<div class="ttc" id="a00099_html_a1feb71de843cebe5e1d7b6e49224986b"><div class="ttname"><a href="a00099.html#a1feb71de843cebe5e1d7b6e49224986b">QUESO::InfiniteDimensionalMCMCSamplerOptions::defineMyOptions</a></div><div class="ttdeci">void defineMyOptions(po::options_description &amp;optionsDesc) const </div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00082">InfiniteDimensionalMCMCSamplerOptions.C:82</a></div></div>
-<div class="ttc" id="a00099_html_ace4a24a8b00672e231ea18e860875c53"><div class="ttname"><a href="a00099.html#ace4a24a8b00672e231ea18e860875c53">QUESO::InfiniteDimensionalMCMCSamplerOptions::getMyOptionValues</a></div><div class="ttdeci">void getMyOptionValues(po::options_description &amp;optionsDesc)</div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00095">InfiniteDimensionalMCMCSamplerOptions.C:95</a></div></div>
-<div class="ttc" id="a00099_html_a75b8f9ff8efcdf810ed966a5e56fdae0"><div class="ttname"><a href="a00099.html#a75b8f9ff8efcdf810ed966a5e56fdae0">QUESO::InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions</a></div><div class="ttdeci">InfiniteDimensionalMCMCSamplerOptions(const BaseEnvironment &amp;env, const char *prefix)</div><div class="ttdoc">Given prefix, read the input file for parameters named prefix_*. </div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00035">InfiniteDimensionalMCMCSamplerOptions.C:35</a></div></div>
-<div class="ttc" id="a00099_html_a75dac93b87f4e93ffef95b35c7382ad2"><div class="ttname"><a href="a00099.html#a75dac93b87f4e93ffef95b35c7382ad2">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_option_dataOutputDirName</a></div><div class="ttdeci">std::string m_option_dataOutputDirName</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00090">InfiniteDimensionalMCMCSamplerOptions.h:90</a></div></div>
-<div class="ttc" id="a00099_html_adf83c39335cefacc35c33770bd020657"><div class="ttname"><a href="a00099.html#adf83c39335cefacc35c33770bd020657">QUESO::InfiniteDimensionalMCMCSamplerOptions::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints this to os. </div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00128">InfiniteDimensionalMCMCSamplerOptions.C:128</a></div></div>
-<div class="ttc" id="a00099_html_a798627198e7d75723bd48d123835503c"><div class="ttname"><a href="a00099.html#a798627198e7d75723bd48d123835503c">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00086">InfiniteDimensionalMCMCSamplerOptions.h:86</a></div></div>
-<div class="ttc" id="a00099_html_aa477dfa39894194aecbc064e2d11af56"><div class="ttname"><a href="a00099.html#aa477dfa39894194aecbc064e2d11af56">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_save_freq</a></div><div class="ttdeci">unsigned int m_save_freq</div><div class="ttdoc">The frequency at which to save the state of the chain. </div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00074">InfiniteDimensionalMCMCSamplerOptions.h:74</a></div></div>
-<div class="ttc" id="a00099_html_ab27e1a612339e516eb32b326e1dd6ed5"><div class="ttname"><a href="a00099.html#ab27e1a612339e516eb32b326e1dd6ed5">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_option_num_iters</a></div><div class="ttdeci">std::string m_option_num_iters</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00092">InfiniteDimensionalMCMCSamplerOptions.h:92</a></div></div>
-<div class="ttc" id="a00099_html_a872f635f05e17901ff245b2c231f8e27"><div class="ttname"><a href="a00099.html#a872f635f05e17901ff245b2c231f8e27">QUESO::InfiniteDimensionalMCMCSamplerOptions::~InfiniteDimensionalMCMCSamplerOptions</a></div><div class="ttdeci">~InfiniteDimensionalMCMCSamplerOptions()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00054">InfiniteDimensionalMCMCSamplerOptions.C:54</a></div></div>
-<div class="ttc" id="a00099_html_abc90ff7faaa869f71034fafccf35f434"><div class="ttname"><a href="a00099.html#abc90ff7faaa869f71034fafccf35f434">QUESO::InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues</a></div><div class="ttdeci">void scanOptionsValues()</div><div class="ttdoc">Scans the input file for options prefixed with prefix. </div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00061">InfiniteDimensionalMCMCSamplerOptions.C:61</a></div></div>
-<div class="ttc" id="a00099_html_a08b73ed8aa86a07c5ed02394380d0434"><div class="ttname"><a href="a00099.html#a08b73ed8aa86a07c5ed02394380d0434">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_rwmh_step</a></div><div class="ttdeci">double m_rwmh_step</div><div class="ttdoc">The proposal step size. </div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00077">InfiniteDimensionalMCMCSamplerOptions.h:77</a></div></div>
-<div class="ttc" id="a00099_html_a6cb95c7e8adbc6ead99b2cf3fb3aed56"><div class="ttname"><a href="a00099.html#a6cb95c7e8adbc6ead99b2cf3fb3aed56">QUESO::InfiniteDimensionalMCMCSamplerOptions::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdoc">The prefix to look for in the input file. </div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00055">InfiniteDimensionalMCMCSamplerOptions.h:55</a></div></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif // UQ_SCALAR_FUNCTION_SYNCHRONIZER_H</span></div>
+<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00192_html_aa77a3d3b53267ef7c731836faaa082fb"><div class="ttname"><a href="a00192.html#aa77a3d3b53267ef7c731836faaa082fb">QUESO::ScalarFunctionSynchronizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00080">ScalarFunctionSynchronizer.h:80</a></div></div>
+<div class="ttc" id="a00041_html"><div class="ttname"><a href="a00041.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00250_source.html#l00051">ScalarFunction.h:51</a></div></div>
+<div class="ttc" id="a00192_html_adbd43aee6de557012924f3e18660a4f3"><div class="ttname"><a href="a00192.html#adbd43aee6de557012924f3e18660a4f3">QUESO::ScalarFunctionSynchronizer::m_auxVec</a></div><div class="ttdeci">const V &amp; m_auxVec</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00083">ScalarFunctionSynchronizer.h:83</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00327_source.html#l00193">Environment.h:193</a></div></div>
+<div class="ttc" id="a00192_html_a6b24acdd3185e57cae74e6d5aedb90bf"><div class="ttname"><a href="a00192.html#a6b24acdd3185e57cae74e6d5aedb90bf">QUESO::ScalarFunctionSynchronizer::m_scalarFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; V, M &gt; &amp; m_scalarFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00081">ScalarFunctionSynchronizer.h:81</a></div></div>
+<div class="ttc" id="a00192_html_a0e17d294521cd22b297374ae2ff7f463"><div class="ttname"><a href="a00192.html#a0e17d294521cd22b297374ae2ff7f463">QUESO::ScalarFunctionSynchronizer::m_bayesianJointPdfPtr</a></div><div class="ttdeci">const BayesianJointPdf&lt; V, M &gt; * m_bayesianJointPdfPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00082">ScalarFunctionSynchronizer.h:82</a></div></div>
+<div class="ttc" id="a00052_html"><div class="ttname"><a href="a00052.html">QUESO::BayesianJointPdf</a></div><div class="ttdoc">A class for handling Bayesian joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00049">BayesianJointPdf.h:49</a></div></div>
+<div class="ttc" id="a00192_html_adcdc70486ac64c11d0e505c4fb590a6b"><div class="ttname"><a href="a00192.html#adcdc70486ac64c11d0e505c4fb590a6b">QUESO::ScalarFunctionSynchronizer::callFunction</a></div><div class="ttdeci">double callFunction(const V *vecValues, const V *vecDirection, V *gradVector, M *hessianMatrix, V *hessianEffect, double *extraOutput1, double *extraOutput2) const </div><div class="ttdoc">Calls the scalar function which will be synchronized. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00061">ScalarFunctionSynchronizer.C:61</a></div></div>
+<div class="ttc" id="a00192_html_a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1"><div class="ttname"><a href="a00192.html#a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1">QUESO::ScalarFunctionSynchronizer::~ScalarFunctionSynchronizer</a></div><div class="ttdeci">~ScalarFunctionSynchronizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00048">ScalarFunctionSynchronizer.C:48</a></div></div>
+<div class="ttc" id="a00192_html_a4618272a8d897dc064a42510039cefcc"><div class="ttname"><a href="a00192.html#a4618272a8d897dc064a42510039cefcc">QUESO::ScalarFunctionSynchronizer::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the domain set of the scalar function which will be synchronized. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00054">ScalarFunctionSynchronizer.C:54</a></div></div>
+<div class="ttc" id="a00192_html"><div class="ttname"><a href="a00192.html">QUESO::ScalarFunctionSynchronizer</a></div><div class="ttdoc">A templated class for synchronizing the calls of scalar functions (BaseScalarFunction and derived cla...</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00047">ScalarFunctionSynchronizer.h:47</a></div></div>
+<div class="ttc" id="a00192_html_ab016c60ae0ab70f4406fefeb50405acf"><div class="ttname"><a href="a00192.html#ab016c60ae0ab70f4406fefeb50405acf">QUESO::ScalarFunctionSynchronizer::ScalarFunctionSynchronizer</a></div><div class="ttdeci">ScalarFunctionSynchronizer(const BaseScalarFunction&lt; V, M &gt; &amp;inputFunction, const V &amp;auxVec)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00036">ScalarFunctionSynchronizer.C:36</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

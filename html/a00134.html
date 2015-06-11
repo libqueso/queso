@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: QUESO::OperatorBase Class Reference</title>
+<title>queso-0.53.0: QUESO::InfiniteDimensionalMeasureBase Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -45,57 +45,58 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00500.html">QUESO</a></li><li class="navelem"><a class="el" href="a00134.html">OperatorBase</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00134.html">InfiniteDimensionalMeasureBase</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="a00875.html">List of all members</a>  </div>
+<a href="a01208.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::OperatorBase Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">QUESO::InfiniteDimensionalMeasureBase Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Abstract base class for operator objects. Operators are assumed to be symmetric and positive-definite.  
+<p>Abstract base class for infinite dimensional measures.  
  <a href="a00134.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00259_source.html">OperatorBase.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00340_source.html">InfiniteDimensionalMeasureBase.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for QUESO::InfiniteDimensionalMeasureBase:</div>
+<div class="dyncontent">
+<div class="center"><img src="a01209.png" border="0" usemap="#_q_u_e_s_o_1_1_infinite_dimensional_measure_base_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_infinite_dimensional_measure_base_inherit__map" id="_q_u_e_s_o_1_1_infinite_dimensional_measure_base_inherit__map">
+<area shape="rect" id="node3" href="a00131.html" title="Class defining infinite dimensional Gaussian measures. " alt="" coords="5,102,213,149"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae16245b5e46e01ff81121cca14190e7f"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#ae16245b5e46e01ff81121cca14190e7f">get_eigenvalue</a> (unsigned int i) const =0</td></tr>
-<tr class="memdesc:ae16245b5e46e01ff81121cca14190e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return eigenvalue <code>i</code>.  <a href="#ae16245b5e46e01ff81121cca14190e7f">More...</a><br/></td></tr>
-<tr class="separator:ae16245b5e46e01ff81121cca14190e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a598da528247dcaec786eee415664d42e"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a598da528247dcaec786eee415664d42e">get_inverted_eigenvalue</a> (unsigned int i) const =0</td></tr>
-<tr class="memdesc:a598da528247dcaec786eee415664d42e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the reciprocal of eigenvalue <code>i</code>.  <a href="#a598da528247dcaec786eee415664d42e">More...</a><br/></td></tr>
-<tr class="separator:a598da528247dcaec786eee415664d42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a610fc538c34726a001d49c138a17817e"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a610fc538c34726a001d49c138a17817e">get_num_converged</a> () const =0</td></tr>
-<tr class="memdesc:a610fc538c34726a001d49c138a17817e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of converged eigenpairs.  <a href="#a610fc538c34726a001d49c138a17817e">More...</a><br/></td></tr>
-<tr class="separator:a610fc538c34726a001d49c138a17817e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb765561b8de30f081fe23c53b1a03fb"><td class="memItemLeft" align="right" valign="top">virtual boost::shared_ptr<br class="typebreak"/>
-&lt; <a class="el" href="a00064.html">FunctionBase</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#adb765561b8de30f081fe23c53b1a03fb">inverse_kl_transform</a> (std::vector&lt; double &gt; &amp;xi, double alpha) const =0</td></tr>
-<tr class="memdesc:adb765561b8de30f081fe23c53b1a03fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given coefficients <code>xi</code>, computes the Karhunen-Loeve transform.  <a href="#adb765561b8de30f081fe23c53b1a03fb">More...</a><br/></td></tr>
-<tr class="separator:adb765561b8de30f081fe23c53b1a03fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6357b505c9d50f9a5c30583bdf361d7e"><td class="memItemLeft" align="right" valign="top">virtual boost::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="a00084.html">FunctionBase</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a6357b505c9d50f9a5c30583bdf361d7e">draw</a> ()=0</td></tr>
+<tr class="memdesc:a6357b505c9d50f9a5c30583bdf361d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw from the measure, and then return a shared pointer to the draw.  <a href="#a6357b505c9d50f9a5c30583bdf361d7e">More...</a><br/></td></tr>
+<tr class="separator:a6357b505c9d50f9a5c30583bdf361d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85c57f9eb7cfec24122f8fb856066d25"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a85c57f9eb7cfec24122f8fb856066d25">get_kl_coefficient</a> (unsigned int i) const =0</td></tr>
+<tr class="memdesc:a85c57f9eb7cfec24122f8fb856066d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return coefficient <code>i</code> of the KL expansion of the current draw. Must be called after <a class="el" href="a00134.html#a6357b505c9d50f9a5c30583bdf361d7e" title="Draw from the measure, and then return a shared pointer to the draw. ">draw()</a>  <a href="#a85c57f9eb7cfec24122f8fb856066d25">More...</a><br/></td></tr>
+<tr class="separator:a85c57f9eb7cfec24122f8fb856066d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:ae9f848c2418f2dca590175a53be0b250"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#ae9f848c2418f2dca590175a53be0b250">OperatorBase</a> ()</td></tr>
-<tr class="memdesc:ae9f848c2418f2dca590175a53be0b250"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#ae9f848c2418f2dca590175a53be0b250">More...</a><br/></td></tr>
-<tr class="separator:ae9f848c2418f2dca590175a53be0b250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2869fcba07398fa247c0095f3e5f272d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a2869fcba07398fa247c0095f3e5f272d">~OperatorBase</a> ()</td></tr>
-<tr class="memdesc:a2869fcba07398fa247c0095f3e5f272d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a2869fcba07398fa247c0095f3e5f272d">More...</a><br/></td></tr>
-<tr class="separator:a2869fcba07398fa247c0095f3e5f272d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a663782b71522112a0584b27205ac262f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a663782b71522112a0584b27205ac262f">InfiniteDimensionalMeasureBase</a> ()</td></tr>
+<tr class="memdesc:a663782b71522112a0584b27205ac262f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a663782b71522112a0584b27205ac262f">More...</a><br/></td></tr>
+<tr class="separator:a663782b71522112a0584b27205ac262f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac979695e339a86943ddda77d72a4a9e6"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#ac979695e339a86943ddda77d72a4a9e6">~InfiniteDimensionalMeasureBase</a> ()</td></tr>
+<tr class="memdesc:ac979695e339a86943ddda77d72a4a9e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ac979695e339a86943ddda77d72a4a9e6">More...</a><br/></td></tr>
+<tr class="separator:ac979695e339a86943ddda77d72a4a9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Abstract base class for operator objects. Operators are assumed to be symmetric and positive-definite. </p>
+<div class="textblock"><p>Abstract base class for infinite dimensional measures. </p>
 
-<p>Definition at line <a class="el" href="a00259_source.html#l00045">45</a> of file <a class="el" href="a00259_source.html">OperatorBase.h</a>.</p>
+<p>Definition at line <a class="el" href="a00340_source.html#l00043">43</a> of file <a class="el" href="a00340_source.html">InfiniteDimensionalMeasureBase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ae9f848c2418f2dca590175a53be0b250"></a>
+<a class="anchor" id="a663782b71522112a0584b27205ac262f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::OperatorBase::OperatorBase </td>
+          <td class="memname">QUESO::InfiniteDimensionalMeasureBase::InfiniteDimensionalMeasureBase </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -103,15 +104,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
+<p>Default constructor. </p>
 
-<p>Definition at line <a class="el" href="a00293_source.html#l00030">30</a> of file <a class="el" href="a00293_source.html">OperatorBase.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
+<p>Definition at line <a class="el" href="a00377_source.html#l00029">29</a> of file <a class="el" href="a00377_source.html">InfiniteDimensionalMeasureBase.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a2869fcba07398fa247c0095f3e5f272d"></a>
+<a class="anchor" id="ac979695e339a86943ddda77d72a4a9e6"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -119,7 +121,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::OperatorBase::~OperatorBase </td>
+          <td class="memname">QUESO::InfiniteDimensionalMeasureBase::~InfiniteDimensionalMeasureBase </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -134,14 +136,14 @@ Public Member Functions</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="a00293_source.html#l00034">34</a> of file <a class="el" href="a00293_source.html">OperatorBase.C</a>.</p>
+<p>Definition at line <a class="el" href="a00377_source.html#l00034">34</a> of file <a class="el" href="a00377_source.html">InfiniteDimensionalMeasureBase.C</a>.</p>
 <div class="fragment"><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ae16245b5e46e01ff81121cca14190e7f"></a>
+<a class="anchor" id="a6357b505c9d50f9a5c30583bdf361d7e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -149,64 +151,37 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double QUESO::OperatorBase::get_eigenvalue </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return eigenvalue <code>i</code>. </p>
-<p>You can store them however you want, but having some kind of order to them is useful for <code>InfiniteDimensionalMeasure</code> </p>
-
-<p>Referenced by <a class="el" href="a00282_source.html#l00070">QUESO::InfiniteDimensionalGaussian::get_kl_coefficient()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a598da528247dcaec786eee415664d42e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual double QUESO::OperatorBase::get_inverted_eigenvalue </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return the reciprocal of eigenvalue <code>i</code>. </p>
-
-</div>
-</div>
-<a class="anchor" id="a610fc538c34726a001d49c138a17817e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual unsigned int QUESO::OperatorBase::get_num_converged </td>
+          <td class="memname">virtual boost::shared_ptr&lt;<a class="el" href="a00084.html">FunctionBase</a>&gt; QUESO::InfiniteDimensionalMeasureBase::draw </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Draw from the measure, and then return a shared pointer to the draw. </p>
+
+<p>Implemented in <a class="el" href="a00131.html#aa052d66b96ae5bc7f2fae2da9ecf1b2e">QUESO::InfiniteDimensionalGaussian</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a85c57f9eb7cfec24122f8fb856066d25"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual double QUESO::InfiniteDimensionalMeasureBase::get_kl_coefficient </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -217,58 +192,19 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the number of converged eigenpairs. </p>
+<p>Return coefficient <code>i</code> of the KL expansion of the current draw. Must be called after <a class="el" href="a00134.html#a6357b505c9d50f9a5c30583bdf361d7e" title="Draw from the measure, and then return a shared pointer to the draw. ">draw()</a> </p>
 
-<p>Referenced by <a class="el" href="a00282_source.html#l00058">QUESO::InfiniteDimensionalGaussian::draw()</a>, and <a class="el" href="a00282_source.html#l00038">QUESO::InfiniteDimensionalGaussian::InfiniteDimensionalGaussian()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="adb765561b8de30f081fe23c53b1a03fb"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual boost::shared_ptr&lt;<a class="el" href="a00064.html">FunctionBase</a>&gt; QUESO::OperatorBase::inverse_kl_transform </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>xi</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>alpha</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Given coefficients <code>xi</code>, computes the Karhunen-Loeve transform. </p>
-<p>This transform goes from coefficient space to physical space using <code>this</code> as the precision operator:   / pow(, <code>alpha</code> / 2.0) (x) where the lambda are eigenvalues of the precision operator, <code>this</code>, and the (x) are eigenfunctions of the precision operator, <code>this</code> </p>
-
-<p>Referenced by <a class="el" href="a00282_source.html#l00058">QUESO::InfiniteDimensionalGaussian::draw()</a>.</p>
+<p>Implemented in <a class="el" href="a00131.html#a07eac1a9245e12bd3bc73ea65aac5ecf">QUESO::InfiniteDimensionalGaussian</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/core/inc/<a class="el" href="a00259_source.html">OperatorBase.h</a></li>
-<li>src/core/src/<a class="el" href="a00293_source.html">OperatorBase.C</a></li>
+<li>src/core/inc/<a class="el" href="a00340_source.html">InfiniteDimensionalMeasureBase.h</a></li>
+<li>src/core/src/<a class="el" href="a00377_source.html">InfiniteDimensionalMeasureBase.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:56 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:34 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

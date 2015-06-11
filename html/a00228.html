@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/basic/src/VectorFunctionSynchronizer.C File Reference</title>
+<title>queso-0.53.0: QUESO::VectorSpace&lt; V, M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -31,49 +31,1477 @@
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_38cd9eca440b760dc966f21b1f8d8f41.html">basic</a></li><li class="navelem"><a class="el" href="dir_01b3a7fd54359c18da5914c7eb8b812f.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00228.html">VectorSpace</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="a01141.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">VectorFunctionSynchronizer.C File Reference</div>  </div>
+<div class="title">QUESO::VectorSpace&lt; V, M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/VectorFunctionSynchronizer.h&gt;</code><br/>
-<code>#include &lt;queso/GslVector.h&gt;</code><br/>
-<code>#include &lt;queso/GslMatrix.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for VectorFunctionSynchronizer.C:</div>
+
+<p>A class representing a vector space.  
+ <a href="a00228.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="a00258_source.html">VectorSet.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for QUESO::VectorSpace&lt; V, M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00543.png" border="0" usemap="#src_2basic_2src_2_vector_function_synchronizer_8_c" alt=""/></div>
-<map name="src_2basic_2src_2_vector_function_synchronizer_8_c" id="src_2basic_2src_2_vector_function_synchronizer_8_c">
-</map>
-</div>
-</div>
-<p><a href="a00228_source.html">Go to the source code of this file.</a></p>
+<div class="center"><img src="a01142.png" border="0" usemap="#_q_u_e_s_o_1_1_vector_space_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_vector_space_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_vector_space_3_01_v_00_01_m_01_4_inherit__map">
+<area shape="rect" id="node2" href="a00227.html" title="A templated class for handling sets. " alt="" coords="5,5,213,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for QUESO::VectorSpace&lt; V, M &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="a01143.png" border="0" usemap="#_q_u_e_s_o_1_1_vector_space_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_vector_space_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_vector_space_3_01_v_00_01_m_01_4_coll__map">
+<area shape="rect" id="node2" href="a00227.html" title="A templated class for handling sets. " alt="" coords="93,496,301,525"/><area shape="rect" id="node4" href="a00032.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="177,296,377,325"/><area shape="rect" id="node16" href="a00175.html" title="The QUESO MPI Communicator Class. " alt="" coords="271,443,417,472"/><area shape="rect" id="node6" href="a00049.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="5,200,184,229"/><area shape="rect" id="node8" href="a00183.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="208,200,347,229"/><area shape="rect" id="node10" href="a00070.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="371,200,571,229"/><area shape="rect" id="node12" href="a00056.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="368,86,573,133"/><area shape="rect" id="node14" href="a00034.html" title="QUESO::BaseInputOptionsParser" alt="" coords="349,5,592,35"/><area shape="rect" id="node21" href="a00160.html" title="A class for partitioning vectors and matrices. " alt="" coords="291,549,397,579"/><area shape="rect" id="node19" href="a00066.html" title="QUESO::DistArray\&lt; std\l::string \&gt;" alt="" coords="336,646,515,693"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:a00500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html">QUESO</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a64856b952d372cb25d0f10853635104a"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a64856b952d372cb25d0f10853635104a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00129.html">GslVector</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00228.html#a64856b952d372cb25d0f10853635104a">newVector</a> () const</td></tr>
+<tr class="separator:a64856b952d372cb25d0f10853635104a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a840fde1ad7e947821dffd3d5ad164509"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a840fde1ad7e947821dffd3d5ad164509"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00129.html">GslVector</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00228.html#a840fde1ad7e947821dffd3d5ad164509">newVector</a> (double value) const</td></tr>
+<tr class="separator:a840fde1ad7e947821dffd3d5ad164509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae28843e8ea7cd8b51aaea3318f6651eb"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:ae28843e8ea7cd8b51aaea3318f6651eb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00127.html">GslMatrix</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00228.html#ae28843e8ea7cd8b51aaea3318f6651eb">newMatrix</a> () const</td></tr>
+<tr class="separator:ae28843e8ea7cd8b51aaea3318f6651eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea4fbf9ced060c790c4f100a7604c271"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:aea4fbf9ced060c790c4f100a7604c271"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00127.html">GslMatrix</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00228.html#aea4fbf9ced060c790c4f100a7604c271">newDiagMatrix</a> (double diagValue) const</td></tr>
+<tr class="separator:aea4fbf9ced060c790c4f100a7604c271"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
+<tr class="memitem:af4603e4342db319c34fe236b9e057f0e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#af4603e4342db319c34fe236b9e057f0e">VectorSpace</a> (const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;<a class="el" href="a00228.html#aa74cd0d1a8b3d599f799ef4aa2ebcfc2">env</a>, const char *<a class="el" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>, unsigned int dimGlobalValue, const std::vector&lt; std::string &gt; *<a class="el" href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">componentsNamesVec</a>)</td></tr>
+<tr class="memdesc:af4603e4342db319c34fe236b9e057f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaped constructor.  <a href="#af4603e4342db319c34fe236b9e057f0e">More...</a><br/></td></tr>
+<tr class="separator:af4603e4342db319c34fe236b9e057f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0677ad2c58ce91321d07f377ffe39f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#aa0677ad2c58ce91321d07f377ffe39f4">VectorSpace</a> (const <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt; &amp;aux)</td></tr>
+<tr class="memdesc:aa0677ad2c58ce91321d07f377ffe39f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#aa0677ad2c58ce91321d07f377ffe39f4">More...</a><br/></td></tr>
+<tr class="separator:aa0677ad2c58ce91321d07f377ffe39f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e543a391950b82f1107b1bd589ebd72"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a0e543a391950b82f1107b1bd589ebd72">~VectorSpace</a> ()</td></tr>
+<tr class="memdesc:a0e543a391950b82f1107b1bd589ebd72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a0e543a391950b82f1107b1bd589ebd72">More...</a><br/></td></tr>
+<tr class="separator:a0e543a391950b82f1107b1bd589ebd72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Attribute methods</div></td></tr>
+<tr class="memitem:aa74cd0d1a8b3d599f799ef4aa2ebcfc2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#aa74cd0d1a8b3d599f799ef4aa2ebcfc2">env</a> () const </td></tr>
+<tr class="memdesc:aa74cd0d1a8b3d599f799ef4aa2ebcfc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Environment.  <a href="#aa74cd0d1a8b3d599f799ef4aa2ebcfc2">More...</a><br/></td></tr>
+<tr class="separator:aa74cd0d1a8b3d599f799ef4aa2ebcfc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2f40e646c62513ea9a6819b82e8ba24"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00160.html">Map</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#ac2f40e646c62513ea9a6819b82e8ba24">map</a> () const </td></tr>
+<tr class="memdesc:ac2f40e646c62513ea9a6819b82e8ba24"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>.  <a href="#ac2f40e646c62513ea9a6819b82e8ba24">More...</a><br/></td></tr>
+<tr class="separator:ac2f40e646c62513ea9a6819b82e8ba24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67b0c3620662116f5a346fdaa5faf38e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a67b0c3620662116f5a346fdaa5faf38e">numOfProcsForStorage</a> () const </td></tr>
+<tr class="memdesc:a67b0c3620662116f5a346fdaa5faf38e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns total number of processes.  <a href="#a67b0c3620662116f5a346fdaa5faf38e">More...</a><br/></td></tr>
+<tr class="separator:a67b0c3620662116f5a346fdaa5faf38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5829a1f4f996f8307c840b705144d666"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a5829a1f4f996f8307c840b705144d666">dimLocal</a> () const </td></tr>
+<tr class="separator:a5829a1f4f996f8307c840b705144d666"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd4359dc120905c22ca1064e33787239"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#acd4359dc120905c22ca1064e33787239">dimGlobal</a> () const </td></tr>
+<tr class="separator:acd4359dc120905c22ca1064e33787239"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cfb48f3058abca35b23c65147217f64"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a6cfb48f3058abca35b23c65147217f64">globalIdOfFirstComponent</a> () const </td></tr>
+<tr class="separator:a6cfb48f3058abca35b23c65147217f64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Mathematical methods</div></td></tr>
+<tr class="memitem:a92e963bb5cab3eecd290dfe4b8f03b04"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a> () const </td></tr>
+<tr class="memdesc:a92e963bb5cab3eecd290dfe4b8f03b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector filled with zeros.  <a href="#a92e963bb5cab3eecd290dfe4b8f03b04">More...</a><br/></td></tr>
+<tr class="separator:a92e963bb5cab3eecd290dfe4b8f03b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fc1d08dfe902e83a011ea6a81aff439"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a6fc1d08dfe902e83a011ea6a81aff439">newVector</a> () const </td></tr>
+<tr class="memdesc:a6fc1d08dfe902e83a011ea6a81aff439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty vector of size given by <a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>&amp; map. See template specialization.  <a href="#a6fc1d08dfe902e83a011ea6a81aff439">More...</a><br/></td></tr>
+<tr class="separator:a6fc1d08dfe902e83a011ea6a81aff439"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc859a81265641b1f8676851fd2ab6bd"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#abc859a81265641b1f8676851fd2ab6bd">newVector</a> (double value) const </td></tr>
+<tr class="memdesc:abc859a81265641b1f8676851fd2ab6bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a vector of size given by <a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>&amp; map and all values give by <code>value</code>. See template specialization.  <a href="#abc859a81265641b1f8676851fd2ab6bd">More...</a><br/></td></tr>
+<tr class="separator:abc859a81265641b1f8676851fd2ab6bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7492fbcc76598ba956e45005ba7cd9cc"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a7492fbcc76598ba956e45005ba7cd9cc">newVector</a> (const V &amp;v) const </td></tr>
+<tr class="memdesc:a7492fbcc76598ba956e45005ba7cd9cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates vector as a copy of another.  <a href="#a7492fbcc76598ba956e45005ba7cd9cc">More...</a><br/></td></tr>
+<tr class="separator:a7492fbcc76598ba956e45005ba7cd9cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8277f132ea382a7f49aa4a6ab7cbea1c"><td class="memItemLeft" align="right" valign="top">M *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a8277f132ea382a7f49aa4a6ab7cbea1c">newMatrix</a> () const </td></tr>
+<tr class="memdesc:a8277f132ea382a7f49aa4a6ab7cbea1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty matrix of size given by <a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>&amp; map. See template specialization.  <a href="#a8277f132ea382a7f49aa4a6ab7cbea1c">More...</a><br/></td></tr>
+<tr class="separator:a8277f132ea382a7f49aa4a6ab7cbea1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f4ad174b63fbc0626070e0f38745e1e"><td class="memItemLeft" align="right" valign="top">M *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a9f4ad174b63fbc0626070e0f38745e1e">newDiagMatrix</a> (const V &amp;v) const </td></tr>
+<tr class="memdesc:a9f4ad174b63fbc0626070e0f38745e1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a diagonal matrix with the elements and size of vector <code>v</code>.  <a href="#a9f4ad174b63fbc0626070e0f38745e1e">More...</a><br/></td></tr>
+<tr class="separator:a9f4ad174b63fbc0626070e0f38745e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe36d0db933c49cb4508b83dd17d33b6"><td class="memItemLeft" align="right" valign="top">M *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#afe36d0db933c49cb4508b83dd17d33b6">newDiagMatrix</a> (double diagValue) const </td></tr>
+<tr class="memdesc:afe36d0db933c49cb4508b83dd17d33b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a diagonal matrix with the elements <code>diagValue</code> and size given by <a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>&amp; map. See template specialization.  <a href="#afe36d0db933c49cb4508b83dd17d33b6">More...</a><br/></td></tr>
+<tr class="separator:afe36d0db933c49cb4508b83dd17d33b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1e7c7ce9aedb494fb2a6fb1fac6a46b"><td class="memItemLeft" align="right" valign="top">M *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#ab1e7c7ce9aedb494fb2a6fb1fac6a46b">newProposalMatrix</a> (const V *varVec, const V *auxVec) const </td></tr>
+<tr class="memdesc:ab1e7c7ce9aedb494fb2a6fb1fac6a46b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a diagonal matrix conditionally to values from vector <code>varVec</code>, guaranteeing that its values are neither 0, NAN nor INFINITY.  <a href="#ab1e7c7ce9aedb494fb2a6fb1fac6a46b">More...</a><br/></td></tr>
+<tr class="separator:ab1e7c7ce9aedb494fb2a6fb1fac6a46b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8bb323280e36a42ac04623b42369da5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#ab8bb323280e36a42ac04623b42369da5">vectorSpace</a> () const </td></tr>
+<tr class="memdesc:ab8bb323280e36a42ac04623b42369da5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessor method to <code>this</code>. <a class="el" href="a00224.html" title="Class for vector operations (virtual). ">Vector</a> space to which <code>this</code> vector set belongs to.  <a href="#ab8bb323280e36a42ac04623b42369da5">More...</a><br/></td></tr>
+<tr class="separator:ab8bb323280e36a42ac04623b42369da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab31d8677d0199e10e1aac9526e2b41e8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#ab31d8677d0199e10e1aac9526e2b41e8">contains</a> (const V &amp;vec) const </td></tr>
+<tr class="memdesc:ab31d8677d0199e10e1aac9526e2b41e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether  vector contains vector <code>vec</code>.  <a href="#ab31d8677d0199e10e1aac9526e2b41e8">More...</a><br/></td></tr>
+<tr class="separator:ab31d8677d0199e10e1aac9526e2b41e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89284638a11e1449149f471a563bb72c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00066.html">DistArray</a>&lt; std::string &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a89284638a11e1449149f471a563bb72c">componentsNamesArray</a> () const </td></tr>
+<tr class="memdesc:a89284638a11e1449149f471a563bb72c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to private attribute m_componentsNamesArray, which is an instance of <a class="el" href="a00066.html" title="A class for partitioning vectors and matrices. ">DistArray</a>.  <a href="#a89284638a11e1449149f471a563bb72c">More...</a><br/></td></tr>
+<tr class="separator:a89284638a11e1449149f471a563bb72c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa315ff4efb4be69a64e341e3ebddca56"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">componentsNamesVec</a> () const </td></tr>
+<tr class="memdesc:aa315ff4efb4be69a64e341e3ebddca56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to private attribute m_componentsNamesVec.  <a href="#aa315ff4efb4be69a64e341e3ebddca56">More...</a><br/></td></tr>
+<tr class="separator:aa315ff4efb4be69a64e341e3ebddca56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57c65df3fa6afbcd5c019e8892f53e44"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a57c65df3fa6afbcd5c019e8892f53e44">localComponentName</a> (unsigned int localComponentId) const </td></tr>
+<tr class="memdesc:a57c65df3fa6afbcd5c019e8892f53e44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the local component names.  <a href="#a57c65df3fa6afbcd5c019e8892f53e44">More...</a><br/></td></tr>
+<tr class="separator:a57c65df3fa6afbcd5c019e8892f53e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">I/O methods</div></td></tr>
+<tr class="memitem:adcae173f0230ef737ea592c34cad1d09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#adcae173f0230ef737ea592c34cad1d09">printComponentsNames</a> (std::ostream &amp;os, bool printHorizontally) const </td></tr>
+<tr class="memdesc:adcae173f0230ef737ea592c34cad1d09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the local component names.  <a href="#adcae173f0230ef737ea592c34cad1d09">More...</a><br/></td></tr>
+<tr class="separator:adcae173f0230ef737ea592c34cad1d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a1fe3c1833380e2a0b19d35494cb635"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a3a1fe3c1833380e2a0b19d35494cb635">print</a> (std::ostream &amp;os) const </td></tr>
+<tr class="memdesc:a3a1fe3c1833380e2a0b19d35494cb635"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints only a message.  <a href="#a3a1fe3c1833380e2a0b19d35494cb635">More...</a><br/></td></tr>
+<tr class="separator:a3a1fe3c1833380e2a0b19d35494cb635"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00227"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00227')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00227.html">QUESO::VectorSet&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:a50aa48fa7da79a12c5fbd97e011a66f1 inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#a50aa48fa7da79a12c5fbd97e011a66f1">VectorSet</a> (const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;<a class="el" href="a00227.html#aa0ed80853d166754ba6ed83e63e737aa">env</a>, const char *<a class="el" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>, double <a class="el" href="a00227.html#a3266f16e2672f5f3c929f22df085e545">volume</a>)</td></tr>
+<tr class="memdesc:a50aa48fa7da79a12c5fbd97e011a66f1 inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaped constructor.  <a href="#a50aa48fa7da79a12c5fbd97e011a66f1">More...</a><br/></td></tr>
+<tr class="separator:a50aa48fa7da79a12c5fbd97e011a66f1 inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8887f7545631fbbb6165a503f690884 inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#aa8887f7545631fbbb6165a503f690884">~VectorSet</a> ()</td></tr>
+<tr class="memdesc:aa8887f7545631fbbb6165a503f690884 inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#aa8887f7545631fbbb6165a503f690884">More...</a><br/></td></tr>
+<tr class="separator:aa8887f7545631fbbb6165a503f690884 inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0ed80853d166754ba6ed83e63e737aa inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#aa0ed80853d166754ba6ed83e63e737aa">env</a> () const </td></tr>
+<tr class="memdesc:aa0ed80853d166754ba6ed83e63e737aa inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Environment. Access to private attribute m_env.  <a href="#aa0ed80853d166754ba6ed83e63e737aa">More...</a><br/></td></tr>
+<tr class="separator:aa0ed80853d166754ba6ed83e63e737aa inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedcd4b0f502af4c6e6df863c13cddfec inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a> () const </td></tr>
+<tr class="memdesc:aedcd4b0f502af4c6e6df863c13cddfec inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to private attribute m_prefix.  <a href="#aedcd4b0f502af4c6e6df863c13cddfec">More...</a><br/></td></tr>
+<tr class="separator:aedcd4b0f502af4c6e6df863c13cddfec inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3266f16e2672f5f3c929f22df085e545 inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#a3266f16e2672f5f3c929f22df085e545">volume</a> () const </td></tr>
+<tr class="memdesc:a3266f16e2672f5f3c929f22df085e545 inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set volume; access to private attribute m_volume.  <a href="#a3266f16e2672f5f3c929f22df085e545">More...</a><br/></td></tr>
+<tr class="separator:a3266f16e2672f5f3c929f22df085e545 inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a9549041aa8525c198155e9ba530e5aa4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00160.html">Map</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a9549041aa8525c198155e9ba530e5aa4">newMap</a> ()</td></tr>
+<tr class="memdesc:a9549041aa8525c198155e9ba530e5aa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new map. See template specialization.  <a href="#a9549041aa8525c198155e9ba530e5aa4">More...</a><br/></td></tr>
+<tr class="separator:a9549041aa8525c198155e9ba530e5aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8a3fcaa8d2891c2ca32733dc5a56008"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:ac8a3fcaa8d2891c2ca32733dc5a56008"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00160.html">Map</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00228.html#ac8a3fcaa8d2891c2ca32733dc5a56008">newMap</a> ()</td></tr>
+<tr class="separator:ac8a3fcaa8d2891c2ca32733dc5a56008"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ad3efef4a407fdc5c98fded11f2f2444e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a></td></tr>
+<tr class="memdesc:ad3efef4a407fdc5c98fded11f2f2444e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global dimension.  <a href="#ad3efef4a407fdc5c98fded11f2f2444e">More...</a><br/></td></tr>
+<tr class="separator:ad3efef4a407fdc5c98fded11f2f2444e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a752194a4dc937db4db4df2a3b207d3b9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00160.html">Map</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a></td></tr>
+<tr class="memdesc:a752194a4dc937db4db4df2a3b207d3b9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>.  <a href="#a752194a4dc937db4db4df2a3b207d3b9">More...</a><br/></td></tr>
+<tr class="separator:a752194a4dc937db4db4df2a3b207d3b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6db91aca8a1f79e27d2f472528850bb"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a></td></tr>
+<tr class="memdesc:aa6db91aca8a1f79e27d2f472528850bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local dimension (number of elements owned by the calling processor.).  <a href="#aa6db91aca8a1f79e27d2f472528850bb">More...</a><br/></td></tr>
+<tr class="separator:aa6db91aca8a1f79e27d2f472528850bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bcd9c13374cda32f043a93e171aeabf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00066.html">DistArray</a>&lt; std::string &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a></td></tr>
+<tr class="memdesc:a6bcd9c13374cda32f043a93e171aeabf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of strings of the type <a class="el" href="a00066.html" title="A class for partitioning vectors and matrices. ">DistArray</a> to store the names of the components.  <a href="#a6bcd9c13374cda32f043a93e171aeabf">More...</a><br/></td></tr>
+<tr class="separator:a6bcd9c13374cda32f043a93e171aeabf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28b5617b4b30cea1e02e4cb01fd067d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00066.html">DistArray</a>&lt; std::string &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">m_componentsNamesVec</a></td></tr>
+<tr class="memdesc:a28b5617b4b30cea1e02e4cb01fd067d8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00224.html" title="Class for vector operations (virtual). ">Vector</a> of strings of the type <a class="el" href="a00066.html" title="A class for partitioning vectors and matrices. ">DistArray</a> to store the names of the components.  <a href="#a28b5617b4b30cea1e02e4cb01fd067d8">More...</a><br/></td></tr>
+<tr class="separator:a28b5617b4b30cea1e02e4cb01fd067d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cc6bfad9eb4031dbe763728f0c25a13"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">m_emptyComponentName</a></td></tr>
+<tr class="memdesc:a7cc6bfad9eb4031dbe763728f0c25a13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty string for the components names.  <a href="#a7cc6bfad9eb4031dbe763728f0c25a13">More...</a><br/></td></tr>
+<tr class="separator:a7cc6bfad9eb4031dbe763728f0c25a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0faa184316e08edb286a1bd0a5059b10"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a></td></tr>
+<tr class="memdesc:a0faa184316e08edb286a1bd0a5059b10"><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector of all elements equal to zero.  <a href="#a0faa184316e08edb286a1bd0a5059b10">More...</a><br/></td></tr>
+<tr class="separator:a0faa184316e08edb286a1bd0a5059b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_a00227"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00227')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00227.html">QUESO::VectorSet&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:a77f3b57109bc1d89b4111f47458df770 inherit pro_attribs_a00227"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a></td></tr>
+<tr class="separator:a77f3b57109bc1d89b4111f47458df770 inherit pro_attribs_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a472995c02b59c8f3cd77230b39535cca inherit pro_attribs_a00227"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#a472995c02b59c8f3cd77230b39535cca">m_prefix</a></td></tr>
+<tr class="separator:a472995c02b59c8f3cd77230b39535cca inherit pro_attribs_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd5cdcdbcbbce29daec684437f511e9f inherit pro_attribs_a00227"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#acd5cdcdbcbbce29daec684437f511e9f">m_volume</a></td></tr>
+<tr class="separator:acd5cdcdbcbbce29daec684437f511e9f inherit pro_attribs_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:ab64f81dae5d122ec818fe96ea404f93c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00228.html#ab64f81dae5d122ec818fe96ea404f93c">VectorSpace</a> ()</td></tr>
+<tr class="memdesc:ab64f81dae5d122ec818fe96ea404f93c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ab64f81dae5d122ec818fe96ea404f93c">More...</a><br/></td></tr>
+<tr class="separator:ab64f81dae5d122ec818fe96ea404f93c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class V, class M&gt;<br/>
+class QUESO::VectorSpace&lt; V, M &gt;</h3>
+
+<p>A class representing a vector space. </p>
+<p>Template classes <code>V</code> and <code>M</code> are to represent a vector class and a matrix class respectively. Currently (as of version 0.46.0) <a class="el" href="a00649.html">QUESO</a> has matrix and vector classes implemented using either GSL or Trilinos-Teuchos libraries. </p>
+
+<p>Definition at line <a class="el" href="a00258_source.html#l00049">49</a> of file <a class="el" href="a00258_source.html">VectorSet.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="af4603e4342db319c34fe236b9e057f0e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::<a class="el" href="a00228.html">VectorSpace</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td>
+          <td class="paramname"><em>env</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>prefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>dimGlobalValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; *&#160;</td>
+          <td class="paramname"><em>componentsNamesVec</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Shaped constructor. </p>
+<p>Construct a vector space with <a class="el" href="a00649.html">QUESO</a> environment <code>env</code> and of dimension <code>dimGlobalValue</code>. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00038">38</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>References <a class="el" href="a00365_source.html#l00396">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00282_source.html#l00182">QUESO::VectorSpace&lt; V, M &gt;::globalIdOfFirstComponent()</a>, <a class="el" href="a00364_source.html#l00126">QUESO::DistArray&lt; T &gt;::GlobalLength()</a>, <a class="el" href="a00259_source.html#l00156">QUESO::VectorSpace&lt; V, M &gt;::m_componentsNamesArray</a>, <a class="el" href="a00259_source.html#l00147">QUESO::VectorSpace&lt; V, M &gt;::m_dimGlobal</a>, <a class="el" href="a00259_source.html#l00153">QUESO::VectorSpace&lt; V, M &gt;::m_dimLocal</a>, <a class="el" href="a00258_source.html#l00098">QUESO::VectorSet&lt; V, M &gt;::m_env</a>, <a class="el" href="a00259_source.html#l00150">QUESO::VectorSpace&lt; V, M &gt;::m_map</a>, <a class="el" href="a00258_source.html#l00099">QUESO::VectorSet&lt; V, M &gt;::m_prefix</a>, <a class="el" href="a00259_source.html#l00165">QUESO::VectorSpace&lt; V, M &gt;::m_zeroVector</a>, <a class="el" href="a00364_source.html#l00137">QUESO::DistArray&lt; T &gt;::MyLength()</a>, <a class="el" href="a00381_source.html#l00085">QUESO::Map::NumGlobalElements()</a>, <a class="el" href="a00319_source.html#l00085">queso_require_equal_to_msg</a>, and <a class="el" href="a00365_source.html#l00274">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  : VectorSet&lt;V,M&gt; (<a class="code" href="a00228.html#aa74cd0d1a8b3d599f799ef4aa2ebcfc2">env</a>,((std::string)(<a class="code" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>) + <span class="stringliteral">&quot;space_&quot;</span>).c_str(),INFINITY),</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>(dimGlobalValue),</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>(<a class="code" href="a00228.html#a9549041aa8525c198155e9ba530e5aa4">newMap</a>()),</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a>(<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>-&gt;<a class="code" href="a00160.html#a6407f6d6a6df8a0a40923c8dc524b021">NumMyElements</a>()),</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a>(NULL),</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">m_componentsNamesVec</a>(NULL),</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">m_emptyComponentName</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>(<span class="keyword">new</span> V(<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>,*<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>))</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    *<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering VectorSpace&lt;V,M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, with m_prefix = &quot;</span>                &lt;&lt; <a class="code" href="a00227.html#a472995c02b59c8f3cd77230b39535cca">m_prefix</a></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_zeroVector-&gt;sizeGlobal() = &quot;</span> &lt;&lt; <a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>-&gt;sizeGlobal()</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_dimGlobal                = &quot;</span> &lt;&lt; <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_zeroVector-&gt;sizeLocal()  = &quot;</span> &lt;&lt; <a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>-&gt;sizeLocal()</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_dimLocal                 = &quot;</span> &lt;&lt; <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_map-&gt;NumGlobalElements() = &quot;</span> &lt;&lt; <a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>-&gt;<a class="code" href="a00160.html#ac67907266dcd7108ffe5a0cbef908781">NumGlobalElements</a>()</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  componentsNamesVec         = &quot;</span> &lt;&lt; <a class="code" href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">componentsNamesVec</a></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>-&gt;sizeGlobal() != <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;In VectorSpace&lt;V,M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, with m_prefix = &quot;</span> &lt;&lt; <a class="code" href="a00227.html#a472995c02b59c8f3cd77230b39535cca">m_prefix</a></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;: m_zeroVector-&gt;sizeGlobal() = &quot;</span> &lt;&lt; <a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>-&gt;sizeGlobal()</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, m_dimGlobal = &quot;</span>                &lt;&lt; <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>-&gt;sizeGlobal(), <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>, <span class="stringliteral">&quot;global size of &#39;m_zeroVector&#39; is not equal to m_dimGlobal&quot;</span>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>-&gt;sizeLocal() != <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a>) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;In VectorSpace&lt;V,M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, with m_prefix = &quot;</span> &lt;&lt; <a class="code" href="a00227.html#a472995c02b59c8f3cd77230b39535cca">m_prefix</a></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;: m_zeroVector-&gt;sizeLocal() = &quot;</span> &lt;&lt; <a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>-&gt;sizeLocal()</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, m_dimLocal = &quot;</span>                &lt;&lt; <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>-&gt;sizeLocal(), <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a>, <span class="stringliteral">&quot;local size of &#39;m_zeroVector&#39; is not equal to m_dimLocal&quot;</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">componentsNamesVec</a> != NULL) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">componentsNamesVec</a>-&gt;size(), (size_t) <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>, <span class="stringliteral">&quot;global size of &#39;componentsNames&#39; is not equal to m_dimGlobal&quot;</span>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a> = <span class="keyword">new</span> DistArray&lt;std::string&gt;(*<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>,1);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> myFirstId = this-&gt;<a class="code" href="a00228.html#a6cfb48f3058abca35b23c65147217f64">globalIdOfFirstComponent</a>();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a>; ++i) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      (*m_componentsNamesArray)(i,0) = (*<a class="code" href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">componentsNamesVec</a>)[myFirstId+i];</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a>-&gt;<a class="code" href="a00066.html#a74e491ed573af8b81f701e2ca136206e">GlobalLength</a>(), (int) <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>, <span class="stringliteral">&quot;global size of &#39;m_componentsNamesArray&#39; is not equal to m_dimGlobal&quot;</span>);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a>-&gt;<a class="code" href="a00066.html#af4a798f5defa6a37dfc82175c7f92f83">MyLength</a>(), (int) m_dimLocal, <span class="stringliteral">&quot;local size of &#39;m_componentsNamesArray&#39; is not equal to m_dimLocal&quot;</span>);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    *<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving VectorSpace&lt;V,M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, with m_prefix = &quot;</span> &lt;&lt; <a class="code" href="a00227.html#a472995c02b59c8f3cd77230b39535cca">m_prefix</a></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00396">Environment.C:396</a></div></div>
+<div class="ttc" id="a00066_html_a74e491ed573af8b81f701e2ca136206e"><div class="ttname"><a href="a00066.html#a74e491ed573af8b81f701e2ca136206e">QUESO::DistArray::GlobalLength</a></div><div class="ttdeci">int GlobalLength() const </div><div class="ttdoc">Returns the global length of the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00364_source.html#l00126">DistArray.C:126</a></div></div>
+<div class="ttc" id="a00228_html_a7cc6bfad9eb4031dbe763728f0c25a13"><div class="ttname"><a href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">QUESO::VectorSpace::m_emptyComponentName</a></div><div class="ttdeci">std::string m_emptyComponentName</div><div class="ttdoc">Empty string for the components names. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00162">VectorSpace.h:162</a></div></div>
+<div class="ttc" id="a00228_html_aa315ff4efb4be69a64e341e3ebddca56"><div class="ttname"><a href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">QUESO::VectorSpace::componentsNamesVec</a></div><div class="ttdeci">const std::vector&lt; std::string &gt; * componentsNamesVec() const </div><div class="ttdoc">Access to private attribute m_componentsNamesVec. </div></div>
+<div class="ttc" id="a00228_html_ad3efef4a407fdc5c98fded11f2f2444e"><div class="ttname"><a href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">QUESO::VectorSpace::m_dimGlobal</a></div><div class="ttdeci">unsigned int m_dimGlobal</div><div class="ttdoc">Global dimension. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00147">VectorSpace.h:147</a></div></div>
+<div class="ttc" id="a00228_html_a28b5617b4b30cea1e02e4cb01fd067d8"><div class="ttname"><a href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">QUESO::VectorSpace::m_componentsNamesVec</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesVec</div><div class="ttdoc">Vector of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00159">VectorSpace.h:159</a></div></div>
+<div class="ttc" id="a00066_html_af4a798f5defa6a37dfc82175c7f92f83"><div class="ttname"><a href="a00066.html#af4a798f5defa6a37dfc82175c7f92f83">QUESO::DistArray::MyLength</a></div><div class="ttdeci">int MyLength() const </div><div class="ttdoc">Returns the length of the locally owned array. </div><div class="ttdef"><b>Definition:</b> <a href="a00364_source.html#l00137">DistArray.C:137</a></div></div>
+<div class="ttc" id="a00160_html_a6407f6d6a6df8a0a40923c8dc524b021"><div class="ttname"><a href="a00160.html#a6407f6d6a6df8a0a40923c8dc524b021">QUESO::Map::NumMyElements</a></div><div class="ttdeci">int NumMyElements() const </div><div class="ttdoc">Returns the number of elements owned by the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00107">Map.C:107</a></div></div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+<div class="ttc" id="a00319_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00085">asserts.h:85</a></div></div>
+<div class="ttc" id="a00228_html_a6cfb48f3058abca35b23c65147217f64"><div class="ttname"><a href="a00228.html#a6cfb48f3058abca35b23c65147217f64">QUESO::VectorSpace::globalIdOfFirstComponent</a></div><div class="ttdeci">unsigned int globalIdOfFirstComponent() const </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00182">VectorSpace.C:182</a></div></div>
+<div class="ttc" id="a00228_html_a0faa184316e08edb286a1bd0a5059b10"><div class="ttname"><a href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">QUESO::VectorSpace::m_zeroVector</a></div><div class="ttdeci">V * m_zeroVector</div><div class="ttdoc">A vector of all elements equal to zero. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00165">VectorSpace.h:165</a></div></div>
+<div class="ttc" id="a00228_html_aa74cd0d1a8b3d599f799ef4aa2ebcfc2"><div class="ttname"><a href="a00228.html#aa74cd0d1a8b3d599f799ef4aa2ebcfc2">QUESO::VectorSpace::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Environment. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00151">VectorSpace.C:151</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
+<div class="ttc" id="a00228_html_aa6db91aca8a1f79e27d2f472528850bb"><div class="ttname"><a href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">QUESO::VectorSpace::m_dimLocal</a></div><div class="ttdeci">unsigned int m_dimLocal</div><div class="ttdoc">Local dimension (number of elements owned by the calling processor.). </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00153">VectorSpace.h:153</a></div></div>
+<div class="ttc" id="a00228_html_a9549041aa8525c198155e9ba530e5aa4"><div class="ttname"><a href="a00228.html#a9549041aa8525c198155e9ba530e5aa4">QUESO::VectorSpace::newMap</a></div><div class="ttdeci">Map * newMap()</div><div class="ttdoc">Creates a new map. See template specialization. </div></div>
+<div class="ttc" id="a00227_html_a472995c02b59c8f3cd77230b39535cca"><div class="ttname"><a href="a00227.html#a472995c02b59c8f3cd77230b39535cca">QUESO::VectorSet::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00099">VectorSet.h:99</a></div></div>
+<div class="ttc" id="a00227_html_aedcd4b0f502af4c6e6df863c13cddfec"><div class="ttname"><a href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">QUESO::VectorSet::prefix</a></div><div class="ttdeci">const std::string &amp; prefix() const </div><div class="ttdoc">Access to private attribute m_prefix. </div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00084">VectorSet.C:84</a></div></div>
+<div class="ttc" id="a00160_html_ac67907266dcd7108ffe5a0cbef908781"><div class="ttname"><a href="a00160.html#ac67907266dcd7108ffe5a0cbef908781">QUESO::Map::NumGlobalElements</a></div><div class="ttdeci">int NumGlobalElements() const </div><div class="ttdoc">Returns the total number of elements across all processors. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00085">Map.C:85</a></div></div>
+<div class="ttc" id="a00228_html_a6bcd9c13374cda32f043a93e171aeabf"><div class="ttname"><a href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">QUESO::VectorSpace::m_componentsNamesArray</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesArray</div><div class="ttdoc">Array of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00156">VectorSpace.h:156</a></div></div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aa0677ad2c58ce91321d07f377ffe39f4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::<a class="el" href="a00228.html">VectorSpace</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>aux</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy constructor. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00102">102</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>References <a class="el" href="a00365_source.html#l00396">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00259_source.html#l00156">QUESO::VectorSpace&lt; V, M &gt;::m_componentsNamesArray</a>, <a class="el" href="a00259_source.html#l00159">QUESO::VectorSpace&lt; V, M &gt;::m_componentsNamesVec</a>, <a class="el" href="a00258_source.html#l00098">QUESO::VectorSet&lt; V, M &gt;::m_env</a>, and <a class="el" href="a00365_source.html#l00274">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  : VectorSet&lt;V,M&gt;(aux.env(),((std::string)(aux.m_prefix)).c_str(),INFINITY),</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>(aux.m_dimGlobal),</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>(<a class="code" href="a00228.html#a9549041aa8525c198155e9ba530e5aa4">newMap</a>()),</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a>(<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>-&gt;<a class="code" href="a00160.html#a6407f6d6a6df8a0a40923c8dc524b021">NumMyElements</a>()),</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a>(NULL),</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <a class="code" href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">m_componentsNamesVec</a>(NULL),</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <a class="code" href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">m_emptyComponentName</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>(<span class="keyword">new</span> V(<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>,*<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>))</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;{</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    *<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering VectorSpace&lt;V,M&gt;::constructor(2)&quot;</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: aux.m_componentsNamesArray = &quot;</span> &lt;&lt; aux.m_componentsNamesArray</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, aux.m_componentsNamesVec = &quot;</span>   &lt;&lt; aux.m_componentsNamesVec</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordflow">if</span> (aux.m_componentsNamesArray != NULL) {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a> = <span class="keyword">new</span> DistArray&lt;std::string&gt;(*(aux.m_componentsNamesArray));</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    *<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving VectorSpace&lt;V,M&gt;::constructor(2)&quot;</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00396">Environment.C:396</a></div></div>
+<div class="ttc" id="a00228_html_a7cc6bfad9eb4031dbe763728f0c25a13"><div class="ttname"><a href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">QUESO::VectorSpace::m_emptyComponentName</a></div><div class="ttdeci">std::string m_emptyComponentName</div><div class="ttdoc">Empty string for the components names. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00162">VectorSpace.h:162</a></div></div>
+<div class="ttc" id="a00228_html_ad3efef4a407fdc5c98fded11f2f2444e"><div class="ttname"><a href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">QUESO::VectorSpace::m_dimGlobal</a></div><div class="ttdeci">unsigned int m_dimGlobal</div><div class="ttdoc">Global dimension. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00147">VectorSpace.h:147</a></div></div>
+<div class="ttc" id="a00228_html_a28b5617b4b30cea1e02e4cb01fd067d8"><div class="ttname"><a href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">QUESO::VectorSpace::m_componentsNamesVec</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesVec</div><div class="ttdoc">Vector of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00159">VectorSpace.h:159</a></div></div>
+<div class="ttc" id="a00160_html_a6407f6d6a6df8a0a40923c8dc524b021"><div class="ttname"><a href="a00160.html#a6407f6d6a6df8a0a40923c8dc524b021">QUESO::Map::NumMyElements</a></div><div class="ttdeci">int NumMyElements() const </div><div class="ttdoc">Returns the number of elements owned by the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00107">Map.C:107</a></div></div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+<div class="ttc" id="a00228_html_a0faa184316e08edb286a1bd0a5059b10"><div class="ttname"><a href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">QUESO::VectorSpace::m_zeroVector</a></div><div class="ttdeci">V * m_zeroVector</div><div class="ttdoc">A vector of all elements equal to zero. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00165">VectorSpace.h:165</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
+<div class="ttc" id="a00228_html_aa6db91aca8a1f79e27d2f472528850bb"><div class="ttname"><a href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">QUESO::VectorSpace::m_dimLocal</a></div><div class="ttdeci">unsigned int m_dimLocal</div><div class="ttdoc">Local dimension (number of elements owned by the calling processor.). </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00153">VectorSpace.h:153</a></div></div>
+<div class="ttc" id="a00228_html_a9549041aa8525c198155e9ba530e5aa4"><div class="ttname"><a href="a00228.html#a9549041aa8525c198155e9ba530e5aa4">QUESO::VectorSpace::newMap</a></div><div class="ttdeci">Map * newMap()</div><div class="ttdoc">Creates a new map. See template specialization. </div></div>
+<div class="ttc" id="a00228_html_a6bcd9c13374cda32f043a93e171aeabf"><div class="ttname"><a href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">QUESO::VectorSpace::m_componentsNamesArray</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesArray</div><div class="ttdoc">Array of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00156">VectorSpace.h:156</a></div></div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a0e543a391950b82f1107b1bd589ebd72"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::~<a class="el" href="a00228.html">VectorSpace</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00131">131</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;{</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    *<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering VectorSpace&lt;V,M&gt;::destructor()&quot;</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>           != NULL) <span class="keyword">delete</span> <a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">m_componentsNamesVec</a>   != NULL) <span class="keyword">delete</span> <a class="code" href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">m_componentsNamesVec</a>;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a> != NULL) <span class="keyword">delete</span> <a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a>;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>                  != NULL) <span class="keyword">delete</span> <a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    *<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving VectorSpace&lt;V,M&gt;::destructor()&quot;</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  }</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00396">Environment.C:396</a></div></div>
+<div class="ttc" id="a00228_html_a28b5617b4b30cea1e02e4cb01fd067d8"><div class="ttname"><a href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">QUESO::VectorSpace::m_componentsNamesVec</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesVec</div><div class="ttdoc">Vector of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00159">VectorSpace.h:159</a></div></div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+<div class="ttc" id="a00228_html_a0faa184316e08edb286a1bd0a5059b10"><div class="ttname"><a href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">QUESO::VectorSpace::m_zeroVector</a></div><div class="ttdeci">V * m_zeroVector</div><div class="ttdoc">A vector of all elements equal to zero. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00165">VectorSpace.h:165</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
+<div class="ttc" id="a00228_html_a6bcd9c13374cda32f043a93e171aeabf"><div class="ttname"><a href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">QUESO::VectorSpace::m_componentsNamesArray</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesArray</div><div class="ttdoc">Array of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00156">VectorSpace.h:156</a></div></div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab64f81dae5d122ec818fe96ea404f93c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::<a class="el" href="a00228.html">VectorSpace</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a89284638a11e1449149f471a563bb72c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00066.html">DistArray</a>&lt; std::string &gt; * <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::componentsNamesArray </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Access to private attribute m_componentsNamesArray, which is an instance of <a class="el" href="a00066.html" title="A class for partitioning vectors and matrices. ">DistArray</a>. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00265">265</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;{</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a>;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a6bcd9c13374cda32f043a93e171aeabf"><div class="ttname"><a href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">QUESO::VectorSpace::m_componentsNamesArray</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesArray</div><div class="ttdoc">Array of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00156">VectorSpace.h:156</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aa315ff4efb4be69a64e341e3ebddca56"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;std::string&gt;* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::componentsNamesVec </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Access to private attribute m_componentsNamesVec. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab31d8677d0199e10e1aac9526e2b41e8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::contains </td>
+          <td>(</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether  vector contains vector <code>vec</code>. </p>
+
+<p>Implements <a class="el" href="a00227.html#ab59fe6ca67647f58920681e05165a9d0">QUESO::VectorSet&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00258">258</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;{</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <span class="keywordflow">if</span> (vec[0]) {}; <span class="comment">// just to remove compiler warning</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="acd4359dc120905c22ca1064e33787239"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::dimGlobal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00176">176</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>Referenced by <a class="el" href="a00280_source.html#l02773">QUESO::ComputeCovCorrMatricesBetweenVectorSequences()</a>, <a class="el" href="a00417_source.html#l00032">QUESO::GcmJointTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmJointTildeInfo()</a>, and <a class="el" href="a00270_source.html#l00037">QUESO::InstantiateIntersection()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;{</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;}</div>
+<div class="ttc" id="a00228_html_ad3efef4a407fdc5c98fded11f2f2444e"><div class="ttname"><a href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">QUESO::VectorSpace::m_dimGlobal</a></div><div class="ttdeci">unsigned int m_dimGlobal</div><div class="ttdoc">Global dimension. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00147">VectorSpace.h:147</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a5829a1f4f996f8307c840b705144d666"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::dimLocal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00170">170</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>Referenced by <a class="el" href="a00262_source.html#l00034">QUESO::BoxSubset&lt; V, M &gt;::BoxSubset()</a>, <a class="el" href="a00280_source.html#l02773">QUESO::ComputeCovCorrMatricesBetweenVectorSequences()</a>, <a class="el" href="a00551_source.html#l00031">QUESO::ExponentialMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;::ExponentialMatrixCovarianceFunction()</a>, <a class="el" href="a00415_source.html#l00032">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::GcmExperimentInfo()</a>, <a class="el" href="a00416_source.html#l00032">QUESO::GcmJointInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmJointInfo()</a>, <a class="el" href="a00418_source.html#l00032">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::GcmSimulationInfo()</a>, <a class="el" href="a00421_source.html#l00033">QUESO::GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmZInfo()</a>, <a class="el" href="a00424_source.html#l00034">QUESO::GpmsaComputerModel&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GpmsaComputerModel()</a>, <a class="el" href="a00427_source.html#l00032">QUESO::SimulationModel&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::SimulationModel()</a>, and <a class="el" href="a00612_source.html#l00108">QUESO::StatisticalInverseProblem&lt; P_V, P_M &gt;::StatisticalInverseProblem()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;{</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a>;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;}</div>
+<div class="ttc" id="a00228_html_aa6db91aca8a1f79e27d2f472528850bb"><div class="ttname"><a href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">QUESO::VectorSpace::m_dimLocal</a></div><div class="ttdeci">unsigned int m_dimLocal</div><div class="ttdoc">Local dimension (number of elements owned by the calling processor.). </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00153">VectorSpace.h:153</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aa74cd0d1a8b3d599f799ef4aa2ebcfc2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp; <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::env </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Environment. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00151">151</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>Referenced by <a class="el" href="a00270_source.html#l00037">QUESO::InstantiateIntersection()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;{</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6cfb48f3058abca35b23c65147217f64"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::globalIdOfFirstComponent </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00182">182</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>Referenced by <a class="el" href="a00282_source.html#l00038">QUESO::VectorSpace&lt; V, M &gt;::VectorSpace()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;{</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>-&gt;<a class="code" href="a00160.html#a686b1ea15e0aa9a5de9d6a03456be4a9">MinMyGID</a>();</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+<div class="ttc" id="a00160_html_a686b1ea15e0aa9a5de9d6a03456be4a9"><div class="ttname"><a href="a00160.html#a686b1ea15e0aa9a5de9d6a03456be4a9">QUESO::Map::MinMyGID</a></div><div class="ttdeci">int MinMyGID() const </div><div class="ttdoc">The minimum global index value on the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00118">Map.C:118</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a57c65df3fa6afbcd5c019e8892f53e44"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::localComponentName </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>localComponentId</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the local component names. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00271">271</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>References <a class="el" href="a00319_source.html#l00089">queso_require_less_equal_msg</a>.</p>
+<div class="fragment"><div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;{</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a> == NULL) <span class="keywordflow">return</span> <a class="code" href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">m_emptyComponentName</a>;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  <a class="code" href="a00319.html#ab700dbf56f43fabc2bcfdc72ca2e50ae">queso_require_less_equal_msg</a>(localComponentId, <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a>, <span class="stringliteral">&quot;localComponentId is too big&quot;</span>);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">//return (*(const_cast&lt;DistArray&lt;std::string&gt;*&gt;(m_componentsNamesArray)))(localComponentId,0);</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;  <span class="keywordflow">return</span> (*<a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a>)(localComponentId,0);</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a7cc6bfad9eb4031dbe763728f0c25a13"><div class="ttname"><a href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">QUESO::VectorSpace::m_emptyComponentName</a></div><div class="ttdeci">std::string m_emptyComponentName</div><div class="ttdoc">Empty string for the components names. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00162">VectorSpace.h:162</a></div></div>
+<div class="ttc" id="a00319_html_ab700dbf56f43fabc2bcfdc72ca2e50ae"><div class="ttname"><a href="a00319.html#ab700dbf56f43fabc2bcfdc72ca2e50ae">queso_require_less_equal_msg</a></div><div class="ttdeci">#define queso_require_less_equal_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00089">asserts.h:89</a></div></div>
+<div class="ttc" id="a00228_html_aa6db91aca8a1f79e27d2f472528850bb"><div class="ttname"><a href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">QUESO::VectorSpace::m_dimLocal</a></div><div class="ttdeci">unsigned int m_dimLocal</div><div class="ttdoc">Local dimension (number of elements owned by the calling processor.). </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00153">VectorSpace.h:153</a></div></div>
+<div class="ttc" id="a00228_html_a6bcd9c13374cda32f043a93e171aeabf"><div class="ttname"><a href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">QUESO::VectorSpace::m_componentsNamesArray</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesArray</div><div class="ttdoc">Array of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00156">VectorSpace.h:156</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ac2f40e646c62513ea9a6819b82e8ba24"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00160.html">Map</a> &amp; <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::map </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00157">157</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>References <a class="el" href="a00319_source.html#l00069">queso_require_msg</a>.</p>
+
+<p>Referenced by <a class="el" href="a00412_source.html#l00032">QUESO::ExperimentModel&lt; S_V, S_M, D_V, D_M &gt;::ExperimentModel()</a>, <a class="el" href="a00415_source.html#l00032">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::GcmExperimentInfo()</a>, <a class="el" href="a00416_source.html#l00032">QUESO::GcmJointInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmJointInfo()</a>, <a class="el" href="a00417_source.html#l00032">QUESO::GcmJointTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmJointTildeInfo()</a>, <a class="el" href="a00418_source.html#l00032">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::GcmSimulationInfo()</a>, <a class="el" href="a00419_source.html#l00032">QUESO::GcmSimulationTildeInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::GcmSimulationTildeInfo()</a>, <a class="el" href="a00421_source.html#l00071">QUESO::GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmZInfo()</a>, and <a class="el" href="a00427_source.html#l00032">QUESO::SimulationModel&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::SimulationModel()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;{</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <a class="code" href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>, <span class="stringliteral">&quot;m_map is still NULL&quot;</span>);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+<div class="ttc" id="a00319_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00069">asserts.h:69</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aea4fbf9ced060c790c4f100a7604c271"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00127.html">GslMatrix</a> * <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; <a class="el" href="a00129.html">GslVector</a>, <a class="el" href="a00127.html">GslMatrix</a> &gt;::newDiagMatrix </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>diagValue</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00269_source.html#l00060">60</a> of file <a class="el" href="a00269_source.html">GslVectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> GslMatrix(<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>,*<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>,diagValue);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9f4ad174b63fbc0626070e0f38745e1e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">M * <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::newDiagMatrix </td>
+          <td>(</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a diagonal matrix with the elements and size of vector <code>v</code>. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00205">205</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;{</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keywordflow">if</span> (v.sizeGlobal() != <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>) <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keywordflow">if</span> (v.sizeLocal () != <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a> ) <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> M(v);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;}</div>
+<div class="ttc" id="a00228_html_ad3efef4a407fdc5c98fded11f2f2444e"><div class="ttname"><a href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">QUESO::VectorSpace::m_dimGlobal</a></div><div class="ttdeci">unsigned int m_dimGlobal</div><div class="ttdoc">Global dimension. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00147">VectorSpace.h:147</a></div></div>
+<div class="ttc" id="a00228_html_aa6db91aca8a1f79e27d2f472528850bb"><div class="ttname"><a href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">QUESO::VectorSpace::m_dimLocal</a></div><div class="ttdeci">unsigned int m_dimLocal</div><div class="ttdoc">Local dimension (number of elements owned by the calling processor.). </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00153">VectorSpace.h:153</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="afe36d0db933c49cb4508b83dd17d33b6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">M* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::newDiagMatrix </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>diagValue</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a diagonal matrix with the elements <code>diagValue</code> and size given by <a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>&amp; map. See template specialization. </p>
+
+</div>
+</div>
+<a class="anchor" id="ac8a3fcaa8d2891c2ca32733dc5a56008"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00160.html">Map</a> * <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; <a class="el" href="a00129.html">GslVector</a>, <a class="el" href="a00127.html">GslMatrix</a> &gt;::newMap </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00269_source.html#l00032">32</a> of file <a class="el" href="a00269_source.html">GslVectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> Map(<a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>,0,<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a824458f0d045db251d982ad4c75a4b76">selfComm</a>());</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
+<div class="ttc" id="a00228_html_ad3efef4a407fdc5c98fded11f2f2444e"><div class="ttname"><a href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">QUESO::VectorSpace::m_dimGlobal</a></div><div class="ttdeci">unsigned int m_dimGlobal</div><div class="ttdoc">Global dimension. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00147">VectorSpace.h:147</a></div></div>
+<div class="ttc" id="a00032_html_a824458f0d045db251d982ad4c75a4b76"><div class="ttname"><a href="a00032.html#a824458f0d045db251d982ad4c75a4b76">QUESO::BaseEnvironment::selfComm</a></div><div class="ttdeci">const MpiComm &amp; selfComm() const </div><div class="ttdoc">Access function for MpiComm self-communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00254">Environment.C:254</a></div></div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9549041aa8525c198155e9ba530e5aa4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00160.html">Map</a>* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::newMap </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new map. See template specialization. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae28843e8ea7cd8b51aaea3318f6651eb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00127.html">GslMatrix</a> * <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; <a class="el" href="a00129.html">GslVector</a>, <a class="el" href="a00127.html">GslMatrix</a> &gt;::newMatrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00269_source.html#l00053">53</a> of file <a class="el" href="a00269_source.html">GslVectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> GslMatrix(<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>,*<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>,this-&gt;<a class="code" href="a00228.html#acd4359dc120905c22ca1064e33787239">dimGlobal</a>());</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+<div class="ttc" id="a00228_html_acd4359dc120905c22ca1064e33787239"><div class="ttname"><a href="a00228.html#acd4359dc120905c22ca1064e33787239">QUESO::VectorSpace::dimGlobal</a></div><div class="ttdeci">unsigned int dimGlobal() const </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00176">VectorSpace.C:176</a></div></div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a8277f132ea382a7f49aa4a6ab7cbea1c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">M* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::newMatrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates an empty matrix of size given by <a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>&amp; map. See template specialization. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab1e7c7ce9aedb494fb2a6fb1fac6a46b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">M * <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::newProposalMatrix </td>
+          <td>(</td>
+          <td class="paramtype">const V *&#160;</td>
+          <td class="paramname"><em>varVec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const V *&#160;</td>
+          <td class="paramname"><em>auxVec</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a diagonal matrix conditionally to values from vector <code>varVec</code>, guaranteeing that its values are neither 0, NAN nor INFINITY. </p>
+<p>If varVec[i] is either 0, NAN or INFINITY, then this method tries to assign the value (*auxVec)[i])^2 to matrix(i,i). Case (*auxVec)[i])^2 is either NAN or INFINITY, then matrix(i,i)=1. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00214">214</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;{</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  V tmpVec(*<a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a>; ++i) {</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordtype">double</span> variance = INFINITY;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordflow">if</span> (varVec) variance = (*varVec)[i];</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      *<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In VectorSpace&lt;V,M&gt;::newProposalMatrix()&quot;</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: i = &quot;</span>        &lt;&lt; i</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, variance = &quot;</span> &lt;&lt; variance</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    }</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keywordflow">if</span> ((variance == INFINITY) ||</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        (variance == NAN     )) {</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      <span class="keywordflow">if</span> (auxVec) {</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        tmpVec[i] = std::pow( fabs((*auxVec)[i])*0.05,2. );</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordflow">if</span> ((tmpVec[i] == 0.      ) ||</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            (tmpVec[i] == INFINITY) ||</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            (tmpVec[i] == NAN     )) {</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;          tmpVec[i] = 1.;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        }</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;      }</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        tmpVec[i] = 1.;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;      }</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    }</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (variance == 0.) {</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      tmpVec[i] = 1.;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    }</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;      tmpVec[i] = variance;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    }</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  }</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00228.html#a9f4ad174b63fbc0626070e0f38745e1e">newDiagMatrix</a>(tmpVec);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a0faa184316e08edb286a1bd0a5059b10"><div class="ttname"><a href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">QUESO::VectorSpace::m_zeroVector</a></div><div class="ttdeci">V * m_zeroVector</div><div class="ttdoc">A vector of all elements equal to zero. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00165">VectorSpace.h:165</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
+<div class="ttc" id="a00228_html_a9f4ad174b63fbc0626070e0f38745e1e"><div class="ttname"><a href="a00228.html#a9f4ad174b63fbc0626070e0f38745e1e">QUESO::VectorSpace::newDiagMatrix</a></div><div class="ttdeci">M * newDiagMatrix(const V &amp;v) const </div><div class="ttdoc">Creates a diagonal matrix with the elements and size of vector v. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00205">VectorSpace.C:205</a></div></div>
+<div class="ttc" id="a00228_html_aa6db91aca8a1f79e27d2f472528850bb"><div class="ttname"><a href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">QUESO::VectorSpace::m_dimLocal</a></div><div class="ttdeci">unsigned int m_dimLocal</div><div class="ttdoc">Local dimension (number of elements owned by the calling processor.). </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00153">VectorSpace.h:153</a></div></div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a64856b952d372cb25d0f10853635104a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00129.html">GslVector</a> * <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; <a class="el" href="a00129.html">GslVector</a>, <a class="el" href="a00127.html">GslMatrix</a> &gt;::newVector </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00269_source.html#l00039">39</a> of file <a class="el" href="a00269_source.html">GslVectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> GslVector(<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>,*<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a840fde1ad7e947821dffd3d5ad164509"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00129.html">GslVector</a> * <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; <a class="el" href="a00129.html">GslVector</a>, <a class="el" href="a00127.html">GslMatrix</a> &gt;::newVector </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00269_source.html#l00046">46</a> of file <a class="el" href="a00269_source.html">GslVectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> GslVector(<a class="code" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>,*<a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>,value);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+<div class="ttc" id="a00227_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00227.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00098">VectorSet.h:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6fc1d08dfe902e83a011ea6a81aff439"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">V* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::newVector </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates an empty vector of size given by <a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>&amp; map. See template specialization. </p>
+
+</div>
+</div>
+<a class="anchor" id="abc859a81265641b1f8676851fd2ab6bd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">V* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::newVector </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a vector of size given by <a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>&amp; map and all values give by <code>value</code>. See template specialization. </p>
+
+</div>
+</div>
+<a class="anchor" id="a7492fbcc76598ba956e45005ba7cd9cc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">V * <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::newVector </td>
+          <td>(</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates vector as a copy of another. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00196">196</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;{</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <span class="keywordflow">if</span> (v.sizeGlobal() != <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>) <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keywordflow">if</span> (v.sizeLocal () != <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a> ) <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> V(v);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;}</div>
+<div class="ttc" id="a00228_html_ad3efef4a407fdc5c98fded11f2f2444e"><div class="ttname"><a href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">QUESO::VectorSpace::m_dimGlobal</a></div><div class="ttdeci">unsigned int m_dimGlobal</div><div class="ttdoc">Global dimension. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00147">VectorSpace.h:147</a></div></div>
+<div class="ttc" id="a00228_html_aa6db91aca8a1f79e27d2f472528850bb"><div class="ttname"><a href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">QUESO::VectorSpace::m_dimLocal</a></div><div class="ttdeci">unsigned int m_dimLocal</div><div class="ttdoc">Local dimension (number of elements owned by the calling processor.). </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00153">VectorSpace.h:153</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a67b0c3620662116f5a346fdaa5faf38e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::numOfProcsForStorage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns total number of processes. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00164">164</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>Referenced by <a class="el" href="a00625_source.html#l00198">QUESO::ComputeCovCorrMatricesBetweenVectorRvs()</a>, and <a class="el" href="a00280_source.html#l02773">QUESO::ComputeCovCorrMatricesBetweenVectorSequences()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;{</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>-&gt;<a class="code" href="a00160.html#aab4fc9911156b61c51f905849e3c9856">Comm</a>().<a class="code" href="a00175.html#aa780721ae0fdeabc5a15e04cb0cad964">NumProc</a>();</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
+<div class="ttc" id="a00160_html_aab4fc9911156b61c51f905849e3c9856"><div class="ttname"><a href="a00160.html#aab4fc9911156b61c51f905849e3c9856">QUESO::Map::Comm</a></div><div class="ttdeci">const MpiComm &amp; Comm() const </div><div class="ttdoc">Access function for MpiComm communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00131">Map.C:131</a></div></div>
+<div class="ttc" id="a00175_html_aa780721ae0fdeabc5a15e04cb0cad964"><div class="ttname"><a href="a00175.html#aa780721ae0fdeabc5a15e04cb0cad964">QUESO::MpiComm::NumProc</a></div><div class="ttdeci">int NumProc() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00103">MpiComm.C:103</a></div></div>
+<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a3a1fe3c1833380e2a0b19d35494cb635"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::print </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prints only a message. </p>
+
+<p>Reimplemented from <a class="el" href="a00227.html#a913fb68533da1e2243882bd63fd2c211">QUESO::VectorSet&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00303">303</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;{</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;  os &lt;&lt; <span class="stringliteral">&quot;In VectorSpace&lt;V,M&gt;::print()&quot;</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;: nothing to be printed&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="adcae173f0230ef737ea592c34cad1d09"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::printComponentsNames </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>printHorizontally</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints the local component names. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00283">283</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;{</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;  <span class="keywordflow">if</span> (printHorizontally) {</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; this-&gt;<a class="code" href="a00228.html#a5829a1f4f996f8307c840b705144d666">dimLocal</a>(); ++i) {</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      os &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; this-&gt;<a class="code" href="a00228.html#a57c65df3fa6afbcd5c019e8892f53e44">localComponentName</a>(i) &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;         &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    }</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;  }</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;  <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; this-&gt;<a class="code" href="a00228.html#a5829a1f4f996f8307c840b705144d666">dimLocal</a>(); ++i) {</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;      os &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; this-&gt;<a class="code" href="a00228.html#a57c65df3fa6afbcd5c019e8892f53e44">localComponentName</a>(i) &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;         &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    }</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a5829a1f4f996f8307c840b705144d666"><div class="ttname"><a href="a00228.html#a5829a1f4f996f8307c840b705144d666">QUESO::VectorSpace::dimLocal</a></div><div class="ttdeci">unsigned int dimLocal() const </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00170">VectorSpace.C:170</a></div></div>
+<div class="ttc" id="a00228_html_a57c65df3fa6afbcd5c019e8892f53e44"><div class="ttname"><a href="a00228.html#a57c65df3fa6afbcd5c019e8892f53e44">QUESO::VectorSpace::localComponentName</a></div><div class="ttdeci">const std::string &amp; localComponentName(unsigned int localComponentId) const </div><div class="ttdoc">Returns the local component names. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00271">VectorSpace.C:271</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab8bb323280e36a42ac04623b42369da5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt; &amp; <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::vectorSpace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Accessor method to <code>this</code>. <a class="el" href="a00224.html" title="Class for vector operations (virtual). ">Vector</a> space to which <code>this</code> vector set belongs to. </p>
+<p>It is virtual in the base class '<a class="el" href="a00227.html" title="A templated class for handling sets. ">VectorSet</a>' </p>
+
+<p>Implements <a class="el" href="a00227.html#a923421590baf5bf93cf066e528f927dc">QUESO::VectorSet&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00252">252</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;{</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a92e963bb5cab3eecd290dfe4b8f03b04"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const V &amp; <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::zeroVector </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a vector filled with zeros. </p>
+
+<p>Definition at line <a class="el" href="a00282_source.html#l00189">189</a> of file <a class="el" href="a00282_source.html">VectorSpace.C</a>.</p>
+
+<p>References <a class="el" href="a00319_source.html#l00069">queso_require_msg</a>.</p>
+
+<p>Referenced by <a class="el" href="a00625_source.html#l00198">QUESO::ComputeCovCorrMatricesBetweenVectorRvs()</a>, <a class="el" href="a00280_source.html#l02773">QUESO::ComputeCovCorrMatricesBetweenVectorSequences()</a>, <a class="el" href="a00415_source.html#l00032">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::GcmExperimentInfo()</a>, <a class="el" href="a00416_source.html#l00032">QUESO::GcmJointInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmJointInfo()</a>, <a class="el" href="a00417_source.html#l00032">QUESO::GcmJointTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmJointTildeInfo()</a>, <a class="el" href="a00418_source.html#l00032">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::GcmSimulationInfo()</a>, <a class="el" href="a00419_source.html#l00032">QUESO::GcmSimulationTildeInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::GcmSimulationTildeInfo()</a>, <a class="el" href="a00422_source.html#l00032">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmZTildeInfo()</a>, and <a class="el" href="a00427_source.html#l00032">QUESO::SimulationModel&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::SimulationModel()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;{</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <a class="code" href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(<a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>, <span class="stringliteral">&quot;m_zeroVector is still NULL&quot;</span>);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;}</div>
+<div class="ttc" id="a00228_html_a0faa184316e08edb286a1bd0a5059b10"><div class="ttname"><a href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">QUESO::VectorSpace::m_zeroVector</a></div><div class="ttdeci">V * m_zeroVector</div><div class="ttdoc">A vector of all elements equal to zero. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00165">VectorSpace.h:165</a></div></div>
+<div class="ttc" id="a00319_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00069">asserts.h:69</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a6bcd9c13374cda32f043a93e171aeabf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00066.html">DistArray</a>&lt;std::string&gt;* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::m_componentsNamesArray</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Array of strings of the type <a class="el" href="a00066.html" title="A class for partitioning vectors and matrices. ">DistArray</a> to store the names of the components. </p>
+
+<p>Definition at line <a class="el" href="a00259_source.html#l00156">156</a> of file <a class="el" href="a00259_source.html">VectorSpace.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00282_source.html#l00038">QUESO::VectorSpace&lt; V, M &gt;::VectorSpace()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a28b5617b4b30cea1e02e4cb01fd067d8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00066.html">DistArray</a>&lt;std::string&gt;* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::m_componentsNamesVec</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="a00224.html" title="Class for vector operations (virtual). ">Vector</a> of strings of the type <a class="el" href="a00066.html" title="A class for partitioning vectors and matrices. ">DistArray</a> to store the names of the components. </p>
+
+<p>Definition at line <a class="el" href="a00259_source.html#l00159">159</a> of file <a class="el" href="a00259_source.html">VectorSpace.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00282_source.html#l00102">QUESO::VectorSpace&lt; V, M &gt;::VectorSpace()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad3efef4a407fdc5c98fded11f2f2444e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::m_dimGlobal</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Global dimension. </p>
+
+<p>Definition at line <a class="el" href="a00259_source.html#l00147">147</a> of file <a class="el" href="a00259_source.html">VectorSpace.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00282_source.html#l00038">QUESO::VectorSpace&lt; V, M &gt;::VectorSpace()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa6db91aca8a1f79e27d2f472528850bb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::m_dimLocal</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Local dimension (number of elements owned by the calling processor.). </p>
+
+<p>Definition at line <a class="el" href="a00259_source.html#l00153">153</a> of file <a class="el" href="a00259_source.html">VectorSpace.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00282_source.html#l00038">QUESO::VectorSpace&lt; V, M &gt;::VectorSpace()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7cc6bfad9eb4031dbe763728f0c25a13"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::m_emptyComponentName</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Empty string for the components names. </p>
+
+<p>Definition at line <a class="el" href="a00259_source.html#l00162">162</a> of file <a class="el" href="a00259_source.html">VectorSpace.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a752194a4dc937db4db4df2a3b207d3b9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00160.html">Map</a>* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::m_map</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="a00160.html" title="A class for partitioning vectors and matrices. ">Map</a>. </p>
+
+<p>Definition at line <a class="el" href="a00259_source.html#l00150">150</a> of file <a class="el" href="a00259_source.html">VectorSpace.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00282_source.html#l00038">QUESO::VectorSpace&lt; V, M &gt;::VectorSpace()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0faa184316e08edb286a1bd0a5059b10"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V, class M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">V* <a class="el" href="a00228.html">QUESO::VectorSpace</a>&lt; V, M &gt;::m_zeroVector</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A vector of all elements equal to zero. </p>
+
+<p>Definition at line <a class="el" href="a00259_source.html#l00165">165</a> of file <a class="el" href="a00259_source.html">VectorSpace.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00282_source.html#l00038">QUESO::VectorSpace&lt; V, M &gt;::VectorSpace()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/basic/inc/<a class="el" href="a00258_source.html">VectorSet.h</a></li>
+<li>src/basic/inc/<a class="el" href="a00259_source.html">VectorSpace.h</a></li>
+<li>src/basic/src/<a class="el" href="a00282_source.html">VectorSpace.C</a></li>
+</ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:34 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/misc/src/UniformOneDGrid.C Source File</title>
+<title>queso-0.53.0: src/core/inc/exceptions.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_88826aa2a10e1882b573f502bc7f4b55.html">misc</a></li><li class="navelem"><a class="el" href="dir_1880c50ca7770a6465988a22e5e4ee55.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_88fac51d2e17cec13478f22fd619c260.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">UniformOneDGrid.C</div>  </div>
+<div class="title">exceptions.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00329.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,101 +75,51 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/UniformOneDGrid.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Constructor-------------------------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00169.html#aedd7bcaf0aec01d5c97c4f31f2b3d357">   31</a></span>&#160;<a class="code" href="a00169.html#aedd7bcaf0aec01d5c97c4f31f2b3d357">UniformOneDGrid&lt;T&gt;::UniformOneDGrid</a>(</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; env,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*               prefix,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>        size,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        T                   minPosition,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        T                   maxPosition)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00022.html">BaseOneDGrid</a>&lt;T&gt;(env,prefix),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_size       (size),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_minPosition(minPosition),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_maxPosition(maxPosition)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00022.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00022.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00022.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering UniformOneDGrid&lt;T&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00022.html#af5fa59e47fae9f6195b00e5bec8310f8">m_prefix</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00022.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00022.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    *<a class="code" href="a00022.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving UniformOneDGrid&lt;T&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00022.html#af5fa59e47fae9f6195b00e5bec8310f8">m_prefix</a></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Destructor--------------------------------------------</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00169.html#a2cfd6fdc7085bd667e18cef6771cf930">   57</a></span>&#160;<a class="code" href="a00169.html#a2cfd6fdc7085bd667e18cef6771cf930">UniformOneDGrid&lt;T&gt;::~UniformOneDGrid</a>()</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// Math methods------------------------------------------</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="a00169.html#a66a0589eb7da47895f2bab97b916fca4">   63</a></span>&#160;<a class="code" href="a00169.html#a66a0589eb7da47895f2bab97b916fca4">UniformOneDGrid&lt;T&gt;::size</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">return</span> m_size;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">//-------------------------------------------------------</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;T</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="a00169.html#a2fe101c8fbce7a6ac00b07781c2c6b6e">   70</a></span>&#160;<a class="code" href="a00169.html#a2fe101c8fbce7a6ac00b07781c2c6b6e">UniformOneDGrid&lt;T&gt;::operator[]</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(i &gt;= m_size,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                      <span class="stringliteral">&quot;UniformOneDGrid&lt;V,M&gt;::operator[]&quot;</span>,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                      <span class="stringliteral">&quot;too large i&quot;</span>);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  T ratio = ((T) i)/(((T)m_size)-1.); <span class="comment">// IMPORTANT: Yes, &#39;-1.&#39;</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  T position = (1.-ratio)*m_minPosition + ratio*m_maxPosition;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">return</span> position;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">//-------------------------------------------------------</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="a00169.html#afa2a0d3a54ce7fed0610a81337dfeae7">   84</a></span>&#160;<a class="code" href="a00169.html#afa2a0d3a54ce7fed0610a81337dfeae7">UniformOneDGrid&lt;T&gt;::findIntervalId</a>(<span class="keyword">const</span> T&amp; paramValue)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>((paramValue &lt; m_minPosition) || (m_maxPosition &lt; paramValue),</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                      <span class="stringliteral">&quot;UniformOneDGrid&lt;V,M&gt;::findIntervalId[]&quot;</span>,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                      <span class="stringliteral">&quot;paramValue is out of domain&quot;</span>);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  T ratio = (paramValue - m_minPosition)/(m_maxPosition - m_minPosition);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = (<span class="keywordtype">unsigned</span> int) (ratio*(m_size-1.));</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordflow">if</span> ((i &gt; 0                  ) &amp;&amp;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      ((*this)[i] &gt; paramValue)) {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    i--;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordflow">return</span> i;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00169.html">QUESO::UniformOneDGrid&lt;double&gt;</a>;</div>
-<div class="ttc" id="a00022_html"><div class="ttname"><a href="a00022.html">QUESO::BaseOneDGrid</a></div><div class="ttdoc">Base class for accommodating one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00312_source.html#l00046">OneDGrid.h:46</a></div></div>
-<div class="ttc" id="a00022_html_af5fa59e47fae9f6195b00e5bec8310f8"><div class="ttname"><a href="a00022.html#af5fa59e47fae9f6195b00e5bec8310f8">QUESO::BaseOneDGrid::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00312_source.html#l00083">OneDGrid.h:83</a></div></div>
-<div class="ttc" id="a00169_html_a2fe101c8fbce7a6ac00b07781c2c6b6e"><div class="ttname"><a href="a00169.html#a2fe101c8fbce7a6ac00b07781c2c6b6e">QUESO::UniformOneDGrid::operator[]</a></div><div class="ttdeci">T operator[](unsigned int i) const </div><div class="ttdoc">Returns the position of the i-th point in the grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00070">UniformOneDGrid.C:70</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00022_html_a668a0033829b907fac9e13466419b7b1"><div class="ttname"><a href="a00022.html#a668a0033829b907fac9e13466419b7b1">QUESO::BaseOneDGrid::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00312_source.html#l00082">OneDGrid.h:82</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00239_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00169_html_afa2a0d3a54ce7fed0610a81337dfeae7"><div class="ttname"><a href="a00169.html#afa2a0d3a54ce7fed0610a81337dfeae7">QUESO::UniformOneDGrid::findIntervalId</a></div><div class="ttdeci">unsigned int findIntervalId(const T &amp;paramValue) const </div><div class="ttdoc">Finds the ID of an interval. See template specialization. </div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00084">UniformOneDGrid.C:84</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00169_html_a2cfd6fdc7085bd667e18cef6771cf930"><div class="ttname"><a href="a00169.html#a2cfd6fdc7085bd667e18cef6771cf930">QUESO::UniformOneDGrid::~UniformOneDGrid</a></div><div class="ttdeci">~UniformOneDGrid()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00057">UniformOneDGrid.C:57</a></div></div>
-<div class="ttc" id="a00169_html_aedd7bcaf0aec01d5c97c4f31f2b3d357"><div class="ttname"><a href="a00169.html#aedd7bcaf0aec01d5c97c4f31f2b3d357">QUESO::UniformOneDGrid::UniformOneDGrid</a></div><div class="ttdeci">UniformOneDGrid(const BaseEnvironment &amp;env, const char *prefix, unsigned int size, T minPosition, T maxPosition)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00031">UniformOneDGrid.C:31</a></div></div>
-<div class="ttc" id="a00169_html"><div class="ttname"><a href="a00169.html">QUESO::UniformOneDGrid</a></div><div class="ttdoc">Class for accommodating uniform one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00314_source.html#l00041">UniformOneDGrid.h:41</a></div></div>
-<div class="ttc" id="a00169_html_a66a0589eb7da47895f2bab97b916fca4"><div class="ttname"><a href="a00169.html#a66a0589eb7da47895f2bab97b916fca4">QUESO::UniformOneDGrid::size</a></div><div class="ttdeci">unsigned int size() const </div><div class="ttdoc">Grid size; the amount of points that defines the grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00063">UniformOneDGrid.C:63</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00436">Environment.C:436</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_EXCEPTIONS_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_EXCEPTIONS_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// C++</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;exception&gt;</span>    <span class="comment">// std::set_terminate</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;mpi.h&gt;</span>        <span class="comment">// for MPI_ABORT in uncaught exceptions</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span>     <span class="comment">// exit(1)</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="a00156.html">   41</a></span>&#160;  <span class="keyword">class </span><a class="code" href="a00156.html">LogicError</a> : <span class="keyword">public</span> std::logic_error</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00156.html#a9c59a149f2c8ef10d7946f843b1b5d40">   44</a></span>&#160;    <a class="code" href="a00156.html#a9c59a149f2c8ef10d7946f843b1b5d40">LogicError</a>() : std::logic_error( <span class="stringliteral">&quot;Error in QUESO internal logic&quot;</span> ) {}</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  };</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00176.html">   52</a></span>&#160;  <span class="keyword">class </span><a class="code" href="a00176.html">NotImplemented</a> : <span class="keyword">public</span> std::logic_error</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00176.html#aea10d6f15b473c4b9dcb865834c1af23">   55</a></span>&#160;    <a class="code" href="a00176.html#aea10d6f15b473c4b9dcb865834c1af23">NotImplemented</a>() : std::logic_error( <span class="stringliteral">&quot;Error: not implemented!&quot;</span> ) {}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  };</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00078.html">   65</a></span>&#160;  <span class="keyword">class </span><a class="code" href="a00078.html">FileError</a> : <span class="keyword">public</span> std::runtime_error</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="a00078.html#a3832f21b43e99c46bc29ee904e8dedfc">   68</a></span>&#160;    <a class="code" href="a00078.html#a3832f21b43e99c46bc29ee904e8dedfc">FileError</a>(<span class="keyword">const</span> std::string&amp; filename) : std::runtime_error( <span class="stringliteral">&quot;Error accessing file: &quot;</span> + filename ) {}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  };</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;} <span class="comment">// end namespace QUESO</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00329.html#afab7833816d1d2328ca5f890ccfc4cae">   74</a></span>&#160;<span class="preprocessor">#define QUESO_THROW(e) do { throw e; } while (0)</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif // QUESO_EXCEPTIONS_H</span></div>
+<div class="ttc" id="a00156_html"><div class="ttname"><a href="a00156.html">QUESO::LogicError</a></div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00041">exceptions.h:41</a></div></div>
+<div class="ttc" id="a00176_html"><div class="ttname"><a href="a00176.html">QUESO::NotImplemented</a></div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00052">exceptions.h:52</a></div></div>
+<div class="ttc" id="a00176_html_aea10d6f15b473c4b9dcb865834c1af23"><div class="ttname"><a href="a00176.html#aea10d6f15b473c4b9dcb865834c1af23">QUESO::NotImplemented::NotImplemented</a></div><div class="ttdeci">NotImplemented()</div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00055">exceptions.h:55</a></div></div>
+<div class="ttc" id="a00078_html"><div class="ttname"><a href="a00078.html">QUESO::FileError</a></div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00065">exceptions.h:65</a></div></div>
+<div class="ttc" id="a00156_html_a9c59a149f2c8ef10d7946f843b1b5d40"><div class="ttname"><a href="a00156.html#a9c59a149f2c8ef10d7946f843b1b5d40">QUESO::LogicError::LogicError</a></div><div class="ttdeci">LogicError()</div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00044">exceptions.h:44</a></div></div>
+<div class="ttc" id="a00078_html_a3832f21b43e99c46bc29ee904e8dedfc"><div class="ttname"><a href="a00078.html#a3832f21b43e99c46bc29ee904e8dedfc">QUESO::FileError::FileError</a></div><div class="ttdeci">FileError(const std::string &amp;filename)</div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00068">exceptions.h:68</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/src/Matrix.C Source File</title>
+<title>queso-0.53.0: src/contrib/ANN/sample/ann_sample.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,224 +43,237 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_bd26773dc971f4fa3aa1d8bd68fbf230.html">contrib</a></li><li class="navelem"><a class="el" href="dir_9b88879957fe8db0821d93727895fef3.html">ANN</a></li><li class="navelem"><a class="el" href="dir_a1ba073defbf3043a3899d4c87eb0380.html">sample</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Matrix.C</div>  </div>
+<div class="title">ann_sample.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00291.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor,</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/Matrix.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Default constructor ------------------------------</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00120.html#a2e0493d6ef72c190a7026e1a505488a6">   31</a></span>&#160;<a class="code" href="a00120.html#a2e0493d6ef72c190a7026e1a505488a6">Matrix::Matrix</a>()</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  :</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  m_env(*(new <a class="code" href="a00051.html">EmptyEnvironment</a>())                                               ),</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  m_map(*(new <a class="code" href="a00118.html">Map</a>( 1,0,*(new <a class="code" href="a00132.html">MpiComm</a>(m_env,<a class="code" href="a00258.html#a30f232216ea0c6b51721e662e02668f4">RawValue_MPI_COMM_SELF</a>)) ) )) <span class="comment">// avoid using MPI_COMM_WORLD</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                      <a class="code" href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                      <span class="stringliteral">&quot;Matrix::constructor(), default&quot;</span>,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                      <span class="stringliteral">&quot;should not be used by user&quot;</span>);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// Shaped constructor --------------------------------</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="a00120.html#a324053bbe984f4549f7b31f0d1aae8b1">   43</a></span>&#160;<a class="code" href="a00120.html#a2e0493d6ef72c190a7026e1a505488a6">Matrix::Matrix</a>(<span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; env, <span class="keyword">const</span> <a class="code" href="a00118.html">Map</a>&amp; map)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  :</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  m_env              (env),</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  m_map              (map),</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  m_printHorizontally(true),</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  m_inDebugMode      (false)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// Copy constructor -----------------------------------</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00120.html#a99e2ce8cfb0db9f98e24a58d78575eb2">   53</a></span>&#160;<a class="code" href="a00120.html#a2e0493d6ef72c190a7026e1a505488a6">Matrix::Matrix</a>(<span class="keyword">const</span> <a class="code" href="a00120.html">Matrix</a>&amp; rhs)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  :</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  m_env(rhs.m_env),</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  m_map(rhs.m_map)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<a class="code" href="a00500.html#ae093c8262be9961cc7297a84347c0c9e">UQ_INVALID_INTERNAL_STATE_RC</a>,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                      <a class="code" href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                      <span class="stringliteral">&quot;Matrix::constructor(), copy&quot;</span>,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                      <span class="stringliteral">&quot;code should not execute through here&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00120.html#a161398a2cf0c9a626651f59f5bd9ae59">   65</a></span>&#160;<a class="code" href="a00120.html#a161398a2cf0c9a626651f59f5bd9ae59">Matrix::~Matrix</a>()</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
+<a href="a00291.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//              File:                   ann_sample.cpp</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//              Programmer:             Sunil Arya and David Mount</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//              Last modified:  03/04/98 (Release 0.1)</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">//              Description:    Sample program for ANN</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (c) 1997-2005 University of Maryland and Sunil Arya and</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// David Mount.  All Rights Reserved.</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// This software and related documentation is part of the Approximate</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Nearest Neighbor Library (ANN).  This software is provided under</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// the provisions of the Lesser GNU Public License (LGPL).  See the</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// file ../ReadMe.txt for further information.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// The University of Maryland (U.M.) and the authors make no</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// representations about the suitability or fitness of this software for</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// any purpose.  It is provided &quot;as is&quot; without express or implied</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// warranty.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span>                                              <span class="comment">// C standard library</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;cstdio&gt;</span>                                               <span class="comment">// C I/O (for sscanf)</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span>                                              <span class="comment">// string manipulation</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span>                                              <span class="comment">// file I/O</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="a00286.html">ANN/ANN.h</a>&gt;</span>                                    <span class="comment">// ANN declarations</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using namespace </span>std;                                    <span class="comment">// make std:: accessible</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// ann_sample</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// This is a simple sample program for the ANN library.  After compiling,</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// it can be run as follows.</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// ann_sample [-d dim] [-max mpts] [-nn k] [-e eps] [-df data] [-qf query]</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// where</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//              dim                             is the dimension of the space (default = 2)</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//              mpts                    maximum number of data points (default = 1000)</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//              k                               number of nearest neighbors per query (default 1)</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//              eps                             is the error bound (default = 0.0)</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//              data                    file containing data points</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//              query                   file containing query points</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// Results are sent to the standard output.</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//      Parameters that are set in getArgs()</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00284.html#a121108f1337a0a9a98c92a1c2faeb8c5">getArgs</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);                    <span class="comment">// get command-line arguments</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">   53</a></span>&#160;<span class="keywordtype">int</span>                             <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>                               = 1;                    <span class="comment">// number of nearest neighbors</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00291.html#a70b5e28b5bc3d1b63a7435c5fe50b837">   54</a></span>&#160;<span class="keywordtype">int</span>                             <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>                             = 2;                    <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">   55</a></span>&#160;<span class="keywordtype">double</span>                  <a class="code" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>                             = 0;                    <span class="comment">// error bound</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00291.html#a8c59db27913a8a427a7049780bacde29">   56</a></span>&#160;<span class="keywordtype">int</span>                             <a class="code" href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a>                  = 1000;                 <span class="comment">// maximum number of data points</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="a00291.html#a69b05c430493eb60acb983be2d11cb0a">   58</a></span>&#160;istream*                <a class="code" href="a00291.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a>                  = NULL;                 <span class="comment">// input for data points</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="a00291.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">   59</a></span>&#160;istream*                <a class="code" href="a00291.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a>                 = NULL;                 <span class="comment">// input for query points</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="a00291.html#aae59a5d5b5611b349436830970ff23c5">   61</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="a00291.html#aae59a5d5b5611b349436830970ff23c5">readPt</a>(istream &amp;in, <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p)                    <span class="comment">// read point (false on EOF)</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <span class="keywordflow">if</span>(!(in &gt;&gt; p[i])) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">// Set methods --------------------------------------</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<a class="code" href="a00120.html">Matrix</a>&amp;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="a00120.html#a21eedb3302f3d41fbd783b363a8ccc71">   71</a></span>&#160;<a class="code" href="a00120.html#a21eedb3302f3d41fbd783b363a8ccc71">Matrix::operator= </a>(<span class="keyword">const</span> <a class="code" href="a00120.html">Matrix</a>&amp; rhs)</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;{</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<a class="code" href="a00500.html#ae093c8262be9961cc7297a84347c0c9e">UQ_INVALID_INTERNAL_STATE_RC</a>,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                      rhs.<a class="code" href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                      <span class="stringliteral">&quot;Matrix::operator=()&quot;</span>,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                      <span class="stringliteral">&quot;code should not execute through here&quot;</span>);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<a class="code" href="a00120.html">Matrix</a>&amp;</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00120.html#a29f5f8eec8bdd1dbdf215d5581686776">   82</a></span>&#160;<a class="code" href="a00120.html#a29f5f8eec8bdd1dbdf215d5581686776">Matrix::operator*=</a>(<span class="keywordtype">double</span> a)</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;{</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<a class="code" href="a00500.html#ae093c8262be9961cc7297a84347c0c9e">UQ_INVALID_INTERNAL_STATE_RC</a>,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                      <a class="code" href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                      <span class="stringliteral">&quot;Matrix::operator*=()&quot;</span>,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                      <span class="stringliteral">&quot;code should not execute through here&quot;</span>);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordtype">double</span> tmpA = a; tmpA += 1.; <span class="comment">// Just to avoid icpc warnings</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<a class="code" href="a00120.html">Matrix</a>&amp;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="a00120.html#a90e47c0d81a0e7e7a2edb7784e3ba680">   94</a></span>&#160;<a class="code" href="a00120.html#a90e47c0d81a0e7e7a2edb7784e3ba680">Matrix::operator+=</a>(<span class="keyword">const</span> <a class="code" href="a00120.html">Matrix</a>&amp; rhs)</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;{</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<a class="code" href="a00500.html#ae093c8262be9961cc7297a84347c0c9e">UQ_INVALID_INTERNAL_STATE_RC</a>,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                      rhs.<a class="code" href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                      <span class="stringliteral">&quot;Matrix::operator+=()&quot;</span>,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                      <span class="stringliteral">&quot;code should not execute through here&quot;</span>);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<a class="code" href="a00120.html">Matrix</a>&amp;</div>
-<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="a00120.html#a8b8f5a2950d31cd52108869a81cbc508">  105</a></span>&#160;<a class="code" href="a00120.html#a8b8f5a2950d31cd52108869a81cbc508">Matrix::operator-=</a>(<span class="keyword">const</span> <a class="code" href="a00120.html">Matrix</a>&amp; rhs)</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;{</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<a class="code" href="a00500.html#ae093c8262be9961cc7297a84347c0c9e">UQ_INVALID_INTERNAL_STATE_RC</a>,</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                      rhs.<a class="code" href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                      <span class="stringliteral">&quot;Matrix::operator-=()&quot;</span>,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                      <span class="stringliteral">&quot;code should not execute through here&quot;</span>);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">// Environment and Map methods ----------------------</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp;</div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="a00120.html#a1eefeca9f35200e8275fb0fdfa0c8684">  116</a></span>&#160;<a class="code" href="a00120.html#a1eefeca9f35200e8275fb0fdfa0c8684">Matrix::env</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword">const</span> <a class="code" href="a00118.html">Map</a>&amp;</div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="a00120.html#ae01c72255466cd95201bb4c7f07e1b83">  123</a></span>&#160;<a class="code" href="a00120.html#ae01c72255466cd95201bb4c7f07e1b83">Matrix::map</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00120.html#adb42d344c0b2859c3b4a4f5a3dd7875f">m_map</a>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="comment">//return (const Map&amp;) (m_mat-&gt;Map());</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00291.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">   69</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00291.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">printPt</a>(ostream &amp;out, <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p)                  <span class="comment">// print point</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; p[0];</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                out &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; p[i];</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00291.html#a3c04138a5bfe5d72780bb7e82a18e627">   78</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="a00284.html#a5ea466849f21e6c2be4ef9b2eb8868d3">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">int</span>                                     nPts;                                   <span class="comment">// actual number of data points</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>           dataPts;                                <span class="comment">// data points</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>                        queryPt;                                <span class="comment">// query point</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <a class="code" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>                     nnIdx;                                  <span class="comment">// near neighbor indices</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="a00286.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a>            dists;                                  <span class="comment">// near neighbor distances</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="a00016.html">ANNkd_tree</a>*                     kdTree;                                 <span class="comment">// search structure</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="code" href="a00284.html#a121108f1337a0a9a98c92a1c2faeb8c5">getArgs</a>(argc, argv);                                            <span class="comment">// read command-line arguments</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        queryPt = <a class="code" href="a00286.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a>(<a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>);                                      <span class="comment">// allocate query point</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        dataPts = <a class="code" href="a00286.html#a7d801c6084e348aefc8d675d5b8f2f9a">annAllocPts</a>(<a class="code" href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a>, <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>);                     <span class="comment">// allocate data points</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        nnIdx = <span class="keyword">new</span> <a class="code" href="a00286.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a>[<a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>];                                          <span class="comment">// allocate near neigh indices</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        dists = <span class="keyword">new</span> <a class="code" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>[<a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>];                                         <span class="comment">// allocate near neighbor dists</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        nPts = 0;                                                                       <span class="comment">// read data points</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;Data Points:\n&quot;</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">while</span> (nPts &lt; <a class="code" href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a> &amp;&amp; <a class="code" href="a00291.html#aae59a5d5b5611b349436830970ff23c5">readPt</a>(*<a class="code" href="a00291.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a>, dataPts[nPts])) {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <a class="code" href="a00291.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">printPt</a>(cout, dataPts[nPts]);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                nPts++;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        kdTree = <span class="keyword">new</span> <a class="code" href="a00016.html">ANNkd_tree</a>(                                        <span class="comment">// build search structure</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                                        dataPts,                                        <span class="comment">// the data points</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                                        nPts,                                           <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                        <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>);                                           <span class="comment">// dimension of space</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">while</span> (<a class="code" href="a00291.html#aae59a5d5b5611b349436830970ff23c5">readPt</a>(*<a class="code" href="a00291.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a>, queryPt)) {                     <span class="comment">// read query points</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                cout &lt;&lt; <span class="stringliteral">&quot;Query point: &quot;</span>;                                <span class="comment">// echo query point</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                <a class="code" href="a00291.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">printPt</a>(cout, queryPt);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                kdTree-&gt;<a class="code" href="a00016.html#a2a0fa2889c23a34773dc054c7769b3c6">annkSearch</a>(                                             <span class="comment">// search</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                                queryPt,                                                <span class="comment">// query point</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                                <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>,                                                              <span class="comment">// number of near neighbors</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                                nnIdx,                                                  <span class="comment">// nearest neighbors (returned)</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                                dists,                                                  <span class="comment">// distance (returned)</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                                <a class="code" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>);                                                   <span class="comment">// error bound</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                cout &lt;&lt; <span class="stringliteral">&quot;\tNN:\tIndex\tDistance\n&quot;</span>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>; i++) {                   <span class="comment">// print summary</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                        dists[i] = sqrt(dists[i]);                      <span class="comment">// unsquare distance</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                        cout &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; nnIdx[i] &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; dists[i] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">delete</span> [] nnIdx;                                                    <span class="comment">// clean things up</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">delete</span> [] dists;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">delete</span> kdTree;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <a class="code" href="a00286.html#a7841414482997b8e49024b3cd5d3a017">annClose</a>();                                                                     <span class="comment">// done with ANN</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="a00120.html#a7d7310149ecf33ca68c5ef7a815093db">  131</a></span>&#160;<a class="code" href="a00120.html#a7d7310149ecf33ca68c5ef7a815093db">Matrix::numOfProcsForStorage</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00120.html#adb42d344c0b2859c3b4a4f5a3dd7875f">m_map</a>.<a class="code" href="a00118.html#aab4fc9911156b61c51f905849e3c9856">Comm</a>().<a class="code" href="a00132.html#aa780721ae0fdeabc5a15e04cb0cad964">NumProc</a>();</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;}</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">//      getArgs - get command line arguments</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">// I/O and Miscellaneous methods --------------------</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="a00120.html#a1f48b60a98b211770f92d42441f51c35">  138</a></span>&#160;<a class="code" href="a00120.html#a1f48b60a98b211770f92d42441f51c35">Matrix::setPrintHorizontally</a>(<span class="keywordtype">bool</span> value)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <a class="code" href="a00120.html#aebf5e44b149cf1454b2e12995d9f8b6b">m_printHorizontally</a> = value;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;}</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="a00120.html#a4b6bdbf50356e19e845d6134ce435ef0">  146</a></span>&#160;<a class="code" href="a00120.html#a4b6bdbf50356e19e845d6134ce435ef0">Matrix::getPrintHorizontally</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00120.html#aebf5e44b149cf1454b2e12995d9f8b6b">m_printHorizontally</a>;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="a00120.html#a0fa94aaee496541e72d527b98af57bae">  153</a></span>&#160;<a class="code" href="a00120.html#a0fa94aaee496541e72d527b98af57bae">Matrix::setInDebugMode</a>(<span class="keywordtype">bool</span> value)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <a class="code" href="a00120.html#a3384d3fc1a1058fce9191b0d74653911">m_inDebugMode</a> = value;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;}</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="a00120.html#ad714793ba87347d88f19b79231405182">  161</a></span>&#160;<a class="code" href="a00120.html#ad714793ba87347d88f19b79231405182">Matrix::getInDebugMode</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00120.html#a3384d3fc1a1058fce9191b0d74653911">m_inDebugMode</a>;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;}</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="a00120.html#ad2be7e0868ead79c99d18b8f23360bcb">  168</a></span>&#160;<a class="code" href="a00120.html#ad2be7e0868ead79c99d18b8f23360bcb">Matrix::copy</a>(<span class="keyword">const</span> <a class="code" href="a00120.html">Matrix</a>&amp; src)</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;{</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="comment">//m_env = src.env;</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="comment">//m_map = src.map;</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  <a class="code" href="a00120.html#aebf5e44b149cf1454b2e12995d9f8b6b">m_printHorizontally</a> = src.<a class="code" href="a00120.html#aebf5e44b149cf1454b2e12995d9f8b6b">m_printHorizontally</a>;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <a class="code" href="a00120.html#a3384d3fc1a1058fce9191b0d74653911">m_inDebugMode</a>       = src.<a class="code" href="a00120.html#a3384d3fc1a1058fce9191b0d74653911">m_inDebugMode</a>;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;}</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00120_html_a21eedb3302f3d41fbd783b363a8ccc71"><div class="ttname"><a href="a00120.html#a21eedb3302f3d41fbd783b363a8ccc71">QUESO::Matrix::operator=</a></div><div class="ttdeci">Matrix &amp; operator=(const Matrix &amp;rhs)</div><div class="ttdoc">Operator for copying a matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00071">Matrix.C:71</a></div></div>
-<div class="ttc" id="a00132_html_aa780721ae0fdeabc5a15e04cb0cad964"><div class="ttname"><a href="a00132.html#aa780721ae0fdeabc5a15e04cb0cad964">QUESO::MpiComm::NumProc</a></div><div class="ttdeci">int NumProc() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00121">MpiComm.C:121</a></div></div>
-<div class="ttc" id="a00120_html_a4b6bdbf50356e19e845d6134ce435ef0"><div class="ttname"><a href="a00120.html#a4b6bdbf50356e19e845d6134ce435ef0">QUESO::Matrix::getPrintHorizontally</a></div><div class="ttdeci">bool getPrintHorizontally() const </div><div class="ttdoc">Checks if matrix will be is printed horizontally. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00146">Matrix.C:146</a></div></div>
-<div class="ttc" id="a00120_html_a1f48b60a98b211770f92d42441f51c35"><div class="ttname"><a href="a00120.html#a1f48b60a98b211770f92d42441f51c35">QUESO::Matrix::setPrintHorizontally</a></div><div class="ttdeci">void setPrintHorizontally(bool value) const </div><div class="ttdoc">Determines whether the matrix should be printed horizontally. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00138">Matrix.C:138</a></div></div>
-<div class="ttc" id="a00018_html_a78b57112bbd0e6dd0e8afec00b40ffa7"><div class="ttname"><a href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">QUESO::BaseEnvironment::worldRank</a></div><div class="ttdeci">int worldRank() const </div><div class="ttdoc">Returns the process world rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00235">Environment.C:235</a></div></div>
-<div class="ttc" id="a00120_html_a161398a2cf0c9a626651f59f5bd9ae59"><div class="ttname"><a href="a00120.html#a161398a2cf0c9a626651f59f5bd9ae59">QUESO::Matrix::~Matrix</a></div><div class="ttdeci">virtual ~Matrix()</div><div class="ttdoc">Virtual Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00065">Matrix.C:65</a></div></div>
-<div class="ttc" id="a00120_html_a2e0493d6ef72c190a7026e1a505488a6"><div class="ttname"><a href="a00120.html#a2e0493d6ef72c190a7026e1a505488a6">QUESO::Matrix::Matrix</a></div><div class="ttdeci">Matrix()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00031">Matrix.C:31</a></div></div>
-<div class="ttc" id="a00120_html_a7d7310149ecf33ca68c5ef7a815093db"><div class="ttname"><a href="a00120.html#a7d7310149ecf33ca68c5ef7a815093db">QUESO::Matrix::numOfProcsForStorage</a></div><div class="ttdeci">unsigned int numOfProcsForStorage() const </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00131">Matrix.C:131</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00239_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00118_html"><div class="ttname"><a href="a00118.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00256_source.html#l00049">Map.h:49</a></div></div>
-<div class="ttc" id="a00120_html_a8b8f5a2950d31cd52108869a81cbc508"><div class="ttname"><a href="a00120.html#a8b8f5a2950d31cd52108869a81cbc508">QUESO::Matrix::operator-=</a></div><div class="ttdeci">Matrix &amp; operator-=(const Matrix &amp;rhs)</div><div class="ttdoc">Operator for subtraction (element-wise) of two matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00105">Matrix.C:105</a></div></div>
-<div class="ttc" id="a00120_html_a0fa94aaee496541e72d527b98af57bae"><div class="ttname"><a href="a00120.html#a0fa94aaee496541e72d527b98af57bae">QUESO::Matrix::setInDebugMode</a></div><div class="ttdeci">void setInDebugMode(bool value) const </div><div class="ttdoc">Determines whether QUESO will run through this class in debug mode. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00153">Matrix.C:153</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00120_html_adb42d344c0b2859c3b4a4f5a3dd7875f"><div class="ttname"><a href="a00120.html#adb42d344c0b2859c3b4a4f5a3dd7875f">QUESO::Matrix::m_map</a></div><div class="ttdeci">const Map &amp; m_map</div><div class="ttdoc">Mapping variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00257_source.html#l00147">Matrix.h:147</a></div></div>
-<div class="ttc" id="a00120_html_a3384d3fc1a1058fce9191b0d74653911"><div class="ttname"><a href="a00120.html#a3384d3fc1a1058fce9191b0d74653911">QUESO::Matrix::m_inDebugMode</a></div><div class="ttdeci">bool m_inDebugMode</div><div class="ttdoc">Flag for either or not QUESO is in debug mode. </div><div class="ttdef"><b>Definition:</b> <a href="a00257_source.html#l00155">Matrix.h:155</a></div></div>
-<div class="ttc" id="a00120_html_ad714793ba87347d88f19b79231405182"><div class="ttname"><a href="a00120.html#ad714793ba87347d88f19b79231405182">QUESO::Matrix::getInDebugMode</a></div><div class="ttdeci">bool getInDebugMode() const </div><div class="ttdoc">Checks if QUESO will run through this class in debug mode. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00161">Matrix.C:161</a></div></div>
-<div class="ttc" id="a00132_html"><div class="ttname"><a href="a00132.html">QUESO::MpiComm</a></div><div class="ttdoc">The QUESO MPI Communicator Class. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00075">MpiComm.h:75</a></div></div>
-<div class="ttc" id="a00120_html"><div class="ttname"><a href="a00120.html">QUESO::Matrix</a></div><div class="ttdoc">Class for matrix operations (virtual). </div><div class="ttdef"><b>Definition:</b> <a href="a00257_source.html#l00046">Matrix.h:46</a></div></div>
-<div class="ttc" id="a00120_html_aebf5e44b149cf1454b2e12995d9f8b6b"><div class="ttname"><a href="a00120.html#aebf5e44b149cf1454b2e12995d9f8b6b">QUESO::Matrix::m_printHorizontally</a></div><div class="ttdeci">bool m_printHorizontally</div><div class="ttdoc">Flag for either or not print this matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00257_source.html#l00152">Matrix.h:152</a></div></div>
-<div class="ttc" id="a00120_html_a29f5f8eec8bdd1dbdf215d5581686776"><div class="ttname"><a href="a00120.html#a29f5f8eec8bdd1dbdf215d5581686776">QUESO::Matrix::operator*=</a></div><div class="ttdeci">Matrix &amp; operator*=(double a)</div><div class="ttdoc">Operator for multiplication of the matrix by a scalar. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00082">Matrix.C:82</a></div></div>
-<div class="ttc" id="a00120_html_a90e47c0d81a0e7e7a2edb7784e3ba680"><div class="ttname"><a href="a00120.html#a90e47c0d81a0e7e7a2edb7784e3ba680">QUESO::Matrix::operator+=</a></div><div class="ttdeci">Matrix &amp; operator+=(const Matrix &amp;rhs)</div><div class="ttdoc">Operator for addition (element-wise) of two matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00094">Matrix.C:94</a></div></div>
-<div class="ttc" id="a00500_html_ae093c8262be9961cc7297a84347c0c9e"><div class="ttname"><a href="a00500.html#ae093c8262be9961cc7297a84347c0c9e">QUESO::UQ_INVALID_INTERNAL_STATE_RC</a></div><div class="ttdeci">const int UQ_INVALID_INTERNAL_STATE_RC</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00082">Defines.h:82</a></div></div>
-<div class="ttc" id="a00120_html_ae01c72255466cd95201bb4c7f07e1b83"><div class="ttname"><a href="a00120.html#ae01c72255466cd95201bb4c7f07e1b83">QUESO::Matrix::map</a></div><div class="ttdeci">const Map &amp; map() const </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00123">Matrix.C:123</a></div></div>
-<div class="ttc" id="a00118_html_aab4fc9911156b61c51f905849e3c9856"><div class="ttname"><a href="a00118.html#aab4fc9911156b61c51f905849e3c9856">QUESO::Map::Comm</a></div><div class="ttdeci">const MpiComm &amp; Comm() const </div><div class="ttdoc">Access function for MpiComm communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00290_source.html#l00142">Map.C:142</a></div></div>
-<div class="ttc" id="a00258_html_a30f232216ea0c6b51721e662e02668f4"><div class="ttname"><a href="a00258.html#a30f232216ea0c6b51721e662e02668f4">RawValue_MPI_COMM_SELF</a></div><div class="ttdeci">#define RawValue_MPI_COMM_SELF</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00043">MpiComm.h:43</a></div></div>
-<div class="ttc" id="a00120_html_ad2be7e0868ead79c99d18b8f23360bcb"><div class="ttname"><a href="a00120.html#ad2be7e0868ead79c99d18b8f23360bcb">QUESO::Matrix::copy</a></div><div class="ttdeci">virtual void copy(const Matrix &amp;src)</div><div class="ttdoc">Copies matrix src to this matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00168">Matrix.C:168</a></div></div>
-<div class="ttc" id="a00051_html"><div class="ttname"><a href="a00051.html">QUESO::EmptyEnvironment</a></div><div class="ttdoc">This class sets up the environment underlying the use of the QUESO library by an executable. </div><div class="ttdef"><b>Definition:</b> <a href="a00239_source.html#l00396">Environment.h:396</a></div></div>
-<div class="ttc" id="a00120_html_a247fb0fc0b87fecdee054bb4660b68e8"><div class="ttname"><a href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">QUESO::Matrix::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdoc">QUESO environment variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00257_source.html#l00137">Matrix.h:137</a></div></div>
-<div class="ttc" id="a00120_html_a1eefeca9f35200e8275fb0fdfa0c8684"><div class="ttname"><a href="a00120.html#a1eefeca9f35200e8275fb0fdfa0c8684">QUESO::Matrix::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00116">Matrix.C:116</a></div></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00284.html#a121108f1337a0a9a98c92a1c2faeb8c5">getArgs</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;{</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keyword">static</span> ifstream dataStream;                                     <span class="comment">// data file stream</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keyword">static</span> ifstream queryStream;                            <span class="comment">// query file stream</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">if</span> (argc &lt;= 1) {                                                        <span class="comment">// no arguments</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                cerr &lt;&lt; <span class="stringliteral">&quot;Usage:\n\n&quot;</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;  ann_sample [-d dim] [-max m] [-nn k] [-e eps] [-df data]&quot;</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                   <span class="stringliteral">&quot; [-qf query]\n\n&quot;</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;  where:\n&quot;</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    dim      dimension of the space (default = 2)\n&quot;</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    m        maximum number of data points (default = 1000)\n&quot;</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    k        number of nearest neighbors per query (default 1)\n&quot;</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    eps      the error bound (default = 0.0)\n&quot;</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    data     name of file containing data points\n&quot;</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    query    name of file containing query points\n\n&quot;</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                &lt;&lt; <span class="stringliteral">&quot; Results are sent to the standard output.\n&quot;</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                &lt;&lt; <span class="stringliteral">&quot; To run this demo use:\n&quot;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    ann_sample -df data.pts -qf query.pts\n&quot;</span>;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                exit(0);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        }</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordtype">int</span> i = 1;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">while</span> (i &lt; argc) {                                                      <span class="comment">// read arguments</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-d&quot;</span>)) {                   <span class="comment">// -d option</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                        <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a> = atoi(argv[++i]);                          <span class="comment">// get dimension to dump</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                }</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-max&quot;</span>)) {    <span class="comment">// -max option</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                        <a class="code" href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a> = atoi(argv[++i]);                       <span class="comment">// get max number of points</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-nn&quot;</span>)) {             <span class="comment">// -nn option</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                        <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a> = atoi(argv[++i]);                            <span class="comment">// get number of near neighbors</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                }</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-e&quot;</span>)) {              <span class="comment">// -e option</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                        sscanf(argv[++i], <span class="stringliteral">&quot;%lf&quot;</span>, &amp;<a class="code" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>);         <span class="comment">// get error bound</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                }</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-df&quot;</span>)) {             <span class="comment">// -df option</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                        dataStream.open(argv[++i], ios::in);<span class="comment">// open data file</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                        <span class="keywordflow">if</span> (!dataStream) {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                                cerr &lt;&lt; <span class="stringliteral">&quot;Cannot open data file\n&quot;</span>;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                                exit(1);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                        }</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                        <a class="code" href="a00291.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a> = &amp;dataStream;                           <span class="comment">// make this the data stream</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-qf&quot;</span>)) {             <span class="comment">// -qf option</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                        queryStream.open(argv[++i], ios::in);<span class="comment">// open query file</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                        <span class="keywordflow">if</span> (!queryStream) {</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                                cerr &lt;&lt; <span class="stringliteral">&quot;Cannot open query file\n&quot;</span>;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                                exit(1);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                        }</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                        <a class="code" href="a00291.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a> = &amp;queryStream;                 <span class="comment">// make this query stream</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                }</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                <span class="keywordflow">else</span> {                                                                  <span class="comment">// illegal syntax</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                        cerr &lt;&lt; <span class="stringliteral">&quot;Unrecognized option.\n&quot;</span>;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                        exit(1);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                }</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                i++;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        }</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00291.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a> == NULL || <a class="code" href="a00291.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a> == NULL) {</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                cerr &lt;&lt; <span class="stringliteral">&quot;-df and -qf options must be specified\n&quot;</span>;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                exit(1);</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        }</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;}</div>
+<div class="ttc" id="a00291_html_a69b05c430493eb60acb983be2d11cb0a"><div class="ttname"><a href="a00291.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a></div><div class="ttdeci">istream * dataIn</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00058">ann_sample.cpp:58</a></div></div>
+<div class="ttc" id="a00016_html_a2a0fa2889c23a34773dc054c7769b3c6"><div class="ttname"><a href="a00016.html#a2a0fa2889c23a34773dc054c7769b3c6">ANNkd_tree::annkSearch</a></div><div class="ttdeci">void annkSearch(ANNpoint q, int k, ANNidxArray nn_idx, ANNdistArray dd, double eps=0.0)</div><div class="ttdef"><b>Definition:</b> <a href="a00304_source.html#l00089">kd_search.cpp:89</a></div></div>
+<div class="ttc" id="a00291_html_a974b448c3d0a13d483d36ef15de369b5"><div class="ttname"><a href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a></div><div class="ttdeci">double eps</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00055">ann_sample.cpp:55</a></div></div>
+<div class="ttc" id="a00284_html_a121108f1337a0a9a98c92a1c2faeb8c5"><div class="ttname"><a href="a00284.html#a121108f1337a0a9a98c92a1c2faeb8c5">getArgs</a></div><div class="ttdeci">void getArgs(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00146">ann2fig.cpp:146</a></div></div>
+<div class="ttc" id="a00291_html_aae59a5d5b5611b349436830970ff23c5"><div class="ttname"><a href="a00291.html#aae59a5d5b5611b349436830970ff23c5">readPt</a></div><div class="ttdeci">bool readPt(istream &amp;in, ANNpoint p)</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00061">ann_sample.cpp:61</a></div></div>
+<div class="ttc" id="a00286_html_ae3a038f02621d79c1efd5f8fb2ee968e"><div class="ttname"><a href="a00286.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a></div><div class="ttdeci">ANNdist * ANNdistArray</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00377">ANN.h:377</a></div></div>
+<div class="ttc" id="a00286_html_a7841414482997b8e49024b3cd5d3a017"><div class="ttname"><a href="a00286.html#a7841414482997b8e49024b3cd5d3a017">annClose</a></div><div class="ttdeci">DLL_API void annClose()</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00221">kd_tree.cpp:221</a></div></div>
+<div class="ttc" id="a00284_html_a5ea466849f21e6c2be4ef9b2eb8868d3"><div class="ttname"><a href="a00284.html#a5ea466849f21e6c2be4ef9b2eb8868d3">main</a></div><div class="ttdeci">main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00583">ann2fig.cpp:583</a></div></div>
+<div class="ttc" id="a00286_html_a479fe2e8e10f09a57c69f70dcd239f9a"><div class="ttname"><a href="a00286.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a></div><div class="ttdeci">DLL_API ANNpoint annAllocPt(int dim, ANNcoord c=0)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00110">ANN.cpp:110</a></div></div>
+<div class="ttc" id="a00286_html_a402299ac00a81ad80f09a0eb84ba4059"><div class="ttname"><a href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a></div><div class="ttdeci">ANNpoint * ANNpointArray</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00376">ANN.h:376</a></div></div>
+<div class="ttc" id="a00286_html_ac73fee32442f021ddcce434bd34f735f"><div class="ttname"><a href="a00286.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a></div><div class="ttdeci">int ANNidx</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00175">ANN.h:175</a></div></div>
+<div class="ttc" id="a00291_html_a5bf3e6f77cc6d8a4d1895f30a4b67380"><div class="ttname"><a href="a00291.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">printPt</a></div><div class="ttdeci">void printPt(ostream &amp;out, ANNpoint p)</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00069">ann_sample.cpp:69</a></div></div>
+<div class="ttc" id="a00286_html"><div class="ttname"><a href="a00286.html">ANN.h</a></div></div>
+<div class="ttc" id="a00286_html_ad85f4b5cb9cf5877a2094bf8582133f5"><div class="ttname"><a href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a></div><div class="ttdeci">ANNcoord * ANNpoint</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00375">ANN.h:375</a></div></div>
+<div class="ttc" id="a00286_html_ab2a7296707a2205201daccfc1929c3ca"><div class="ttname"><a href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a></div><div class="ttdeci">double ANNdist</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00159">ANN.h:159</a></div></div>
+<div class="ttc" id="a00291_html_a1e762cf8fc8c7e92bfb0be1a8306f45c"><div class="ttname"><a href="a00291.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a></div><div class="ttdeci">istream * queryIn</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00059">ann_sample.cpp:59</a></div></div>
+<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00016_html"><div class="ttname"><a href="a00016.html">ANNkd_tree</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00705">ANN.h:705</a></div></div>
+<div class="ttc" id="a00286_html_a7d801c6084e348aefc8d675d5b8f2f9a"><div class="ttname"><a href="a00286.html#a7d801c6084e348aefc8d675d5b8f2f9a">annAllocPts</a></div><div class="ttdeci">DLL_API ANNpointArray annAllocPts(int n, int dim)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00117">ANN.cpp:117</a></div></div>
+<div class="ttc" id="a00291_html_ab66ed8e0098c0a86b458672a55a9cca9"><div class="ttname"><a href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00053">ann_sample.cpp:53</a></div></div>
+<div class="ttc" id="a00286_html_a6cc54f9929727736423d719870cf1a5b"><div class="ttname"><a href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a></div><div class="ttdeci">ANNidx * ANNidxArray</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00378">ANN.h:378</a></div></div>
+<div class="ttc" id="a00291_html_a8c59db27913a8a427a7049780bacde29"><div class="ttname"><a href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a></div><div class="ttdeci">int maxPts</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00056">ann_sample.cpp:56</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

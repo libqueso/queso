@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/inc/SampledVectorCdf.h Source File</title>
+<title>queso-0.53.0: src/core/src/RngGsl.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_d98b071537eea78ae0761911e9f6b515.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_d16228283b18c448cbd408df6e1bb59e.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">SampledVectorCdf.h</div>  </div>
+<div class="title">RngGsl.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00389.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,71 +75,106 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_SAMPLED_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_SAMPLED_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorCdf.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/ArrayOfOneDGrids.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/ArrayOfOneDTables.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarCdf.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// Sampled cumulative distribution function class</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00146.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00146.html">SampledVectorCdf</a> : <span class="keyword">public</span> <a class="code" href="a00028.html">BaseVectorCdf</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00146.html#a9ccd0e1af52f109a50cf9bc2f88370fb">SampledVectorCdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                          prefix,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                          <span class="keyword">const</span> <a class="code" href="a00010.html">ArrayOfOneDGrids &lt;V,M&gt;</a>&amp; oneDGrids,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                          <span class="keyword">const</span> <a class="code" href="a00011.html">ArrayOfOneDTables&lt;V,M&gt;</a>&amp; cdfValues);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00146.html#a5434d0c34434b0bdf073523aee4182be">~SampledVectorCdf</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">void</span>                          <a class="code" href="a00146.html#a1d908923cf5b441a4cebf7ac3c7fd2d8">values</a>(<span class="keyword">const</span> V&amp; paramValues, V&amp; cdfVec) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00024.html">BaseScalarCdf&lt;double&gt;</a>&amp; <a class="code" href="a00146.html#a51ee2c218b4e36dfc0c02bd542205789">cdf</a>   (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rowId)              <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">void</span>                          <a class="code" href="a00146.html#a9d62ca801a3d52b18188ae93b476c847">print</a> (std::ostream&amp; os)                <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">void</span>                          <a class="code" href="a00146.html#acae1453895e364bf726ef60f8fde1bd8">subWriteContents</a>(<span class="keyword">const</span> std::string&amp;            varNamePrefix,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;             <span class="keyword">const</span> std::string&amp;            fileName,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;             <span class="keyword">const</span> std::string&amp;            fileType,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;             <span class="keyword">const</span> std::set&lt;unsigned int&gt;&amp; allowedSubEnvIds) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00028.html">BaseVectorCdf&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00028.html">BaseVectorCdf&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00028.html">BaseVectorCdf&lt;V,M&gt;::m_pdfSupport</a>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="a00146.html#ab1bc899ffdea9ca7e635312f82ff169f">   88</a></span>&#160;  <a class="code" href="a00050.html">DistArray&lt;SampledScalarCdf&lt;double&gt;</a>*&gt; <a class="code" href="a00146.html#ab1bc899ffdea9ca7e635312f82ff169f">m_cdfs</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;};</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif // UQ_SAMPLED_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
-<div class="ttc" id="a00024_html"><div class="ttname"><a href="a00024.html">QUESO::BaseScalarCdf</a></div><div class="ttdoc">A templated (base) class for handling CDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00391_source.html#l00056">ScalarCdf.h:56</a></div></div>
-<div class="ttc" id="a00146_html_a51ee2c218b4e36dfc0c02bd542205789"><div class="ttname"><a href="a00146.html#a51ee2c218b4e36dfc0c02bd542205789">QUESO::SampledVectorCdf::cdf</a></div><div class="ttdeci">const BaseScalarCdf&lt; double &gt; &amp; cdf(unsigned int rowId) const </div><div class="ttdoc">Returns a scalar CDF stored at row rowId of the vector CDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00474_source.html#l00084">SampledVectorCdf.C:84</a></div></div>
-<div class="ttc" id="a00010_html"><div class="ttname"><a href="a00010.html">QUESO::ArrayOfOneDGrids</a></div><div class="ttdoc">Class to accommodate arrays of one-dimensional grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00044">ArrayOfOneDGrids.h:44</a></div></div>
-<div class="ttc" id="a00146_html_a1d908923cf5b441a4cebf7ac3c7fd2d8"><div class="ttname"><a href="a00146.html#a1d908923cf5b441a4cebf7ac3c7fd2d8">QUESO::SampledVectorCdf::values</a></div><div class="ttdeci">void values(const V &amp;paramValues, V &amp;cdfVec) const </div><div class="ttdoc">TODO: Returns the values of the vector CDF at each element of paramValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00474_source.html#l00071">SampledVectorCdf.C:71</a></div></div>
-<div class="ttc" id="a00050_html"><div class="ttname"><a href="a00050.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00238_source.html#l00056">DistArray.h:56</a></div></div>
-<div class="ttc" id="a00146_html_ab1bc899ffdea9ca7e635312f82ff169f"><div class="ttname"><a href="a00146.html#ab1bc899ffdea9ca7e635312f82ff169f">QUESO::SampledVectorCdf::m_cdfs</a></div><div class="ttdeci">DistArray&lt; SampledScalarCdf&lt; double &gt; * &gt; m_cdfs</div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00088">SampledVectorCdf.h:88</a></div></div>
-<div class="ttc" id="a00146_html_a9d62ca801a3d52b18188ae93b476c847"><div class="ttname"><a href="a00146.html#a9d62ca801a3d52b18188ae93b476c847">QUESO::SampledVectorCdf::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the vector CDF (values of the grid points and of the CDF at such grid points). </div><div class="ttdef"><b>Definition:</b> <a href="a00474_source.html#l00098">SampledVectorCdf.C:98</a></div></div>
-<div class="ttc" id="a00146_html"><div class="ttname"><a href="a00146.html">QUESO::SampledVectorCdf</a></div><div class="ttdoc">A class for handling sampled vector CDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00048">SampledVectorCdf.h:48</a></div></div>
-<div class="ttc" id="a00011_html"><div class="ttname"><a href="a00011.html">QUESO::ArrayOfOneDTables</a></div><div class="ttdoc">Class to accommodate arrays of one-dimensional tables. </div><div class="ttdef"><b>Definition:</b> <a href="a00307_source.html#l00046">ArrayOfOneDTables.h:46</a></div></div>
-<div class="ttc" id="a00146_html_a5434d0c34434b0bdf073523aee4182be"><div class="ttname"><a href="a00146.html#a5434d0c34434b0bdf073523aee4182be">QUESO::SampledVectorCdf::~SampledVectorCdf</a></div><div class="ttdeci">~SampledVectorCdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00474_source.html#l00062">SampledVectorCdf.C:62</a></div></div>
-<div class="ttc" id="a00028_html"><div class="ttname"><a href="a00028.html">QUESO::BaseVectorCdf</a></div><div class="ttdoc">A templated (base) class for handling CDFs of vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00407_source.html#l00056">VectorCdf.h:56</a></div></div>
-<div class="ttc" id="a00146_html_a9ccd0e1af52f109a50cf9bc2f88370fb"><div class="ttname"><a href="a00146.html#a9ccd0e1af52f109a50cf9bc2f88370fb">QUESO::SampledVectorCdf::SampledVectorCdf</a></div><div class="ttdeci">SampledVectorCdf(const char *prefix, const ArrayOfOneDGrids&lt; V, M &gt; &amp;oneDGrids, const ArrayOfOneDTables&lt; V, M &gt; &amp;cdfValues)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00474_source.html#l00031">SampledVectorCdf.C:31</a></div></div>
-<div class="ttc" id="a00146_html_acae1453895e364bf726ef60f8fde1bd8"><div class="ttname"><a href="a00146.html#acae1453895e364bf726ef60f8fde1bd8">QUESO::SampledVectorCdf::subWriteContents</a></div><div class="ttdeci">void subWriteContents(const std::string &amp;varNamePrefix, const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds) const </div><div class="ttdoc">Writes the CDF of an allowed sub-environment to a file. </div><div class="ttdef"><b>Definition:</b> <a href="a00474_source.html#l00111">SampledVectorCdf.C:111</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/RngGsl.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;gsl/gsl_randist.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;mpi.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00186.html#a719078b54d621d51348b02c1fcac80c1">   32</a></span>&#160;<a class="code" href="a00186.html#a47f994ab64fed4bbd1e3726d409d7f3d">RngGsl::RngGsl</a>(<span class="keywordtype">int</span> seed, <span class="keywordtype">int</span> worldRank)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  :</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="a00183.html">RngBase</a>(seed,worldRank),</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  m_rng         (NULL)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00353.html#aaedcdd15e9f5b131033de5fca9b4faa7">gsl_rng_default_seed</a> = (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> int) <a class="code" href="a00183.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a> = gsl_rng_alloc(gsl_rng_ranlxd2);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(<a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>, <span class="stringliteral">&quot;null m_rng&quot;</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//gsl_rng_set(m_rng, gsl_rng_default_seed);</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#if 0</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">if</span> (<a class="code" href="a00183.html#a94515d2b7d493d8e4e238628716dd11b">m_worldRank</a> == 0) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;In RngGsl::constructor():&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;\n  m_seed = &quot;</span>                                              &lt;&lt; <a class="code" href="a00183.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;\n  internal seed = &quot;</span>                                       &lt;&lt; <a class="code" href="a00353.html#aaedcdd15e9f5b131033de5fca9b4faa7">gsl_rng_default_seed</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="comment">//&lt;&lt; &quot;\n  first generated sample from uniform distribution = &quot;    &lt;&lt; gsl_rng_uniform(m_rng)</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="comment">//&lt;&lt; &quot;\n  first generated sample from std normal distribution = &quot; &lt;&lt; gsl_ran_gaussian(m_rng,1.)</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00186.html#a201a5c5a0805c8de61110736fef85b7d">   55</a></span>&#160;<a class="code" href="a00186.html#a201a5c5a0805c8de61110736fef85b7d">RngGsl::~RngGsl</a>()</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>) gsl_rng_free(<a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// Sampling methods ---------------------------------</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="a00186.html#a95e515676ae7b503bd3b72eea7432598">   62</a></span>&#160;<a class="code" href="a00186.html#a95e515676ae7b503bd3b72eea7432598">RngGsl::resetSeed</a>(<span class="keywordtype">int</span> newSeed)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="a00183.html#a8cb8cbf14298bfcb84de1b562c069e84">RngBase::resetSeed</a>(newSeed);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  gsl_rng_free(<a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="a00353.html#aaedcdd15e9f5b131033de5fca9b4faa7">gsl_rng_default_seed</a> = (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> int) <a class="code" href="a00183.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a> = gsl_rng_alloc(gsl_rng_ranlxd2);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(<a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>, <span class="stringliteral">&quot;null m_rng&quot;</span>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00186.html#a903f2db902f287a0d7d85f68d95d7225">   75</a></span>&#160;<a class="code" href="a00186.html#a903f2db902f287a0d7d85f68d95d7225">RngGsl::uniformSample</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">return</span> gsl_rng_uniform(<a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00186.html#a4ebf1a75b394d2a650c1742c132b00c4">   82</a></span>&#160;<a class="code" href="a00186.html#a4ebf1a75b394d2a650c1742c132b00c4">RngGsl::gaussianSample</a>(<span class="keywordtype">double</span> stdDev)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordflow">return</span> gsl_ran_gaussian(<a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>,stdDev);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="a00186.html#a4cfa51656336eadbd137c7698e5f1b59">   89</a></span>&#160;<a class="code" href="a00186.html#a4cfa51656336eadbd137c7698e5f1b59">RngGsl::betaSample</a>(<span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">return</span> gsl_ran_beta(<a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>,alpha,beta);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="a00186.html#a18017f2291ad584f169a7efc7ca5dd32">   96</a></span>&#160;<a class="code" href="a00186.html#a18017f2291ad584f169a7efc7ca5dd32">RngGsl::gammaSample</a>(<span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordflow">return</span> gsl_ran_gamma(<a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>,a,b);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">const</span> gsl_rng*</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="a00186.html#a1a67001d7a3616dd68e8fc5a691da5d8">  102</a></span>&#160;<a class="code" href="a00186.html#a1a67001d7a3616dd68e8fc5a691da5d8">RngGsl::rng</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00186_html_a903f2db902f287a0d7d85f68d95d7225"><div class="ttname"><a href="a00186.html#a903f2db902f287a0d7d85f68d95d7225">QUESO::RngGsl::uniformSample</a></div><div class="ttdeci">double uniformSample() const </div><div class="ttdoc">Samples a value from a uniform distribution. Support: [0,1] or [a,b]. </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00075">RngGsl.C:75</a></div></div>
+<div class="ttc" id="a00186_html_a18017f2291ad584f169a7efc7ca5dd32"><div class="ttname"><a href="a00186.html#a18017f2291ad584f169a7efc7ca5dd32">QUESO::RngGsl::gammaSample</a></div><div class="ttdeci">double gammaSample(double a, double b) const </div><div class="ttdoc">Samples a value from a Gamma distribution. Support: [0,infinity). </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00096">RngGsl.C:96</a></div></div>
+<div class="ttc" id="a00186_html_a48893d570695ebf59f8b96e28b9739b1"><div class="ttname"><a href="a00186.html#a48893d570695ebf59f8b96e28b9739b1">QUESO::RngGsl::m_rng</a></div><div class="ttdeci">gsl_rng * m_rng</div><div class="ttdoc">GSL random number generator. </div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00111">RngGsl.h:111</a></div></div>
+<div class="ttc" id="a00186_html_a201a5c5a0805c8de61110736fef85b7d"><div class="ttname"><a href="a00186.html#a201a5c5a0805c8de61110736fef85b7d">QUESO::RngGsl::~RngGsl</a></div><div class="ttdeci">~RngGsl()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00055">RngGsl.C:55</a></div></div>
+<div class="ttc" id="a00186_html_a4ebf1a75b394d2a650c1742c132b00c4"><div class="ttname"><a href="a00186.html#a4ebf1a75b394d2a650c1742c132b00c4">QUESO::RngGsl::gaussianSample</a></div><div class="ttdeci">double gaussianSample(double stdDev) const </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00082">RngGsl.C:82</a></div></div>
+<div class="ttc" id="a00186_html_a95e515676ae7b503bd3b72eea7432598"><div class="ttname"><a href="a00186.html#a95e515676ae7b503bd3b72eea7432598">QUESO::RngGsl::resetSeed</a></div><div class="ttdeci">void resetSeed(int newSeed)</div><div class="ttdoc">Resets the seed with value newSeed. </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00062">RngGsl.C:62</a></div></div>
+<div class="ttc" id="a00186_html_a1a67001d7a3616dd68e8fc5a691da5d8"><div class="ttname"><a href="a00186.html#a1a67001d7a3616dd68e8fc5a691da5d8">QUESO::RngGsl::rng</a></div><div class="ttdeci">const gsl_rng * rng() const </div><div class="ttdoc">GSL random number generator. </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00102">RngGsl.C:102</a></div></div>
+<div class="ttc" id="a00319_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00069">asserts.h:69</a></div></div>
+<div class="ttc" id="a00183_html"><div class="ttname"><a href="a00183.html">QUESO::RngBase</a></div><div class="ttdoc">Class for random number generation (base class for either GSL or Boost RNG). </div><div class="ttdef"><b>Definition:</b> <a href="a00351_source.html#l00045">RngBase.h:45</a></div></div>
+<div class="ttc" id="a00186_html_a47f994ab64fed4bbd1e3726d409d7f3d"><div class="ttname"><a href="a00186.html#a47f994ab64fed4bbd1e3726d409d7f3d">QUESO::RngGsl::RngGsl</a></div><div class="ttdeci">RngGsl()</div><div class="ttdoc">Default Constructor: it should not be used. </div></div>
+<div class="ttc" id="a00183_html_a8cb8cbf14298bfcb84de1b562c069e84"><div class="ttname"><a href="a00183.html#a8cb8cbf14298bfcb84de1b562c069e84">QUESO::RngBase::resetSeed</a></div><div class="ttdeci">virtual void resetSeed(int newSeed)</div><div class="ttdoc">Resets the seed with value newSeed. </div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00049">RngBase.C:49</a></div></div>
+<div class="ttc" id="a00183_html_ab67b3c940ba6ffb4f2d70079fe36e343"><div class="ttname"><a href="a00183.html#ab67b3c940ba6ffb4f2d70079fe36e343">QUESO::RngBase::m_seed</a></div><div class="ttdeci">int m_seed</div><div class="ttdoc">Seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00351_source.html#l00082">RngBase.h:82</a></div></div>
+<div class="ttc" id="a00186_html_a4cfa51656336eadbd137c7698e5f1b59"><div class="ttname"><a href="a00186.html#a4cfa51656336eadbd137c7698e5f1b59">QUESO::RngGsl::betaSample</a></div><div class="ttdeci">double betaSample(double alpha, double beta) const </div><div class="ttdoc">Samples a value from a Beta distribution. Support: [0,1]. </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00089">RngGsl.C:89</a></div></div>
+<div class="ttc" id="a00353_html_aaedcdd15e9f5b131033de5fca9b4faa7"><div class="ttname"><a href="a00353.html#aaedcdd15e9f5b131033de5fca9b4faa7">gsl_rng_default_seed</a></div><div class="ttdeci">unsigned long int gsl_rng_default_seed</div></div>
+<div class="ttc" id="a00183_html_a94515d2b7d493d8e4e238628716dd11b"><div class="ttname"><a href="a00183.html#a94515d2b7d493d8e4e238628716dd11b">QUESO::RngBase::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdoc">Rank of processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00351_source.html#l00085">RngBase.h:85</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/src/InfiniteDimensionalMeasureBase.C File Reference</title>
+<title>queso-0.53.0: src/contrib/ANN/include/ANN/ANN.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,35 +43,944 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_bd26773dc971f4fa3aa1d8bd68fbf230.html">contrib</a></li><li class="navelem"><a class="el" href="dir_9b88879957fe8db0821d93727895fef3.html">ANN</a></li><li class="navelem"><a class="el" href="dir_9053558d2ad0ee975158b36cefda7ede.html">include</a></li><li class="navelem"><a class="el" href="dir_f5001a4fbf879d579c38fd56db69a30a.html">ANN</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">InfiniteDimensionalMeasureBase.C File Reference</div>  </div>
+<div class="title">ANN.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/InfiniteDimensionalMeasureBase.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;cstdlib&gt;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;cstring&gt;</code><br/>
+<code>#include &lt;climits&gt;</code><br/>
+<code>#include &lt;cfloat&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for InfiniteDimensionalMeasureBase.C:</div>
+Include dependency graph for ANN.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00599.png" border="0" usemap="#src_2core_2src_2_infinite_dimensional_measure_base_8_c" alt=""/></div>
-<map name="src_2core_2src_2_infinite_dimensional_measure_base_8_c" id="src_2core_2src_2_infinite_dimensional_measure_base_8_c">
+<div class="center"><img src="a00698.png" border="0" usemap="#src_2contrib_2_a_n_n_2include_2_a_n_n_2_a_n_n_8h" alt=""/></div>
+<map name="src_2contrib_2_a_n_n_2include_2_a_n_n_2_a_n_n_8h" id="src_2contrib_2_a_n_n_2include_2_a_n_n_2_a_n_n_8h">
 </map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00699.png" border="0" usemap="#src_2contrib_2_a_n_n_2include_2_a_n_n_2_a_n_n_8hdep" alt=""/></div>
+<map name="src_2contrib_2_a_n_n_2include_2_a_n_n_2_a_n_n_8hdep" id="src_2contrib_2_a_n_n_2include_2_a_n_n_2_a_n_n_8hdep">
+<area shape="rect" id="node3" href="a00287.html" title="src/contrib/ANN/include\l/ANN/ANNperf.h" alt="" coords="597,198,773,245"/><area shape="rect" id="node41" href="a00312.html" title="src/contrib/ANN/src\l/perf.cpp" alt="" coords="26,294,176,341"/><area shape="rect" id="node43" href="a00315.html" title="src/contrib/ANN/test\l/ann_test.cpp" alt="" coords="1848,294,2008,341"/><area shape="rect" id="node45" href="a00288.html" title="src/contrib/ANN/include\l/ANN/ANNx.h" alt="" coords="950,102,1126,149"/><area shape="rect" id="node86" href="a00291.html" title="src/contrib/ANN/sample\l/ann_sample.cpp" alt="" coords="1450,102,1629,149"/><area shape="rect" id="node90" href="a00317.html" title="src/contrib/ANN/test\l/rand.h" alt="" coords="1848,198,2008,245"/><area shape="rect" id="node5" href="a00292.html" title="src/contrib/ANN/src\l/ANN.cpp" alt="" coords="800,294,949,341"/><area shape="rect" id="node7" href="a00314.html" title="src/contrib/ANN/src\l/pr_queue_k.h" alt="" coords="200,294,349,341"/><area shape="rect" id="node9" href="a00301.html" title="src/contrib/ANN/src\l/kd_fix_rad_search.h" alt="" coords="426,390,581,437"/><area shape="rect" id="node15" href="a00303.html" title="src/contrib/ANN/src\l/kd_pr_search.h" alt="" coords="605,390,754,437"/><area shape="rect" id="node21" href="a00305.html" title="src/contrib/ANN/src\l/kd_search.h" alt="" coords="778,390,928,437"/><area shape="rect" id="node30" href="a00313.html" title="src/contrib/ANN/src\l/pr_queue.h" alt="" coords="373,294,522,341"/><area shape="rect" id="node35" href="a00296.html" title="src/contrib/ANN/src\l/bd_tree.cpp" alt="" coords="1472,390,1621,437"/><area shape="rect" id="node37" href="a00308.html" title="src/contrib/ANN/src\l/kd_tree.cpp" alt="" coords="1125,390,1274,437"/><area shape="rect" id="node39" href="a00310.html" title="src/contrib/ANN/src\l/kd_util.cpp" alt="" coords="952,390,1101,437"/><area shape="rect" id="node27" href="a00298.html" title="src/contrib/ANN/src\l/brute.cpp" alt="" coords="57,390,206,437"/><area shape="rect" id="node11" href="a00293.html" title="src/contrib/ANN/src\l/bd_fix_rad_search.cpp" alt="" coords="1220,486,1393,533"/><area shape="rect" id="node13" href="a00300.html" title="src/contrib/ANN/src\l/kd_fix_rad_search.cpp" alt="" coords="410,486,581,533"/><area shape="rect" id="node17" href="a00294.html" title="src/contrib/ANN/src\l/bd_pr_search.cpp" alt="" coords="1550,486,1700,533"/><area shape="rect" id="node19" href="a00302.html" title="src/contrib/ANN/src\l/kd_pr_search.cpp" alt="" coords="605,486,754,533"/><area shape="rect" id="node23" href="a00295.html" title="src/contrib/ANN/src\l/bd_search.cpp" alt="" coords="1790,486,1940,533"/><area shape="rect" id="node25" href="a00304.html" title="src/contrib/ANN/src\l/kd_search.cpp" alt="" coords="778,486,928,533"/><area shape="rect" id="node47" href="a00284.html" title="src/contrib/ANN/ann2fig\l/ann2fig.cpp" alt="" coords="822,198,1001,245"/><area shape="rect" id="node50" href="a00297.html" title="src/contrib/ANN/src\l/bd_tree.h" alt="" coords="1674,294,1824,341"/><area shape="rect" id="node58" href="a00309.html" title="src/contrib/ANN/src\l/kd_tree.h" alt="" coords="1125,198,1274,245"/><area shape="rect" id="node56" href="a00299.html" title="src/contrib/ANN/src\l/kd_dump.cpp" alt="" coords="1645,390,1794,437"/><area shape="rect" id="node62" href="a00311.html" title="src/contrib/ANN/src\l/kd_util.h" alt="" coords="1125,294,1274,341"/><area shape="rect" id="node68" href="a00306.html" title="src/contrib/ANN/src\l/kd_split.cpp" alt="" coords="1298,390,1448,437"/><area shape="rect" id="node74" href="a00307.html" title="src/contrib/ANN/src\l/kd_split.h" alt="" coords="1349,294,1498,341"/><area shape="rect" id="node93" href="a00316.html" title="src/contrib/ANN/test\l/rand.cpp" alt="" coords="2032,294,2192,341"/></map>
 </div>
 </div>
 <p><a href="a00286_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:a00500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html">QUESO</a></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00021.html">ANNpointSet</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html">ANNbruteForce</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html">ANNkd_tree</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html">ANNbd_tree</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a1a2aaad2f42ad198a2e6c97dc7681137"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a></td></tr>
+<tr class="separator:a1a2aaad2f42ad198a2e6c97dc7681137"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ef5fb5f7e0bf3774fb2806411da5f49"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a4ef5fb5f7e0bf3774fb2806411da5f49">ANNversion</a>&#160;&#160;&#160;&quot;1.1.2&quot;</td></tr>
+<tr class="separator:a4ef5fb5f7e0bf3774fb2806411da5f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f7631a9a849a061774026c06da511ee"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a5f7631a9a849a061774026c06da511ee">ANNversionCmt</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
+<tr class="separator:a5f7631a9a849a061774026c06da511ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11382dea040739c8fa14084650eb5de5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a11382dea040739c8fa14084650eb5de5">ANNcopyright</a>&#160;&#160;&#160;&quot;David M. Mount <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya&quot;</td></tr>
+<tr class="separator:a11382dea040739c8fa14084650eb5de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7066d3c64155111f9d28b766442bf711"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a7066d3c64155111f9d28b766442bf711">ANNlatestRev</a>&#160;&#160;&#160;&quot;Jan 27, 2010&quot;</td></tr>
+<tr class="separator:a7066d3c64155111f9d28b766442bf711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9098bea865802af85103a5a1b4582d2c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a9098bea865802af85103a5a1b4582d2c">ANN_POW</a>(v)&#160;&#160;&#160;fabs(v)</td></tr>
+<tr class="separator:a9098bea865802af85103a5a1b4582d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89ef502f6f11abc56cc0f3aa530e5b13"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a89ef502f6f11abc56cc0f3aa530e5b13">ANN_ROOT</a>(x)&#160;&#160;&#160;(x)</td></tr>
+<tr class="separator:a89ef502f6f11abc56cc0f3aa530e5b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a185e91d6668c4e876c016ef9dff4d107"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a185e91d6668c4e876c016ef9dff4d107">ANN_SUM</a>(x, y)&#160;&#160;&#160;((x) &gt; (y) ? (x) : (y))</td></tr>
+<tr class="separator:a185e91d6668c4e876c016ef9dff4d107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a36654b93b11f820a32404cba93a98f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a3a36654b93b11f820a32404cba93a98f">ANN_DIFF</a>(x, y)&#160;&#160;&#160;(y)</td></tr>
+<tr class="separator:a3a36654b93b11f820a32404cba93a98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ab066cd4e4fffad67a16b64d9a28a86e4"><td class="memItemLeft" align="right" valign="top">typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a></td></tr>
+<tr class="separator:ab066cd4e4fffad67a16b64d9a28a86e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2a7296707a2205201daccfc1929c3ca"><td class="memItemLeft" align="right" valign="top">typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a></td></tr>
+<tr class="separator:ab2a7296707a2205201daccfc1929c3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac73fee32442f021ddcce434bd34f735f"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a></td></tr>
+<tr class="separator:ac73fee32442f021ddcce434bd34f735f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad85f4b5cb9cf5877a2094bf8582133f5"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a></td></tr>
+<tr class="separator:ad85f4b5cb9cf5877a2094bf8582133f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a402299ac00a81ad80f09a0eb84ba4059"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a></td></tr>
+<tr class="separator:a402299ac00a81ad80f09a0eb84ba4059"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3a038f02621d79c1efd5f8fb2ee968e"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a></td></tr>
+<tr class="separator:ae3a038f02621d79c1efd5f8fb2ee968e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cc54f9929727736423d719870cf1a5b"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00286.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a></td></tr>
+<tr class="separator:a6cc54f9929727736423d719870cf1a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacc30b4a2ed20722620c89db6c9f512c"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="a00014.html">ANNkd_node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#aacc30b4a2ed20722620c89db6c9f512c">ANNkd_ptr</a></td></tr>
+<tr class="separator:aacc30b4a2ed20722620c89db6c9f512c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ae5927710e8251aa54f5b820eca160f2c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a> { <a class="el" href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a> = 0, 
+<a class="el" href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a> = 1
+ }</td></tr>
+<tr class="separator:ae5927710e8251aa54f5b820eca160f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a229eef95deefadc9d3fa738683c9c2bb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bb">ANNsplitRule</a> { <br/>
+&#160;&#160;<a class="el" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba33c8110b750dedbe3e585bfe1371b35f">ANN_KD_STD</a> = 0, 
+<a class="el" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba269ec3c64e6a211889803403e3db8c08">ANN_KD_MIDPT</a> = 1, 
+<a class="el" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba120e2bf3c00d785a8deeaa911aa0762d">ANN_KD_FAIR</a> = 2, 
+<a class="el" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bbac8e375f7efb04af5ff833dac2095bc50">ANN_KD_SL_MIDPT</a> = 3, 
+<br/>
+&#160;&#160;<a class="el" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba55cf23b5fd13fc8ca54d1e3c4a04d0fb">ANN_KD_SL_FAIR</a> = 4, 
+<a class="el" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba9998b60fada03ec8867d9ee448ac4ea7">ANN_KD_SUGGEST</a> = 5
+<br/>
+ }</td></tr>
+<tr class="separator:a229eef95deefadc9d3fa738683c9c2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6efa97da21b6bc41db3ce4cfbfbe9c8c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8c">ANNshrinkRule</a> { <a class="el" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca00e2c3dae33e7a522c5f5265d1ce67e5">ANN_BD_NONE</a> = 0, 
+<a class="el" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca9b85530cb7c0f2afd844dd298239beca">ANN_BD_SIMPLE</a> = 1, 
+<a class="el" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca337cef9db4d4b9d7184c912bb5802a9a">ANN_BD_CENTROID</a> = 2, 
+<a class="el" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8caf9599a9dddddb636d4fb525dc14751bc">ANN_BD_SUGGEST</a> = 3
+ }</td></tr>
+<tr class="separator:a6efa97da21b6bc41db3ce4cfbfbe9c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:abcf59e35431a1c2153e0a01c056bc647"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#abcf59e35431a1c2153e0a01c056bc647">annDist</a> (int <a class="el" href="a00315.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p, <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> q)</td></tr>
+<tr class="separator:abcf59e35431a1c2153e0a01c056bc647"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a479fe2e8e10f09a57c69f70dcd239f9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a> (int <a class="el" href="a00315.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="el" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> c=0)</td></tr>
+<tr class="separator:a479fe2e8e10f09a57c69f70dcd239f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d801c6084e348aefc8d675d5b8f2f9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a7d801c6084e348aefc8d675d5b8f2f9a">annAllocPts</a> (int n, int <a class="el" href="a00315.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>)</td></tr>
+<tr class="separator:a7d801c6084e348aefc8d675d5b8f2f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85f3fafa513eee017f525ad74a82cf10"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a85f3fafa513eee017f525ad74a82cf10">annDeallocPt</a> (<a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> &amp;p)</td></tr>
+<tr class="separator:a85f3fafa513eee017f525ad74a82cf10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af45ca32b2926c0e7c20c458e555c8c04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#af45ca32b2926c0e7c20c458e555c8c04">annDeallocPts</a> (<a class="el" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> &amp;pa)</td></tr>
+<tr class="separator:af45ca32b2926c0e7c20c458e555c8c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d699aa9bd46a0c0bf91c25252da80e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a4d699aa9bd46a0c0bf91c25252da80e0">annCopyPt</a> (int <a class="el" href="a00315.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> source)</td></tr>
+<tr class="separator:a4d699aa9bd46a0c0bf91c25252da80e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a821c00e57e7674b17d9a6145839f48d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a821c00e57e7674b17d9a6145839f48d4">annMaxPtsVisit</a> (int <a class="el" href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a>)</td></tr>
+<tr class="separator:a821c00e57e7674b17d9a6145839f48d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7841414482997b8e49024b3cd5d3a017"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a7841414482997b8e49024b3cd5d3a017">annClose</a> ()</td></tr>
+<tr class="separator:a7841414482997b8e49024b3cd5d3a017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a477b3fd2435613171740930b8e1925cf"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a477b3fd2435613171740930b8e1925cf">ANN_DBL_MAX</a> = DBL_MAX</td></tr>
+<tr class="separator:a477b3fd2435613171740930b8e1925cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1346d82a39cf8b05b03fa85aaa51233"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00286.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#ae1346d82a39cf8b05b03fa85aaa51233">ANN_NULL_IDX</a> = -1</td></tr>
+<tr class="separator:ae1346d82a39cf8b05b03fa85aaa51233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a36a08c888181744ed16309e29f48ac"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a8a36a08c888181744ed16309e29f48ac">ANN_DIST_INF</a> = <a class="el" href="a00286.html#a477b3fd2435613171740930b8e1925cf">ANN_DBL_MAX</a></td></tr>
+<tr class="separator:a8a36a08c888181744ed16309e29f48ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af70a6982ba3eb965c85163b12bf15a79"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#af70a6982ba3eb965c85163b12bf15a79">ANNcoordPrec</a> = 15</td></tr>
+<tr class="separator:af70a6982ba3eb965c85163b12bf15a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe32cadf19fdc4ce47a9b05d309d767c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00286.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#afe32cadf19fdc4ce47a9b05d309d767c">ANN_ALLOW_SELF_MATCH</a> = <a class="el" href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a></td></tr>
+<tr class="separator:afe32cadf19fdc4ce47a9b05d309d767c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a421ca66e0eaae53f541086d744353b2d"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a421ca66e0eaae53f541086d744353b2d">ANN_N_SPLIT_RULES</a> = 6</td></tr>
+<tr class="separator:a421ca66e0eaae53f541086d744353b2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a626cc402195987f50e1355300ceaa9f5"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html#a626cc402195987f50e1355300ceaa9f5">ANN_N_SHRINK_RULES</a> = 4</td></tr>
+<tr class="separator:a626cc402195987f50e1355300ceaa9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a3a36654b93b11f820a32404cba93a98f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANN_DIFF</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">y&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(y)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00363">363</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00300_source.html#l00100">ANNkd_split::ann_FR_search()</a>, <a class="el" href="a00302_source.html#l00139">ANNkd_split::ann_pri_search()</a>, and <a class="el" href="a00304_source.html#l00124">ANNkd_split::ann_search()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9098bea865802af85103a5a1b4582d2c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANN_POW</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">v</td><td>)</td>
+          <td>&#160;&#160;&#160;fabs(v)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00360">360</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00300_source.html#l00148">ANNkd_leaf::ann_FR_search()</a>, <a class="el" href="a00300_source.html#l00100">ANNkd_split::ann_FR_search()</a>, <a class="el" href="a00302_source.html#l00181">ANNkd_leaf::ann_pri_search()</a>, <a class="el" href="a00302_source.html#l00139">ANNkd_split::ann_pri_search()</a>, <a class="el" href="a00304_source.html#l00172">ANNkd_leaf::ann_search()</a>, <a class="el" href="a00304_source.html#l00124">ANNkd_split::ann_search()</a>, <a class="el" href="a00310_source.html#l00124">annBoxDistance()</a>, <a class="el" href="a00292_source.html#l00046">annDist()</a>, <a class="el" href="a00300_source.html#l00058">ANNkd_tree::annkFRSearch()</a>, <a class="el" href="a00302_source.html#l00087">ANNkd_tree::annkPriSearch()</a>, <a class="el" href="a00304_source.html#l00089">ANNkd_tree::annkSearch()</a>, <a class="el" href="a00288_source.html#l00153">ANNorthHalfSpace::dist()</a>, <a class="el" href="a00315_source.html#l01374">getTrueNN()</a>, and <a class="el" href="a00315_source.html#l00628">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a89ef502f6f11abc56cc0f3aa530e5b13"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANN_ROOT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x</td><td>)</td>
+          <td>&#160;&#160;&#160;(x)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00361">361</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00315_source.html#l01467">doValidation()</a>, and <a class="el" href="a00315_source.html#l00628">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a185e91d6668c4e876c016ef9dff4d107"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANN_SUM</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">y&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;((x) &gt; (y) ? (x) : (y))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00362">362</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00293_source.html#l00039">ANNbd_shrink::ann_FR_search()</a>, <a class="el" href="a00300_source.html#l00148">ANNkd_leaf::ann_FR_search()</a>, <a class="el" href="a00300_source.html#l00100">ANNkd_split::ann_FR_search()</a>, <a class="el" href="a00294_source.html#l00039">ANNbd_shrink::ann_pri_search()</a>, <a class="el" href="a00302_source.html#l00181">ANNkd_leaf::ann_pri_search()</a>, <a class="el" href="a00302_source.html#l00139">ANNkd_split::ann_pri_search()</a>, <a class="el" href="a00295_source.html#l00039">ANNbd_shrink::ann_search()</a>, <a class="el" href="a00304_source.html#l00172">ANNkd_leaf::ann_search()</a>, <a class="el" href="a00304_source.html#l00124">ANNkd_split::ann_search()</a>, <a class="el" href="a00310_source.html#l00124">annBoxDistance()</a>, and <a class="el" href="a00292_source.html#l00046">annDist()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a11382dea040739c8fa14084650eb5de5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANNcopyright&#160;&#160;&#160;&quot;David M. Mount <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00123">123</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00315_source.html#l00628">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7066d3c64155111f9d28b766442bf711"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANNlatestRev&#160;&#160;&#160;&quot;Jan 27, 2010&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00124">124</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00315_source.html#l00628">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4ef5fb5f7e0bf3774fb2806411da5f49"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANNversion&#160;&#160;&#160;&quot;1.1.2&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00121">121</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00299_source.html#l00102">ANNkd_tree::Dump()</a>, <a class="el" href="a00315_source.html#l00628">main()</a>, and <a class="el" href="a00308_source.html#l00104">ANNkd_tree::Print()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5f7631a9a849a061774026c06da511ee"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANNversionCmt&#160;&#160;&#160;&quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00122">122</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00315_source.html#l00628">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1a2aaad2f42ad198a2e6c97dc7681137"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DLL_API</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00085">85</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="ab066cd4e4fffad67a16b64d9a28a86e4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef double <a class="el" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00158">158</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab2a7296707a2205201daccfc1929c3ca"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef double <a class="el" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00159">159</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae3a038f02621d79c1efd5f8fb2ee968e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>* <a class="el" href="a00286.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00377">377</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac73fee32442f021ddcce434bd34f735f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int <a class="el" href="a00286.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00175">175</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6cc54f9929727736423d719870cf1a5b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="a00286.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a>* <a class="el" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00378">378</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aacc30b4a2ed20722620c89db6c9f512c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="a00014.html">ANNkd_node</a>* <a class="el" href="a00286.html#aacc30b4a2ed20722620c89db6c9f512c">ANNkd_ptr</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00702">702</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad85f4b5cb9cf5877a2094bf8582133f5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>* <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00375">375</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a402299ac00a81ad80f09a0eb84ba4059"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>* <a class="el" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00376">376</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a class="anchor" id="ae5927710e8251aa54f5b820eca160f2c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00286.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474"></a>ANNfalse</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1"></a>ANNtrue</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00132">132</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;{<a class="code" href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a> = 0, <a class="code" href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a> = 1}; <span class="comment">// ANN boolean type (non ANSI C++)</span></div>
+<div class="ttc" id="a00286_html_ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1"><div class="ttname"><a href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00132">ANN.h:132</a></div></div>
+<div class="ttc" id="a00286_html_ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474"><div class="ttname"><a href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00132">ANN.h:132</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6efa97da21b6bc41db3ce4cfbfbe9c8c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8c">ANNshrinkRule</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a6efa97da21b6bc41db3ce4cfbfbe9c8ca00e2c3dae33e7a522c5f5265d1ce67e5"></a>ANN_BD_NONE</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a6efa97da21b6bc41db3ce4cfbfbe9c8ca9b85530cb7c0f2afd844dd298239beca"></a>ANN_BD_SIMPLE</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a6efa97da21b6bc41db3ce4cfbfbe9c8ca337cef9db4d4b9d7184c912bb5802a9a"></a>ANN_BD_CENTROID</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a6efa97da21b6bc41db3ce4cfbfbe9c8caf9599a9dddddb636d4fb525dc14751bc"></a>ANN_BD_SUGGEST</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00605">605</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;                   {</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;                <a class="code" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca00e2c3dae33e7a522c5f5265d1ce67e5">ANN_BD_NONE</a>                             = 0,    <span class="comment">// no shrinking at all (just kd-tree)</span></div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;                <a class="code" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca9b85530cb7c0f2afd844dd298239beca">ANN_BD_SIMPLE</a>                   = 1,    <span class="comment">// simple splitting</span></div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;                <a class="code" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca337cef9db4d4b9d7184c912bb5802a9a">ANN_BD_CENTROID</a>                 = 2,    <span class="comment">// centroid splitting</span></div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;                <a class="code" href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8caf9599a9dddddb636d4fb525dc14751bc">ANN_BD_SUGGEST</a>                  = 3};   <span class="comment">// the authors&#39; suggested choice</span></div>
+<div class="ttc" id="a00286_html_a6efa97da21b6bc41db3ce4cfbfbe9c8caf9599a9dddddb636d4fb525dc14751bc"><div class="ttname"><a href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8caf9599a9dddddb636d4fb525dc14751bc">ANN_BD_SUGGEST</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00609">ANN.h:609</a></div></div>
+<div class="ttc" id="a00286_html_a6efa97da21b6bc41db3ce4cfbfbe9c8ca337cef9db4d4b9d7184c912bb5802a9a"><div class="ttname"><a href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca337cef9db4d4b9d7184c912bb5802a9a">ANN_BD_CENTROID</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00608">ANN.h:608</a></div></div>
+<div class="ttc" id="a00286_html_a6efa97da21b6bc41db3ce4cfbfbe9c8ca9b85530cb7c0f2afd844dd298239beca"><div class="ttname"><a href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca9b85530cb7c0f2afd844dd298239beca">ANN_BD_SIMPLE</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00607">ANN.h:607</a></div></div>
+<div class="ttc" id="a00286_html_a6efa97da21b6bc41db3ce4cfbfbe9c8ca00e2c3dae33e7a522c5f5265d1ce67e5"><div class="ttname"><a href="a00286.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca00e2c3dae33e7a522c5f5265d1ce67e5">ANN_BD_NONE</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00606">ANN.h:606</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a229eef95deefadc9d3fa738683c9c2bb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bb">ANNsplitRule</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a229eef95deefadc9d3fa738683c9c2bba33c8110b750dedbe3e585bfe1371b35f"></a>ANN_KD_STD</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a229eef95deefadc9d3fa738683c9c2bba269ec3c64e6a211889803403e3db8c08"></a>ANN_KD_MIDPT</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a229eef95deefadc9d3fa738683c9c2bba120e2bf3c00d785a8deeaa911aa0762d"></a>ANN_KD_FAIR</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a229eef95deefadc9d3fa738683c9c2bbac8e375f7efb04af5ff833dac2095bc50"></a>ANN_KD_SL_MIDPT</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a229eef95deefadc9d3fa738683c9c2bba55cf23b5fd13fc8ca54d1e3c4a04d0fb"></a>ANN_KD_SL_FAIR</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a229eef95deefadc9d3fa738683c9c2bba9998b60fada03ec8867d9ee448ac4ea7"></a>ANN_KD_SUGGEST</em>&nbsp;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00596">596</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;                  {</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;                <a class="code" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba33c8110b750dedbe3e585bfe1371b35f">ANN_KD_STD</a>                              = 0,    <span class="comment">// the optimized kd-splitting rule</span></div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;                <a class="code" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba269ec3c64e6a211889803403e3db8c08">ANN_KD_MIDPT</a>                    = 1,    <span class="comment">// midpoint split</span></div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;                <a class="code" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba120e2bf3c00d785a8deeaa911aa0762d">ANN_KD_FAIR</a>                             = 2,    <span class="comment">// fair split</span></div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;                <a class="code" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bbac8e375f7efb04af5ff833dac2095bc50">ANN_KD_SL_MIDPT</a>                 = 3,    <span class="comment">// sliding midpoint splitting method</span></div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;                <a class="code" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba55cf23b5fd13fc8ca54d1e3c4a04d0fb">ANN_KD_SL_FAIR</a>                  = 4,    <span class="comment">// sliding fair split method</span></div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;                <a class="code" href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba9998b60fada03ec8867d9ee448ac4ea7">ANN_KD_SUGGEST</a>                  = 5};   <span class="comment">// the authors&#39; suggestion for best</span></div>
+<div class="ttc" id="a00286_html_a229eef95deefadc9d3fa738683c9c2bba55cf23b5fd13fc8ca54d1e3c4a04d0fb"><div class="ttname"><a href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba55cf23b5fd13fc8ca54d1e3c4a04d0fb">ANN_KD_SL_FAIR</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00601">ANN.h:601</a></div></div>
+<div class="ttc" id="a00286_html_a229eef95deefadc9d3fa738683c9c2bba9998b60fada03ec8867d9ee448ac4ea7"><div class="ttname"><a href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba9998b60fada03ec8867d9ee448ac4ea7">ANN_KD_SUGGEST</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00602">ANN.h:602</a></div></div>
+<div class="ttc" id="a00286_html_a229eef95deefadc9d3fa738683c9c2bba33c8110b750dedbe3e585bfe1371b35f"><div class="ttname"><a href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba33c8110b750dedbe3e585bfe1371b35f">ANN_KD_STD</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00597">ANN.h:597</a></div></div>
+<div class="ttc" id="a00286_html_a229eef95deefadc9d3fa738683c9c2bba120e2bf3c00d785a8deeaa911aa0762d"><div class="ttname"><a href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba120e2bf3c00d785a8deeaa911aa0762d">ANN_KD_FAIR</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00599">ANN.h:599</a></div></div>
+<div class="ttc" id="a00286_html_a229eef95deefadc9d3fa738683c9c2bbac8e375f7efb04af5ff833dac2095bc50"><div class="ttname"><a href="a00286.html#a229eef95deefadc9d3fa738683c9c2bbac8e375f7efb04af5ff833dac2095bc50">ANN_KD_SL_MIDPT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00600">ANN.h:600</a></div></div>
+<div class="ttc" id="a00286_html_a229eef95deefadc9d3fa738683c9c2bba269ec3c64e6a211889803403e3db8c08"><div class="ttname"><a href="a00286.html#a229eef95deefadc9d3fa738683c9c2bba269ec3c64e6a211889803403e3db8c08">ANN_KD_MIDPT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00598">ANN.h:598</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a479fe2e8e10f09a57c69f70dcd239f9a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> annAllocPt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>&#160;</td>
+          <td class="paramname"><em>c</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00292_source.html#l00110">110</a> of file <a class="el" href="a00292_source.html">ANN.cpp</a>.</p>
+
+<p>References <a class="el" href="a00284_source.html#l00081">dim</a>.</p>
+
+<p>Referenced by <a class="el" href="a00288_source.html#l00096">ANNorthRect::ANNorthRect()</a>, <a class="el" href="a00299_source.html#l00253">annReadDump()</a>, and <a class="el" href="a00291_source.html#l00078">main()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;{</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p = <span class="keyword">new</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>[<a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>];</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) p[i] = c;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">return</span> p;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}</div>
+<div class="ttc" id="a00286_html_ab066cd4e4fffad67a16b64d9a28a86e4"><div class="ttname"><a href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a></div><div class="ttdeci">double ANNcoord</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00158">ANN.h:158</a></div></div>
+<div class="ttc" id="a00286_html_ad85f4b5cb9cf5877a2094bf8582133f5"><div class="ttname"><a href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a></div><div class="ttdeci">ANNcoord * ANNpoint</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00375">ANN.h:375</a></div></div>
+<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a7d801c6084e348aefc8d675d5b8f2f9a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> annAllocPts </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00292_source.html#l00117">117</a> of file <a class="el" href="a00292_source.html">ANN.cpp</a>.</p>
+
+<p>References <a class="el" href="a00284_source.html#l00081">dim</a>.</p>
+
+<p>Referenced by <a class="el" href="a00316_source.html#l00503">annClusEllipsoids()</a>, <a class="el" href="a00316_source.html#l00314">annClusGaussPts()</a>, <a class="el" href="a00316_source.html#l00408">annClusOrthFlats()</a>, <a class="el" href="a00299_source.html#l00253">annReadDump()</a>, <a class="el" href="a00315_source.html#l01191">generatePts()</a>, <a class="el" href="a00291_source.html#l00078">main()</a>, <a class="el" href="a00284_source.html#l00514">readANN()</a>, and <a class="el" href="a00315_source.html#l01283">readPts()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;{</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> pa = <span class="keyword">new</span> <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>[n];                     <span class="comment">// allocate points</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>          p  = <span class="keyword">new</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>[n*<a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>];             <span class="comment">// allocate space for coords</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; n; i++) {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                pa[i] = &amp;(p[i*<a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>]);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">return</span> pa;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
+<div class="ttc" id="a00286_html_ab066cd4e4fffad67a16b64d9a28a86e4"><div class="ttname"><a href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a></div><div class="ttdeci">double ANNcoord</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00158">ANN.h:158</a></div></div>
+<div class="ttc" id="a00286_html_a402299ac00a81ad80f09a0eb84ba4059"><div class="ttname"><a href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a></div><div class="ttdeci">ANNpoint * ANNpointArray</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00376">ANN.h:376</a></div></div>
+<div class="ttc" id="a00286_html_ad85f4b5cb9cf5877a2094bf8582133f5"><div class="ttname"><a href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a></div><div class="ttdeci">ANNcoord * ANNpoint</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00375">ANN.h:375</a></div></div>
+<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a7841414482997b8e49024b3cd5d3a017"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> annClose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00308_source.html#l00221">221</a> of file <a class="el" href="a00308_source.html">kd_tree.cpp</a>.</p>
+
+<p>References <a class="el" href="a00308_source.html#l00050">KD_TRIVIAL</a>.</p>
+
+<p>Referenced by <a class="el" href="a00291_source.html#l00078">main()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;{</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a> != NULL) {</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                <span class="keyword">delete</span> <a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a>;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                <a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a> = NULL;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;}</div>
+<div class="ttc" id="a00308_html_aefd44c312f0116089b2cfbf80ef5c5c7"><div class="ttname"><a href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a></div><div class="ttdeci">ANNkd_leaf * KD_TRIVIAL</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00050">kd_tree.cpp:50</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a4d699aa9bd46a0c0bf91c25252da80e0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> annCopyPt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00292_source.html#l00140">140</a> of file <a class="el" href="a00292_source.html">ANN.cpp</a>.</p>
+
+<p>References <a class="el" href="a00284_source.html#l00081">dim</a>.</p>
+
+<p>Referenced by <a class="el" href="a00296_source.html#l00116">ANNbd_tree::ANNbd_tree()</a>, <a class="el" href="a00308_source.html#l00368">ANNkd_tree::ANNkd_tree()</a>, and <a class="el" href="a00288_source.html#l00102">ANNorthRect::ANNorthRect()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;{</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p = <span class="keyword">new</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>[<a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>];</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) p[i] = source[i];</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keywordflow">return</span> p;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;}</div>
+<div class="ttc" id="a00286_html_ab066cd4e4fffad67a16b64d9a28a86e4"><div class="ttname"><a href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a></div><div class="ttdeci">double ANNcoord</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00158">ANN.h:158</a></div></div>
+<div class="ttc" id="a00286_html_ad85f4b5cb9cf5877a2094bf8582133f5"><div class="ttname"><a href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a></div><div class="ttdeci">ANNcoord * ANNpoint</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00375">ANN.h:375</a></div></div>
+<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a85f3fafa513eee017f525ad74a82cf10"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> annDeallocPt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00292_source.html#l00127">127</a> of file <a class="el" href="a00292_source.html">ANN.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="a00308_source.html#l00209">ANNkd_tree::~ANNkd_tree()</a>, and <a class="el" href="a00288_source.html#l00113">ANNorthRect::~ANNorthRect()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;{</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keyword">delete</span> [] p;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        p = NULL;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af45ca32b2926c0e7c20c458e555c8c04"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> annDeallocPts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> &amp;&#160;</td>
+          <td class="paramname"><em>pa</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00292_source.html#l00133">133</a> of file <a class="el" href="a00292_source.html">ANN.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="a00316_source.html#l00503">annClusEllipsoids()</a>, <a class="el" href="a00316_source.html#l00314">annClusGaussPts()</a>, <a class="el" href="a00316_source.html#l00408">annClusOrthFlats()</a>, <a class="el" href="a00315_source.html#l01191">generatePts()</a>, <a class="el" href="a00315_source.html#l00628">main()</a>, and <a class="el" href="a00315_source.html#l01283">readPts()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;{</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keyword">delete</span> [] pa[0];                                                        <span class="comment">// dealloc coordinate storage</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keyword">delete</span> [] pa;                                                           <span class="comment">// dealloc points</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        pa = NULL;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="abcf59e35431a1c2153e0a01c056bc647"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a> annDist </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00292_source.html#l00046">46</a> of file <a class="el" href="a00292_source.html">ANN.cpp</a>.</p>
+
+<p>References <a class="el" href="a00287_source.html#l00136">ANN_COORD</a>, <a class="el" href="a00287_source.html#l00131">ANN_FLOP</a>, <a class="el" href="a00286_source.html#l00360">ANN_POW</a>, <a class="el" href="a00287_source.html#l00135">ANN_PTS</a>, <a class="el" href="a00286_source.html#l00362">ANN_SUM</a>, and <a class="el" href="a00284_source.html#l00081">dim</a>.</p>
+
+<p>Referenced by <a class="el" href="a00298_source.html#l00080">ANNbruteForce::annkFRSearch()</a>, and <a class="el" href="a00298_source.html#l00054">ANNbruteForce::annkSearch()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keyword">register</span> <span class="keywordtype">int</span> d;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">register</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> diff;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">register</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> dist;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        dist = 0;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">for</span> (d = 0; d &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; d++) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                diff = p[d] - q[d];</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                dist = <a class="code" href="a00286.html#a185e91d6668c4e876c016ef9dff4d107">ANN_SUM</a>(dist, <a class="code" href="a00286.html#a9098bea865802af85103a5a1b4582d2c">ANN_POW</a>(diff));</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="a00287.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a>(3*dim)                                 <span class="comment">// performance counts</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="a00287.html#a6e30a1f9d8d2889f718811d80b2cba08">ANN_PTS</a>(1)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="a00287.html#a67b23644302dcb8220dd583858c08e70">ANN_COORD</a>(dim)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        return dist;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="ttc" id="a00287_html_a6e30a1f9d8d2889f718811d80b2cba08"><div class="ttname"><a href="a00287.html#a6e30a1f9d8d2889f718811d80b2cba08">ANN_PTS</a></div><div class="ttdeci">#define ANN_PTS(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00135">ANNperf.h:135</a></div></div>
+<div class="ttc" id="a00286_html_ab066cd4e4fffad67a16b64d9a28a86e4"><div class="ttname"><a href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a></div><div class="ttdeci">double ANNcoord</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00158">ANN.h:158</a></div></div>
+<div class="ttc" id="a00286_html_a185e91d6668c4e876c016ef9dff4d107"><div class="ttname"><a href="a00286.html#a185e91d6668c4e876c016ef9dff4d107">ANN_SUM</a></div><div class="ttdeci">#define ANN_SUM(x, y)</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00362">ANN.h:362</a></div></div>
+<div class="ttc" id="a00287_html_a9e54d6f38fc80e6cdd64b97abf63c9a3"><div class="ttname"><a href="a00287.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a></div><div class="ttdeci">#define ANN_FLOP(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00131">ANNperf.h:131</a></div></div>
+<div class="ttc" id="a00287_html_a67b23644302dcb8220dd583858c08e70"><div class="ttname"><a href="a00287.html#a67b23644302dcb8220dd583858c08e70">ANN_COORD</a></div><div class="ttdeci">#define ANN_COORD(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00136">ANNperf.h:136</a></div></div>
+<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00286_html_a9098bea865802af85103a5a1b4582d2c"><div class="ttname"><a href="a00286.html#a9098bea865802af85103a5a1b4582d2c">ANN_POW</a></div><div class="ttdeci">#define ANN_POW(v)</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00360">ANN.h:360</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a821c00e57e7674b17d9a6145839f48d4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00286.html#a1a2aaad2f42ad198a2e6c97dc7681137">DLL_API</a> <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> annMaxPtsVisit </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxPts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00292_source.html#l00197">197</a> of file <a class="el" href="a00292_source.html">ANN.cpp</a>.</p>
+
+<p>References <a class="el" href="a00292_source.html#l00190">ANNmaxPtsVisited</a>, and <a class="el" href="a00291_source.html#l00056">maxPts</a>.</p>
+
+<p>Referenced by <a class="el" href="a00315_source.html#l00628">main()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;{</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <a class="code" href="a00288.html#ad78dd7b2d385a9fbf5921ad3ab0483d6">ANNmaxPtsVisited</a> = <a class="code" href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a>;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;}</div>
+<div class="ttc" id="a00291_html_a8c59db27913a8a427a7049780bacde29"><div class="ttname"><a href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a></div><div class="ttdeci">int maxPts</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00056">ann_sample.cpp:56</a></div></div>
+<div class="ttc" id="a00288_html_ad78dd7b2d385a9fbf5921ad3ab0483d6"><div class="ttname"><a href="a00288.html#ad78dd7b2d385a9fbf5921ad3ab0483d6">ANNmaxPtsVisited</a></div><div class="ttdeci">int ANNmaxPtsVisited</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00190">ANN.cpp:190</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="afe32cadf19fdc4ce47a9b05d309d767c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00286.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a> ANN_ALLOW_SELF_MATCH = <a class="el" href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00235">235</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00300_source.html#l00148">ANNkd_leaf::ann_FR_search()</a>, <a class="el" href="a00302_source.html#l00181">ANNkd_leaf::ann_pri_search()</a>, <a class="el" href="a00304_source.html#l00172">ANNkd_leaf::ann_search()</a>, <a class="el" href="a00298_source.html#l00080">ANNbruteForce::annkFRSearch()</a>, and <a class="el" href="a00298_source.html#l00054">ANNbruteForce::annkSearch()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a477b3fd2435613171740930b8e1925cf"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double ANN_DBL_MAX = DBL_MAX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00118">118</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00315_source.html#l01467">doValidation()</a>, and <a class="el" href="a00287_source.html#l00091">ANNsampStat::reset()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8a36a08c888181744ed16309e29f48ac"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a> ANN_DIST_INF = <a class="el" href="a00286.html#a477b3fd2435613171740930b8e1925cf">ANN_DBL_MAX</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00199">199</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a626cc402195987f50e1355300ceaa9f5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int ANN_N_SHRINK_RULES = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00610">610</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a421ca66e0eaae53f541086d744353b2d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int ANN_N_SPLIT_RULES = 6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00603">603</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae1346d82a39cf8b05b03fa85aaa51233"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00286.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a> ANN_NULL_IDX = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00176">176</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00315_source.html#l01467">doValidation()</a>, and <a class="el" href="a00315_source.html#l00628">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af70a6982ba3eb965c85163b12bf15a79"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int ANNcoordPrec = 15</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00286_source.html#l00222">222</a> of file <a class="el" href="a00286_source.html">ANN.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00299_source.html#l00102">ANNkd_tree::Dump()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

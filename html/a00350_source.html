@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/inc/GaussianLikelihoodScalarCovariance.h Source File</title>
+<title>queso-0.53.0: src/core/inc/queso.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_d98b071537eea78ae0761911e9f6b515.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_88fac51d2e17cec13478f22fd619c260.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GaussianLikelihoodScalarCovariance.h</div>  </div>
+<div class="title">queso.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00350.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -74,50 +74,44 @@
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GAUSSIAN_LIKELIHOOD_SCALAR_COV_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GAUSSIAN_LIKELIHOOD_SCALAR_COV_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GaussianLikelihood.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="a00076.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00076.html">GaussianLikelihoodScalarCovariance</a> : <span class="keyword">public</span> <a class="code" href="a00019.html">BaseGaussianLikelihood</a>&lt;V, M&gt; {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="a00076.html#aa7004f00a51c29e71a25eedb5f549114">GaussianLikelihoodScalarCovariance</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * prefix,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00176.html">VectorSet&lt;V, M&gt;</a> &amp; <a class="code" href="a00026.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>, <span class="keyword">const</span> V &amp; observations,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <span class="keywordtype">double</span> covariance);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00076.html#a2e4de28d32dfc7a9a77ef41f41ea508d">~GaussianLikelihoodScalarCovariance</a>();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00076.html#a303c5bae905ae908389398ba66cc09da">actualValue</a>(<span class="keyword">const</span> V &amp; domainVector, <span class="keyword">const</span> V * domainDirection,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      V * gradVector, M * hessianMatrix, V * hessianEffect) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00076.html#a156f507978d1caaa127cb058d2ea2ac0">lnValue</a>(<span class="keyword">const</span> V &amp; domainVector, <span class="keyword">const</span> V * domainDirection,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      V * gradVector, M * hessianMatrix, V * hessianEffect) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="a00076.html#aa8a85a90acf4fd7181f1e212d6aed55c">   67</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00076.html#aa8a85a90acf4fd7181f1e212d6aed55c">m_covariance</a>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif  // UQ_GAUSSIAN_LIKELIHOOD_SCALAR_COV_H</span></div>
-<div class="ttc" id="a00076_html_a2e4de28d32dfc7a9a77ef41f41ea508d"><div class="ttname"><a href="a00076.html#a2e4de28d32dfc7a9a77ef41f41ea508d">QUESO::GaussianLikelihoodScalarCovariance::~GaussianLikelihoodScalarCovariance</a></div><div class="ttdeci">virtual ~GaussianLikelihoodScalarCovariance()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00044">GaussianLikelihoodScalarCovariance.C:44</a></div></div>
-<div class="ttc" id="a00076_html_a156f507978d1caaa127cb058d2ea2ac0"><div class="ttname"><a href="a00076.html#a156f507978d1caaa127cb058d2ea2ac0">QUESO::GaussianLikelihoodScalarCovariance::lnValue</a></div><div class="ttdeci">virtual double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00060">GaussianLikelihoodScalarCovariance.C:60</a></div></div>
-<div class="ttc" id="a00076_html_aa8a85a90acf4fd7181f1e212d6aed55c"><div class="ttname"><a href="a00076.html#aa8a85a90acf4fd7181f1e212d6aed55c">QUESO::GaussianLikelihoodScalarCovariance::m_covariance</a></div><div class="ttdeci">double m_covariance</div><div class="ttdef"><b>Definition:</b> <a href="a00350_source.html#l00067">GaussianLikelihoodScalarCovariance.h:67</a></div></div>
-<div class="ttc" id="a00076_html"><div class="ttname"><a href="a00076.html">QUESO::GaussianLikelihoodScalarCovariance</a></div><div class="ttdoc">A class that represents a Gaussian likelihood with scalar covariance. </div><div class="ttdef"><b>Definition:</b> <a href="a00350_source.html#l00040">GaussianLikelihoodScalarCovariance.h:40</a></div></div>
-<div class="ttc" id="a00176_html"><div class="ttname"><a href="a00176.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00207_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00076_html_a303c5bae905ae908389398ba66cc09da"><div class="ttname"><a href="a00076.html#a303c5bae905ae908389398ba66cc09da">QUESO::GaussianLikelihoodScalarCovariance::actualValue</a></div><div class="ttdeci">virtual double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00050">GaussianLikelihoodScalarCovariance.C:50</a></div></div>
-<div class="ttc" id="a00026_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00026.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00221_source.html#l00050">ScalarFunction.C:50</a></div></div>
-<div class="ttc" id="a00076_html_aa7004f00a51c29e71a25eedb5f549114"><div class="ttname"><a href="a00076.html#aa7004f00a51c29e71a25eedb5f549114">QUESO::GaussianLikelihoodScalarCovariance::GaussianLikelihoodScalarCovariance</a></div><div class="ttdeci">GaussianLikelihoodScalarCovariance(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;observations, double covariance)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00035">GaussianLikelihoodScalarCovariance.C:35</a></div></div>
-<div class="ttc" id="a00019_html"><div class="ttname"><a href="a00019.html">QUESO::BaseGaussianLikelihood</a></div><div class="ttdoc">Base class for canned Gaussian likelihoods. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00045">GaussianLikelihood.h:45</a></div></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// grvy.h: Basic API Definitions</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifndef QUESO_H_</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_H_</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Library version/build info</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00350.html#af8f8eb612ce429b5b52d7fd5e412f2dd">   34</a></span>&#160;<span class="preprocessor">#define QUESO_MAJOR_VERSION  0</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00350.html#a8aa8d2fc44e6edc52b2baa17c5001bae">   35</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_MINOR_VERSION  53</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00350.html#a73b7d04c533087e0000140cc9e19dc71">   36</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_MICRO_VERSION  0</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00350.html#ac220e0baec88681f8270678badb7bcb9">   38</a></span>&#160;<span class="preprocessor">#define QUESO_BUILD_USER     &quot;damon&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00350.html#aef2d7f6fe2a604b6dc962d9c53fbccad">   39</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_ARCH     &quot;x86_64-unknown-linux-gnu&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="a00350.html#a82f0d319c13988e6ce0abfc3e5acfafd">   40</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_HOST     &quot;zoidberg.ices.utexas.edu&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="a00350.html#ad3f2a2a9e1a0507319ca48e4a171d7c6">   41</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_DATE     &quot;2015-06-11 13:51&quot;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="a00350.html#a8b36b33f2429f166778a0a9410259f1d">   42</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_VERSION  &quot;94c18ec&quot;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00350.html#a4ade4ed888e8e8984634ec507e08dcf4">   44</a></span>&#160;<span class="preprocessor">#define QUESO_LIB_VERSION    &quot;0.53.0&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00350.html#a200372295aca6277053dc3198acd1fa2">   45</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_LIB_RELEASE    &quot;Development Build&quot;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00350.html#a5473b76f2474d904b914586f0e85575d">   47</a></span>&#160;<span class="preprocessor">#define QUESO_CXX            &quot;/opt/apps/ossw/libraries/mpich2/mpich2-1.4.1p1/sl6/gcc-4.7/bin/mpicxx&quot;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00350.html#a0733ab68bd215a3d12bc6aea1d80a7e5">   48</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_CXXFLAGS       &quot;-g -O2 -Wall&quot;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// External libraries</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00350.html#a735dae31e72a24c63c02e5ed8868fcac">   52</a></span>&#160;<span class="preprocessor">#define QUESO_TRILINOS_DIR  &quot;&quot;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00350.html#aad144bff960096e3e55ea946a529dc9f">   53</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GSL_DIR       &quot;-L/opt/apps/ossw/libraries/gsl/gsl-1.15/sl6/gcc-4.7/lib -lgsl -lgslcblas -lm&quot;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00350.html#ae762ff926acfd3095751bf812077f02d">   54</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GRVY_DIR      &quot;&quot;</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00350.html#ace4c8bf4a22ac49477823be20179d3d7">   55</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GLPK_DIR      &quot;&quot;</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00350.html#a204aeda021989ea37fbc54f1861cbfef">   56</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_HDF5_DIR      &quot;/opt/apps/ossw/libraries/hdf5/hdf5-1.8.9/sl6/gcc-4.7&quot;</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

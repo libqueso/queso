@@ -1,0 +1,17 @@
+<map id="QUESO::BaseJointPdf&lt; V, M &gt;" name="QUESO::BaseJointPdf&lt; V, M &gt;">
+<area shape="rect" id="node5" href="$a00052.html" title="BayesianJointPdf\&lt; P\l_V, P_M \&gt;" alt="" coords="513,5,671,51"/>
+<area shape="rect" id="node7" href="$a00052.html" title="A class for handling Bayesian joint PDFs. " alt="" coords="496,74,688,121"/>
+<area shape="rect" id="node9" href="$a00053.html" title="A class for handling Beta joint PDFs. " alt="" coords="509,143,675,190"/>
+<area shape="rect" id="node11" href="$a00058.html" title="A class for handling concatenated PDFs. " alt="" coords="488,213,696,259"/>
+<area shape="rect" id="node13" href="$a00086.html" title="A class for handling Gamma joint PDFs. " alt="" coords="500,282,684,329"/>
+<area shape="rect" id="node15" href="$a00090.html" title="A class for handling Gaussian joint PDFs. " alt="" coords="497,351,687,398"/>
+<area shape="rect" id="node17" href="$a00112.html" title="A class for handling generic joint PDFs. " alt="" coords="500,421,684,467"/>
+<area shape="rect" id="node19" href="$a00143.html" title="A class for handling Inverse Gamma joint PDFs. " alt="" coords="487,490,697,537"/>
+<area shape="rect" id="node21" href="$a00146.html" title="A class for handling hybrid (transformed) Gaussians with bounds. " alt="" coords="481,559,703,606"/>
+<area shape="rect" id="node23" href="$a00149.html" title="A class for handling jeffreys joint PDFs. " alt="" coords="500,629,684,675"/>
+<area shape="rect" id="node25" href="$a00157.html" title="A class for handling Log&#45;Normal joint PDFs. " alt="" coords="491,698,693,745"/>
+<area shape="rect" id="node27" href="$a00180.html" title="A class for handling a powered joint PDFs. " alt="" coords="497,767,687,814"/>
+<area shape="rect" id="node29" href="$a00218.html" title="A class for handling uniform joint PDFs. " alt="" coords="501,837,683,883"/>
+<area shape="rect" id="node31" href="$a00232.html" title="A class for handling Wigner joint PDFs. " alt="" coords="503,906,681,953"/>
+<area shape="rect" id="node2" href="$a00041.html" title="A templated (base) class for handling scalar functions. " alt="" coords="5,455,216,502"/>
+</map>

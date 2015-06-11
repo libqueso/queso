@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/inc/EnvironmentOptions.h File Reference</title>
+<title>queso-0.53.0: src/basic/inc/ArrayOfSequences.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,28 +43,23 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_1df83ded4604fcab59464c552d0ec4a5.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1e11172a4448ab4d7b3d22091261e10c.html">basic</a></li><li class="navelem"><a class="el" href="dir_990ebc7eb5cbf688bd17d58c5e18d0f7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">EnvironmentOptions.h File Reference</div>  </div>
+<div class="title">ArrayOfSequences.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Class to allow options to be passed to a <a class="el" href="a00500.html">QUESO</a> environment.  
-<a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;queso/Environment.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;queso/VectorSequence.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for EnvironmentOptions.h:</div>
+Include dependency graph for ArrayOfSequences.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00555.png" border="0" usemap="#src_2core_2inc_2_environment_options_8h" alt=""/></div>
-<map name="src_2core_2inc_2_environment_options_8h" id="src_2core_2inc_2_environment_options_8h">
+<div class="center"><img src="a00653.png" border="0" usemap="#src_2basic_2inc_2_array_of_sequences_8h" alt=""/></div>
+<map name="src_2basic_2inc_2_array_of_sequences_8h" id="src_2basic_2inc_2_array_of_sequences_8h">
 </map>
 </div>
 </div>
@@ -72,332 +67,18 @@ Include dependency graph for EnvironmentOptions.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00052.html">QUESO::EnvironmentOptions</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class reads options one can pass to a <a class="el" href="a00500.html">QUESO</a> environment through an input file.  <a href="a00052.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html">QUESO::ArrayOfSequences&lt; V, M &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for handling array samples (arrays of scalar sequences).  <a href="a00026.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html">QUESO</a></td></tr>
+<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a0b152a87af300fefc74156efb1526e67"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#a0b152a87af300fefc74156efb1526e67">UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE</a>&#160;&#160;&#160;&quot;.&quot;</td></tr>
-<tr class="separator:a0b152a87af300fefc74156efb1526e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a892d0b4584a84b0dd25ce41a69493bf3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#a892d0b4584a84b0dd25ce41a69493bf3">UQ_ENV_FILENAME_FOR_NO_INPUT_FILE</a>&#160;&#160;&#160;&quot;.&quot;</td></tr>
-<tr class="separator:a892d0b4584a84b0dd25ce41a69493bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa218bd19c1b15600e9fc4aea92000417"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#aa218bd19c1b15600e9fc4aea92000417">UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:aa218bd19c1b15600e9fc4aea92000417"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7b98ca2738dcbc152d358eafb2685be"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#ab7b98ca2738dcbc152d358eafb2685be">UQ_ENV_SUB_SCREEN_WRITE_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:ab7b98ca2738dcbc152d358eafb2685be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb73e22ce84a516af0ad8860409588c5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#adb73e22ce84a516af0ad8860409588c5">UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV</a>&#160;&#160;&#160;<a class="el" href="a00240.html#a0b152a87af300fefc74156efb1526e67">UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE</a></td></tr>
-<tr class="separator:adb73e22ce84a516af0ad8860409588c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac435da3ea28649fbfb1f79e08c5e9a45"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#ac435da3ea28649fbfb1f79e08c5e9a45">UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:ac435da3ea28649fbfb1f79e08c5e9a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a848e049bac92957c3bf2b4897d70557f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#a848e049bac92957c3bf2b4897d70557f">UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a848e049bac92957c3bf2b4897d70557f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a7226f5e2f79219b66071c97099fcb4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#a7a7226f5e2f79219b66071c97099fcb4">UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
-<tr class="separator:a7a7226f5e2f79219b66071c97099fcb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0aed60fbfac9147a8f4d02f5e57fc3c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#aa0aed60fbfac9147a8f4d02f5e57fc3c">UQ_ENV_DISPLAY_VERBOSITY_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:aa0aed60fbfac9147a8f4d02f5e57fc3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4388bca2484d2787f65db58c924e4663"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#a4388bca2484d2787f65db58c924e4663">UQ_ENV_SYNC_VERBOSITY_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a4388bca2484d2787f65db58c924e4663"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af34c1c6676f7044beafb32dab1a1301a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#af34c1c6676f7044beafb32dab1a1301a">UQ_ENV_CHECKING_LEVEL_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:af34c1c6676f7044beafb32dab1a1301a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a706f5da95b8e726b803ef2b7e3dcb7c9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#a706f5da95b8e726b803ef2b7e3dcb7c9">UQ_ENV_RNG_TYPE_ODV</a>&#160;&#160;&#160;&quot;gsl&quot;</td></tr>
-<tr class="separator:a706f5da95b8e726b803ef2b7e3dcb7c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46ccfdca1dd926bb77e0a35061f7b8e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#a46ccfdca1dd926bb77e0a35061f7b8e2">UQ_ENV_SEED_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a46ccfdca1dd926bb77e0a35061f7b8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd20b252766664d5f0d557b1b99ae9cd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#acd20b252766664d5f0d557b1b99ae9cd">UQ_ENV_IDENTIFYING_STRING_ODV</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
-<tr class="separator:acd20b252766664d5f0d557b1b99ae9cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3bd1899c8b9dd8693709bfde2380b54"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#af3bd1899c8b9dd8693709bfde2380b54">UQ_ENV_PLATFORM_NAME_ODV</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
-<tr class="separator:af3bd1899c8b9dd8693709bfde2380b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc461b58cef6f59de0d02dd6ee425f88"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#afc461b58cef6f59de0d02dd6ee425f88">UQ_ENV_NUM_DEBUG_PARAMS_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:afc461b58cef6f59de0d02dd6ee425f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a568dda30a031949b122d7b55118012d1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html#a568dda30a031949b122d7b55118012d1">UQ_ENV_DEBUG_PARAM_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a568dda30a031949b122d7b55118012d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a19108ba91686fa96e00f6f47bed7c67f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#a19108ba91686fa96e00f6f47bed7c67f">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const EnvironmentOptions &amp;obj)</td></tr>
-<tr class="memdesc:a19108ba91686fa96e00f6f47bed7c67f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print values of the options chosen.  <a href="#a19108ba91686fa96e00f6f47bed7c67f">More...</a><br/></td></tr>
-<tr class="separator:a19108ba91686fa96e00f6f47bed7c67f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class to allow options to be passed to a <a class="el" href="a00500.html">QUESO</a> environment. </p>
-
-<p>Definition in file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="af34c1c6676f7044beafb32dab1a1301a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_CHECKING_LEVEL_ODV&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00041">41</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a568dda30a031949b122d7b55118012d1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_DEBUG_PARAM_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00047">47</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa0aed60fbfac9147a8f4d02f5e57fc3c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_DISPLAY_VERBOSITY_ODV&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00039">39</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a892d0b4584a84b0dd25ce41a69493bf3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_FILENAME_FOR_NO_INPUT_FILE&#160;&#160;&#160;&quot;.&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00031">31</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00274_source.html#l00913">QUESO::BaseEnvironment::openInputFile()</a>, and <a class="el" href="a00274_source.html#l01016">QUESO::BaseEnvironment::openUnifiedInputFile()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0b152a87af300fefc74156efb1526e67"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE&#160;&#160;&#160;&quot;.&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00030">30</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00274_source.html#l01207">QUESO::FullEnvironment::FullEnvironment()</a>, and <a class="el" href="a00274_source.html#l00516">QUESO::BaseEnvironment::openOutputFile()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acd20b252766664d5f0d557b1b99ae9cd"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_IDENTIFYING_STRING_ODV&#160;&#160;&#160;&quot;&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00044">44</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="afc461b58cef6f59de0d02dd6ee425f88"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_NUM_DEBUG_PARAMS_ODV&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00046">46</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa218bd19c1b15600e9fc4aea92000417"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00033">33</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af3bd1899c8b9dd8693709bfde2380b54"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_PLATFORM_NAME_ODV&#160;&#160;&#160;&quot;&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00045">45</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a706f5da95b8e726b803ef2b7e3dcb7c9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_RNG_TYPE_ODV&#160;&#160;&#160;&quot;gsl&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00042">42</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a46ccfdca1dd926bb77e0a35061f7b8e2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_SEED_ODV&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00043">43</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac435da3ea28649fbfb1f79e08c5e9a45"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00036">36</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a848e049bac92957c3bf2b4897d70557f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00037">37</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7a7226f5e2f79219b66071c97099fcb4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV&#160;&#160;&#160;&quot;&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00038">38</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="adb73e22ce84a516af0ad8860409588c5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV&#160;&#160;&#160;<a class="el" href="a00240.html#a0b152a87af300fefc74156efb1526e67">UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00035">35</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab7b98ca2738dcbc152d358eafb2685be"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_SUB_SCREEN_WRITE_ODV&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00034">34</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4388bca2484d2787f65db58c924e4663"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_ENV_SYNC_VERBOSITY_ODV&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00240_source.html#l00040">40</a> of file <a class="el" href="a00240_source.html">EnvironmentOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00275_source.html#l00222">QUESO::EnvironmentOptions::defineMyOptions()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

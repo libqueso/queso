@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/src/MpiComm.C Source File</title>
+<title>queso-0.53.0: src/contrib/ANN/src/ANN.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,335 +43,252 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_bd26773dc971f4fa3aa1d8bd68fbf230.html">contrib</a></li><li class="navelem"><a class="el" href="dir_9b88879957fe8db0821d93727895fef3.html">ANN</a></li><li class="navelem"><a class="el" href="dir_162f6fcbd574a601bad28c5358416498.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">MpiComm.C</div>  </div>
+<div class="title">ANN.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00292.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor,</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/MpiComm.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Default constructor ------------------------------</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00132.html#a34237212169683b2df357b6b710d2a38">   31</a></span>&#160;<a class="code" href="a00132.html#a34237212169683b2df357b6b710d2a38">MpiComm::MpiComm</a>()</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  :</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  m_env( *(new <a class="code" href="a00051.html">EmptyEnvironment</a>()) )</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                      <a class="code" href="a00500.html#a7d4679800a430ae8e473c1c7bc0bfb21">UQ_UNAVAILABLE_RANK</a>,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                      <span class="stringliteral">&quot;MpiComm::constructor()&quot;</span>,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                      <span class="stringliteral">&quot;should not be called&quot;</span>);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// QUESO MpiComm MPI Constructor ------------------</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="a00132.html#a975b6dcbce05a62ec4c4034ff200a6fe">   41</a></span>&#160;<a class="code" href="a00132.html#a34237212169683b2df357b6b710d2a38">MpiComm::MpiComm</a>(<span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; env, <a class="code" href="a00500.html#af48741a7e6d7897e9e96e0f5bb26cfd7">RawType_MPI_Comm</a> inputRawComm)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  :</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  m_env          (env),</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;#ifdef QUESO_HAS_TRILINOS</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  m_epetraMpiComm( new Epetra_MpiComm(inputRawComm) ),</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;#endif</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  m_rawComm      (inputRawComm),</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  m_worldRank    (-1),</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  m_myPid        (-1),</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  m_numProc      (-1)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Comm_rank(inputRawComm,&amp;<a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                      <a class="code" href="a00500.html#a7d4679800a430ae8e473c1c7bc0bfb21">UQ_UNAVAILABLE_RANK</a>,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                      <span class="stringliteral">&quot;MpiComm::constructor()&quot;</span>,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                      <span class="stringliteral">&quot;failed MPI_Comm_rank() on full rank&quot;</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  mpiRC = MPI_Comm_rank(inputRawComm,&amp;<a class="code" href="a00132.html#aca028ecbe31a1eafa0e0bf93b331bcb9">m_myPid</a>);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                      <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                      <span class="stringliteral">&quot;MpiComm::constructor()&quot;</span>,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                      <span class="stringliteral">&quot;failed MPI_Comm_rank() on inputRawComm&quot;</span>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  mpiRC = MPI_Comm_size(inputRawComm,&amp;<a class="code" href="a00132.html#a73c6f34523215042d866680b3e9a1497">m_numProc</a>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                      <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                      <span class="stringliteral">&quot;MpiComm::constructor()&quot;</span>,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                      <span class="stringliteral">&quot;failed MPI_Comm_size() on inputRawComm&quot;</span>);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// Copy constructor ---------------------------------</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="a00132.html#a740705f407d4cd32ebf66fd797977209">   72</a></span>&#160;<a class="code" href="a00132.html#a34237212169683b2df357b6b710d2a38">MpiComm::MpiComm</a>(<span class="keyword">const</span> <a class="code" href="a00132.html">MpiComm</a>&amp; src)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  :</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  m_env          (src.m_env)</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;#ifdef QUESO_HAS_TRILINOS</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  ,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  m_epetraMpiComm(NULL)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;#endif</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  this-&gt;<a class="code" href="a00132.html#a62220ff8cea91f4f51e8713a9a513846">copy</a>(src);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="a00132.html#a2bf46779dc9fe47cf90cb205285e8a99">   84</a></span>&#160;<a class="code" href="a00132.html#a2bf46779dc9fe47cf90cb205285e8a99">MpiComm::~MpiComm</a>()</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;{</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor"></span>  <span class="keyword">delete</span> m_epetraMpiComm;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  m_epetraMpiComm = NULL;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor"></span>}</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// Set methodos -------------------------------------</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<a class="code" href="a00132.html">MpiComm</a>&amp;</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00132.html#ac72ab4b4a0181c4e37e6e6edfa6b696a">   95</a></span>&#160;<a class="code" href="a00132.html#ac72ab4b4a0181c4e37e6e6edfa6b696a">MpiComm::operator=</a>(<span class="keyword">const</span> <a class="code" href="a00132.html">MpiComm</a>&amp; rhs)</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;{</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  this-&gt;<a class="code" href="a00132.html#a62220ff8cea91f4f51e8713a9a513846">copy</a>(rhs);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">// Attribute access methods -------------------------</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<a class="code" href="a00500.html#af48741a7e6d7897e9e96e0f5bb26cfd7">RawType_MPI_Comm</a></div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="a00132.html#a29d53c01c5ac7ba1bb3a33911d89b6b8">  103</a></span>&#160;<a class="code" href="a00132.html#a29d53c01c5ac7ba1bb3a33911d89b6b8">MpiComm::Comm</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraMpiComm-&gt;Comm();</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="keywordtype">int</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="a00132.html#ab806f80f206210723fcb4df8185a55a8">  112</a></span>&#160;<a class="code" href="a00132.html#ab806f80f206210723fcb4df8185a55a8">MpiComm::MyPID</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraMpiComm-&gt;MyPID();</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00132.html#aca028ecbe31a1eafa0e0bf93b331bcb9">m_myPid</a>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keywordtype">int</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="a00132.html#aa780721ae0fdeabc5a15e04cb0cad964">  121</a></span>&#160;<a class="code" href="a00132.html#aa780721ae0fdeabc5a15e04cb0cad964">MpiComm::NumProc</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraMpiComm-&gt;NumProc();</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00132.html#a73c6f34523215042d866680b3e9a1497">m_numProc</a>;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">// Methods overridden from Comm ---------------------</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="a00132.html#a72e137e60ef8060efb1ee5fc874fa4b8">  131</a></span>&#160;<a class="code" href="a00132.html#a72e137e60ef8060efb1ee5fc874fa4b8">MpiComm::Allreduce</a>(<span class="keywordtype">void</span>* sendbuf, <span class="keywordtype">void</span>* recvbuf, <span class="keywordtype">int</span> count, <a class="code" href="a00500.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> datatype, <a class="code" href="a00500.html#ab6a4008f3ba2b0196dae9e41971a9c18">RawType_MPI_Op</a> op, <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, <a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                      <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>,</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                      whereMsg,</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                      whatMsg);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;}</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="a00132.html#a4059971c30e023b272fccaa6aa00c426">  143</a></span>&#160;<a class="code" href="a00132.html#a4059971c30e023b272fccaa6aa00c426">MpiComm::Barrier</a>() const <span class="comment">// const char* whereMsg, const char* whatMsg) const</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;{</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraMpiComm-&gt;Barrier();</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor"></span>  <span class="keywordtype">int</span> mpiRC = MPI_Barrier(<a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                      <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>,</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                      <span class="stringliteral">&quot;MPIComm::Barrier()&quot;</span>, <span class="comment">// whereMsg,</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                      <span class="stringliteral">&quot;mpiRC indicates failure&quot;</span>);  <span class="comment">// whatMsg);</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordflow">return</span>;</div>
+<a href="a00292.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// File:                        ANN.cpp</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Programmer:          Sunil Arya and David Mount</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// Description:         Methods for ANN.h and ANNx.h</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Last modified:       01/27/10 (Version 1.1.2)</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (c) 1997-2010 University of Maryland and Sunil Arya and</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// David Mount.  All Rights Reserved.</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// This software and related documentation is part of the Approximate</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Nearest Neighbor Library (ANN).  This software is provided under</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// the provisions of the Lesser GNU Public License (LGPL).  See the</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// file ../ReadMe.txt for further information.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// The University of Maryland (U.M.) and the authors make no</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// representations about the suitability or fitness of this software for</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// any purpose.  It is provided &quot;as is&quot; without express or implied</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// warranty.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// History:</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//      Revision 0.1  03/04/98</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//              Initial release</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//      Revision 1.0  04/01/05</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//              Added performance counting to annDist()</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">//      Revision 1.1.2  01/27/10</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//              Fixed minor compilation bugs for new versions of gcc</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span>                                              <span class="comment">// C standard lib defs</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="a00288.html">ANN/ANNx.h</a>&gt;</span>                                   <span class="comment">// all ANN includes</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="a00287.html">ANN/ANNperf.h</a>&gt;</span>                                <span class="comment">// ANN performance</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">using namespace </span>std;                                    <span class="comment">// make std:: accessible</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//      Point methods</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//      Distance utility.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//              (Note: In the nearest neighbor search, most distances are</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//              computed using partial distance calculations, not this</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//              procedure.)</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00292.html#a76a0095a765b28e3ad8499b01120b8d9">   46</a></span>&#160;<a class="code" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a> <a class="code" href="a00286.html#abcf59e35431a1c2153e0a01c056bc647">annDist</a>(                                                <span class="comment">// interpoint squared distance</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">int</span>                                     <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>                        p,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>                        q)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keyword">register</span> <span class="keywordtype">int</span> d;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">register</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> diff;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">register</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> dist;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        dist = 0;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">for</span> (d = 0; d &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; d++) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                diff = p[d] - q[d];</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                dist = <a class="code" href="a00286.html#a185e91d6668c4e876c016ef9dff4d107">ANN_SUM</a>(dist, <a class="code" href="a00286.html#a9098bea865802af85103a5a1b4582d2c">ANN_POW</a>(diff));</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="a00287.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a>(3*dim)                                 <span class="comment">// performance counts</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="a00287.html#a6e30a1f9d8d2889f718811d80b2cba08">ANN_PTS</a>(1)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="a00287.html#a67b23644302dcb8220dd583858c08e70">ANN_COORD</a>(dim)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">return</span> dist;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">//      annPrintPoint() prints a point to a given output stream.</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="a00292.html#ad98b2b2c921df6fd52bb08c46b68cd98">   70</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00288.html#ad98b2b2c921df6fd52bb08c46b68cd98">annPrintPt</a>(                                                <span class="comment">// print a point</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>                        pt,                             <span class="comment">// the point</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordtype">int</span>                                     <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,                    <span class="comment">// the dimension</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        std::ostream            &amp;out)                   <span class="comment">// output stream</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; j++) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                out &lt;&lt; pt[j];</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">if</span> (j &lt; dim-1) out &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">//      Point allocation/deallocation:</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">//              Because points (somewhat like strings in C) are stored</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">//              as pointers.  Consequently, creating and destroying</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">//              copies of points may require storage allocation.  These</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">//              procedures do this.</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">//              annAllocPt() and annDeallocPt() allocate a deallocate</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">//              storage for a single point, and return a pointer to it.</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">//              annAllocPts() allocates an array of points as well a place</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">//              to store their coordinates, and initializes the points to</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">//              point to their respective coordinates.  It allocates point</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">//              storage in a contiguous block large enough to store all the</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">//              points.  It performs no initialization.</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">//              annDeallocPts() should only be used on point arrays allocated</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">//              by annAllocPts since it assumes that points are allocated in</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">//              a block.</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">//              annCopyPt() copies a point taking care to allocate storage</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">//              for the new point.</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">//              annAssignRect() assigns the coordinates of one rectangle to</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">//              another.  The two rectangles must have the same dimension</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">//              (and it is not possible to test this here).</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="a00292.html#a1df39489f56d5a8d926c6fd4a572915a">  110</a></span>&#160;<a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> <a class="code" href="a00286.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a>(<span class="keywordtype">int</span> <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> c)                <span class="comment">// allocate 1 point</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;{</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p = <span class="keyword">new</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>[<a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>];</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) p[i] = c;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">return</span> p;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="a00292.html#a703040bb093ce3037ab49fda6d0d93cb">  117</a></span>&#160;<a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> <a class="code" href="a00286.html#a7d801c6084e348aefc8d675d5b8f2f9a">annAllocPts</a>(<span class="keywordtype">int</span> n, <span class="keywordtype">int</span> <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>)               <span class="comment">// allocate n pts in dim</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;{</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> pa = <span class="keyword">new</span> <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>[n];                     <span class="comment">// allocate points</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>          p  = <span class="keyword">new</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>[n*<a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>];             <span class="comment">// allocate space for coords</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; n; i++) {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                pa[i] = &amp;(p[i*<a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>]);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">return</span> pa;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="a00292.html#aad1268f560cd6fd1e303c7d4b6542546">  127</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00286.html#a85f3fafa513eee017f525ad74a82cf10">annDeallocPt</a>(<a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> &amp;p)                                  <span class="comment">// deallocate 1 point</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;{</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keyword">delete</span> [] p;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        p = NULL;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="a00292.html#a106ff4e0d6961e2f4052568644620d5c">  133</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00286.html#af45ca32b2926c0e7c20c458e555c8c04">annDeallocPts</a>(<a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> &amp;pa)                   <span class="comment">// deallocate points</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;{</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keyword">delete</span> [] pa[0];                                                        <span class="comment">// dealloc coordinate storage</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keyword">delete</span> [] pa;                                                           <span class="comment">// dealloc points</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        pa = NULL;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="a00292.html#a4d8063b183a74fc44b855fa06e49e55b">  140</a></span>&#160;<a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> <a class="code" href="a00286.html#a4d699aa9bd46a0c0bf91c25252da80e0">annCopyPt</a>(<span class="keywordtype">int</span> <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> source)    <span class="comment">// copy point</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;{</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p = <span class="keyword">new</span> <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>[<a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>];</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) p[i] = source[i];</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keywordflow">return</span> p;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;}</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                                                                                                <span class="comment">// assign one rect to another</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="a00292.html#aa570fcff6b3af0b516162d102c04c68b">  148</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00288.html#aa570fcff6b3af0b516162d102c04c68b">annAssignRect</a>(<span class="keywordtype">int</span> <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="code" href="a00020.html">ANNorthRect</a> &amp;dest, <span class="keyword">const</span> <a class="code" href="a00020.html">ANNorthRect</a> &amp;source)</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;{</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                dest.<a class="code" href="a00020.html#af8c0d718f4c7b98b2e437235da2c9de0">lo</a>[i] = source.<a class="code" href="a00020.html#af8c0d718f4c7b98b2e437235da2c9de0">lo</a>[i];</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                dest.<a class="code" href="a00020.html#a4183b43fb488ab030f6f5ed2e81e3578">hi</a>[i] = source.<a class="code" href="a00020.html#a4183b43fb488ab030f6f5ed2e81e3578">hi</a>[i];</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="a00132.html#abd6af8db8b0c7fd2f5b62e26477a9537">  157</a></span>&#160;<a class="code" href="a00132.html#abd6af8db8b0c7fd2f5b62e26477a9537">MpiComm::Bcast</a>(<span class="keywordtype">void</span>* buffer, <span class="keywordtype">int</span> count, <a class="code" href="a00500.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> datatype, <span class="keywordtype">int</span> root, <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Bcast(buffer, count, datatype, root, <a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                      <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>,</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                      whereMsg,</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                      whatMsg);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="a00132.html#a184a5e411afcfb6dc41e99fca9435045">  168</a></span>&#160;<a class="code" href="a00132.html#a184a5e411afcfb6dc41e99fca9435045">MpiComm::Gather</a>(</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <span class="keywordtype">void</span>* sendbuf, <span class="keywordtype">int</span> sendcnt, <a class="code" href="a00500.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> sendtype,</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="keywordtype">void</span>* recvbuf, <span class="keywordtype">int</span> recvcount, <a class="code" href="a00500.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> recvtype,</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="keywordtype">int</span> root,</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="comment">//int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype,</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="comment">//                void *recvbuf, int recvcount, MPI_Datatype recvtype,</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="comment">//                int root, MPI_Comm comm )</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Gather(sendbuf, sendcnt, sendtype,</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                         recvbuf, recvcount, recvtype,</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                         root, <a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                      <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>,</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                      whereMsg,</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                      whatMsg);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;}</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="a00132.html#a9313449240c1bb2289870309a5c711ed">  188</a></span>&#160;<a class="code" href="a00132.html#a9313449240c1bb2289870309a5c711ed">MpiComm::Gatherv</a>(</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordtype">void</span>* sendbuf, <span class="keywordtype">int</span> sendcnt, <a class="code" href="a00500.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> sendtype,</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="keywordtype">void</span>* recvbuf, <span class="keywordtype">int</span>* recvcnts, <span class="keywordtype">int</span>* displs, <a class="code" href="a00500.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> recvtype,</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordtype">int</span> root,</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  <span class="comment">//int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype,</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <span class="comment">//                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype,</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="comment">//                int root, MPI_Comm comm )</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Gatherv(sendbuf, sendcnt, sendtype,</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                          recvbuf, recvcnts, displs, recvtype,</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                          root, <a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                      <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>,</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                      whereMsg,</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                      whatMsg);</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;}</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="a00132.html#a12d7a87a4407e442c35a17d3caaf46c1">  208</a></span>&#160;<a class="code" href="a00132.html#a12d7a87a4407e442c35a17d3caaf46c1">MpiComm::Recv</a>(</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  <span class="keywordtype">void</span>* buf, <span class="keywordtype">int</span> count, <a class="code" href="a00500.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> datatype, <span class="keywordtype">int</span> source, <span class="keywordtype">int</span> tag, <a class="code" href="a00500.html#af3c313103c6396188748a1d534577ff7">RawType_MPI_Status</a>* status,</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Recv(buf, count, datatype, source, tag, <a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>, status);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                      <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>,</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                      whereMsg,</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;                      whatMsg);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;}</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno"><a class="line" href="a00132.html#a1ecdbeac992a2ab1ff12e45e0c1b53b4">  221</a></span>&#160;<a class="code" href="a00132.html#a1ecdbeac992a2ab1ff12e45e0c1b53b4">MpiComm::Send</a>(</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <span class="keywordtype">void</span>* buf, <span class="keywordtype">int</span> count, <a class="code" href="a00500.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> datatype, <span class="keywordtype">int</span> dest, <span class="keywordtype">int</span> tag,</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Send(buf, count, datatype, dest, tag, <a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(mpiRC != MPI_SUCCESS,</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                      <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>,</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                      whereMsg,</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                      whatMsg);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;}</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment">// Misc methods ------------------------------------</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno"><a class="line" href="a00132.html#a6f73891de4668c325277ddaa799cf808">  234</a></span>&#160;<a class="code" href="a00132.html#a6f73891de4668c325277ddaa799cf808">MpiComm::syncPrintDebugMsg</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* msg, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> msgVerbosity, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numUSecs)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00132.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00018.html#a70df256cd4d968e426175a38269c04d5">syncVerbosity</a>() &gt;= msgVerbosity) {</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    this-&gt;<a class="code" href="a00132.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; this-&gt;<a class="code" href="a00132.html#aa780721ae0fdeabc5a15e04cb0cad964">NumProc</a>(); ++i) {</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;      <span class="keywordflow">if</span> (i == this-&gt;<a class="code" href="a00132.html#ab806f80f206210723fcb4df8185a55a8">MyPID</a>()) {</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        std::cout &lt;&lt; msg</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;: fullRank &quot;</span>       &lt;&lt; <a class="code" href="a00132.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00018.html#a84a239e42ae443cf71db6e03e8159620">fullRank</a>()</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;, subEnvironment &quot;</span> &lt;&lt; <a class="code" href="a00132.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00018.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>()</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;, subRank &quot;</span>        &lt;&lt; <a class="code" href="a00132.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00018.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>()</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;, inter0Rank &quot;</span>     &lt;&lt; <a class="code" href="a00132.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00018.html#ae106b5bb8a80b655b88b3a26b1e7c185">inter0Rank</a>()</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                  &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;      }</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      usleep(numUSecs);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      this-&gt;<a class="code" href="a00132.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    }</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="comment">//if (this-&gt;fullRank() == 0) std::cout &lt;&lt; &quot;Sleeping &quot; &lt;&lt; numUSecs &lt;&lt; &quot; microseconds...&quot;</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="comment">//                                     &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="comment">//usleep(numUSecs);</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    this-&gt;<a class="code" href="a00132.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  }</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;}</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">// -------------------------------------------------</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor"></span><span class="keyword">const</span> Epetra_MpiComm&amp;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;MpiComm::epetraMpiComm()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <span class="keywordflow">return</span> *m_epetraMpiComm;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;}</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment">// Private methods----------------------------------</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno"><a class="line" href="a00132.html#a62220ff8cea91f4f51e8713a9a513846">  269</a></span>&#160;<a class="code" href="a00132.html#a62220ff8cea91f4f51e8713a9a513846">MpiComm::copy</a>(<span class="keyword">const</span> <a class="code" href="a00132.html">MpiComm</a>&amp; src)</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;{</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="preprocessor"></span>  <span class="keyword">delete</span> m_epetraMpiComm;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  m_epetraMpiComm = <span class="keyword">new</span> Epetra_MpiComm(*src.m_epetraMpiComm);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="preprocessor"></span>  <a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>   = src.<a class="code" href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  <a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a> = src.<a class="code" href="a00132.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  <a class="code" href="a00132.html#aca028ecbe31a1eafa0e0bf93b331bcb9">m_myPid</a>     = src.<a class="code" href="a00132.html#aca028ecbe31a1eafa0e0bf93b331bcb9">m_myPid</a>;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  <a class="code" href="a00132.html#a73c6f34523215042d866680b3e9a1497">m_numProc</a>   = src.<a class="code" href="a00132.html#a73c6f34523215042d866680b3e9a1497">m_numProc</a>;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;}</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">// -------------------------------------------------</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00132_html_aa780721ae0fdeabc5a15e04cb0cad964"><div class="ttname"><a href="a00132.html#aa780721ae0fdeabc5a15e04cb0cad964">QUESO::MpiComm::NumProc</a></div><div class="ttdeci">int NumProc() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00121">MpiComm.C:121</a></div></div>
-<div class="ttc" id="a00132_html_aca028ecbe31a1eafa0e0bf93b331bcb9"><div class="ttname"><a href="a00132.html#aca028ecbe31a1eafa0e0bf93b331bcb9">QUESO::MpiComm::m_myPid</a></div><div class="ttdeci">int m_myPid</div><div class="ttdoc">Process ID of this process. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00219">MpiComm.h:219</a></div></div>
-<div class="ttc" id="a00018_html_a172d52f993f1322ed45aaddf71518dbb"><div class="ttname"><a href="a00018.html#a172d52f993f1322ed45aaddf71518dbb">QUESO::BaseEnvironment::subRank</a></div><div class="ttdeci">int subRank() const </div><div class="ttdoc">Access function for sub-rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00263">Environment.C:263</a></div></div>
-<div class="ttc" id="a00018_html_a70df256cd4d968e426175a38269c04d5"><div class="ttname"><a href="a00018.html#a70df256cd4d968e426175a38269c04d5">QUESO::BaseEnvironment::syncVerbosity</a></div><div class="ttdeci">unsigned int syncVerbosity() const </div><div class="ttdoc">Access function to private attribute m_syncVerbosity. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00446">Environment.C:446</a></div></div>
-<div class="ttc" id="a00018_html_ae106b5bb8a80b655b88b3a26b1e7c185"><div class="ttname"><a href="a00018.html#ae106b5bb8a80b655b88b3a26b1e7c185">QUESO::BaseEnvironment::inter0Rank</a></div><div class="ttdeci">int inter0Rank() const </div><div class="ttdoc">Returns the process inter0 rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00289">Environment.C:289</a></div></div>
-<div class="ttc" id="a00132_html_a29d53c01c5ac7ba1bb3a33911d89b6b8"><div class="ttname"><a href="a00132.html#a29d53c01c5ac7ba1bb3a33911d89b6b8">QUESO::MpiComm::Comm</a></div><div class="ttdeci">RawType_MPI_Comm Comm() const </div><div class="ttdoc">Extract MPI Communicator from a MpiComm object. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00103">MpiComm.C:103</a></div></div>
-<div class="ttc" id="a00132_html_abd6af8db8b0c7fd2f5b62e26477a9537"><div class="ttname"><a href="a00132.html#abd6af8db8b0c7fd2f5b62e26477a9537">QUESO::MpiComm::Bcast</a></div><div class="ttdeci">void Bcast(void *buffer, int count, RawType_MPI_Datatype datatype, int root, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Broadcast values from the root process to the slave processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00157">MpiComm.C:157</a></div></div>
-<div class="ttc" id="a00132_html_aae8c456bc75534d43d682178bf98ef65"><div class="ttname"><a href="a00132.html#aae8c456bc75534d43d682178bf98ef65">QUESO::MpiComm::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdoc">World rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00216">MpiComm.h:216</a></div></div>
-<div class="ttc" id="a00500_html_a7d4679800a430ae8e473c1c7bc0bfb21"><div class="ttname"><a href="a00500.html#a7d4679800a430ae8e473c1c7bc0bfb21">QUESO::UQ_UNAVAILABLE_RANK</a></div><div class="ttdeci">const int UQ_UNAVAILABLE_RANK</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00074">Defines.h:74</a></div></div>
-<div class="ttc" id="a00500_html_af48741a7e6d7897e9e96e0f5bb26cfd7"><div class="ttname"><a href="a00500.html#af48741a7e6d7897e9e96e0f5bb26cfd7">QUESO::RawType_MPI_Comm</a></div><div class="ttdeci">MPI_Comm RawType_MPI_Comm</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00038">MpiComm.h:38</a></div></div>
-<div class="ttc" id="a00132_html_a184a5e411afcfb6dc41e99fca9435045"><div class="ttname"><a href="a00132.html#a184a5e411afcfb6dc41e99fca9435045">QUESO::MpiComm::Gather</a></div><div class="ttdeci">void Gather(void *sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, void *recvbuf, int recvcount, RawType_MPI_Datatype recvtype, int root, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Gather values from each process to collect on all processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00168">MpiComm.C:168</a></div></div>
-<div class="ttc" id="a00132_html_a990a22b37217ce6fc6a7c818c8d0106b"><div class="ttname"><a href="a00132.html#a990a22b37217ce6fc6a7c818c8d0106b">QUESO::MpiComm::m_rawComm</a></div><div class="ttdeci">RawType_MPI_Comm m_rawComm</div><div class="ttdoc">Embedded wrapped opaque MPI_Comm object. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00213">MpiComm.h:213</a></div></div>
-<div class="ttc" id="a00132_html_a4059971c30e023b272fccaa6aa00c426"><div class="ttname"><a href="a00132.html#a4059971c30e023b272fccaa6aa00c426">QUESO::MpiComm::Barrier</a></div><div class="ttdeci">void Barrier() const </div><div class="ttdoc">Pause every process in *this communicator until all the processes reach this point. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00143">MpiComm.C:143</a></div></div>
-<div class="ttc" id="a00132_html_ac72ab4b4a0181c4e37e6e6edfa6b696a"><div class="ttname"><a href="a00132.html#ac72ab4b4a0181c4e37e6e6edfa6b696a">QUESO::MpiComm::operator=</a></div><div class="ttdeci">MpiComm &amp; operator=(const MpiComm &amp;rhs)</div><div class="ttdoc">Assignment operator. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00095">MpiComm.C:95</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00239_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00132_html_a6b63af09a9b80f14b25409bc561abb41"><div class="ttname"><a href="a00132.html#a6b63af09a9b80f14b25409bc561abb41">QUESO::MpiComm::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00206">MpiComm.h:206</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00132_html_a9313449240c1bb2289870309a5c711ed"><div class="ttname"><a href="a00132.html#a9313449240c1bb2289870309a5c711ed">QUESO::MpiComm::Gatherv</a></div><div class="ttdeci">void Gatherv(void *sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, void *recvbuf, int *recvcnts, int *displs, RawType_MPI_Datatype recvtype, int root, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Gathers into specified locations from all processes in a group. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00188">MpiComm.C:188</a></div></div>
-<div class="ttc" id="a00500_html_ab6a4008f3ba2b0196dae9e41971a9c18"><div class="ttname"><a href="a00500.html#ab6a4008f3ba2b0196dae9e41971a9c18">QUESO::RawType_MPI_Op</a></div><div class="ttdeci">MPI_Op RawType_MPI_Op</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00041">MpiComm.h:41</a></div></div>
-<div class="ttc" id="a00132_html_a72e137e60ef8060efb1ee5fc874fa4b8"><div class="ttname"><a href="a00132.html#a72e137e60ef8060efb1ee5fc874fa4b8">QUESO::MpiComm::Allreduce</a></div><div class="ttdeci">void Allreduce(void *sendbuf, void *recvbuf, int count, RawType_MPI_Datatype datatype, RawType_MPI_Op op, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Combines values from all processes and distributes the result back to all processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00131">MpiComm.C:131</a></div></div>
-<div class="ttc" id="a00132_html_a6f73891de4668c325277ddaa799cf808"><div class="ttname"><a href="a00132.html#a6f73891de4668c325277ddaa799cf808">QUESO::MpiComm::syncPrintDebugMsg</a></div><div class="ttdeci">void syncPrintDebugMsg(const char *msg, unsigned int msgVerbosity, unsigned int numUSecs) const </div><div class="ttdoc">Synchronizes all the processes and print debug message. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00234">MpiComm.C:234</a></div></div>
-<div class="ttc" id="a00132_html_ab806f80f206210723fcb4df8185a55a8"><div class="ttname"><a href="a00132.html#ab806f80f206210723fcb4df8185a55a8">QUESO::MpiComm::MyPID</a></div><div class="ttdeci">int MyPID() const </div><div class="ttdoc">Return my process ID. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00112">MpiComm.C:112</a></div></div>
-<div class="ttc" id="a00132_html_a1ecdbeac992a2ab1ff12e45e0c1b53b4"><div class="ttname"><a href="a00132.html#a1ecdbeac992a2ab1ff12e45e0c1b53b4">QUESO::MpiComm::Send</a></div><div class="ttdeci">void Send(void *buf, int count, RawType_MPI_Datatype datatype, int dest, int tag, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Possibly blocking send of data from this process to another process. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00221">MpiComm.C:221</a></div></div>
-<div class="ttc" id="a00500_html_a8648edf143b92c6f21f6cb93223b2cc9"><div class="ttname"><a href="a00500.html#a8648edf143b92c6f21f6cb93223b2cc9">QUESO::RawType_MPI_Datatype</a></div><div class="ttdeci">MPI_Datatype RawType_MPI_Datatype</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00040">MpiComm.h:40</a></div></div>
-<div class="ttc" id="a00132_html"><div class="ttname"><a href="a00132.html">QUESO::MpiComm</a></div><div class="ttdoc">The QUESO MPI Communicator Class. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00075">MpiComm.h:75</a></div></div>
-<div class="ttc" id="a00132_html_a73c6f34523215042d866680b3e9a1497"><div class="ttname"><a href="a00132.html#a73c6f34523215042d866680b3e9a1497">QUESO::MpiComm::m_numProc</a></div><div class="ttdeci">int m_numProc</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00222">MpiComm.h:222</a></div></div>
-<div class="ttc" id="a00018_html_a84a239e42ae443cf71db6e03e8159620"><div class="ttname"><a href="a00018.html#a84a239e42ae443cf71db6e03e8159620">QUESO::BaseEnvironment::fullRank</a></div><div class="ttdeci">int fullRank() const </div><div class="ttdoc">Returns the process full rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00241">Environment.C:241</a></div></div>
-<div class="ttc" id="a00132_html_a62220ff8cea91f4f51e8713a9a513846"><div class="ttname"><a href="a00132.html#a62220ff8cea91f4f51e8713a9a513846">QUESO::MpiComm::copy</a></div><div class="ttdeci">void copy(const MpiComm &amp;src)</div><div class="ttdoc">Copies from an existing MpiComm instance. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00269">MpiComm.C:269</a></div></div>
-<div class="ttc" id="a00132_html_a12d7a87a4407e442c35a17d3caaf46c1"><div class="ttname"><a href="a00132.html#a12d7a87a4407e442c35a17d3caaf46c1">QUESO::MpiComm::Recv</a></div><div class="ttdeci">void Recv(void *buf, int count, RawType_MPI_Datatype datatype, int source, int tag, RawType_MPI_Status *status, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Blocking receive of data from this process to another process. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00208">MpiComm.C:208</a></div></div>
-<div class="ttc" id="a00051_html"><div class="ttname"><a href="a00051.html">QUESO::EmptyEnvironment</a></div><div class="ttdoc">This class sets up the environment underlying the use of the QUESO library by an executable. </div><div class="ttdef"><b>Definition:</b> <a href="a00239_source.html#l00396">Environment.h:396</a></div></div>
-<div class="ttc" id="a00018_html_a6ae3174897a9b3a4c85fa18da5d4c16f"><div class="ttname"><a href="a00018.html#a6ae3174897a9b3a4c85fa18da5d4c16f">QUESO::BaseEnvironment::subId</a></div><div class="ttdeci">unsigned int subId() const </div><div class="ttdoc">Access function to the number of each sub-environment Id: m_subId. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00329">Environment.C:329</a></div></div>
-<div class="ttc" id="a00500_html_af3c313103c6396188748a1d534577ff7"><div class="ttname"><a href="a00500.html#af3c313103c6396188748a1d534577ff7">QUESO::RawType_MPI_Status</a></div><div class="ttdeci">MPI_Status RawType_MPI_Status</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00042">MpiComm.h:42</a></div></div>
-<div class="ttc" id="a00132_html_a2bf46779dc9fe47cf90cb205285e8a99"><div class="ttname"><a href="a00132.html#a2bf46779dc9fe47cf90cb205285e8a99">QUESO::MpiComm::~MpiComm</a></div><div class="ttdeci">~MpiComm()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00084">MpiComm.C:84</a></div></div>
-<div class="ttc" id="a00132_html_a34237212169683b2df357b6b710d2a38"><div class="ttname"><a href="a00132.html#a34237212169683b2df357b6b710d2a38">QUESO::MpiComm::MpiComm</a></div><div class="ttdeci">MpiComm()</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00031">MpiComm.C:31</a></div></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                                                                                                <span class="comment">// is point inside rectangle?</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="a00020.html#a11201db5ee69e87633d5a6e38ef60111">  157</a></span>&#160;<a class="code" href="a00286.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a> <a class="code" href="a00020.html#a11201db5ee69e87633d5a6e38ef60111">ANNorthRect::inside</a>(<span class="keywordtype">int</span> <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="code" href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p)</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;{</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="keywordflow">if</span> (p[i] &lt; lo[i] || p[i] &gt; hi[i]) <span class="keywordflow">return</span> <a class="code" href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;}</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">//      Error handler</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="a00292.html#a9c45d5ab29fad7c514d22008daf15534">  169</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00288.html#a9c45d5ab29fad7c514d22008daf15534">annError</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* msg, <a class="code" href="a00288.html#a13bdbb0af13b1a99636a383f628469d4">ANNerr</a> level)</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;{</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">if</span> (level == <a class="code" href="a00288.html#a13bdbb0af13b1a99636a383f628469d4ac74a434b098f1c98aa9c2fbdd2e93524">ANNabort</a>) {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                cerr &lt;&lt; <span class="stringliteral">&quot;ANN: ERROR-------&gt;&quot;</span> &lt;&lt; msg &lt;&lt; <span class="stringliteral">&quot;&lt;-------------ERROR\n&quot;</span>;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                exit(1);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                cerr &lt;&lt; <span class="stringliteral">&quot;ANN: WARNING-----&gt;&quot;</span> &lt;&lt; msg &lt;&lt; <span class="stringliteral">&quot;&lt;-------------WARNING\n&quot;</span>;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        }</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">//      Limit on number of points visited</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">//              We have an option for terminating the search early if the</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">//              number of points visited exceeds some threshold.  If the</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">//              threshold is 0 (its default)  this means there is no limit</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">//              and the algorithm applies its normal termination condition.</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">//              This is for applications where there are real time constraints</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">//              on the running time of the algorithm.</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00190"></a><span class="lineno"><a class="line" href="a00292.html#ad78dd7b2d385a9fbf5921ad3ab0483d6">  190</a></span>&#160;<span class="keywordtype">int</span>     <a class="code" href="a00288.html#ad78dd7b2d385a9fbf5921ad3ab0483d6">ANNmaxPtsVisited</a> = 0;   <span class="comment">// maximum number of pts visited</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="a00305.html#aeb58eb8320bf779eb6646194bb1d0df3">  191</a></span>&#160;<span class="keywordtype">int</span>     <a class="code" href="a00288.html#aeb58eb8320bf779eb6646194bb1d0df3">ANNptsVisited</a>;                  <span class="comment">// number of pts visited in search</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">//      Global function declarations</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="a00292.html#abf6536a3f3d4ce36a8880bffd26c3952">  197</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00286.html#a821c00e57e7674b17d9a6145839f48d4">annMaxPtsVisit</a>(                    <span class="comment">// set limit on max. pts to visit in search</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keywordtype">int</span>                                     <a class="code" href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a>)                 <span class="comment">// the limit</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;{</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <a class="code" href="a00288.html#ad78dd7b2d385a9fbf5921ad3ab0483d6">ANNmaxPtsVisited</a> = <a class="code" href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a>;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;}</div>
+<div class="ttc" id="a00286_html_a85f3fafa513eee017f525ad74a82cf10"><div class="ttname"><a href="a00286.html#a85f3fafa513eee017f525ad74a82cf10">annDeallocPt</a></div><div class="ttdeci">DLL_API void annDeallocPt(ANNpoint &amp;p)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00127">ANN.cpp:127</a></div></div>
+<div class="ttc" id="a00286_html_ae5927710e8251aa54f5b820eca160f2c"><div class="ttname"><a href="a00286.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a></div><div class="ttdeci">ANNbool</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00132">ANN.h:132</a></div></div>
+<div class="ttc" id="a00287_html_a6e30a1f9d8d2889f718811d80b2cba08"><div class="ttname"><a href="a00287.html#a6e30a1f9d8d2889f718811d80b2cba08">ANN_PTS</a></div><div class="ttdeci">#define ANN_PTS(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00135">ANNperf.h:135</a></div></div>
+<div class="ttc" id="a00020_html_a11201db5ee69e87633d5a6e38ef60111"><div class="ttname"><a href="a00020.html#a11201db5ee69e87633d5a6e38ef60111">ANNorthRect::inside</a></div><div class="ttdeci">ANNbool inside(int dim, ANNpoint p)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00157">ANN.cpp:157</a></div></div>
+<div class="ttc" id="a00288_html_a13bdbb0af13b1a99636a383f628469d4ac74a434b098f1c98aa9c2fbdd2e93524"><div class="ttname"><a href="a00288.html#a13bdbb0af13b1a99636a383f628469d4ac74a434b098f1c98aa9c2fbdd2e93524">ANNabort</a></div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00048">ANNx.h:48</a></div></div>
+<div class="ttc" id="a00288_html"><div class="ttname"><a href="a00288.html">ANNx.h</a></div></div>
+<div class="ttc" id="a00286_html_a821c00e57e7674b17d9a6145839f48d4"><div class="ttname"><a href="a00286.html#a821c00e57e7674b17d9a6145839f48d4">annMaxPtsVisit</a></div><div class="ttdeci">DLL_API void annMaxPtsVisit(int maxPts)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00197">ANN.cpp:197</a></div></div>
+<div class="ttc" id="a00286_html_ab066cd4e4fffad67a16b64d9a28a86e4"><div class="ttname"><a href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a></div><div class="ttdeci">double ANNcoord</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00158">ANN.h:158</a></div></div>
+<div class="ttc" id="a00286_html_a185e91d6668c4e876c016ef9dff4d107"><div class="ttname"><a href="a00286.html#a185e91d6668c4e876c016ef9dff4d107">ANN_SUM</a></div><div class="ttdeci">#define ANN_SUM(x, y)</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00362">ANN.h:362</a></div></div>
+<div class="ttc" id="a00288_html_a13bdbb0af13b1a99636a383f628469d4"><div class="ttname"><a href="a00288.html#a13bdbb0af13b1a99636a383f628469d4">ANNerr</a></div><div class="ttdeci">ANNerr</div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00048">ANNx.h:48</a></div></div>
+<div class="ttc" id="a00288_html_aeb58eb8320bf779eb6646194bb1d0df3"><div class="ttname"><a href="a00288.html#aeb58eb8320bf779eb6646194bb1d0df3">ANNptsVisited</a></div><div class="ttdeci">int ANNptsVisited</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00191">ANN.cpp:191</a></div></div>
+<div class="ttc" id="a00287_html"><div class="ttname"><a href="a00287.html">ANNperf.h</a></div></div>
+<div class="ttc" id="a00288_html_aa570fcff6b3af0b516162d102c04c68b"><div class="ttname"><a href="a00288.html#aa570fcff6b3af0b516162d102c04c68b">annAssignRect</a></div><div class="ttdeci">void annAssignRect(int dim, ANNorthRect &amp;dest, const ANNorthRect &amp;source)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00148">ANN.cpp:148</a></div></div>
+<div class="ttc" id="a00286_html_af45ca32b2926c0e7c20c458e555c8c04"><div class="ttname"><a href="a00286.html#af45ca32b2926c0e7c20c458e555c8c04">annDeallocPts</a></div><div class="ttdeci">DLL_API void annDeallocPts(ANNpointArray &amp;pa)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00133">ANN.cpp:133</a></div></div>
+<div class="ttc" id="a00286_html_a479fe2e8e10f09a57c69f70dcd239f9a"><div class="ttname"><a href="a00286.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a></div><div class="ttdeci">DLL_API ANNpoint annAllocPt(int dim, ANNcoord c=0)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00110">ANN.cpp:110</a></div></div>
+<div class="ttc" id="a00288_html_a9c45d5ab29fad7c514d22008daf15534"><div class="ttname"><a href="a00288.html#a9c45d5ab29fad7c514d22008daf15534">annError</a></div><div class="ttdeci">void annError(const char *msg, ANNerr level)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00169">ANN.cpp:169</a></div></div>
+<div class="ttc" id="a00286_html_a402299ac00a81ad80f09a0eb84ba4059"><div class="ttname"><a href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a></div><div class="ttdeci">ANNpoint * ANNpointArray</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00376">ANN.h:376</a></div></div>
+<div class="ttc" id="a00020_html"><div class="ttname"><a href="a00020.html">ANNorthRect</a></div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00091">ANNx.h:91</a></div></div>
+<div class="ttc" id="a00020_html_af8c0d718f4c7b98b2e437235da2c9de0"><div class="ttname"><a href="a00020.html#af8c0d718f4c7b98b2e437235da2c9de0">ANNorthRect::lo</a></div><div class="ttdeci">ANNpoint lo</div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00093">ANNx.h:93</a></div></div>
+<div class="ttc" id="a00287_html_a9e54d6f38fc80e6cdd64b97abf63c9a3"><div class="ttname"><a href="a00287.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a></div><div class="ttdeci">#define ANN_FLOP(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00131">ANNperf.h:131</a></div></div>
+<div class="ttc" id="a00286_html_a4d699aa9bd46a0c0bf91c25252da80e0"><div class="ttname"><a href="a00286.html#a4d699aa9bd46a0c0bf91c25252da80e0">annCopyPt</a></div><div class="ttdeci">DLL_API ANNpoint annCopyPt(int dim, ANNpoint source)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00140">ANN.cpp:140</a></div></div>
+<div class="ttc" id="a00286_html_abcf59e35431a1c2153e0a01c056bc647"><div class="ttname"><a href="a00286.html#abcf59e35431a1c2153e0a01c056bc647">annDist</a></div><div class="ttdeci">DLL_API ANNdist annDist(int dim, ANNpoint p, ANNpoint q)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00046">ANN.cpp:46</a></div></div>
+<div class="ttc" id="a00287_html_a67b23644302dcb8220dd583858c08e70"><div class="ttname"><a href="a00287.html#a67b23644302dcb8220dd583858c08e70">ANN_COORD</a></div><div class="ttdeci">#define ANN_COORD(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00136">ANNperf.h:136</a></div></div>
+<div class="ttc" id="a00286_html_ad85f4b5cb9cf5877a2094bf8582133f5"><div class="ttname"><a href="a00286.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a></div><div class="ttdeci">ANNcoord * ANNpoint</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00375">ANN.h:375</a></div></div>
+<div class="ttc" id="a00286_html_ab2a7296707a2205201daccfc1929c3ca"><div class="ttname"><a href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a></div><div class="ttdeci">double ANNdist</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00159">ANN.h:159</a></div></div>
+<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00286_html_ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1"><div class="ttname"><a href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00132">ANN.h:132</a></div></div>
+<div class="ttc" id="a00020_html_a4183b43fb488ab030f6f5ed2e81e3578"><div class="ttname"><a href="a00020.html#a4183b43fb488ab030f6f5ed2e81e3578">ANNorthRect::hi</a></div><div class="ttdeci">ANNpoint hi</div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00094">ANNx.h:94</a></div></div>
+<div class="ttc" id="a00286_html_a7d801c6084e348aefc8d675d5b8f2f9a"><div class="ttname"><a href="a00286.html#a7d801c6084e348aefc8d675d5b8f2f9a">annAllocPts</a></div><div class="ttdeci">DLL_API ANNpointArray annAllocPts(int n, int dim)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00117">ANN.cpp:117</a></div></div>
+<div class="ttc" id="a00288_html_ad98b2b2c921df6fd52bb08c46b68cd98"><div class="ttname"><a href="a00288.html#ad98b2b2c921df6fd52bb08c46b68cd98">annPrintPt</a></div><div class="ttdeci">void annPrintPt(ANNpoint pt, int dim, std::ostream &amp;out)</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00070">ANN.cpp:70</a></div></div>
+<div class="ttc" id="a00286_html_a9098bea865802af85103a5a1b4582d2c"><div class="ttname"><a href="a00286.html#a9098bea865802af85103a5a1b4582d2c">ANN_POW</a></div><div class="ttdeci">#define ANN_POW(v)</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00360">ANN.h:360</a></div></div>
+<div class="ttc" id="a00286_html_ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474"><div class="ttname"><a href="a00286.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a></div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00132">ANN.h:132</a></div></div>
+<div class="ttc" id="a00291_html_a8c59db27913a8a427a7049780bacde29"><div class="ttname"><a href="a00291.html#a8c59db27913a8a427a7049780bacde29">maxPts</a></div><div class="ttdeci">int maxPts</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00056">ann_sample.cpp:56</a></div></div>
+<div class="ttc" id="a00288_html_ad78dd7b2d385a9fbf5921ad3ab0483d6"><div class="ttname"><a href="a00288.html#ad78dd7b2d385a9fbf5921ad3ab0483d6">ANNmaxPtsVisited</a></div><div class="ttdeci">int ANNmaxPtsVisited</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00190">ANN.cpp:190</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

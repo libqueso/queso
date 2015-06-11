@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/src/GslBlockMatrix.C Source File</title>
+<title>queso-0.53.0: src/basic/src/VectorFunction.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1e11172a4448ab4d7b3d22091261e10c.html">basic</a></li><li class="navelem"><a class="el" href="dir_1ddda6cfdab808066600d2423f0eda9f.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GslBlockMatrix.C</div>  </div>
+<div class="title">VectorFunction.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00278.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,173 +75,60 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/GslBlockMatrix.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/VectorFunction.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="a00092.html#ae26a24fb91a867d2f6dbb2d8cfe64ab5">   29</a></span>&#160;<a class="code" href="a00092.html#ae26a24fb91a867d2f6dbb2d8cfe64ab5">GslBlockMatrix::GslBlockMatrix</a>(<span class="keyword">const</span> std::vector&lt;unsigned int&gt; &amp; blockSizes,</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00095.html">GslVector</a> &amp; v, <span class="keywordtype">double</span> diagValue)</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  : <a class="code" href="a00120.html">Matrix</a>(v.env(), v.map()),</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    m_vectorSpaces(blockSizes.size()),</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    m_blocks(blockSizes.size())</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; this-&gt;<a class="code" href="a00092.html#ae304c18d5cc424cde85df541babdcbbf">m_vectorSpaces</a>.size(); i++) {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    this-&gt;<a class="code" href="a00092.html#ae304c18d5cc424cde85df541babdcbbf">m_vectorSpaces</a>[i] = <span class="keyword">new</span> <a class="code" href="a00177.html">VectorSpace&lt;GslVector, GslMatrix&gt;</a>(<a class="code" href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="stringliteral">&quot;block_param_&quot;</span>, blockSizes[i], NULL);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>[i] = <span class="keyword">new</span> <a class="code" href="a00093.html">GslMatrix</a>(this-&gt;<a class="code" href="a00092.html#ae304c18d5cc424cde85df541babdcbbf">m_vectorSpaces</a>[i]-&gt;zeroVector(),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        diagValue);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="a00092.html#a8eb3681f069c0b650c5dc62629ed277d">   43</a></span>&#160;<a class="code" href="a00092.html#a8eb3681f069c0b650c5dc62629ed277d">GslBlockMatrix::~GslBlockMatrix</a>()</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; this-&gt;<a class="code" href="a00092.html#ae304c18d5cc424cde85df541babdcbbf">m_vectorSpaces</a>.size(); i++) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">delete</span> this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>[i];</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">delete</span> this-&gt;<a class="code" href="a00092.html#ae304c18d5cc424cde85df541babdcbbf">m_vectorSpaces</a>[i];</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Default constructor -----------------------------</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00044.html#a6f819f1f9adcf13e9ed4a35542aeff20">   33</a></span>&#160;<a class="code" href="a00044.html#a6f819f1f9adcf13e9ed4a35542aeff20">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::BaseVectorFunction</a>(</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                      prefix,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; domainSet,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;Q_V,Q_M&gt;</a>&amp; imageSet)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_env      (domainSet.env()),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_prefix   ((std::string)(prefix)+<span class="stringliteral">&quot;func_&quot;</span>),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_domainSet(domainSet),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_imageSet (imageSet)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00044.html#a25e2bf49649abce43b9390d7cfd04164">   47</a></span>&#160;<a class="code" href="a00044.html#a25e2bf49649abce43b9390d7cfd04164">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::~BaseVectorFunction</a>()</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00092.html#a37c63ed8b18585d58c626f49c0849ca7">   53</a></span>&#160;<a class="code" href="a00092.html#a37c63ed8b18585d58c626f49c0849ca7">GslBlockMatrix::numRowsLocal</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00233.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="a00092.html#aff3ceb080aeb936e36d9eb7cab2b8068">   59</a></span>&#160;<a class="code" href="a00092.html#aff3ceb080aeb936e36d9eb7cab2b8068">GslBlockMatrix::numRowsGlobal</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="a00233.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="a00092.html#adf40ac42a23c600f46444e5a317b2f9c">   66</a></span>&#160;<a class="code" href="a00092.html#adf40ac42a23c600f46444e5a317b2f9c">GslBlockMatrix::numCols</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="a00233.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">int</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="a00092.html#a4e059f020a04c07d252118596d1a47f7">   73</a></span>&#160;<a class="code" href="a00092.html#a4e059f020a04c07d252118596d1a47f7">GslBlockMatrix::chol</a>()</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <a class="code" href="a00233.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="a00092.html#a7ddb5948caf244e1063b21c430b4721b">   80</a></span>&#160;<a class="code" href="a00092.html#a7ddb5948caf244e1063b21c430b4721b">GslBlockMatrix::zeroLower</a>(<span class="keywordtype">bool</span> includeDiagonal)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="code" href="a00233.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="a00092.html#a9490f3cefc7f10d701fe5cd45f297396">   86</a></span>&#160;<a class="code" href="a00092.html#a9490f3cefc7f10d701fe5cd45f297396">GslBlockMatrix::zeroUpper</a>(<span class="keywordtype">bool</span> includeDiagonal)</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;{</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <a class="code" href="a00233.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<a class="code" href="a00093.html">GslMatrix</a> &amp;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00092.html#a7a433366209d4cf0fb1263ef32da5f14">   93</a></span>&#160;<a class="code" href="a00092.html#a7a433366209d4cf0fb1263ef32da5f14">GslBlockMatrix::getBlock</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordflow">return</span> *(this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>[i]);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="a00092.html#a8ea5bd6e4fce76de0e3e600a100abe7d">   99</a></span>&#160;<a class="code" href="a00092.html#a8ea5bd6e4fce76de0e3e600a100abe7d">GslBlockMatrix::numBlocks</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>.size();</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="a00092.html#a11c63edfed75a238b6da7eb460e7e526">  105</a></span>&#160;<a class="code" href="a00092.html#a11c63edfed75a238b6da7eb460e7e526">GslBlockMatrix::invertMultiply</a>(<span class="keyword">const</span> <a class="code" href="a00095.html">GslVector</a> &amp; b, <a class="code" href="a00095.html">GslVector</a> &amp; x)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> totalCols = 0;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>.size(); i++) {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    totalCols += this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>[i]-&gt;numCols();</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordflow">if</span> (totalCols != b.<a class="code" href="a00095.html#ace6fb1739b7cf6456b3dcde84c766fb3">sizeLocal</a>()) {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <a class="code" href="a00233.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;block matrix and rhs have incompatible sizes&quot;</span>);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keywordflow">if</span> (x.<a class="code" href="a00095.html#ace6fb1739b7cf6456b3dcde84c766fb3">sizeLocal</a>() != b.<a class="code" href="a00095.html#ace6fb1739b7cf6456b3dcde84c766fb3">sizeLocal</a>()) {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="a00233.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;solution and rhs have incompatible sizes&quot;</span>);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> blockOffset = 0;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="comment">// Do an invertMultiply for each block</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>.size(); i++) {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <a class="code" href="a00095.html">GslVector</a> blockRHS(this-&gt;<a class="code" href="a00092.html#ae304c18d5cc424cde85df541babdcbbf">m_vectorSpaces</a>[i]-&gt;zeroVector());</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <a class="code" href="a00095.html">GslVector</a> blockSol(this-&gt;<a class="code" href="a00092.html#ae304c18d5cc424cde85df541babdcbbf">m_vectorSpaces</a>[i]-&gt;zeroVector());</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="comment">// Be sure to copy over the RHS to the right sized vector</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>[i]-&gt;numCols(); j++) {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      blockRHS[j] = b[blockOffset + j];</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="comment">// Solve</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>[i]-&gt;invertMultiply(blockRHS, blockSol);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="comment">// Be sure to copy the block solution back to the global solution vector</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>[i]-&gt;numCols(); j++) {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      x[blockOffset + j] = blockSol[j];</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    }</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="comment">// Remember to increment the offset so we don&#39;t lose our place for the next</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="comment">// block</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    blockOffset += this-&gt;<a class="code" href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">m_blocks</a>[i]-&gt;numCols();</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;}</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="a00092.html#aa752584b62c19653b35c50874ff402c2">  148</a></span>&#160;<a class="code" href="a00092.html#aa752584b62c19653b35c50874ff402c2">GslBlockMatrix::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; this-&gt;<a class="code" href="a00092.html#a8ea5bd6e4fce76de0e3e600a100abe7d">numBlocks</a>(); i++) {</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    this-&gt;<a class="code" href="a00092.html#a7a433366209d4cf0fb1263ef32da5f14">getBlock</a>(i).<a class="code" href="a00093.html#a4f5f3689f1c013fa9042ea0177d8b020">print</a>(os);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  }</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;std::ostream&amp;</div>
-<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="a00500.html#aee9cd88f39e5f81acf1cbc121a2d85f9">  156</a></span>&#160;<a class="code" href="a00500.html#ae007c2d003b9f75b31b073ececd3120a">operator&lt;&lt;</a>(std::ostream&amp; os, <span class="keyword">const</span> <a class="code" href="a00092.html">GslBlockMatrix</a> &amp; obj)</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;{</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  obj.<a class="code" href="a00092.html#aa752584b62c19653b35c50874ff402c2">print</a>(os);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;}</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00092_html_aa752584b62c19653b35c50874ff402c2"><div class="ttname"><a href="a00092.html#aa752584b62c19653b35c50874ff402c2">QUESO::GslBlockMatrix::print</a></div><div class="ttdeci">virtual void print(std::ostream &amp;os) const </div><div class="ttdoc">Print method. Defines the behavior of operator&amp;lt;&amp;lt; inherited from the Object class. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00148">GslBlockMatrix.C:148</a></div></div>
-<div class="ttc" id="a00093_html"><div class="ttname"><a href="a00093.html">QUESO::GslMatrix</a></div><div class="ttdoc">Class for matrix operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00245_source.html#l00047">GslMatrix.h:47</a></div></div>
-<div class="ttc" id="a00500_html_ae007c2d003b9f75b31b073ececd3120a"><div class="ttname"><a href="a00500.html#ae007c2d003b9f75b31b073ececd3120a">QUESO::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const BaseEnvironment &amp;obj)</div></div>
-<div class="ttc" id="a00092_html_aff3ceb080aeb936e36d9eb7cab2b8068"><div class="ttname"><a href="a00092.html#aff3ceb080aeb936e36d9eb7cab2b8068">QUESO::GslBlockMatrix::numRowsGlobal</a></div><div class="ttdeci">virtual unsigned int numRowsGlobal() const </div><div class="ttdoc">Not implemented yet. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00059">GslBlockMatrix.C:59</a></div></div>
-<div class="ttc" id="a00093_html_a4f5f3689f1c013fa9042ea0177d8b020"><div class="ttname"><a href="a00093.html#a4f5f3689f1c013fa9042ea0177d8b020">QUESO::GslMatrix::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Print method. Defines the behavior of the ostream &amp;lt;&amp;lt; operator inherited from the Object class...</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l02114">GslMatrix.C:2114</a></div></div>
-<div class="ttc" id="a00095_html_ace6fb1739b7cf6456b3dcde84c766fb3"><div class="ttname"><a href="a00095.html#ace6fb1739b7cf6456b3dcde84c766fb3">QUESO::GslVector::sizeLocal</a></div><div class="ttdeci">unsigned int sizeLocal() const </div><div class="ttdoc">Returns the length of this vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00343">GslVector.C:343</a></div></div>
-<div class="ttc" id="a00092_html_ae26a24fb91a867d2f6dbb2d8cfe64ab5"><div class="ttname"><a href="a00092.html#ae26a24fb91a867d2f6dbb2d8cfe64ab5">QUESO::GslBlockMatrix::GslBlockMatrix</a></div><div class="ttdeci">GslBlockMatrix(const std::vector&lt; unsigned int &gt; &amp;blockSizes, const GslVector &amp;v, double diagValue)</div><div class="ttdoc">Creates a square matrix with size defined by v and diagonal values all equal to diagValue. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00029">GslBlockMatrix.C:29</a></div></div>
-<div class="ttc" id="a00092_html_a8ea5bd6e4fce76de0e3e600a100abe7d"><div class="ttname"><a href="a00092.html#a8ea5bd6e4fce76de0e3e600a100abe7d">QUESO::GslBlockMatrix::numBlocks</a></div><div class="ttdeci">unsigned int numBlocks() const </div><div class="ttdoc">Return the number of blocks in the block diagonal matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00099">GslBlockMatrix.C:99</a></div></div>
-<div class="ttc" id="a00233_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00233.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00233_source.html#l00091">asserts.h:91</a></div></div>
-<div class="ttc" id="a00095_html"><div class="ttname"><a href="a00095.html">QUESO::GslVector</a></div><div class="ttdoc">Class for vector operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00247_source.html#l00048">GslVector.h:48</a></div></div>
-<div class="ttc" id="a00092_html_a11c63edfed75a238b6da7eb460e7e526"><div class="ttname"><a href="a00092.html#a11c63edfed75a238b6da7eb460e7e526">QUESO::GslBlockMatrix::invertMultiply</a></div><div class="ttdeci">void invertMultiply(const GslVector &amp;b, GslVector &amp;x) const </div><div class="ttdoc">This function calculates the inverse of this matrix, multiplies it with vector b and stores the resul...</div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00105">GslBlockMatrix.C:105</a></div></div>
-<div class="ttc" id="a00092_html_ae304c18d5cc424cde85df541babdcbbf"><div class="ttname"><a href="a00092.html#ae304c18d5cc424cde85df541babdcbbf">QUESO::GslBlockMatrix::m_vectorSpaces</a></div><div class="ttdeci">std::vector&lt; VectorSpace&lt; GslVector, GslMatrix &gt; * &gt; m_vectorSpaces</div><div class="ttdef"><b>Definition:</b> <a href="a00244_source.html#l00104">GslBlockMatrix.h:104</a></div></div>
-<div class="ttc" id="a00092_html_a7a433366209d4cf0fb1263ef32da5f14"><div class="ttname"><a href="a00092.html#a7a433366209d4cf0fb1263ef32da5f14">QUESO::GslBlockMatrix::getBlock</a></div><div class="ttdeci">GslMatrix &amp; getBlock(unsigned int i) const </div><div class="ttdoc">Return block i in the block diagonal matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00093">GslBlockMatrix.C:93</a></div></div>
-<div class="ttc" id="a00120_html"><div class="ttname"><a href="a00120.html">QUESO::Matrix</a></div><div class="ttdoc">Class for matrix operations (virtual). </div><div class="ttdef"><b>Definition:</b> <a href="a00257_source.html#l00046">Matrix.h:46</a></div></div>
-<div class="ttc" id="a00092_html_adf40ac42a23c600f46444e5a317b2f9c"><div class="ttname"><a href="a00092.html#adf40ac42a23c600f46444e5a317b2f9c">QUESO::GslBlockMatrix::numCols</a></div><div class="ttdeci">virtual unsigned int numCols() const </div><div class="ttdoc">Not implemented yet. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00066">GslBlockMatrix.C:66</a></div></div>
-<div class="ttc" id="a00233_html_a7cd5266c96c8870c5d1c1e13073afb87"><div class="ttname"><a href="a00233.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a></div><div class="ttdeci">#define queso_not_implemented()</div><div class="ttdef"><b>Definition:</b> <a href="a00233_source.html#l00088">asserts.h:88</a></div></div>
-<div class="ttc" id="a00092_html_a8eb3681f069c0b650c5dc62629ed277d"><div class="ttname"><a href="a00092.html#a8eb3681f069c0b650c5dc62629ed277d">QUESO::GslBlockMatrix::~GslBlockMatrix</a></div><div class="ttdeci">~GslBlockMatrix()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00043">GslBlockMatrix.C:43</a></div></div>
-<div class="ttc" id="a00092_html_a9490f3cefc7f10d701fe5cd45f297396"><div class="ttname"><a href="a00092.html#a9490f3cefc7f10d701fe5cd45f297396">QUESO::GslBlockMatrix::zeroUpper</a></div><div class="ttdeci">virtual void zeroUpper(bool includeDiagonal=false)</div><div class="ttdoc">Not implemented yet. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00086">GslBlockMatrix.C:86</a></div></div>
-<div class="ttc" id="a00177_html"><div class="ttname"><a href="a00177.html">QUESO::VectorSpace</a></div><div class="ttdoc">A class representing a vector space. </div><div class="ttdef"><b>Definition:</b> <a href="a00207_source.html#l00046">VectorSet.h:46</a></div></div>
-<div class="ttc" id="a00092_html"><div class="ttname"><a href="a00092.html">QUESO::GslBlockMatrix</a></div><div class="ttdoc">Class for representing block matrices using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00244_source.html#l00050">GslBlockMatrix.h:50</a></div></div>
-<div class="ttc" id="a00092_html_a37c63ed8b18585d58c626f49c0849ca7"><div class="ttname"><a href="a00092.html#a37c63ed8b18585d58c626f49c0849ca7">QUESO::GslBlockMatrix::numRowsLocal</a></div><div class="ttdeci">virtual unsigned int numRowsLocal() const </div><div class="ttdoc">Not implemented yet. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00053">GslBlockMatrix.C:53</a></div></div>
-<div class="ttc" id="a00092_html_aaccb4dc96cb37bcad77b310bb45caedf"><div class="ttname"><a href="a00092.html#aaccb4dc96cb37bcad77b310bb45caedf">QUESO::GslBlockMatrix::m_blocks</a></div><div class="ttdeci">std::vector&lt; GslMatrix * &gt; m_blocks</div><div class="ttdef"><b>Definition:</b> <a href="a00244_source.html#l00105">GslBlockMatrix.h:105</a></div></div>
-<div class="ttc" id="a00092_html_a7ddb5948caf244e1063b21c430b4721b"><div class="ttname"><a href="a00092.html#a7ddb5948caf244e1063b21c430b4721b">QUESO::GslBlockMatrix::zeroLower</a></div><div class="ttdeci">virtual void zeroLower(bool includeDiagonal=false)</div><div class="ttdoc">Not implemented yet. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00080">GslBlockMatrix.C:80</a></div></div>
-<div class="ttc" id="a00092_html_a4e059f020a04c07d252118596d1a47f7"><div class="ttname"><a href="a00092.html#a4e059f020a04c07d252118596d1a47f7">QUESO::GslBlockMatrix::chol</a></div><div class="ttdeci">virtual int chol()</div><div class="ttdoc">Not implemented yet. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00073">GslBlockMatrix.C:73</a></div></div>
-<div class="ttc" id="a00120_html_a247fb0fc0b87fecdee054bb4660b68e8"><div class="ttname"><a href="a00120.html#a247fb0fc0b87fecdee054bb4660b68e8">QUESO::Matrix::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdoc">QUESO environment variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00257_source.html#l00137">Matrix.h:137</a></div></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// Math methods -------------------------------------</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;P_V,P_M&gt;</a>&amp;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00044.html#af77b709d473f253e5c56aa620d5f3cb0">   54</a></span>&#160;<a class="code" href="a00044.html#af77b709d473f253e5c56aa620d5f3cb0">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::domainSet</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">return</span> m_domainSet;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;Q_V,Q_M&gt;</a>&amp;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="a00044.html#aa3a070a86f7099f53a669f1aab547619">   62</a></span>&#160;<a class="code" href="a00044.html#aa3a070a86f7099f53a669f1aab547619">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::imageSet</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span> m_imageSet;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00044.html">QUESO::BaseVectorFunction&lt;QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet&lt; P_V, P_M &gt;</a></div></div>
+<div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">QUESO::BaseVectorFunction</a></div><div class="ttdoc">A templated (base) class for handling vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00255_source.html#l00050">VectorFunction.h:50</a></div></div>
+<div class="ttc" id="a00044_html_aa3a070a86f7099f53a669f1aab547619"><div class="ttname"><a href="a00044.html#aa3a070a86f7099f53a669f1aab547619">QUESO::BaseVectorFunction::imageSet</a></div><div class="ttdeci">const VectorSet&lt; Q_V, Q_M &gt; &amp; imageSet() const </div><div class="ttdoc">Access to the protected attribute m_imageSet: image set of the vector function/ It is an instance of ...</div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00062">VectorFunction.C:62</a></div></div>
+<div class="ttc" id="a00044_html_a25e2bf49649abce43b9390d7cfd04164"><div class="ttname"><a href="a00044.html#a25e2bf49649abce43b9390d7cfd04164">QUESO::BaseVectorFunction::~BaseVectorFunction</a></div><div class="ttdeci">virtual ~BaseVectorFunction()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00047">VectorFunction.C:47</a></div></div>
+<div class="ttc" id="a00044_html_af77b709d473f253e5c56aa620d5f3cb0"><div class="ttname"><a href="a00044.html#af77b709d473f253e5c56aa620d5f3cb0">QUESO::BaseVectorFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; P_V, P_M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the vector function. It is an instance o...</div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00054">VectorFunction.C:54</a></div></div>
+<div class="ttc" id="a00044_html_a6f819f1f9adcf13e9ed4a35542aeff20"><div class="ttname"><a href="a00044.html#a6f819f1f9adcf13e9ed4a35542aeff20">QUESO::BaseVectorFunction::BaseVectorFunction</a></div><div class="ttdeci">BaseVectorFunction(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;domainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet)</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00278_source.html#l00033">VectorFunction.C:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

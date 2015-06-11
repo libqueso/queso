@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/src/Map.C File Reference</title>
+<title>queso-0.53.0: src/contrib/ANN/ReadMe.txt File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -41,38 +41,195 @@
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
-</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">Map.C File Reference</div>  </div>
+<div class="title">src/contrib/ANN/ReadMe.txt File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/Map.h&gt;</code><br/>
-<code>#include &lt;queso/MpiComm.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for Map.C:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00603.png" border="0" usemap="#src_2core_2src_2_map_8_c" alt=""/></div>
-<map name="src_2core_2src_2_map_8_c" id="src_2core_2src_2_map_8_c">
-</map>
-</div>
-</div>
-<p><a href="a00290_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:a00500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html">QUESO</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:af9c791ac5753e4d7d7a2f88174931c4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00290.html#af9c791ac5753e4d7d7a2f88174931c4e">Copyright</a> (c) 1997-2010 University of <a class="el" href="a00285.html#a9fa68e71f593fd4c05bac6e9767a7dd1">Maryland</a> <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> David Mount.All Rights Reserved.See Copyright.txt <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> License.txt for complete information <a class="el" href="a00289.html#a3a09c912178e06d15053fd07b1c9c94f">on</a> <a class="el" href="a00289.html#a55e9e8cd95e9ba7aefc56f876dd6bb8d">terms</a> <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> <a class="el" href="a00289.html#a959c33040522a6f22c2b74cb54f5c100">conditions</a> of <a class="el" href="a00289.html#a86986f37198fc3e201d462d14d004409">use</a> <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> distribution of this software.----------------------------------------------------------------------------Authors-------David Mount Dept of Computer Science University of <a class="el" href="a00285.html#a9fa68e71f593fd4c05bac6e9767a7dd1">Maryland</a></td></tr>
+<tr class="separator:af9c791ac5753e4d7d7a2f88174931c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac944ce38f41b55a0241b3fc6e6f4c60"><td class="memItemLeft" align="right" valign="top">ANN College MD USA mount cs <br class="typebreak"/>
+umd edu HONG KONG arya cs ust <br class="typebreak"/>
+hk <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya of the Hong <br class="typebreak"/>
+Kong University of Science <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> <br class="typebreak"/>
+Technology&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> (pronounced like the name``Ann'') stands for Approximate Nearest Neighbors.ANN is also a testbed containing <a class="el" href="a00289.html#a4ef2920e76005114cb8e96e7f62863bd">programs</a> <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> procedures for generating data sets</td></tr>
+<tr class="separator:aac944ce38f41b55a0241b3fc6e6f4c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:affac4b8d6c026d8cb1b2ec07ff806bbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00290.html#affac4b8d6c026d8cb1b2ec07ff806bbf">__pad0__</a></td></tr>
+<tr class="separator:affac4b8d6c026d8cb1b2ec07ff806bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a033799b02cde1d4d85c99a0605cfea65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00290.html#a033799b02cde1d4d85c99a0605cfea65">Park</a></td></tr>
+<tr class="separator:a033799b02cde1d4d85c99a0605cfea65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa88f37f5cd3de0e0806b9c08a48cbc51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College MD USA mount cs umd edu&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00290.html#aa88f37f5cd3de0e0806b9c08a48cbc51">http</a></td></tr>
+<tr class="separator:aa88f37f5cd3de0e0806b9c08a48cbc51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86256db26f33a0e156b1f3018eeb0a19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College MD USA mount cs <br class="typebreak"/>
+umd edu HONG KONG arya cs ust <br class="typebreak"/>
+hk <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya of the Hong <br class="typebreak"/>
+Kong University of Science <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> <br class="typebreak"/>
+Technology collecting <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> <br class="typebreak"/>
+analyzing statistics <a class="el" href="a00289.html#a3a09c912178e06d15053fd07b1c9c94f">on</a> the <br class="typebreak"/>
+performance of nearest <br class="typebreak"/>
+neighbor algorithms <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> data&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00290.html#a86256db26f33a0e156b1f3018eeb0a19">structures</a></td></tr>
+<tr class="separator:a86256db26f33a0e156b1f3018eeb0a19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a185d0342dab15e22e0c2750068c62067"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College MD USA mount cs <br class="typebreak"/>
+umd edu HONG KONG arya cs ust <br class="typebreak"/>
+hk <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya of the Hong <br class="typebreak"/>
+Kong University of Science <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> <br class="typebreak"/>
+Technology collecting <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> <br class="typebreak"/>
+analyzing statistics <a class="el" href="a00289.html#a3a09c912178e06d15053fd07b1c9c94f">on</a> the <br class="typebreak"/>
+performance of nearest <br class="typebreak"/>
+neighbor algorithms <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> data <br class="typebreak"/>
+<a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> visualizing the geometric <br class="typebreak"/>
+structure of <a class="el" href="a00289.html#a14c3a401d863646681a42df2779ef995">these</a> data <br class="typebreak"/>
+<a class="el" href="a00290.html#a86256db26f33a0e156b1f3018eeb0a19">structures</a> The <a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> source <a class="el" href="a00289.html#afa2765f9f647ea2e9c46055f93a44d41">code</a> <br class="typebreak"/>
+<a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> documentation is available <br class="typebreak"/>
+from the following web&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00290.html#a185d0342dab15e22e0c2750068c62067">page</a></td></tr>
+<tr class="separator:a185d0342dab15e22e0c2750068c62067"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c56307b8ba25158a51e185409b5a834"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College MD USA mount cs <br class="typebreak"/>
+umd edu HONG KONG arya cs ust <br class="typebreak"/>
+hk <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya of the Hong <br class="typebreak"/>
+Kong University of Science <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> <br class="typebreak"/>
+Technology collecting <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> <br class="typebreak"/>
+analyzing statistics <a class="el" href="a00289.html#a3a09c912178e06d15053fd07b1c9c94f">on</a> the <br class="typebreak"/>
+performance of nearest <br class="typebreak"/>
+neighbor algorithms <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> data <br class="typebreak"/>
+<a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> visualizing the geometric <br class="typebreak"/>
+structure of <a class="el" href="a00289.html#a14c3a401d863646681a42df2779ef995">these</a> data <br class="typebreak"/>
+<a class="el" href="a00290.html#a86256db26f33a0e156b1f3018eeb0a19">structures</a> The <a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> source <a class="el" href="a00289.html#afa2765f9f647ea2e9c46055f93a44d41">code</a> <br class="typebreak"/>
+<a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> documentation is available <br class="typebreak"/>
+from the following web see the <br class="typebreak"/>
+<a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> Programming&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00290.html#a5c56307b8ba25158a51e185409b5a834">Manual</a></td></tr>
+<tr class="separator:a5c56307b8ba25158a51e185409b5a834"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="aac944ce38f41b55a0241b3fc6e6f4c60"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ANN College MD USA mount cs umd edu HONG KONG arya cs ust hk <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya of the Hong Kong University of Science <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Technology ANN </td>
+          <td>(</td>
+          <td class="paramtype">pronounced like the name``Ann''&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af9c791ac5753e4d7d7a2f88174931c4e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> Copyright </td>
+          <td>(</td>
+          <td class="paramtype">c&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="affac4b8d6c026d8cb1b2ec07ff806bbf"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> __pad0__</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00290_source.html#l00003">3</a> of file <a class="el" href="a00290_source.html">ReadMe.txt</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa88f37f5cd3de0e0806b9c08a48cbc51"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College MD USA mount cs umd edu HONG KONG arya cs ust hk http</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00290_source.html#l00016">16</a> of file <a class="el" href="a00290_source.html">ReadMe.txt</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5c56307b8ba25158a51e185409b5a834"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College MD USA mount cs umd edu HONG KONG arya cs ust hk <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya of the Hong Kong University of Science <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Technology collecting <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> analyzing statistics <a class="el" href="a00289.html#a3a09c912178e06d15053fd07b1c9c94f">on</a> the performance of nearest neighbor algorithms <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> data <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> visualizing the geometric structure of <a class="el" href="a00289.html#a14c3a401d863646681a42df2779ef995">these</a> data <a class="el" href="a00290.html#a86256db26f33a0e156b1f3018eeb0a19">structures</a> The <a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> source <a class="el" href="a00289.html#afa2765f9f647ea2e9c46055f93a44d41">code</a> <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> documentation is available from the following web see the <a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> Programming Manual</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00290_source.html#l00037">37</a> of file <a class="el" href="a00290_source.html">ReadMe.txt</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a185d0342dab15e22e0c2750068c62067"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College MD USA mount cs umd edu HONG KONG arya cs ust hk <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya of the Hong Kong University of Science <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Technology collecting <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> analyzing statistics <a class="el" href="a00289.html#a3a09c912178e06d15053fd07b1c9c94f">on</a> the performance of nearest neighbor algorithms <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> data <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> visualizing the geometric structure of <a class="el" href="a00289.html#a14c3a401d863646681a42df2779ef995">these</a> data <a class="el" href="a00290.html#a86256db26f33a0e156b1f3018eeb0a19">structures</a> The <a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> source <a class="el" href="a00289.html#afa2765f9f647ea2e9c46055f93a44d41">code</a> <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> documentation is available from the following web page</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00290_source.html#l00037">37</a> of file <a class="el" href="a00290_source.html">ReadMe.txt</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a033799b02cde1d4d85c99a0605cfea65"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College Park</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00290_source.html#l00016">16</a> of file <a class="el" href="a00290_source.html">ReadMe.txt</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a86256db26f33a0e156b1f3018eeb0a19"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00290.html#aac944ce38f41b55a0241b3fc6e6f4c60">ANN</a> College MD USA mount cs umd edu HONG KONG arya cs ust hk <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Sunil Arya of the Hong Kong University of Science <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Technology collecting <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> analyzing statistics <a class="el" href="a00289.html#a3a09c912178e06d15053fd07b1c9c94f">on</a> the performance of nearest neighbor algorithms <a class="el" href="a00289.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> data structures</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00290_source.html#l00037">37</a> of file <a class="el" href="a00290_source.html">ReadMe.txt</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

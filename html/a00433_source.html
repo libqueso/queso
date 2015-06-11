@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/src/GaussianLikelihoodFullCovariance.C Source File</title>
+<title>queso-0.53.0: src/misc/inc/ArrayOfOneDGrids.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_85aa4481915a0d58eac2c78710df0bea.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_cef55f19861ce62c0ca627401191ab0f.html">misc</a></li><li class="navelem"><a class="el" href="dir_13f3ced7e7515c530250c895de57efa8.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GaussianLikelihoodFullCovariance.C</div>  </div>
+<div class="title">ArrayOfOneDGrids.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00433.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,84 +75,95 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/GaussianLikelihoodFullCovariance.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00074.html#a14d099a4551a5c3e1bae3e53eca41831">   35</a></span>&#160;<a class="code" href="a00074.html#a14d099a4551a5c3e1bae3e53eca41831">GaussianLikelihoodFullCovariance&lt;V, M&gt;::GaussianLikelihoodFullCovariance</a>(</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> * prefix, <span class="keyword">const</span> <a class="code" href="a00176.html">VectorSet&lt;V, M&gt;</a> &amp; domainSet,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">const</span> V &amp; observations, <span class="keyword">const</span> M &amp; covariance, <span class="keywordtype">double</span> covarianceCoefficient)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  : <a class="code" href="a00019.html">BaseGaussianLikelihood</a>&lt;V, M&gt;(prefix, domainSet, observations),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    m_covarianceCoefficient(covarianceCoefficient),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    m_covariance(covariance)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> (covariance.numRowsLocal() != observations.sizeLocal()) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="a00233.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;Covariance matrix not same size as observation vector&quot;</span>);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00074.html#a61a29a02efdf1bd36595708780bad0d1">   48</a></span>&#160;<a class="code" href="a00074.html#a61a29a02efdf1bd36595708780bad0d1">GaussianLikelihoodFullCovariance&lt;V, M&gt;::~GaussianLikelihoodFullCovariance</a>()</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_ARRAY_OF_ONE_D_GRIDS_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ARRAY_OF_ONE_D_GRIDS_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/OneDGrid.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00024.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00024.html">ArrayOfOneDGrids</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00074.html#afc8f8d25936282af5d4489aa21f94937">   54</a></span>&#160;<a class="code" href="a00074.html#afc8f8d25936282af5d4489aa21f94937">GaussianLikelihoodFullCovariance&lt;V, M&gt;::actualValue</a>(<span class="keyword">const</span> V &amp; domainVector,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">const</span> V * domainDirection, V * gradVector, M * hessianMatrix,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    V * hessianEffect)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">return</span> std::exp(this-&gt;lnValue(domainVector, domainDirection, gradVector,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        hessianMatrix, hessianEffect));</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="a00074.html#a436133388a158d94bfd017cfc5d97985">   64</a></span>&#160;<a class="code" href="a00074.html#a436133388a158d94bfd017cfc5d97985">GaussianLikelihoodFullCovariance&lt;V, M&gt;::lnValue</a>(<span class="keyword">const</span> V &amp; domainVector,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">const</span> V * domainDirection, V * gradVector, M * hessianMatrix,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    V * hessianEffect)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  V modelOutput(this-&gt;m_observations, 0, 0);  <span class="comment">// At least it&#39;s not a copy</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  V weightedMisfit(this-&gt;m_observations, 0, 0);  <span class="comment">// At least it&#39;s not a copy</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  this-&gt;evaluateModel(domainVector, domainDirection, modelOutput, gradVector,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      hessianMatrix, hessianEffect);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="a00024.html#afac2d38cfd5e69c4e7cd7744308063af">ArrayOfOneDGrids</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* prefix, <span class="keyword">const</span> <a class="code" href="a00228.html">VectorSpace&lt;V,M&gt;</a>&amp; <a class="code" href="a00024.html#a07aee362e04f713c139730c991de9baa">rowSpace</a>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00024.html#a4580db34a8438863e75c40cd47e9c8d4">~ArrayOfOneDGrids</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00228.html">VectorSpace&lt;V,M&gt;</a>&amp;     <a class="code" href="a00024.html#a07aee362e04f713c139730c991de9baa">rowSpace</a>       () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">const</span> V&amp;  <a class="code" href="a00024.html#a2035c97cda24870644070eae0f8ecfae">sizes</a>          () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">const</span> V&amp;  <a class="code" href="a00024.html#a9230fc37403bb00ecd27ad842eb01c2b">minPositions</a>   () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">const</span> V&amp;  <a class="code" href="a00024.html#a958f92e18bcab93e1866ec67b18e408b">maxPositions</a>   () <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// Compute misfit G(x) - y</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  modelOutput -= this-&gt;m_observations;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// Solve \Sigma u = G(x) - y for u</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  this-&gt;m_covariance.invertMultiply(modelOutput, weightedMisfit);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// Compute (G(x) - y)^T \Sigma^{-1} (G(x) - y)</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  modelOutput *= weightedMisfit;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// This is square of 2-norm</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">double</span> norm2_squared = modelOutput.sumOfComponents();</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordflow">return</span> -0.5 * norm2_squared / (this-&gt;m_covarianceCoefficient);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">//  void      setGrid        (unsigned int                 rowId,</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">//                          BaseOneDGrid&lt;double&gt;&amp; oneDGrid);</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">void</span>      <a class="code" href="a00024.html#a143a91500dd5cbc18dd9f8ec912f21d1">setUniformGrids</a>(<span class="keyword">const</span> V&amp; sizesVec,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                            <span class="keyword">const</span> V&amp; minPositionsVec,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                            <span class="keyword">const</span> V&amp; maxPositionsVec);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00037.html">BaseOneDGrid&lt;double&gt;</a>&amp; <a class="code" href="a00024.html#a1e09877a9c5e712a03812163f628685b">grid</a>           (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rowId) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00074.html">QUESO::GaussianLikelihoodFullCovariance&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00176_html"><div class="ttname"><a href="a00176.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00207_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00233_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00233.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00233_source.html#l00091">asserts.h:91</a></div></div>
-<div class="ttc" id="a00074_html_a436133388a158d94bfd017cfc5d97985"><div class="ttname"><a href="a00074.html#a436133388a158d94bfd017cfc5d97985">QUESO::GaussianLikelihoodFullCovariance::lnValue</a></div><div class="ttdeci">virtual double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00064">GaussianLikelihoodFullCovariance.C:64</a></div></div>
-<div class="ttc" id="a00074_html_a61a29a02efdf1bd36595708780bad0d1"><div class="ttname"><a href="a00074.html#a61a29a02efdf1bd36595708780bad0d1">QUESO::GaussianLikelihoodFullCovariance::~GaussianLikelihoodFullCovariance</a></div><div class="ttdeci">virtual ~GaussianLikelihoodFullCovariance()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00048">GaussianLikelihoodFullCovariance.C:48</a></div></div>
-<div class="ttc" id="a00074_html"><div class="ttname"><a href="a00074.html">QUESO::GaussianLikelihoodFullCovariance</a></div><div class="ttdoc">A class that represents a Gaussian likelihood with full covariance. </div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00040">GaussianLikelihoodFullCovariance.h:40</a></div></div>
-<div class="ttc" id="a00074_html_a14d099a4551a5c3e1bae3e53eca41831"><div class="ttname"><a href="a00074.html#a14d099a4551a5c3e1bae3e53eca41831">QUESO::GaussianLikelihoodFullCovariance::GaussianLikelihoodFullCovariance</a></div><div class="ttdeci">GaussianLikelihoodFullCovariance(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;observations, const M &amp;covariance, double covarianceCoefficient=1.0)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00035">GaussianLikelihoodFullCovariance.C:35</a></div></div>
-<div class="ttc" id="a00074_html_afc8f8d25936282af5d4489aa21f94937"><div class="ttname"><a href="a00074.html#afc8f8d25936282af5d4489aa21f94937">QUESO::GaussianLikelihoodFullCovariance::actualValue</a></div><div class="ttdeci">virtual double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00054">GaussianLikelihoodFullCovariance.C:54</a></div></div>
-<div class="ttc" id="a00019_html"><div class="ttname"><a href="a00019.html">QUESO::BaseGaussianLikelihood</a></div><div class="ttdoc">Base class for canned Gaussian likelihoods. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00045">GaussianLikelihood.h:45</a></div></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">void</span>      <a class="code" href="a00024.html#a2c9eb92727869d6f985ed01c4a6d833d">print</a>          (std::ostream&amp; os) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00024.html#af1bc76a10219d37cae967bf8f6d9859a">   95</a></span>&#160;  <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="a00024.html#af1bc76a10219d37cae967bf8f6d9859a">operator&lt;&lt; </a>(std::ostream&amp; os,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00024.html">ArrayOfOneDGrids&lt;V,M&gt;</a>&amp; obj)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    obj.<a class="code" href="a00024.html#a2c9eb92727869d6f985ed01c4a6d833d">print</a>(os);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> os;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="a00024.html#abe7ada351d4ab3d04987f52cfedb419c">  104</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp;                  <a class="code" href="a00024.html#abe7ada351d4ab3d04987f52cfedb419c">m_env</a>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="a00024.html#ae9f51dffdcb939ac6b85d700a60fe167">  105</a></span>&#160;        std::string                              <a class="code" href="a00024.html#ae9f51dffdcb939ac6b85d700a60fe167">m_prefix</a>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00024.html#af8f8d1a3e1d4f6213cf64698f95d34da">  106</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00228.html">VectorSpace&lt;V,M&gt;</a>&amp;                 <a class="code" href="a00024.html#af8f8d1a3e1d4f6213cf64698f95d34da">m_rowSpace</a>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="a00024.html#a0cdfeb23fce031448906cef8d15fd407">  107</a></span>&#160;  <a class="code" href="a00066.html">DistArray&lt;BaseOneDGrid&lt;double&gt;</a>*&gt; <a class="code" href="a00024.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="a00024.html#ae2164bf692a8fed51b630a114824ffa7">  109</a></span>&#160;  V* <a class="code" href="a00024.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="a00024.html#aaca722e41b97a006385c588ea888f7d9">  110</a></span>&#160;  V* <a class="code" href="a00024.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="a00024.html#a8deeecb4b58f401acdc1fd101d6b5f42">  111</a></span>&#160;  V* <a class="code" href="a00024.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;};</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#endif // UQ_ARRAY_OF_ONE_D_GRIDS_H</span></div>
+<div class="ttc" id="a00024_html_af1bc76a10219d37cae967bf8f6d9859a"><div class="ttname"><a href="a00024.html#af1bc76a10219d37cae967bf8f6d9859a">QUESO::ArrayOfOneDGrids::operator&lt;&lt;</a></div><div class="ttdeci">friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const ArrayOfOneDGrids&lt; V, M &gt; &amp;obj)</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00095">ArrayOfOneDGrids.h:95</a></div></div>
+<div class="ttc" id="a00024_html"><div class="ttname"><a href="a00024.html">QUESO::ArrayOfOneDGrids</a></div><div class="ttdoc">Class to accommodate arrays of one-dimensional grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00047">ArrayOfOneDGrids.h:47</a></div></div>
+<div class="ttc" id="a00024_html_a958f92e18bcab93e1866ec67b18e408b"><div class="ttname"><a href="a00024.html#a958f92e18bcab93e1866ec67b18e408b">QUESO::ArrayOfOneDGrids::maxPositions</a></div><div class="ttdeci">const V &amp; maxPositions() const </div><div class="ttdoc">Returns an array with the maximum position of each grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00446_source.html#l00093">ArrayOfOneDGrids.C:93</a></div></div>
+<div class="ttc" id="a00024_html_a2c9eb92727869d6f985ed01c4a6d833d"><div class="ttname"><a href="a00024.html#a2c9eb92727869d6f985ed01c4a6d833d">QUESO::ArrayOfOneDGrids::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the values of the array of grids (points). </div><div class="ttdef"><b>Definition:</b> <a href="a00446_source.html#l00142">ArrayOfOneDGrids.C:142</a></div></div>
+<div class="ttc" id="a00024_html_abe7ada351d4ab3d04987f52cfedb419c"><div class="ttname"><a href="a00024.html#abe7ada351d4ab3d04987f52cfedb419c">QUESO::ArrayOfOneDGrids::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00104">ArrayOfOneDGrids.h:104</a></div></div>
+<div class="ttc" id="a00024_html_af8f8d1a3e1d4f6213cf64698f95d34da"><div class="ttname"><a href="a00024.html#af8f8d1a3e1d4f6213cf64698f95d34da">QUESO::ArrayOfOneDGrids::m_rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; m_rowSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00106">ArrayOfOneDGrids.h:106</a></div></div>
+<div class="ttc" id="a00024_html_afac2d38cfd5e69c4e7cd7744308063af"><div class="ttname"><a href="a00024.html#afac2d38cfd5e69c4e7cd7744308063af">QUESO::ArrayOfOneDGrids::ArrayOfOneDGrids</a></div><div class="ttdeci">ArrayOfOneDGrids(const char *prefix, const VectorSpace&lt; V, M &gt; &amp;rowSpace)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00446_source.html#l00035">ArrayOfOneDGrids.C:35</a></div></div>
+<div class="ttc" id="a00024_html_a0cdfeb23fce031448906cef8d15fd407"><div class="ttname"><a href="a00024.html#a0cdfeb23fce031448906cef8d15fd407">QUESO::ArrayOfOneDGrids::m_oneDGrids</a></div><div class="ttdeci">DistArray&lt; BaseOneDGrid&lt; double &gt; * &gt; m_oneDGrids</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00107">ArrayOfOneDGrids.h:107</a></div></div>
+<div class="ttc" id="a00024_html_ae2164bf692a8fed51b630a114824ffa7"><div class="ttname"><a href="a00024.html#ae2164bf692a8fed51b630a114824ffa7">QUESO::ArrayOfOneDGrids::m_sizes</a></div><div class="ttdeci">V * m_sizes</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00109">ArrayOfOneDGrids.h:109</a></div></div>
+<div class="ttc" id="a00024_html_ae9f51dffdcb939ac6b85d700a60fe167"><div class="ttname"><a href="a00024.html#ae9f51dffdcb939ac6b85d700a60fe167">QUESO::ArrayOfOneDGrids::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00105">ArrayOfOneDGrids.h:105</a></div></div>
+<div class="ttc" id="a00024_html_a8deeecb4b58f401acdc1fd101d6b5f42"><div class="ttname"><a href="a00024.html#a8deeecb4b58f401acdc1fd101d6b5f42">QUESO::ArrayOfOneDGrids::m_maxPositions</a></div><div class="ttdeci">V * m_maxPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00111">ArrayOfOneDGrids.h:111</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00327_source.html#l00193">Environment.h:193</a></div></div>
+<div class="ttc" id="a00024_html_a07aee362e04f713c139730c991de9baa"><div class="ttname"><a href="a00024.html#a07aee362e04f713c139730c991de9baa">QUESO::ArrayOfOneDGrids::rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; rowSpace() const </div><div class="ttdoc">Returns the (vector) space to which the row belongs to. </div><div class="ttdef"><b>Definition:</b> <a href="a00446_source.html#l00068">ArrayOfOneDGrids.C:68</a></div></div>
+<div class="ttc" id="a00024_html_a1e09877a9c5e712a03812163f628685b"><div class="ttname"><a href="a00024.html#a1e09877a9c5e712a03812163f628685b">QUESO::ArrayOfOneDGrids::grid</a></div><div class="ttdeci">const BaseOneDGrid&lt; double &gt; &amp; grid(unsigned int rowId) const </div><div class="ttdoc">Returns the grid stored in the rowId-th position of the array of grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00446_source.html#l00131">ArrayOfOneDGrids.C:131</a></div></div>
+<div class="ttc" id="a00024_html_a9230fc37403bb00ecd27ad842eb01c2b"><div class="ttname"><a href="a00024.html#a9230fc37403bb00ecd27ad842eb01c2b">QUESO::ArrayOfOneDGrids::minPositions</a></div><div class="ttdeci">const V &amp; minPositions() const </div><div class="ttdoc">Returns an array with the minimum position of each grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00446_source.html#l00084">ArrayOfOneDGrids.C:84</a></div></div>
+<div class="ttc" id="a00066_html"><div class="ttname"><a href="a00066.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00326_source.html#l00056">DistArray.h:56</a></div></div>
+<div class="ttc" id="a00037_html"><div class="ttname"><a href="a00037.html">QUESO::BaseOneDGrid</a></div><div class="ttdoc">Base class for accommodating one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00439_source.html#l00046">OneDGrid.h:46</a></div></div>
+<div class="ttc" id="a00024_html_a143a91500dd5cbc18dd9f8ec912f21d1"><div class="ttname"><a href="a00024.html#a143a91500dd5cbc18dd9f8ec912f21d1">QUESO::ArrayOfOneDGrids::setUniformGrids</a></div><div class="ttdeci">void setUniformGrids(const V &amp;sizesVec, const V &amp;minPositionsVec, const V &amp;maxPositionsVec)</div><div class="ttdoc">Sets an array of uniform grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00446_source.html#l00102">ArrayOfOneDGrids.C:102</a></div></div>
+<div class="ttc" id="a00024_html_a4580db34a8438863e75c40cd47e9c8d4"><div class="ttname"><a href="a00024.html#a4580db34a8438863e75c40cd47e9c8d4">QUESO::ArrayOfOneDGrids::~ArrayOfOneDGrids</a></div><div class="ttdeci">~ArrayOfOneDGrids()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00446_source.html#l00054">ArrayOfOneDGrids.C:54</a></div></div>
+<div class="ttc" id="a00024_html_aaca722e41b97a006385c588ea888f7d9"><div class="ttname"><a href="a00024.html#aaca722e41b97a006385c588ea888f7d9">QUESO::ArrayOfOneDGrids::m_minPositions</a></div><div class="ttdeci">V * m_minPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00110">ArrayOfOneDGrids.h:110</a></div></div>
+<div class="ttc" id="a00024_html_a2035c97cda24870644070eae0f8ecfae"><div class="ttname"><a href="a00024.html#a2035c97cda24870644070eae0f8ecfae">QUESO::ArrayOfOneDGrids::sizes</a></div><div class="ttdeci">const V &amp; sizes() const </div><div class="ttdoc">Returns an array with the sizes of the grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00446_source.html#l00075">ArrayOfOneDGrids.C:75</a></div></div>
+<div class="ttc" id="a00228_html"><div class="ttname"><a href="a00228.html">QUESO::VectorSpace</a></div><div class="ttdoc">A class representing a vector space. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00049">VectorSet.h:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

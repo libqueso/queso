@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/inc/GaussianLikelihood.h Source File</title>
+<title>queso-0.53.0: src/core/inc/Map.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_d98b071537eea78ae0761911e9f6b515.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_88fac51d2e17cec13478f22fd619c260.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GaussianLikelihood.h</div>  </div>
+<div class="title">Map.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00344.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,48 +75,90 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GAUSSIAN_LLHD_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GAUSSIAN_LLHD_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_MAP_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_MAP_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarFunction.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00019.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00019.html">BaseGaussianLikelihood</a> : <span class="keyword">public</span> <a class="code" href="a00026.html">BaseScalarFunction</a>&lt;V, M&gt; {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="a00019.html#a77f96d5a7526947c3ccb3f4d1a62de6f">BaseGaussianLikelihood</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * prefix,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00176.html">VectorSet&lt;V, M&gt;</a> &amp; <a class="code" href="a00026.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keyword">const</span> V &amp; observations);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00019.html#a87e1378a685f2afff32be4369d33492a">~BaseGaussianLikelihood</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00019.html#a27a49f9fb4830bfe2c0dc6015c48466d">evaluateModel</a>(<span class="keyword">const</span> V &amp; domainVector, <span class="keyword">const</span> V * domainDirection,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      V &amp; modelOutput, V * gradVector, M * hessianMatrix,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      V * hessianEffect) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00019.html#a1d8164465eaac7206aa81e4347ac914c">   83</a></span>&#160;  <span class="keyword">const</span> V &amp; <a class="code" href="a00019.html#a1d8164465eaac7206aa81e4347ac914c">m_observations</a>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;Epetra_Map.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/MpiComm.h&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00160.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00160.html">Map</a></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00160.html#acce20c97c69af851cbf67386beb133b2">Map</a>(<span class="keywordtype">int</span>                   numGlobalElements,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;             <span class="keywordtype">int</span>                   indexBase,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;             <span class="keyword">const</span> <a class="code" href="a00175.html">MpiComm</a>&amp; comm);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="a00160.html#acce20c97c69af851cbf67386beb133b2">Map</a>(<span class="keyword">const</span> <a class="code" href="a00160.html">Map</a>&amp; src);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; <a class="code" href="a00160.html#a280330a2d8fc1694461f09941a443b4e">~Map</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="a00160.html">Map</a>&amp; <a class="code" href="a00160.html#afb3d6d9dc20139964090478678194359">operator= </a>(<span class="keyword">const</span> <a class="code" href="a00160.html">Map</a>&amp; rhs);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">int</span>                   <a class="code" href="a00160.html#ac67907266dcd7108ffe5a0cbef908781">NumGlobalElements</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">int</span>                   <a class="code" href="a00160.html#a83f67cf2643489a45ef0e515d814c89d">IndexBase</a>        () <span class="keyword">const</span>;<span class="comment">//1st position in the global processor in my processors</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">int</span>                   <a class="code" href="a00160.html#a6407f6d6a6df8a0a40923c8dc524b021">NumMyElements</a>    () <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif  // UQ_GAUSSIAN_LLHD_H</span></div>
-<div class="ttc" id="a00176_html"><div class="ttname"><a href="a00176.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00207_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00026_html"><div class="ttname"><a href="a00026.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00048">GslOptimizer.h:48</a></div></div>
-<div class="ttc" id="a00019_html_a77f96d5a7526947c3ccb3f4d1a62de6f"><div class="ttname"><a href="a00019.html#a77f96d5a7526947c3ccb3f4d1a62de6f">QUESO::BaseGaussianLikelihood::BaseGaussianLikelihood</a></div><div class="ttdeci">BaseGaussianLikelihood(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;observations)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00429_source.html#l00033">GaussianLikelihood.C:33</a></div></div>
-<div class="ttc" id="a00019_html_a87e1378a685f2afff32be4369d33492a"><div class="ttname"><a href="a00019.html#a87e1378a685f2afff32be4369d33492a">QUESO::BaseGaussianLikelihood::~BaseGaussianLikelihood</a></div><div class="ttdeci">virtual ~BaseGaussianLikelihood()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00429_source.html#l00042">GaussianLikelihood.C:42</a></div></div>
-<div class="ttc" id="a00019_html_a27a49f9fb4830bfe2c0dc6015c48466d"><div class="ttname"><a href="a00019.html#a27a49f9fb4830bfe2c0dc6015c48466d">QUESO::BaseGaussianLikelihood::evaluateModel</a></div><div class="ttdeci">virtual void evaluateModel(const V &amp;domainVector, const V *domainDirection, V &amp;modelOutput, V *gradVector, M *hessianMatrix, V *hessianEffect) const =0</div><div class="ttdoc">Evaluates the user&amp;#39;s model at the point domainVector. </div></div>
-<div class="ttc" id="a00026_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00026.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00221_source.html#l00050">ScalarFunction.C:50</a></div></div>
-<div class="ttc" id="a00019_html_a1d8164465eaac7206aa81e4347ac914c"><div class="ttname"><a href="a00019.html#a1d8164465eaac7206aa81e4347ac914c">QUESO::BaseGaussianLikelihood::m_observations</a></div><div class="ttdeci">const V &amp; m_observations</div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00083">GaussianLikelihood.h:83</a></div></div>
-<div class="ttc" id="a00019_html"><div class="ttname"><a href="a00019.html">QUESO::BaseGaussianLikelihood</a></div><div class="ttdoc">Base class for canned Gaussian likelihoods. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00045">GaussianLikelihood.h:45</a></div></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">int</span>                   <a class="code" href="a00160.html#a686b1ea15e0aa9a5de9d6a03456be4a9">MinMyGID</a>         () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00175.html">MpiComm</a>&amp; <a class="code" href="a00160.html#aab4fc9911156b61c51f905849e3c9856">Comm</a>             () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor"></span>  <span class="keyword">const</span> Epetra_Map&amp;     epetraMap        () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <a class="code" href="a00160.html#acce20c97c69af851cbf67386beb133b2">Map</a>();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">void</span>                  <a class="code" href="a00160.html#a2ed4b24e922e77695d85de7fd4e9042a">copy</a>             (<span class="keyword">const</span> <a class="code" href="a00160.html">Map</a>&amp; src);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="a00160.html#aa002700b90ae2edbf5b3ee6968b28c50">  109</a></span>&#160;  <a class="code" href="a00175.html">MpiComm</a> <a class="code" href="a00160.html#aa002700b90ae2edbf5b3ee6968b28c50">m_MpiComm</a>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor"></span>  Epetra_Map*    m_epetraMap;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor"></span>  <span class="keywordtype">int</span>            <a class="code" href="a00160.html#a67c0e876f9c6e9dcf9eba45d34c02b0a">m_numGlobalElements</a>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="a00160.html#a26b42eedd432d109ac0e349eff15da29">  119</a></span>&#160;  <span class="keywordtype">int</span>            <a class="code" href="a00160.html#a26b42eedd432d109ac0e349eff15da29">m_indexBase</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="a00160.html#afdde1747848ac8dd3cebf8eed159de82">  122</a></span>&#160;  <span class="keywordtype">int</span>            <a class="code" href="a00160.html#afdde1747848ac8dd3cebf8eed159de82">m_numMyElements</a>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor"></span>};</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif // UQ_MAP_H</span></div>
+<div class="ttc" id="a00160_html_aab4fc9911156b61c51f905849e3c9856"><div class="ttname"><a href="a00160.html#aab4fc9911156b61c51f905849e3c9856">QUESO::Map::Comm</a></div><div class="ttdeci">const MpiComm &amp; Comm() const </div><div class="ttdoc">Access function for MpiComm communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00131">Map.C:131</a></div></div>
+<div class="ttc" id="a00160_html_afdde1747848ac8dd3cebf8eed159de82"><div class="ttname"><a href="a00160.html#afdde1747848ac8dd3cebf8eed159de82">QUESO::Map::m_numMyElements</a></div><div class="ttdeci">int m_numMyElements</div><div class="ttdoc">Number of elements owned by the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00122">Map.h:122</a></div></div>
+<div class="ttc" id="a00160_html_a6407f6d6a6df8a0a40923c8dc524b021"><div class="ttname"><a href="a00160.html#a6407f6d6a6df8a0a40923c8dc524b021">QUESO::Map::NumMyElements</a></div><div class="ttdeci">int NumMyElements() const </div><div class="ttdoc">Returns the number of elements owned by the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00107">Map.C:107</a></div></div>
+<div class="ttc" id="a00160_html_afb3d6d9dc20139964090478678194359"><div class="ttname"><a href="a00160.html#afb3d6d9dc20139964090478678194359">QUESO::Map::operator=</a></div><div class="ttdeci">Map &amp; operator=(const Map &amp;rhs)</div><div class="ttdoc">Assignment operator. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00076">Map.C:76</a></div></div>
+<div class="ttc" id="a00175_html"><div class="ttname"><a href="a00175.html">QUESO::MpiComm</a></div><div class="ttdoc">The QUESO MPI Communicator Class. </div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00075">MpiComm.h:75</a></div></div>
+<div class="ttc" id="a00160_html_a280330a2d8fc1694461f09941a443b4e"><div class="ttname"><a href="a00160.html#a280330a2d8fc1694461f09941a443b4e">QUESO::Map::~Map</a></div><div class="ttdeci">~Map()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00063">Map.C:63</a></div></div>
+<div class="ttc" id="a00160_html_a83f67cf2643489a45ef0e515d814c89d"><div class="ttname"><a href="a00160.html#a83f67cf2643489a45ef0e515d814c89d">QUESO::Map::IndexBase</a></div><div class="ttdeci">int IndexBase() const </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00096">Map.C:96</a></div></div>
+<div class="ttc" id="a00160_html_a67c0e876f9c6e9dcf9eba45d34c02b0a"><div class="ttname"><a href="a00160.html#a67c0e876f9c6e9dcf9eba45d34c02b0a">QUESO::Map::m_numGlobalElements</a></div><div class="ttdeci">int m_numGlobalElements</div><div class="ttdoc">Total number of elements across all processors. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00116">Map.h:116</a></div></div>
+<div class="ttc" id="a00160_html_aa002700b90ae2edbf5b3ee6968b28c50"><div class="ttname"><a href="a00160.html#aa002700b90ae2edbf5b3ee6968b28c50">QUESO::Map::m_MpiComm</a></div><div class="ttdeci">MpiComm m_MpiComm</div><div class="ttdoc">This communicator can be queried for processor rank and size information. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00109">Map.h:109</a></div></div>
+<div class="ttc" id="a00160_html_a26b42eedd432d109ac0e349eff15da29"><div class="ttname"><a href="a00160.html#a26b42eedd432d109ac0e349eff15da29">QUESO::Map::m_indexBase</a></div><div class="ttdeci">int m_indexBase</div><div class="ttdoc">Base integer value for indexed array references. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00119">Map.h:119</a></div></div>
+<div class="ttc" id="a00160_html_a686b1ea15e0aa9a5de9d6a03456be4a9"><div class="ttname"><a href="a00160.html#a686b1ea15e0aa9a5de9d6a03456be4a9">QUESO::Map::MinMyGID</a></div><div class="ttdeci">int MinMyGID() const </div><div class="ttdoc">The minimum global index value on the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00118">Map.C:118</a></div></div>
+<div class="ttc" id="a00160_html_acce20c97c69af851cbf67386beb133b2"><div class="ttname"><a href="a00160.html#acce20c97c69af851cbf67386beb133b2">QUESO::Map::Map</a></div><div class="ttdeci">Map()</div><div class="ttdoc">Default constructor. Do not call this directly. </div></div>
+<div class="ttc" id="a00160_html"><div class="ttname"><a href="a00160.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00049">Map.h:49</a></div></div>
+<div class="ttc" id="a00160_html_a2ed4b24e922e77695d85de7fd4e9042a"><div class="ttname"><a href="a00160.html#a2ed4b24e922e77695d85de7fd4e9042a">QUESO::Map::copy</a></div><div class="ttdeci">void copy(const Map &amp;src)</div><div class="ttdoc">Copies the map. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00146">Map.C:146</a></div></div>
+<div class="ttc" id="a00160_html_ac67907266dcd7108ffe5a0cbef908781"><div class="ttname"><a href="a00160.html#ac67907266dcd7108ffe5a0cbef908781">QUESO::Map::NumGlobalElements</a></div><div class="ttdeci">int NumGlobalElements() const </div><div class="ttdoc">Returns the total number of elements across all processors. </div><div class="ttdef"><b>Definition:</b> <a href="a00381_source.html#l00085">Map.C:85</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

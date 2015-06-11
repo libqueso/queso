@@ -1,111 +1,111 @@
-\form#0:\[f(x) = y_1 + m (x - x_1), \]
-\form#1:$ m $
-\form#2:$(x_1,y_1)$
-\form#3:\[ f(x)=ax^2+bx+c,\quad a \ne 0.\]
-\form#4:$ f(x) = y $
-\form#5:$ P(x) $
-\form#6:$ \leq n-1 $
-\form#7:$ n $
-\form#8:$ (x_1,y_1=f(x_1)), (x_2,y_2=f(x_2)), ..., (x_n,y_n=f(x_n))$
-\form#9:\[ P(x)=\sum_{j=1}^n \prod_{k=1; k\not=j}^n \frac{x-x_k}{x_j-x_k}.\]
-\form#10:\[ P(x)=\frac{(x-x_2)(x-x_3)...(x-x_n)}{(x_1-x_2)(x_1-x_3)...(x_1-x_n)}y_1+ \frac{(x-x_1)(x-x_3)...(x-x_n)}{(x_2-x_1)(x_2-x_3)...(x_2-x_n)}y_2+...+ \frac{(x-x_1)(x-x_2)...(x-x_(n-1))}{(x_n-x_1)(x_n-x_2)...(x_n-x_(n-1))}y_n.\]
-\form#11:$ x_1, x_2, ... x_n $
-\form#12:$ y_1, y_2, ... y_n $
-\form#13:$ k+1 $
-\form#14:$(x_0, y_0),\ldots,(x_j, y_j),\ldots,(x_k, y_k)$
-\form#15:$ x_j $
-\form#16:\[ L(x) = \sum_{j=0}^{k} y_j \ell_j(x) \]
-\form#17:\[ \ell_j(x) = \prod_{0\le m\le k;\, m\neq j} \frac{x-x_m}{x_j-x_m} = \frac{(x-x_0)}{(x_j-x_0)} \cdots \frac{(x-x_{j-1})}{(x_j-x_{j-1})} \frac{(x-x_{j+1})}{(x_j-x_{j+1})} \cdots \frac{(x-x_k)}{(x_j-x_k)},\]
-\form#18:$ 0\le j\le k $
-\form#19:$ \ell_j(x) $
-\form#20:$ j $
-\form#21:$ x_1 $
-\form#22:$ f(x) = y_1 + m (x - x_1)$
-\form#23:$ y_1 $
-\form#24:$ m$
-\form#25:$f(x) = y_1 + m (x - x_1)$
-\form#26:$ x_1i $
-\form#27:$ f_i(x) = y_{1i} + m_i (x - x_{1i})$
-\form#28:$ i $
-\form#29:$ y_{1i} $
-\form#30:$ m_i $
-\form#31:$ f(x)=ax^2+bx+c $
-\form#32:$ f(x)$
-\form#33:$ g(x)$
-\form#34:$ W(x)$
-\form#35:\[\int_{-1}^1 f(x) \, dx = \int_{-1}^1 W(x) g(x) \, dx\]
-\form#36:$ x_i $
-\form#37:$ w_i $
-\form#38:\[ \int_{-1}^1 W(x) g(x) \, dx \approx \sum_{i=1}^n w_i g(x_i) \]
-\form#39:$ W(x) = 1 $
-\form#40:$ f(x) $
-\form#41:\[ \int_{-1}^1 f(x)\,dx \approx \sum_{i=1}^n w_i f(x_i) \]
-\form#42:$ P_n(x)$
-\form#43:\[ w_i = \frac{2}{(1-x_i^2)[P'_n(x_i)]^2}=\frac{2(1-x_i^2)}{(n+1)^2[P_{n+1}(x_i)]^2} \]
-\form#44:$ \pm \frac{1}{3}\sqrt{3} $
-\form#45:$ 1 $
-\form#46:$ 0 $
-\form#47:$ \frac{8}{9} $
-\form#48:$ \pm \frac{1}{5} \sqrt{15} $
-\form#49:$ \frac{5}{9} $
-\form#50:$ \pm \frac{1}{35}\sqrt{525-70\sqrt{30}} $
-\form#51:$ \frac{1}{36}(18+\sqrt{30})$
-\form#52:$ \pm \frac{1}{35}\sqrt{525+70\sqrt{30}} $
-\form#53:$ \frac{1}{36}(18-\sqrt{30})$
-\form#54:$ \frac{128}{225}$
-\form#55:$ \pm \frac{1}{21}\sqrt{245-14\sqrt{70}} $
-\form#56:$ \frac{1}{900}(322+13\sqrt{70})$
-\form#57:$ \pm \frac{1}{21}\sqrt{245+14\sqrt{70}} $
-\form#58:$ \frac{1}{900}(322-13\sqrt{70})$
-\form#59:$(-\infty,\infty)$
-\form#60:$ W(x)=e^{-x^2}$
-\form#61:$ H_n(x)$
-\form#62:$\pm \frac{1}{2}\sqrt{2} $
-\form#63:$ \frac{1}{2}\sqrt{\pi} $
-\form#64:$ \frac{2}{3}\sqrt{\pi} $
-\form#65:$\pm \frac{1}{2}\sqrt{6} $
-\form#66:$ \frac{1}{6}\sqrt{\pi} $
-\form#67:$\pm \sqrt{\frac{3-\sqrt{6}}{2}} $
-\form#68:$ \frac{\sqrt{\pi}}{4(3-\sqrt{6})} $
-\form#69:$ \frac{\sqrt{\pi}}{4(3+\sqrt{6})} $
-\form#70:$ W(x)=\frac{1}{\sqrt{1-x^2}}$
-\form#71:$ T_n(x) $
-\form#72:$ x_i=\cos[\frac{(2i-1)\pi}{2n}]$
-\form#73:$ w_i=\frac{\pi}{n}. $
-\form#74:$ W(x)=\sqrt{1-x^2}$
-\form#75:$ U_n(x) $
-\form#76:$ x_i=\cos[\frac{i\pi}{n+1}].$
-\form#77:$ w_i=\frac{\pi}{n+1}\sin^2[\frac{i\pi}{n+1}]. $
-\form#78:\[ x_j = \sum_{k=0}^{N-1} z_k \exp(-2\pi i j k / N) \]
-\form#79:$ Ab $
-\form#80:$ O(N^2)$
-\form#81:$ N $
-\form#82:$ A $
-\form#83:$ f_1 f_2 ... f_n $
-\form#84:$ O(N \sum f_i) $
-\form#85:$ O(N \log_2 N)$
-\form#86:$ O(\c fftSize ^2) $
-\form#87:$ x = FFT(z) $
-\form#88:\[ x_j = \sum_{k=0}^{N-1} z_k \exp(-2\pi i j k / N). \]
-\form#89:$ O(fftSize^2) $
-\form#90:$ x = IFFT(z)$
-\form#91:\[ z_j = {1 \over N} \sum_{k=0}^{N-1} x_k \exp(2\pi i j k / N).\]
-\form#92:$ 1/N $
-\form#93:\[ \hat{f}(x) = \frac{1}{nh} \sum_{j=1}^n K\Big(\frac{x-x_j}{h}\Big),\]
-\form#94:$ K $
-\form#95:$ R $
-\form#96:$ R^2 $
-\form#97:$ f: B \subset R \rightarrow R $
-\form#98:$ \mathbf{q}: B \subset R^n \rightarrow R^m $
-\form#99:$ \sigma_y^2 $
-\form#100:$ \sigma_y^2 = \frac{1}{n} \sum_{i=1}^n \left(y_i - \mu \right)^2 $
-\form#101:$ \mu $
-\form#102:$ \sigma^2 $
-\form#103:$ \sigma^2 = \frac{1}{n-1} \sum_{i=1}^n \left(y_i - \mu \right)^2 $
-\form#104:$ B $
-\form#105:$ R^n $
-\form#106:$ R^m $
-\form#107:$ \pi: B \subset R^n \rightarrow R $
+\form#0:\[ \hat{f}(x) = \frac{1}{nh} \sum_{j=1}^n K\Big(\frac{x-x_j}{h}\Big),\]
+\form#1:$ K $
+\form#2:$ R $
+\form#3:$ R^2 $
+\form#4:$ f: B \subset R \rightarrow R $
+\form#5:$ \mathbf{q}: B \subset R^n \rightarrow R^m $
+\form#6:$ \sigma_y^2 $
+\form#7:$ \sigma_y^2 = \frac{1}{n} \sum_{i=1}^n \left(y_i - \mu \right)^2 $
+\form#8:$ \mu $
+\form#9:$ n $
+\form#10:$ \sigma^2 $
+\form#11:$ \sigma^2 = \frac{1}{n-1} \sum_{i=1}^n \left(y_i - \mu \right)^2 $
+\form#12:$ B $
+\form#13:$ R^n $
+\form#14:$ R^m $
+\form#15:$ \pi: B \subset R^n \rightarrow R $
+\form#16:\[f(x) = y_1 + m (x - x_1), \]
+\form#17:$ m $
+\form#18:$(x_1,y_1)$
+\form#19:\[ f(x)=ax^2+bx+c,\quad a \ne 0.\]
+\form#20:$ f(x) = y $
+\form#21:$ P(x) $
+\form#22:$ \leq n-1 $
+\form#23:$ (x_1,y_1=f(x_1)), (x_2,y_2=f(x_2)), ..., (x_n,y_n=f(x_n))$
+\form#24:\[ P(x)=\sum_{j=1}^n \prod_{k=1; k\not=j}^n \frac{x-x_k}{x_j-x_k}.\]
+\form#25:\[ P(x)=\frac{(x-x_2)(x-x_3)...(x-x_n)}{(x_1-x_2)(x_1-x_3)...(x_1-x_n)}y_1+ \frac{(x-x_1)(x-x_3)...(x-x_n)}{(x_2-x_1)(x_2-x_3)...(x_2-x_n)}y_2+...+ \frac{(x-x_1)(x-x_2)...(x-x_(n-1))}{(x_n-x_1)(x_n-x_2)...(x_n-x_(n-1))}y_n.\]
+\form#26:$ x_1, x_2, ... x_n $
+\form#27:$ y_1, y_2, ... y_n $
+\form#28:$ k+1 $
+\form#29:$(x_0, y_0),\ldots,(x_j, y_j),\ldots,(x_k, y_k)$
+\form#30:$ x_j $
+\form#31:\[ L(x) = \sum_{j=0}^{k} y_j \ell_j(x) \]
+\form#32:\[ \ell_j(x) = \prod_{0\le m\le k;\, m\neq j} \frac{x-x_m}{x_j-x_m} = \frac{(x-x_0)}{(x_j-x_0)} \cdots \frac{(x-x_{j-1})}{(x_j-x_{j-1})} \frac{(x-x_{j+1})}{(x_j-x_{j+1})} \cdots \frac{(x-x_k)}{(x_j-x_k)},\]
+\form#33:$ 0\le j\le k $
+\form#34:$ \ell_j(x) $
+\form#35:$ j $
+\form#36:$ x_1 $
+\form#37:$ f(x) = y_1 + m (x - x_1)$
+\form#38:$ y_1 $
+\form#39:$ m$
+\form#40:$f(x) = y_1 + m (x - x_1)$
+\form#41:$ x_1i $
+\form#42:$ f_i(x) = y_{1i} + m_i (x - x_{1i})$
+\form#43:$ i $
+\form#44:$ y_{1i} $
+\form#45:$ m_i $
+\form#46:$ f(x)=ax^2+bx+c $
+\form#47:$ f(x)$
+\form#48:$ g(x)$
+\form#49:$ W(x)$
+\form#50:\[\int_{-1}^1 f(x) \, dx = \int_{-1}^1 W(x) g(x) \, dx\]
+\form#51:$ x_i $
+\form#52:$ w_i $
+\form#53:\[ \int_{-1}^1 W(x) g(x) \, dx \approx \sum_{i=1}^n w_i g(x_i) \]
+\form#54:$ W(x) = 1 $
+\form#55:$ f(x) $
+\form#56:\[ \int_{-1}^1 f(x)\,dx \approx \sum_{i=1}^n w_i f(x_i) \]
+\form#57:$ P_n(x)$
+\form#58:\[ w_i = \frac{2}{(1-x_i^2)[P'_n(x_i)]^2}=\frac{2(1-x_i^2)}{(n+1)^2[P_{n+1}(x_i)]^2} \]
+\form#59:$ \pm \frac{1}{3}\sqrt{3} $
+\form#60:$ 1 $
+\form#61:$ 0 $
+\form#62:$ \frac{8}{9} $
+\form#63:$ \pm \frac{1}{5} \sqrt{15} $
+\form#64:$ \frac{5}{9} $
+\form#65:$ \pm \frac{1}{35}\sqrt{525-70\sqrt{30}} $
+\form#66:$ \frac{1}{36}(18+\sqrt{30})$
+\form#67:$ \pm \frac{1}{35}\sqrt{525+70\sqrt{30}} $
+\form#68:$ \frac{1}{36}(18-\sqrt{30})$
+\form#69:$ \frac{128}{225}$
+\form#70:$ \pm \frac{1}{21}\sqrt{245-14\sqrt{70}} $
+\form#71:$ \frac{1}{900}(322+13\sqrt{70})$
+\form#72:$ \pm \frac{1}{21}\sqrt{245+14\sqrt{70}} $
+\form#73:$ \frac{1}{900}(322-13\sqrt{70})$
+\form#74:$(-\infty,\infty)$
+\form#75:$ W(x)=e^{-x^2}$
+\form#76:$ H_n(x)$
+\form#77:$\pm \frac{1}{2}\sqrt{2} $
+\form#78:$ \frac{1}{2}\sqrt{\pi} $
+\form#79:$ \frac{2}{3}\sqrt{\pi} $
+\form#80:$\pm \frac{1}{2}\sqrt{6} $
+\form#81:$ \frac{1}{6}\sqrt{\pi} $
+\form#82:$\pm \sqrt{\frac{3-\sqrt{6}}{2}} $
+\form#83:$ \frac{\sqrt{\pi}}{4(3-\sqrt{6})} $
+\form#84:$ \frac{\sqrt{\pi}}{4(3+\sqrt{6})} $
+\form#85:$ W(x)=\frac{1}{\sqrt{1-x^2}}$
+\form#86:$ T_n(x) $
+\form#87:$ x_i=\cos[\frac{(2i-1)\pi}{2n}]$
+\form#88:$ w_i=\frac{\pi}{n}. $
+\form#89:$ W(x)=\sqrt{1-x^2}$
+\form#90:$ U_n(x) $
+\form#91:$ x_i=\cos[\frac{i\pi}{n+1}].$
+\form#92:$ w_i=\frac{\pi}{n+1}\sin^2[\frac{i\pi}{n+1}]. $
+\form#93:\[ x_j = \sum_{k=0}^{N-1} z_k \exp(-2\pi i j k / N) \]
+\form#94:$ Ab $
+\form#95:$ O(N^2)$
+\form#96:$ N $
+\form#97:$ A $
+\form#98:$ f_1 f_2 ... f_n $
+\form#99:$ O(N \sum f_i) $
+\form#100:$ O(N \log_2 N)$
+\form#101:$ O(\c fftSize ^2) $
+\form#102:$ x = FFT(z) $
+\form#103:\[ x_j = \sum_{k=0}^{N-1} z_k \exp(-2\pi i j k / N). \]
+\form#104:$ O(fftSize^2) $
+\form#105:$ x = IFFT(z)$
+\form#106:\[ z_j = {1 \over N} \sum_{k=0}^{N-1} x_k \exp(2\pi i j k / N).\]
+\form#107:$ 1/N $
 \form#108:$ lnValue = \sum[ (alpha_i-1)*log(domainVector_i) + (beta_i-1)*log(1-domainVector_i)] + m_logOfNormalizationFactor $
 \form#109:\[ y=f(x|a,b)= \frac{1}{B(a,b)} x^{a-1}(1-x)^{b-1}, \]
 \form#110:\[ B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}=\frac{(a-1)!(b-1)!}{(a+b-1)!}.\]
@@ -162,3 +162,8 @@
 \form#161:$ P(x, {x}) $
 \form#162:$ X_1, X_2, ..., X_n $
 \form#163:$ X_i $
+\form#164:$ n$
+\form#165:$ f: \mathbb{R}^n \rightarrow \mathbb{R} $
+\form#166:$ \sum_{ijkl...} f_{ijkl...} N_{ijkl...} $
+\form#167:$ ijkl... $
+\form#168:$ N_{ijkl...} (\xi, \eta, \zeta,...) = N_i(\eta) N_j(\eta) N_k(\zeta) ... $

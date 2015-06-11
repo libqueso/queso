@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/inc/MLSampling.h File Reference</title>
+<title>queso-0.53.0: src/core/src/Map.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,102 +43,36 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_d98b071537eea78ae0761911e9f6b515.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_d16228283b18c448cbd408df6e1bb59e.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">MLSampling.h File Reference</div>  </div>
+<div class="title">Map.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/MLSamplingOptions.h&gt;</code><br/>
-<code>#include &lt;queso/MetropolisHastingsSG.h&gt;</code><br/>
-<code>#include &lt;queso/FiniteDistribution.h&gt;</code><br/>
-<code>#include &lt;queso/VectorRV.h&gt;</code><br/>
-<code>#include &lt;queso/GenericVectorRV.h&gt;</code><br/>
-<code>#include &lt;queso/VectorSpace.h&gt;</code><br/>
-<code>#include &lt;queso/MarkovChainPositionData.h&gt;</code><br/>
-<code>#include &lt;queso/ScalarFunctionSynchronizer.h&gt;</code><br/>
-<code>#include &lt;queso/SequenceOfVectors.h&gt;</code><br/>
-<code>#include &lt;queso/ArrayOfSequences.h&gt;</code><br/>
-<code>#include &lt;sys/time.h&gt;</code><br/>
-<code>#include &lt;fstream&gt;</code><br/>
+<div class="textblock"><code>#include &lt;queso/Map.h&gt;</code><br/>
+<code>#include &lt;queso/MpiComm.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for MLSampling.h:</div>
+Include dependency graph for Map.C:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00692.png" border="0" usemap="#src_2stats_2inc_2_m_l_sampling_8h" alt=""/></div>
-<map name="src_2stats_2inc_2_m_l_sampling_8h" id="src_2stats_2inc_2_m_l_sampling_8h">
+<div class="center"><img src="a00801.png" border="0" usemap="#src_2core_2src_2_map_8_c" alt=""/></div>
+<map name="src_2core_2src_2_map_8_c" id="src_2core_2src_2_map_8_c">
 </map>
 </div>
 </div>
 <p><a href="a00381_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00054.html">QUESO::ExchangeInfoStruct</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html">QUESO::BalancedLinkedChainControlStruct&lt; P_V &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html">QUESO::BalancedLinkedChainsPerNodeStruct&lt; P_V &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00165.html">QUESO::UnbalancedLinkedChainControlStruct</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html">QUESO::UnbalancedLinkedChainsPerNodeStruct</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00126.html">QUESO::MLSampling&lt; P_V, P_M &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A templated class that represents a Multilevel generator of samples.  <a href="a00126.html#details">More...</a><br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html">QUESO</a></td></tr>
+<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ad6326f75e9ff1aa45eee62528bc0522d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00381.html#ad6326f75e9ff1aa45eee62528bc0522d">ML_NEW_CODE_2009_12_29</a></td></tr>
-<tr class="separator:ad6326f75e9ff1aa45eee62528bc0522d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c830698381e4aa1c55b3b418754ae4b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00381.html#a6c830698381e4aa1c55b3b418754ae4b">ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA</a>&#160;&#160;&#160;6</td></tr>
-<tr class="separator:a6c830698381e4aa1c55b3b418754ae4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a6c830698381e4aa1c55b3b418754ae4b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA&#160;&#160;&#160;6</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00381_source.html#l00046">46</a> of file <a class="el" href="a00381_source.html">MLSampling.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00466_source.html#l02234">QUESO::MLSampling&lt; P_V, P_M &gt;::restartML()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad6326f75e9ff1aa45eee62528bc0522d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ML_NEW_CODE_2009_12_29</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00381_source.html#l00028">28</a> of file <a class="el" href="a00381_source.html">MLSampling.h</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

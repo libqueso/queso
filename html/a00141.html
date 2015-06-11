@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: QUESO::RngBoost Class Reference</title>
+<title>queso-0.53.0: QUESO::InterpolationSurrogateIOBase&lt; V, M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -45,99 +45,74 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00500.html">QUESO</a></li><li class="navelem"><a class="el" href="a00141.html">RngBoost</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00141.html">InterpolationSurrogateIOBase</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="a00882.html">List of all members</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="a01610.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::RngBoost Class Reference</div>  </div>
+<div class="title">QUESO::InterpolationSurrogateIOBase&lt; V, M &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="a00264_source.html">RngBoost.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::RngBoost:</div>
+Inheritance diagram for QUESO::InterpolationSurrogateIOBase&lt; V, M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00883.png" border="0" usemap="#_q_u_e_s_o_1_1_rng_boost_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_rng_boost_inherit__map" id="_q_u_e_s_o_1_1_rng_boost_inherit__map">
-<area shape="rect" id="node2" href="a00139.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="9,5,148,35"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for QUESO::RngBoost:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00884.png" border="0" usemap="#_q_u_e_s_o_1_1_rng_boost_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_rng_boost_coll__map" id="_q_u_e_s_o_1_1_rng_boost_coll__map">
-<area shape="rect" id="node2" href="a00139.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="9,5,148,35"/></map>
+<div class="center"><img src="a01611.png" border="0" usemap="#_q_u_e_s_o_1_1_interpolation_surrogate_i_o_base_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_interpolation_surrogate_i_o_base_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_interpolation_surrogate_i_o_base_3_01_v_00_01_m_01_4_inherit__map">
+<area shape="rect" id="node3" href="a00140.html" title="QUESO::InterpolationSurrogate\lIOASCII\&lt; V, M \&gt;" alt="" coords="5,102,237,149"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:a6fa78750ef38de7034414b5e701bc544"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a6fa78750ef38de7034414b5e701bc544">RngBoost</a> ()</td></tr>
-<tr class="memdesc:a6fa78750ef38de7034414b5e701bc544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Constructor: it should not be used.  <a href="#a6fa78750ef38de7034414b5e701bc544">More...</a><br/></td></tr>
-<tr class="separator:a6fa78750ef38de7034414b5e701bc544"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d2d2582ba8c3c892e0e20798730f0a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a8d2d2582ba8c3c892e0e20798730f0a9">RngBoost</a> (int <a class="el" href="a00139.html#a3094da86084e56faaae9325f1117f9a3">seed</a>, int worldRank)</td></tr>
-<tr class="memdesc:a8d2d2582ba8c3c892e0e20798730f0a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with seed.  <a href="#a8d2d2582ba8c3c892e0e20798730f0a9">More...</a><br/></td></tr>
-<tr class="separator:a8d2d2582ba8c3c892e0e20798730f0a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96ffa32ae3700ca164db8799d32b19ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a96ffa32ae3700ca164db8799d32b19ca">~RngBoost</a> ()</td></tr>
-<tr class="memdesc:a96ffa32ae3700ca164db8799d32b19ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a96ffa32ae3700ca164db8799d32b19ca">More...</a><br/></td></tr>
-<tr class="separator:a96ffa32ae3700ca164db8799d32b19ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00139"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00139')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00139.html">QUESO::RngBase</a></td></tr>
-<tr class="memitem:ad8dd3cef9323851cad163c37b815bc88 inherit pub_methods_a00139"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00139.html#ad8dd3cef9323851cad163c37b815bc88">RngBase</a> ()</td></tr>
-<tr class="memdesc:ad8dd3cef9323851cad163c37b815bc88 inherit pub_methods_a00139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Constructor: it should not be used.  <a href="#ad8dd3cef9323851cad163c37b815bc88">More...</a><br/></td></tr>
-<tr class="separator:ad8dd3cef9323851cad163c37b815bc88 inherit pub_methods_a00139"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e8dbae3304dfd27211b0d1f6de6eee0 inherit pub_methods_a00139"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00139.html#a5e8dbae3304dfd27211b0d1f6de6eee0">RngBase</a> (int <a class="el" href="a00139.html#a3094da86084e56faaae9325f1117f9a3">seed</a>, int worldRank)</td></tr>
-<tr class="memdesc:a5e8dbae3304dfd27211b0d1f6de6eee0 inherit pub_methods_a00139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with seed.  <a href="#a5e8dbae3304dfd27211b0d1f6de6eee0">More...</a><br/></td></tr>
-<tr class="separator:a5e8dbae3304dfd27211b0d1f6de6eee0 inherit pub_methods_a00139"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64e1281954e342f704d5f3cbcbffa30c inherit pub_methods_a00139"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00139.html#a64e1281954e342f704d5f3cbcbffa30c">~RngBase</a> ()</td></tr>
-<tr class="memdesc:a64e1281954e342f704d5f3cbcbffa30c inherit pub_methods_a00139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#a64e1281954e342f704d5f3cbcbffa30c">More...</a><br/></td></tr>
-<tr class="separator:a64e1281954e342f704d5f3cbcbffa30c inherit pub_methods_a00139"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3094da86084e56faaae9325f1117f9a3 inherit pub_methods_a00139"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00139.html#a3094da86084e56faaae9325f1117f9a3">seed</a> () const </td></tr>
-<tr class="memdesc:a3094da86084e56faaae9325f1117f9a3 inherit pub_methods_a00139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the seed.  <a href="#a3094da86084e56faaae9325f1117f9a3">More...</a><br/></td></tr>
-<tr class="separator:a3094da86084e56faaae9325f1117f9a3 inherit pub_methods_a00139"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8ba6167ceff5740cf549116c4fd99d8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#aa8ba6167ceff5740cf549116c4fd99d8">InterpolationSurrogateIOBase</a> ()</td></tr>
+<tr class="separator:aa8ba6167ceff5740cf549116c4fd99d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a8d01a394dbc01960c3adb9cb2eca1d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a0a8d01a394dbc01960c3adb9cb2eca1d">~InterpolationSurrogateIOBase</a> ()</td></tr>
+<tr class="separator:a0a8d01a394dbc01960c3adb9cb2eca1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba9b0a877cef77bbea72c95ca81910cf"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#aba9b0a877cef77bbea72c95ca81910cf">read</a> (const std::string &amp;filename, const <a class="el" href="a00081.html">FullEnvironment</a> &amp;env, const std::string &amp;vector_space_prefix, int reading_rank)=0</td></tr>
+<tr class="separator:aba9b0a877cef77bbea72c95ca81910cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa633d5e710f2e07fdb5b8740bf8a9b6f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#aa633d5e710f2e07fdb5b8740bf8a9b6f">write</a> (const std::string &amp;filename, const <a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp;<a class="el" href="a00141.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>, int writing_rank) const =0</td></tr>
+<tr class="separator:aa633d5e710f2e07fdb5b8740bf8a9b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad24e29bc8ef971a00d44b90c008208d4"><td class="memItemLeft" align="right" valign="top">const <br class="typebreak"/>
+<a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt; V, <br class="typebreak"/>
+M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#ad24e29bc8ef971a00d44b90c008208d4">data</a> () const </td></tr>
+<tr class="memdesc:ad24e29bc8ef971a00d44b90c008208d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to data object.  <a href="#ad24e29bc8ef971a00d44b90c008208d4">More...</a><br/></td></tr>
+<tr class="separator:ad24e29bc8ef971a00d44b90c008208d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Sampling methods</h2></td></tr>
-<tr class="memitem:aef65914cae8b11e345bfb082db616f0e"><td class="memItemLeft" align="right" valign="top">boost::mt19937&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a></td></tr>
-<tr class="memdesc:aef65914cae8b11e345bfb082db616f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random number generator from class boost::mt19937.  <a href="#aef65914cae8b11e345bfb082db616f0e">More...</a><br/></td></tr>
-<tr class="separator:aef65914cae8b11e345bfb082db616f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94c246d855ea22332b0dafc0891e328f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a94c246d855ea22332b0dafc0891e328f">resetSeed</a> (int newSeed)</td></tr>
-<tr class="memdesc:a94c246d855ea22332b0dafc0891e328f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the seed with value <code>newSeed</code>.  <a href="#a94c246d855ea22332b0dafc0891e328f">More...</a><br/></td></tr>
-<tr class="separator:a94c246d855ea22332b0dafc0891e328f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad1548eec706aeb6580af163bd80e0a9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#aad1548eec706aeb6580af163bd80e0a9">uniformSample</a> () const </td></tr>
-<tr class="memdesc:aad1548eec706aeb6580af163bd80e0a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples a value from a uniform distribution. Support: [0,1] or [a,b].  <a href="#aad1548eec706aeb6580af163bd80e0a9">More...</a><br/></td></tr>
-<tr class="separator:aad1548eec706aeb6580af163bd80e0a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d33a495101b353e267ea7d3a6df361f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a9d33a495101b353e267ea7d3a6df361f">gaussianSample</a> (double stdDev) const </td></tr>
-<tr class="separator:a9d33a495101b353e267ea7d3a6df361f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab859b0ff1e728c6a65c2aef62afe028e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#ab859b0ff1e728c6a65c2aef62afe028e">betaSample</a> (double alpha, double beta) const </td></tr>
-<tr class="memdesc:ab859b0ff1e728c6a65c2aef62afe028e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples a value from a Beta distribution. Support: [0,1].  <a href="#ab859b0ff1e728c6a65c2aef62afe028e">More...</a><br/></td></tr>
-<tr class="separator:ab859b0ff1e728c6a65c2aef62afe028e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4fcb113ba19dbec7684f41c3aebf4e7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#ae4fcb113ba19dbec7684f41c3aebf4e7">gammaSample</a> (double a, double b) const </td></tr>
-<tr class="memdesc:ae4fcb113ba19dbec7684f41c3aebf4e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples a value from a Gamma distribution. Support: [0,infinity).  <a href="#ae4fcb113ba19dbec7684f41c3aebf4e7">More...</a><br/></td></tr>
-<tr class="separator:ae4fcb113ba19dbec7684f41c3aebf4e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_a00139"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00139')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00139.html">QUESO::RngBase</a></td></tr>
-<tr class="memitem:ab67b3c940ba6ffb4f2d70079fe36e343 inherit pro_attribs_a00139"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00139.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a></td></tr>
-<tr class="memdesc:ab67b3c940ba6ffb4f2d70079fe36e343 inherit pro_attribs_a00139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seed.  <a href="#ab67b3c940ba6ffb4f2d70079fe36e343">More...</a><br/></td></tr>
-<tr class="separator:ab67b3c940ba6ffb4f2d70079fe36e343 inherit pro_attribs_a00139"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94515d2b7d493d8e4e238628716dd11b inherit pro_attribs_a00139"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00139.html#a94515d2b7d493d8e4e238628716dd11b">m_worldRank</a></td></tr>
-<tr class="memdesc:a94515d2b7d493d8e4e238628716dd11b inherit pro_attribs_a00139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rank of processor.  <a href="#a94515d2b7d493d8e4e238628716dd11b">More...</a><br/></td></tr>
-<tr class="separator:a94515d2b7d493d8e4e238628716dd11b inherit pro_attribs_a00139"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a06531cf2abfd2d92e4eee8e9ca02c8ad"><td class="memItemLeft" align="right" valign="top">ScopedPtr&lt; <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt;<br class="typebreak"/>
+ &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a06531cf2abfd2d92e4eee8e9ca02c8ad">m_vector_space</a></td></tr>
+<tr class="separator:a06531cf2abfd2d92e4eee8e9ca02c8ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8b1c4d297f6d576ed2328af27d823d4"><td class="memItemLeft" align="right" valign="top">ScopedPtr&lt; <a class="el" href="a00057.html">BoxSubset</a>&lt; V, M &gt;<br class="typebreak"/>
+ &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#ab8b1c4d297f6d576ed2328af27d823d4">m_domain</a></td></tr>
+<tr class="separator:ab8b1c4d297f6d576ed2328af27d823d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1b0cad48d89815d90e5afbf9e1d7e0b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#ab1b0cad48d89815d90e5afbf9e1d7e0b">m_n_points</a></td></tr>
+<tr class="separator:ab1b0cad48d89815d90e5afbf9e1d7e0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98797df0b43929552ec90387f213e13c"><td class="memItemLeft" align="right" valign="top">ScopedPtr<br class="typebreak"/>
+&lt; <a class="el" href="a00137.html">InterpolationSurrogateData</a><br class="typebreak"/>
+&lt; V, M &gt; &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a98797df0b43929552ec90387f213e13c">m_data</a></td></tr>
+<tr class="separator:a98797df0b43929552ec90387f213e13c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="a00264_source.html#l00047">47</a> of file <a class="el" href="a00264_source.html">RngBoost.h</a>.</p>
+<div class="textblock"><h3>template&lt;class V, class M&gt;<br/>
+class QUESO::InterpolationSurrogateIOBase&lt; V, M &gt;</h3>
+
+
+<p>Definition at line <a class="el" href="a00635_source.html#l00035">35</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a6fa78750ef38de7034414b5e701bc544"></a>
+<a class="anchor" id="aa8ba6167ceff5740cf549116c4fd99d8"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">RngBoost::RngBoost </td>
+          <td class="memname"><a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::<a class="el" href="a00141.html">InterpolationSurrogateIOBase</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -145,40 +120,108 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Default Constructor: it should not be used. </p>
-
-<p>Definition at line <a class="el" href="a00297_source.html#l00031">31</a> of file <a class="el" href="a00297_source.html">RngBoost.C</a>.</p>
-
-<p>References <a class="el" href="a00263_source.html#l00088">QUESO::RngBase::m_worldRank</a>, and <a class="el" href="a00237_source.html#l00223">UQ_FATAL_TEST_MACRO</a>.</p>
-<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  :</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <a class="code" href="a00139.html#ad8dd3cef9323851cad163c37b815bc88">RngBase</a>()</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                      <a class="code" href="a00139.html#a94515d2b7d493d8e4e238628716dd11b">m_worldRank</a>,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                      <span class="stringliteral">&quot;RngBoost::constructor(), default&quot;</span>,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                      <span class="stringliteral">&quot;should not be used by user&quot;</span>);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00139_html_a94515d2b7d493d8e4e238628716dd11b"><div class="ttname"><a href="a00139.html#a94515d2b7d493d8e4e238628716dd11b">QUESO::RngBase::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdoc">Rank of processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00263_source.html#l00088">RngBase.h:88</a></div></div>
-<div class="ttc" id="a00139_html_ad8dd3cef9323851cad163c37b815bc88"><div class="ttname"><a href="a00139.html#ad8dd3cef9323851cad163c37b815bc88">QUESO::RngBase::RngBase</a></div><div class="ttdeci">RngBase()</div><div class="ttdoc">Default Constructor: it should not be used. </div><div class="ttdef"><b>Definition:</b> <a href="a00296_source.html#l00030">RngBase.C:30</a></div></div>
+<p>Definition at line <a class="el" href="a00645_source.html#l00035">35</a> of file <a class="el" href="a00645_source.html">InterpolationSurrogateIOBase.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    : <a class="code" href="a00141.html#ab8b1c4d297f6d576ed2328af27d823d4">m_domain</a>(NULL),</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      <a class="code" href="a00141.html#a98797df0b43929552ec90387f213e13c">m_data</a>(NULL)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  {}</div>
+<div class="ttc" id="a00141_html_a98797df0b43929552ec90387f213e13c"><div class="ttname"><a href="a00141.html#a98797df0b43929552ec90387f213e13c">QUESO::InterpolationSurrogateIOBase::m_data</a></div><div class="ttdeci">ScopedPtr&lt; InterpolationSurrogateData&lt; V, M &gt; &gt;::Type m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00067">InterpolationSurrogateIOBase.h:67</a></div></div>
+<div class="ttc" id="a00141_html_ab8b1c4d297f6d576ed2328af27d823d4"><div class="ttname"><a href="a00141.html#ab8b1c4d297f6d576ed2328af27d823d4">QUESO::InterpolationSurrogateIOBase::m_domain</a></div><div class="ttdeci">ScopedPtr&lt; BoxSubset&lt; V, M &gt; &gt;::Type m_domain</div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00063">InterpolationSurrogateIOBase.h:63</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a8d2d2582ba8c3c892e0e20798730f0a9"></a>
+<a class="anchor" id="a0a8d01a394dbc01960c3adb9cb2eca1d"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">RngBoost::RngBoost </td>
+          <td class="memname">virtual <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::~<a class="el" href="a00141.html">InterpolationSurrogateIOBase</a> </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>seed</em>, </td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00635_source.html#l00041">41</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ad24e29bc8ef971a00d44b90c008208d4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt;V,M&gt;&amp; <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference to data object. </p>
+<p>If we read the data, then use this method to grab a reference to the data in order to construct an <a class="el" href="a00135.html" title="Base class for interpolation-based surrogates. ">InterpolationSurrogateBase</a> subclass. </p>
+
+<p>Definition at line <a class="el" href="a00635_source.html#l00056">56</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    { <span class="keywordflow">return</span> *(this-&gt;<a class="code" href="a00141.html#a98797df0b43929552ec90387f213e13c">m_data</a>.get()); };</div>
+<div class="ttc" id="a00141_html_a98797df0b43929552ec90387f213e13c"><div class="ttname"><a href="a00141.html#a98797df0b43929552ec90387f213e13c">QUESO::InterpolationSurrogateIOBase::m_data</a></div><div class="ttdeci">ScopedPtr&lt; InterpolationSurrogateData&lt; V, M &gt; &gt;::Type m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00067">InterpolationSurrogateIOBase.h:67</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aba9b0a877cef77bbea72c95ca81910cf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::read </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00081.html">FullEnvironment</a> &amp;&#160;</td>
+          <td class="paramname"><em>env</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>vector_space_prefix</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>worldRank</em>&#160;</td>
+          <td class="paramname"><em>reading_rank</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -186,303 +229,165 @@ Additional Inherited Members</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Constructor with seed. </p>
-<p>Constructor with seed ------------------------&mdash;. </p>
+<p>Implemented in <a class="el" href="a00140.html#a71a2c390a880bb92f26d8085ba5eed17">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="a00297_source.html#l00042">42</a> of file <a class="el" href="a00297_source.html">RngBoost.C</a>.</p>
-
-<p>References <a class="el" href="a00297_source.html#l00063">resetSeed()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  :</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="a00139.html#ad8dd3cef9323851cad163c37b815bc88">RngBase</a>(<a class="code" href="a00139.html#a3094da86084e56faaae9325f1117f9a3">seed</a>,worldRank)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="comment">//m_rng(seed)</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="a00141.html#a94c246d855ea22332b0dafc0891e328f">resetSeed</a>(<a class="code" href="a00139.html#a3094da86084e56faaae9325f1117f9a3">seed</a>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//TODO Find a suitable test for here; Kemelli todo</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//   UQ_FATAL_TEST_MACRO(true,</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">//                       m_worldRank,</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">//                       &quot;RngBoos::constructor()&quot;,</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">//                       &quot;Kemelli todo: boost rng&quot;);</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
-<div class="ttc" id="a00139_html_a3094da86084e56faaae9325f1117f9a3"><div class="ttname"><a href="a00139.html#a3094da86084e56faaae9325f1117f9a3">QUESO::RngBase::seed</a></div><div class="ttdeci">int seed() const </div><div class="ttdoc">Sets the seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00296_source.html#l00054">RngBase.C:54</a></div></div>
-<div class="ttc" id="a00141_html_a94c246d855ea22332b0dafc0891e328f"><div class="ttname"><a href="a00141.html#a94c246d855ea22332b0dafc0891e328f">QUESO::RngBoost::resetSeed</a></div><div class="ttdeci">void resetSeed(int newSeed)</div><div class="ttdoc">Resets the seed with value newSeed. </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00063">RngBoost.C:63</a></div></div>
-<div class="ttc" id="a00139_html_ad8dd3cef9323851cad163c37b815bc88"><div class="ttname"><a href="a00139.html#ad8dd3cef9323851cad163c37b815bc88">QUESO::RngBase::RngBase</a></div><div class="ttdeci">RngBase()</div><div class="ttdoc">Default Constructor: it should not be used. </div><div class="ttdef"><b>Definition:</b> <a href="a00296_source.html#l00030">RngBase.C:30</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a96ffa32ae3700ca164db8799d32b19ca"></a>
+<a class="anchor" id="aa633d5e710f2e07fdb5b8740bf8a9b6f"></a>
 <div class="memitem">
 <div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RngBoost::~RngBoost </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Destructor. </p>
-
-<p>Definition at line <a class="el" href="a00297_source.html#l00056">56</a> of file <a class="el" href="a00297_source.html">RngBoost.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="comment">//this function does nothing</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ab859b0ff1e728c6a65c2aef62afe028e"></a>
-<div class="memitem">
-<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double RngBoost::betaSample </td>
+          <td class="memname">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::write </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>alpha</em>, </td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>beta</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Samples a value from a Beta distribution. Support: [0,1]. </p>
-<p>The Beta Distribution is a continuous probability distribution; it has two free parameters, which are labeled alpha and beta. The beta distribution is used as a prior distribution for binomial proportions in Bayesian analysis (Evans et al. 2000, p. 34). Uses boost::math::beta_distribution&lt;double&gt; beta_dist(alpha, beta). Support (domain): [0,1]. </p>
-
-<p>Implements <a class="el" href="a00139.html#a098089a93e29db4ad9ac106c8b5de583">QUESO::RngBase</a>.</p>
-
-<p>Definition at line <a class="el" href="a00297_source.html#l00090">90</a> of file <a class="el" href="a00297_source.html">RngBoost.C</a>.</p>
-
-<p>References <a class="el" href="a00264_source.html#l00110">m_rng</a>.</p>
-<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;{</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  boost::math::beta_distribution&lt;double&gt; beta_dist(alpha, beta);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">return</span> quantile(beta_dist, zeroone());</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
-<div class="ttc" id="a00141_html_aef65914cae8b11e345bfb082db616f0e"><div class="ttname"><a href="a00141.html#aef65914cae8b11e345bfb082db616f0e">QUESO::RngBoost::m_rng</a></div><div class="ttdeci">boost::mt19937 m_rng</div><div class="ttdoc">Random number generator from class boost::mt19937. </div><div class="ttdef"><b>Definition:</b> <a href="a00264_source.html#l00110">RngBoost.h:110</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="ae4fcb113ba19dbec7684f41c3aebf4e7"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double RngBoost::gammaSample </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
+          <td class="paramtype">const <a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Samples a value from a Gamma distribution. Support: [0,infinity). </p>
-<p>The Gamma Distribution is a continuous probability distribution; it has two free parameters, which may be labeled: a shape parameter a and an inverse scale parameter b, called a rate parameter. The parameterization with a and b is more common in Bayesian statistics, where the gamma distribution is used as a conjugate prior distribution for various types of inverse scale (aka rate) parameters. Uses boost::math::gamma_distribution&lt;double&gt; gamma_dist(a,b). Support (domain): [0,infinity). </p>
-
-<p>Implements <a class="el" href="a00139.html#abd9abcf42426b568d4f13f5c3f3dc997">QUESO::RngBase</a>.</p>
-
-<p>Definition at line <a class="el" href="a00297_source.html#l00099">99</a> of file <a class="el" href="a00297_source.html">RngBoost.C</a>.</p>
-
-<p>References <a class="el" href="a00264_source.html#l00110">m_rng</a>.</p>
-<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  boost::math::gamma_distribution&lt;double&gt;  gamma_dist(a,b);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordflow">return</span> quantile(gamma_dist, zeroone());</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
-<div class="ttc" id="a00141_html_aef65914cae8b11e345bfb082db616f0e"><div class="ttname"><a href="a00141.html#aef65914cae8b11e345bfb082db616f0e">QUESO::RngBoost::m_rng</a></div><div class="ttdeci">boost::mt19937 m_rng</div><div class="ttdoc">Random number generator from class boost::mt19937. </div><div class="ttdef"><b>Definition:</b> <a href="a00264_source.html#l00110">RngBoost.h:110</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a9d33a495101b353e267ea7d3a6df361f"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double RngBoost::gaussianSample </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>stdDev</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Samples a value from a Gaussian distribution with standard deviation given by <code>stdDev</code>. Support: (-infinity, infinity).</p>
-<p>The parameter mu (mean or expectation of the distribution) in this Gaussian sample isn't present, and thus, needs to be provided. e.g., in the form of a sum. The parameter stdDev is its standard deviation; its variance is therefore stdDev^2. A random variable with a Gaussian distribution is said to be normally distributed and is called a normal deviate. Uses boost::math::normal_distribution&lt;double&gt; gaussian_dist(mean, stdDev) Support (domain): (-infinity, infinity). </p>
-
-<p>Implements <a class="el" href="a00139.html#a7be9cf40cc50b973ed8c2f594f402584">QUESO::RngBase</a>.</p>
-
-<p>Definition at line <a class="el" href="a00297_source.html#l00080">80</a> of file <a class="el" href="a00297_source.html">RngBoost.C</a>.</p>
-
-<p>References <a class="el" href="a00264_source.html#l00110">m_rng</a>.</p>
-<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordtype">double</span> mean = 0.; <span class="comment">//it will be added conveniently later</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  boost::math::normal_distribution&lt;double&gt;  gaussian_dist(mean, stdDev);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordflow">return</span> quantile(gaussian_dist, zeroone());</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
-<div class="ttc" id="a00141_html_aef65914cae8b11e345bfb082db616f0e"><div class="ttname"><a href="a00141.html#aef65914cae8b11e345bfb082db616f0e">QUESO::RngBoost::m_rng</a></div><div class="ttdeci">boost::mt19937 m_rng</div><div class="ttdoc">Random number generator from class boost::mt19937. </div><div class="ttdef"><b>Definition:</b> <a href="a00264_source.html#l00110">RngBoost.h:110</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a94c246d855ea22332b0dafc0891e328f"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void RngBoost::resetSeed </td>
-          <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>newSeed</em></td><td>)</td>
-          <td></td>
+          <td class="paramname"><em>writing_rank</em>&#160;</td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Resets the seed with value <code>newSeed</code>. </p>
-
-<p>Reimplemented from <a class="el" href="a00139.html#a8cb8cbf14298bfcb84de1b562c069e84">QUESO::RngBase</a>.</p>
-
-<p>Definition at line <a class="el" href="a00297_source.html#l00063">63</a> of file <a class="el" href="a00297_source.html">RngBoost.C</a>.</p>
-
-<p>References <a class="el" href="a00264_source.html#l00110">m_rng</a>.</p>
-
-<p>Referenced by <a class="el" href="a00297_source.html#l00042">RngBoost()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>.seed(newSeed);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
-<div class="ttc" id="a00141_html_aef65914cae8b11e345bfb082db616f0e"><div class="ttname"><a href="a00141.html#aef65914cae8b11e345bfb082db616f0e">QUESO::RngBoost::m_rng</a></div><div class="ttdeci">boost::mt19937 m_rng</div><div class="ttdoc">Random number generator from class boost::mt19937. </div><div class="ttdef"><b>Definition:</b> <a href="a00264_source.html#l00110">RngBoost.h:110</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="aad1548eec706aeb6580af163bd80e0a9"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname">double RngBoost::uniformSample </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Samples a value from a uniform distribution. Support: [0,1] or [a,b]. </p>
-<p>This function samples from continuous uniform distribution on the range [0,1). It is possible to scale this distribution so the support is defined by the two parameters, a and b, which are its minimum and maximum values. Support: -infinity &lt; a &lt; x&lt; b&lt; infinity. Uses boost::uniform_01&lt;boost::mt19937&gt; zeroone(m_rng). </p>
+<p>Implemented in <a class="el" href="a00140.html#a21624e30df6f98f0edc500ff72218be0">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;</a>.</p>
 
-<p>Implements <a class="el" href="a00139.html#aed8342f0c8a4ac0a311cce9cac2b67e5">QUESO::RngBase</a>.</p>
-
-<p>Definition at line <a class="el" href="a00297_source.html#l00072">72</a> of file <a class="el" href="a00297_source.html">RngBoost.C</a>.</p>
-
-<p>References <a class="el" href="a00264_source.html#l00110">m_rng</a>.</p>
-<div class="fragment"><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">return</span> zeroone();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
-<div class="ttc" id="a00141_html_aef65914cae8b11e345bfb082db616f0e"><div class="ttname"><a href="a00141.html#aef65914cae8b11e345bfb082db616f0e">QUESO::RngBoost::m_rng</a></div><div class="ttdeci">boost::mt19937 m_rng</div><div class="ttdoc">Random number generator from class boost::mt19937. </div><div class="ttdef"><b>Definition:</b> <a href="a00264_source.html#l00110">RngBoost.h:110</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="aef65914cae8b11e345bfb082db616f0e"></a>
+<a class="anchor" id="a98797df0b43929552ec90387f213e13c"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">boost::mt19937 QUESO::RngBoost::m_rng</td>
+          <td class="memname">ScopedPtr&lt;<a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt;V,M&gt; &gt;::Type <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::m_data</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Random number generator from class boost::mt19937. </p>
-<p>mt19937 are models for a pseudo-random number generator. Here it is cannot be static, as it has not been initialized yet. mt19937 has length cycle of 2^(19937)-1, requires approximately 625*sizeof(uint32_t) of memory, has relatively high speed (93% of the fastest available in Boost library), and provides good uniform distribution in up to 623 dimensions. </p>
+<p>Definition at line <a class="el" href="a00635_source.html#l00067">67</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
 
-<p>Definition at line <a class="el" href="a00264_source.html#l00110">110</a> of file <a class="el" href="a00264_source.html">RngBoost.h</a>.</p>
+</div>
+</div>
+<a class="anchor" id="ab8b1c4d297f6d576ed2328af27d823d4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ScopedPtr&lt;<a class="el" href="a00057.html">BoxSubset</a>&lt;V,M&gt; &gt;::Type <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::m_domain</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
-<p>Referenced by <a class="el" href="a00297_source.html#l00090">betaSample()</a>, <a class="el" href="a00297_source.html#l00099">gammaSample()</a>, <a class="el" href="a00297_source.html#l00080">gaussianSample()</a>, <a class="el" href="a00297_source.html#l00063">resetSeed()</a>, and <a class="el" href="a00297_source.html#l00072">uniformSample()</a>.</p>
+<p>Definition at line <a class="el" href="a00635_source.html#l00063">63</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab1b0cad48d89815d90e5afbf9e1d7e0b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;unsigned int&gt; <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::m_n_points</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00635_source.html#l00065">65</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a06531cf2abfd2d92e4eee8e9ca02c8ad"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ScopedPtr&lt;<a class="el" href="a00228.html">VectorSpace</a>&lt;V,M&gt; &gt;::Type <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::m_vector_space</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00635_source.html#l00057">57</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/core/inc/<a class="el" href="a00264_source.html">RngBoost.h</a></li>
-<li>src/core/src/<a class="el" href="a00297_source.html">RngBoost.C</a></li>
+<li>src/surrogates/inc/<a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a></li>
+<li>src/surrogates/src/<a class="el" href="a00645_source.html">InterpolationSurrogateIOBase.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:56 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:36 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

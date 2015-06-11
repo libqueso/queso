@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/src/BasicPdfsBase.C Source File</title>
+<title>queso-0.53.0: src/basic/src/GslVectorSpace.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1e11172a4448ab4d7b3d22091261e10c.html">basic</a></li><li class="navelem"><a class="el" href="dir_1ddda6cfdab808066600d2423f0eda9f.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">BasicPdfsBase.C</div>  </div>
+<div class="title">GslVectorSpace.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00269.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,40 +75,57 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/BasicPdfsBase.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;mpi.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00034.html#a2ca589bc1e025d7e84a0b029b4c610a1">   30</a></span>&#160;<a class="code" href="a00034.html#a2ca589bc1e025d7e84a0b029b4c610a1">BasicPdfsBase::BasicPdfsBase</a>()</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  :</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  m_worldRank(<a class="code" href="a00500.html#a7d4679800a430ae8e473c1c7bc0bfb21">UQ_UNAVAILABLE_RANK</a>)</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;Map*</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00228.html#ac8a3fcaa8d2891c2ca32733dc5a56008">   32</a></span>&#160;<a class="code" href="a00228.html#a9549041aa8525c198155e9ba530e5aa4">VectorSpace&lt;GslVector, GslMatrix&gt;::newMap</a>()</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                      <a class="code" href="a00034.html#a67e06f7bb30579581db1a7b9b3507d1c">m_worldRank</a>,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                      <span class="stringliteral">&quot;BasicPdfsBase::constructor(), default&quot;</span>,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                      <span class="stringliteral">&quot;should not be used by user&quot;</span>);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="a00034.html#acf3bfe40802cd488d9d01077a7d15e55">   40</a></span>&#160;<a class="code" href="a00034.html#a2ca589bc1e025d7e84a0b029b4c610a1">BasicPdfsBase::BasicPdfsBase</a>(<span class="keywordtype">int</span> worldRank)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  :</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  m_worldRank(worldRank)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00034.html#a4e0421cd14da7b04d4242318c7de5ece">   46</a></span>&#160;<a class="code" href="a00034.html#a4e0421cd14da7b04d4242318c7de5ece">BasicPdfsBase::~BasicPdfsBase</a>()</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00034_html_a2ca589bc1e025d7e84a0b029b4c610a1"><div class="ttname"><a href="a00034.html#a2ca589bc1e025d7e84a0b029b4c610a1">QUESO::BasicPdfsBase::BasicPdfsBase</a></div><div class="ttdeci">BasicPdfsBase()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00030">BasicPdfsBase.C:30</a></div></div>
-<div class="ttc" id="a00500_html_a7d4679800a430ae8e473c1c7bc0bfb21"><div class="ttname"><a href="a00500.html#a7d4679800a430ae8e473c1c7bc0bfb21">QUESO::UQ_UNAVAILABLE_RANK</a></div><div class="ttdeci">const int UQ_UNAVAILABLE_RANK</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00074">Defines.h:74</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00034_html_a67e06f7bb30579581db1a7b9b3507d1c"><div class="ttname"><a href="a00034.html#a67e06f7bb30579581db1a7b9b3507d1c">QUESO::BasicPdfsBase::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdef"><b>Definition:</b> <a href="a00234_source.html#l00068">BasicPdfsBase.h:68</a></div></div>
-<div class="ttc" id="a00034_html_a4e0421cd14da7b04d4242318c7de5ece"><div class="ttname"><a href="a00034.html#a4e0421cd14da7b04d4242318c7de5ece">QUESO::BasicPdfsBase::~BasicPdfsBase</a></div><div class="ttdeci">virtual ~BasicPdfsBase()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00046">BasicPdfsBase.C:46</a></div></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00160.html">Map</a>(m_dimGlobal,0,m_env.selfComm());</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<a class="code" href="a00129.html">GslVector</a>*</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00228.html#a64856b952d372cb25d0f10853635104a">   39</a></span>&#160;<a class="code" href="a00228.html#a6fc1d08dfe902e83a011ea6a81aff439">VectorSpace&lt;GslVector,GslMatrix&gt;::newVector</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00129.html">GslVector</a>(m_env,*m_map);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="a00129.html">GslVector</a>*</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00228.html#a840fde1ad7e947821dffd3d5ad164509">   46</a></span>&#160;<a class="code" href="a00228.html#a6fc1d08dfe902e83a011ea6a81aff439">VectorSpace&lt;GslVector,GslMatrix&gt;::newVector</a>(<span class="keywordtype">double</span> value)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00129.html">GslVector</a>(m_env,*m_map,value);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<a class="code" href="a00127.html">GslMatrix</a>*</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00228.html#ae28843e8ea7cd8b51aaea3318f6651eb">   53</a></span>&#160;<a class="code" href="a00228.html#a8277f132ea382a7f49aa4a6ab7cbea1c">VectorSpace&lt;GslVector,GslMatrix&gt;::newMatrix</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00127.html">GslMatrix</a>(m_env,*m_map,this-&gt;dimGlobal());</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<a class="code" href="a00127.html">GslMatrix</a>*</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="a00228.html#aea4fbf9ced060c790c4f100a7604c271">   60</a></span>&#160;<a class="code" href="a00228.html#a9f4ad174b63fbc0626070e0f38745e1e">VectorSpace&lt;GslVector,GslMatrix&gt;::newDiagMatrix</a>(<span class="keywordtype">double</span> diagValue)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00127.html">GslMatrix</a>(m_env,*m_map,diagValue);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00127_html"><div class="ttname"><a href="a00127.html">QUESO::GslMatrix</a></div><div class="ttdoc">Class for matrix operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00333_source.html#l00047">GslMatrix.h:47</a></div></div>
+<div class="ttc" id="a00228_html_a8277f132ea382a7f49aa4a6ab7cbea1c"><div class="ttname"><a href="a00228.html#a8277f132ea382a7f49aa4a6ab7cbea1c">QUESO::VectorSpace::newMatrix</a></div><div class="ttdeci">M * newMatrix() const </div><div class="ttdoc">Creates an empty matrix of size given by Map&amp;amp; map. See template specialization. </div></div>
+<div class="ttc" id="a00228_html_a6fc1d08dfe902e83a011ea6a81aff439"><div class="ttname"><a href="a00228.html#a6fc1d08dfe902e83a011ea6a81aff439">QUESO::VectorSpace::newVector</a></div><div class="ttdeci">V * newVector() const </div><div class="ttdoc">Creates an empty vector of size given by Map&amp;amp; map. See template specialization. </div></div>
+<div class="ttc" id="a00129_html"><div class="ttname"><a href="a00129.html">QUESO::GslVector</a></div><div class="ttdoc">Class for vector operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00335_source.html#l00048">GslVector.h:48</a></div></div>
+<div class="ttc" id="a00228_html_a9f4ad174b63fbc0626070e0f38745e1e"><div class="ttname"><a href="a00228.html#a9f4ad174b63fbc0626070e0f38745e1e">QUESO::VectorSpace::newDiagMatrix</a></div><div class="ttdeci">M * newDiagMatrix(const V &amp;v) const </div><div class="ttdoc">Creates a diagonal matrix with the elements and size of vector v. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00205">VectorSpace.C:205</a></div></div>
+<div class="ttc" id="a00228_html_a9549041aa8525c198155e9ba530e5aa4"><div class="ttname"><a href="a00228.html#a9549041aa8525c198155e9ba530e5aa4">QUESO::VectorSpace::newMap</a></div><div class="ttdeci">Map * newMap()</div><div class="ttdoc">Creates a new map. See template specialization. </div></div>
+<div class="ttc" id="a00160_html"><div class="ttname"><a href="a00160.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00049">Map.h:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/src/GslVector.C File Reference</title>
+<title>queso-0.53.0: src/basic/src/VectorSet.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,26 +43,28 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1e11172a4448ab4d7b3d22091261e10c.html">basic</a></li><li class="navelem"><a class="el" href="dir_1ddda6cfdab808066600d2423f0eda9f.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">GslVector.C File Reference</div>  </div>
+<div class="title">VectorSet.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/GslVector.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;queso/Environment.h&gt;</code><br/>
 <code>#include &lt;queso/Defines.h&gt;</code><br/>
-<code>#include &lt;gsl/gsl_sort_vector.h&gt;</code><br/>
-<code>#include &lt;cmath&gt;</code><br/>
+<code>#include &lt;queso/VectorSet.h&gt;</code><br/>
+<code>#include &lt;queso/GslVector.h&gt;</code><br/>
+<code>#include &lt;queso/GslMatrix.h&gt;</code><br/>
+<code>#include &lt;queso/TeuchosVector.h&gt;</code><br/>
+<code>#include &lt;queso/TeuchosMatrix.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for GslVector.C:</div>
+Include dependency graph for VectorSet.C:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00594.png" border="0" usemap="#src_2core_2src_2_gsl_vector_8_c" alt=""/></div>
-<map name="src_2core_2src_2_gsl_vector_8_c" id="src_2core_2src_2_gsl_vector_8_c">
+<div class="center"><img src="a00694.png" border="0" usemap="#src_2basic_2src_2_vector_set_8_c" alt=""/></div>
+<map name="src_2basic_2src_2_vector_set_8_c" id="src_2basic_2src_2_vector_set_8_c">
 </map>
 </div>
 </div>
@@ -70,33 +72,12 @@ Include dependency graph for GslVector.C:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html">QUESO</a></td></tr>
+<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a25bb97988816bba6f17d35884da60512"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#a25bb97988816bba6f17d35884da60512">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const GslVector &amp;obj)</td></tr>
-<tr class="separator:a25bb97988816bba6f17d35884da60512"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a583c7692c136ba44beb81f031d8d55fc"><td class="memItemLeft" align="right" valign="top">GslVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#a583c7692c136ba44beb81f031d8d55fc">QUESO::operator/</a> (double a, const GslVector &amp;x)</td></tr>
-<tr class="separator:a583c7692c136ba44beb81f031d8d55fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac34d69017fbfb253ed76d20ef53c6f81"><td class="memItemLeft" align="right" valign="top">GslVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#ac34d69017fbfb253ed76d20ef53c6f81">QUESO::operator/</a> (const GslVector &amp;x, const GslVector &amp;y)</td></tr>
-<tr class="separator:ac34d69017fbfb253ed76d20ef53c6f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6209b9b8dde0c23a8d7a239eabcc6b5"><td class="memItemLeft" align="right" valign="top">GslVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#ac6209b9b8dde0c23a8d7a239eabcc6b5">QUESO::operator*</a> (double a, const GslVector &amp;x)</td></tr>
-<tr class="separator:ac6209b9b8dde0c23a8d7a239eabcc6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc8f40b553602f8f0e9668d30af42ebe"><td class="memItemLeft" align="right" valign="top">GslVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#adc8f40b553602f8f0e9668d30af42ebe">QUESO::operator*</a> (const GslVector &amp;x, const GslVector &amp;y)</td></tr>
-<tr class="separator:adc8f40b553602f8f0e9668d30af42ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a159769395a413f58b974587d5f43bbc7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#a159769395a413f58b974587d5f43bbc7">QUESO::scalarProduct</a> (const GslVector &amp;x, const GslVector &amp;y)</td></tr>
-<tr class="separator:a159769395a413f58b974587d5f43bbc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b74ebe52de00d2ea6affde322a158bc"><td class="memItemLeft" align="right" valign="top">GslVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#a4b74ebe52de00d2ea6affde322a158bc">QUESO::operator+</a> (const GslVector &amp;x, const GslVector &amp;y)</td></tr>
-<tr class="separator:a4b74ebe52de00d2ea6affde322a158bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae873227c9725013266467750e1fbad72"><td class="memItemLeft" align="right" valign="top">GslVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#ae873227c9725013266467750e1fbad72">QUESO::operator-</a> (const GslVector &amp;x, const GslVector &amp;y)</td></tr>
-<tr class="separator:ae873227c9725013266467750e1fbad72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18841f416975b3d80dfefa99a9ad0c15"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html#a18841f416975b3d80dfefa99a9ad0c15">QUESO::operator==</a> (const GslVector &amp;lhs, const GslVector &amp;rhs)</td></tr>
-<tr class="separator:a18841f416975b3d80dfefa99a9ad0c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

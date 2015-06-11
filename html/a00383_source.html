@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/inc/MLSamplingOptions.h Source File</title>
+<title>queso-0.53.0: src/core/src/MpiComm.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_d98b071537eea78ae0761911e9f6b515.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_d16228283b18c448cbd408df6e1bb59e.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">MLSamplingOptions.h</div>  </div>
+<div class="title">MpiComm.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00383.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,134 +75,262 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/MLSamplingLevelOptions.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/MpiComm.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00383.html#a7b733ab95e374e35c7f37894dc455b10">   31</a></span>&#160;<span class="preprocessor">#define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE &quot;.&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// _ODV = option default value</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV         0</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV  UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV   UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00383.html#a17088af1520e38f78034a6a9d729dff4">   45</a></span>&#160;<span class="preprocessor">#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV             UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00383.html#a018a972ab4b4e38509e010f4b3223fb1">   46</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV             UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00383.html#a68cd0922499c632ff3ff44abb4df797e">   47</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV                  100</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00383.html#a08071d6c8f72010522ac64f4268b699a">   51</a></span>&#160;<span class="preprocessor">#define UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV               UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00383.html#a3a9d1ab75ed8fc07b1dcd781455ec296">   52</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOW_ALL_ODV               0</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00383.html#a18a664fedd552e2d2ebdac80b4d4f54b">   53</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV             &quot;&quot;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="a00128.html">   67</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00128.html">MLSamplingOptions</a></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;{</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <a class="code" href="a00128.html#abdbf362961e3abf0f375da5c7ca31907">MLSamplingOptions</a>(<span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; env, <span class="keyword">const</span> <span class="keywordtype">char</span>* prefix);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="a00128.html#a7494c07488ccee22c202462769aa2fc5">~MLSamplingOptions</a>();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#ac30d28bbd4eea520fbbcfa5641dc62e1">scanOptionsValues</a>();</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#a507134cba6c1c525f6684122c7d90ccc">print</a>            (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="a00128.html#a1d3d48598e0b59b46337ce66a52671a5">   90</a></span>&#160;  std::string            <a class="code" href="a00128.html#a1d3d48598e0b59b46337ce66a52671a5">m_prefix</a>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor"></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>           m_restartOutput_levelPeriod;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  std::string            m_restartOutput_baseNameForFiles;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  std::string            m_restartOutput_fileType;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  std::string            m_restartInput_baseNameForFiles;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  std::string            m_restartInput_fileType;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor"></span>  std::string            <a class="code" href="a00128.html#aff68336a5d6ae4160e541975260450d8">m_restartInputFileName</a>;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="a00128.html#aae8adcb5188369ea144d2144b53cde48">  112</a></span>&#160;  std::string            <a class="code" href="a00128.html#aae8adcb5188369ea144d2144b53cde48">m_restartInputFileType</a>;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="a00128.html#a073caa3483cbca881934842451412681">  115</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>           <a class="code" href="a00128.html#a073caa3483cbca881934842451412681">m_restartChainSize</a>;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor"></span>  std::string            <a class="code" href="a00128.html#a2507c0e8b86f9d6f07a3f5609593fc96">m_dataOutputFileName</a>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="a00128.html#a530b32a42d38ca4112de8a06a2e760d3">  121</a></span>&#160;  <span class="keywordtype">bool</span>                   <a class="code" href="a00128.html#a530b32a42d38ca4112de8a06a2e760d3">m_dataOutputAllowAll</a>;</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="a00128.html#aa5f7e589376e3700b0132c1fa91cccc9">  122</a></span>&#160;  std::set&lt;unsigned int&gt; <a class="code" href="a00128.html#aa5f7e589376e3700b0132c1fa91cccc9">m_dataOutputAllowedSet</a>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="keywordtype">void</span>   <a class="code" href="a00128.html#a36a5d0aab29603e955e3f942e5dc5cda">defineMyOptions</a>  (po::options_description&amp; optionsDesc) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordtype">void</span>   <a class="code" href="a00128.html#a209b2e0cf3fdaa85add4d04f8cf602a1">getMyOptionValues</a>(po::options_description&amp; optionsDesc);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="a00128.html#a28d73f222e9b20f1c749ed808f69eebd">  131</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; <a class="code" href="a00128.html#a28d73f222e9b20f1c749ed808f69eebd">m_env</a>;</div>
-<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="a00128.html#afc13079420db3e2c7eaf97ca4d44cc97">  132</a></span>&#160;  po::options_description*      <a class="code" href="a00128.html#afc13079420db3e2c7eaf97ca4d44cc97">m_optionsDesc</a>;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="a00128.html#a5239a6e156de70d1f64b90e5885556d5">  134</a></span>&#160;  std::string                   <a class="code" href="a00128.html#a5239a6e156de70d1f64b90e5885556d5">m_option_help</a>;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor"></span>  std::string                   m_option_restartOutput_levelPeriod;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  std::string                   m_option_restartOutput_baseNameForFiles;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  std::string                   m_option_restartOutput_fileType;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  std::string                   m_option_restartInput_baseNameForFiles;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  std::string                   m_option_restartInput_fileType;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="a00128.html#a0fbc7946acb9944500d92503a1a0feaf">  142</a></span>&#160;<span class="preprocessor"></span>  std::string                   <a class="code" href="a00128.html#a0fbc7946acb9944500d92503a1a0feaf">m_option_restartInputFileName</a>;</div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="a00128.html#a3fa31b5691319385226e2149b549e269">  143</a></span>&#160;  std::string                   <a class="code" href="a00128.html#a3fa31b5691319385226e2149b549e269">m_option_restartInputFileType</a>;</div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="a00128.html#ad37df327253d40983ac3e3ed880069c3">  144</a></span>&#160;  std::string                   <a class="code" href="a00128.html#ad37df327253d40983ac3e3ed880069c3">m_option_restartChainSize</a>;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="a00128.html#a3950ebf354b0ff038c3e0b5c2cc2efa9">  146</a></span>&#160;<span class="preprocessor"></span>  std::string                   <a class="code" href="a00128.html#a3950ebf354b0ff038c3e0b5c2cc2efa9">m_option_dataOutputFileName</a>;</div>
-<div class="line"><a name="l00147"></a><span class="lineno"><a class="line" href="a00128.html#af2f225d4068ab602b17ae28242596ddd">  147</a></span>&#160;  std::string                   <a class="code" href="a00128.html#af2f225d4068ab602b17ae28242596ddd">m_option_dataOutputAllowAll</a>;</div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="a00128.html#a0dc0efc965101db9b18888c3db5bef99">  148</a></span>&#160;  std::string                   <a class="code" href="a00128.html#a0dc0efc965101db9b18888c3db5bef99">m_option_dataOutputAllowedSet</a>;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;};</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;std::ostream&amp; <a class="code" href="a00500.html#ae007c2d003b9f75b31b073ececd3120a">operator&lt;&lt;</a>(std::ostream&amp; os, <span class="keyword">const</span> <a class="code" href="a00128.html">MLSamplingOptions</a>&amp; obj);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#endif // UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H</span></div>
-<div class="ttc" id="a00128_html_a7494c07488ccee22c202462769aa2fc5"><div class="ttname"><a href="a00128.html#a7494c07488ccee22c202462769aa2fc5">QUESO::MLSamplingOptions::~MLSamplingOptions</a></div><div class="ttdeci">~MLSamplingOptions()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00468_source.html#l00065">MLSamplingOptions.C:65</a></div></div>
-<div class="ttc" id="a00128_html_a2507c0e8b86f9d6f07a3f5609593fc96"><div class="ttname"><a href="a00128.html#a2507c0e8b86f9d6f07a3f5609593fc96">QUESO::MLSamplingOptions::m_dataOutputFileName</a></div><div class="ttdeci">std::string m_dataOutputFileName</div><div class="ttdoc">Name of generic output file. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00118">MLSamplingOptions.h:118</a></div></div>
-<div class="ttc" id="a00128_html_aae8adcb5188369ea144d2144b53cde48"><div class="ttname"><a href="a00128.html#aae8adcb5188369ea144d2144b53cde48">QUESO::MLSamplingOptions::m_restartInputFileType</a></div><div class="ttdeci">std::string m_restartInputFileType</div><div class="ttdoc">Type of restart input file. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00112">MLSamplingOptions.h:112</a></div></div>
-<div class="ttc" id="a00128_html_a0dc0efc965101db9b18888c3db5bef99"><div class="ttname"><a href="a00128.html#a0dc0efc965101db9b18888c3db5bef99">QUESO::MLSamplingOptions::m_option_dataOutputAllowedSet</a></div><div class="ttdeci">std::string m_option_dataOutputAllowedSet</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00148">MLSamplingOptions.h:148</a></div></div>
-<div class="ttc" id="a00128_html_abdbf362961e3abf0f375da5c7ca31907"><div class="ttname"><a href="a00128.html#abdbf362961e3abf0f375da5c7ca31907">QUESO::MLSamplingOptions::MLSamplingOptions</a></div><div class="ttdeci">MLSamplingOptions(const BaseEnvironment &amp;env, const char *prefix)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00468_source.html#l00030">MLSamplingOptions.C:30</a></div></div>
-<div class="ttc" id="a00500_html_ae007c2d003b9f75b31b073ececd3120a"><div class="ttname"><a href="a00500.html#ae007c2d003b9f75b31b073ececd3120a">QUESO::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const BaseEnvironment &amp;obj)</div></div>
-<div class="ttc" id="a00128_html_aa5f7e589376e3700b0132c1fa91cccc9"><div class="ttname"><a href="a00128.html#aa5f7e589376e3700b0132c1fa91cccc9">QUESO::MLSamplingOptions::m_dataOutputAllowedSet</a></div><div class="ttdeci">std::set&lt; unsigned int &gt; m_dataOutputAllowedSet</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00122">MLSamplingOptions.h:122</a></div></div>
-<div class="ttc" id="a00128_html_a3fa31b5691319385226e2149b549e269"><div class="ttname"><a href="a00128.html#a3fa31b5691319385226e2149b549e269">QUESO::MLSamplingOptions::m_option_restartInputFileType</a></div><div class="ttdeci">std::string m_option_restartInputFileType</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00143">MLSamplingOptions.h:143</a></div></div>
-<div class="ttc" id="a00128_html_a1d3d48598e0b59b46337ce66a52671a5"><div class="ttname"><a href="a00128.html#a1d3d48598e0b59b46337ce66a52671a5">QUESO::MLSamplingOptions::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdoc">Class prefix. (ml) </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00090">MLSamplingOptions.h:90</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00239_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00128_html_a28d73f222e9b20f1c749ed808f69eebd"><div class="ttname"><a href="a00128.html#a28d73f222e9b20f1c749ed808f69eebd">QUESO::MLSamplingOptions::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00131">MLSamplingOptions.h:131</a></div></div>
-<div class="ttc" id="a00128_html_a209b2e0cf3fdaa85add4d04f8cf602a1"><div class="ttname"><a href="a00128.html#a209b2e0cf3fdaa85add4d04f8cf602a1">QUESO::MLSamplingOptions::getMyOptionValues</a></div><div class="ttdeci">void getMyOptionValues(po::options_description &amp;optionsDesc)</div><div class="ttdoc">Gets the sequence options defined to the Multilevel algorithm. </div><div class="ttdef"><b>Definition:</b> <a href="a00468_source.html#l00112">MLSamplingOptions.C:112</a></div></div>
-<div class="ttc" id="a00128_html_afc13079420db3e2c7eaf97ca4d44cc97"><div class="ttname"><a href="a00128.html#afc13079420db3e2c7eaf97ca4d44cc97">QUESO::MLSamplingOptions::m_optionsDesc</a></div><div class="ttdeci">po::options_description * m_optionsDesc</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00132">MLSamplingOptions.h:132</a></div></div>
-<div class="ttc" id="a00128_html_a507134cba6c1c525f6684122c7d90ccc"><div class="ttname"><a href="a00128.html#a507134cba6c1c525f6684122c7d90ccc">QUESO::MLSamplingOptions::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">It prints the option values. </div><div class="ttdef"><b>Definition:</b> <a href="a00468_source.html#l00180">MLSamplingOptions.C:180</a></div></div>
-<div class="ttc" id="a00128_html_ad37df327253d40983ac3e3ed880069c3"><div class="ttname"><a href="a00128.html#ad37df327253d40983ac3e3ed880069c3">QUESO::MLSamplingOptions::m_option_restartChainSize</a></div><div class="ttdeci">std::string m_option_restartChainSize</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00144">MLSamplingOptions.h:144</a></div></div>
-<div class="ttc" id="a00128_html_a36a5d0aab29603e955e3f942e5dc5cda"><div class="ttname"><a href="a00128.html#a36a5d0aab29603e955e3f942e5dc5cda">QUESO::MLSamplingOptions::defineMyOptions</a></div><div class="ttdeci">void defineMyOptions(po::options_description &amp;optionsDesc) const </div><div class="ttdoc">Defines the options for the Multilevel generator of samples as the default options. </div><div class="ttdef"><b>Definition:</b> <a href="a00468_source.html#l00089">MLSamplingOptions.C:89</a></div></div>
-<div class="ttc" id="a00128_html_aff68336a5d6ae4160e541975260450d8"><div class="ttname"><a href="a00128.html#aff68336a5d6ae4160e541975260450d8">QUESO::MLSamplingOptions::m_restartInputFileName</a></div><div class="ttdeci">std::string m_restartInputFileName</div><div class="ttdoc">Name of restart input file. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00109">MLSamplingOptions.h:109</a></div></div>
-<div class="ttc" id="a00128_html_a530b32a42d38ca4112de8a06a2e760d3"><div class="ttname"><a href="a00128.html#a530b32a42d38ca4112de8a06a2e760d3">QUESO::MLSamplingOptions::m_dataOutputAllowAll</a></div><div class="ttdeci">bool m_dataOutputAllowAll</div><div class="ttdoc">subEnvs that will write to generic output file </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00121">MLSamplingOptions.h:121</a></div></div>
-<div class="ttc" id="a00128_html_a0fbc7946acb9944500d92503a1a0feaf"><div class="ttname"><a href="a00128.html#a0fbc7946acb9944500d92503a1a0feaf">QUESO::MLSamplingOptions::m_option_restartInputFileName</a></div><div class="ttdeci">std::string m_option_restartInputFileName</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00142">MLSamplingOptions.h:142</a></div></div>
-<div class="ttc" id="a00128_html_a5239a6e156de70d1f64b90e5885556d5"><div class="ttname"><a href="a00128.html#a5239a6e156de70d1f64b90e5885556d5">QUESO::MLSamplingOptions::m_option_help</a></div><div class="ttdeci">std::string m_option_help</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00134">MLSamplingOptions.h:134</a></div></div>
-<div class="ttc" id="a00128_html_a073caa3483cbca881934842451412681"><div class="ttname"><a href="a00128.html#a073caa3483cbca881934842451412681">QUESO::MLSamplingOptions::m_restartChainSize</a></div><div class="ttdeci">unsigned int m_restartChainSize</div><div class="ttdoc">Size of restart chain. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00115">MLSamplingOptions.h:115</a></div></div>
-<div class="ttc" id="a00128_html_ac30d28bbd4eea520fbbcfa5641dc62e1"><div class="ttname"><a href="a00128.html#ac30d28bbd4eea520fbbcfa5641dc62e1">QUESO::MLSamplingOptions::scanOptionsValues</a></div><div class="ttdeci">void scanOptionsValues()</div><div class="ttdoc">It scans the option values from the options input file. </div><div class="ttdef"><b>Definition:</b> <a href="a00468_source.html#l00071">MLSamplingOptions.C:71</a></div></div>
-<div class="ttc" id="a00128_html"><div class="ttname"><a href="a00128.html">QUESO::MLSamplingOptions</a></div><div class="ttdoc">This class provides options for the Multilevel sequence generator if no input file is available...</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00067">MLSamplingOptions.h:67</a></div></div>
-<div class="ttc" id="a00128_html_af2f225d4068ab602b17ae28242596ddd"><div class="ttname"><a href="a00128.html#af2f225d4068ab602b17ae28242596ddd">QUESO::MLSamplingOptions::m_option_dataOutputAllowAll</a></div><div class="ttdeci">std::string m_option_dataOutputAllowAll</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00147">MLSamplingOptions.h:147</a></div></div>
-<div class="ttc" id="a00128_html_a3950ebf354b0ff038c3e0b5c2cc2efa9"><div class="ttname"><a href="a00128.html#a3950ebf354b0ff038c3e0b5c2cc2efa9">QUESO::MLSamplingOptions::m_option_dataOutputFileName</a></div><div class="ttdeci">std::string m_option_dataOutputFileName</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00146">MLSamplingOptions.h:146</a></div></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// QUESO MpiComm MPI Constructor ------------------</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00175.html#a975b6dcbce05a62ec4c4034ff200a6fe">   32</a></span>&#160;<a class="code" href="a00175.html#a34237212169683b2df357b6b710d2a38">MpiComm::MpiComm</a>(<span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; env, <a class="code" href="a00649.html#af48741a7e6d7897e9e96e0f5bb26cfd7">RawType_MPI_Comm</a> inputRawComm)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  :</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  m_env          (env),</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;#ifdef QUESO_HAS_TRILINOS</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  m_epetraMpiComm( new Epetra_MpiComm(inputRawComm) ),</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;#endif</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_rawComm      (inputRawComm),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_worldRank    (-1),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_myPid        (-1),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_numProc      (-1)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Comm_rank(inputRawComm,&amp;<a class="code" href="a00175.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, <span class="stringliteral">&quot;failed MPI_Comm_rank() on full rank&quot;</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  mpiRC = MPI_Comm_rank(inputRawComm,&amp;<a class="code" href="a00175.html#aca028ecbe31a1eafa0e0bf93b331bcb9">m_myPid</a>);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, <span class="stringliteral">&quot;failed MPI_Comm_rank() on inputRawComm&quot;</span>);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  mpiRC = MPI_Comm_size(inputRawComm,&amp;<a class="code" href="a00175.html#a73c6f34523215042d866680b3e9a1497">m_numProc</a>);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, <span class="stringliteral">&quot;failed MPI_Comm_size() on inputRawComm&quot;</span>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// Copy constructor ---------------------------------</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00175.html#a740705f407d4cd32ebf66fd797977209">   54</a></span>&#160;<a class="code" href="a00175.html#a34237212169683b2df357b6b710d2a38">MpiComm::MpiComm</a>(<span class="keyword">const</span> <a class="code" href="a00175.html">MpiComm</a>&amp; src)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  :</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  m_env          (src.m_env)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;#ifdef QUESO_HAS_TRILINOS</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  ,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  m_epetraMpiComm(NULL)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;#endif</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  this-&gt;<a class="code" href="a00175.html#a62220ff8cea91f4f51e8713a9a513846">copy</a>(src);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="a00175.html#a2bf46779dc9fe47cf90cb205285e8a99">   66</a></span>&#160;<a class="code" href="a00175.html#a2bf46779dc9fe47cf90cb205285e8a99">MpiComm::~MpiComm</a>()</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span>  <span class="keyword">delete</span> m_epetraMpiComm;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  m_epetraMpiComm = NULL;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">// Set methodos -------------------------------------</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<a class="code" href="a00175.html">MpiComm</a>&amp;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00175.html#ac72ab4b4a0181c4e37e6e6edfa6b696a">   77</a></span>&#160;<a class="code" href="a00175.html#ac72ab4b4a0181c4e37e6e6edfa6b696a">MpiComm::operator=</a>(<span class="keyword">const</span> <a class="code" href="a00175.html">MpiComm</a>&amp; rhs)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  this-&gt;<a class="code" href="a00175.html#a62220ff8cea91f4f51e8713a9a513846">copy</a>(rhs);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">// Attribute access methods -------------------------</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<a class="code" href="a00649.html#af48741a7e6d7897e9e96e0f5bb26cfd7">RawType_MPI_Comm</a></div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="a00175.html#a29d53c01c5ac7ba1bb3a33911d89b6b8">   85</a></span>&#160;<a class="code" href="a00175.html#a29d53c01c5ac7ba1bb3a33911d89b6b8">MpiComm::Comm</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraMpiComm-&gt;Comm();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="a00175.html#ab806f80f206210723fcb4df8185a55a8">   94</a></span>&#160;<a class="code" href="a00175.html#ab806f80f206210723fcb4df8185a55a8">MpiComm::MyPID</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraMpiComm-&gt;MyPID();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00175.html#aca028ecbe31a1eafa0e0bf93b331bcb9">m_myPid</a>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="a00175.html#aa780721ae0fdeabc5a15e04cb0cad964">  103</a></span>&#160;<a class="code" href="a00175.html#aa780721ae0fdeabc5a15e04cb0cad964">MpiComm::NumProc</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraMpiComm-&gt;NumProc();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00175.html#a73c6f34523215042d866680b3e9a1497">m_numProc</a>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">// Methods overridden from Comm ---------------------</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="a00175.html#a72e137e60ef8060efb1ee5fc874fa4b8">  113</a></span>&#160;<a class="code" href="a00175.html#a72e137e60ef8060efb1ee5fc874fa4b8">MpiComm::Allreduce</a>(<span class="keywordtype">void</span>* sendbuf, <span class="keywordtype">void</span>* recvbuf, <span class="keywordtype">int</span> count, <a class="code" href="a00649.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> datatype, <a class="code" href="a00649.html#ab6a4008f3ba2b0196dae9e41971a9c18">RawType_MPI_Op</a> op, <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, <a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, whatMsg);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="a00175.html#a4059971c30e023b272fccaa6aa00c426">  122</a></span>&#160;<a class="code" href="a00175.html#a4059971c30e023b272fccaa6aa00c426">MpiComm::Barrier</a>() const <span class="comment">// const char* whereMsg, const char* whatMsg) const</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;{</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraMpiComm-&gt;Barrier();</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor"></span>  <span class="keywordtype">int</span> mpiRC = MPI_Barrier(<a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, <span class="stringliteral">&quot;mpiRC indicates failure&quot;</span>);  <span class="comment">// whatMsg);</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="a00175.html#abd6af8db8b0c7fd2f5b62e26477a9537">  133</a></span>&#160;<a class="code" href="a00175.html#abd6af8db8b0c7fd2f5b62e26477a9537">MpiComm::Bcast</a>(<span class="keywordtype">void</span>* buffer, <span class="keywordtype">int</span> count, <a class="code" href="a00649.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> datatype, <span class="keywordtype">int</span> root, <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Bcast(buffer, count, datatype, root, <a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, whatMsg);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="a00175.html#a184a5e411afcfb6dc41e99fca9435045">  141</a></span>&#160;<a class="code" href="a00175.html#a184a5e411afcfb6dc41e99fca9435045">MpiComm::Gather</a>(</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  <span class="keywordtype">void</span>* sendbuf, <span class="keywordtype">int</span> sendcnt, <a class="code" href="a00649.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> sendtype,</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordtype">void</span>* recvbuf, <span class="keywordtype">int</span> recvcount, <a class="code" href="a00649.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> recvtype,</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  <span class="keywordtype">int</span> root,</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <span class="comment">//int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype,</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="comment">//                void *recvbuf, int recvcount, MPI_Datatype recvtype,</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <span class="comment">//                int root, MPI_Comm comm )</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Gather(sendbuf, sendcnt, sendtype,</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                         recvbuf, recvcount, recvtype,</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                         root, <a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, whatMsg);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;}</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="a00175.html#a9313449240c1bb2289870309a5c711ed">  158</a></span>&#160;<a class="code" href="a00175.html#a9313449240c1bb2289870309a5c711ed">MpiComm::Gatherv</a>(</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="keywordtype">void</span>* sendbuf, <span class="keywordtype">int</span> sendcnt, <a class="code" href="a00649.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> sendtype,</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="keywordtype">void</span>* recvbuf, <span class="keywordtype">int</span>* recvcnts, <span class="keywordtype">int</span>* displs, <a class="code" href="a00649.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> recvtype,</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="keywordtype">int</span> root,</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="comment">//int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype,</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  <span class="comment">//                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype,</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="comment">//                int root, MPI_Comm comm )</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Gatherv(sendbuf, sendcnt, sendtype,</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                          recvbuf, recvcnts, displs, recvtype,</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                          root, <a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, whatMsg);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;}</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="a00175.html#a12d7a87a4407e442c35a17d3caaf46c1">  175</a></span>&#160;<a class="code" href="a00175.html#a12d7a87a4407e442c35a17d3caaf46c1">MpiComm::Recv</a>(</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keywordtype">void</span>* buf, <span class="keywordtype">int</span> count, <a class="code" href="a00649.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> datatype, <span class="keywordtype">int</span> source, <span class="keywordtype">int</span> tag, <a class="code" href="a00649.html#af3c313103c6396188748a1d534577ff7">RawType_MPI_Status</a>* status,</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Recv(buf, count, datatype, source, tag, <a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>, status);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, whatMsg);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;}</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno"><a class="line" href="a00175.html#a1ecdbeac992a2ab1ff12e45e0c1b53b4">  185</a></span>&#160;<a class="code" href="a00175.html#a1ecdbeac992a2ab1ff12e45e0c1b53b4">MpiComm::Send</a>(</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keywordtype">void</span>* buf, <span class="keywordtype">int</span> count, <a class="code" href="a00649.html#a8648edf143b92c6f21f6cb93223b2cc9">RawType_MPI_Datatype</a> datatype, <span class="keywordtype">int</span> dest, <span class="keywordtype">int</span> tag,</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* whereMsg, <span class="keyword">const</span> <span class="keywordtype">char</span>* whatMsg)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordtype">int</span> mpiRC = MPI_Send(buf, count, datatype, dest, tag, <a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(mpiRC, MPI_SUCCESS, whatMsg);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;}</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">// Misc methods ------------------------------------</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno"><a class="line" href="a00175.html#a6f73891de4668c325277ddaa799cf808">  195</a></span>&#160;<a class="code" href="a00175.html#a6f73891de4668c325277ddaa799cf808">MpiComm::syncPrintDebugMsg</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* msg, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> msgVerbosity, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numUSecs)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00175.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00032.html#a70df256cd4d968e426175a38269c04d5">syncVerbosity</a>() &gt;= msgVerbosity) {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    this-&gt;<a class="code" href="a00175.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; this-&gt;<a class="code" href="a00175.html#aa780721ae0fdeabc5a15e04cb0cad964">NumProc</a>(); ++i) {</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      <span class="keywordflow">if</span> (i == this-&gt;<a class="code" href="a00175.html#ab806f80f206210723fcb4df8185a55a8">MyPID</a>()) {</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        std::cout &lt;&lt; msg</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;: fullRank &quot;</span>       &lt;&lt; <a class="code" href="a00175.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00032.html#a84a239e42ae443cf71db6e03e8159620">fullRank</a>()</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;, subEnvironment &quot;</span> &lt;&lt; <a class="code" href="a00175.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>()</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;, subRank &quot;</span>        &lt;&lt; <a class="code" href="a00175.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00032.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>()</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;, inter0Rank &quot;</span>     &lt;&lt; <a class="code" href="a00175.html#a6b63af09a9b80f14b25409bc561abb41">m_env</a>.<a class="code" href="a00032.html#ae106b5bb8a80b655b88b3a26b1e7c185">inter0Rank</a>()</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                  &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;      }</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;      usleep(numUSecs);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;      this-&gt;<a class="code" href="a00175.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    }</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="comment">//if (this-&gt;fullRank() == 0) std::cout &lt;&lt; &quot;Sleeping &quot; &lt;&lt; numUSecs &lt;&lt; &quot; microseconds...&quot;</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="comment">//                                     &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="comment">//usleep(numUSecs);</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    this-&gt;<a class="code" href="a00175.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  }</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;}</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">// -------------------------------------------------</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="preprocessor"></span><span class="keyword">const</span> Epetra_MpiComm&amp;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;MpiComm::epetraMpiComm()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  <span class="keywordflow">return</span> *m_epetraMpiComm;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;}</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">// Private methods----------------------------------</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="a00175.html#a62220ff8cea91f4f51e8713a9a513846">  230</a></span>&#160;<a class="code" href="a00175.html#a62220ff8cea91f4f51e8713a9a513846">MpiComm::copy</a>(<span class="keyword">const</span> <a class="code" href="a00175.html">MpiComm</a>&amp; src)</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;{</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="preprocessor"></span>  <span class="keyword">delete</span> m_epetraMpiComm;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  m_epetraMpiComm = <span class="keyword">new</span> Epetra_MpiComm(*src.m_epetraMpiComm);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="preprocessor"></span>  <a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>   = src.<a class="code" href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">m_rawComm</a>;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  <a class="code" href="a00175.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a> = src.<a class="code" href="a00175.html#aae8c456bc75534d43d682178bf98ef65">m_worldRank</a>;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <a class="code" href="a00175.html#aca028ecbe31a1eafa0e0bf93b331bcb9">m_myPid</a>     = src.<a class="code" href="a00175.html#aca028ecbe31a1eafa0e0bf93b331bcb9">m_myPid</a>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  <a class="code" href="a00175.html#a73c6f34523215042d866680b3e9a1497">m_numProc</a>   = src.<a class="code" href="a00175.html#a73c6f34523215042d866680b3e9a1497">m_numProc</a>;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;}</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="comment">// -------------------------------------------------</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00649_html_af48741a7e6d7897e9e96e0f5bb26cfd7"><div class="ttname"><a href="a00649.html#af48741a7e6d7897e9e96e0f5bb26cfd7">QUESO::RawType_MPI_Comm</a></div><div class="ttdeci">MPI_Comm RawType_MPI_Comm</div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00038">MpiComm.h:38</a></div></div>
+<div class="ttc" id="a00032_html_a172d52f993f1322ed45aaddf71518dbb"><div class="ttname"><a href="a00032.html#a172d52f993f1322ed45aaddf71518dbb">QUESO::BaseEnvironment::subRank</a></div><div class="ttdeci">int subRank() const </div><div class="ttdoc">Access function for sub-rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00241">Environment.C:241</a></div></div>
+<div class="ttc" id="a00175_html_a73c6f34523215042d866680b3e9a1497"><div class="ttname"><a href="a00175.html#a73c6f34523215042d866680b3e9a1497">QUESO::MpiComm::m_numProc</a></div><div class="ttdeci">int m_numProc</div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00222">MpiComm.h:222</a></div></div>
+<div class="ttc" id="a00175_html_ab806f80f206210723fcb4df8185a55a8"><div class="ttname"><a href="a00175.html#ab806f80f206210723fcb4df8185a55a8">QUESO::MpiComm::MyPID</a></div><div class="ttdeci">int MyPID() const </div><div class="ttdoc">Return my process ID. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00094">MpiComm.C:94</a></div></div>
+<div class="ttc" id="a00649_html_af3c313103c6396188748a1d534577ff7"><div class="ttname"><a href="a00649.html#af3c313103c6396188748a1d534577ff7">QUESO::RawType_MPI_Status</a></div><div class="ttdeci">MPI_Status RawType_MPI_Status</div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00042">MpiComm.h:42</a></div></div>
+<div class="ttc" id="a00649_html_ab6a4008f3ba2b0196dae9e41971a9c18"><div class="ttname"><a href="a00649.html#ab6a4008f3ba2b0196dae9e41971a9c18">QUESO::RawType_MPI_Op</a></div><div class="ttdeci">MPI_Op RawType_MPI_Op</div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00041">MpiComm.h:41</a></div></div>
+<div class="ttc" id="a00175_html_a990a22b37217ce6fc6a7c818c8d0106b"><div class="ttname"><a href="a00175.html#a990a22b37217ce6fc6a7c818c8d0106b">QUESO::MpiComm::m_rawComm</a></div><div class="ttdeci">RawType_MPI_Comm m_rawComm</div><div class="ttdoc">Embedded wrapped opaque MPI_Comm object. </div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00213">MpiComm.h:213</a></div></div>
+<div class="ttc" id="a00175_html_a4059971c30e023b272fccaa6aa00c426"><div class="ttname"><a href="a00175.html#a4059971c30e023b272fccaa6aa00c426">QUESO::MpiComm::Barrier</a></div><div class="ttdeci">void Barrier() const </div><div class="ttdoc">Pause every process in *this communicator until all the processes reach this point. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00122">MpiComm.C:122</a></div></div>
+<div class="ttc" id="a00175_html_aa780721ae0fdeabc5a15e04cb0cad964"><div class="ttname"><a href="a00175.html#aa780721ae0fdeabc5a15e04cb0cad964">QUESO::MpiComm::NumProc</a></div><div class="ttdeci">int NumProc() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00103">MpiComm.C:103</a></div></div>
+<div class="ttc" id="a00032_html_a84a239e42ae443cf71db6e03e8159620"><div class="ttname"><a href="a00032.html#a84a239e42ae443cf71db6e03e8159620">QUESO::BaseEnvironment::fullRank</a></div><div class="ttdeci">int fullRank() const </div><div class="ttdoc">Returns the process full rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00222">Environment.C:222</a></div></div>
+<div class="ttc" id="a00175_html_a6b63af09a9b80f14b25409bc561abb41"><div class="ttname"><a href="a00175.html#a6b63af09a9b80f14b25409bc561abb41">QUESO::MpiComm::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00206">MpiComm.h:206</a></div></div>
+<div class="ttc" id="a00175_html_a1ecdbeac992a2ab1ff12e45e0c1b53b4"><div class="ttname"><a href="a00175.html#a1ecdbeac992a2ab1ff12e45e0c1b53b4">QUESO::MpiComm::Send</a></div><div class="ttdeci">void Send(void *buf, int count, RawType_MPI_Datatype datatype, int dest, int tag, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Possibly blocking send of data from this process to another process. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00185">MpiComm.C:185</a></div></div>
+<div class="ttc" id="a00649_html_a8648edf143b92c6f21f6cb93223b2cc9"><div class="ttname"><a href="a00649.html#a8648edf143b92c6f21f6cb93223b2cc9">QUESO::RawType_MPI_Datatype</a></div><div class="ttdeci">MPI_Datatype RawType_MPI_Datatype</div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00040">MpiComm.h:40</a></div></div>
+<div class="ttc" id="a00032_html_a70df256cd4d968e426175a38269c04d5"><div class="ttname"><a href="a00032.html#a70df256cd4d968e426175a38269c04d5">QUESO::BaseEnvironment::syncVerbosity</a></div><div class="ttdeci">unsigned int syncVerbosity() const </div><div class="ttdoc">Access function to private attribute m_syncVerbosity. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00403">Environment.C:403</a></div></div>
+<div class="ttc" id="a00032_html_ae106b5bb8a80b655b88b3a26b1e7c185"><div class="ttname"><a href="a00032.html#ae106b5bb8a80b655b88b3a26b1e7c185">QUESO::BaseEnvironment::inter0Rank</a></div><div class="ttdeci">int inter0Rank() const </div><div class="ttdoc">Returns the process inter0 rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00261">Environment.C:261</a></div></div>
+<div class="ttc" id="a00175_html"><div class="ttname"><a href="a00175.html">QUESO::MpiComm</a></div><div class="ttdoc">The QUESO MPI Communicator Class. </div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00075">MpiComm.h:75</a></div></div>
+<div class="ttc" id="a00319_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00085">asserts.h:85</a></div></div>
+<div class="ttc" id="a00175_html_aae8c456bc75534d43d682178bf98ef65"><div class="ttname"><a href="a00175.html#aae8c456bc75534d43d682178bf98ef65">QUESO::MpiComm::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdoc">World rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00216">MpiComm.h:216</a></div></div>
+<div class="ttc" id="a00175_html_a9313449240c1bb2289870309a5c711ed"><div class="ttname"><a href="a00175.html#a9313449240c1bb2289870309a5c711ed">QUESO::MpiComm::Gatherv</a></div><div class="ttdeci">void Gatherv(void *sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, void *recvbuf, int *recvcnts, int *displs, RawType_MPI_Datatype recvtype, int root, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Gathers into specified locations from all processes in a group. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00158">MpiComm.C:158</a></div></div>
+<div class="ttc" id="a00175_html_a29d53c01c5ac7ba1bb3a33911d89b6b8"><div class="ttname"><a href="a00175.html#a29d53c01c5ac7ba1bb3a33911d89b6b8">QUESO::MpiComm::Comm</a></div><div class="ttdeci">RawType_MPI_Comm Comm() const </div><div class="ttdoc">Extract MPI Communicator from a MpiComm object. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00085">MpiComm.C:85</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00327_source.html#l00193">Environment.h:193</a></div></div>
+<div class="ttc" id="a00175_html_abd6af8db8b0c7fd2f5b62e26477a9537"><div class="ttname"><a href="a00175.html#abd6af8db8b0c7fd2f5b62e26477a9537">QUESO::MpiComm::Bcast</a></div><div class="ttdeci">void Bcast(void *buffer, int count, RawType_MPI_Datatype datatype, int root, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Broadcast values from the root process to the slave processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00133">MpiComm.C:133</a></div></div>
+<div class="ttc" id="a00175_html_ac72ab4b4a0181c4e37e6e6edfa6b696a"><div class="ttname"><a href="a00175.html#ac72ab4b4a0181c4e37e6e6edfa6b696a">QUESO::MpiComm::operator=</a></div><div class="ttdeci">MpiComm &amp; operator=(const MpiComm &amp;rhs)</div><div class="ttdoc">Assignment operator. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00077">MpiComm.C:77</a></div></div>
+<div class="ttc" id="a00175_html_a34237212169683b2df357b6b710d2a38"><div class="ttname"><a href="a00175.html#a34237212169683b2df357b6b710d2a38">QUESO::MpiComm::MpiComm</a></div><div class="ttdeci">MpiComm()</div><div class="ttdoc">Default Constructor. </div></div>
+<div class="ttc" id="a00032_html_a6ae3174897a9b3a4c85fa18da5d4c16f"><div class="ttname"><a href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">QUESO::BaseEnvironment::subId</a></div><div class="ttdeci">unsigned int subId() const </div><div class="ttdoc">Access function to the number of each sub-environment Id: m_subId. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00295">Environment.C:295</a></div></div>
+<div class="ttc" id="a00175_html_a12d7a87a4407e442c35a17d3caaf46c1"><div class="ttname"><a href="a00175.html#a12d7a87a4407e442c35a17d3caaf46c1">QUESO::MpiComm::Recv</a></div><div class="ttdeci">void Recv(void *buf, int count, RawType_MPI_Datatype datatype, int source, int tag, RawType_MPI_Status *status, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Blocking receive of data from this process to another process. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00175">MpiComm.C:175</a></div></div>
+<div class="ttc" id="a00175_html_a2bf46779dc9fe47cf90cb205285e8a99"><div class="ttname"><a href="a00175.html#a2bf46779dc9fe47cf90cb205285e8a99">QUESO::MpiComm::~MpiComm</a></div><div class="ttdeci">~MpiComm()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00066">MpiComm.C:66</a></div></div>
+<div class="ttc" id="a00175_html_aca028ecbe31a1eafa0e0bf93b331bcb9"><div class="ttname"><a href="a00175.html#aca028ecbe31a1eafa0e0bf93b331bcb9">QUESO::MpiComm::m_myPid</a></div><div class="ttdeci">int m_myPid</div><div class="ttdoc">Process ID of this process. </div><div class="ttdef"><b>Definition:</b> <a href="a00346_source.html#l00219">MpiComm.h:219</a></div></div>
+<div class="ttc" id="a00175_html_a184a5e411afcfb6dc41e99fca9435045"><div class="ttname"><a href="a00175.html#a184a5e411afcfb6dc41e99fca9435045">QUESO::MpiComm::Gather</a></div><div class="ttdeci">void Gather(void *sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, void *recvbuf, int recvcount, RawType_MPI_Datatype recvtype, int root, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Gather values from each process to collect on all processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00141">MpiComm.C:141</a></div></div>
+<div class="ttc" id="a00175_html_a72e137e60ef8060efb1ee5fc874fa4b8"><div class="ttname"><a href="a00175.html#a72e137e60ef8060efb1ee5fc874fa4b8">QUESO::MpiComm::Allreduce</a></div><div class="ttdeci">void Allreduce(void *sendbuf, void *recvbuf, int count, RawType_MPI_Datatype datatype, RawType_MPI_Op op, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Combines values from all processes and distributes the result back to all processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00113">MpiComm.C:113</a></div></div>
+<div class="ttc" id="a00175_html_a6f73891de4668c325277ddaa799cf808"><div class="ttname"><a href="a00175.html#a6f73891de4668c325277ddaa799cf808">QUESO::MpiComm::syncPrintDebugMsg</a></div><div class="ttdeci">void syncPrintDebugMsg(const char *msg, unsigned int msgVerbosity, unsigned int numUSecs) const </div><div class="ttdoc">Synchronizes all the processes and print debug message. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00195">MpiComm.C:195</a></div></div>
+<div class="ttc" id="a00175_html_a62220ff8cea91f4f51e8713a9a513846"><div class="ttname"><a href="a00175.html#a62220ff8cea91f4f51e8713a9a513846">QUESO::MpiComm::copy</a></div><div class="ttdeci">void copy(const MpiComm &amp;src)</div><div class="ttdoc">Copies from an existing MpiComm instance. </div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00230">MpiComm.C:230</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

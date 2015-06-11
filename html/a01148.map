@@ -1,9 +1,11 @@
-<map id="QUESO::LogNormalVectorRV&lt; V, M &gt;" name="QUESO::LogNormalVectorRV&lt; V, M &gt;">
-<area shape="rect" id="node2" href="$a00032.html" title="A templated base class for handling vector RV. " alt="" coords="827,5,1003,51"/>
-<area shape="rect" id="node4" href="$a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,168,648,197"/>
-<area shape="rect" id="node10" href="$a00052.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,257,1024,287"/>
-<area shape="rect" id="node16" href="$a00132.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,137,988,167"/>
-<area shape="rect" id="node6" href="$a00034.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,120,195,149"/>
-<area shape="rect" id="node8" href="$a00139.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,173,175,203"/>
-<area shape="rect" id="node13" href="$a00053.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,283,205,312"/>
+<map id="QUESO::VectorSubset&lt; V, M &gt;" name="QUESO::VectorSubset&lt; V, M &gt;">
+<area shape="rect" id="node5" href="$a00057.html" title="BoxSubset\&lt; P_V, P_M \&gt;" alt="" coords="503,5,689,35"/>
+<area shape="rect" id="node7" href="$a00057.html" title="BoxSubset\&lt; Q_V, Q_M \&gt;" alt="" coords="501,59,691,88"/>
+<area shape="rect" id="node9" href="$a00057.html" title="BoxSubset\&lt; S_V, S_M \&gt;" alt="" coords="504,112,688,141"/>
+<area shape="rect" id="node11" href="$a00061.html" title="ConcatenationSubset\l\&lt; P_V, P_M \&gt;" alt="" coords="512,165,680,211"/>
+<area shape="rect" id="node13" href="$a00057.html" title="Class representing a subset of a vector space shaped like a hypercube. " alt="" coords="491,235,701,264"/>
+<area shape="rect" id="node15" href="$a00061.html" title="A templated class representing the concatenation of two vector subsets. " alt="" coords="483,287,709,334"/>
+<area shape="rect" id="node17" href="$a00065.html" title="A templated class representing the discrete vector subsets. " alt="" coords="503,357,689,403"/>
+<area shape="rect" id="node19" href="$a00142.html" title="A templated class representing the intersection of two vector sets. " alt="" coords="491,426,701,473"/>
+<area shape="rect" id="node2" href="$a00227.html" title="A templated class for handling sets. " alt="" coords="5,204,213,233"/>
 </map>

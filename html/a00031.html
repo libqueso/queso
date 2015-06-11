@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: QUESO::BaseVectorRealizer&lt; V, M &gt; Class Template Reference</title>
+<title>queso-0.53.0: QUESO::Base1DQuadrature Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -45,100 +45,99 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00500.html">QUESO</a></li><li class="navelem"><a class="el" href="a00031.html">BaseVectorRealizer</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00031.html">Base1DQuadrature</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a01242.html">List of all members</a>  </div>
+<a href="a01313.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::BaseVectorRealizer&lt; V, M &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">QUESO::Base1DQuadrature Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A templated (base) class for handling sampling from vector RVs.  
+<p>Base class for one-dimensional quadrature rules (numerical integration of functions).  
  <a href="a00031.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00410_source.html">VectorRealizer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00431_source.html">1DQuadrature.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::BaseVectorRealizer&lt; V, M &gt;:</div>
+Inheritance diagram for QUESO::Base1DQuadrature:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01243.png" border="0" usemap="#_q_u_e_s_o_1_1_base_vector_realizer_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_base_vector_realizer_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_base_vector_realizer_3_01_v_00_01_m_01_4_inherit__map">
-<area shape="rect" id="node3" href="a00039.html" title="A class for handling sampling from a Beta probability density distribution. " alt="" coords="285,5,499,51"/><area shape="rect" id="node5" href="a00043.html" title="A class for handling sampling from concatenated probability density distributions. " alt="" coords="281,74,503,121"/><area shape="rect" id="node7" href="a00067.html" title="A class for handling sampling from a Gamma probability density distribution. " alt="" coords="277,143,507,190"/><area shape="rect" id="node9" href="a00079.html" title="A class for handling sampling from Gaussian probability density distributions. " alt="" coords="273,213,511,259"/><area shape="rect" id="node11" href="a00090.html" title="A class for handling sampling from generic probability density distributions. " alt="" coords="277,282,507,329"/><area shape="rect" id="node13" href="a00103.html" title="A class for handling sampling from an Inverse Gamma probability density distribution. " alt="" coords="279,351,505,398"/><area shape="rect" id="node15" href="a00106.html" title="A class for handling sampling from (transformed) Gaussian probability density distributions with boun..." alt="" coords="273,421,511,467"/><area shape="rect" id="node17" href="a00109.html" title="A class for handling sampling from a jeffreys probability density distribution. " alt="" coords="277,490,507,537"/><area shape="rect" id="node19" href="a00116.html" title="A class for handling sampling from a Log&#45;Normal probability density distribution. ..." alt="" coords="267,559,517,606"/><area shape="rect" id="node21" href="a00154.html" title="A class for handling sequential draws (sampling) from probability density distributions. " alt="" coords="267,629,517,675"/><area shape="rect" id="node23" href="a00170.html" title="A class for handling sampling from a Uniform probability density distribution. " alt="" coords="277,698,507,745"/><area shape="rect" id="node25" href="a00182.html" title="A class for handling sampling from a Wigner probability density distribution. " alt="" coords="280,767,504,814"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for QUESO::BaseVectorRealizer&lt; V, M &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="a01244.png" border="0" usemap="#_q_u_e_s_o_1_1_base_vector_realizer_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_base_vector_realizer_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_base_vector_realizer_3_01_v_00_01_m_01_4_coll__map">
-<area shape="rect" id="node2" href="a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,168,648,197"/><area shape="rect" id="node8" href="a00052.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,257,1024,287"/><area shape="rect" id="node14" href="a00132.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,137,988,167"/><area shape="rect" id="node4" href="a00034.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,120,195,149"/><area shape="rect" id="node6" href="a00139.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,173,175,203"/><area shape="rect" id="node11" href="a00053.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,283,205,312"/></map>
+<div class="center"><img src="a01314.png" border="0" usemap="#_q_u_e_s_o_1_1_base1_d_quadrature_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_base1_d_quadrature_inherit__map" id="_q_u_e_s_o_1_1_base1_d_quadrature_inherit__map">
+<area shape="rect" id="node3" href="a00089.html" title="Class for Hermite&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="264,5,555,35"/><area shape="rect" id="node5" href="a00111.html" title="Class for one&#45;dimensional generic quadrature rules (numerical integration of functions). " alt="" coords="296,59,523,88"/><area shape="rect" id="node7" href="a00219.html" title="Class for Legendre&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="264,112,555,141"/><area shape="rect" id="node9" href="a00230.html" title="Class for second type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="293,165,525,211"/><area shape="rect" id="node11" href="a00231.html" title="Class for first type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="269,234,549,281"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:ad77258f8737d87b5d0cd58b398939c70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#ad77258f8737d87b5d0cd58b398939c70">BaseVectorRealizer</a> (const char *prefix, const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00031.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>, unsigned int <a class="el" href="a00031.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a>)</td></tr>
-<tr class="memdesc:ad77258f8737d87b5d0cd58b398939c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ad77258f8737d87b5d0cd58b398939c70">More...</a><br/></td></tr>
-<tr class="separator:ad77258f8737d87b5d0cd58b398939c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc2eda9b3cea09c559c19e349c537b91"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#abc2eda9b3cea09c559c19e349c537b91">~BaseVectorRealizer</a> ()</td></tr>
-<tr class="memdesc:abc2eda9b3cea09c559c19e349c537b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#abc2eda9b3cea09c559c19e349c537b91">More...</a><br/></td></tr>
-<tr class="separator:abc2eda9b3cea09c559c19e349c537b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Realization-related methods</div></td></tr>
-<tr class="memitem:ad958991bab8d6369e8a0d66b22a237d4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a> () const </td></tr>
-<tr class="memdesc:ad958991bab8d6369e8a0d66b22a237d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet.  <a href="#ad958991bab8d6369e8a0d66b22a237d4">More...</a><br/></td></tr>
-<tr class="separator:ad958991bab8d6369e8a0d66b22a237d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9fda59efacf5bd84c472c96dfa00613"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a> () const </td></tr>
-<tr class="memdesc:ad9fda59efacf5bd84c472c96dfa00613"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sub-period of the realization. Access to protected attribute m_subPeriod.  <a href="#ad9fda59efacf5bd84c472c96dfa00613">More...</a><br/></td></tr>
-<tr class="separator:ad9fda59efacf5bd84c472c96dfa00613"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6845173dd79a80ae11c86cde26e55817"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a6845173dd79a80ae11c86cde26e55817">realization</a> (V &amp;nextValues) const =0</td></tr>
-<tr class="memdesc:a6845173dd79a80ae11c86cde26e55817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a realization (sample) from a probability density function. See template specialization.  <a href="#a6845173dd79a80ae11c86cde26e55817">More...</a><br/></td></tr>
-<tr class="separator:a6845173dd79a80ae11c86cde26e55817"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78007aa675ab263a24d86774e8b98c28"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a78007aa675ab263a24d86774e8b98c28">Base1DQuadrature</a> (double <a class="el" href="a00031.html#a938187458b0069e7b3779bc3739a1cc0">minDomainValue</a>, double <a class="el" href="a00031.html#af3d09abe6716a23f9061b8b657524547">maxDomainValue</a>, unsigned int <a class="el" href="a00031.html#a07713b5e8df24bbc8e3e9d13b707e5d0">order</a>)</td></tr>
+<tr class="memdesc:a78007aa675ab263a24d86774e8b98c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a78007aa675ab263a24d86774e8b98c28">More...</a><br/></td></tr>
+<tr class="separator:a78007aa675ab263a24d86774e8b98c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb90cfc1106240a7a48579e0594c7e17"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#acb90cfc1106240a7a48579e0594c7e17">~Base1DQuadrature</a> ()</td></tr>
+<tr class="memdesc:acb90cfc1106240a7a48579e0594c7e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#acb90cfc1106240a7a48579e0594c7e17">More...</a><br/></td></tr>
+<tr class="separator:acb90cfc1106240a7a48579e0594c7e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Mathematical methods</div></td></tr>
+<tr class="memitem:a938187458b0069e7b3779bc3739a1cc0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a938187458b0069e7b3779bc3739a1cc0">minDomainValue</a> () const </td></tr>
+<tr class="memdesc:a938187458b0069e7b3779bc3739a1cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the minimum value of the domain of the (one-dimensional) function.  <a href="#a938187458b0069e7b3779bc3739a1cc0">More...</a><br/></td></tr>
+<tr class="separator:a938187458b0069e7b3779bc3739a1cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3d09abe6716a23f9061b8b657524547"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#af3d09abe6716a23f9061b8b657524547">maxDomainValue</a> () const </td></tr>
+<tr class="memdesc:af3d09abe6716a23f9061b8b657524547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum value of the domain of the (one-dimensional) function.  <a href="#af3d09abe6716a23f9061b8b657524547">More...</a><br/></td></tr>
+<tr class="separator:af3d09abe6716a23f9061b8b657524547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07713b5e8df24bbc8e3e9d13b707e5d0"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a07713b5e8df24bbc8e3e9d13b707e5d0">order</a> () const </td></tr>
+<tr class="memdesc:a07713b5e8df24bbc8e3e9d13b707e5d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the order of the quadrature rule.  <a href="#a07713b5e8df24bbc8e3e9d13b707e5d0">More...</a><br/></td></tr>
+<tr class="separator:a07713b5e8df24bbc8e3e9d13b707e5d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f5d9b6e20b5105e2c17b7da1b71c259"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a9f5d9b6e20b5105e2c17b7da1b71c259">positions</a> () const </td></tr>
+<tr class="memdesc:a9f5d9b6e20b5105e2c17b7da1b71c259"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of the positions for the numerical integration.  <a href="#a9f5d9b6e20b5105e2c17b7da1b71c259">More...</a><br/></td></tr>
+<tr class="separator:a9f5d9b6e20b5105e2c17b7da1b71c259"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5780ce2b5ef26ce0f5183e8e32358cee"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a5780ce2b5ef26ce0f5183e8e32358cee">weights</a> () const </td></tr>
+<tr class="memdesc:a5780ce2b5ef26ce0f5183e8e32358cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of the weights used in the numerical integration.  <a href="#a5780ce2b5ef26ce0f5183e8e32358cee">More...</a><br/></td></tr>
+<tr class="separator:a5780ce2b5ef26ce0f5183e8e32358cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37bdd63ba8b986e02d47b05fc8795332"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a37bdd63ba8b986e02d47b05fc8795332">dumbRoutine</a> () const =0</td></tr>
+<tr class="memdesc:a37bdd63ba8b986e02d47b05fc8795332"><td class="mdescLeft">&#160;</td><td class="mdescRight">A bogus method.  <a href="#a37bdd63ba8b986e02d47b05fc8795332">More...</a><br/></td></tr>
+<tr class="separator:a37bdd63ba8b986e02d47b05fc8795332"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:acde246c52f82d8ed687d91cfac14c29c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00018.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a></td></tr>
-<tr class="separator:acde246c52f82d8ed687d91cfac14c29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5559b6921816ccaed7afc2d342c2a32"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></td></tr>
-<tr class="separator:ac5559b6921816ccaed7afc2d342c2a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c705235d28a3c12641da57cde948872"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a6c705235d28a3c12641da57cde948872">m_unifiedImageSet</a></td></tr>
-<tr class="separator:a6c705235d28a3c12641da57cde948872"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeddb6129f2810fef48b4e00daa5cea7b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#aeddb6129f2810fef48b4e00daa5cea7b">m_subPeriod</a></td></tr>
-<tr class="separator:aeddb6129f2810fef48b4e00daa5cea7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7165680498394fa2d23ac919a920fc01"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a7165680498394fa2d23ac919a920fc01">m_minDomainValue</a></td></tr>
+<tr class="separator:a7165680498394fa2d23ac919a920fc01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace30af8dd67b04f11ea37ebe509f256e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#ace30af8dd67b04f11ea37ebe509f256e">m_maxDomainValue</a></td></tr>
+<tr class="separator:ace30af8dd67b04f11ea37ebe509f256e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78ba0750b7220b302e4cd1415c7d4c48"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a78ba0750b7220b302e4cd1415c7d4c48">m_order</a></td></tr>
+<tr class="separator:a78ba0750b7220b302e4cd1415c7d4c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeda387c028c3ba89ea0f9637a2234212"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#aeda387c028c3ba89ea0f9637a2234212">m_positions</a></td></tr>
+<tr class="separator:aeda387c028c3ba89ea0f9637a2234212"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7117fec020a8098d1c22b604268bad93"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a7117fec020a8098d1c22b604268bad93">m_weights</a></td></tr>
+<tr class="separator:a7117fec020a8098d1c22b604268bad93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class V, class M&gt;<br/>
-class QUESO::BaseVectorRealizer&lt; V, M &gt;</h3>
+<div class="textblock"><p>Base class for one-dimensional quadrature rules (numerical integration of functions). </p>
+<p>Base class for numerical integration via quadrature rules of one-dimensional functions. </p>
 
-<p>A templated (base) class for handling sampling from vector RVs. </p>
-<p>A realizer is an object that, simply put, contains a <a class="el" href="a00031.html#a6845173dd79a80ae11c86cde26e55817" title="Performs a realization (sample) from a probability density function. See template specialization...">realization()</a> operation that returns a sample of a vector RV. This is the base class. <a class="el" href="a00500.html">QUESO</a> also support uniform, Gaussian, Beta, Gamma, Inverse Gamma and LogNormal realizers, as described and implemented in the derived classes. </p>
-
-<p>Definition at line <a class="el" href="a00410_source.html#l00053">53</a> of file <a class="el" href="a00410_source.html">VectorRealizer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00431_source.html#l00047">47</a> of file <a class="el" href="a00431_source.html">1DQuadrature.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ad77258f8737d87b5d0cd58b398939c70"></a>
+<a class="anchor" id="a78007aa675ab263a24d86774e8b98c28"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V, class M&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00031.html">QUESO::BaseVectorRealizer</a>&lt; V, M &gt;::<a class="el" href="a00031.html">BaseVectorRealizer</a> </td>
+          <td class="memname">QUESO::Base1DQuadrature::Base1DQuadrature </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>prefix</em>, </td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>minDomainValue</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>unifiedImageSet</em>, </td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>maxDomainValue</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>subPeriod</em>&#160;</td>
+          <td class="paramname"><em>order</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -149,51 +148,44 @@ template&lt;class V, class M&gt; </div>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Constructs a new object, given a prefix and the image set of the vector realizer. </p>
 
-<p>Definition at line <a class="el" href="a00495_source.html#l00033">33</a> of file <a class="el" href="a00495_source.html">VectorRealizer.C</a>.</p>
+<p>Definition at line <a class="el" href="a00444_source.html#l00032">32</a> of file <a class="el" href="a00444_source.html">1DQuadrature.C</a>.</p>
 
-<p>References <a class="el" href="a00274_source.html#l00436">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00410_source.html#l00081">QUESO::BaseVectorRealizer&lt; V, M &gt;::m_env</a>, <a class="el" href="a00410_source.html#l00082">QUESO::BaseVectorRealizer&lt; V, M &gt;::m_prefix</a>, and <a class="el" href="a00274_source.html#l00305">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>            (<a class="code" href="a00031.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>.env()),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00031.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a>         ((std::string)(prefix)+<span class="stringliteral">&quot;re_&quot;</span>),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00031.html#a6c705235d28a3c12641da57cde948872">m_unifiedImageSet</a>(<a class="code" href="a00031.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00031.html#aeddb6129f2810fef48b4e00daa5cea7b">m_subPeriod</a>      (<a class="code" href="a00031.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a>)</div>
+<p>References <a class="el" href="a00431_source.html#l00083">m_maxDomainValue</a>, <a class="el" href="a00431_source.html#l00082">m_minDomainValue</a>, and <a class="el" href="a00319_source.html#l00087">queso_require_less_msg</a>.</p>
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00031.html#a7165680498394fa2d23ac919a920fc01">m_minDomainValue</a>(<a class="code" href="a00031.html#a938187458b0069e7b3779bc3739a1cc0">minDomainValue</a>),</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00031.html#ace30af8dd67b04f11ea37ebe509f256e">m_maxDomainValue</a>(<a class="code" href="a00031.html#af3d09abe6716a23f9061b8b657524547">maxDomainValue</a>),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00031.html#a78ba0750b7220b302e4cd1415c7d4c48">m_order</a>         (<a class="code" href="a00031.html#a07713b5e8df24bbc8e3e9d13b707e5d0">order</a>),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00031.html#aeda387c028c3ba89ea0f9637a2234212">m_positions</a>     (0),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00031.html#a7117fec020a8098d1c22b604268bad93">m_weights</a>       (0)</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering BaseVectorRealizer&lt;V,M&gt;::constructor() [4]&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00031.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    *<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving BaseVectorRealizer&lt;V,M&gt;::constructor() [4]&quot;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00031.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
-<div class="ttc" id="a00031_html_aeddb6129f2810fef48b4e00daa5cea7b"><div class="ttname"><a href="a00031.html#aeddb6129f2810fef48b4e00daa5cea7b">QUESO::BaseVectorRealizer::m_subPeriod</a></div><div class="ttdeci">unsigned int m_subPeriod</div><div class="ttdef"><b>Definition:</b> <a href="a00410_source.html#l00084">VectorRealizer.h:84</a></div></div>
-<div class="ttc" id="a00031_html_ad958991bab8d6369e8a0d66b22a237d4"><div class="ttname"><a href="a00031.html#ad958991bab8d6369e8a0d66b22a237d4">QUESO::BaseVectorRealizer::unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; unifiedImageSet() const </div><div class="ttdoc">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00495_source.html#l00070">VectorRealizer.C:70</a></div></div>
-<div class="ttc" id="a00031_html_a6c705235d28a3c12641da57cde948872"><div class="ttname"><a href="a00031.html#a6c705235d28a3c12641da57cde948872">QUESO::BaseVectorRealizer::m_unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_unifiedImageSet</div><div class="ttdef"><b>Definition:</b> <a href="a00410_source.html#l00083">VectorRealizer.h:83</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00031_html_acde246c52f82d8ed687d91cfac14c29c"><div class="ttname"><a href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">QUESO::BaseVectorRealizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00410_source.html#l00081">VectorRealizer.h:81</a></div></div>
-<div class="ttc" id="a00031_html_ac5559b6921816ccaed7afc2d342c2a32"><div class="ttname"><a href="a00031.html#ac5559b6921816ccaed7afc2d342c2a32">QUESO::BaseVectorRealizer::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00410_source.html#l00082">VectorRealizer.h:82</a></div></div>
-<div class="ttc" id="a00031_html_ad9fda59efacf5bd84c472c96dfa00613"><div class="ttname"><a href="a00031.html#ad9fda59efacf5bd84c472c96dfa00613">QUESO::BaseVectorRealizer::subPeriod</a></div><div class="ttdeci">unsigned int subPeriod() const </div><div class="ttdoc">Sub-period of the realization. Access to protected attribute m_subPeriod. </div><div class="ttdef"><b>Definition:</b> <a href="a00495_source.html#l00063">VectorRealizer.C:63</a></div></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00319.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(<a class="code" href="a00031.html#a7165680498394fa2d23ac919a920fc01">m_minDomainValue</a>, <a class="code" href="a00031.html#ace30af8dd67b04f11ea37ebe509f256e">m_maxDomainValue</a>, <span class="stringliteral">&quot;min &gt;= max&quot;</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="comment">//                    UQ_UNAVAILABLE_RANK,</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="comment">//                    &quot;Base1DQuadrature::constructor()&quot;,</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">//                    &quot;order = 0&quot;);</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="ttc" id="a00031_html_a938187458b0069e7b3779bc3739a1cc0"><div class="ttname"><a href="a00031.html#a938187458b0069e7b3779bc3739a1cc0">QUESO::Base1DQuadrature::minDomainValue</a></div><div class="ttdeci">double minDomainValue() const </div><div class="ttdoc">Returns the minimum value of the domain of the (one-dimensional) function. </div><div class="ttdef"><b>Definition:</b> <a href="a00444_source.html#l00055">1DQuadrature.C:55</a></div></div>
+<div class="ttc" id="a00031_html_aeda387c028c3ba89ea0f9637a2234212"><div class="ttname"><a href="a00031.html#aeda387c028c3ba89ea0f9637a2234212">QUESO::Base1DQuadrature::m_positions</a></div><div class="ttdeci">std::vector&lt; double &gt; m_positions</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00085">1DQuadrature.h:85</a></div></div>
+<div class="ttc" id="a00031_html_a07713b5e8df24bbc8e3e9d13b707e5d0"><div class="ttname"><a href="a00031.html#a07713b5e8df24bbc8e3e9d13b707e5d0">QUESO::Base1DQuadrature::order</a></div><div class="ttdeci">unsigned int order() const </div><div class="ttdoc">Returns the order of the quadrature rule. </div><div class="ttdef"><b>Definition:</b> <a href="a00444_source.html#l00067">1DQuadrature.C:67</a></div></div>
+<div class="ttc" id="a00319_html_a9fbd2830796070462f06425899f3d6d5"><div class="ttname"><a href="a00319.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a></div><div class="ttdeci">#define queso_require_less_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00087">asserts.h:87</a></div></div>
+<div class="ttc" id="a00031_html_a78ba0750b7220b302e4cd1415c7d4c48"><div class="ttname"><a href="a00031.html#a78ba0750b7220b302e4cd1415c7d4c48">QUESO::Base1DQuadrature::m_order</a></div><div class="ttdeci">unsigned int m_order</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00084">1DQuadrature.h:84</a></div></div>
+<div class="ttc" id="a00031_html_ace30af8dd67b04f11ea37ebe509f256e"><div class="ttname"><a href="a00031.html#ace30af8dd67b04f11ea37ebe509f256e">QUESO::Base1DQuadrature::m_maxDomainValue</a></div><div class="ttdeci">double m_maxDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00083">1DQuadrature.h:83</a></div></div>
+<div class="ttc" id="a00031_html_af3d09abe6716a23f9061b8b657524547"><div class="ttname"><a href="a00031.html#af3d09abe6716a23f9061b8b657524547">QUESO::Base1DQuadrature::maxDomainValue</a></div><div class="ttdeci">double maxDomainValue() const </div><div class="ttdoc">Returns the maximum value of the domain of the (one-dimensional) function. </div><div class="ttdef"><b>Definition:</b> <a href="a00444_source.html#l00061">1DQuadrature.C:61</a></div></div>
+<div class="ttc" id="a00031_html_a7117fec020a8098d1c22b604268bad93"><div class="ttname"><a href="a00031.html#a7117fec020a8098d1c22b604268bad93">QUESO::Base1DQuadrature::m_weights</a></div><div class="ttdeci">std::vector&lt; double &gt; m_weights</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00086">1DQuadrature.h:86</a></div></div>
+<div class="ttc" id="a00031_html_a7165680498394fa2d23ac919a920fc01"><div class="ttname"><a href="a00031.html#a7165680498394fa2d23ac919a920fc01">QUESO::Base1DQuadrature::m_minDomainValue</a></div><div class="ttdeci">double m_minDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00082">1DQuadrature.h:82</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="abc2eda9b3cea09c559c19e349c537b91"></a>
+<a class="anchor" id="acb90cfc1106240a7a48579e0594c7e17"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00031.html">QUESO::BaseVectorRealizer</a>&lt; V, M &gt;::~<a class="el" href="a00031.html">BaseVectorRealizer</a> </td>
+          <td class="memname">QUESO::Base1DQuadrature::~Base1DQuadrature </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -208,27 +200,24 @@ template&lt;class V , class M &gt; </div>
 
 <p>Virtual destructor. </p>
 
-<p>Definition at line <a class="el" href="a00495_source.html#l00057">57</a> of file <a class="el" href="a00495_source.html">VectorRealizer.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00444_source.html#l00050">50</a> of file <a class="el" href="a00444_source.html">1DQuadrature.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a6845173dd79a80ae11c86cde26e55817"></a>
+<a class="anchor" id="a37bdd63ba8b986e02d47b05fc8795332"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V, class M&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="a00031.html">QUESO::BaseVectorRealizer</a>&lt; V, M &gt;::realization </td>
+          <td class="memname">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::Base1DQuadrature::dumbRoutine </td>
           <td>(</td>
-          <td class="paramtype">V &amp;&#160;</td>
-          <td class="paramname"><em>nextValues</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -239,22 +228,18 @@ template&lt;class V, class M&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Performs a realization (sample) from a probability density function. See template specialization. </p>
+<p>A bogus method. </p>
 
-<p>Implemented in <a class="el" href="a00106.html#a80332b86bb5d988591dcfc634bdf6abb">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00079.html#ad001b06fe7dab455507df0eb19494518">QUESO::GaussianVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00116.html#a27d5cb6728ed1c78ba2ce6f1d1e5144a">QUESO::LogNormalVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00043.html#afa41c8065e84a5bbfd74a67436ecd889">QUESO::ConcatenatedVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00039.html#a75659aac16145ad3e770e852500ee7f2">QUESO::BetaVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00067.html#ac2c9be536e210dd61614f96372df8c62">QUESO::GammaVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00090.html#aeb79c966ab4e20b22f75acc6b7068925">QUESO::GenericVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00182.html#a0d72232eb5843e78fc3d02a510ceb966">QUESO::WignerVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00103.html#a115670530398d012040f7183290251d3">QUESO::InverseGammaVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00154.html#a67050d12ad38147f9f0743a0e53011b2">QUESO::SequentialVectorRealizer&lt; V, M &gt;</a>, <a class="el" href="a00170.html#a59c9c5c848823a4c6b0992adc4f772e2">QUESO::UniformVectorRealizer&lt; V, M &gt;</a>, and <a class="el" href="a00109.html#a505bdd78f3ef70a7227f57aa6ef6df04">QUESO::JeffreysVectorRealizer&lt; V, M &gt;</a>.</p>
-
-<p>Referenced by <a class="el" href="a00470_source.html#l00338">QUESO::MonteCarloSG&lt; P_V, P_M, Q_V, Q_M &gt;::actualGenerateSequence()</a>, <a class="el" href="a00470_source.html#l00480">QUESO::MonteCarloSG&lt; P_V, P_M, Q_V, Q_M &gt;::actualReadSequence()</a>, and <a class="el" href="a00496_source.html#l00213">QUESO::ComputeCovCorrMatricesBetweenVectorRvs()</a>.</p>
+<p>Implemented in <a class="el" href="a00230.html#a1be91acea2adbbaf5f61a408d66737fb">QUESO::WignerChebyshev2nd1DQuadrature</a>, <a class="el" href="a00231.html#aacf526849bf3bcec245d12f14d24352d">QUESO::WignerInverseChebyshev1st1DQuadrature</a>, <a class="el" href="a00089.html#ae622aec1b3ed4d5b1630825819322090">QUESO::GaussianHermite1DQuadrature</a>, <a class="el" href="a00219.html#a4d63fb6517b84b37e47da5cea15bc2b1">QUESO::UniformLegendre1DQuadrature</a>, and <a class="el" href="a00111.html#a365701bda9fba17fdf5498436722cdde">QUESO::Generic1DQuadrature</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad9fda59efacf5bd84c472c96dfa00613"></a>
+<a class="anchor" id="af3d09abe6716a23f9061b8b657524547"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="a00031.html">QUESO::BaseVectorRealizer</a>&lt; V, M &gt;::subPeriod </td>
+          <td class="memname">double QUESO::Base1DQuadrature::maxDomainValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -262,26 +247,24 @@ template&lt;class V , class M &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Sub-period of the realization. Access to protected attribute m_subPeriod. </p>
+<p>Returns the maximum value of the domain of the (one-dimensional) function. </p>
 
-<p>Definition at line <a class="el" href="a00495_source.html#l00063">63</a> of file <a class="el" href="a00495_source.html">VectorRealizer.C</a>.</p>
+<p>Definition at line <a class="el" href="a00444_source.html#l00061">61</a> of file <a class="el" href="a00444_source.html">1DQuadrature.C</a>.</p>
 
-<p>Referenced by <a class="el" href="a00470_source.html#l00121">QUESO::MonteCarloSG&lt; P_V, P_M, Q_V, Q_M &gt;::internGenerateSequence()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00031.html#aeddb6129f2810fef48b4e00daa5cea7b">m_subPeriod</a>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
-<div class="ttc" id="a00031_html_aeddb6129f2810fef48b4e00daa5cea7b"><div class="ttname"><a href="a00031.html#aeddb6129f2810fef48b4e00daa5cea7b">QUESO::BaseVectorRealizer::m_subPeriod</a></div><div class="ttdeci">unsigned int m_subPeriod</div><div class="ttdef"><b>Definition:</b> <a href="a00410_source.html#l00084">VectorRealizer.h:84</a></div></div>
+<p>References <a class="el" href="a00431_source.html#l00083">m_maxDomainValue</a>.</p>
+<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00031.html#ace30af8dd67b04f11ea37ebe509f256e">m_maxDomainValue</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="ttc" id="a00031_html_ace30af8dd67b04f11ea37ebe509f256e"><div class="ttname"><a href="a00031.html#ace30af8dd67b04f11ea37ebe509f256e">QUESO::Base1DQuadrature::m_maxDomainValue</a></div><div class="ttdeci">double m_maxDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00083">1DQuadrature.h:83</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ad958991bab8d6369e8a0d66b22a237d4"></a>
+<a class="anchor" id="a938187458b0069e7b3779bc3739a1cc0"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp; <a class="el" href="a00031.html">QUESO::BaseVectorRealizer</a>&lt; V, M &gt;::unifiedImageSet </td>
+          <td class="memname">double QUESO::Base1DQuadrature::minDomainValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -289,28 +272,111 @@ template&lt;class V , class M &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Image set where the realizations lie. Access to protected attribute m_unifiedImageSet. </p>
+<p>Returns the minimum value of the domain of the (one-dimensional) function. </p>
 
-<p>Definition at line <a class="el" href="a00495_source.html#l00070">70</a> of file <a class="el" href="a00495_source.html">VectorRealizer.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;{</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00031.html#a6c705235d28a3c12641da57cde948872">m_unifiedImageSet</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
-<div class="ttc" id="a00031_html_a6c705235d28a3c12641da57cde948872"><div class="ttname"><a href="a00031.html#a6c705235d28a3c12641da57cde948872">QUESO::BaseVectorRealizer::m_unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_unifiedImageSet</div><div class="ttdef"><b>Definition:</b> <a href="a00410_source.html#l00083">VectorRealizer.h:83</a></div></div>
+<p>Definition at line <a class="el" href="a00444_source.html#l00055">55</a> of file <a class="el" href="a00444_source.html">1DQuadrature.C</a>.</p>
+
+<p>References <a class="el" href="a00431_source.html#l00082">m_minDomainValue</a>.</p>
+<div class="fragment"><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00031.html#a7165680498394fa2d23ac919a920fc01">m_minDomainValue</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="ttc" id="a00031_html_a7165680498394fa2d23ac919a920fc01"><div class="ttname"><a href="a00031.html#a7165680498394fa2d23ac919a920fc01">QUESO::Base1DQuadrature::m_minDomainValue</a></div><div class="ttdeci">double m_minDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00082">1DQuadrature.h:82</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a07713b5e8df24bbc8e3e9d13b707e5d0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int QUESO::Base1DQuadrature::order </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the order of the quadrature rule. </p>
+
+<p>Definition at line <a class="el" href="a00444_source.html#l00067">67</a> of file <a class="el" href="a00444_source.html">1DQuadrature.C</a>.</p>
+
+<p>References <a class="el" href="a00431_source.html#l00084">m_order</a>.</p>
+<div class="fragment"><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;{</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00031.html#a78ba0750b7220b302e4cd1415c7d4c48">m_order</a>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="ttc" id="a00031_html_a78ba0750b7220b302e4cd1415c7d4c48"><div class="ttname"><a href="a00031.html#a78ba0750b7220b302e4cd1415c7d4c48">QUESO::Base1DQuadrature::m_order</a></div><div class="ttdeci">unsigned int m_order</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00084">1DQuadrature.h:84</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9f5d9b6e20b5105e2c17b7da1b71c259"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; double &gt; &amp; QUESO::Base1DQuadrature::positions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Array of the positions for the numerical integration. </p>
+
+<p>Definition at line <a class="el" href="a00444_source.html#l00073">73</a> of file <a class="el" href="a00444_source.html">1DQuadrature.C</a>.</p>
+
+<p>References <a class="el" href="a00431_source.html#l00085">m_positions</a>, and <a class="el" href="a00319_source.html#l00086">queso_require_not_equal_to_msg</a>.</p>
+
+<p>Referenced by <a class="el" href="a00444_source.html#l00089">QUESO::Generic1DQuadrature::Generic1DQuadrature()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <a class="code" href="a00319.html#ae5d1ae7a9426ab91c69d53b051eb0cb3">queso_require_not_equal_to_msg</a>(<a class="code" href="a00031.html#aeda387c028c3ba89ea0f9637a2234212">m_positions</a>.size(), 0, <span class="stringliteral">&quot;size = 0&quot;</span>);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00031.html#aeda387c028c3ba89ea0f9637a2234212">m_positions</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="ttc" id="a00031_html_aeda387c028c3ba89ea0f9637a2234212"><div class="ttname"><a href="a00031.html#aeda387c028c3ba89ea0f9637a2234212">QUESO::Base1DQuadrature::m_positions</a></div><div class="ttdeci">std::vector&lt; double &gt; m_positions</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00085">1DQuadrature.h:85</a></div></div>
+<div class="ttc" id="a00319_html_ae5d1ae7a9426ab91c69d53b051eb0cb3"><div class="ttname"><a href="a00319.html#ae5d1ae7a9426ab91c69d53b051eb0cb3">queso_require_not_equal_to_msg</a></div><div class="ttdeci">#define queso_require_not_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00086">asserts.h:86</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a5780ce2b5ef26ce0f5183e8e32358cee"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; double &gt; &amp; QUESO::Base1DQuadrature::weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Array of the weights used in the numerical integration. </p>
+
+<p>Definition at line <a class="el" href="a00444_source.html#l00080">80</a> of file <a class="el" href="a00444_source.html">1DQuadrature.C</a>.</p>
+
+<p>References <a class="el" href="a00431_source.html#l00086">m_weights</a>, and <a class="el" href="a00319_source.html#l00086">queso_require_not_equal_to_msg</a>.</p>
+
+<p>Referenced by <a class="el" href="a00444_source.html#l00089">QUESO::Generic1DQuadrature::Generic1DQuadrature()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="code" href="a00319.html#ae5d1ae7a9426ab91c69d53b051eb0cb3">queso_require_not_equal_to_msg</a>(<a class="code" href="a00031.html#a7117fec020a8098d1c22b604268bad93">m_weights</a>.size(), 0, <span class="stringliteral">&quot;size = 0&quot;</span>);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00031.html#a7117fec020a8098d1c22b604268bad93">m_weights</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
+<div class="ttc" id="a00319_html_ae5d1ae7a9426ab91c69d53b051eb0cb3"><div class="ttname"><a href="a00319.html#ae5d1ae7a9426ab91c69d53b051eb0cb3">queso_require_not_equal_to_msg</a></div><div class="ttdeci">#define queso_require_not_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00086">asserts.h:86</a></div></div>
+<div class="ttc" id="a00031_html_a7117fec020a8098d1c22b604268bad93"><div class="ttname"><a href="a00031.html#a7117fec020a8098d1c22b604268bad93">QUESO::Base1DQuadrature::m_weights</a></div><div class="ttdeci">std::vector&lt; double &gt; m_weights</div><div class="ttdef"><b>Definition:</b> <a href="a00431_source.html#l00086">1DQuadrature.h:86</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="acde246c52f82d8ed687d91cfac14c29c"></a>
+<a class="anchor" id="ace30af8dd67b04f11ea37ebe509f256e"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V, class M&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00018.html">BaseEnvironment</a>&amp; <a class="el" href="a00031.html">QUESO::BaseVectorRealizer</a>&lt; V, M &gt;::m_env</td>
+          <td class="memname">double QUESO::Base1DQuadrature::m_maxDomainValue</td>
         </tr>
       </table>
   </td>
@@ -320,23 +386,21 @@ template&lt;class V, class M&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00081">81</a> of file <a class="el" href="a00410_source.html">VectorRealizer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00431_source.html#l00083">83</a> of file <a class="el" href="a00431_source.html">1DQuadrature.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00495_source.html#l00033">QUESO::BaseVectorRealizer&lt; V, M &gt;::BaseVectorRealizer()</a>, <a class="el" href="a00417_source.html#l00033">QUESO::BetaVectorRealizer&lt; V, M &gt;::BetaVectorRealizer()</a>, <a class="el" href="a00420_source.html#l00033">QUESO::ConcatenatedVectorRealizer&lt; V, M &gt;::ConcatenatedVectorRealizer()</a>, <a class="el" href="a00426_source.html#l00033">QUESO::GammaVectorRealizer&lt; V, M &gt;::GammaVectorRealizer()</a>, <a class="el" href="a00438_source.html#l00033">QUESO::GaussianVectorRealizer&lt; V, M &gt;::GaussianVectorRealizer()</a>, <a class="el" href="a00445_source.html#l00033">QUESO::GenericVectorRealizer&lt; V, M &gt;::GenericVectorRealizer()</a>, <a class="el" href="a00450_source.html#l00033">QUESO::InverseGammaVectorRealizer&lt; V, M &gt;::InverseGammaVectorRealizer()</a>, <a class="el" href="a00456_source.html#l00033">QUESO::JeffreysVectorRealizer&lt; V, M &gt;::JeffreysVectorRealizer()</a>, <a class="el" href="a00460_source.html#l00033">QUESO::LogNormalVectorRealizer&lt; V, M &gt;::LogNormalVectorRealizer()</a>, <a class="el" href="a00480_source.html#l00033">QUESO::SequentialVectorRealizer&lt; V, M &gt;::SequentialVectorRealizer()</a>, <a class="el" href="a00489_source.html#l00033">QUESO::UniformVectorRealizer&lt; V, M &gt;::UniformVectorRealizer()</a>, and <a class="el" href="a00498_source.html#l00033">QUESO::WignerVectorRealizer&lt; V, M &gt;::WignerVectorRealizer()</a>.</p>
+<p>Referenced by <a class="el" href="a00444_source.html#l00032">Base1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00061">maxDomainValue()</a>, <a class="el" href="a00444_source.html#l00118">QUESO::UniformLegendre1DQuadrature::UniformLegendre1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00694">QUESO::WignerChebyshev2nd1DQuadrature::WignerChebyshev2nd1DQuadrature()</a>, and <a class="el" href="a00444_source.html#l00657">QUESO::WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac5559b6921816ccaed7afc2d342c2a32"></a>
+<a class="anchor" id="a7165680498394fa2d23ac919a920fc01"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V, class M&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="a00031.html">QUESO::BaseVectorRealizer</a>&lt; V, M &gt;::m_prefix</td>
+          <td class="memname">double QUESO::Base1DQuadrature::m_minDomainValue</td>
         </tr>
       </table>
   </td>
@@ -346,23 +410,21 @@ template&lt;class V, class M&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00082">82</a> of file <a class="el" href="a00410_source.html">VectorRealizer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00431_source.html#l00082">82</a> of file <a class="el" href="a00431_source.html">1DQuadrature.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00495_source.html#l00033">QUESO::BaseVectorRealizer&lt; V, M &gt;::BaseVectorRealizer()</a>, <a class="el" href="a00417_source.html#l00033">QUESO::BetaVectorRealizer&lt; V, M &gt;::BetaVectorRealizer()</a>, <a class="el" href="a00420_source.html#l00033">QUESO::ConcatenatedVectorRealizer&lt; V, M &gt;::ConcatenatedVectorRealizer()</a>, <a class="el" href="a00426_source.html#l00033">QUESO::GammaVectorRealizer&lt; V, M &gt;::GammaVectorRealizer()</a>, <a class="el" href="a00438_source.html#l00033">QUESO::GaussianVectorRealizer&lt; V, M &gt;::GaussianVectorRealizer()</a>, <a class="el" href="a00445_source.html#l00033">QUESO::GenericVectorRealizer&lt; V, M &gt;::GenericVectorRealizer()</a>, <a class="el" href="a00450_source.html#l00033">QUESO::InverseGammaVectorRealizer&lt; V, M &gt;::InverseGammaVectorRealizer()</a>, <a class="el" href="a00456_source.html#l00033">QUESO::JeffreysVectorRealizer&lt; V, M &gt;::JeffreysVectorRealizer()</a>, <a class="el" href="a00460_source.html#l00033">QUESO::LogNormalVectorRealizer&lt; V, M &gt;::LogNormalVectorRealizer()</a>, <a class="el" href="a00489_source.html#l00033">QUESO::UniformVectorRealizer&lt; V, M &gt;::UniformVectorRealizer()</a>, and <a class="el" href="a00498_source.html#l00033">QUESO::WignerVectorRealizer&lt; V, M &gt;::WignerVectorRealizer()</a>.</p>
+<p>Referenced by <a class="el" href="a00444_source.html#l00032">Base1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00055">minDomainValue()</a>, <a class="el" href="a00444_source.html#l00118">QUESO::UniformLegendre1DQuadrature::UniformLegendre1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00694">QUESO::WignerChebyshev2nd1DQuadrature::WignerChebyshev2nd1DQuadrature()</a>, and <a class="el" href="a00444_source.html#l00657">QUESO::WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aeddb6129f2810fef48b4e00daa5cea7b"></a>
+<a class="anchor" id="a78ba0750b7220b302e4cd1415c7d4c48"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V, class M&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="a00031.html">QUESO::BaseVectorRealizer</a>&lt; V, M &gt;::m_subPeriod</td>
+          <td class="memname">unsigned int QUESO::Base1DQuadrature::m_order</td>
         </tr>
       </table>
   </td>
@@ -372,21 +434,21 @@ template&lt;class V, class M&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00084">84</a> of file <a class="el" href="a00410_source.html">VectorRealizer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00431_source.html#l00084">84</a> of file <a class="el" href="a00431_source.html">1DQuadrature.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00444_source.html#l00428">QUESO::GaussianHermite1DQuadrature::GaussianHermite1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00067">order()</a>, <a class="el" href="a00444_source.html#l00118">QUESO::UniformLegendre1DQuadrature::UniformLegendre1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00694">QUESO::WignerChebyshev2nd1DQuadrature::WignerChebyshev2nd1DQuadrature()</a>, and <a class="el" href="a00444_source.html#l00657">QUESO::WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6c705235d28a3c12641da57cde948872"></a>
+<a class="anchor" id="aeda387c028c3ba89ea0f9637a2234212"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V, class M&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00176.html">VectorSet</a>&lt;V,M&gt;&amp; <a class="el" href="a00031.html">QUESO::BaseVectorRealizer</a>&lt; V, M &gt;::m_unifiedImageSet</td>
+          <td class="memname">std::vector&lt;double&gt; QUESO::Base1DQuadrature::m_positions</td>
         </tr>
       </table>
   </td>
@@ -396,17 +458,43 @@ template&lt;class V, class M&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00083">83</a> of file <a class="el" href="a00410_source.html">VectorRealizer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00431_source.html#l00085">85</a> of file <a class="el" href="a00431_source.html">1DQuadrature.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00444_source.html#l00428">QUESO::GaussianHermite1DQuadrature::GaussianHermite1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00089">QUESO::Generic1DQuadrature::Generic1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00073">positions()</a>, <a class="el" href="a00444_source.html#l00118">QUESO::UniformLegendre1DQuadrature::UniformLegendre1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00694">QUESO::WignerChebyshev2nd1DQuadrature::WignerChebyshev2nd1DQuadrature()</a>, and <a class="el" href="a00444_source.html#l00657">QUESO::WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7117fec020a8098d1c22b604268bad93"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; QUESO::Base1DQuadrature::m_weights</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00431_source.html#l00086">86</a> of file <a class="el" href="a00431_source.html">1DQuadrature.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00444_source.html#l00428">QUESO::GaussianHermite1DQuadrature::GaussianHermite1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00089">QUESO::Generic1DQuadrature::Generic1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00118">QUESO::UniformLegendre1DQuadrature::UniformLegendre1DQuadrature()</a>, <a class="el" href="a00444_source.html#l00080">weights()</a>, <a class="el" href="a00444_source.html#l00694">QUESO::WignerChebyshev2nd1DQuadrature::WignerChebyshev2nd1DQuadrature()</a>, and <a class="el" href="a00444_source.html#l00657">QUESO::WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/stats/inc/<a class="el" href="a00410_source.html">VectorRealizer.h</a></li>
-<li>src/stats/src/<a class="el" href="a00495_source.html">VectorRealizer.C</a></li>
+<li>src/misc/inc/<a class="el" href="a00431_source.html">1DQuadrature.h</a></li>
+<li>src/misc/src/<a class="el" href="a00444_source.html">1DQuadrature.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:58 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:35 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

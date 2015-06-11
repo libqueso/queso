@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/misc/inc/AsciiTable.h File Reference</title>
+<title>queso-0.53.0: src/contrib/ANN/src/kd_tree.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,52 +43,279 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_88826aa2a10e1882b573f502bc7f4b55.html">misc</a></li><li class="navelem"><a class="el" href="dir_c2e907ccdf1bb9500d3a3d017a89ba74.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_bd26773dc971f4fa3aa1d8bd68fbf230.html">contrib</a></li><li class="navelem"><a class="el" href="dir_9b88879957fe8db0821d93727895fef3.html">ANN</a></li><li class="navelem"><a class="el" href="dir_162f6fcbd574a601bad28c5358416498.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">AsciiTable.h File Reference</div>  </div>
+<div class="title">kd_tree.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Class to read ASCII values from a table.  
-<a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;queso/Environment.h&gt;</code><br/>
-<code>#include &lt;queso/DistArray.h&gt;</code><br/>
-<code>#include &lt;queso/Map.h&gt;</code><br/>
-<code>#include &lt;queso/Miscellaneous.h&gt;</code><br/>
+<div class="textblock"><code>#include &quot;<a class="el" href="a00309_source.html">kd_tree.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="a00307_source.html">kd_split.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="a00311_source.html">kd_util.h</a>&quot;</code><br/>
+<code>#include &lt;<a class="el" href="a00287_source.html">ANN/ANNperf.h</a>&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for AsciiTable.h:</div>
+Include dependency graph for kd_tree.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00620.png" border="0" usemap="#src_2misc_2inc_2_ascii_table_8h" alt=""/></div>
-<map name="src_2misc_2inc_2_ascii_table_8h" id="src_2misc_2inc_2_ascii_table_8h">
-</map>
+<div class="center"><img src="a00726.png" border="0" usemap="#src_2contrib_2_a_n_n_2src_2kd__tree_8cpp" alt=""/></div>
+<map name="src_2contrib_2_a_n_n_2src_2kd__tree_8cpp" id="src_2contrib_2_a_n_n_2src_2kd__tree_8cpp">
+<area shape="rect" id="node3" href="a00309.html" title="kd_tree.h" alt="" coords="99,179,184,208"/><area shape="rect" id="node23" href="a00307.html" title="kd_split.h" alt="" coords="87,101,169,131"/><area shape="rect" id="node26" href="a00311.html" title="kd_util.h" alt="" coords="193,101,271,131"/><area shape="rect" id="node29" href="a00287.html" title="ANN/ANNperf.h" alt="" coords="233,179,356,208"/><area shape="rect" id="node5" href="a00288.html" title="ANN/ANNx.h" alt="" coords="112,256,216,285"/><area shape="rect" id="node9" href="a00286.html" title="ANN/ANN.h" alt="" coords="229,333,325,363"/></map>
 </div>
 </div>
 <p><a href="a00308_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html">QUESO::AsciiTable&lt; V, M &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for reading ASCII values from a table in a file.  <a href="a00013.html#details">More...</a><br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:afa99ec4acc4ecb2dc3c2d05da15d0e3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00308.html#afa99ec4acc4ecb2dc3c2d05da15d0e3f">MAX</a>(a, b)&#160;&#160;&#160;((a) &gt; (b) ? (a) : (b))</td></tr>
+<tr class="separator:afa99ec4acc4ecb2dc3c2d05da15d0e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:a00500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html">QUESO</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aa8c7cdb69389c07d12cdce9b9f2cb132"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00308.html#aa8c7cdb69389c07d12cdce9b9f2cb132">annClose</a> ()</td></tr>
+<tr class="separator:aa8c7cdb69389c07d12cdce9b9f2cb132"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98c8c4e8b5a0301bdc0e71e9726b3fdf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00286.html#aacc30b4a2ed20722620c89db6c9f512c">ANNkd_ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00308.html#a98c8c4e8b5a0301bdc0e71e9726b3fdf">rkd_tree</a> (<a class="el" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> pa, <a class="el" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a> pidx, int n, int <a class="el" href="a00315.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, int bsp, <a class="el" href="a00020.html">ANNorthRect</a> &amp;bnd_box, <a class="el" href="a00309.html#a0cbd4f81e97e97a48ccdf5227f04aa80">ANNkd_splitter</a> splitter)</td></tr>
+<tr class="separator:a98c8c4e8b5a0301bdc0e71e9726b3fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a61de2b08f94c67c1c047b70367edef43"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00308.html#a61de2b08f94c67c1c047b70367edef43">IDX_TRIVIAL</a> [] = {0}</td></tr>
+<tr class="separator:a61de2b08f94c67c1c047b70367edef43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefd44c312f0116089b2cfbf80ef5c5c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00013.html">ANNkd_leaf</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a> = NULL</td></tr>
+<tr class="separator:aefd44c312f0116089b2cfbf80ef5c5c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af54d0f80dc799be58b844867993ba603"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00308.html#af54d0f80dc799be58b844867993ba603">ANN_AR_TOOBIG</a> = 1000</td></tr>
+<tr class="separator:af54d0f80dc799be58b844867993ba603"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class to read ASCII values from a table. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="afa99ec4acc4ecb2dc3c2d05da15d0e3f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAX</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;((a) &gt; (b) ? (a) : (b))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
-<p>Definition in file <a class="el" href="a00308_source.html">AsciiTable.h</a>.</p>
-</div></div><!-- contents -->
+<p>Definition at line <a class="el" href="a00308_source.html#l00131">131</a> of file <a class="el" href="a00308_source.html">kd_tree.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="a00308_source.html#l00133">ANNkdStats::merge()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="aa8c7cdb69389c07d12cdce9b9f2cb132"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> annClose </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00308_source.html#l00221">221</a> of file <a class="el" href="a00308_source.html">kd_tree.cpp</a>.</p>
+
+<p>References <a class="el" href="a00308_source.html#l00050">KD_TRIVIAL</a>.</p>
+
+<p>Referenced by <a class="el" href="a00291_source.html#l00078">main()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;{</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a> != NULL) {</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                <span class="keyword">delete</span> <a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a>;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                <a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a> = NULL;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;}</div>
+<div class="ttc" id="a00308_html_aefd44c312f0116089b2cfbf80ef5c5c7"><div class="ttname"><a href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a></div><div class="ttdeci">ANNkd_leaf * KD_TRIVIAL</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00050">kd_tree.cpp:50</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a98c8c4e8b5a0301bdc0e71e9726b3fdf"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00286.html#aacc30b4a2ed20722620c89db6c9f512c">ANNkd_ptr</a> rkd_tree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>&#160;</td>
+          <td class="paramname"><em>pa</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>&#160;</td>
+          <td class="paramname"><em>pidx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>bsp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00020.html">ANNorthRect</a> &amp;&#160;</td>
+          <td class="paramname"><em>bnd_box</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00309.html#a0cbd4f81e97e97a48ccdf5227f04aa80">ANNkd_splitter</a>&#160;</td>
+          <td class="paramname"><em>splitter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00308_source.html#l00314">314</a> of file <a class="el" href="a00308_source.html">kd_tree.cpp</a>.</p>
+
+<p>References <a class="el" href="a00284_source.html#l00081">dim</a>, <a class="el" href="a00308_source.html#l00050">KD_TRIVIAL</a>, and <a class="el" href="a00308_source.html#l00314">rkd_tree()</a>.</p>
+
+<p>Referenced by <a class="el" href="a00308_source.html#l00368">ANNkd_tree::ANNkd_tree()</a>, and <a class="el" href="a00308_source.html#l00314">rkd_tree()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;{</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        <span class="keywordflow">if</span> (n &lt;= bsp) {                                         <span class="comment">// n small, make a leaf node</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                <span class="keywordflow">if</span> (n == 0)                                             <span class="comment">// empty leaf node</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                        <span class="keywordflow">return</span> <a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a>;                      <span class="comment">// return (canonical) empty leaf</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                <span class="keywordflow">else</span>                                                    <span class="comment">// construct the node and return</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00013.html">ANNkd_leaf</a>(n, pidx);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        }</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keywordflow">else</span> {                                                          <span class="comment">// n large, make a splitting node</span></div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                <span class="keywordtype">int</span> cd;                                                 <span class="comment">// cutting dimension</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> cv;                                    <span class="comment">// cutting value</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                <span class="keywordtype">int</span> n_lo;                                               <span class="comment">// number on low side of cut</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                <a class="code" href="a00014.html">ANNkd_node</a> *lo, *hi;                    <span class="comment">// low and high children</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                                                                                <span class="comment">// invoke splitting procedure</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                (*splitter)(pa, pidx, bnd_box, n, <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, cd, cv, n_lo);</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;                <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> lv = bnd_box.lo[cd];   <span class="comment">// save bounds for cutting dimension</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> hv = bnd_box.hi[cd];</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                bnd_box.hi[cd] = cv;                    <span class="comment">// modify bounds for left subtree</span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                lo = <a class="code" href="a00308.html#a98c8c4e8b5a0301bdc0e71e9726b3fdf">rkd_tree</a>(                                  <span class="comment">// build left subtree</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                                pa, pidx, n_lo,                 <span class="comment">// ...from pidx[0..n_lo-1]</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                                dim, bsp, bnd_box, splitter);</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                bnd_box.hi[cd] = hv;                    <span class="comment">// restore bounds</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                bnd_box.lo[cd] = cv;                    <span class="comment">// modify bounds for right subtree</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                hi = <a class="code" href="a00308.html#a98c8c4e8b5a0301bdc0e71e9726b3fdf">rkd_tree</a>(                                  <span class="comment">// build right subtree</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                                pa, pidx + n_lo, n-n_lo,<span class="comment">// ...from pidx[n_lo..n-1]</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                                dim, bsp, bnd_box, splitter);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;                bnd_box.lo[cd] = lv;                    <span class="comment">// restore bounds</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;                                                                                <span class="comment">// create the splitting node</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                <a class="code" href="a00015.html">ANNkd_split</a> *ptr = <span class="keyword">new</span> <a class="code" href="a00015.html">ANNkd_split</a>(cd, cv, lv, hv, lo, hi);</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                <span class="keywordflow">return</span> ptr;                                             <span class="comment">// return pointer to this node</span></div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        }</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;}</div>
+<div class="ttc" id="a00015_html"><div class="ttname"><a href="a00015.html">ANNkd_split</a></div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00142">kd_tree.h:142</a></div></div>
+<div class="ttc" id="a00308_html_a98c8c4e8b5a0301bdc0e71e9726b3fdf"><div class="ttname"><a href="a00308.html#a98c8c4e8b5a0301bdc0e71e9726b3fdf">rkd_tree</a></div><div class="ttdeci">ANNkd_ptr rkd_tree(ANNpointArray pa, ANNidxArray pidx, int n, int dim, int bsp, ANNorthRect &amp;bnd_box, ANNkd_splitter splitter)</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00314">kd_tree.cpp:314</a></div></div>
+<div class="ttc" id="a00286_html_ab066cd4e4fffad67a16b64d9a28a86e4"><div class="ttname"><a href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a></div><div class="ttdeci">double ANNcoord</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00158">ANN.h:158</a></div></div>
+<div class="ttc" id="a00014_html"><div class="ttname"><a href="a00014.html">ANNkd_node</a></div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00046">kd_tree.h:46</a></div></div>
+<div class="ttc" id="a00308_html_aefd44c312f0116089b2cfbf80ef5c5c7"><div class="ttname"><a href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a></div><div class="ttdeci">ANNkd_leaf * KD_TRIVIAL</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00050">kd_tree.cpp:50</a></div></div>
+<div class="ttc" id="a00013_html"><div class="ttname"><a href="a00013.html">ANNkd_leaf</a></div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00091">kd_tree.h:91</a></div></div>
+<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="af54d0f80dc799be58b844867993ba603"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double ANN_AR_TOOBIG = 1000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00308_source.html#l00145">145</a> of file <a class="el" href="a00308_source.html">kd_tree.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="a00308_source.html#l00147">ANNkd_leaf::getStats()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a61de2b08f94c67c1c047b70367edef43"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int IDX_TRIVIAL[] = {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00308_source.html#l00049">49</a> of file <a class="el" href="a00308_source.html">kd_tree.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="a00308_source.html#l00244">ANNkd_tree::SkeletonTree()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aefd44c312f0116089b2cfbf80ef5c5c7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00013.html">ANNkd_leaf</a>* KD_TRIVIAL = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00308_source.html#l00050">50</a> of file <a class="el" href="a00308_source.html">kd_tree.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="a00294_source.html#l00039">ANNbd_shrink::ann_pri_search()</a>, <a class="el" href="a00302_source.html#l00139">ANNkd_split::ann_pri_search()</a>, <a class="el" href="a00308_source.html#l00221">annClose()</a>, <a class="el" href="a00299_source.html#l00368">annReadTree()</a>, <a class="el" href="a00299_source.html#l00144">ANNkd_leaf::dump()</a>, <a class="el" href="a00296_source.html#l00335">rbd_tree()</a>, <a class="el" href="a00308_source.html#l00314">rkd_tree()</a>, <a class="el" href="a00297_source.html#l00078">ANNbd_shrink::~ANNbd_shrink()</a>, and <a class="el" href="a00309_source.html#l00164">ANNkd_split::~ANNkd_split()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

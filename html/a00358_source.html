@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/inc/GenericVectorCdf.h Source File</title>
+<title>queso-0.53.0: src/core/src/BaseInputOptionsParser.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_d98b071537eea78ae0761911e9f6b515.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_d16228283b18c448cbd408df6e1bb59e.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GenericVectorCdf.h</div>  </div>
+<div class="title">BaseInputOptionsParser.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00358.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,64 +75,24 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GENERIC_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GENERIC_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorCdf.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/ArrayOfOneDGrids.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/ArrayOfOneDTables.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarCdf.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/BaseInputOptionsParser.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="a00034.html#a6221c1fa63072271320083ff0734b680">   29</a></span>&#160;<a class="code" href="a00034.html#a6221c1fa63072271320083ff0734b680">BaseInputOptionsParser::BaseInputOptionsParser</a>()</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00034.html#a26f3af2bd82a27bf735cc15af0c08cad">   33</a></span>&#160;<a class="code" href="a00034.html#a26f3af2bd82a27bf735cc15af0c08cad">BaseInputOptionsParser::~BaseInputOptionsParser</a>()</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// Generic cumulative distribution function class</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00087.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00087.html">GenericVectorCdf</a> : <span class="keyword">public</span> <a class="code" href="a00028.html">BaseVectorCdf</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="a00087.html#a76cb484b4bb7fb3450bd64777108b1a7">GenericVectorCdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                          <span class="keyword">const</span> <a class="code" href="a00176.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00028.html#aaf5088d3994606a9d449ccd414509709">pdfSupport</a>,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                          <span class="keywordtype">double</span> (*routinePtr)(<span class="keyword">const</span> V&amp; paramValues, <span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr, V&amp; cdfVec),</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                          <span class="keyword">const</span> <span class="keywordtype">void</span>*                  routineDataPtr);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00087.html#a4a8e94de6837482e7ac90cd993c4431a">~GenericVectorCdf</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00087.html#aac56bdb8cbe36b161cf238db695eb454">values</a>(<span class="keyword">const</span> V&amp; paramValues, V&amp; cdfVec) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00087.html#a475687f4b66245980a79fcc825c76c7c">print</a> (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00087.html#a6ae0cb85626ec0d713ba4fbea621ffef">   76</a></span>&#160;  double (*<a class="code" href="a00087.html#a6ae0cb85626ec0d713ba4fbea621ffef">m_routinePtr</a>)(<span class="keyword">const</span> V&amp; paramValues, <span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr, V&amp; cdfVec);</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00087.html#adfdd6840459650b1f52fec7e42c5f8e6">   77</a></span>&#160;  <span class="keyword">const</span> <span class="keywordtype">void</span>* <a class="code" href="a00087.html#adfdd6840459650b1f52fec7e42c5f8e6">m_routineDataPtr</a>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00028.html">BaseVectorCdf&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00028.html">BaseVectorCdf&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00028.html">BaseVectorCdf&lt;V,M&gt;::m_pdfSupport</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif // UQ_GENERIC_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
-<div class="ttc" id="a00176_html"><div class="ttname"><a href="a00176.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00207_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00087_html"><div class="ttname"><a href="a00087.html">QUESO::GenericVectorCdf</a></div><div class="ttdoc">A class for handling generic vector CDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00047">GenericVectorCdf.h:47</a></div></div>
-<div class="ttc" id="a00087_html_adfdd6840459650b1f52fec7e42c5f8e6"><div class="ttname"><a href="a00087.html#adfdd6840459650b1f52fec7e42c5f8e6">QUESO::GenericVectorCdf::m_routineDataPtr</a></div><div class="ttdeci">const void * m_routineDataPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00077">GenericVectorCdf.h:77</a></div></div>
-<div class="ttc" id="a00087_html_a6ae0cb85626ec0d713ba4fbea621ffef"><div class="ttname"><a href="a00087.html#a6ae0cb85626ec0d713ba4fbea621ffef">QUESO::GenericVectorCdf::m_routinePtr</a></div><div class="ttdeci">double(* m_routinePtr)(const V &amp;paramValues, const void *routineDataPtr, V &amp;cdfVec)</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00076">GenericVectorCdf.h:76</a></div></div>
-<div class="ttc" id="a00028_html_aaf5088d3994606a9d449ccd414509709"><div class="ttname"><a href="a00028.html#aaf5088d3994606a9d449ccd414509709">QUESO::BaseVectorCdf::pdfSupport</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; pdfSupport() const </div><div class="ttdoc">Returns the image set (support) of the PDF; access to protected attribute m_pdfSupport. </div><div class="ttdef"><b>Definition:</b> <a href="a00492_source.html#l00059">VectorCdf.C:59</a></div></div>
-<div class="ttc" id="a00087_html_a76cb484b4bb7fb3450bd64777108b1a7"><div class="ttname"><a href="a00087.html#a76cb484b4bb7fb3450bd64777108b1a7">QUESO::GenericVectorCdf::GenericVectorCdf</a></div><div class="ttdeci">GenericVectorCdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;pdfSupport, double(*routinePtr)(const V &amp;paramValues, const void *routineDataPtr, V &amp;cdfVec), const void *routineDataPtr)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00443_source.html#l00031">GenericVectorCdf.C:31</a></div></div>
-<div class="ttc" id="a00028_html"><div class="ttname"><a href="a00028.html">QUESO::BaseVectorCdf</a></div><div class="ttdoc">A templated (base) class for handling CDFs of vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00407_source.html#l00056">VectorCdf.h:56</a></div></div>
-<div class="ttc" id="a00087_html_aac56bdb8cbe36b161cf238db695eb454"><div class="ttname"><a href="a00087.html#aac56bdb8cbe36b161cf238db695eb454">QUESO::GenericVectorCdf::values</a></div><div class="ttdeci">void values(const V &amp;paramValues, V &amp;cdfVec) const </div><div class="ttdoc">TODO: Returns the values of the vector CDF at each element of paramValues, by calling m_routinePtr...</div><div class="ttdef"><b>Definition:</b> <a href="a00443_source.html#l00050">GenericVectorCdf.C:50</a></div></div>
-<div class="ttc" id="a00087_html_a475687f4b66245980a79fcc825c76c7c"><div class="ttname"><a href="a00087.html#a475687f4b66245980a79fcc825c76c7c">QUESO::GenericVectorCdf::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the vector CDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00443_source.html#l00060">GenericVectorCdf.C:60</a></div></div>
-<div class="ttc" id="a00087_html_a4a8e94de6837482e7ac90cd993c4431a"><div class="ttname"><a href="a00087.html#a4a8e94de6837482e7ac90cd993c4431a">QUESO::GenericVectorCdf::~GenericVectorCdf</a></div><div class="ttdeci">~GenericVectorCdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00443_source.html#l00044">GenericVectorCdf.C:44</a></div></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00034_html_a26f3af2bd82a27bf735cc15af0c08cad"><div class="ttname"><a href="a00034.html#a26f3af2bd82a27bf735cc15af0c08cad">QUESO::BaseInputOptionsParser::~BaseInputOptionsParser</a></div><div class="ttdeci">virtual ~BaseInputOptionsParser()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00033">BaseInputOptionsParser.C:33</a></div></div>
+<div class="ttc" id="a00034_html_a6221c1fa63072271320083ff0734b680"><div class="ttname"><a href="a00034.html#a6221c1fa63072271320083ff0734b680">QUESO::BaseInputOptionsParser::BaseInputOptionsParser</a></div><div class="ttdeci">BaseInputOptionsParser()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00029">BaseInputOptionsParser.C:29</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

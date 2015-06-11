@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/inc/BetaVectorRealizer.h File Reference</title>
+<title>queso-0.53.0: src/core/inc/GslBlockMatrix.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,26 +43,32 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_d98b071537eea78ae0761911e9f6b515.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_88fac51d2e17cec13478f22fd619c260.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">BetaVectorRealizer.h File Reference</div>  </div>
+<div class="title">GslBlockMatrix.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/VectorRealizer.h&gt;</code><br/>
-<code>#include &lt;queso/VectorSequence.h&gt;</code><br/>
+
+<p><a class="el" href="a00649.html">QUESO</a> block matrix class using GSL.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &lt;vector&gt;</code><br/>
 <code>#include &lt;queso/Environment.h&gt;</code><br/>
-<code>#include &lt;math.h&gt;</code><br/>
+<code>#include &lt;queso/Matrix.h&gt;</code><br/>
+<code>#include &lt;queso/GslVector.h&gt;</code><br/>
+<code>#include &lt;queso/GslMatrix.h&gt;</code><br/>
+<code>#include &lt;queso/VectorSpace.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for BetaVectorRealizer.h:</div>
+Include dependency graph for GslBlockMatrix.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00643.png" border="0" usemap="#src_2stats_2inc_2_beta_vector_realizer_8h" alt=""/></div>
-<map name="src_2stats_2inc_2_beta_vector_realizer_8h" id="src_2stats_2inc_2_beta_vector_realizer_8h">
+<div class="center"><img src="a00755.png" border="0" usemap="#src_2core_2inc_2_gsl_block_matrix_8h" alt=""/></div>
+<map name="src_2core_2inc_2_gsl_block_matrix_8h" id="src_2core_2inc_2_gsl_block_matrix_8h">
 </map>
 </div>
 </div>
@@ -70,18 +76,27 @@ Include dependency graph for BetaVectorRealizer.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html">QUESO::BetaVectorRealizer&lt; V, M &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class for handling sampling from a Beta probability density distribution.  <a href="a00039.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00126.html">QUESO::GslBlockMatrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for representing block matrices using GSL library.  <a href="a00126.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html">QUESO</a></td></tr>
+<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aee9cd88f39e5f81acf1cbc121a2d85f9"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#aee9cd88f39e5f81acf1cbc121a2d85f9">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const GslBlockMatrix &amp;obj)</td></tr>
+<tr class="separator:aee9cd88f39e5f81acf1cbc121a2d85f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="a00649.html">QUESO</a> block matrix class using GSL. </p>
+
+<p>Definition in file <a class="el" href="a00332_source.html">GslBlockMatrix.h</a>.</p>
+</div></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

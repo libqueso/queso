@@ -1,4 +1,2 @@
-<map id="QUESO::GaussianLikelihoodBlockDiagonalCovariance&lt; V, M &gt;" name="QUESO::GaussianLikelihoodBlockDiagonalCovariance&lt; V, M &gt;">
-<area shape="rect" id="node2" href="$a00019.html" title="Base class for canned Gaussian likelihoods. " alt="" coords="5,102,243,149"/>
-<area shape="rect" id="node4" href="$a00026.html" title="A templated (base) class for handling scalar functions. " alt="" coords="19,6,229,53"/>
+<map id="src/surrogates/src/InterpolationSurrogateBuilder.C" name="src/surrogates/src/InterpolationSurrogateBuilder.C">
 </map>

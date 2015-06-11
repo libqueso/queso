@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/src/GenericScalarCovarianceFunction.C Source File</title>
+<title>queso-0.53.0: src/misc/inc/UniformOneDGrid.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_85aa4481915a0d58eac2c78710df0bea.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_cef55f19861ce62c0ca627401191ab0f.html">misc</a></li><li class="navelem"><a class="el" href="dir_13f3ced7e7515c530250c895de57efa8.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GenericScalarCovarianceFunction.C</div>  </div>
+<div class="title">UniformOneDGrid.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00442.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,89 +75,65 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/GenericScalarCovarianceFunction.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Default constructor -----------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00085.html#a33edf41b7bcff2d5b519d9a0a6fee314">   31</a></span>&#160;<a class="code" href="a00085.html#a33edf41b7bcff2d5b519d9a0a6fee314">GenericScalarCovarianceFunction&lt;V,M&gt;::GenericScalarCovarianceFunction</a>(</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00176.html">VectorSet&lt;V,M&gt;</a>&amp; domainSet,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keywordtype">double</span> (*covRoutinePtr)(<span class="keyword">const</span> V&amp; positionVector1, <span class="keyword">const</span> V&amp; positionVector2, <span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr),</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">void</span>*                  routinesDataPtr)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00025.html">BaseScalarCovarianceFunction</a>&lt;V,M&gt;(prefix,domainSet),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_covRoutinePtr                         (covRoutinePtr),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_routineDataPtr                        (routinesDataPtr)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00025.html#a2a100016b480c498b5219fb937d62543">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00025.html#a2a100016b480c498b5219fb937d62543">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    *<a class="code" href="a00025.html#a2a100016b480c498b5219fb937d62543">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GenericScalarCovarianceFunction&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00025.html#a21636873436b88cb77075c6edbd61c71">m_prefix</a></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00025.html#a2a100016b480c498b5219fb937d62543">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00025.html#a2a100016b480c498b5219fb937d62543">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    *<a class="code" href="a00025.html#a2a100016b480c498b5219fb937d62543">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving GenericScalarCovarianceFunction&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00025.html#a21636873436b88cb77075c6edbd61c71">m_prefix</a></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00085.html#a8138a46b55498cf9b2f14aa51776d437">   55</a></span>&#160;<a class="code" href="a00085.html#a8138a46b55498cf9b2f14aa51776d437">GenericScalarCovarianceFunction&lt;V,M&gt;::~GenericScalarCovarianceFunction</a>()</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering GenericScalarCovarianceFunction&lt;V,M&gt;::destructor()&quot;</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving GenericScalarCovarianceFunction&lt;V,M&gt;::destructor()&quot;</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">// Math methods -------------------------------------</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="a00085.html#ab02d90f973034672b84888c941230a8c">   72</a></span>&#160;<a class="code" href="a00085.html#ab02d90f973034672b84888c941230a8c">GenericScalarCovarianceFunction&lt;V,M&gt;::value</a>(<span class="keyword">const</span> V&amp; positionVector1, <span class="keyword">const</span> V&amp; positionVector2)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering GenericScalarCovarianceFunction&lt;V,M&gt;::value()&quot;</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(m_covRoutinePtr == NULL,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                      <span class="stringliteral">&quot;GenericScalarCovarianceFunction&lt;V,M&gt;::value()&quot;</span>,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                      <span class="stringliteral">&quot;m_covRoutinePtr = NULL&quot;</span>);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">double</span> result = m_covRoutinePtr(positionVector1, positionVector2, m_routineDataPtr);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving GenericScalarCovarianceFunction&lt;V,M&gt;::value()&quot;</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00176_html"><div class="ttname"><a href="a00176.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00207_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00025_html_a21636873436b88cb77075c6edbd61c71"><div class="ttname"><a href="a00025.html#a21636873436b88cb77075c6edbd61c71">QUESO::BaseScalarCovarianceFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00077">ScalarCovarianceFunction.h:77</a></div></div>
-<div class="ttc" id="a00025_html_a2a100016b480c498b5219fb937d62543"><div class="ttname"><a href="a00025.html#a2a100016b480c498b5219fb937d62543">QUESO::BaseScalarCovarianceFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00076">ScalarCovarianceFunction.h:76</a></div></div>
-<div class="ttc" id="a00085_html_ab02d90f973034672b84888c941230a8c"><div class="ttname"><a href="a00085.html#ab02d90f973034672b84888c941230a8c">QUESO::GenericScalarCovarianceFunction::value</a></div><div class="ttdeci">double value(const V &amp;positionVector1, const V &amp;positionVector2) const </div><div class="ttdoc">Calculates the value of the generic covariance function. </div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00072">GenericScalarCovarianceFunction.C:72</a></div></div>
-<div class="ttc" id="a00085_html_a33edf41b7bcff2d5b519d9a0a6fee314"><div class="ttname"><a href="a00085.html#a33edf41b7bcff2d5b519d9a0a6fee314">QUESO::GenericScalarCovarianceFunction::GenericScalarCovarianceFunction</a></div><div class="ttdeci">GenericScalarCovarianceFunction(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, double(*covRoutinePtr)(const V &amp;positionVector1, const V &amp;positionVector2, const void *routineDataPtr), const void *routinesDataPtr)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00031">GenericScalarCovarianceFunction.C:31</a></div></div>
-<div class="ttc" id="a00025_html"><div class="ttname"><a href="a00025.html">QUESO::BaseScalarCovarianceFunction</a></div><div class="ttdoc">A templated (base) class to accommodate scalar covariance functions (of random variables). </div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00053">ScalarCovarianceFunction.h:53</a></div></div>
-<div class="ttc" id="a00085_html_a8138a46b55498cf9b2f14aa51776d437"><div class="ttname"><a href="a00085.html#a8138a46b55498cf9b2f14aa51776d437">QUESO::GenericScalarCovarianceFunction::~GenericScalarCovarianceFunction</a></div><div class="ttdeci">virtual ~GenericScalarCovarianceFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00055">GenericScalarCovarianceFunction.C:55</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00436">Environment.C:436</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_UNIFORM_ONE_D_GRID_FUNCTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_UNIFORM_ONE_D_GRID_FUNCTION_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/OneDGrid.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// Uniform grid class</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="a00220.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00220.html">UniformOneDGrid</a> : <span class="keyword">public</span> <a class="code" href="a00037.html">BaseOneDGrid</a>&lt;T&gt; {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="a00220.html#aedd7bcaf0aec01d5c97c4f31f2b3d357">UniformOneDGrid</a>(<span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; env,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                         <span class="keyword">const</span> <span class="keywordtype">char</span>*               prefix,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                               <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>        <a class="code" href="a00220.html#a66a0589eb7da47895f2bab97b916fca4">size</a>,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                               T                   minPosition,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                               T                   maxPosition);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00220.html#a2cfd6fdc7085bd667e18cef6771cf930">~UniformOneDGrid</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  T    <a class="code" href="a00220.html#a2fe101c8fbce7a6ac00b07781c2c6b6e">operator[]    </a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i)      <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00220.html#a66a0589eb7da47895f2bab97b916fca4">size</a>          ()                    <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00220.html#afa2a0d3a54ce7fed0610a81337dfeae7">findIntervalId</a>(<span class="keyword">const</span> T&amp; paramValue) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00037.html">BaseOneDGrid&lt;T&gt;::m_env</a>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00037.html">BaseOneDGrid&lt;T&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00220.html#a4d76f44ccd66199aa55fa75aed57ffaa">   76</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00220.html#a4d76f44ccd66199aa55fa75aed57ffaa">m_size</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00220.html#a1cf3c2bcc5b0dd70ecf5addcae839a2b">   77</a></span>&#160;  T            <a class="code" href="a00220.html#a1cf3c2bcc5b0dd70ecf5addcae839a2b">m_minPosition</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00220.html#ab65cb3991c8759837cdc0f3a5094a4c7">   78</a></span>&#160;  T            <a class="code" href="a00220.html#ab65cb3991c8759837cdc0f3a5094a4c7">m_maxPosition</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif // UQ_UNIFORM_ONE_D_GRID_FUNCTION_H</span></div>
+<div class="ttc" id="a00220_html_a1cf3c2bcc5b0dd70ecf5addcae839a2b"><div class="ttname"><a href="a00220.html#a1cf3c2bcc5b0dd70ecf5addcae839a2b">QUESO::UniformOneDGrid::m_minPosition</a></div><div class="ttdeci">T m_minPosition</div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00077">UniformOneDGrid.h:77</a></div></div>
+<div class="ttc" id="a00220_html_a2fe101c8fbce7a6ac00b07781c2c6b6e"><div class="ttname"><a href="a00220.html#a2fe101c8fbce7a6ac00b07781c2c6b6e">QUESO::UniformOneDGrid::operator[]</a></div><div class="ttdeci">T operator[](unsigned int i) const </div><div class="ttdoc">Returns the position of the i-th point in the grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00458_source.html#l00070">UniformOneDGrid.C:70</a></div></div>
+<div class="ttc" id="a00220_html_aedd7bcaf0aec01d5c97c4f31f2b3d357"><div class="ttname"><a href="a00220.html#aedd7bcaf0aec01d5c97c4f31f2b3d357">QUESO::UniformOneDGrid::UniformOneDGrid</a></div><div class="ttdeci">UniformOneDGrid(const BaseEnvironment &amp;env, const char *prefix, unsigned int size, T minPosition, T maxPosition)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00458_source.html#l00031">UniformOneDGrid.C:31</a></div></div>
+<div class="ttc" id="a00220_html_a2cfd6fdc7085bd667e18cef6771cf930"><div class="ttname"><a href="a00220.html#a2cfd6fdc7085bd667e18cef6771cf930">QUESO::UniformOneDGrid::~UniformOneDGrid</a></div><div class="ttdeci">~UniformOneDGrid()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00458_source.html#l00057">UniformOneDGrid.C:57</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00327_source.html#l00193">Environment.h:193</a></div></div>
+<div class="ttc" id="a00220_html_afa2a0d3a54ce7fed0610a81337dfeae7"><div class="ttname"><a href="a00220.html#afa2a0d3a54ce7fed0610a81337dfeae7">QUESO::UniformOneDGrid::findIntervalId</a></div><div class="ttdeci">unsigned int findIntervalId(const T &amp;paramValue) const </div><div class="ttdoc">Finds the ID of an interval. See template specialization. </div><div class="ttdef"><b>Definition:</b> <a href="a00458_source.html#l00081">UniformOneDGrid.C:81</a></div></div>
+<div class="ttc" id="a00220_html"><div class="ttname"><a href="a00220.html">QUESO::UniformOneDGrid</a></div><div class="ttdoc">Class for accommodating uniform one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00041">UniformOneDGrid.h:41</a></div></div>
+<div class="ttc" id="a00037_html"><div class="ttname"><a href="a00037.html">QUESO::BaseOneDGrid</a></div><div class="ttdoc">Base class for accommodating one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00439_source.html#l00046">OneDGrid.h:46</a></div></div>
+<div class="ttc" id="a00220_html_a66a0589eb7da47895f2bab97b916fca4"><div class="ttname"><a href="a00220.html#a66a0589eb7da47895f2bab97b916fca4">QUESO::UniformOneDGrid::size</a></div><div class="ttdeci">unsigned int size() const </div><div class="ttdoc">Grid size; the amount of points that defines the grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00458_source.html#l00063">UniformOneDGrid.C:63</a></div></div>
+<div class="ttc" id="a00220_html_ab65cb3991c8759837cdc0f3a5094a4c7"><div class="ttname"><a href="a00220.html#ab65cb3991c8759837cdc0f3a5094a4c7">QUESO::UniformOneDGrid::m_maxPosition</a></div><div class="ttdeci">T m_maxPosition</div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00078">UniformOneDGrid.h:78</a></div></div>
+<div class="ttc" id="a00220_html_a4d76f44ccd66199aa55fa75aed57ffaa"><div class="ttname"><a href="a00220.html#a4d76f44ccd66199aa55fa75aed57ffaa">QUESO::UniformOneDGrid::m_size</a></div><div class="ttdeci">unsigned int m_size</div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00076">UniformOneDGrid.h:76</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

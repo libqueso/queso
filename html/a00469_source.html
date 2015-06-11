@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/src/ModelValidation.C Source File</title>
+<title>queso-0.53.0: src/stats/inc/GammaJointPdf.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_85aa4481915a0d58eac2c78710df0bea.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_84a4f20dccd7baf1e042e36cd61e1aee.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ModelValidation.C</div>  </div>
+<div class="title">GammaJointPdf.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00469.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,80 +75,75 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/ModelValidation.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00129.html#a4745b3be6aaaeab5c904b2b4fe9f25f8">   31</a></span>&#160;<a class="code" href="a00129.html#a4745b3be6aaaeab5c904b2b4fe9f25f8">ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::ModelValidation</a>(</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; env,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                   prefix)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  m_env   (env),</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  m_prefix((std::string)(prefix) + <span class="stringliteral">&quot;&quot;</span>),</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  m_cycle (NULL)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00129.html#a357832c31f58c1bd11c10733317437ae">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    *<a class="code" href="a00129.html#a357832c31f58c1bd11c10733317437ae">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00129.html#aa239eb12478d1904e18ffe2ed712630f">m_prefix</a></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00129.html#a357832c31f58c1bd11c10733317437ae">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    *<a class="code" href="a00129.html#a357832c31f58c1bd11c10733317437ae">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00129.html#aa239eb12478d1904e18ffe2ed712630f">m_prefix</a></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// Destructor---------------------------------------</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00129.html#aa840badb782acf1a02e0c46c84bcdfe4">   55</a></span>&#160;<a class="code" href="a00129.html#aa840badb782acf1a02e0c46c84bcdfe4">ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::~ModelValidation</a>()</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">if</span> (m_env.subDisplayFile()) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering ModeValidation::destructor()&quot;</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">if</span> (m_cycle) <span class="keyword">delete</span> m_cycle;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">if</span> (m_env.subDisplayFile()) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving ModeValidation::destructor()&quot;</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// Misc methods-------------------------------------</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp;</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00129.html#a8da12a6dfe30feba5e3319031049a93f">   74</a></span>&#160;<a class="code" href="a00129.html#a8da12a6dfe30feba5e3319031049a93f">ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::env</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> m_env;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">const</span> <a class="code" href="a00172.html">ValidationCycle&lt;P_V,P_M,Q_V,Q_M&gt;</a>&amp;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00129.html#a3ea30ea21d361878e5aea12f6aff8e0f">   81</a></span>&#160;<a class="code" href="a00129.html#a3ea30ea21d361878e5aea12f6aff8e0f">ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::cycle</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">return</span> *m_cycle;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00239_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00129_html_a8da12a6dfe30feba5e3319031049a93f"><div class="ttname"><a href="a00129.html#a8da12a6dfe30feba5e3319031049a93f">QUESO::ModelValidation::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Access to the environment variable (m_env). </div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00074">ModelValidation.C:74</a></div></div>
-<div class="ttc" id="a00129_html_a4745b3be6aaaeab5c904b2b4fe9f25f8"><div class="ttname"><a href="a00129.html#a4745b3be6aaaeab5c904b2b4fe9f25f8">QUESO::ModelValidation::ModelValidation</a></div><div class="ttdeci">ModelValidation(const BaseEnvironment &amp;env, const char *prefix)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00031">ModelValidation.C:31</a></div></div>
-<div class="ttc" id="a00129_html_a3ea30ea21d361878e5aea12f6aff8e0f"><div class="ttname"><a href="a00129.html#a3ea30ea21d361878e5aea12f6aff8e0f">QUESO::ModelValidation::cycle</a></div><div class="ttdeci">const ValidationCycle&lt; P_V, P_M, Q_V, Q_M &gt; &amp; cycle() const </div><div class="ttdoc">Access to the cycle (m_cycle). </div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00081">ModelValidation.C:81</a></div></div>
-<div class="ttc" id="a00129_html_aa239eb12478d1904e18ffe2ed712630f"><div class="ttname"><a href="a00129.html#aa239eb12478d1904e18ffe2ed712630f">QUESO::ModelValidation::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00069">ModelValidation.h:69</a></div></div>
-<div class="ttc" id="a00172_html"><div class="ttname"><a href="a00172.html">QUESO::ValidationCycle</a></div><div class="ttdoc">A templated class for validation cycle of the examples validationCycle and validationCycle2. </div><div class="ttdef"><b>Definition:</b> <a href="a00406_source.html#l00051">ValidationCycle.h:51</a></div></div>
-<div class="ttc" id="a00129_html_a357832c31f58c1bd11c10733317437ae"><div class="ttname"><a href="a00129.html#a357832c31f58c1bd11c10733317437ae">QUESO::ModelValidation::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00068">ModelValidation.h:68</a></div></div>
-<div class="ttc" id="a00129_html_aa840badb782acf1a02e0c46c84bcdfe4"><div class="ttname"><a href="a00129.html#aa840badb782acf1a02e0c46c84bcdfe4">QUESO::ModelValidation::~ModelValidation</a></div><div class="ttdeci">virtual ~ModelValidation()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00055">ModelValidation.C:55</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GAMMA_JOINT_PROB_DENSITY_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GAMMA_JOINT_PROB_DENSITY_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;boost/math/special_functions.hpp&gt;</span> <span class="comment">// for Boost isnan. Note parentheses are important in function call.</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/JointPdf.h&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarFunction.h&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;queso/BoxSubset.h&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// Gamma probability density class [PDF-06]</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00086.html">   52</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00086.html">GammaJointPdf</a> : <span class="keyword">public</span> <a class="code" href="a00035.html">BaseJointPdf</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00086.html#aae9aa55f730ccefa107e1163bdb8e91a">GammaJointPdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                       <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                       <span class="keyword">const</span> V&amp;                     a,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                       <span class="keyword">const</span> V&amp;                     b);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; <a class="code" href="a00086.html#a457ae0ae5485dce6e68d03fc8153c2ff">~GammaJointPdf</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00086.html#a4907d38d266d271d34cce9be333a95df">actualValue</a>(<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00086.html#a990337e7c25a4214b15fd71cb6deb384">lnValue</a>    (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00086.html#a5fb1d17a267c8110442689721e74c8d4">computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;::m_domainSet</a>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00035.html">BaseJointPdf&lt;V,M&gt;::m_normalizationStyle</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00035.html">BaseJointPdf&lt;V,M&gt;::m_logOfNormalizationFactor</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00086.html#ab7120940a19b96f70ffde24ddc22cf20">   92</a></span>&#160;  V <a class="code" href="a00086.html#ab7120940a19b96f70ffde24ddc22cf20">m_a</a>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00086.html#ad651745cadab6db31b6458ad8f72c570">   93</a></span>&#160;  V <a class="code" href="a00086.html#ad651745cadab6db31b6458ad8f72c570">m_b</a>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif // UQ_GAMMA_JOINT_PROB_DENSITY_H</span></div>
+<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00086_html_a990337e7c25a4214b15fd71cb6deb384"><div class="ttname"><a href="a00086.html#a990337e7c25a4214b15fd71cb6deb384">QUESO::GammaJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the Gamma PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00080">GammaJointPdf.C:80</a></div></div>
+<div class="ttc" id="a00086_html_ab7120940a19b96f70ffde24ddc22cf20"><div class="ttname"><a href="a00086.html#ab7120940a19b96f70ffde24ddc22cf20">QUESO::GammaJointPdf::m_a</a></div><div class="ttdeci">V m_a</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00092">GammaJointPdf.h:92</a></div></div>
+<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00056">JointPdf.h:56</a></div></div>
+<div class="ttc" id="a00086_html_aae9aa55f730ccefa107e1163bdb8e91a"><div class="ttname"><a href="a00086.html#aae9aa55f730ccefa107e1163bdb8e91a">QUESO::GammaJointPdf::GammaJointPdf</a></div><div class="ttdeci">GammaJointPdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;a, const V &amp;b)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00033">GammaJointPdf.C:33</a></div></div>
+<div class="ttc" id="a00041_html"><div class="ttname"><a href="a00041.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00250_source.html#l00051">ScalarFunction.h:51</a></div></div>
+<div class="ttc" id="a00086_html_a5fb1d17a267c8110442689721e74c8d4"><div class="ttname"><a href="a00086.html#a5fb1d17a267c8110442689721e74c8d4">QUESO::GammaJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00117">GammaJointPdf.C:117</a></div></div>
+<div class="ttc" id="a00041_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00272_source.html#l00050">ScalarFunction.C:50</a></div></div>
+<div class="ttc" id="a00086_html"><div class="ttname"><a href="a00086.html">QUESO::GammaJointPdf</a></div><div class="ttdoc">A class for handling Gamma joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00052">GammaJointPdf.h:52</a></div></div>
+<div class="ttc" id="a00086_html_a4907d38d266d271d34cce9be333a95df"><div class="ttname"><a href="a00086.html#a4907d38d266d271d34cce9be333a95df">QUESO::GammaJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the Gamma PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00063">GammaJointPdf.C:63</a></div></div>
+<div class="ttc" id="a00086_html_a457ae0ae5485dce6e68d03fc8153c2ff"><div class="ttname"><a href="a00086.html#a457ae0ae5485dce6e68d03fc8153c2ff">QUESO::GammaJointPdf::~GammaJointPdf</a></div><div class="ttdeci">~GammaJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00057">GammaJointPdf.C:57</a></div></div>
+<div class="ttc" id="a00086_html_ad651745cadab6db31b6458ad8f72c570"><div class="ttname"><a href="a00086.html#ad651745cadab6db31b6458ad8f72c570">QUESO::GammaJointPdf::m_b</a></div><div class="ttdeci">V m_b</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00093">GammaJointPdf.h:93</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/inc/queso.h Source File</title>
+<title>queso-0.53.0: src/basic/src/BoxSubset.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_1df83ded4604fcab59464c552d0ec4a5.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1e11172a4448ab4d7b3d22091261e10c.html">basic</a></li><li class="navelem"><a class="el" href="dir_1ddda6cfdab808066600d2423f0eda9f.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">queso.h</div>  </div>
+<div class="title">BoxSubset.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00262.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -74,44 +74,101 @@
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// grvy.h: Basic API Definitions</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifndef QUESO_H_</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_H_</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Library version/build info</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00262.html#af8f8eb612ce429b5b52d7fd5e412f2dd">   34</a></span>&#160;<span class="preprocessor">#define QUESO_MAJOR_VERSION  0</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00262.html#a8aa8d2fc44e6edc52b2baa17c5001bae">   35</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_MINOR_VERSION  52</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00262.html#a73b7d04c533087e0000140cc9e19dc71">   36</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_MICRO_VERSION  0</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00262.html#ac220e0baec88681f8270678badb7bcb9">   38</a></span>&#160;<span class="preprocessor">#define QUESO_BUILD_USER     &quot;damon&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00262.html#aef2d7f6fe2a604b6dc962d9c53fbccad">   39</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_ARCH     &quot;x86_64-unknown-linux-gnu&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="a00262.html#a82f0d319c13988e6ce0abfc3e5acfafd">   40</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_HOST     &quot;zoidberg.ices.utexas.edu&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="a00262.html#ad3f2a2a9e1a0507319ca48e4a171d7c6">   41</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_DATE     &quot;2015-04-23 19:28&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="a00262.html#a8b36b33f2429f166778a0a9410259f1d">   42</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_VERSION  &quot;2c61fef&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00262.html#a4ade4ed888e8e8984634ec507e08dcf4">   44</a></span>&#160;<span class="preprocessor">#define QUESO_LIB_VERSION    &quot;0.52.0&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00262.html#a200372295aca6277053dc3198acd1fa2">   45</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_LIB_RELEASE    &quot;Development Build&quot;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00262.html#a5473b76f2474d904b914586f0e85575d">   47</a></span>&#160;<span class="preprocessor">#define QUESO_CXX            &quot;/opt/apps/ossw/libraries/mpich2/mpich2-1.4.1p1/sl6/gcc-4.7/bin/mpicxx&quot;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00262.html#a0733ab68bd215a3d12bc6aea1d80a7e5">   48</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_CXXFLAGS       &quot;-g -O2 -Wall&quot;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// External libraries</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00262.html#a735dae31e72a24c63c02e5ed8868fcac">   52</a></span>&#160;<span class="preprocessor">#define QUESO_TRILINOS_DIR  &quot;&quot;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00262.html#aad144bff960096e3e55ea946a529dc9f">   53</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GSL_DIR       &quot;-L/opt/apps/ossw/libraries/gsl/gsl-1.15/sl6/gcc-4.7/lib -lgsl -lgslcblas -lm&quot;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00262.html#ae762ff926acfd3095751bf812077f02d">   54</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GRVY_DIR      &quot;&quot;</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00262.html#ace4c8bf4a22ac49477823be20179d3d7">   55</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GLPK_DIR      &quot;&quot;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00262.html#a204aeda021989ea37fbc54f1861cbfef">   56</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_HDF5_DIR      &quot;/opt/apps/ossw/libraries/hdf5/hdf5-1.8.9/sl6/gcc-4.7&quot;</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/BoxSubset.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Default, shaped constructor</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00057.html#a87bd3b29193a18a68a7be3b9469491c0">   34</a></span>&#160;<a class="code" href="a00057.html#a87bd3b29193a18a68a7be3b9469491c0">BoxSubset&lt;V,M&gt;::BoxSubset</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* prefix,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00228.html">VectorSpace&lt;V,M&gt;</a>&amp; vectorSpace,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">const</span> V&amp; minValues,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">const</span> V&amp; maxValues)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  : <a class="code" href="a00229.html">VectorSubset</a>&lt;V,M&gt;(prefix,vectorSpace,0.),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    m_minValues(minValues),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    m_maxValues(maxValues)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(minValues.sizeLocal(), maxValues.sizeLocal(), <span class="stringliteral">&quot;vectors &#39;minValues&#39; and &#39;maxValues&#39; should have the same size&quot;</span>);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(minValues.sizeLocal(), vectorSpace.<a class="code" href="a00228.html#a5829a1f4f996f8307c840b705144d666">dimLocal</a>(), <span class="stringliteral">&quot;sizes of vectors &#39;minValues&#39; and &#39;maxValues&#39; should be equal to dimension of the vector space&quot;</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00229.html#a8d1bfbac8c601b407c0a6a7af0904e2f">m_vectorSpace</a>-&gt;dimLocal(); ++i) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="a00319.html#ab700dbf56f43fabc2bcfdc72ca2e50ae">queso_require_less_equal_msg</a>(minValues[i], maxValues[i], <span class="stringliteral">&quot;it should happen minValue &lt;= maxValue for all dimensions&quot;</span>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="a00227.html#acd5cdcdbcbbce29daec684437f511e9f">m_volume</a> = 1.;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00229.html#a8d1bfbac8c601b407c0a6a7af0904e2f">m_vectorSpace</a>-&gt;dimLocal(); ++i) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="a00227.html#acd5cdcdbcbbce29daec684437f511e9f">m_volume</a> *= (<a class="code" href="a00057.html#ad234b8d38a236fb5c0d1353302c3e2f5">m_maxValues</a>[i] - <a class="code" href="a00057.html#a633a4fbfa03590b38e4d2b192f3cc2b5">m_minValues</a>[i]);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Destructor</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00057.html#a9e78b65ed80f2d11d1161a2fcfbb543d">   56</a></span>&#160;<a class="code" href="a00057.html#a9e78b65ed80f2d11d1161a2fcfbb543d">BoxSubset&lt;V,M&gt;::~BoxSubset</a>()</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// Math methods</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="a00057.html#a16fff2b1f133ddd750008680c6831dd0">   62</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="a00057.html#a16fff2b1f133ddd750008680c6831dd0">BoxSubset&lt;V,M&gt;::contains</a>(<span class="keyword">const</span> V&amp; vec)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="comment">// prudenci, 2012-09-26: allow boundary values because of &#39;beta&#39; realizer, which can generate a sample with boundary value &#39;1&#39;</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">//return (!vec.atLeastOneComponentSmallerOrEqualThan(m_minValues) &amp;&amp;</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">//        !vec.atLeastOneComponentBiggerOrEqualThan (m_maxValues));</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordflow">return</span> (!vec.atLeastOneComponentSmallerThan(m_minValues) &amp;&amp;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;          !vec.atLeastOneComponentBiggerThan (m_maxValues));</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="a00057.html#a57d3ba7df60a38abc4c161ff78f4a567">   73</a></span>&#160;<span class="keyword">const</span> V&amp; <a class="code" href="a00057.html#a57d3ba7df60a38abc4c161ff78f4a567">BoxSubset&lt;V,M&gt;::minValues</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">return</span> m_minValues;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="a00057.html#a47616371623019a8c6399d5b3661d25b">   79</a></span>&#160;<span class="keyword">const</span> V&amp; <a class="code" href="a00057.html#a47616371623019a8c6399d5b3661d25b">BoxSubset&lt;V,M&gt;::maxValues</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">return</span> m_maxValues;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// I/O method</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="a00057.html#ae5490757cf0504fbe31681bf0b291e93">   86</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00057.html#ae5490757cf0504fbe31681bf0b291e93">BoxSubset&lt;V,M&gt;::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  os &lt;&lt; <span class="stringliteral">&quot;In BoxSubset&lt;V,M&gt;::print()&quot;</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;: m_minValues = &quot;</span> &lt;&lt; m_minValues</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;, m_maxValues = &quot;</span> &lt;&lt; m_maxValues</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;, m_volume = &quot;</span>    &lt;&lt; m_volume</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;     &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00057.html">QUESO::BoxSubset&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00228_html_a5829a1f4f996f8307c840b705144d666"><div class="ttname"><a href="a00228.html#a5829a1f4f996f8307c840b705144d666">QUESO::VectorSpace::dimLocal</a></div><div class="ttdeci">unsigned int dimLocal() const </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00170">VectorSpace.C:170</a></div></div>
+<div class="ttc" id="a00057_html_a16fff2b1f133ddd750008680c6831dd0"><div class="ttname"><a href="a00057.html#a16fff2b1f133ddd750008680c6831dd0">QUESO::BoxSubset::contains</a></div><div class="ttdeci">bool contains(const V &amp;vec) const </div><div class="ttdoc">Checks whether this box subset contains vector vec. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00062">BoxSubset.C:62</a></div></div>
+<div class="ttc" id="a00319_html_ab700dbf56f43fabc2bcfdc72ca2e50ae"><div class="ttname"><a href="a00319.html#ab700dbf56f43fabc2bcfdc72ca2e50ae">queso_require_less_equal_msg</a></div><div class="ttdeci">#define queso_require_less_equal_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00089">asserts.h:89</a></div></div>
+<div class="ttc" id="a00319_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00085">asserts.h:85</a></div></div>
+<div class="ttc" id="a00057_html_ae5490757cf0504fbe31681bf0b291e93"><div class="ttname"><a href="a00057.html#ae5490757cf0504fbe31681bf0b291e93">QUESO::BoxSubset::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the volume, the minimum and the maximum values of this. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00086">BoxSubset.C:86</a></div></div>
+<div class="ttc" id="a00057_html_a47616371623019a8c6399d5b3661d25b"><div class="ttname"><a href="a00057.html#a47616371623019a8c6399d5b3661d25b">QUESO::BoxSubset::maxValues</a></div><div class="ttdeci">const V &amp; maxValues() const </div><div class="ttdoc">Vector of the maximum values of the box subset. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00079">BoxSubset.C:79</a></div></div>
+<div class="ttc" id="a00229_html"><div class="ttname"><a href="a00229.html">QUESO::VectorSubset</a></div><div class="ttdoc">A templated class for handling subsets. </div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00046">VectorSubset.h:46</a></div></div>
+<div class="ttc" id="a00057_html_a57d3ba7df60a38abc4c161ff78f4a567"><div class="ttname"><a href="a00057.html#a57d3ba7df60a38abc4c161ff78f4a567">QUESO::BoxSubset::minValues</a></div><div class="ttdeci">const V &amp; minValues() const </div><div class="ttdoc">Vector of the minimum values of the box subset. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00073">BoxSubset.C:73</a></div></div>
+<div class="ttc" id="a00057_html_a633a4fbfa03590b38e4d2b192f3cc2b5"><div class="ttname"><a href="a00057.html#a633a4fbfa03590b38e4d2b192f3cc2b5">QUESO::BoxSubset::m_minValues</a></div><div class="ttdeci">V m_minValues</div><div class="ttdoc">Vector of templated type V to store the minimum values of the box subset class. </div><div class="ttdef"><b>Definition:</b> <a href="a00241_source.html#l00086">BoxSubset.h:86</a></div></div>
+<div class="ttc" id="a00229_html_a8d1bfbac8c601b407c0a6a7af0904e2f"><div class="ttname"><a href="a00229.html#a8d1bfbac8c601b407c0a6a7af0904e2f">QUESO::VectorSubset::m_vectorSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; * m_vectorSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00081">VectorSubset.h:81</a></div></div>
+<div class="ttc" id="a00057_html_ad234b8d38a236fb5c0d1353302c3e2f5"><div class="ttname"><a href="a00057.html#ad234b8d38a236fb5c0d1353302c3e2f5">QUESO::BoxSubset::m_maxValues</a></div><div class="ttdeci">V m_maxValues</div><div class="ttdoc">Vector of templated type V to store the maximum values of the box subset class. </div><div class="ttdef"><b>Definition:</b> <a href="a00241_source.html#l00089">BoxSubset.h:89</a></div></div>
+<div class="ttc" id="a00057_html_a87bd3b29193a18a68a7be3b9469491c0"><div class="ttname"><a href="a00057.html#a87bd3b29193a18a68a7be3b9469491c0">QUESO::BoxSubset::BoxSubset</a></div><div class="ttdeci">BoxSubset(const char *prefix, const VectorSpace&lt; V, M &gt; &amp;vectorSpace, const V &amp;minValues, const V &amp;maxValues)</div><div class="ttdoc">Shaped, default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00034">BoxSubset.C:34</a></div></div>
+<div class="ttc" id="a00057_html"><div class="ttname"><a href="a00057.html">QUESO::BoxSubset</a></div><div class="ttdoc">Class representing a subset of a vector space shaped like a hypercube. </div><div class="ttdef"><b>Definition:</b> <a href="a00241_source.html#l00044">BoxSubset.h:44</a></div></div>
+<div class="ttc" id="a00227_html_acd5cdcdbcbbce29daec684437f511e9f"><div class="ttname"><a href="a00227.html#acd5cdcdbcbbce29daec684437f511e9f">QUESO::VectorSet::m_volume</a></div><div class="ttdeci">double m_volume</div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00100">VectorSet.h:100</a></div></div>
+<div class="ttc" id="a00057_html_a9e78b65ed80f2d11d1161a2fcfbb543d"><div class="ttname"><a href="a00057.html#a9e78b65ed80f2d11d1161a2fcfbb543d">QUESO::BoxSubset::~BoxSubset</a></div><div class="ttdeci">~BoxSubset()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00056">BoxSubset.C:56</a></div></div>
+<div class="ttc" id="a00228_html"><div class="ttname"><a href="a00228.html">QUESO::VectorSpace</a></div><div class="ttdoc">A class representing a vector space. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00049">VectorSet.h:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

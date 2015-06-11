@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/src/ExponentialMatrixCovarianceFunction.C Source File</title>
+<title>queso-0.53.0: src/gp/src/GcmZTildeInfo.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_85aa4481915a0d58eac2c78710df0bea.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_4b3710b33bc76bf67ad04126b28c22f5.html">gp</a></li><li class="navelem"><a class="el" href="dir_c27e6041ef44d82ece3aa63cf0602348.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ExponentialMatrixCovarianceFunction.C</div>  </div>
+<div class="title">GcmZTildeInfo.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00422.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,138 +75,250 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/ExponentialMatrixCovarianceFunction.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/GcmZTildeInfo.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Default constructor -----------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M, <span class="keyword">class</span> Q_V, <span class="keyword">class</span> Q_M&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00055.html#a15ab626ab0e3ee4adcdc4460d79a8cb7">   31</a></span>&#160;<a class="code" href="a00055.html#a15ab626ab0e3ee4adcdc4460d79a8cb7">ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::ExponentialMatrixCovarianceFunction</a>(</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                      prefix,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00176.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; basicDomainSet,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00176.html">VectorSet&lt;Q_V,Q_M&gt;</a>&amp; imageSet,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> Q_M&amp;                       sigmas,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> Q_M&amp;                       as)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00021.html">BaseMatrixCovarianceFunction</a>&lt;P_V,P_M,Q_V,Q_M&gt;(prefix,basicDomainSet,imageSet),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_sigmas(NULL),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_as    (NULL)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    *<a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00021.html#a05865387f77ce48e71ab2448982c5616">m_prefix</a></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="a00055.html#a4da6af8ffd336294a3d7a89c5258099e">m_sigmas</a> = <span class="keyword">new</span> Q_M(sigmas);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="a00055.html#a63e36890c98437a802ba59be08fb166b">m_as</a>     = <span class="keyword">new</span> Q_M(as);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> matrixOrder = <a class="code" href="a00021.html#aa6e05a29048771a3a327b82cea09d480">m_imageSet</a>.<a class="code" href="a00176.html#a923421590baf5bf93cf066e528f927dc">vectorSpace</a>().<a class="code" href="a00177.html#a5829a1f4f996f8307c840b705144d666">dimLocal</a>();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> D_V,<span class="keyword">class</span> D_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00109.html#a624e7903c2d69d6d588e9dcf123176ca">   32</a></span>&#160;<a class="code" href="a00109.html#a624e7903c2d69d6d588e9dcf123176ca">GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::GcmZTildeInfo</a>(</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00122.html">GpmsaComputerModelOptions</a>&amp;                     gcmOptionsObj,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00102.html">GcmJointInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;</a>&amp; jj,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00108.html">GcmZInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;</a>&amp;     z)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  m_env                     (jj.m_env),</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_Cmat_tilde              (m_env,jj.m_omega_space.map(),z.m_Cmat_rank),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_z_tilde_space           (m_env, <span class="stringliteral">&quot;z_tilde_&quot;</span>, z.m_Cmat_rank, NULL),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_Lmat                    (m_env,m_z_tilde_space.map(),z.m_Cmat-&gt;numCols()),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_Lmat_t                  (m_env,z.m_z_space.map(),z.m_Cmat_rank),</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  m_Zvec_tilde_hat          (m_z_tilde_space.zeroVector()),</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  m_tmp_Smat_z_tilde        (m_z_tilde_space.zeroVector()),</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  m_tmp_Smat_extra_tilde    (m_z_tilde_space.zeroVector()),</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  m_tmp_Smat_z_tilde_hat    (m_z_tilde_space.zeroVector()),</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  m_tmp_Smat_z_tilde_hat_inv(m_z_tilde_space.zeroVector())</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<a class="code" href="a00055.html#a4da6af8ffd336294a3d7a89c5258099e">m_sigmas</a>-&gt;numRowsLocal() != matrixOrder,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                      <a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                      <span class="stringliteral">&quot;ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::Constructor()&quot;</span>,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                      <span class="stringliteral">&quot;m_sigmas has invalid number of rows&quot;</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<a class="code" href="a00055.html#a4da6af8ffd336294a3d7a89c5258099e">m_sigmas</a>-&gt;numCols() != matrixOrder,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                      <a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                      <span class="stringliteral">&quot;ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::Constructor()&quot;</span>,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                      <span class="stringliteral">&quot;m_sigmas has invalid number of columns&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<a class="code" href="a00055.html#a63e36890c98437a802ba59be08fb166b">m_as</a>-&gt;numRowsLocal() != matrixOrder,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                      <a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                      <span class="stringliteral">&quot;ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::Constructor()&quot;</span>,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                      <span class="stringliteral">&quot;m_as has invalid number of rows&quot;</span>);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<a class="code" href="a00055.html#a63e36890c98437a802ba59be08fb166b">m_as</a>-&gt;numCols() != matrixOrder,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                      <a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                      <span class="stringliteral">&quot;ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::Constructor()&quot;</span>,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                      <span class="stringliteral">&quot;m_as has invalid number of columns&quot;</span>);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    *<a class="code" href="a00021.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00021.html#a05865387f77ce48e71ab2448982c5616">m_prefix</a></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M, <span class="keyword">class</span> Q_V, <span class="keyword">class</span> Q_M&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00055.html#aa3141a3558de01ca06ca39698e872396">   81</a></span>&#160;<a class="code" href="a00055.html#aa3141a3558de01ca06ca39698e872396">ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::~ExponentialMatrixCovarianceFunction</a>()</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::destructor()&quot;</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">delete</span> m_as;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">delete</span> m_sigmas;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::destructor()&quot;</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">// Math methods -------------------------------------</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M, <span class="keyword">class</span> Q_V, <span class="keyword">class</span> Q_M&gt;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="a00055.html#a039c72a29ea453320cbdb2a6e54a360a">  101</a></span>&#160;<a class="code" href="a00055.html#a039c72a29ea453320cbdb2a6e54a360a">ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::covMatrix</a>(<span class="keyword">const</span> P_V&amp; domainVector1, <span class="keyword">const</span> P_V&amp; domainVector2, Q_M&amp; imageMatrix)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::covMatrix()&quot;</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                          &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> matrixOrder = m_imageSet.vectorSpace().dimLocal();</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(imageMatrix.numRowsLocal() != matrixOrder,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                      <span class="stringliteral">&quot;ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::covMatrix()&quot;</span>,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                      <span class="stringliteral">&quot;imageMatrix has invalid number of rows&quot;</span>);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  std::set&lt;unsigned int&gt; tmpSet;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  tmpSet.insert(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>());</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// Naive formation of &#39;m_Cmat_tilde&#39;</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    D_M matU(z.<a class="code" href="a00108.html#a8f6baa0957b76f7d16047674fd91daed">m_Cmat</a>-&gt;svdMatU());</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> uMatRank   = matU.rank(0.,1.e-8 ); <span class="comment">// todo: should be an option</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> uMatRank14 = matU.rank(0.,1.e-14);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: matU.numRowsLocal() = &quot;</span>  &lt;&lt; matU.numRowsLocal()</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, matU.numCols() = &quot;</span>       &lt;&lt; matU.numCols()</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, matU.rank(0.,1.e-8) = &quot;</span>  &lt;&lt; uMatRank</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, matU.rank(0.,1.e-14) = &quot;</span> &lt;&lt; uMatRank14</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a83c1c036f81651792a74975f2da23ae1">checkingLevel</a>() &gt;= 1) {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      D_M matUcheck(z.<a class="code" href="a00108.html#a507dae47f154105236b51911517fdad3">m_z_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>());</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      D_V vecI(jj.<a class="code" href="a00102.html#a050efe660d2642374a369ad3fc51c1d0">m_omega_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>());</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      D_V vecJ(jj.<a class="code" href="a00102.html#a050efe660d2642374a369ad3fc51c1d0">m_omega_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>());</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; matU.numCols(); ++i) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        matU.getColumn(i,vecI);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = i; j &lt; matU.numCols(); ++j) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;          matU.getColumn(j,vecJ);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;          matUcheck(i,j) = <a class="code" href="a00649.html#a159769395a413f58b974587d5f43bbc7">scalarProduct</a>(vecI,vecJ);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      matUcheck.setPrintHorizontally(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;: m_Cmat_rank = &quot;</span>              &lt;&lt; z.<a class="code" href="a00108.html#ad28dd3bef8aefc574b9bbcbd97de938c">m_Cmat_rank</a></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;, matUcheck.numRowsLocal() = &quot;</span> &lt;&lt; matUcheck.numRowsLocal()</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;, matUcheck.numCols() = &quot;</span>      &lt;&lt; matUcheck.numCols()</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;, matUcheck =\n&quot;</span>               &lt;&lt; matUcheck</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                                &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    D_V vecJ(jj.<a class="code" href="a00102.html#a050efe660d2642374a369ad3fc51c1d0">m_omega_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>());</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; z.<a class="code" href="a00108.html#ad28dd3bef8aefc574b9bbcbd97de938c">m_Cmat_rank</a>; ++j) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      matU.getColumn(j,vecJ);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.setColumn(j,vecJ);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">if</span> (gcmOptionsObj.<a class="code" href="a00122.html#a7df65862f849591c67655eed4b14bf06">m_ov</a>.<a class="code" href="a00104.html#a2669902d3701a4b76654288781db1964">m_dataOutputAllowedSet</a>.find(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>()) != gcmOptionsObj.<a class="code" href="a00122.html#a7df65862f849591c67655eed4b14bf06">m_ov</a>.<a class="code" href="a00104.html#a2669902d3701a4b76654288781db1964">m_dataOutputAllowedSet</a>.end()) {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.subWriteContents(<span class="stringliteral">&quot;Ctilde&quot;</span>,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                                    <span class="stringliteral">&quot;Ctilde2&quot;</span>,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                    <span class="stringliteral">&quot;m&quot;</span>,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                    tmpSet);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Cmat_tilde formed (2)&quot;</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">// Naive formation of &#39;m_Lmat&#39;</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.svdSolve(*(z.<a class="code" href="a00108.html#a8f6baa0957b76f7d16047674fd91daed">m_Cmat</a>),<a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <a class="code" href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">commonConstructor</a>(z);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(imageMatrix.numCols() != matrixOrder,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                      <span class="stringliteral">&quot;ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::covMatrix()&quot;</span>,</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                      <span class="stringliteral">&quot;imageMatrix has invalid number of columns&quot;</span>);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordtype">double</span> tmpSq = -(domainVector1 - domainVector2).norm2Sq();</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; matrixOrder; ++i) {</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; matrixOrder; ++j) {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="keywordtype">double</span> tmp = tmpSq/( (*m_sigmas)(i,j) * (*m_sigmas)(i,j) );</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      imageMatrix(i,j) = (*m_as)(i,j) * std::exp(tmp);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::covMatrix()&quot;</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                          &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  }</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;}</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00055_html_a15ab626ab0e3ee4adcdc4460d79a8cb7"><div class="ttname"><a href="a00055.html#a15ab626ab0e3ee4adcdc4460d79a8cb7">QUESO::ExponentialMatrixCovarianceFunction::ExponentialMatrixCovarianceFunction</a></div><div class="ttdeci">ExponentialMatrixCovarianceFunction(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;basicDomainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet, const Q_M &amp;sigmas, const Q_M &amp;as)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00031">ExponentialMatrixCovarianceFunction.C:31</a></div></div>
-<div class="ttc" id="a00055_html_a039c72a29ea453320cbdb2a6e54a360a"><div class="ttname"><a href="a00055.html#a039c72a29ea453320cbdb2a6e54a360a">QUESO::ExponentialMatrixCovarianceFunction::covMatrix</a></div><div class="ttdeci">void covMatrix(const P_V &amp;domainVector1, const P_V &amp;domainVector2, Q_M &amp;imageMatrix) const </div><div class="ttdoc">Calculates the covariance matrix, given two parameter domains. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00101">ExponentialMatrixCovarianceFunction.C:101</a></div></div>
-<div class="ttc" id="a00018_html_a78b57112bbd0e6dd0e8afec00b40ffa7"><div class="ttname"><a href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">QUESO::BaseEnvironment::worldRank</a></div><div class="ttdeci">int worldRank() const </div><div class="ttdoc">Returns the process world rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00235">Environment.C:235</a></div></div>
-<div class="ttc" id="a00177_html_a5829a1f4f996f8307c840b705144d666"><div class="ttname"><a href="a00177.html#a5829a1f4f996f8307c840b705144d666">QUESO::VectorSpace::dimLocal</a></div><div class="ttdeci">unsigned int dimLocal() const </div><div class="ttdef"><b>Definition:</b> <a href="a00231_source.html#l00199">VectorSpace.C:199</a></div></div>
-<div class="ttc" id="a00176_html"><div class="ttname"><a href="a00176.html">QUESO::VectorSet&lt; P_V, P_M &gt;</a></div></div>
-<div class="ttc" id="a00021_html_aa6e05a29048771a3a327b82cea09d480"><div class="ttname"><a href="a00021.html#aa6e05a29048771a3a327b82cea09d480">QUESO::BaseMatrixCovarianceFunction::m_imageSet</a></div><div class="ttdeci">const VectorSet&lt; Q_V, Q_M &gt; &amp; m_imageSet</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00081">MatrixCovarianceFunction.h:81</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00055_html_aa3141a3558de01ca06ca39698e872396"><div class="ttname"><a href="a00055.html#aa3141a3558de01ca06ca39698e872396">QUESO::ExponentialMatrixCovarianceFunction::~ExponentialMatrixCovarianceFunction</a></div><div class="ttdeci">virtual ~ExponentialMatrixCovarianceFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00081">ExponentialMatrixCovarianceFunction.C:81</a></div></div>
-<div class="ttc" id="a00021_html"><div class="ttname"><a href="a00021.html">QUESO::BaseMatrixCovarianceFunction</a></div><div class="ttdoc">A templated (base) class to accommodate covariance matrix of (random) vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00054">MatrixCovarianceFunction.h:54</a></div></div>
-<div class="ttc" id="a00055_html_a4da6af8ffd336294a3d7a89c5258099e"><div class="ttname"><a href="a00055.html#a4da6af8ffd336294a3d7a89c5258099e">QUESO::ExponentialMatrixCovarianceFunction::m_sigmas</a></div><div class="ttdeci">Q_M * m_sigmas</div><div class="ttdef"><b>Definition:</b> <a href="a00337_source.html#l00075">ExponentialMatrixCovarianceFunction.h:75</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00021_html_a2bf98f6576db775109e240a2d828c578"><div class="ttname"><a href="a00021.html#a2bf98f6576db775109e240a2d828c578">QUESO::BaseMatrixCovarianceFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00078">MatrixCovarianceFunction.h:78</a></div></div>
-<div class="ttc" id="a00055_html_a63e36890c98437a802ba59be08fb166b"><div class="ttname"><a href="a00055.html#a63e36890c98437a802ba59be08fb166b">QUESO::ExponentialMatrixCovarianceFunction::m_as</a></div><div class="ttdeci">Q_M * m_as</div><div class="ttdef"><b>Definition:</b> <a href="a00337_source.html#l00076">ExponentialMatrixCovarianceFunction.h:76</a></div></div>
-<div class="ttc" id="a00021_html_a05865387f77ce48e71ab2448982c5616"><div class="ttname"><a href="a00021.html#a05865387f77ce48e71ab2448982c5616">QUESO::BaseMatrixCovarianceFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00079">MatrixCovarianceFunction.h:79</a></div></div>
-<div class="ttc" id="a00176_html_a923421590baf5bf93cf066e528f927dc"><div class="ttname"><a href="a00176.html#a923421590baf5bf93cf066e528f927dc">QUESO::VectorSet::vectorSpace</a></div><div class="ttdeci">virtual const VectorSpace&lt; V, M &gt; &amp; vectorSpace() const =0</div><div class="ttdoc">Vector space to which this set belongs to. See template specialization. </div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00436">Environment.C:436</a></div></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> D_V,<span class="keyword">class</span> D_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="a00109.html#aa346a6e8542a42804dadf277acf24f2c">  116</a></span>&#160;<a class="code" href="a00109.html#a624e7903c2d69d6d588e9dcf123176ca">GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::GcmZTildeInfo</a>(</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00122.html">GpmsaComputerModelOptions</a>&amp;                               gcmOptionsObj,</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00102.html">GcmJointInfo          &lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;</a>&amp; jj,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00108.html">GcmZInfo              &lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;</a>&amp; z,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00106.html">GcmSimulationTildeInfo&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;</a>&amp;         st,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00103.html">GcmJointTildeInfo     &lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;</a>&amp; jt)</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  :</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  m_env                     (jj.m_env),</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  m_Cmat_tilde              (m_env,jj.m_omega_space.map(),z.m_Cmat_rank),</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  m_z_tilde_space           (m_env, <span class="stringliteral">&quot;z_tilde_&quot;</span>, z.m_Cmat_rank, NULL),</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  m_Lmat                    (m_env,m_z_tilde_space.map(),z.m_Cmat-&gt;numCols()),</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  m_Lmat_t                  (m_env,z.m_z_space.map(),z.m_Cmat_rank),</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  m_Zvec_tilde_hat          (m_z_tilde_space.zeroVector()),</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  m_tmp_Smat_z_tilde        (m_z_tilde_space.zeroVector()),</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  m_tmp_Smat_extra_tilde    (m_z_tilde_space.zeroVector()),</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  m_tmp_Smat_z_tilde_hat    (m_z_tilde_space.zeroVector()),</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  m_tmp_Smat_z_tilde_hat_inv(m_z_tilde_space.zeroVector())</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;{</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(2)&quot;</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  }</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  std::set&lt;unsigned int&gt; tmpSet;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  tmpSet.insert(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>());</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.cwSet(0.);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.cwSet(                             0,                        0,jt.<a class="code" href="a00103.html#ab12a2d3b360bb8945ecdf88f16081a2a">m_Bmat_tilde</a>);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.cwSet(jt.<a class="code" href="a00103.html#ab12a2d3b360bb8945ecdf88f16081a2a">m_Bmat_tilde</a>.numRowsLocal(),jt.<a class="code" href="a00103.html#ab12a2d3b360bb8945ecdf88f16081a2a">m_Bmat_tilde</a>.numCols(),st.<a class="code" href="a00106.html#a69f504bd1df103cd0338e58118329460">m_Kmat_tilde</a>);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">if</span> (gcmOptionsObj.<a class="code" href="a00122.html#a7df65862f849591c67655eed4b14bf06">m_ov</a>.<a class="code" href="a00104.html#a2669902d3701a4b76654288781db1964">m_dataOutputAllowedSet</a>.find(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>()) != gcmOptionsObj.<a class="code" href="a00122.html#a7df65862f849591c67655eed4b14bf06">m_ov</a>.<a class="code" href="a00104.html#a2669902d3701a4b76654288781db1964">m_dataOutputAllowedSet</a>.end()) {</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.subWriteContents(<span class="stringliteral">&quot;Ctilde&quot;</span>,</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                                    <span class="stringliteral">&quot;Ctilde1&quot;</span>,</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                                    <span class="stringliteral">&quot;m&quot;</span>,</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                                    tmpSet);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    }</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(2)&quot;</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Cmat_tilde formed (1)&quot;</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    }</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.cwSet(0.);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.cwSet(                        0,                   0,jt.<a class="code" href="a00103.html#a71fdeb509b89176152970e8559c22ba9">m_Lbmat</a>);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.cwSet(jt.<a class="code" href="a00103.html#a71fdeb509b89176152970e8559c22ba9">m_Lbmat</a>.numRowsLocal(),jt.<a class="code" href="a00103.html#a71fdeb509b89176152970e8559c22ba9">m_Lbmat</a>.numCols(),st.<a class="code" href="a00106.html#af9ad19c702c196f97d6f681a5736d24f">m_Lkmat</a>);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordflow">if</span> (gcmOptionsObj.<a class="code" href="a00122.html#a7df65862f849591c67655eed4b14bf06">m_ov</a>.<a class="code" href="a00104.html#a2669902d3701a4b76654288781db1964">m_dataOutputAllowedSet</a>.find(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>()) != gcmOptionsObj.<a class="code" href="a00122.html#a7df65862f849591c67655eed4b14bf06">m_ov</a>.<a class="code" href="a00104.html#a2669902d3701a4b76654288781db1964">m_dataOutputAllowedSet</a>.end()) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.subWriteContents(<span class="stringliteral">&quot;Lmat&quot;</span>,</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                              <span class="stringliteral">&quot;Lmat&quot;</span>,</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                              <span class="stringliteral">&quot;m&quot;</span>,</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                              tmpSet);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    }</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(2)&quot;</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Lmat_tilde formed&quot;</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <a class="code" href="a00109.html#a26c6a1bb51c7fe79d0d4b27849c1d5af">m_Zvec_tilde_hat</a>.cwSetConcatenated(jt.<a class="code" href="a00103.html#afd49d0600ccd23ebd6a8a4521d2a60c5">m_Zvec_tilde_hat_vu</a>,st.<a class="code" href="a00106.html#aab65391751ac9a1622cf571540e78df7">m_Zvec_tilde_hat_w</a>); <span class="comment">// todo_rrr: not in constructor(1) ???</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <a class="code" href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">commonConstructor</a>(z);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> D_V,<span class="keyword">class</span> D_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="a00109.html#a796f6cbeeb6673e145fec824428d4cf4">  177</a></span>&#160;<a class="code" href="a00109.html#a796f6cbeeb6673e145fec824428d4cf4">GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::~GcmZTildeInfo</a>()</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;{</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;}</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> D_V,<span class="keyword">class</span> D_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">  183</a></span>&#160;<a class="code" href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::commonConstructor</a>(<span class="keyword">const</span> <a class="code" href="a00108.html">GcmZInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;</a>&amp; z)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;{</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cMatTildeRank   = m_Cmat_tilde.rank(0.,1.e-8 ); <span class="comment">// todo: should be an option</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cMatTildeRank14 = m_Cmat_tilde.rank(0.,1.e-14);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">if</span> (m_env.subDisplayFile()) {</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;      *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Cmat_tilde.numRowsLocal() = &quot;</span>  &lt;&lt; m_Cmat_tilde.numRowsLocal()</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Cmat_tilde.numCols() = &quot;</span>       &lt;&lt; m_Cmat_tilde.numCols()</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Cmat_tilde.rank(0.,1.e-8) = &quot;</span>  &lt;&lt; cMatTildeRank</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Cmat_tilde.rank(0.,1.e-14) = &quot;</span> &lt;&lt; cMatTildeRank14</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    }</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(cMatTildeRank, z.<a class="code" href="a00108.html#ad28dd3bef8aefc574b9bbcbd97de938c">m_Cmat_rank</a>, <span class="stringliteral">&quot;&#39;m_Cmat_tilde&#39; should have full column rank&quot;</span>);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <a class="code" href="a00319.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(m_Lmat.numRowsGlobal(), m_Lmat.numCols(), <span class="stringliteral">&quot;&#39;m_Lmat&#39; should be a &#39;horizontal&#39; rectangular matrix&quot;</span>);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="comment">//******************************************************************************</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">// Tilde situation: form &#39;m_Lmat_t&#39;</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="comment">//******************************************************************************</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    m_Lmat_t.fillWithTranspose(0,0,m_Lmat,<span class="keyword">true</span>,<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> lMatRank   = m_Lmat_t.rank(0.,1.e-8 ); <span class="comment">// todo: should be an option</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> lMatRank14 = m_Lmat_t.rank(0.,1.e-14);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">if</span> (m_env.subDisplayFile()) {</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;      *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::commonConstructor()&quot;</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Lmat.numRowsLocal() = &quot;</span>  &lt;&lt; m_Lmat.numRowsLocal()</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Lmat.numCols() = &quot;</span>       &lt;&lt; m_Lmat.numCols()</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Lmat.rank(0.,1.e-8) = &quot;</span>  &lt;&lt; lMatRank</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Lmat.rank(0.,1.e-14) = &quot;</span> &lt;&lt; lMatRank14</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(lMatRank, z.<a class="code" href="a00108.html#ad28dd3bef8aefc574b9bbcbd97de938c">m_Cmat_rank</a>, <span class="stringliteral">&quot;&#39;m_Lmat&#39; should have full row rank&quot;</span>);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">if</span> (m_env.checkingLevel() &gt;= 1) {</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      <span class="comment">// Check if C == C_tilde * L</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      D_M tmpCmat(m_Cmat_tilde * m_Lmat);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;      tmpCmat -= *z.<a class="code" href="a00108.html#a8f6baa0957b76f7d16047674fd91daed">m_Cmat</a>;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      <span class="keywordtype">double</span> cDiffNorm = tmpCmat.normFrob();</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      <span class="keywordflow">if</span> (m_env.subDisplayFile()) {</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::commonConstructor()&quot;</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;: ||tmpC - C||_2 = &quot;</span> &lt;&lt; cDiffNorm</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                                &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;      }</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    }</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;}</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00109.html">QUESO::GcmZTildeInfo&lt;QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00122_html"><div class="ttname"><a href="a00122.html">QUESO::GpmsaComputerModelOptions</a></div><div class="ttdef"><b>Definition:</b> <a href="a00407_source.html#l00132">GpmsaComputerModelOptions.h:132</a></div></div>
+<div class="ttc" id="a00109_html_a26c6a1bb51c7fe79d0d4b27849c1d5af"><div class="ttname"><a href="a00109.html#a26c6a1bb51c7fe79d0d4b27849c1d5af">QUESO::GcmZTildeInfo::m_Zvec_tilde_hat</a></div><div class="ttdeci">D_V m_Zvec_tilde_hat</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00061">GcmZTildeInfo.h:61</a></div></div>
+<div class="ttc" id="a00103_html"><div class="ttname"><a href="a00103.html">QUESO::GcmJointTildeInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="a00399_source.html#l00040">GcmJointTildeInfo.h:40</a></div></div>
+<div class="ttc" id="a00109_html_ae4398f7df32219bec1b8c476ce8ff2ae"><div class="ttname"><a href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">QUESO::GcmZTildeInfo::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00056">GcmZTildeInfo.h:56</a></div></div>
+<div class="ttc" id="a00108_html_ad28dd3bef8aefc574b9bbcbd97de938c"><div class="ttname"><a href="a00108.html#ad28dd3bef8aefc574b9bbcbd97de938c">QUESO::GcmZInfo::m_Cmat_rank</a></div><div class="ttdeci">unsigned int m_Cmat_rank</div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00065">GcmZInfo.h:65</a></div></div>
+<div class="ttc" id="a00109_html_a328d668cc10c7f10c1ab5664a68476b3"><div class="ttname"><a href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">QUESO::GcmZTildeInfo::m_Cmat_tilde</a></div><div class="ttdeci">D_M m_Cmat_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00057">GcmZTildeInfo.h:57</a></div></div>
+<div class="ttc" id="a00109_html_a624e7903c2d69d6d588e9dcf123176ca"><div class="ttname"><a href="a00109.html#a624e7903c2d69d6d588e9dcf123176ca">QUESO::GcmZTildeInfo::GcmZTildeInfo</a></div><div class="ttdeci">GcmZTildeInfo(const GpmsaComputerModelOptions &amp;gcmOptionsObj, const GcmJointInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;jj, const GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;z)</div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00032">GcmZTildeInfo.C:32</a></div></div>
+<div class="ttc" id="a00106_html"><div class="ttname"><a href="a00106.html">QUESO::GcmSimulationTildeInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="a00401_source.html#l00040">GcmSimulationTildeInfo.h:40</a></div></div>
+<div class="ttc" id="a00104_html_a2669902d3701a4b76654288781db1964"><div class="ttname"><a href="a00104.html#a2669902d3701a4b76654288781db1964">QUESO::GcmOptionsValues::m_dataOutputAllowedSet</a></div><div class="ttdeci">std::set&lt; unsigned int &gt; m_dataOutputAllowedSet</div><div class="ttdef"><b>Definition:</b> <a href="a00407_source.html#l00079">GpmsaComputerModelOptions.h:79</a></div></div>
+<div class="ttc" id="a00228_html_a92e963bb5cab3eecd290dfe4b8f03b04"><div class="ttname"><a href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">QUESO::VectorSpace::zeroVector</a></div><div class="ttdeci">const V &amp; zeroVector() const </div><div class="ttdoc">Returns a vector filled with zeros. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00189">VectorSpace.C:189</a></div></div>
+<div class="ttc" id="a00103_html_ab12a2d3b360bb8945ecdf88f16081a2a"><div class="ttname"><a href="a00103.html#ab12a2d3b360bb8945ecdf88f16081a2a">QUESO::GcmJointTildeInfo::m_Bmat_tilde</a></div><div class="ttdeci">D_M m_Bmat_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00399_source.html#l00049">GcmJointTildeInfo.h:49</a></div></div>
+<div class="ttc" id="a00109_html"><div class="ttname"><a href="a00109.html">QUESO::GcmZTildeInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00043">GcmZTildeInfo.h:43</a></div></div>
+<div class="ttc" id="a00319_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00085">asserts.h:85</a></div></div>
+<div class="ttc" id="a00649_html_a159769395a413f58b974587d5f43bbc7"><div class="ttname"><a href="a00649.html#a159769395a413f58b974587d5f43bbc7">QUESO::scalarProduct</a></div><div class="ttdeci">double scalarProduct(const GslVector &amp;x, const GslVector &amp;y)</div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l01150">GslVector.C:1150</a></div></div>
+<div class="ttc" id="a00108_html_a507dae47f154105236b51911517fdad3"><div class="ttname"><a href="a00108.html#a507dae47f154105236b51911517fdad3">QUESO::GcmZInfo::m_z_space</a></div><div class="ttdeci">VectorSpace&lt; D_V, D_M &gt; m_z_space</div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00061">GcmZInfo.h:61</a></div></div>
+<div class="ttc" id="a00103_html_afd49d0600ccd23ebd6a8a4521d2a60c5"><div class="ttname"><a href="a00103.html#afd49d0600ccd23ebd6a8a4521d2a60c5">QUESO::GcmJointTildeInfo::m_Zvec_tilde_hat_vu</a></div><div class="ttdeci">D_V m_Zvec_tilde_hat_vu</div><div class="ttdef"><b>Definition:</b> <a href="a00399_source.html#l00055">GcmJointTildeInfo.h:55</a></div></div>
+<div class="ttc" id="a00109_html_a796f6cbeeb6673e145fec824428d4cf4"><div class="ttname"><a href="a00109.html#a796f6cbeeb6673e145fec824428d4cf4">QUESO::GcmZTildeInfo::~GcmZTildeInfo</a></div><div class="ttdeci">~GcmZTildeInfo()</div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00177">GcmZTildeInfo.C:177</a></div></div>
+<div class="ttc" id="a00103_html_a71fdeb509b89176152970e8559c22ba9"><div class="ttname"><a href="a00103.html#a71fdeb509b89176152970e8559c22ba9">QUESO::GcmJointTildeInfo::m_Lbmat</a></div><div class="ttdeci">D_M m_Lbmat</div><div class="ttdef"><b>Definition:</b> <a href="a00399_source.html#l00052">GcmJointTildeInfo.h:52</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
+<div class="ttc" id="a00319_html_a9fbd2830796070462f06425899f3d6d5"><div class="ttname"><a href="a00319.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a></div><div class="ttdeci">#define queso_require_less_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00087">asserts.h:87</a></div></div>
+<div class="ttc" id="a00108_html_a8f6baa0957b76f7d16047674fd91daed"><div class="ttname"><a href="a00108.html#a8f6baa0957b76f7d16047674fd91daed">QUESO::GcmZInfo::m_Cmat</a></div><div class="ttdeci">D_M * m_Cmat</div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00064">GcmZInfo.h:64</a></div></div>
+<div class="ttc" id="a00106_html_af9ad19c702c196f97d6f681a5736d24f"><div class="ttname"><a href="a00106.html#af9ad19c702c196f97d6f681a5736d24f">QUESO::GcmSimulationTildeInfo::m_Lkmat</a></div><div class="ttdeci">Q_M m_Lkmat</div><div class="ttdef"><b>Definition:</b> <a href="a00401_source.html#l00050">GcmSimulationTildeInfo.h:50</a></div></div>
+<div class="ttc" id="a00032_html_a6ae3174897a9b3a4c85fa18da5d4c16f"><div class="ttname"><a href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">QUESO::BaseEnvironment::subId</a></div><div class="ttdeci">unsigned int subId() const </div><div class="ttdoc">Access function to the number of each sub-environment Id: m_subId. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00295">Environment.C:295</a></div></div>
+<div class="ttc" id="a00109_html_a3201b9ceb9937a848f309e484c9856cb"><div class="ttname"><a href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">QUESO::GcmZTildeInfo::m_Lmat</a></div><div class="ttdeci">D_M m_Lmat</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00059">GcmZTildeInfo.h:59</a></div></div>
+<div class="ttc" id="a00102_html_a050efe660d2642374a369ad3fc51c1d0"><div class="ttname"><a href="a00102.html#a050efe660d2642374a369ad3fc51c1d0">QUESO::GcmJointInfo::m_omega_space</a></div><div class="ttdeci">VectorSpace&lt; D_V, D_M &gt; m_omega_space</div><div class="ttdef"><b>Definition:</b> <a href="a00398_source.html#l00104">GcmJointInfo.h:104</a></div></div>
+<div class="ttc" id="a00108_html"><div class="ttname"><a href="a00108.html">QUESO::GcmZInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00040">GcmZInfo.h:40</a></div></div>
+<div class="ttc" id="a00032_html_a83c1c036f81651792a74975f2da23ae1"><div class="ttname"><a href="a00032.html#a83c1c036f81651792a74975f2da23ae1">QUESO::BaseEnvironment::checkingLevel</a></div><div class="ttdeci">unsigned int checkingLevel() const </div><div class="ttdoc">Access function to private attribute m_checkingLevel. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00410">Environment.C:410</a></div></div>
+<div class="ttc" id="a00106_html_aab65391751ac9a1622cf571540e78df7"><div class="ttname"><a href="a00106.html#aab65391751ac9a1622cf571540e78df7">QUESO::GcmSimulationTildeInfo::m_Zvec_tilde_hat_w</a></div><div class="ttdeci">Q_V m_Zvec_tilde_hat_w</div><div class="ttdef"><b>Definition:</b> <a href="a00401_source.html#l00053">GcmSimulationTildeInfo.h:53</a></div></div>
+<div class="ttc" id="a00122_html_a7df65862f849591c67655eed4b14bf06"><div class="ttname"><a href="a00122.html#a7df65862f849591c67655eed4b14bf06">QUESO::GpmsaComputerModelOptions::m_ov</a></div><div class="ttdeci">GcmOptionsValues m_ov</div><div class="ttdef"><b>Definition:</b> <a href="a00407_source.html#l00142">GpmsaComputerModelOptions.h:142</a></div></div>
+<div class="ttc" id="a00106_html_a69f504bd1df103cd0338e58118329460"><div class="ttname"><a href="a00106.html#a69f504bd1df103cd0338e58118329460">QUESO::GcmSimulationTildeInfo::m_Kmat_tilde</a></div><div class="ttdeci">Q_M m_Kmat_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00401_source.html#l00048">GcmSimulationTildeInfo.h:48</a></div></div>
+<div class="ttc" id="a00102_html"><div class="ttname"><a href="a00102.html">QUESO::GcmJointInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="a00398_source.html#l00039">GcmJointInfo.h:39</a></div></div>
+<div class="ttc" id="a00109_html_a173c1e39bc87a2ccc3fb73a459693cc3"><div class="ttname"><a href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">QUESO::GcmZTildeInfo::commonConstructor</a></div><div class="ttdeci">void commonConstructor(const GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;z)</div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00183">GcmZTildeInfo.C:183</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

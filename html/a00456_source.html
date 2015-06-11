@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/src/JeffreysVectorRealizer.C Source File</title>
+<title>queso-0.53.0: src/misc/src/StdOneDGrid.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_85aa4481915a0d58eac2c78710df0bea.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_cef55f19861ce62c0ca627401191ab0f.html">misc</a></li><li class="navelem"><a class="el" href="dir_15cf634b6a809d03479bbc24f9ccd87a.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">JeffreysVectorRealizer.C</div>  </div>
+<div class="title">StdOneDGrid.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00456.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,96 +75,88 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/JeffreysVectorRealizer.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/StdOneDGrid.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00109.html#a021a570c651d8e2145656ebc47486b30">   33</a></span>&#160;<a class="code" href="a00109.html#a021a570c651d8e2145656ebc47486b30">JeffreysVectorRealizer&lt;V,M&gt;::JeffreysVectorRealizer</a>(</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00176.html">VectorSet&lt;V,M&gt;</a>&amp; unifiedImageSet)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00031.html">BaseVectorRealizer</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;gen&quot;</span>).c_str(),unifiedImageSet,std::numeric_limits&lt;unsigned int&gt;::max())</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    *<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering JeffreysVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00031.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    *<a class="code" href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving JeffreysVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00031.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00109.html#a62c3dae91d392779204eba228470b65f">   53</a></span>&#160;<a class="code" href="a00109.html#a62c3dae91d392779204eba228470b65f">JeffreysVectorRealizer&lt;V,M&gt;::~JeffreysVectorRealizer</a>()</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// Realization-related methods----------------------</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="a00109.html#a505bdd78f3ef70a7227f57aa6ef6df04">   59</a></span>&#160;<a class="code" href="a00109.html#a505bdd78f3ef70a7227f57aa6ef6df04">JeffreysVectorRealizer&lt;V,M&gt;::realization</a>(V&amp; nextValues)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00041.html">BoxSubset&lt;V,M&gt;</a>* imageBox = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="a00041.html">BoxSubset&lt;V,M&gt;</a>* <span class="keyword">&gt;</span>(&amp;m_unifiedImageSet);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00209.html#abc4d171b8f9df81014b10ac86e84b3b2">   30</a></span>&#160;<a class="code" href="a00209.html#abc4d171b8f9df81014b10ac86e84b3b2">StdOneDGrid&lt;T&gt;::StdOneDGrid</a>(</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; env,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                   prefix,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> std::vector&lt;T&gt;&amp;         points)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00037.html">BaseOneDGrid</a>&lt;T&gt;(env,prefix),</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  m_points              (points)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    *<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering StdOneDGrid&lt;T&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00037.html#af5fa59e47fae9f6195b00e5bec8310f8">m_prefix</a></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    *<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving StdOneDGrid&lt;T&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00037.html#af5fa59e47fae9f6195b00e5bec8310f8">m_prefix</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00209.html#ab001d3cccbda4c4c288e5f6a3e398574">   52</a></span>&#160;<a class="code" href="a00209.html#ab001d3cccbda4c4c288e5f6a3e398574">StdOneDGrid&lt;T&gt;::~StdOneDGrid</a>()</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="a00209.html#a006574772a0021d68c6f5c98e2db3458">   58</a></span>&#160;<a class="code" href="a00209.html#a006574772a0021d68c6f5c98e2db3458">StdOneDGrid&lt;T&gt;::size</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">return</span> m_points.size();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">if</span> (imageBox == NULL) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="a00233.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;For JeffreysVectorRealizer&lt;V,M&gt;::realization(), only box images are supported right now&quot;</span>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">//take log of Jeffreys bounds to set uniform bounds</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="a00095.html">GslVector</a> logMinValues(imageBox-&gt;<a class="code" href="a00041.html#a57d3ba7df60a38abc4c161ff78f4a567">minValues</a>());</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; logMinValues.sizeLocal(); ++i) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> (logMinValues[i] &lt; 0.0) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <a class="code" href="a00233.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;The minimum value for a Jeffreys distribution should be greater than or equal to zero.&quot;</span>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      logMinValues[i] = std::log(logMinValues[i]);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="a00095.html">GslVector</a> logMaxValues(imageBox-&gt;<a class="code" href="a00041.html#a47616371623019a8c6399d5b3661d25b">maxValues</a>());</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; logMaxValues.sizeLocal(); ++i) {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span> (logMaxValues[i] &lt;= 0.0) {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <a class="code" href="a00233.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;The maximum value for a Jeffreys distribution should be greater than zero.&quot;</span>);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      logMaxValues[i] = std::log(logMaxValues[i]);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;T</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00209.html#a08cb60749c59ff27239c231d6a0f1eca">   65</a></span>&#160;<a class="code" href="a00209.html#a08cb60749c59ff27239c231d6a0f1eca">StdOneDGrid&lt;T&gt;::operator[]</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="a00319.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(i, m_points.size(), <span class="stringliteral">&quot;too large i&quot;</span>);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">return</span> m_points[i];</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00209.html#aaf32f8fe97724ad2d23d5be9b2faeaae">   74</a></span>&#160;<a class="code" href="a00209.html#aaf32f8fe97724ad2d23d5be9b2faeaae">StdOneDGrid&lt;T&gt;::findIntervalId</a>(<span class="keyword">const</span> T&amp; paramValue)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <a class="code" href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!((paramValue &lt; m_points[0]) || (m_points[m_points.size()-1] &lt; paramValue)), <span class="stringliteral">&quot;paramValue is out of domain&quot;</span>);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> iMax = m_points.size();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 1; <span class="comment">// Yes, &#39;1&#39;</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordflow">for</span> (i = 1; i &lt; iMax; ++i) { <span class="comment">// Yes, &#39;1&#39;</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">if</span> (paramValue &lt; m_points[i]) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      i--;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  nextValues.cwSetUniform(logMinValues,logMaxValues);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; nextValues.sizeLocal(); ++i) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    nextValues[i] = std::exp(nextValues[i]);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00109.html">QUESO::JeffreysVectorRealizer&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00109_html_a021a570c651d8e2145656ebc47486b30"><div class="ttname"><a href="a00109.html#a021a570c651d8e2145656ebc47486b30">QUESO::JeffreysVectorRealizer::JeffreysVectorRealizer</a></div><div class="ttdeci">JeffreysVectorRealizer(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00456_source.html#l00033">JeffreysVectorRealizer.C:33</a></div></div>
-<div class="ttc" id="a00041_html_a47616371623019a8c6399d5b3661d25b"><div class="ttname"><a href="a00041.html#a47616371623019a8c6399d5b3661d25b">QUESO::BoxSubset::maxValues</a></div><div class="ttdeci">const V &amp; maxValues() const </div><div class="ttdoc">Vector of the maximum values of the box subset. </div><div class="ttdef"><b>Definition:</b> <a href="a00211_source.html#l00088">BoxSubset.C:88</a></div></div>
-<div class="ttc" id="a00176_html"><div class="ttname"><a href="a00176.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00207_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00041_html_a57d3ba7df60a38abc4c161ff78f4a567"><div class="ttname"><a href="a00041.html#a57d3ba7df60a38abc4c161ff78f4a567">QUESO::BoxSubset::minValues</a></div><div class="ttdeci">const V &amp; minValues() const </div><div class="ttdoc">Vector of the minimum values of the box subset. </div><div class="ttdef"><b>Definition:</b> <a href="a00211_source.html#l00082">BoxSubset.C:82</a></div></div>
-<div class="ttc" id="a00041_html"><div class="ttname"><a href="a00041.html">QUESO::BoxSubset</a></div><div class="ttdoc">Class representing a subset of a vector space shaped like a hypercube. </div><div class="ttdef"><b>Definition:</b> <a href="a00190_source.html#l00041">BoxSubset.h:41</a></div></div>
-<div class="ttc" id="a00109_html"><div class="ttname"><a href="a00109.html">QUESO::JeffreysVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from a jeffreys probability density distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00043">JeffreysVectorRealizer.h:43</a></div></div>
-<div class="ttc" id="a00233_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00233.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00233_source.html#l00091">asserts.h:91</a></div></div>
-<div class="ttc" id="a00109_html_a505bdd78f3ef70a7227f57aa6ef6df04"><div class="ttname"><a href="a00109.html#a505bdd78f3ef70a7227f57aa6ef6df04">QUESO::JeffreysVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdoc">Draws a realization. </div><div class="ttdef"><b>Definition:</b> <a href="a00456_source.html#l00059">JeffreysVectorRealizer.C:59</a></div></div>
-<div class="ttc" id="a00095_html"><div class="ttname"><a href="a00095.html">QUESO::GslVector</a></div><div class="ttdoc">Class for vector operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00247_source.html#l00048">GslVector.h:48</a></div></div>
-<div class="ttc" id="a00031_html"><div class="ttname"><a href="a00031.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00410_source.html#l00053">VectorRealizer.h:53</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00031_html_acde246c52f82d8ed687d91cfac14c29c"><div class="ttname"><a href="a00031.html#acde246c52f82d8ed687d91cfac14c29c">QUESO::BaseVectorRealizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00410_source.html#l00081">VectorRealizer.h:81</a></div></div>
-<div class="ttc" id="a00031_html_ac5559b6921816ccaed7afc2d342c2a32"><div class="ttname"><a href="a00031.html#ac5559b6921816ccaed7afc2d342c2a32">QUESO::BaseVectorRealizer::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00410_source.html#l00082">VectorRealizer.h:82</a></div></div>
-<div class="ttc" id="a00109_html_a62c3dae91d392779204eba228470b65f"><div class="ttname"><a href="a00109.html#a62c3dae91d392779204eba228470b65f">QUESO::JeffreysVectorRealizer::~JeffreysVectorRealizer</a></div><div class="ttdeci">~JeffreysVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00456_source.html#l00053">JeffreysVectorRealizer.C:53</a></div></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordflow">return</span> i;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00396">Environment.C:396</a></div></div>
+<div class="ttc" id="a00037_html_af5fa59e47fae9f6195b00e5bec8310f8"><div class="ttname"><a href="a00037.html#af5fa59e47fae9f6195b00e5bec8310f8">QUESO::BaseOneDGrid::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00439_source.html#l00083">OneDGrid.h:83</a></div></div>
+<div class="ttc" id="a00209_html_a006574772a0021d68c6f5c98e2db3458"><div class="ttname"><a href="a00209.html#a006574772a0021d68c6f5c98e2db3458">QUESO::StdOneDGrid::size</a></div><div class="ttdeci">unsigned int size() const </div><div class="ttdoc">Grid size; the amount of points which defines the grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00456_source.html#l00058">StdOneDGrid.C:58</a></div></div>
+<div class="ttc" id="a00037_html_a668a0033829b907fac9e13466419b7b1"><div class="ttname"><a href="a00037.html#a668a0033829b907fac9e13466419b7b1">QUESO::BaseOneDGrid::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00439_source.html#l00082">OneDGrid.h:82</a></div></div>
+<div class="ttc" id="a00319_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00069">asserts.h:69</a></div></div>
+<div class="ttc" id="a00209_html_abc4d171b8f9df81014b10ac86e84b3b2"><div class="ttname"><a href="a00209.html#abc4d171b8f9df81014b10ac86e84b3b2">QUESO::StdOneDGrid::StdOneDGrid</a></div><div class="ttdeci">StdOneDGrid(const BaseEnvironment &amp;env, const char *prefix, const std::vector&lt; T &gt; &amp;points)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00456_source.html#l00030">StdOneDGrid.C:30</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
+<div class="ttc" id="a00319_html_a9fbd2830796070462f06425899f3d6d5"><div class="ttname"><a href="a00319.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a></div><div class="ttdeci">#define queso_require_less_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00087">asserts.h:87</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00327_source.html#l00193">Environment.h:193</a></div></div>
+<div class="ttc" id="a00037_html"><div class="ttname"><a href="a00037.html">QUESO::BaseOneDGrid</a></div><div class="ttdoc">Base class for accommodating one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00439_source.html#l00046">OneDGrid.h:46</a></div></div>
+<div class="ttc" id="a00209_html_aaf32f8fe97724ad2d23d5be9b2faeaae"><div class="ttname"><a href="a00209.html#aaf32f8fe97724ad2d23d5be9b2faeaae">QUESO::StdOneDGrid::findIntervalId</a></div><div class="ttdeci">unsigned int findIntervalId(const T &amp;paramValue) const </div><div class="ttdoc">Finds the ID of an interval. See template specialization. </div><div class="ttdef"><b>Definition:</b> <a href="a00456_source.html#l00074">StdOneDGrid.C:74</a></div></div>
+<div class="ttc" id="a00209_html_ab001d3cccbda4c4c288e5f6a3e398574"><div class="ttname"><a href="a00209.html#ab001d3cccbda4c4c288e5f6a3e398574">QUESO::StdOneDGrid::~StdOneDGrid</a></div><div class="ttdeci">~StdOneDGrid()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00456_source.html#l00052">StdOneDGrid.C:52</a></div></div>
+<div class="ttc" id="a00209_html_a08cb60749c59ff27239c231d6a0f1eca"><div class="ttname"><a href="a00209.html#a08cb60749c59ff27239c231d6a0f1eca">QUESO::StdOneDGrid::operator[]</a></div><div class="ttdeci">T operator[](unsigned int i) const </div><div class="ttdoc">Returns the position of the i-th point in the grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00456_source.html#l00065">StdOneDGrid.C:65</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

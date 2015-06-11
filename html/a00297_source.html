@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/src/RngBoost.C Source File</title>
+<title>queso-0.53.0: src/contrib/ANN/src/bd_tree.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,133 +43,140 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_bd26773dc971f4fa3aa1d8bd68fbf230.html">contrib</a></li><li class="navelem"><a class="el" href="dir_9b88879957fe8db0821d93727895fef3.html">ANN</a></li><li class="navelem"><a class="el" href="dir_162f6fcbd574a601bad28c5358416498.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">RngBoost.C</div>  </div>
+<div class="title">bd_tree.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00297.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor,</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/RngBoost.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;mpi.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Default constructor ------------------------------</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00141.html#a6fa78750ef38de7034414b5e701bc544">   31</a></span>&#160;<a class="code" href="a00141.html#a6fa78750ef38de7034414b5e701bc544">RngBoost::RngBoost</a>()</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  :</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <a class="code" href="a00139.html">RngBase</a>()</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                      <a class="code" href="a00139.html#a94515d2b7d493d8e4e238628716dd11b">m_worldRank</a>,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                      <span class="stringliteral">&quot;RngBoost::constructor(), default&quot;</span>,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                      <span class="stringliteral">&quot;should not be used by user&quot;</span>);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="a00141.html#a8d2d2582ba8c3c892e0e20798730f0a9">   42</a></span>&#160;<a class="code" href="a00141.html#a6fa78750ef38de7034414b5e701bc544">RngBoost::RngBoost</a>(<span class="keywordtype">int</span> seed, <span class="keywordtype">int</span> worldRank)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  :</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="a00139.html">RngBase</a>(seed,worldRank)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="comment">//m_rng(seed)</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="a00141.html#a94c246d855ea22332b0dafc0891e328f">resetSeed</a>(seed);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//TODO Find a suitable test for here; Kemelli todo</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//   UQ_FATAL_TEST_MACRO(true,</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">//                       m_worldRank,</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">//                       &quot;RngBoos::constructor()&quot;,</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">//                       &quot;Kemelli todo: boost rng&quot;);</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00141.html#a96ffa32ae3700ca164db8799d32b19ca">   56</a></span>&#160;<a class="code" href="a00141.html#a96ffa32ae3700ca164db8799d32b19ca">RngBoost::~RngBoost</a>()</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="comment">//this function does nothing</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<a href="a00297.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// File:                        bd_tree.h</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Programmer:          David Mount</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// Description:         Declarations for standard bd-tree routines</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Last modified:       01/04/05 (Version 1.0)</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (c) 1997-2005 University of Maryland and Sunil Arya and</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// David Mount.  All Rights Reserved.</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// This software and related documentation is part of the Approximate</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Nearest Neighbor Library (ANN).  This software is provided under</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// the provisions of the Lesser GNU Public License (LGPL).  See the</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// file ../ReadMe.txt for further information.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// The University of Maryland (U.M.) and the authors make no</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// representations about the suitability or fitness of this software for</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// any purpose.  It is provided &quot;as is&quot; without express or implied</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// warranty.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// History:</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//      Revision 0.1  03/04/98</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//              Initial release</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//      Revision 1.0  04/01/05</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//              Changed IN, OUT to ANN_IN, ANN_OUT</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifndef ANN_bd_tree_H</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ANN_bd_tree_H</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="a00288.html">ANN/ANNx.h</a>&gt;</span>                                   <span class="comment">// all ANN includes</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00309.html">kd_tree.h</a>&quot;</span>                                    <span class="comment">// kd-tree includes</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//      bd-tree shrinking node.</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//              The main addition in the bd-tree is the shrinking node, which</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//              is declared here.</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//              Shrinking nodes are defined by list of orthogonal halfspaces.</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//              These halfspaces define a (possibly unbounded) orthogonal</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//              rectangle.  There are two children, in and out.  Points that</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//              lie within this rectangle are stored in the in-child, and the</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//              other points are stored in the out-child.</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//              We use a list of orthogonal halfspaces rather than an</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">//              orthogonal rectangle object because typically the number of</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">//              sides of the shrinking box will be much smaller than the</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">//              worst case bound of 2*dim.</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//              BEWARE: Note that constructor just copies the pointer to the</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">//              bounding array, but the destructor deallocates it.  This is</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">//              rather poor practice, but happens to be convenient.  The list</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">//              is allocated in the bd-tree building procedure rbd_tree() just</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">//              prior to construction, and is used for no other purposes.</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">//              WARNING: In the near neighbor searching code it is assumed that</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">//              the list of bounding halfspaces is irredundant, meaning that there</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//              are no two distinct halfspaces in the list with the same outward</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//              pointing normals.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// Sampling methods ---------------------------------</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="a00141.html#a94c246d855ea22332b0dafc0891e328f">   63</a></span>&#160;<a class="code" href="a00141.html#a94c246d855ea22332b0dafc0891e328f">RngBoost::resetSeed</a>(<span class="keywordtype">int</span> newSeed)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>.seed(newSeed);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="a00141.html#aad1548eec706aeb6580af163bd80e0a9">   72</a></span>&#160;<a class="code" href="a00141.html#aad1548eec706aeb6580af163bd80e0a9">RngBoost::uniformSample</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">return</span> zeroone();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="a00010.html">   61</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00010.html">ANNbd_shrink</a> : <span class="keyword">public</span> <a class="code" href="a00014.html">ANNkd_node</a>  <span class="comment">// splitting node of a kd-tree</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="a00010.html#aa39fd79dab4163b3ff8a0af60fec9742">   63</a></span>&#160;        <span class="keywordtype">int</span>                                     <a class="code" href="a00010.html#aa39fd79dab4163b3ff8a0af60fec9742">n_bnds</a>;                 <span class="comment">// number of bounding halfspaces</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="a00010.html#af37a99b5d5b1c460e31ea5b9ca994e3f">   64</a></span>&#160;        <a class="code" href="a00019.html">ANNorthHSArray</a>          <a class="code" href="a00010.html#af37a99b5d5b1c460e31ea5b9ca994e3f">bnds</a>;                   <span class="comment">// list of bounding halfspaces</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">   65</a></span>&#160;        <a class="code" href="a00014.html">ANNkd_ptr</a>                       <a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[2];               <span class="comment">// in and out children</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="a00010.html#a5a237183dfd0646b2c90aa2bb282ba71">   67</a></span>&#160;        <a class="code" href="a00010.html#a5a237183dfd0646b2c90aa2bb282ba71">ANNbd_shrink</a>(                                           <span class="comment">// constructor</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="keywordtype">int</span>                             nb,                             <span class="comment">// number of bounding halfspaces</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <a class="code" href="a00019.html">ANNorthHSArray</a>  bds,                    <span class="comment">// list of bounding halfspaces</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <a class="code" href="a00014.html">ANNkd_ptr</a> ic=NULL, <a class="code" href="a00014.html">ANNkd_ptr</a> oc=NULL)   <span class="comment">// children</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                        <a class="code" href="a00010.html#aa39fd79dab4163b3ff8a0af60fec9742">n_bnds</a>                  = nb;                           <span class="comment">// cutting dimension</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                        <a class="code" href="a00010.html#af37a99b5d5b1c460e31ea5b9ca994e3f">bnds</a>                    = bds;                          <span class="comment">// assign bounds</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                        <a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9">ANN_IN</a>]   = ic;                           <span class="comment">// set children</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                        <a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c">ANN_OUT</a>]  = oc;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                }</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="a00141.html#a9d33a495101b353e267ea7d3a6df361f">   80</a></span>&#160;<a class="code" href="a00141.html#a9d33a495101b353e267ea7d3a6df361f">RngBoost::gaussianSample</a>(<span class="keywordtype">double</span> stdDev)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordtype">double</span> mean = 0.; <span class="comment">//it will be added conveniently later</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  boost::math::normal_distribution&lt;double&gt;  gaussian_dist(mean, stdDev);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordflow">return</span> quantile(gaussian_dist, zeroone());</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00010.html#a1dd5b9b46f66329ed409cd4b508a27cc">   78</a></span>&#160;        <a class="code" href="a00010.html#a1dd5b9b46f66329ed409cd4b508a27cc">~ANNbd_shrink</a>()                                         <span class="comment">// destructor</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                        <span class="keywordflow">if</span> (<a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9">ANN_IN</a>]!= NULL &amp;&amp; <a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9">ANN_IN</a>]!=  <a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a>)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                <span class="keyword">delete</span> <a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9">ANN_IN</a>];</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                        <span class="keywordflow">if</span> (<a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c">ANN_OUT</a>]!= NULL&amp;&amp; <a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c">ANN_OUT</a>]!= <a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a>)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                                <span class="keyword">delete</span> <a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c">ANN_OUT</a>];</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                        <span class="keywordflow">if</span> (<a class="code" href="a00010.html#af37a99b5d5b1c460e31ea5b9ca994e3f">bnds</a> != NULL)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                                <span class="keyword">delete</span> [] <a class="code" href="a00010.html#af37a99b5d5b1c460e31ea5b9ca994e3f">bnds</a>;                 <span class="comment">// delete bounds</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                }</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="a00141.html#ab859b0ff1e728c6a65c2aef62afe028e">   90</a></span>&#160;<a class="code" href="a00141.html#ab859b0ff1e728c6a65c2aef62afe028e">RngBoost::betaSample</a>(<span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  boost::math::beta_distribution&lt;double&gt; beta_dist(alpha, beta);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">return</span> quantile(beta_dist, zeroone());</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="a00141.html#ae4fcb113ba19dbec7684f41c3aebf4e7">   99</a></span>&#160;<a class="code" href="a00141.html#ae4fcb113ba19dbec7684f41c3aebf4e7">RngBoost::gammaSample</a>(<span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00141.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  boost::math::gamma_distribution&lt;double&gt;  gamma_dist(a,b);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordflow">return</span> quantile(gamma_dist, zeroone());</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00139_html"><div class="ttname"><a href="a00139.html">QUESO::RngBase</a></div><div class="ttdoc">Class for random number generation (base class for either GSL or Boost RNG). </div><div class="ttdef"><b>Definition:</b> <a href="a00263_source.html#l00045">RngBase.h:45</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00141_html_a6fa78750ef38de7034414b5e701bc544"><div class="ttname"><a href="a00141.html#a6fa78750ef38de7034414b5e701bc544">QUESO::RngBoost::RngBoost</a></div><div class="ttdeci">RngBoost()</div><div class="ttdoc">Default Constructor: it should not be used. </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00031">RngBoost.C:31</a></div></div>
-<div class="ttc" id="a00141_html_aad1548eec706aeb6580af163bd80e0a9"><div class="ttname"><a href="a00141.html#aad1548eec706aeb6580af163bd80e0a9">QUESO::RngBoost::uniformSample</a></div><div class="ttdeci">double uniformSample() const </div><div class="ttdoc">Samples a value from a uniform distribution. Support: [0,1] or [a,b]. </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00072">RngBoost.C:72</a></div></div>
-<div class="ttc" id="a00141_html_a96ffa32ae3700ca164db8799d32b19ca"><div class="ttname"><a href="a00141.html#a96ffa32ae3700ca164db8799d32b19ca">QUESO::RngBoost::~RngBoost</a></div><div class="ttdeci">~RngBoost()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00056">RngBoost.C:56</a></div></div>
-<div class="ttc" id="a00141_html_ab859b0ff1e728c6a65c2aef62afe028e"><div class="ttname"><a href="a00141.html#ab859b0ff1e728c6a65c2aef62afe028e">QUESO::RngBoost::betaSample</a></div><div class="ttdeci">double betaSample(double alpha, double beta) const </div><div class="ttdoc">Samples a value from a Beta distribution. Support: [0,1]. </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00090">RngBoost.C:90</a></div></div>
-<div class="ttc" id="a00141_html_ae4fcb113ba19dbec7684f41c3aebf4e7"><div class="ttname"><a href="a00141.html#ae4fcb113ba19dbec7684f41c3aebf4e7">QUESO::RngBoost::gammaSample</a></div><div class="ttdeci">double gammaSample(double a, double b) const </div><div class="ttdoc">Samples a value from a Gamma distribution. Support: [0,infinity). </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00099">RngBoost.C:99</a></div></div>
-<div class="ttc" id="a00139_html_a94515d2b7d493d8e4e238628716dd11b"><div class="ttname"><a href="a00139.html#a94515d2b7d493d8e4e238628716dd11b">QUESO::RngBase::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdoc">Rank of processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00263_source.html#l00088">RngBase.h:88</a></div></div>
-<div class="ttc" id="a00141_html_a94c246d855ea22332b0dafc0891e328f"><div class="ttname"><a href="a00141.html#a94c246d855ea22332b0dafc0891e328f">QUESO::RngBoost::resetSeed</a></div><div class="ttdeci">void resetSeed(int newSeed)</div><div class="ttdoc">Resets the seed with value newSeed. </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00063">RngBoost.C:63</a></div></div>
-<div class="ttc" id="a00141_html_a9d33a495101b353e267ea7d3a6df361f"><div class="ttname"><a href="a00141.html#a9d33a495101b353e267ea7d3a6df361f">QUESO::RngBoost::gaussianSample</a></div><div class="ttdeci">double gaussianSample(double stdDev) const </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00080">RngBoost.C:80</a></div></div>
-<div class="ttc" id="a00141_html_aef65914cae8b11e345bfb082db616f0e"><div class="ttname"><a href="a00141.html#aef65914cae8b11e345bfb082db616f0e">QUESO::RngBoost::m_rng</a></div><div class="ttdeci">boost::mt19937 m_rng</div><div class="ttdoc">Random number generator from class boost::mt19937. </div><div class="ttdef"><b>Definition:</b> <a href="a00264_source.html#l00110">RngBoost.h:110</a></div></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00010.html#a37a635b661ebb1b18ec6ab68df92a2b4">getStats</a>(                                          <span class="comment">// get tree statistics</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                                <span class="keywordtype">int</span> <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,                                                <span class="comment">// dimension of space</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                                <a class="code" href="a00017.html">ANNkdStats</a> &amp;st,                                 <span class="comment">// statistics</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                <a class="code" href="a00020.html">ANNorthRect</a> &amp;bnd_box);                  <span class="comment">// bounding box</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00010.html#a41b772faa781609ff39da6a269c16662">print</a>(<span class="keywordtype">int</span> level, ostream &amp;out);<span class="comment">// print node</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00010.html#a51d412cbad1b7823437adf97050d8880">dump</a>(ostream &amp;out);                        <span class="comment">// dump node</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00010.html#a56bedc3fbf48f37c82aa6ea5228cc97e">ann_search</a>(<a class="code" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>);                       <span class="comment">// standard search</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00010.html#adb5b5c04e63c394e650ae3fc7e195989">ann_pri_search</a>(<a class="code" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>);           <span class="comment">// priority search</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00010.html#a87afc7f96e0203b7d5149ca3aec65d57">ann_FR_search</a>(<a class="code" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>);            <span class="comment">// fixed-radius search</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="a00010_html"><div class="ttname"><a href="a00010.html">ANNbd_shrink</a></div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00061">bd_tree.h:61</a></div></div>
+<div class="ttc" id="a00010_html_adb5b5c04e63c394e650ae3fc7e195989"><div class="ttname"><a href="a00010.html#adb5b5c04e63c394e650ae3fc7e195989">ANNbd_shrink::ann_pri_search</a></div><div class="ttdeci">virtual void ann_pri_search(ANNdist)</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00039">bd_pr_search.cpp:39</a></div></div>
+<div class="ttc" id="a00010_html_a37a635b661ebb1b18ec6ab68df92a2b4"><div class="ttname"><a href="a00010.html#a37a635b661ebb1b18ec6ab68df92a2b4">ANNbd_shrink::getStats</a></div><div class="ttdeci">virtual void getStats(int dim, ANNkdStats &amp;st, ANNorthRect &amp;bnd_box)</div><div class="ttdef"><b>Definition:</b> <a href="a00296_source.html#l00071">bd_tree.cpp:71</a></div></div>
+<div class="ttc" id="a00288_html"><div class="ttname"><a href="a00288.html">ANNx.h</a></div></div>
+<div class="ttc" id="a00010_html_a56bedc3fbf48f37c82aa6ea5228cc97e"><div class="ttname"><a href="a00010.html#a56bedc3fbf48f37c82aa6ea5228cc97e">ANNbd_shrink::ann_search</a></div><div class="ttdeci">virtual void ann_search(ANNdist)</div><div class="ttdef"><b>Definition:</b> <a href="a00295_source.html#l00039">bd_search.cpp:39</a></div></div>
+<div class="ttc" id="a00010_html_a1dd5b9b46f66329ed409cd4b508a27cc"><div class="ttname"><a href="a00010.html#a1dd5b9b46f66329ed409cd4b508a27cc">ANNbd_shrink::~ANNbd_shrink</a></div><div class="ttdeci">~ANNbd_shrink()</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00078">bd_tree.h:78</a></div></div>
+<div class="ttc" id="a00010_html_a5a237183dfd0646b2c90aa2bb282ba71"><div class="ttname"><a href="a00010.html#a5a237183dfd0646b2c90aa2bb282ba71">ANNbd_shrink::ANNbd_shrink</a></div><div class="ttdeci">ANNbd_shrink(int nb, ANNorthHSArray bds, ANNkd_ptr ic=NULL, ANNkd_ptr oc=NULL)</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00067">bd_tree.h:67</a></div></div>
+<div class="ttc" id="a00288_html_adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c"><div class="ttname"><a href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c">ANN_OUT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00046">ANNx.h:46</a></div></div>
+<div class="ttc" id="a00288_html_adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9"><div class="ttname"><a href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9">ANN_IN</a></div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00046">ANNx.h:46</a></div></div>
+<div class="ttc" id="a00309_html"><div class="ttname"><a href="a00309.html">kd_tree.h</a></div></div>
+<div class="ttc" id="a00014_html"><div class="ttname"><a href="a00014.html">ANNkd_node</a></div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00046">kd_tree.h:46</a></div></div>
+<div class="ttc" id="a00308_html_aefd44c312f0116089b2cfbf80ef5c5c7"><div class="ttname"><a href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a></div><div class="ttdeci">ANNkd_leaf * KD_TRIVIAL</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00050">kd_tree.cpp:50</a></div></div>
+<div class="ttc" id="a00017_html"><div class="ttname"><a href="a00017.html">ANNkdStats</a></div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00045">ANNperf.h:45</a></div></div>
+<div class="ttc" id="a00010_html_a41b772faa781609ff39da6a269c16662"><div class="ttname"><a href="a00010.html#a41b772faa781609ff39da6a269c16662">ANNbd_shrink::print</a></div><div class="ttdeci">virtual void print(int level, ostream &amp;out)</div><div class="ttdef"><b>Definition:</b> <a href="a00296_source.html#l00041">bd_tree.cpp:41</a></div></div>
+<div class="ttc" id="a00020_html"><div class="ttname"><a href="a00020.html">ANNorthRect</a></div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00091">ANNx.h:91</a></div></div>
+<div class="ttc" id="a00010_html_a51d412cbad1b7823437adf97050d8880"><div class="ttname"><a href="a00010.html#a51d412cbad1b7823437adf97050d8880">ANNbd_shrink::dump</a></div><div class="ttdeci">virtual void dump(ostream &amp;out)</div><div class="ttdef"><b>Definition:</b> <a href="a00299_source.html#l00159">kd_dump.cpp:159</a></div></div>
+<div class="ttc" id="a00286_html_ab2a7296707a2205201daccfc1929c3ca"><div class="ttname"><a href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a></div><div class="ttdeci">double ANNdist</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00159">ANN.h:159</a></div></div>
+<div class="ttc" id="a00010_html_aa39fd79dab4163b3ff8a0af60fec9742"><div class="ttname"><a href="a00010.html#aa39fd79dab4163b3ff8a0af60fec9742">ANNbd_shrink::n_bnds</a></div><div class="ttdeci">int n_bnds</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00063">bd_tree.h:63</a></div></div>
+<div class="ttc" id="a00010_html_a87afc7f96e0203b7d5149ca3aec65d57"><div class="ttname"><a href="a00010.html#a87afc7f96e0203b7d5149ca3aec65d57">ANNbd_shrink::ann_FR_search</a></div><div class="ttdeci">virtual void ann_FR_search(ANNdist)</div><div class="ttdef"><b>Definition:</b> <a href="a00293_source.html#l00039">bd_fix_rad_search.cpp:39</a></div></div>
+<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00010_html_a6b50ec4569620af69946e62106eeb5a7"><div class="ttname"><a href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">ANNbd_shrink::child</a></div><div class="ttdeci">ANNkd_ptr child[2]</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00065">bd_tree.h:65</a></div></div>
+<div class="ttc" id="a00019_html"><div class="ttname"><a href="a00019.html">ANNorthHalfSpace</a></div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00132">ANNx.h:132</a></div></div>
+<div class="ttc" id="a00010_html_af37a99b5d5b1c460e31ea5b9ca994e3f"><div class="ttname"><a href="a00010.html#af37a99b5d5b1c460e31ea5b9ca994e3f">ANNbd_shrink::bnds</a></div><div class="ttdeci">ANNorthHSArray bnds</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00064">bd_tree.h:64</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

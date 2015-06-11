@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: QUESO::GslOptimizer Class Reference</title>
+<title>queso-0.53.0: QUESO::GaussianLikelihoodFullCovariance&lt; V, M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -45,274 +45,180 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00500.html">QUESO</a></li><li class="navelem"><a class="el" href="a00094.html">GslOptimizer</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00094.html">GaussianLikelihoodFullCovariance</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="a00854.html">List of all members</a>  </div>
+<a href="a01402.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::GslOptimizer Class Reference</div>  </div>
+<div class="title">QUESO::GaussianLikelihoodFullCovariance&lt; V, M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A base class for handling optimisation of scalar functions.  
+<p>A class that represents a Gaussian likelihood with full covariance.  
  <a href="a00094.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00246_source.html">GslOptimizer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00477_source.html">GaussianLikelihoodFullCovariance.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::GslOptimizer:</div>
+Inheritance diagram for QUESO::GaussianLikelihoodFullCovariance&lt; V, M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00855.png" border="0" usemap="#_q_u_e_s_o_1_1_gsl_optimizer_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_gsl_optimizer_inherit__map" id="_q_u_e_s_o_1_1_gsl_optimizer_inherit__map">
-<area shape="rect" id="node2" href="a00023.html" title="A base class for handling optimisation of scalar functions. " alt="" coords="5,5,187,35"/></map>
+<div class="center"><img src="a01403.png" border="0" usemap="#_q_u_e_s_o_1_1_gaussian_likelihood_full_covariance_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_gaussian_likelihood_full_covariance_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_gaussian_likelihood_full_covariance_3_01_v_00_01_m_01_4_inherit__map">
+<area shape="rect" id="node2" href="a00033.html" title="Base class for canned Gaussian likelihoods. " alt="" coords="5,102,243,149"/><area shape="rect" id="node4" href="a00041.html" title="A templated (base) class for handling scalar functions. " alt="" coords="19,6,229,53"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for QUESO::GslOptimizer:</div>
+Collaboration diagram for QUESO::GaussianLikelihoodFullCovariance&lt; V, M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00856.png" border="0" usemap="#_q_u_e_s_o_1_1_gsl_optimizer_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_gsl_optimizer_coll__map" id="_q_u_e_s_o_1_1_gsl_optimizer_coll__map">
-<area shape="rect" id="node2" href="a00023.html" title="A base class for handling optimisation of scalar functions. " alt="" coords="1832,96,2013,125"/><area shape="rect" id="node4" href="a00095.html" title="Class for vector operations using GSL library. " alt="" coords="1851,155,1995,184"/><area shape="rect" id="node6" href="a00173.html" title="Class for vector operations (virtual). " alt="" coords="1512,127,1637,156"/><area shape="rect" id="node8" href="a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,245,648,275"/><area shape="rect" id="node14" href="a00052.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="817,360,1036,389"/><area shape="rect" id="node20" href="a00132.html" title="The QUESO MPI Communicator Class. " alt="" coords="853,127,1000,156"/><area shape="rect" id="node26" href="a00026.html" title="QUESO::BaseScalarFunction\l\&lt; QUESO::GslVector, QUESO\l::GslMatrix \&gt;" alt="" coords="1195,209,1411,273"/><area shape="rect" id="node29" href="a00176.html" title="QUESO::VectorSet\&lt; QUESO\l::GslVector, QUESO::GslMatrix \&gt;" alt="" coords="807,289,1047,335"/><area shape="rect" id="node10" href="a00034.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,213,195,243"/><area shape="rect" id="node12" href="a00139.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,267,175,296"/><area shape="rect" id="node17" href="a00053.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,361,205,391"/><area shape="rect" id="node23" href="a00118.html" title="A class for partitioning vectors and matrices. " alt="" coords="1249,127,1356,156"/></map>
+<div class="center"><img src="a01404.png" border="0" usemap="#_q_u_e_s_o_1_1_gaussian_likelihood_full_covariance_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_gaussian_likelihood_full_covariance_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_gaussian_likelihood_full_covariance_3_01_v_00_01_m_01_4_coll__map">
+<area shape="rect" id="node2" href="a00033.html" title="Base class for canned Gaussian likelihoods. " alt="" coords="36,542,273,589"/><area shape="rect" id="node4" href="a00041.html" title="A templated (base) class for handling scalar functions. " alt="" coords="49,443,260,490"/><area shape="rect" id="node6" href="a00032.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="177,296,377,325"/><area shape="rect" id="node18" href="a00175.html" title="The QUESO MPI Communicator Class. " alt="" coords="284,452,431,481"/><area shape="rect" id="node8" href="a00049.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="5,200,184,229"/><area shape="rect" id="node10" href="a00183.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="208,200,347,229"/><area shape="rect" id="node12" href="a00070.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="371,200,571,229"/><area shape="rect" id="node14" href="a00056.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="368,86,573,133"/><area shape="rect" id="node16" href="a00034.html" title="QUESO::BaseInputOptionsParser" alt="" coords="349,5,592,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a46b48df880796034a4b9ac51c7e6524d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> { <br/>
-&#160;&#160;<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">FLETCHER_REEVES_CG</a>, 
-<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">POLAK_RIBIERE_CG</a>, 
-<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">BFGS</a>, 
-<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">BFGS2</a>, 
-<br/>
-&#160;&#160;<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">STEEPEST_DESCENT</a>, 
-<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">NELDER_MEAD</a>, 
-<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">NELDER_MEAD2</a>, 
-<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">NELDER_MEAD2_RAND</a>
-<br/>
- }</td></tr>
-<tr class="separator:a46b48df880796034a4b9ac51c7e6524d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad10295a3103150b1549466ac97c820e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#ad10295a3103150b1549466ac97c820e6">GslOptimizer</a> (const <a class="el" href="a00026.html">BaseScalarFunction</a>&lt; <a class="el" href="a00095.html">GslVector</a>, <a class="el" href="a00093.html">GslMatrix</a> &gt; &amp;<a class="el" href="a00094.html#af5e20b7ecaf01bc59b1a3f2ddec7d990">objectiveFunction</a>)</td></tr>
-<tr class="memdesc:ad10295a3103150b1549466ac97c820e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an object that will maximize a scalar function.  <a href="#ad10295a3103150b1549466ac97c820e6">More...</a><br/></td></tr>
-<tr class="separator:ad10295a3103150b1549466ac97c820e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00e5600214b09df0b8ff0477a787b162"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a00e5600214b09df0b8ff0477a787b162">~GslOptimizer</a> ()</td></tr>
-<tr class="memdesc:a00e5600214b09df0b8ff0477a787b162"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a00e5600214b09df0b8ff0477a787b162">More...</a><br/></td></tr>
-<tr class="separator:a00e5600214b09df0b8ff0477a787b162"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47c46f655dc8513385f2678b780a5e5e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a47c46f655dc8513385f2678b780a5e5e">minimize</a> (<a class="el" href="a00135.html">OptimizerMonitor</a> *monitor=NULL)</td></tr>
-<tr class="memdesc:a47c46f655dc8513385f2678b780a5e5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimize the objective function, starting at <code>m_initialPoint</code>.  <a href="#a47c46f655dc8513385f2678b780a5e5e">More...</a><br/></td></tr>
-<tr class="separator:a47c46f655dc8513385f2678b780a5e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5e20b7ecaf01bc59b1a3f2ddec7d990"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00026.html">BaseScalarFunction</a><br class="typebreak"/>
-&lt; <a class="el" href="a00095.html">GslVector</a>, <a class="el" href="a00093.html">GslMatrix</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#af5e20b7ecaf01bc59b1a3f2ddec7d990">objectiveFunction</a> () const </td></tr>
-<tr class="memdesc:af5e20b7ecaf01bc59b1a3f2ddec7d990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the objective function.  <a href="#af5e20b7ecaf01bc59b1a3f2ddec7d990">More...</a><br/></td></tr>
-<tr class="separator:af5e20b7ecaf01bc59b1a3f2ddec7d990"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dd79ad241e96f5e937b534b50f64b32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a4dd79ad241e96f5e937b534b50f64b32">setInitialPoint</a> (const <a class="el" href="a00095.html">GslVector</a> &amp;intialPoint)</td></tr>
-<tr class="memdesc:a4dd79ad241e96f5e937b534b50f64b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the point at which the optimization starts.  <a href="#a4dd79ad241e96f5e937b534b50f64b32">More...</a><br/></td></tr>
-<tr class="separator:a4dd79ad241e96f5e937b534b50f64b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0d1ebc450eaa46f36a2d37a04ee8c20"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00095.html">GslVector</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#ab0d1ebc450eaa46f36a2d37a04ee8c20">minimizer</a> () const </td></tr>
-<tr class="memdesc:ab0d1ebc450eaa46f36a2d37a04ee8c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the point that minimizes the objective function.  <a href="#ab0d1ebc450eaa46f36a2d37a04ee8c20">More...</a><br/></td></tr>
-<tr class="separator:ab0d1ebc450eaa46f36a2d37a04ee8c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af44200fe3ca000860324501222d90aed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#af44200fe3ca000860324501222d90aed">set_solver_type</a> (<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> solver)</td></tr>
-<tr class="separator:af44200fe3ca000860324501222d90aed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a643bd0c4ccd554ed65e88048a368b4e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a643bd0c4ccd554ed65e88048a368b4e8">set_solver_type</a> (std::string &amp;solver)</td></tr>
-<tr class="separator:a643bd0c4ccd554ed65e88048a368b4e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5ee10f794e134732d97f0f2f734ff84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#aa5ee10f794e134732d97f0f2f734ff84">string_to_enum</a> (std::string &amp;solver)</td></tr>
-<tr class="separator:aa5ee10f794e134732d97f0f2f734ff84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a264289748b987fed2f99db5177ae7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a3a264289748b987fed2f99db5177ae7e">set_step_size</a> (const <a class="el" href="a00095.html">GslVector</a> &amp;step_size)</td></tr>
-<tr class="memdesc:a3a264289748b987fed2f99db5177ae7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets step size used in gradient-free solvers.  <a href="#a3a264289748b987fed2f99db5177ae7e">More...</a><br/></td></tr>
-<tr class="separator:a3a264289748b987fed2f99db5177ae7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab417b878cf5c0aa1fb45d7161adced8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#ab417b878cf5c0aa1fb45d7161adced8e">set_step_size</a> (double step_size)</td></tr>
-<tr class="memdesc:ab417b878cf5c0aa1fb45d7161adced8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets step size used in gradient-based solvers.  <a href="#ab417b878cf5c0aa1fb45d7161adced8e">More...</a><br/></td></tr>
-<tr class="separator:ab417b878cf5c0aa1fb45d7161adced8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa8c1ccb10189638d4993b32a808b4ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#aaa8c1ccb10189638d4993b32a808b4ea">set_line_tol</a> (double tol)</td></tr>
-<tr class="memdesc:aaa8c1ccb10189638d4993b32a808b4ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set GSL line minimization tolerance.  <a href="#aaa8c1ccb10189638d4993b32a808b4ea">More...</a><br/></td></tr>
-<tr class="separator:aaa8c1ccb10189638d4993b32a808b4ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00023"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00023')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00023.html">QUESO::BaseOptimizer</a></td></tr>
-<tr class="memitem:a06ee4af69d1dcdcb6c5fc64337cfed16 inherit pub_methods_a00023"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a06ee4af69d1dcdcb6c5fc64337cfed16">BaseOptimizer</a> ()</td></tr>
-<tr class="memdesc:a06ee4af69d1dcdcb6c5fc64337cfed16 inherit pub_methods_a00023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a06ee4af69d1dcdcb6c5fc64337cfed16">More...</a><br/></td></tr>
-<tr class="separator:a06ee4af69d1dcdcb6c5fc64337cfed16 inherit pub_methods_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0d3914f16c9539125fdf18f72e06c1a inherit pub_methods_a00023"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ad0d3914f16c9539125fdf18f72e06c1a">~BaseOptimizer</a> ()</td></tr>
-<tr class="memdesc:ad0d3914f16c9539125fdf18f72e06c1a inherit pub_methods_a00023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ad0d3914f16c9539125fdf18f72e06c1a">More...</a><br/></td></tr>
-<tr class="separator:ad0d3914f16c9539125fdf18f72e06c1a inherit pub_methods_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afee64fa553e2115c11e483409c005463 inherit pub_methods_a00023"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#afee64fa553e2115c11e483409c005463">getMaxIterations</a> () const </td></tr>
-<tr class="memdesc:afee64fa553e2115c11e483409c005463 inherit pub_methods_a00023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum number of iterations the optimizer will do.  <a href="#afee64fa553e2115c11e483409c005463">More...</a><br/></td></tr>
-<tr class="separator:afee64fa553e2115c11e483409c005463 inherit pub_methods_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31e322b52129baacf03e19278e0375f0 inherit pub_methods_a00023"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a31e322b52129baacf03e19278e0375f0">getTolerance</a> () const </td></tr>
-<tr class="memdesc:a31e322b52129baacf03e19278e0375f0 inherit pub_methods_a00023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the tolerance used to test for an extremum in the optimizer.  <a href="#a31e322b52129baacf03e19278e0375f0">More...</a><br/></td></tr>
-<tr class="separator:a31e322b52129baacf03e19278e0375f0 inherit pub_methods_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e527eab75fab7fa43f741494fdb9f08 inherit pub_methods_a00023"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a5e527eab75fab7fa43f741494fdb9f08">getFiniteDifferenceStepSize</a> () const </td></tr>
-<tr class="memdesc:a5e527eab75fab7fa43f741494fdb9f08 inherit pub_methods_a00023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the step size used in the finite difference formula.  <a href="#a5e527eab75fab7fa43f741494fdb9f08">More...</a><br/></td></tr>
-<tr class="separator:a5e527eab75fab7fa43f741494fdb9f08 inherit pub_methods_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae01578ed2d1ba7e92ba4f5a51347aec2 inherit pub_methods_a00023"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ae01578ed2d1ba7e92ba4f5a51347aec2">setMaxIterations</a> (unsigned int maxIterations)</td></tr>
-<tr class="memdesc:ae01578ed2d1ba7e92ba4f5a51347aec2 inherit pub_methods_a00023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of iterations to be used by the optimizer.  <a href="#ae01578ed2d1ba7e92ba4f5a51347aec2">More...</a><br/></td></tr>
-<tr class="separator:ae01578ed2d1ba7e92ba4f5a51347aec2 inherit pub_methods_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a236511ca3bacfd63664d018a1b8265d8 inherit pub_methods_a00023"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a236511ca3bacfd63664d018a1b8265d8">setTolerance</a> (double tolerance)</td></tr>
-<tr class="memdesc:a236511ca3bacfd63664d018a1b8265d8 inherit pub_methods_a00023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the tolerance the optimizer will use to test for an extremum.  <a href="#a236511ca3bacfd63664d018a1b8265d8">More...</a><br/></td></tr>
-<tr class="separator:a236511ca3bacfd63664d018a1b8265d8 inherit pub_methods_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f93afc910029b6a722ef3d855cd2daf inherit pub_methods_a00023"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a7f93afc910029b6a722ef3d855cd2daf">setFiniteDifferenceStepSize</a> (double h)</td></tr>
-<tr class="memdesc:a7f93afc910029b6a722ef3d855cd2daf inherit pub_methods_a00023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the step to use in the finite difference derivative.  <a href="#a7f93afc910029b6a722ef3d855cd2daf">More...</a><br/></td></tr>
-<tr class="separator:a7f93afc910029b6a722ef3d855cd2daf inherit pub_methods_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:aac15d1985e8232bb8de8dca37e15d671"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#aac15d1985e8232bb8de8dca37e15d671">solver_needs_gradient</a> (<a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> solver)</td></tr>
-<tr class="memdesc:aac15d1985e8232bb8de8dca37e15d671"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function.  <a href="#aac15d1985e8232bb8de8dca37e15d671">More...</a><br/></td></tr>
-<tr class="separator:aac15d1985e8232bb8de8dca37e15d671"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96afabe144a7e159102c85a5dafcd53f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a96afabe144a7e159102c85a5dafcd53f">minimize_with_gradient</a> (unsigned int dim, <a class="el" href="a00135.html">OptimizerMonitor</a> *monitor)</td></tr>
-<tr class="separator:a96afabe144a7e159102c85a5dafcd53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8160dd4579b0b3944c5c16afbe8573a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#ad8160dd4579b0b3944c5c16afbe8573a">minimize_no_gradient</a> (unsigned int dim, <a class="el" href="a00135.html">OptimizerMonitor</a> *monitor)</td></tr>
-<tr class="separator:ad8160dd4579b0b3944c5c16afbe8573a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc8f8d25936282af5d4489aa21f94937"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#afc8f8d25936282af5d4489aa21f94937">actualValue</a> (const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td></tr>
+<tr class="memdesc:afc8f8d25936282af5d4489aa21f94937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actual value of the scalar function.  <a href="#afc8f8d25936282af5d4489aa21f94937">More...</a><br/></td></tr>
+<tr class="separator:afc8f8d25936282af5d4489aa21f94937"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a436133388a158d94bfd017cfc5d97985"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a436133388a158d94bfd017cfc5d97985">lnValue</a> (const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td></tr>
+<tr class="memdesc:a436133388a158d94bfd017cfc5d97985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logarithm of the value of the scalar function.  <a href="#a436133388a158d94bfd017cfc5d97985">More...</a><br/></td></tr>
+<tr class="separator:a436133388a158d94bfd017cfc5d97985"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods.</div></td></tr>
+<tr class="memitem:a14d099a4551a5c3e1bae3e53eca41831"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a14d099a4551a5c3e1bae3e53eca41831">GaussianLikelihoodFullCovariance</a> (const char *prefix, const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>, const V &amp;observations, const M &amp;covariance, double covarianceCoefficient=1.0)</td></tr>
+<tr class="memdesc:a14d099a4551a5c3e1bae3e53eca41831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a14d099a4551a5c3e1bae3e53eca41831">More...</a><br/></td></tr>
+<tr class="separator:a14d099a4551a5c3e1bae3e53eca41831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a29a02efdf1bd36595708780bad0d1"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a61a29a02efdf1bd36595708780bad0d1">~GaussianLikelihoodFullCovariance</a> ()</td></tr>
+<tr class="memdesc:a61a29a02efdf1bd36595708780bad0d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a61a29a02efdf1bd36595708780bad0d1">More...</a><br/></td></tr>
+<tr class="separator:a61a29a02efdf1bd36595708780bad0d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00033"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00033')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00033.html">QUESO::BaseGaussianLikelihood&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:a27a49f9fb4830bfe2c0dc6015c48466d inherit pub_methods_a00033"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#a27a49f9fb4830bfe2c0dc6015c48466d">evaluateModel</a> (const V &amp;domainVector, const V *domainDirection, V &amp;modelOutput, V *gradVector, M *hessianMatrix, V *hessianEffect) const =0</td></tr>
+<tr class="memdesc:a27a49f9fb4830bfe2c0dc6015c48466d inherit pub_methods_a00033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates the user's model at the point <code>domainVector</code>.  <a href="#a27a49f9fb4830bfe2c0dc6015c48466d">More...</a><br/></td></tr>
+<tr class="separator:a27a49f9fb4830bfe2c0dc6015c48466d inherit pub_methods_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77f96d5a7526947c3ccb3f4d1a62de6f inherit pub_methods_a00033"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#a77f96d5a7526947c3ccb3f4d1a62de6f">BaseGaussianLikelihood</a> (const char *prefix, const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>, const V &amp;observations)</td></tr>
+<tr class="memdesc:a77f96d5a7526947c3ccb3f4d1a62de6f inherit pub_methods_a00033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a77f96d5a7526947c3ccb3f4d1a62de6f">More...</a><br/></td></tr>
+<tr class="separator:a77f96d5a7526947c3ccb3f4d1a62de6f inherit pub_methods_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87e1378a685f2afff32be4369d33492a inherit pub_methods_a00033"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#a87e1378a685f2afff32be4369d33492a">~BaseGaussianLikelihood</a> ()</td></tr>
+<tr class="memdesc:a87e1378a685f2afff32be4369d33492a inherit pub_methods_a00033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a87e1378a685f2afff32be4369d33492a">More...</a><br/></td></tr>
+<tr class="separator:a87e1378a685f2afff32be4369d33492a inherit pub_methods_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00041"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00041')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00041.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:a68ab7c82be7eba7bd5d51ce8d85c65f0 inherit pub_methods_a00041"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#a68ab7c82be7eba7bd5d51ce8d85c65f0">BaseScalarFunction</a> (const char *prefix, const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>)</td></tr>
+<tr class="memdesc:a68ab7c82be7eba7bd5d51ce8d85c65f0 inherit pub_methods_a00041"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a68ab7c82be7eba7bd5d51ce8d85c65f0">More...</a><br/></td></tr>
+<tr class="separator:a68ab7c82be7eba7bd5d51ce8d85c65f0 inherit pub_methods_a00041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f96de783e174cfe84682766f5957969 inherit pub_methods_a00041"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#a6f96de783e174cfe84682766f5957969">~BaseScalarFunction</a> ()</td></tr>
+<tr class="memdesc:a6f96de783e174cfe84682766f5957969 inherit pub_methods_a00041"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a6f96de783e174cfe84682766f5957969">More...</a><br/></td></tr>
+<tr class="separator:a6f96de783e174cfe84682766f5957969 inherit pub_methods_a00041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0937628825249dd36ded3ce0c7959ac inherit pub_methods_a00041"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a> () const </td></tr>
+<tr class="memdesc:ad0937628825249dd36ded3ce0c7959ac inherit pub_methods_a00041"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the protected attribute <code>m_domainSet:</code> domain set of the scalar function.  <a href="#ad0937628825249dd36ded3ce0c7959ac">More...</a><br/></td></tr>
+<tr class="separator:ad0937628825249dd36ded3ce0c7959ac inherit pub_methods_a00041"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:afe0e221ebed93a455711f9f26806b1d2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00026.html">BaseScalarFunction</a><br class="typebreak"/>
-&lt; <a class="el" href="a00095.html">GslVector</a>, <a class="el" href="a00093.html">GslMatrix</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a></td></tr>
-<tr class="separator:afe0e221ebed93a455711f9f26806b1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62623a622a6975c372b51ffb25d2dec5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00095.html">GslVector</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">m_initialPoint</a></td></tr>
-<tr class="separator:a62623a622a6975c372b51ffb25d2dec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76cd70956b96167ba85df9daf6b5b7aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00095.html">GslVector</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a76cd70956b96167ba85df9daf6b5b7aa">m_minimizer</a></td></tr>
-<tr class="separator:a76cd70956b96167ba85df9daf6b5b7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6eb4b0086b3a6ead2764bad2b2a6a47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">m_solver_type</a></td></tr>
-<tr class="separator:ac6eb4b0086b3a6ead2764bad2b2a6a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadd94f873c5ec1a38ca44ccceb23e239"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00095.html">GslVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#aadd94f873c5ec1a38ca44ccceb23e239">m_fstep_size</a></td></tr>
-<tr class="memdesc:aadd94f873c5ec1a38ca44ccceb23e239"><td class="mdescLeft">&#160;</td><td class="mdescRight">For use in gradient-free algorithms.  <a href="#aadd94f873c5ec1a38ca44ccceb23e239">More...</a><br/></td></tr>
-<tr class="separator:aadd94f873c5ec1a38ca44ccceb23e239"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa71aad9b4bc0d60b4ad7ecca275db1a4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">m_fdfstep_size</a></td></tr>
-<tr class="memdesc:aa71aad9b4bc0d60b4ad7ecca275db1a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">For use in gradient-based algorithms.  <a href="#aa71aad9b4bc0d60b4ad7ecca275db1a4">More...</a><br/></td></tr>
-<tr class="separator:aa71aad9b4bc0d60b4ad7ecca275db1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae45ebe43d2bf29dd31f8b60c2517280d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#ae45ebe43d2bf29dd31f8b60c2517280d">m_line_tol</a></td></tr>
-<tr class="memdesc:ae45ebe43d2bf29dd31f8b60c2517280d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Line minimization tolerance in gradient-based algorithms.  <a href="#ae45ebe43d2bf29dd31f8b60c2517280d">More...</a><br/></td></tr>
-<tr class="separator:ae45ebe43d2bf29dd31f8b60c2517280d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11db306c4b3356202432a35c359364da"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a11db306c4b3356202432a35c359364da">m_covarianceCoefficient</a></td></tr>
+<tr class="separator:a11db306c4b3356202432a35c359364da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a87b6382be0b61ca814926dbe0450c2"><td class="memItemLeft" align="right" valign="top">const M &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00094.html#a1a87b6382be0b61ca814926dbe0450c2">m_covariance</a></td></tr>
+<tr class="separator:a1a87b6382be0b61ca814926dbe0450c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_a00023"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00023')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00023.html">QUESO::BaseOptimizer</a></td></tr>
-<tr class="memitem:a9f491dcc7bc4388ee8b8ff567caf4550 inherit pro_attribs_a00023"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a></td></tr>
-<tr class="separator:a9f491dcc7bc4388ee8b8ff567caf4550 inherit pro_attribs_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a383e5c3d09fd907658f7558f14a57c25 inherit pro_attribs_a00023"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a></td></tr>
-<tr class="separator:a383e5c3d09fd907658f7558f14a57c25 inherit pro_attribs_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52d7dc0a76af37c36c5e3f8d01c8ab21 inherit pro_attribs_a00023"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a></td></tr>
-<tr class="separator:a52d7dc0a76af37c36c5e3f8d01c8ab21 inherit pro_attribs_a00023"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_a00033"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00033')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00033.html">QUESO::BaseGaussianLikelihood&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:a1d8164465eaac7206aa81e4347ac914c inherit pro_attribs_a00033"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#a1d8164465eaac7206aa81e4347ac914c">m_observations</a></td></tr>
+<tr class="separator:a1d8164465eaac7206aa81e4347ac914c inherit pro_attribs_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_a00041"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00041')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00041.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:adf44141aeb765d97613286f88f235f04 inherit pro_attribs_a00041"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a></td></tr>
+<tr class="separator:adf44141aeb765d97613286f88f235f04 inherit pro_attribs_a00041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e81dc902aca6a546877da99b2f4a169 inherit pro_attribs_a00041"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></td></tr>
+<tr class="separator:a6e81dc902aca6a546877da99b2f4a169 inherit pro_attribs_a00041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab81be32259b9764250660a035439fda8 inherit pro_attribs_a00041"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00041.html#ab81be32259b9764250660a035439fda8">m_domainSet</a></td></tr>
+<tr class="memdesc:ab81be32259b9764250660a035439fda8 inherit pro_attribs_a00041"><td class="mdescLeft">&#160;</td><td class="mdescRight">Domain set of the scalar function.  <a href="#ab81be32259b9764250660a035439fda8">More...</a><br/></td></tr>
+<tr class="separator:ab81be32259b9764250660a035439fda8 inherit pro_attribs_a00041"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A base class for handling optimisation of scalar functions. </p>
-<p>WRITE DOCS HERE </p>
+<div class="textblock"><h3>template&lt;class V = GslVector, class M = GslMatrix&gt;<br/>
+class QUESO::GaussianLikelihoodFullCovariance&lt; V, M &gt;</h3>
 
-<p>Definition at line <a class="el" href="a00246_source.html#l00050">50</a> of file <a class="el" href="a00246_source.html">GslOptimizer.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a class="anchor" id="a46b48df880796034a4b9ac51c7e6524d"></a>
+<p>A class that represents a Gaussian likelihood with full covariance. </p>
+
+<p>Definition at line <a class="el" href="a00477_source.html#l00043">43</a> of file <a class="el" href="a00477_source.html">GaussianLikelihoodFullCovariance.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a14d099a4551a5c3e1bae3e53eca41831"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">QUESO::GslOptimizer::SolverType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b"></a>FLETCHER_REEVES_CG</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df"></a>POLAK_RIBIERE_CG</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06"></a>BFGS</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9"></a>BFGS2</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e"></a>STEEPEST_DESCENT</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95"></a>NELDER_MEAD</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02"></a>NELDER_MEAD2</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8"></a>NELDER_MEAD2_RAND</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-</table>
-
-<p>Definition at line <a class="el" href="a00246_source.html#l00071">71</a> of file <a class="el" href="a00246_source.html">GslOptimizer.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                  { <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">FLETCHER_REEVES_CG</a>,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">POLAK_RIBIERE_CG</a>,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                    <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">BFGS</a>,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                    <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">BFGS2</a>,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                    <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">STEEPEST_DESCENT</a>,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                    <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">NELDER_MEAD</a>,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                    <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">NELDER_MEAD2</a>,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                    <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">NELDER_MEAD2_RAND</a> };</div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">QUESO::GslOptimizer::BFGS</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00073">GslOptimizer.h:73</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">QUESO::GslOptimizer::NELDER_MEAD2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00077">GslOptimizer.h:77</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">QUESO::GslOptimizer::FLETCHER_REEVES_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00071">GslOptimizer.h:71</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">QUESO::GslOptimizer::POLAK_RIBIERE_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00072">GslOptimizer.h:72</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">QUESO::GslOptimizer::NELDER_MEAD</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00076">GslOptimizer.h:76</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">QUESO::GslOptimizer::NELDER_MEAD2_RAND</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00078">GslOptimizer.h:78</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">QUESO::GslOptimizer::STEEPEST_DESCENT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00075">GslOptimizer.h:75</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">QUESO::GslOptimizer::BFGS2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00074">GslOptimizer.h:74</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ad10295a3103150b1549466ac97c820e6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QUESO::GslOptimizer::GslOptimizer </td>
+          <td class="memname"><a class="el" href="a00094.html">QUESO::GaussianLikelihoodFullCovariance</a>&lt; V, M &gt;::<a class="el" href="a00094.html">GaussianLikelihoodFullCovariance</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00026.html">BaseScalarFunction</a>&lt; <a class="el" href="a00095.html">GslVector</a>, <a class="el" href="a00093.html">GslMatrix</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>objectiveFunction</em></td><td>)</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>prefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>domainSet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>observations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const M &amp;&#160;</td>
+          <td class="paramname"><em>covariance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>covarianceCoefficient</em> = <code>1.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructs an object that will maximize a scalar function. </p>
-<p>The function <code>objectiveFunction</code> is the function that will be maximized. </p>
+<p>Default constructor. </p>
+<p>Instantiates a Gaussian likelihood function, given a prefix, its domain, a set of observations and a full covariance matrix. The full covariance matrix is stored as a matrix in the <code>covariance</code> parameter.</p>
+<p>The parameter <code>covarianceCoefficient</code> is a multiplying factor of <code>covaraince</code> and is fixed (i.e. not solved for in a statistical inversion). </p>
 
-<p>Definition at line <a class="el" href="a00280_source.html#l00157">157</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
+<p>Definition at line <a class="el" href="a00562_source.html#l00035">35</a> of file <a class="el" href="a00562_source.html">GaussianLikelihoodFullCovariance.C</a>.</p>
 
-<p>References <a class="el" href="a00281_source.html#l00435">QUESO::GslVector::cwSet()</a>, <a class="el" href="a00246_source.html#l00128">m_fstep_size</a>, and <a class="el" href="a00246_source.html#l00123">m_minimizer</a>.</p>
-<div class="fragment"><div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  : <a class="code" href="a00023.html#a06ee4af69d1dcdcb6c5fc64337cfed16">BaseOptimizer</a>(),</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>(<a class="code" href="a00094.html#af5e20b7ecaf01bc59b1a3f2ddec7d990">objectiveFunction</a>),</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <a class="code" href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">m_initialPoint</a>(<span class="keyword">new</span> GslVector(<a class="code" href="a00094.html#af5e20b7ecaf01bc59b1a3f2ddec7d990">objectiveFunction</a>.domainSet().</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;          vectorSpace().zeroVector())),</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="a00094.html#a76cd70956b96167ba85df9daf6b5b7aa">m_minimizer</a>(<span class="keyword">new</span> GslVector(this-&gt;<a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>.domainSet().</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        vectorSpace().zeroVector())),</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <a class="code" href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">m_solver_type</a>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">BFGS2</a>),</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <a class="code" href="a00094.html#aadd94f873c5ec1a38ca44ccceb23e239">m_fstep_size</a>(this-&gt;<a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>.domainSet().vectorSpace().zeroVector()),</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <a class="code" href="a00094.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">m_fdfstep_size</a>(1.0),</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="a00094.html#ae45ebe43d2bf29dd31f8b60c2517280d">m_line_tol</a>(0.1)</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;{</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="comment">// We initialize the minimizer to GSL_NAN just in case the optimization fails</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <a class="code" href="a00094.html#a76cd70956b96167ba85df9daf6b5b7aa">m_minimizer</a>-&gt;<a class="code" href="a00095.html#a706d70a875a0e0c0f091e794c8baece5">cwSet</a>(GSL_NAN);</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <span class="comment">// Set to documented default value.</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <a class="code" href="a00094.html#aadd94f873c5ec1a38ca44ccceb23e239">m_fstep_size</a>.<a class="code" href="a00095.html#a706d70a875a0e0c0f091e794c8baece5">cwSet</a>(0.1);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;}</div>
-<div class="ttc" id="a00094_html_af5e20b7ecaf01bc59b1a3f2ddec7d990"><div class="ttname"><a href="a00094.html#af5e20b7ecaf01bc59b1a3f2ddec7d990">QUESO::GslOptimizer::objectiveFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp; objectiveFunction() const </div><div class="ttdoc">Returns the objective function. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00211">GslOptimizer.C:211</a></div></div>
-<div class="ttc" id="a00094_html_ac6eb4b0086b3a6ead2764bad2b2a6a47"><div class="ttname"><a href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">QUESO::GslOptimizer::m_solver_type</a></div><div class="ttdeci">SolverType m_solver_type</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00125">GslOptimizer.h:125</a></div></div>
-<div class="ttc" id="a00095_html_a706d70a875a0e0c0f091e794c8baece5"><div class="ttname"><a href="a00095.html#a706d70a875a0e0c0f091e794c8baece5">QUESO::GslVector::cwSet</a></div><div class="ttdeci">void cwSet(double value)</div><div class="ttdoc">Component-wise sets all values to this with value. </div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00435">GslVector.C:435</a></div></div>
-<div class="ttc" id="a00094_html_afe0e221ebed93a455711f9f26806b1d2"><div class="ttname"><a href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">QUESO::GslOptimizer::m_objectiveFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp; m_objectiveFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00120">GslOptimizer.h:120</a></div></div>
-<div class="ttc" id="a00023_html_a06ee4af69d1dcdcb6c5fc64337cfed16"><div class="ttname"><a href="a00023.html#a06ee4af69d1dcdcb6c5fc64337cfed16">QUESO::BaseOptimizer::BaseOptimizer</a></div><div class="ttdeci">BaseOptimizer()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00029">Optimizer.C:29</a></div></div>
-<div class="ttc" id="a00094_html_a62623a622a6975c372b51ffb25d2dec5"><div class="ttname"><a href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">QUESO::GslOptimizer::m_initialPoint</a></div><div class="ttdeci">GslVector * m_initialPoint</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00122">GslOptimizer.h:122</a></div></div>
-<div class="ttc" id="a00094_html_aadd94f873c5ec1a38ca44ccceb23e239"><div class="ttname"><a href="a00094.html#aadd94f873c5ec1a38ca44ccceb23e239">QUESO::GslOptimizer::m_fstep_size</a></div><div class="ttdeci">GslVector m_fstep_size</div><div class="ttdoc">For use in gradient-free algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00128">GslOptimizer.h:128</a></div></div>
-<div class="ttc" id="a00094_html_ae45ebe43d2bf29dd31f8b60c2517280d"><div class="ttname"><a href="a00094.html#ae45ebe43d2bf29dd31f8b60c2517280d">QUESO::GslOptimizer::m_line_tol</a></div><div class="ttdeci">double m_line_tol</div><div class="ttdoc">Line minimization tolerance in gradient-based algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00134">GslOptimizer.h:134</a></div></div>
-<div class="ttc" id="a00094_html_a76cd70956b96167ba85df9daf6b5b7aa"><div class="ttname"><a href="a00094.html#a76cd70956b96167ba85df9daf6b5b7aa">QUESO::GslOptimizer::m_minimizer</a></div><div class="ttdeci">GslVector * m_minimizer</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00123">GslOptimizer.h:123</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">QUESO::GslOptimizer::BFGS2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00074">GslOptimizer.h:74</a></div></div>
-<div class="ttc" id="a00094_html_aa71aad9b4bc0d60b4ad7ecca275db1a4"><div class="ttname"><a href="a00094.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">QUESO::GslOptimizer::m_fdfstep_size</a></div><div class="ttdeci">double m_fdfstep_size</div><div class="ttdoc">For use in gradient-based algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00131">GslOptimizer.h:131</a></div></div>
+<p>References <a class="el" href="a00319_source.html#l00047">queso_error_msg</a>.</p>
+<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  : BaseGaussianLikelihood&lt;V, M&gt;(prefix, <a class="code" href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>, observations),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="a00094.html#a11db306c4b3356202432a35c359364da">m_covarianceCoefficient</a>(covarianceCoefficient),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="a00094.html#a1a87b6382be0b61ca814926dbe0450c2">m_covariance</a>(covariance)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> (covariance.numRowsLocal() != observations.sizeLocal()) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="a00319.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;Covariance matrix not same size as observation vector&quot;</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="ttc" id="a00094_html_a11db306c4b3356202432a35c359364da"><div class="ttname"><a href="a00094.html#a11db306c4b3356202432a35c359364da">QUESO::GaussianLikelihoodFullCovariance::m_covarianceCoefficient</a></div><div class="ttdeci">double m_covarianceCoefficient</div><div class="ttdef"><b>Definition:</b> <a href="a00477_source.html#l00074">GaussianLikelihoodFullCovariance.h:74</a></div></div>
+<div class="ttc" id="a00319_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00319.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00047">asserts.h:47</a></div></div>
+<div class="ttc" id="a00041_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00272_source.html#l00050">ScalarFunction.C:50</a></div></div>
+<div class="ttc" id="a00094_html_a1a87b6382be0b61ca814926dbe0450c2"><div class="ttname"><a href="a00094.html#a1a87b6382be0b61ca814926dbe0450c2">QUESO::GaussianLikelihoodFullCovariance::m_covariance</a></div><div class="ttdeci">const M &amp; m_covariance</div><div class="ttdef"><b>Definition:</b> <a href="a00477_source.html#l00075">GaussianLikelihoodFullCovariance.h:75</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a00e5600214b09df0b8ff0477a787b162"></a>
+<a class="anchor" id="a61a29a02efdf1bd36595708780bad0d1"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::GslOptimizer::~GslOptimizer </td>
+          <td class="memname"><a class="el" href="a00094.html">QUESO::GaussianLikelihoodFullCovariance</a>&lt; V, M &gt;::~<a class="el" href="a00094.html">GaussianLikelihoodFullCovariance</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -327,30 +233,56 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="a00280_source.html#l00177">177</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00122">m_initialPoint</a>.</p>
-<div class="fragment"><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;{</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="keyword">delete</span> this-&gt;<a class="code" href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">m_initialPoint</a>;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;}</div>
-<div class="ttc" id="a00094_html_a62623a622a6975c372b51ffb25d2dec5"><div class="ttname"><a href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">QUESO::GslOptimizer::m_initialPoint</a></div><div class="ttdeci">GslVector * m_initialPoint</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00122">GslOptimizer.h:122</a></div></div>
+<p>Definition at line <a class="el" href="a00562_source.html#l00048">48</a> of file <a class="el" href="a00562_source.html">GaussianLikelihoodFullCovariance.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a47c46f655dc8513385f2678b780a5e5e"></a>
+<a class="anchor" id="afc8f8d25936282af5d4489aa21f94937"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void QUESO::GslOptimizer::minimize </td>
+          <td class="memname">double <a class="el" href="a00094.html">QUESO::GaussianLikelihoodFullCovariance</a>&lt; V, M &gt;::actualValue </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00135.html">OptimizerMonitor</a> *&#160;</td>
-          <td class="paramname"><em>monitor</em> = <code>NULL</code></td><td>)</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>domainVector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const V *&#160;</td>
+          <td class="paramname"><em>domainDirection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">V *&#160;</td>
+          <td class="paramname"><em>gradVector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">M *&#160;</td>
+          <td class="paramname"><em>hessianMatrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">V *&#160;</td>
+          <td class="paramname"><em>hessianEffect</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -360,722 +292,116 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Minimize the objective function, starting at <code>m_initialPoint</code>. </p>
-<p>m_initialPoint is handled in the derived class </p>
+<p>Actual value of the scalar function. </p>
 
-<p>Implements <a class="el" href="a00023.html#a07b2d2fdb0c13aa26f10a301ec01f94c">QUESO::BaseOptimizer</a>.</p>
+<p>Implements <a class="el" href="a00041.html#aad8957ecbc4e155cbc4c40a1c21135d7">QUESO::BaseScalarFunction&lt; V, M &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="a00280_source.html#l00182">182</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00122">m_initialPoint</a>, <a class="el" href="a00246_source.html#l00120">m_objectiveFunction</a>, <a class="el" href="a00246_source.html#l00125">m_solver_type</a>, <a class="el" href="a00280_source.html#l00363">minimize_no_gradient()</a>, <a class="el" href="a00280_source.html#l00266">minimize_with_gradient()</a>, <a class="el" href="a00233_source.html#l00087">queso_error</a>, and <a class="el" href="a00280_source.html#l00235">solver_needs_gradient()</a>.</p>
-
-<p>Referenced by <a class="el" href="a00483_source.html#l00191">QUESO::StatisticalInverseProblem&lt; P_V, P_M &gt;::solveWithBayesMetropolisHastings()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                                                     {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="comment">// First check that initial guess is reasonable</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;<a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>.domainSet().contains(*(this-&gt;<a class="code" href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">m_initialPoint</a>)))</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    {</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;      <span class="keywordflow">if</span>( <a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>.domainSet().env().fullRank() == 0 )</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        {</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;          std::cerr &lt;&lt; <span class="stringliteral">&quot;Minimization was given initial point outside of domain&quot;</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                    &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        }</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <a class="code" href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>();</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    }</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim = this-&gt;<a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>.domainSet().vectorSpace().</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    zeroVector().sizeLocal();</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <span class="keywordflow">if</span>( this-&gt;<a class="code" href="a00094.html#aac15d1985e8232bb8de8dca37e15d671">solver_needs_gradient</a>(<a class="code" href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">m_solver_type</a>) )</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      this-&gt;<a class="code" href="a00094.html#a96afabe144a7e159102c85a5dafcd53f">minimize_with_gradient</a>( dim, monitor );</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      this-&gt;<a class="code" href="a00094.html#ad8160dd4579b0b3944c5c16afbe8573a">minimize_no_gradient</a>( dim, monitor );</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    }</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;}</div>
-<div class="ttc" id="a00094_html_ac6eb4b0086b3a6ead2764bad2b2a6a47"><div class="ttname"><a href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">QUESO::GslOptimizer::m_solver_type</a></div><div class="ttdeci">SolverType m_solver_type</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00125">GslOptimizer.h:125</a></div></div>
-<div class="ttc" id="a00094_html_afe0e221ebed93a455711f9f26806b1d2"><div class="ttname"><a href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">QUESO::GslOptimizer::m_objectiveFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp; m_objectiveFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00120">GslOptimizer.h:120</a></div></div>
-<div class="ttc" id="a00094_html_a62623a622a6975c372b51ffb25d2dec5"><div class="ttname"><a href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">QUESO::GslOptimizer::m_initialPoint</a></div><div class="ttdeci">GslVector * m_initialPoint</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00122">GslOptimizer.h:122</a></div></div>
-<div class="ttc" id="a00094_html_ad8160dd4579b0b3944c5c16afbe8573a"><div class="ttname"><a href="a00094.html#ad8160dd4579b0b3944c5c16afbe8573a">QUESO::GslOptimizer::minimize_no_gradient</a></div><div class="ttdeci">void minimize_no_gradient(unsigned int dim, OptimizerMonitor *monitor)</div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00363">GslOptimizer.C:363</a></div></div>
-<div class="ttc" id="a00233_html_a0af4fa8de607265fa3e7413ba0475a18"><div class="ttname"><a href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a></div><div class="ttdeci">#define queso_error()</div><div class="ttdef"><b>Definition:</b> <a href="a00233_source.html#l00087">asserts.h:87</a></div></div>
-<div class="ttc" id="a00094_html_aac15d1985e8232bb8de8dca37e15d671"><div class="ttname"><a href="a00094.html#aac15d1985e8232bb8de8dca37e15d671">QUESO::GslOptimizer::solver_needs_gradient</a></div><div class="ttdeci">bool solver_needs_gradient(SolverType solver)</div><div class="ttdoc">Helper function. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00235">GslOptimizer.C:235</a></div></div>
-<div class="ttc" id="a00094_html_a96afabe144a7e159102c85a5dafcd53f"><div class="ttname"><a href="a00094.html#a96afabe144a7e159102c85a5dafcd53f">QUESO::GslOptimizer::minimize_with_gradient</a></div><div class="ttdeci">void minimize_with_gradient(unsigned int dim, OptimizerMonitor *monitor)</div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00266">GslOptimizer.C:266</a></div></div>
+<p>Definition at line <a class="el" href="a00562_source.html#l00054">54</a> of file <a class="el" href="a00562_source.html">GaussianLikelihoodFullCovariance.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">return</span> std::exp(this-&gt;<a class="code" href="a00094.html#a436133388a158d94bfd017cfc5d97985">lnValue</a>(domainVector, domainDirection, gradVector,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        hessianMatrix, hessianEffect));</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
+<div class="ttc" id="a00094_html_a436133388a158d94bfd017cfc5d97985"><div class="ttname"><a href="a00094.html#a436133388a158d94bfd017cfc5d97985">QUESO::GaussianLikelihoodFullCovariance::lnValue</a></div><div class="ttdeci">virtual double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00562_source.html#l00064">GaussianLikelihoodFullCovariance.C:64</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ad8160dd4579b0b3944c5c16afbe8573a"></a>
+<a class="anchor" id="a436133388a158d94bfd017cfc5d97985"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void QUESO::GslOptimizer::minimize_no_gradient </td>
+          <td class="memname">double <a class="el" href="a00094.html">QUESO::GaussianLikelihoodFullCovariance</a>&lt; V, M &gt;::lnValue </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>dim</em>, </td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>domainVector</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00135.html">OptimizerMonitor</a> *&#160;</td>
-          <td class="paramname"><em>monitor</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00363">363</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00295_source.html#l00053">QUESO::OptimizerMonitor::append()</a>, <a class="el" href="a00246_source.html#l00073">BFGS</a>, <a class="el" href="a00246_source.html#l00074">BFGS2</a>, <a class="el" href="a00280_source.html#l00041">QUESO::c_evaluate()</a>, <a class="el" href="a00246_source.html#l00071">FLETCHER_REEVES_CG</a>, <a class="el" href="a00294_source.html#l00041">QUESO::BaseOptimizer::getMaxIterations()</a>, <a class="el" href="a00294_source.html#l00047">QUESO::BaseOptimizer::getTolerance()</a>, <a class="el" href="a00246_source.html#l00128">m_fstep_size</a>, <a class="el" href="a00246_source.html#l00122">m_initialPoint</a>, <a class="el" href="a00246_source.html#l00120">m_objectiveFunction</a>, <a class="el" href="a00246_source.html#l00125">m_solver_type</a>, <a class="el" href="a00246_source.html#l00076">NELDER_MEAD</a>, <a class="el" href="a00246_source.html#l00077">NELDER_MEAD2</a>, <a class="el" href="a00246_source.html#l00078">NELDER_MEAD2_RAND</a>, <a class="el" href="a00246_source.html#l00072">POLAK_RIBIERE_CG</a>, <a class="el" href="a00233_source.html#l00087">queso_error</a>, and <a class="el" href="a00246_source.html#l00075">STEEPEST_DESCENT</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00182">minimize()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;  {</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <span class="comment">// Set initial point</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    gsl_vector* x = gsl_vector_alloc(dim);</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; i++) {</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;      gsl_vector_set(x, i, (*<a class="code" href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">m_initialPoint</a>)[i]);</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    }</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="comment">// Tell GSL which solver we&#39;re using</span></div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keyword">const</span> gsl_multimin_fminimizer_type* type = NULL;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keywordflow">switch</span>(<a class="code" href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">m_solver_type</a>)</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;      {</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">NELDER_MEAD</a>):</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        type = gsl_multimin_fminimizer_nmsimplex;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">NELDER_MEAD2</a>):</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        type = gsl_multimin_fminimizer_nmsimplex2;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">NELDER_MEAD2_RAND</a>):</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        type = gsl_multimin_fminimizer_nmsimplex2rand;</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">FLETCHER_REEVES_CG</a>):</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">POLAK_RIBIERE_CG</a>):</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">BFGS</a>):</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">BFGS2</a>):</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">STEEPEST_DESCENT</a>):</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;      <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <span class="comment">// Wat?!</span></div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        <a class="code" href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>();</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;      }</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="comment">// Init solver</span></div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    gsl_multimin_fminimizer* solver =</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;      gsl_multimin_fminimizer_alloc(type, dim);</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="comment">// Point GSL at the right functions</span></div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    gsl_multimin_function minusLogPosterior;</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    minusLogPosterior.n = dim;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    minusLogPosterior.f = &amp;<a class="code" href="a00500.html#a41729b1987bfaf3172e9ea79913876dd">c_evaluate</a>;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    minusLogPosterior.params = (<span class="keywordtype">void</span> *)(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    <span class="comment">// Needed for these gradient free algorithms.</span></div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    gsl_vector* step_size = gsl_vector_alloc(dim);</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; i++) {</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;      gsl_vector_set(step_size, i, <a class="code" href="a00094.html#aadd94f873c5ec1a38ca44ccceb23e239">m_fstep_size</a>[i]);</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    }</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    gsl_multimin_fminimizer_set(solver, &amp;minusLogPosterior, x, step_size);</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <span class="keywordtype">int</span> status;</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="keywordtype">size_t</span> iter = 0;</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <span class="keywordtype">double</span> size = 0.0;</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    <span class="keywordflow">do</span></div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;      {</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        iter++;</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        status = gsl_multimin_fminimizer_iterate(solver);</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        <span class="keywordflow">if</span> (status) {</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;          <span class="keywordflow">if</span>( <a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>.domainSet().env().fullRank() == 0 )</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;            {</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;              std::cerr &lt;&lt; <span class="stringliteral">&quot;Error while GSL does optimisation. &quot;</span></div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                        &lt;&lt; <span class="stringliteral">&quot;See below for GSL error type.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;              std::cerr &lt;&lt; <span class="stringliteral">&quot;Gsl error: &quot;</span> &lt;&lt; gsl_strerror(status) &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;            }</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;          <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        }</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        size = gsl_multimin_fminimizer_size(solver);</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        status = gsl_multimin_test_size (size, this-&gt;<a class="code" href="a00023.html#a31e322b52129baacf03e19278e0375f0">getTolerance</a>());</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;        <span class="keywordflow">if</span>(monitor)</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        {</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;          gsl_vector* x = gsl_multimin_fminimizer_x(solver);</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;          std::vector&lt;double&gt; x_min(dim);</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;          <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; i++)</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;            x_min[i] = gsl_vector_get(x,i);</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;          <span class="keywordtype">double</span> f = gsl_multimin_fminimizer_minimum(solver);</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;          monitor-&gt;append( x_min, f, size );</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;        }</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;      }</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    <span class="keywordflow">while</span> ((status == GSL_CONTINUE) &amp;&amp; (iter &lt; this-&gt;<a class="code" href="a00023.html#afee64fa553e2115c11e483409c005463">getMaxIterations</a>()));</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; i++) {</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;      (*m_minimizer)[i] = gsl_vector_get(solver-&gt;x, i);</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    }</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <span class="comment">// We&#39;re being good human beings and cleaning up the memory we allocated</span></div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    gsl_vector_free(step_size);</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    gsl_multimin_fminimizer_free(solver);</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    gsl_vector_free(x);</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;  }</div>
-<div class="ttc" id="a00094_html_ac6eb4b0086b3a6ead2764bad2b2a6a47"><div class="ttname"><a href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">QUESO::GslOptimizer::m_solver_type</a></div><div class="ttdeci">SolverType m_solver_type</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00125">GslOptimizer.h:125</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">QUESO::GslOptimizer::BFGS</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00073">GslOptimizer.h:73</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">QUESO::GslOptimizer::NELDER_MEAD2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00077">GslOptimizer.h:77</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">QUESO::GslOptimizer::FLETCHER_REEVES_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00071">GslOptimizer.h:71</a></div></div>
-<div class="ttc" id="a00094_html_afe0e221ebed93a455711f9f26806b1d2"><div class="ttname"><a href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">QUESO::GslOptimizer::m_objectiveFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp; m_objectiveFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00120">GslOptimizer.h:120</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">QUESO::GslOptimizer::POLAK_RIBIERE_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00072">GslOptimizer.h:72</a></div></div>
-<div class="ttc" id="a00094_html_a62623a622a6975c372b51ffb25d2dec5"><div class="ttname"><a href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">QUESO::GslOptimizer::m_initialPoint</a></div><div class="ttdeci">GslVector * m_initialPoint</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00122">GslOptimizer.h:122</a></div></div>
-<div class="ttc" id="a00094_html_aadd94f873c5ec1a38ca44ccceb23e239"><div class="ttname"><a href="a00094.html#aadd94f873c5ec1a38ca44ccceb23e239">QUESO::GslOptimizer::m_fstep_size</a></div><div class="ttdeci">GslVector m_fstep_size</div><div class="ttdoc">For use in gradient-free algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00128">GslOptimizer.h:128</a></div></div>
-<div class="ttc" id="a00233_html_a0af4fa8de607265fa3e7413ba0475a18"><div class="ttname"><a href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a></div><div class="ttdeci">#define queso_error()</div><div class="ttdef"><b>Definition:</b> <a href="a00233_source.html#l00087">asserts.h:87</a></div></div>
-<div class="ttc" id="a00023_html_a31e322b52129baacf03e19278e0375f0"><div class="ttname"><a href="a00023.html#a31e322b52129baacf03e19278e0375f0">QUESO::BaseOptimizer::getTolerance</a></div><div class="ttdeci">double getTolerance() const </div><div class="ttdoc">Returns the tolerance used to test for an extremum in the optimizer. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00047">Optimizer.C:47</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">QUESO::GslOptimizer::NELDER_MEAD</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00076">GslOptimizer.h:76</a></div></div>
-<div class="ttc" id="a00500_html_a41729b1987bfaf3172e9ea79913876dd"><div class="ttname"><a href="a00500.html#a41729b1987bfaf3172e9ea79913876dd">QUESO::c_evaluate</a></div><div class="ttdeci">double c_evaluate(const gsl_vector *x, void *context)</div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00041">GslOptimizer.C:41</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">QUESO::GslOptimizer::NELDER_MEAD2_RAND</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00078">GslOptimizer.h:78</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">QUESO::GslOptimizer::STEEPEST_DESCENT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00075">GslOptimizer.h:75</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">QUESO::GslOptimizer::BFGS2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00074">GslOptimizer.h:74</a></div></div>
-<div class="ttc" id="a00023_html_afee64fa553e2115c11e483409c005463"><div class="ttname"><a href="a00023.html#afee64fa553e2115c11e483409c005463">QUESO::BaseOptimizer::getMaxIterations</a></div><div class="ttdeci">unsigned int getMaxIterations() const </div><div class="ttdoc">Returns the maximum number of iterations the optimizer will do. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00041">Optimizer.C:41</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a96afabe144a7e159102c85a5dafcd53f"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void QUESO::GslOptimizer::minimize_with_gradient </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>dim</em>, </td>
+          <td class="paramtype">const V *&#160;</td>
+          <td class="paramname"><em>domainDirection</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00135.html">OptimizerMonitor</a> *&#160;</td>
-          <td class="paramname"><em>monitor</em>&#160;</td>
+          <td class="paramtype">V *&#160;</td>
+          <td class="paramname"><em>gradVector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">M *&#160;</td>
+          <td class="paramname"><em>hessianMatrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">V *&#160;</td>
+          <td class="paramname"><em>hessianEffect</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00280_source.html#l00266">266</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
+<p>Logarithm of the value of the scalar function. </p>
 
-<p>References <a class="el" href="a00295_source.html#l00053">QUESO::OptimizerMonitor::append()</a>, <a class="el" href="a00246_source.html#l00073">BFGS</a>, <a class="el" href="a00246_source.html#l00074">BFGS2</a>, <a class="el" href="a00280_source.html#l00041">QUESO::c_evaluate()</a>, <a class="el" href="a00280_source.html#l00067">QUESO::c_evaluate_derivative()</a>, <a class="el" href="a00280_source.html#l00149">QUESO::c_evaluate_with_derivative()</a>, <a class="el" href="a00246_source.html#l00071">FLETCHER_REEVES_CG</a>, <a class="el" href="a00294_source.html#l00041">QUESO::BaseOptimizer::getMaxIterations()</a>, <a class="el" href="a00246_source.html#l00131">m_fdfstep_size</a>, <a class="el" href="a00246_source.html#l00122">m_initialPoint</a>, <a class="el" href="a00246_source.html#l00134">m_line_tol</a>, <a class="el" href="a00246_source.html#l00120">m_objectiveFunction</a>, <a class="el" href="a00246_source.html#l00125">m_solver_type</a>, <a class="el" href="a00246_source.html#l00076">NELDER_MEAD</a>, <a class="el" href="a00246_source.html#l00077">NELDER_MEAD2</a>, <a class="el" href="a00246_source.html#l00078">NELDER_MEAD2_RAND</a>, <a class="el" href="a00246_source.html#l00072">POLAK_RIBIERE_CG</a>, <a class="el" href="a00233_source.html#l00087">queso_error</a>, and <a class="el" href="a00246_source.html#l00075">STEEPEST_DESCENT</a>.</p>
+<p>Implements <a class="el" href="a00041.html#acf2f92adac2df2a0d750dc62cd3a4d0a">QUESO::BaseScalarFunction&lt; V, M &gt;</a>.</p>
 
-<p>Referenced by <a class="el" href="a00280_source.html#l00182">minimize()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  {</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="comment">// Set initial point</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    gsl_vector * x = gsl_vector_alloc(dim);</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; i++) {</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;      gsl_vector_set(x, i, (*<a class="code" href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">m_initialPoint</a>)[i]);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    }</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="comment">// Tell GSL which solver we&#39;re using</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keyword">const</span> gsl_multimin_fdfminimizer_type* type = NULL;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keywordflow">switch</span>(<a class="code" href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">m_solver_type</a>)</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;      {</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">FLETCHER_REEVES_CG</a>):</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        type = gsl_multimin_fdfminimizer_conjugate_fr;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">POLAK_RIBIERE_CG</a>):</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        type = gsl_multimin_fdfminimizer_conjugate_pr;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">BFGS</a>):</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        type = gsl_multimin_fdfminimizer_vector_bfgs;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">BFGS2</a>):</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        type = gsl_multimin_fdfminimizer_vector_bfgs2;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">STEEPEST_DESCENT</a>):</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        type = gsl_multimin_fdfminimizer_steepest_descent;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">NELDER_MEAD</a>):</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">NELDER_MEAD2</a>):</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">NELDER_MEAD2_RAND</a>):</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;      <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        <span class="comment">// Wat?!</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <a class="code" href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>();</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;      }</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="comment">// Init solver</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    gsl_multimin_fdfminimizer * solver =</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;      gsl_multimin_fdfminimizer_alloc(type, dim);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="comment">// Point GSL to the right functions</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    gsl_multimin_function_fdf minusLogPosterior;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    minusLogPosterior.n = dim;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    minusLogPosterior.f = &amp;<a class="code" href="a00500.html#a41729b1987bfaf3172e9ea79913876dd">c_evaluate</a>;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    minusLogPosterior.df = &amp;<a class="code" href="a00500.html#a9e69e6940dbc0ea35bbb5eb085163177">c_evaluate_derivative</a>;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    minusLogPosterior.fdf = &amp;<a class="code" href="a00500.html#aadca5d879e57d8f597a440c33950256e">c_evaluate_with_derivative</a>;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    minusLogPosterior.params = (<span class="keywordtype">void</span> *)(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    gsl_multimin_fdfminimizer_set(solver, &amp;minusLogPosterior, x, <a class="code" href="a00094.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">m_fdfstep_size</a>, <a class="code" href="a00094.html#ae45ebe43d2bf29dd31f8b60c2517280d">m_line_tol</a>);</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="keywordtype">int</span> status;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keywordtype">size_t</span> iter = 0;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keywordflow">do</span> {</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;      iter++;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      status = gsl_multimin_fdfminimizer_iterate(solver);</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      <span class="keywordflow">if</span> (status) {</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>.domainSet().env().fullRank() == 0 )</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;          {</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Error while GSL does optimisation. &quot;</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;See below for GSL error type.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Gsl error: &quot;</span> &lt;&lt; gsl_strerror(status) &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;          }</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;      }</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;      status = gsl_multimin_test_gradient(solver-&gt;gradient, this-&gt;getTolerance());</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;      <span class="keywordflow">if</span>(monitor)</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        {</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;          gsl_vector* x = gsl_multimin_fdfminimizer_x(solver);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;          std::vector&lt;double&gt; x_min(dim);</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;          <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; i++)</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;            x_min[i] = gsl_vector_get(x,i);</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;          <span class="keywordtype">double</span> f = gsl_multimin_fdfminimizer_minimum(solver);</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;          gsl_vector* grad = gsl_multimin_fdfminimizer_gradient(solver);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;          <span class="keywordtype">double</span> grad_norm = gsl_blas_dnrm2(grad);</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;          monitor-&gt;append( x_min, f, grad_norm );</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        }</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    } <span class="keywordflow">while</span> ((status == GSL_CONTINUE) &amp;&amp; (iter &lt; this-&gt;<a class="code" href="a00023.html#afee64fa553e2115c11e483409c005463">getMaxIterations</a>()));</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; i++) {</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;      (*m_minimizer)[i] = gsl_vector_get(solver-&gt;x, i);</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    }</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="comment">// We&#39;re being good human beings and cleaning up the memory we allocated</span></div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    gsl_multimin_fdfminimizer_free(solver);</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    gsl_vector_free(x);</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;  }</div>
-<div class="ttc" id="a00094_html_ac6eb4b0086b3a6ead2764bad2b2a6a47"><div class="ttname"><a href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">QUESO::GslOptimizer::m_solver_type</a></div><div class="ttdeci">SolverType m_solver_type</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00125">GslOptimizer.h:125</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">QUESO::GslOptimizer::BFGS</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00073">GslOptimizer.h:73</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">QUESO::GslOptimizer::NELDER_MEAD2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00077">GslOptimizer.h:77</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">QUESO::GslOptimizer::FLETCHER_REEVES_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00071">GslOptimizer.h:71</a></div></div>
-<div class="ttc" id="a00094_html_afe0e221ebed93a455711f9f26806b1d2"><div class="ttname"><a href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">QUESO::GslOptimizer::m_objectiveFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp; m_objectiveFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00120">GslOptimizer.h:120</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">QUESO::GslOptimizer::POLAK_RIBIERE_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00072">GslOptimizer.h:72</a></div></div>
-<div class="ttc" id="a00500_html_aadca5d879e57d8f597a440c33950256e"><div class="ttname"><a href="a00500.html#aadca5d879e57d8f597a440c33950256e">QUESO::c_evaluate_with_derivative</a></div><div class="ttdeci">void c_evaluate_with_derivative(const gsl_vector *x, void *context, double *f, gsl_vector *derivative)</div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00149">GslOptimizer.C:149</a></div></div>
-<div class="ttc" id="a00094_html_a62623a622a6975c372b51ffb25d2dec5"><div class="ttname"><a href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">QUESO::GslOptimizer::m_initialPoint</a></div><div class="ttdeci">GslVector * m_initialPoint</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00122">GslOptimizer.h:122</a></div></div>
-<div class="ttc" id="a00233_html_a0af4fa8de607265fa3e7413ba0475a18"><div class="ttname"><a href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a></div><div class="ttdeci">#define queso_error()</div><div class="ttdef"><b>Definition:</b> <a href="a00233_source.html#l00087">asserts.h:87</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">QUESO::GslOptimizer::NELDER_MEAD</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00076">GslOptimizer.h:76</a></div></div>
-<div class="ttc" id="a00094_html_ae45ebe43d2bf29dd31f8b60c2517280d"><div class="ttname"><a href="a00094.html#ae45ebe43d2bf29dd31f8b60c2517280d">QUESO::GslOptimizer::m_line_tol</a></div><div class="ttdeci">double m_line_tol</div><div class="ttdoc">Line minimization tolerance in gradient-based algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00134">GslOptimizer.h:134</a></div></div>
-<div class="ttc" id="a00500_html_a41729b1987bfaf3172e9ea79913876dd"><div class="ttname"><a href="a00500.html#a41729b1987bfaf3172e9ea79913876dd">QUESO::c_evaluate</a></div><div class="ttdeci">double c_evaluate(const gsl_vector *x, void *context)</div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00041">GslOptimizer.C:41</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">QUESO::GslOptimizer::NELDER_MEAD2_RAND</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00078">GslOptimizer.h:78</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">QUESO::GslOptimizer::STEEPEST_DESCENT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00075">GslOptimizer.h:75</a></div></div>
-<div class="ttc" id="a00500_html_a9e69e6940dbc0ea35bbb5eb085163177"><div class="ttname"><a href="a00500.html#a9e69e6940dbc0ea35bbb5eb085163177">QUESO::c_evaluate_derivative</a></div><div class="ttdeci">void c_evaluate_derivative(const gsl_vector *x, void *context, gsl_vector *derivative)</div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00067">GslOptimizer.C:67</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">QUESO::GslOptimizer::BFGS2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00074">GslOptimizer.h:74</a></div></div>
-<div class="ttc" id="a00094_html_aa71aad9b4bc0d60b4ad7ecca275db1a4"><div class="ttname"><a href="a00094.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">QUESO::GslOptimizer::m_fdfstep_size</a></div><div class="ttdeci">double m_fdfstep_size</div><div class="ttdoc">For use in gradient-based algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00131">GslOptimizer.h:131</a></div></div>
-<div class="ttc" id="a00023_html_afee64fa553e2115c11e483409c005463"><div class="ttname"><a href="a00023.html#afee64fa553e2115c11e483409c005463">QUESO::BaseOptimizer::getMaxIterations</a></div><div class="ttdeci">unsigned int getMaxIterations() const </div><div class="ttdoc">Returns the maximum number of iterations the optimizer will do. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00041">Optimizer.C:41</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="ab0d1ebc450eaa46f36a2d37a04ee8c20"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00095.html">GslVector</a> &amp; QUESO::GslOptimizer::minimizer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Return the point that minimizes the objective function. </p>
-<p>This state will be filled with GSL_NAN if, for some reason, the optimization failed </p>
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00225">225</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00123">m_minimizer</a>.</p>
-
-<p>Referenced by <a class="el" href="a00483_source.html#l00191">QUESO::StatisticalInverseProblem&lt; P_V, P_M &gt;::solveWithBayesMetropolisHastings()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;{</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  <span class="keywordflow">return</span> *(this-&gt;<a class="code" href="a00094.html#a76cd70956b96167ba85df9daf6b5b7aa">m_minimizer</a>);</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;}</div>
-<div class="ttc" id="a00094_html_a76cd70956b96167ba85df9daf6b5b7aa"><div class="ttname"><a href="a00094.html#a76cd70956b96167ba85df9daf6b5b7aa">QUESO::GslOptimizer::m_minimizer</a></div><div class="ttdeci">GslVector * m_minimizer</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00123">GslOptimizer.h:123</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="af5e20b7ecaf01bc59b1a3f2ddec7d990"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00026.html">BaseScalarFunction</a>&lt; <a class="el" href="a00095.html">GslVector</a>, <a class="el" href="a00093.html">GslMatrix</a> &gt; &amp; QUESO::GslOptimizer::objectiveFunction </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the objective function. </p>
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00211">211</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00120">m_objectiveFunction</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00041">QUESO::c_evaluate()</a>, and <a class="el" href="a00280_source.html#l00067">QUESO::c_evaluate_derivative()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;{</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;}</div>
-<div class="ttc" id="a00094_html_afe0e221ebed93a455711f9f26806b1d2"><div class="ttname"><a href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">QUESO::GslOptimizer::m_objectiveFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp; m_objectiveFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00120">GslOptimizer.h:120</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="aaa8c1ccb10189638d4993b32a808b4ea"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void QUESO::GslOptimizer::set_line_tol </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tol</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set GSL line minimization tolerance. </p>
-<p>Applicable only to gradient-based solvers. Default is 0.1, as recommended by GSL documentation. See GSL documentation for more details. </p>
-
-</div>
-</div>
-<a class="anchor" id="af44200fe3ca000860324501222d90aed"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void QUESO::GslOptimizer::set_solver_type </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a>&#160;</td>
-          <td class="paramname"><em>solver</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00230">230</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00125">m_solver_type</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00515">set_solver_type()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <a class="code" href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">m_solver_type</a> = solver;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  }</div>
-<div class="ttc" id="a00094_html_ac6eb4b0086b3a6ead2764bad2b2a6a47"><div class="ttname"><a href="a00094.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">QUESO::GslOptimizer::m_solver_type</a></div><div class="ttdeci">SolverType m_solver_type</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00125">GslOptimizer.h:125</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a643bd0c4ccd554ed65e88048a368b4e8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void QUESO::GslOptimizer::set_solver_type </td>
-          <td>(</td>
-          <td class="paramtype">std::string &amp;&#160;</td>
-          <td class="paramname"><em>solver</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00515">515</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00280_source.html#l00230">set_solver_type()</a>, and <a class="el" href="a00280_source.html#l00475">string_to_enum()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;  {</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    this-&gt;<a class="code" href="a00094.html#af44200fe3ca000860324501222d90aed">set_solver_type</a>( this-&gt;<a class="code" href="a00094.html#aa5ee10f794e134732d97f0f2f734ff84">string_to_enum</a>(solver) );</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;  }</div>
-<div class="ttc" id="a00094_html_af44200fe3ca000860324501222d90aed"><div class="ttname"><a href="a00094.html#af44200fe3ca000860324501222d90aed">QUESO::GslOptimizer::set_solver_type</a></div><div class="ttdeci">void set_solver_type(SolverType solver)</div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00230">GslOptimizer.C:230</a></div></div>
-<div class="ttc" id="a00094_html_aa5ee10f794e134732d97f0f2f734ff84"><div class="ttname"><a href="a00094.html#aa5ee10f794e134732d97f0f2f734ff84">QUESO::GslOptimizer::string_to_enum</a></div><div class="ttdeci">SolverType string_to_enum(std::string &amp;solver)</div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00475">GslOptimizer.C:475</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a3a264289748b987fed2f99db5177ae7e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void QUESO::GslOptimizer::set_step_size </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00095.html">GslVector</a> &amp;&#160;</td>
-          <td class="paramname"><em>step_size</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets step size used in gradient-free solvers. </p>
-<p>By default, the step size used will be a vector of 0.1. Use this method to reset the step_size to the desired values. </p>
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00465">465</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00128">m_fstep_size</a>.</p>
-<div class="fragment"><div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;  {</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <a class="code" href="a00094.html#aadd94f873c5ec1a38ca44ccceb23e239">m_fstep_size</a> = step_size;</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;  }</div>
-<div class="ttc" id="a00094_html_aadd94f873c5ec1a38ca44ccceb23e239"><div class="ttname"><a href="a00094.html#aadd94f873c5ec1a38ca44ccceb23e239">QUESO::GslOptimizer::m_fstep_size</a></div><div class="ttdeci">GslVector m_fstep_size</div><div class="ttdoc">For use in gradient-free algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00128">GslOptimizer.h:128</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="ab417b878cf5c0aa1fb45d7161adced8e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void QUESO::GslOptimizer::set_step_size </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>step_size</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets step size used in gradient-based solvers. </p>
-<p>GSL doesn't document this parameter well, but it seems to be related to the line search, so we default to 1.0 for full step. </p>
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00470">470</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00131">m_fdfstep_size</a>.</p>
-<div class="fragment"><div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;  {</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;    <a class="code" href="a00094.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">m_fdfstep_size</a> = step_size;</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;  }</div>
-<div class="ttc" id="a00094_html_aa71aad9b4bc0d60b4ad7ecca275db1a4"><div class="ttname"><a href="a00094.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">QUESO::GslOptimizer::m_fdfstep_size</a></div><div class="ttdeci">double m_fdfstep_size</div><div class="ttdoc">For use in gradient-based algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00131">GslOptimizer.h:131</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a4dd79ad241e96f5e937b534b50f64b32"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void QUESO::GslOptimizer::setInitialPoint </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00095.html">GslVector</a> &amp;&#160;</td>
-          <td class="paramname"><em>intialPoint</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the point at which the optimization starts. </p>
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00217">217</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00122">m_initialPoint</a>, and <a class="el" href="a00281_source.html#l00343">QUESO::GslVector::sizeLocal()</a>.</p>
-
-<p>Referenced by <a class="el" href="a00483_source.html#l00191">QUESO::StatisticalInverseProblem&lt; P_V, P_M &gt;::solveWithBayesMetropolisHastings()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;{</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; initialPoint.sizeLocal(); i++) {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    (*(this-&gt;<a class="code" href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">m_initialPoint</a>))[i] = initialPoint[i];</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  }</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;}</div>
-<div class="ttc" id="a00094_html_a62623a622a6975c372b51ffb25d2dec5"><div class="ttname"><a href="a00094.html#a62623a622a6975c372b51ffb25d2dec5">QUESO::GslOptimizer::m_initialPoint</a></div><div class="ttdeci">GslVector * m_initialPoint</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00122">GslOptimizer.h:122</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="aac15d1985e8232bb8de8dca37e15d671"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool QUESO::GslOptimizer::solver_needs_gradient </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a>&#160;</td>
-          <td class="paramname"><em>solver</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Helper function. </p>
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00235">235</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00073">BFGS</a>, <a class="el" href="a00246_source.html#l00074">BFGS2</a>, <a class="el" href="a00246_source.html#l00071">FLETCHER_REEVES_CG</a>, <a class="el" href="a00246_source.html#l00076">NELDER_MEAD</a>, <a class="el" href="a00246_source.html#l00077">NELDER_MEAD2</a>, <a class="el" href="a00246_source.html#l00078">NELDER_MEAD2_RAND</a>, <a class="el" href="a00246_source.html#l00072">POLAK_RIBIERE_CG</a>, <a class="el" href="a00233_source.html#l00087">queso_error</a>, and <a class="el" href="a00246_source.html#l00075">STEEPEST_DESCENT</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00182">minimize()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  {</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordtype">bool</span> gradient_needed = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordflow">switch</span>(solver)</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">FLETCHER_REEVES_CG</a>):</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">POLAK_RIBIERE_CG</a>):</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">BFGS</a>):</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">BFGS2</a>):</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">STEEPEST_DESCENT</a>):</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        {</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;          gradient_needed = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;          <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        }</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">NELDER_MEAD</a>):</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">NELDER_MEAD2</a>):</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;      <span class="keywordflow">case</span>(<a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">NELDER_MEAD2_RAND</a>):</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        {</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;          <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        }</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;      <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        {</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;          <span class="comment">// Wat?!</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;          <a class="code" href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>();</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        }</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      } <span class="comment">// switch(solver)</span></div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keywordflow">return</span> gradient_needed;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  }</div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">QUESO::GslOptimizer::BFGS</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00073">GslOptimizer.h:73</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">QUESO::GslOptimizer::NELDER_MEAD2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00077">GslOptimizer.h:77</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">QUESO::GslOptimizer::FLETCHER_REEVES_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00071">GslOptimizer.h:71</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">QUESO::GslOptimizer::POLAK_RIBIERE_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00072">GslOptimizer.h:72</a></div></div>
-<div class="ttc" id="a00233_html_a0af4fa8de607265fa3e7413ba0475a18"><div class="ttname"><a href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a></div><div class="ttdeci">#define queso_error()</div><div class="ttdef"><b>Definition:</b> <a href="a00233_source.html#l00087">asserts.h:87</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">QUESO::GslOptimizer::NELDER_MEAD</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00076">GslOptimizer.h:76</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">QUESO::GslOptimizer::NELDER_MEAD2_RAND</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00078">GslOptimizer.h:78</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">QUESO::GslOptimizer::STEEPEST_DESCENT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00075">GslOptimizer.h:75</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">QUESO::GslOptimizer::BFGS2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00074">GslOptimizer.h:74</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="aa5ee10f794e134732d97f0f2f734ff84"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">GslOptimizer::SolverType</a> QUESO::GslOptimizer::string_to_enum </td>
-          <td>(</td>
-          <td class="paramtype">std::string &amp;&#160;</td>
-          <td class="paramname"><em>solver</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00280_source.html#l00475">475</a> of file <a class="el" href="a00280_source.html">GslOptimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00246_source.html#l00073">BFGS</a>, <a class="el" href="a00246_source.html#l00074">BFGS2</a>, <a class="el" href="a00246_source.html#l00071">FLETCHER_REEVES_CG</a>, <a class="el" href="a00246_source.html#l00120">m_objectiveFunction</a>, <a class="el" href="a00246_source.html#l00076">NELDER_MEAD</a>, <a class="el" href="a00246_source.html#l00077">NELDER_MEAD2</a>, <a class="el" href="a00246_source.html#l00078">NELDER_MEAD2_RAND</a>, <a class="el" href="a00246_source.html#l00072">POLAK_RIBIERE_CG</a>, <a class="el" href="a00233_source.html#l00087">queso_error</a>, and <a class="el" href="a00246_source.html#l00075">STEEPEST_DESCENT</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00515">set_solver_type()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;  {</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;    <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> solver_type;</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;</div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;    <span class="keywordflow">if</span>( solver == std::string(<span class="stringliteral">&quot;fletcher_reeves_cg&quot;</span>) )</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;      solver_type = <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">FLETCHER_REEVES_CG</a>;</div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( solver == std::string(<span class="stringliteral">&quot;polak_ribiere_cg&quot;</span>) )</div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;      solver_type = <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">POLAK_RIBIERE_CG</a>;</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( solver == std::string(<span class="stringliteral">&quot;bfgs&quot;</span>) )</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;      solver_type = <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">BFGS</a>;</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( solver == std::string(<span class="stringliteral">&quot;bfgs2&quot;</span>) )</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;      solver_type = <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">BFGS2</a>;</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( solver == std::string(<span class="stringliteral">&quot;steepest_decent&quot;</span>) )</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;      solver_type = <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">STEEPEST_DESCENT</a>;</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( solver == std::string(<span class="stringliteral">&quot;nelder_mead&quot;</span>) )</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;      solver_type = <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">NELDER_MEAD</a>;</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( solver == std::string(<span class="stringliteral">&quot;nelder_mead2&quot;</span>) )</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;      solver_type = <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">NELDER_MEAD2</a>;</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( solver == std::string(<span class="stringliteral">&quot;nelder_mead2_rand&quot;</span>) )</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;      solver_type = <a class="code" href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">NELDER_MEAD2_RAND</a>;</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;      {</div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>.domainSet().env().fullRank() == 0 )</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;          {</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: Invalid GslOptimizer solver name: &quot;</span> &lt;&lt; solver &lt;&lt; std::endl</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;       Valids choices are: fletcher_reeves_cg&quot;</span> &lt;&lt; std::endl</div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;                           polak_ribiere_cg&quot;</span> &lt;&lt; std::endl</div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;                           bfgs&quot;</span> &lt;&lt; std::endl</div>
-<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;                           bfgs2&quot;</span> &lt;&lt; std::endl</div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;                           steepest_decent&quot;</span> &lt;&lt; std::endl</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;                           nelder_mead&quot;</span> &lt;&lt; std::endl</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;                           nelder_mead2&quot;</span> &lt;&lt; std::endl</div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;                           nelder_mead2_rand&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;          }</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        <a class="code" href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>();</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;      }</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;</div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;    <span class="keywordflow">return</span> solver_type;</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;  }</div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">QUESO::GslOptimizer::BFGS</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00073">GslOptimizer.h:73</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">QUESO::GslOptimizer::NELDER_MEAD2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00077">GslOptimizer.h:77</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524d"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">QUESO::GslOptimizer::SolverType</a></div><div class="ttdeci">SolverType</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00071">GslOptimizer.h:71</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">QUESO::GslOptimizer::FLETCHER_REEVES_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00071">GslOptimizer.h:71</a></div></div>
-<div class="ttc" id="a00094_html_afe0e221ebed93a455711f9f26806b1d2"><div class="ttname"><a href="a00094.html#afe0e221ebed93a455711f9f26806b1d2">QUESO::GslOptimizer::m_objectiveFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp; m_objectiveFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00120">GslOptimizer.h:120</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">QUESO::GslOptimizer::POLAK_RIBIERE_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00072">GslOptimizer.h:72</a></div></div>
-<div class="ttc" id="a00233_html_a0af4fa8de607265fa3e7413ba0475a18"><div class="ttname"><a href="a00233.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a></div><div class="ttdeci">#define queso_error()</div><div class="ttdef"><b>Definition:</b> <a href="a00233_source.html#l00087">asserts.h:87</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">QUESO::GslOptimizer::NELDER_MEAD</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00076">GslOptimizer.h:76</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">QUESO::GslOptimizer::NELDER_MEAD2_RAND</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00078">GslOptimizer.h:78</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">QUESO::GslOptimizer::STEEPEST_DESCENT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00075">GslOptimizer.h:75</a></div></div>
-<div class="ttc" id="a00094_html_a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9"><div class="ttname"><a href="a00094.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">QUESO::GslOptimizer::BFGS2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00246_source.html#l00074">GslOptimizer.h:74</a></div></div>
+<p>Definition at line <a class="el" href="a00562_source.html#l00064">64</a> of file <a class="el" href="a00562_source.html">GaussianLikelihoodFullCovariance.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  V modelOutput(this-&gt;<a class="code" href="a00033.html#a1d8164465eaac7206aa81e4347ac914c">m_observations</a>, 0, 0);  <span class="comment">// At least it&#39;s not a copy</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  V weightedMisfit(this-&gt;<a class="code" href="a00033.html#a1d8164465eaac7206aa81e4347ac914c">m_observations</a>, 0, 0);  <span class="comment">// At least it&#39;s not a copy</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  this-&gt;<a class="code" href="a00033.html#a27a49f9fb4830bfe2c0dc6015c48466d">evaluateModel</a>(domainVector, domainDirection, modelOutput, gradVector,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      hessianMatrix, hessianEffect);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// Compute misfit G(x) - y</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  modelOutput -= this-&gt;<a class="code" href="a00033.html#a1d8164465eaac7206aa81e4347ac914c">m_observations</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// Solve \Sigma u = G(x) - y for u</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  this-&gt;<a class="code" href="a00094.html#a1a87b6382be0b61ca814926dbe0450c2">m_covariance</a>.invertMultiply(modelOutput, weightedMisfit);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// Compute (G(x) - y)^T \Sigma^{-1} (G(x) - y)</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  modelOutput *= weightedMisfit;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// This is square of 2-norm</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">double</span> norm2_squared = modelOutput.sumOfComponents();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordflow">return</span> -0.5 * norm2_squared / (this-&gt;<a class="code" href="a00094.html#a11db306c4b3356202432a35c359364da">m_covarianceCoefficient</a>);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
+<div class="ttc" id="a00033_html_a1d8164465eaac7206aa81e4347ac914c"><div class="ttname"><a href="a00033.html#a1d8164465eaac7206aa81e4347ac914c">QUESO::BaseGaussianLikelihood::m_observations</a></div><div class="ttdeci">const V &amp; m_observations</div><div class="ttdef"><b>Definition:</b> <a href="a00473_source.html#l00086">GaussianLikelihood.h:86</a></div></div>
+<div class="ttc" id="a00094_html_a11db306c4b3356202432a35c359364da"><div class="ttname"><a href="a00094.html#a11db306c4b3356202432a35c359364da">QUESO::GaussianLikelihoodFullCovariance::m_covarianceCoefficient</a></div><div class="ttdeci">double m_covarianceCoefficient</div><div class="ttdef"><b>Definition:</b> <a href="a00477_source.html#l00074">GaussianLikelihoodFullCovariance.h:74</a></div></div>
+<div class="ttc" id="a00033_html_a27a49f9fb4830bfe2c0dc6015c48466d"><div class="ttname"><a href="a00033.html#a27a49f9fb4830bfe2c0dc6015c48466d">QUESO::BaseGaussianLikelihood::evaluateModel</a></div><div class="ttdeci">virtual void evaluateModel(const V &amp;domainVector, const V *domainDirection, V &amp;modelOutput, V *gradVector, M *hessianMatrix, V *hessianEffect) const =0</div><div class="ttdoc">Evaluates the user&amp;#39;s model at the point domainVector. </div></div>
+<div class="ttc" id="a00094_html_a1a87b6382be0b61ca814926dbe0450c2"><div class="ttname"><a href="a00094.html#a1a87b6382be0b61ca814926dbe0450c2">QUESO::GaussianLikelihoodFullCovariance::m_covariance</a></div><div class="ttdeci">const M &amp; m_covariance</div><div class="ttdef"><b>Definition:</b> <a href="a00477_source.html#l00075">GaussianLikelihoodFullCovariance.h:75</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="aa71aad9b4bc0d60b4ad7ecca275db1a4"></a>
+<a class="anchor" id="a1a87b6382be0b61ca814926dbe0450c2"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double QUESO::GslOptimizer::m_fdfstep_size</td>
+          <td class="memname">const M&amp; <a class="el" href="a00094.html">QUESO::GaussianLikelihoodFullCovariance</a>&lt; V, M &gt;::m_covariance</td>
         </tr>
       </table>
   </td>
@@ -1085,23 +411,21 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>For use in gradient-based algorithms. </p>
-
-<p>Definition at line <a class="el" href="a00246_source.html#l00131">131</a> of file <a class="el" href="a00246_source.html">GslOptimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00266">minimize_with_gradient()</a>, and <a class="el" href="a00280_source.html#l00470">set_step_size()</a>.</p>
+<p>Definition at line <a class="el" href="a00477_source.html#l00075">75</a> of file <a class="el" href="a00477_source.html">GaussianLikelihoodFullCovariance.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aadd94f873c5ec1a38ca44ccceb23e239"></a>
+<a class="anchor" id="a11db306c4b3356202432a35c359364da"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00095.html">GslVector</a> QUESO::GslOptimizer::m_fstep_size</td>
+          <td class="memname">double <a class="el" href="a00094.html">QUESO::GaussianLikelihoodFullCovariance</a>&lt; V, M &gt;::m_covarianceCoefficient</td>
         </tr>
       </table>
   </td>
@@ -1111,143 +435,17 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>For use in gradient-free algorithms. </p>
-
-<p>Definition at line <a class="el" href="a00246_source.html#l00128">128</a> of file <a class="el" href="a00246_source.html">GslOptimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00157">GslOptimizer()</a>, <a class="el" href="a00280_source.html#l00363">minimize_no_gradient()</a>, and <a class="el" href="a00280_source.html#l00465">set_step_size()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a62623a622a6975c372b51ffb25d2dec5"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00095.html">GslVector</a>* QUESO::GslOptimizer::m_initialPoint</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00246_source.html#l00122">122</a> of file <a class="el" href="a00246_source.html">GslOptimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00182">minimize()</a>, <a class="el" href="a00280_source.html#l00363">minimize_no_gradient()</a>, <a class="el" href="a00280_source.html#l00266">minimize_with_gradient()</a>, <a class="el" href="a00280_source.html#l00217">setInitialPoint()</a>, and <a class="el" href="a00280_source.html#l00177">~GslOptimizer()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae45ebe43d2bf29dd31f8b60c2517280d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double QUESO::GslOptimizer::m_line_tol</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Line minimization tolerance in gradient-based algorithms. </p>
-
-<p>Definition at line <a class="el" href="a00246_source.html#l00134">134</a> of file <a class="el" href="a00246_source.html">GslOptimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00266">minimize_with_gradient()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a76cd70956b96167ba85df9daf6b5b7aa"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00095.html">GslVector</a>* QUESO::GslOptimizer::m_minimizer</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00246_source.html#l00123">123</a> of file <a class="el" href="a00246_source.html">GslOptimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00157">GslOptimizer()</a>, and <a class="el" href="a00280_source.html#l00225">minimizer()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="afe0e221ebed93a455711f9f26806b1d2"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00026.html">BaseScalarFunction</a>&lt;<a class="el" href="a00095.html">GslVector</a>, <a class="el" href="a00093.html">GslMatrix</a>&gt;&amp; QUESO::GslOptimizer::m_objectiveFunction</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00246_source.html#l00120">120</a> of file <a class="el" href="a00246_source.html">GslOptimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00182">minimize()</a>, <a class="el" href="a00280_source.html#l00363">minimize_no_gradient()</a>, <a class="el" href="a00280_source.html#l00266">minimize_with_gradient()</a>, <a class="el" href="a00280_source.html#l00211">objectiveFunction()</a>, and <a class="el" href="a00280_source.html#l00475">string_to_enum()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac6eb4b0086b3a6ead2764bad2b2a6a47"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00094.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> QUESO::GslOptimizer::m_solver_type</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00246_source.html#l00125">125</a> of file <a class="el" href="a00246_source.html">GslOptimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00182">minimize()</a>, <a class="el" href="a00280_source.html#l00363">minimize_no_gradient()</a>, <a class="el" href="a00280_source.html#l00266">minimize_with_gradient()</a>, and <a class="el" href="a00280_source.html#l00230">set_solver_type()</a>.</p>
+<p>Definition at line <a class="el" href="a00477_source.html#l00074">74</a> of file <a class="el" href="a00477_source.html">GaussianLikelihoodFullCovariance.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/core/inc/<a class="el" href="a00246_source.html">GslOptimizer.h</a></li>
-<li>src/core/src/<a class="el" href="a00280_source.html">GslOptimizer.C</a></li>
+<li>src/stats/inc/<a class="el" href="a00477_source.html">GaussianLikelihoodFullCovariance.h</a></li>
+<li>src/stats/src/<a class="el" href="a00562_source.html">GaussianLikelihoodFullCovariance.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:56 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:35 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

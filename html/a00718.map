@@ -1,2 +1,9 @@
-<map id="src/stats/inc/VectorCdf.h" name="src/stats/inc/VectorCdf.h">
+<map id="src/contrib/ANN/src/kd_pr_search.h" name="src/contrib/ANN/src/kd_pr_search.h">
+<area shape="rect" id="node3" href="$a00309.html" title="kd_tree.h" alt="" coords="19,179,104,208"/>
+<area shape="rect" id="node23" href="$a00311.html" title="kd_util.h" alt="" coords="23,101,100,131"/>
+<area shape="rect" id="node26" href="$a00313.html" title="pr_queue.h" alt="" coords="124,101,220,131"/>
+<area shape="rect" id="node29" href="$a00287.html" title="ANN/ANNperf.h" alt="" coords="248,179,371,208"/>
+<area shape="rect" id="node32" href="$a00314.html" title="pr_queue_k.h" alt="" coords="244,101,353,131"/>
+<area shape="rect" id="node5" href="$a00288.html" title="ANN/ANNx.h" alt="" coords="113,256,217,285"/>
+<area shape="rect" id="node9" href="$a00286.html" title="ANN/ANN.h" alt="" coords="236,333,332,363"/>
 </map>

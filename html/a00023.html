@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: QUESO::BaseOptimizer Class Reference</title>
+<title>queso-0.53.0: ANNsampStat Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,106 +43,56 @@
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="a00500.html">QUESO</a></li><li class="navelem"><a class="el" href="a00023.html">BaseOptimizer</a></li>  </ul>
-</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a00876.html">List of all members</a>  </div>
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="a01095.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::BaseOptimizer Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">ANNsampStat Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A base class for handling optimisation of scalar functions.  
- <a href="a00023.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="a00260_source.html">Optimizer.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for QUESO::BaseOptimizer:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00877.png" border="0" usemap="#_q_u_e_s_o_1_1_base_optimizer_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_base_optimizer_inherit__map" id="_q_u_e_s_o_1_1_base_optimizer_inherit__map">
-<area shape="rect" id="node3" href="a00094.html" title="A base class for handling optimisation of scalar functions. " alt="" coords="13,83,179,112"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<p><code>#include &lt;<a class="el" href="a00287_source.html">ANNperf.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a06ee4af69d1dcdcb6c5fc64337cfed16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a06ee4af69d1dcdcb6c5fc64337cfed16">BaseOptimizer</a> ()</td></tr>
-<tr class="memdesc:a06ee4af69d1dcdcb6c5fc64337cfed16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a06ee4af69d1dcdcb6c5fc64337cfed16">More...</a><br/></td></tr>
-<tr class="separator:a06ee4af69d1dcdcb6c5fc64337cfed16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0d3914f16c9539125fdf18f72e06c1a"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ad0d3914f16c9539125fdf18f72e06c1a">~BaseOptimizer</a> ()</td></tr>
-<tr class="memdesc:ad0d3914f16c9539125fdf18f72e06c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ad0d3914f16c9539125fdf18f72e06c1a">More...</a><br/></td></tr>
-<tr class="separator:ad0d3914f16c9539125fdf18f72e06c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07b2d2fdb0c13aa26f10a301ec01f94c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a07b2d2fdb0c13aa26f10a301ec01f94c">minimize</a> (<a class="el" href="a00135.html">OptimizerMonitor</a> *monitor)=0</td></tr>
-<tr class="memdesc:a07b2d2fdb0c13aa26f10a301ec01f94c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimize the objective function, starting at <code>m_initialPoint</code>.  <a href="#a07b2d2fdb0c13aa26f10a301ec01f94c">More...</a><br/></td></tr>
-<tr class="separator:a07b2d2fdb0c13aa26f10a301ec01f94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afee64fa553e2115c11e483409c005463"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#afee64fa553e2115c11e483409c005463">getMaxIterations</a> () const </td></tr>
-<tr class="memdesc:afee64fa553e2115c11e483409c005463"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum number of iterations the optimizer will do.  <a href="#afee64fa553e2115c11e483409c005463">More...</a><br/></td></tr>
-<tr class="separator:afee64fa553e2115c11e483409c005463"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31e322b52129baacf03e19278e0375f0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a31e322b52129baacf03e19278e0375f0">getTolerance</a> () const </td></tr>
-<tr class="memdesc:a31e322b52129baacf03e19278e0375f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the tolerance used to test for an extremum in the optimizer.  <a href="#a31e322b52129baacf03e19278e0375f0">More...</a><br/></td></tr>
-<tr class="separator:a31e322b52129baacf03e19278e0375f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e527eab75fab7fa43f741494fdb9f08"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a5e527eab75fab7fa43f741494fdb9f08">getFiniteDifferenceStepSize</a> () const </td></tr>
-<tr class="memdesc:a5e527eab75fab7fa43f741494fdb9f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the step size used in the finite difference formula.  <a href="#a5e527eab75fab7fa43f741494fdb9f08">More...</a><br/></td></tr>
-<tr class="separator:a5e527eab75fab7fa43f741494fdb9f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae01578ed2d1ba7e92ba4f5a51347aec2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ae01578ed2d1ba7e92ba4f5a51347aec2">setMaxIterations</a> (unsigned int maxIterations)</td></tr>
-<tr class="memdesc:ae01578ed2d1ba7e92ba4f5a51347aec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of iterations to be used by the optimizer.  <a href="#ae01578ed2d1ba7e92ba4f5a51347aec2">More...</a><br/></td></tr>
-<tr class="separator:ae01578ed2d1ba7e92ba4f5a51347aec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a236511ca3bacfd63664d018a1b8265d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a236511ca3bacfd63664d018a1b8265d8">setTolerance</a> (double tolerance)</td></tr>
-<tr class="memdesc:a236511ca3bacfd63664d018a1b8265d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the tolerance the optimizer will use to test for an extremum.  <a href="#a236511ca3bacfd63664d018a1b8265d8">More...</a><br/></td></tr>
-<tr class="separator:a236511ca3bacfd63664d018a1b8265d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f93afc910029b6a722ef3d855cd2daf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a7f93afc910029b6a722ef3d855cd2daf">setFiniteDifferenceStepSize</a> (double h)</td></tr>
-<tr class="memdesc:a7f93afc910029b6a722ef3d855cd2daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the step to use in the finite difference derivative.  <a href="#a7f93afc910029b6a722ef3d855cd2daf">More...</a><br/></td></tr>
-<tr class="separator:a7f93afc910029b6a722ef3d855cd2daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bd02812439e763a28a538554c5cbc41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a3bd02812439e763a28a538554c5cbc41">reset</a> ()</td></tr>
+<tr class="separator:a3bd02812439e763a28a538554c5cbc41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f19db1ce9dfe4c28e24aa5165948254"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a9f19db1ce9dfe4c28e24aa5165948254">ANNsampStat</a> ()</td></tr>
+<tr class="separator:a9f19db1ce9dfe4c28e24aa5165948254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2213787291e70f24c873e2483c3ea0da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a2213787291e70f24c873e2483c3ea0da">operator+=</a> (double x)</td></tr>
+<tr class="separator:a2213787291e70f24c873e2483c3ea0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ba7393a26ec5760b4e5efbc2fd6cf50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a4ba7393a26ec5760b4e5efbc2fd6cf50">samples</a> ()</td></tr>
+<tr class="separator:a4ba7393a26ec5760b4e5efbc2fd6cf50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a160bb296a7529384af88731b45b2cfcf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a160bb296a7529384af88731b45b2cfcf">mean</a> ()</td></tr>
+<tr class="separator:a160bb296a7529384af88731b45b2cfcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5f55b125a8f8b510ede9b92d394ff71"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#aa5f55b125a8f8b510ede9b92d394ff71">stdDev</a> ()</td></tr>
+<tr class="separator:aa5f55b125a8f8b510ede9b92d394ff71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b9978f9a76c46b3b0794e5887eb6cb1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a6b9978f9a76c46b3b0794e5887eb6cb1">min</a> ()</td></tr>
+<tr class="separator:a6b9978f9a76c46b3b0794e5887eb6cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad42511f02ba75bc3c1021724ba11d2ee"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ad42511f02ba75bc3c1021724ba11d2ee">max</a> ()</td></tr>
+<tr class="separator:ad42511f02ba75bc3c1021724ba11d2ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a9f491dcc7bc4388ee8b8ff567caf4550"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a></td></tr>
-<tr class="separator:a9f491dcc7bc4388ee8b8ff567caf4550"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a383e5c3d09fd907658f7558f14a57c25"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a></td></tr>
-<tr class="separator:a383e5c3d09fd907658f7558f14a57c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52d7dc0a76af37c36c5e3f8d01c8ab21"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a></td></tr>
-<tr class="separator:a52d7dc0a76af37c36c5e3f8d01c8ab21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a214c592fbbdf98714583c74501b8a637"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a214c592fbbdf98714583c74501b8a637">n</a></td></tr>
+<tr class="separator:a214c592fbbdf98714583c74501b8a637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41c4fd9c20bb36f3ce57fd00e517d1e7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a></td></tr>
+<tr class="separator:a41c4fd9c20bb36f3ce57fd00e517d1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7270d792a062a06dea51370f51b074f5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a7270d792a062a06dea51370f51b074f5">sum2</a></td></tr>
+<tr class="separator:a7270d792a062a06dea51370f51b074f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2872786f4a4d6a38ebfb9586abe9147"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a></td></tr>
+<tr class="separator:ab2872786f4a4d6a38ebfb9586abe9147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7a6f8d44ecd769972ca3f2ba99cc3ea"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a></td></tr>
+<tr class="separator:aa7a6f8d44ecd769972ca3f2ba99cc3ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A base class for handling optimisation of scalar functions. </p>
-<p>This class defines the interface every optimizer must adhere to. All optimizers should subclass this class. </p>
-
-<p>Definition at line <a class="el" href="a00260_source.html#l00044">44</a> of file <a class="el" href="a00260_source.html">Optimizer.h</a>.</p>
+<div class="textblock">
+<p>Definition at line <a class="el" href="a00287_source.html#l00085">85</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a06ee4af69d1dcdcb6c5fc64337cfed16"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QUESO::BaseOptimizer::BaseOptimizer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Default constructor. </p>
-
-<p>Definition at line <a class="el" href="a00294_source.html#l00029">29</a> of file <a class="el" href="a00294_source.html">Optimizer.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  : <a class="code" href="a00023.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a>(100),</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="a00023.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a>(1e-3),</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="a00023.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a>(1e-4)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
-<div class="ttc" id="a00023_html_a52d7dc0a76af37c36c5e3f8d01c8ab21"><div class="ttname"><a href="a00023.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">QUESO::BaseOptimizer::m_finiteDifferenceStepSize</a></div><div class="ttdeci">double m_finiteDifferenceStepSize</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00089">Optimizer.h:89</a></div></div>
-<div class="ttc" id="a00023_html_a9f491dcc7bc4388ee8b8ff567caf4550"><div class="ttname"><a href="a00023.html#a9f491dcc7bc4388ee8b8ff567caf4550">QUESO::BaseOptimizer::m_maxIterations</a></div><div class="ttdeci">unsigned int m_maxIterations</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00087">Optimizer.h:87</a></div></div>
-<div class="ttc" id="a00023_html_a383e5c3d09fd907658f7558f14a57c25"><div class="ttname"><a href="a00023.html#a383e5c3d09fd907658f7558f14a57c25">QUESO::BaseOptimizer::m_tolerance</a></div><div class="ttdeci">double m_tolerance</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00088">Optimizer.h:88</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="ad0d3914f16c9539125fdf18f72e06c1a"></a>
+<a class="anchor" id="a9f19db1ce9dfe4c28e24aa5165948254"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -150,7 +100,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::BaseOptimizer::~BaseOptimizer </td>
+          <td class="memname">ANNsampStat::ANNsampStat </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -158,105 +108,19 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Destructor. </p>
-
-<p>Definition at line <a class="el" href="a00294_source.html#l00036">36</a> of file <a class="el" href="a00294_source.html">Optimizer.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00287_source.html#l00099">99</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{ <a class="code" href="a00023.html#a3bd02812439e763a28a538554c5cbc41">reset</a>(); }            <span class="comment">// constructor</span></div>
+<div class="ttc" id="a00023_html_a3bd02812439e763a28a538554c5cbc41"><div class="ttname"><a href="a00023.html#a3bd02812439e763a28a538554c5cbc41">ANNsampStat::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00091">ANNperf.h:91</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a5e527eab75fab7fa43f741494fdb9f08"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double QUESO::BaseOptimizer::getFiniteDifferenceStepSize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the step size used in the finite difference formula. </p>
-<p>Default value is 1e-4 </p>
-
-<p>Definition at line <a class="el" href="a00294_source.html#l00053">53</a> of file <a class="el" href="a00294_source.html">Optimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00260_source.html#l00089">m_finiteDifferenceStepSize</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00067">QUESO::c_evaluate_derivative()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00023.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="ttc" id="a00023_html_a52d7dc0a76af37c36c5e3f8d01c8ab21"><div class="ttname"><a href="a00023.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">QUESO::BaseOptimizer::m_finiteDifferenceStepSize</a></div><div class="ttdeci">double m_finiteDifferenceStepSize</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00089">Optimizer.h:89</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="afee64fa553e2115c11e483409c005463"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int QUESO::BaseOptimizer::getMaxIterations </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the maximum number of iterations the optimizer will do. </p>
-<p>Default value is 100 </p>
-
-<p>Definition at line <a class="el" href="a00294_source.html#l00041">41</a> of file <a class="el" href="a00294_source.html">Optimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00260_source.html#l00087">m_maxIterations</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00363">QUESO::GslOptimizer::minimize_no_gradient()</a>, and <a class="el" href="a00280_source.html#l00266">QUESO::GslOptimizer::minimize_with_gradient()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00023.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
-<div class="ttc" id="a00023_html_a9f491dcc7bc4388ee8b8ff567caf4550"><div class="ttname"><a href="a00023.html#a9f491dcc7bc4388ee8b8ff567caf4550">QUESO::BaseOptimizer::m_maxIterations</a></div><div class="ttdeci">unsigned int m_maxIterations</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00087">Optimizer.h:87</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a31e322b52129baacf03e19278e0375f0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double QUESO::BaseOptimizer::getTolerance </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the tolerance used to test for an extremum in the optimizer. </p>
-<p>Default value is 1e-3 </p>
-
-<p>Definition at line <a class="el" href="a00294_source.html#l00047">47</a> of file <a class="el" href="a00294_source.html">Optimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00260_source.html#l00088">m_tolerance</a>.</p>
-
-<p>Referenced by <a class="el" href="a00280_source.html#l00363">QUESO::GslOptimizer::minimize_no_gradient()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00023.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
-<div class="ttc" id="a00023_html_a383e5c3d09fd907658f7558f14a57c25"><div class="ttname"><a href="a00023.html#a383e5c3d09fd907658f7558f14a57c25">QUESO::BaseOptimizer::m_tolerance</a></div><div class="ttdeci">double m_tolerance</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00088">Optimizer.h:88</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a07b2d2fdb0c13aa26f10a301ec01f94c"></a>
+<a class="anchor" id="ad42511f02ba75bc3c1021724ba11d2ee"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -264,107 +128,223 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void QUESO::BaseOptimizer::minimize </td>
+          <td class="memname">double ANNsampStat::max </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00135.html">OptimizerMonitor</a> *&#160;</td>
-          <td class="paramname"><em>monitor</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Minimize the objective function, starting at <code>m_initialPoint</code>. </p>
-<p>m_initialPoint is handled in the derived class </p>
+<p>Definition at line <a class="el" href="a00287_source.html#l00116">116</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
 
-<p>Implemented in <a class="el" href="a00094.html#a47c46f655dc8513385f2678b780a5e5e">QUESO::GslOptimizer</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7f93afc910029b6a722ef3d855cd2daf"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void QUESO::BaseOptimizer::setFiniteDifferenceStepSize </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>h</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the step to use in the finite difference derivative. </p>
-
-<p>Definition at line <a class="el" href="a00294_source.html#l00071">71</a> of file <a class="el" href="a00294_source.html">Optimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00260_source.html#l00089">m_finiteDifferenceStepSize</a>.</p>
-<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;{</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  this-&gt;<a class="code" href="a00023.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a> = h;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
-<div class="ttc" id="a00023_html_a52d7dc0a76af37c36c5e3f8d01c8ab21"><div class="ttname"><a href="a00023.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">QUESO::BaseOptimizer::m_finiteDifferenceStepSize</a></div><div class="ttdeci">double m_finiteDifferenceStepSize</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00089">Optimizer.h:89</a></div></div>
+<p>Referenced by <a class="el" href="a00312_source.html#l00107">print_one_stat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="a00023.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a>; } <span class="comment">// maximum</span></div>
+<div class="ttc" id="a00023_html_aa7a6f8d44ecd769972ca3f2ba99cc3ea"><div class="ttname"><a href="a00023.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">ANNsampStat::maxVal</a></div><div class="ttdeci">double maxVal</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00089">ANNperf.h:89</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ae01578ed2d1ba7e92ba4f5a51347aec2"></a>
+<a class="anchor" id="a160bb296a7529384af88731b45b2cfcf"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void QUESO::BaseOptimizer::setMaxIterations </td>
+          <td class="memname">double ANNsampStat::mean </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>maxIterations</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Sets the maximum number of iterations to be used by the optimizer. </p>
+<p>Definition at line <a class="el" href="a00287_source.html#l00110">110</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
 
-<p>Definition at line <a class="el" href="a00294_source.html#l00059">59</a> of file <a class="el" href="a00294_source.html">Optimizer.C</a>.</p>
-
-<p>References <a class="el" href="a00260_source.html#l00087">m_maxIterations</a>.</p>
-<div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  this-&gt;<a class="code" href="a00023.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a> = maxIterations;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
-<div class="ttc" id="a00023_html_a9f491dcc7bc4388ee8b8ff567caf4550"><div class="ttname"><a href="a00023.html#a9f491dcc7bc4388ee8b8ff567caf4550">QUESO::BaseOptimizer::m_maxIterations</a></div><div class="ttdeci">unsigned int m_maxIterations</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00087">Optimizer.h:87</a></div></div>
+<p>Referenced by <a class="el" href="a00312_source.html#l00107">print_one_stat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a>/<a class="code" href="a00023.html#a214c592fbbdf98714583c74501b8a637">n</a>; } <span class="comment">// mean</span></div>
+<div class="ttc" id="a00023_html_a41c4fd9c20bb36f3ce57fd00e517d1e7"><div class="ttname"><a href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">ANNsampStat::sum</a></div><div class="ttdeci">double sum</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00087">ANNperf.h:87</a></div></div>
+<div class="ttc" id="a00023_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00023.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00086">ANNperf.h:86</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a236511ca3bacfd63664d018a1b8265d8"></a>
+<a class="anchor" id="a6b9978f9a76c46b3b0794e5887eb6cb1"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void QUESO::BaseOptimizer::setTolerance </td>
+          <td class="memname">double ANNsampStat::min </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tolerance</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Sets the tolerance the optimizer will use to test for an extremum. </p>
+<p>Definition at line <a class="el" href="a00287_source.html#l00115">115</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
 
-<p>Definition at line <a class="el" href="a00294_source.html#l00065">65</a> of file <a class="el" href="a00294_source.html">Optimizer.C</a>.</p>
+<p>Referenced by <a class="el" href="a00312_source.html#l00107">print_one_stat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="a00023.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a>; } <span class="comment">// minimum</span></div>
+<div class="ttc" id="a00023_html_ab2872786f4a4d6a38ebfb9586abe9147"><div class="ttname"><a href="a00023.html#ab2872786f4a4d6a38ebfb9586abe9147">ANNsampStat::minVal</a></div><div class="ttdeci">double minVal</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00089">ANNperf.h:89</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a2213787291e70f24c873e2483c3ea0da"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> ANNsampStat::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
-<p>References <a class="el" href="a00260_source.html#l00088">m_tolerance</a>.</p>
-<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  this-&gt;<a class="code" href="a00023.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a> = tolerance;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
-<div class="ttc" id="a00023_html_a383e5c3d09fd907658f7558f14a57c25"><div class="ttname"><a href="a00023.html#a383e5c3d09fd907658f7558f14a57c25">QUESO::BaseOptimizer::m_tolerance</a></div><div class="ttdeci">double m_tolerance</div><div class="ttdef"><b>Definition:</b> <a href="a00260_source.html#l00088">Optimizer.h:88</a></div></div>
+<p>Definition at line <a class="el" href="a00287_source.html#l00101">101</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <a class="code" href="a00023.html#a214c592fbbdf98714583c74501b8a637">n</a>++;  <a class="code" href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a> += x;  <a class="code" href="a00023.html#a7270d792a062a06dea51370f51b074f5">sum2</a> += x*x;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                <span class="keywordflow">if</span> (x &lt; <a class="code" href="a00023.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a>) <a class="code" href="a00023.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a> = x;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                <span class="keywordflow">if</span> (x &gt; <a class="code" href="a00023.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a>) <a class="code" href="a00023.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a> = x;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
+<div class="ttc" id="a00023_html_aa7a6f8d44ecd769972ca3f2ba99cc3ea"><div class="ttname"><a href="a00023.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">ANNsampStat::maxVal</a></div><div class="ttdeci">double maxVal</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00089">ANNperf.h:89</a></div></div>
+<div class="ttc" id="a00023_html_ab2872786f4a4d6a38ebfb9586abe9147"><div class="ttname"><a href="a00023.html#ab2872786f4a4d6a38ebfb9586abe9147">ANNsampStat::minVal</a></div><div class="ttdeci">double minVal</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00089">ANNperf.h:89</a></div></div>
+<div class="ttc" id="a00023_html_a41c4fd9c20bb36f3ce57fd00e517d1e7"><div class="ttname"><a href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">ANNsampStat::sum</a></div><div class="ttdeci">double sum</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00087">ANNperf.h:87</a></div></div>
+<div class="ttc" id="a00023_html_a7270d792a062a06dea51370f51b074f5"><div class="ttname"><a href="a00023.html#a7270d792a062a06dea51370f51b074f5">ANNsampStat::sum2</a></div><div class="ttdeci">double sum2</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00088">ANNperf.h:88</a></div></div>
+<div class="ttc" id="a00023_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00023.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00086">ANNperf.h:86</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a3bd02812439e763a28a538554c5cbc41"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> ANNsampStat::reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00287_source.html#l00091">91</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
+
+<p>References <a class="el" href="a00286_source.html#l00118">ANN_DBL_MAX</a>.</p>
+
+<p>Referenced by <a class="el" href="a00312_source.html#l00071">annResetStats()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                <a class="code" href="a00023.html#a214c592fbbdf98714583c74501b8a637">n</a> = 0;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                <a class="code" href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a> = <a class="code" href="a00023.html#a7270d792a062a06dea51370f51b074f5">sum2</a> = 0;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                <a class="code" href="a00023.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a> = <a class="code" href="a00286.html#a477b3fd2435613171740930b8e1925cf">ANN_DBL_MAX</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <a class="code" href="a00023.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a> = -<a class="code" href="a00286.html#a477b3fd2435613171740930b8e1925cf">ANN_DBL_MAX</a>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
+<div class="ttc" id="a00023_html_aa7a6f8d44ecd769972ca3f2ba99cc3ea"><div class="ttname"><a href="a00023.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">ANNsampStat::maxVal</a></div><div class="ttdeci">double maxVal</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00089">ANNperf.h:89</a></div></div>
+<div class="ttc" id="a00023_html_ab2872786f4a4d6a38ebfb9586abe9147"><div class="ttname"><a href="a00023.html#ab2872786f4a4d6a38ebfb9586abe9147">ANNsampStat::minVal</a></div><div class="ttdeci">double minVal</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00089">ANNperf.h:89</a></div></div>
+<div class="ttc" id="a00023_html_a41c4fd9c20bb36f3ce57fd00e517d1e7"><div class="ttname"><a href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">ANNsampStat::sum</a></div><div class="ttdeci">double sum</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00087">ANNperf.h:87</a></div></div>
+<div class="ttc" id="a00023_html_a7270d792a062a06dea51370f51b074f5"><div class="ttname"><a href="a00023.html#a7270d792a062a06dea51370f51b074f5">ANNsampStat::sum2</a></div><div class="ttdeci">double sum2</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00088">ANNperf.h:88</a></div></div>
+<div class="ttc" id="a00023_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00023.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00086">ANNperf.h:86</a></div></div>
+<div class="ttc" id="a00286_html_a477b3fd2435613171740930b8e1925cf"><div class="ttname"><a href="a00286.html#a477b3fd2435613171740930b8e1925cf">ANN_DBL_MAX</a></div><div class="ttdeci">const double ANN_DBL_MAX</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00118">ANN.h:118</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a4ba7393a26ec5760b4e5efbc2fd6cf50"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ANNsampStat::samples </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00287_source.html#l00108">108</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="a00023.html#a214c592fbbdf98714583c74501b8a637">n</a>; }           <span class="comment">// number of samples</span></div>
+<div class="ttc" id="a00023_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00023.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00086">ANNperf.h:86</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aa5f55b125a8f8b510ede9b92d394ff71"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ANNsampStat::stdDev </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00287_source.html#l00113">113</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00312_source.html#l00107">print_one_stat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;{ <span class="keywordflow">return</span> sqrt((<a class="code" href="a00023.html#a7270d792a062a06dea51370f51b074f5">sum2</a> - (<a class="code" href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a>*<a class="code" href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a>)/<a class="code" href="a00023.html#a214c592fbbdf98714583c74501b8a637">n</a>)/(<a class="code" href="a00023.html#a214c592fbbdf98714583c74501b8a637">n</a>-1));}</div>
+<div class="ttc" id="a00023_html_a41c4fd9c20bb36f3ce57fd00e517d1e7"><div class="ttname"><a href="a00023.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">ANNsampStat::sum</a></div><div class="ttdeci">double sum</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00087">ANNperf.h:87</a></div></div>
+<div class="ttc" id="a00023_html_a7270d792a062a06dea51370f51b074f5"><div class="ttname"><a href="a00023.html#a7270d792a062a06dea51370f51b074f5">ANNsampStat::sum2</a></div><div class="ttdeci">double sum2</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00088">ANNperf.h:88</a></div></div>
+<div class="ttc" id="a00023_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00023.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00086">ANNperf.h:86</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a52d7dc0a76af37c36c5e3f8d01c8ab21"></a>
+<a class="anchor" id="aa7a6f8d44ecd769972ca3f2ba99cc3ea"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -372,23 +352,21 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double QUESO::BaseOptimizer::m_finiteDifferenceStepSize</td>
+          <td class="memname">double ANNsampStat::maxVal</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00260_source.html#l00089">89</a> of file <a class="el" href="a00260_source.html">Optimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00294_source.html#l00053">getFiniteDifferenceStepSize()</a>, and <a class="el" href="a00294_source.html#l00071">setFiniteDifferenceStepSize()</a>.</p>
+<p>Definition at line <a class="el" href="a00287_source.html#l00089">89</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9f491dcc7bc4388ee8b8ff567caf4550"></a>
+<a class="anchor" id="ab2872786f4a4d6a38ebfb9586abe9147"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -396,23 +374,21 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int QUESO::BaseOptimizer::m_maxIterations</td>
+          <td class="memname">double ANNsampStat::minVal</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00260_source.html#l00087">87</a> of file <a class="el" href="a00260_source.html">Optimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00294_source.html#l00041">getMaxIterations()</a>, and <a class="el" href="a00294_source.html#l00059">setMaxIterations()</a>.</p>
+<p>Definition at line <a class="el" href="a00287_source.html#l00089">89</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a383e5c3d09fd907658f7558f14a57c25"></a>
+<a class="anchor" id="a214c592fbbdf98714583c74501b8a637"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -420,29 +396,70 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double QUESO::BaseOptimizer::m_tolerance</td>
+          <td class="memname">int ANNsampStat::n</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00260_source.html#l00088">88</a> of file <a class="el" href="a00260_source.html">Optimizer.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00294_source.html#l00047">getTolerance()</a>, and <a class="el" href="a00294_source.html#l00065">setTolerance()</a>.</p>
+<p>Definition at line <a class="el" href="a00287_source.html#l00086">86</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/core/inc/<a class="el" href="a00260_source.html">Optimizer.h</a></li>
-<li>src/core/src/<a class="el" href="a00294_source.html">Optimizer.C</a></li>
+<a class="anchor" id="a41c4fd9c20bb36f3ce57fd00e517d1e7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ANNsampStat::sum</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00287_source.html#l00087">87</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7270d792a062a06dea51370f51b074f5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ANNsampStat::sum2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00287_source.html#l00088">88</a> of file <a class="el" href="a00287_source.html">ANNperf.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/contrib/ANN/include/ANN/<a class="el" href="a00287_source.html">ANNperf.h</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:56 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

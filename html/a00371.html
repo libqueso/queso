@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/stats/inc/JeffreysVectorRealizer.h File Reference</title>
+<title>queso-0.53.0: src/core/src/GslOptimizer.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,45 +43,52 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_d98b071537eea78ae0761911e9f6b515.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_d16228283b18c448cbd408df6e1bb59e.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">JeffreysVectorRealizer.h File Reference</div>  </div>
+<div class="title">GslOptimizer.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/Defines.h&gt;</code><br/>
-<code>#include &lt;queso/VectorRealizer.h&gt;</code><br/>
-<code>#include &lt;queso/VectorSequence.h&gt;</code><br/>
-<code>#include &lt;queso/Environment.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;gsl/gsl_multimin.h&gt;</code><br/>
+<code>#include &lt;gsl/gsl_blas.h&gt;</code><br/>
+<code>#include &lt;queso/GslVector.h&gt;</code><br/>
+<code>#include &lt;queso/VectorSpace.h&gt;</code><br/>
+<code>#include &lt;queso/ScalarFunction.h&gt;</code><br/>
+<code>#include &lt;queso/GslOptimizer.h&gt;</code><br/>
+<code>#include &lt;queso/OptimizerMonitor.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for JeffreysVectorRealizer.h:</div>
+Include dependency graph for GslOptimizer.C:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00682.png" border="0" usemap="#src_2stats_2inc_2_jeffreys_vector_realizer_8h" alt=""/></div>
-<map name="src_2stats_2inc_2_jeffreys_vector_realizer_8h" id="src_2stats_2inc_2_jeffreys_vector_realizer_8h">
+<div class="center"><img src="a00791.png" border="0" usemap="#src_2core_2src_2_gsl_optimizer_8_c" alt=""/></div>
+<map name="src_2core_2src_2_gsl_optimizer_8_c" id="src_2core_2src_2_gsl_optimizer_8_c">
 </map>
 </div>
 </div>
 <p><a href="a00371_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html">QUESO::JeffreysVectorRealizer&lt; V, M &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class for handling sampling from a jeffreys probability density distribution.  <a href="a00109.html#details">More...</a><br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00500"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00500.html">QUESO</a></td></tr>
+<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a41729b1987bfaf3172e9ea79913876dd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#a41729b1987bfaf3172e9ea79913876dd">QUESO::c_evaluate</a> (const gsl_vector *x, <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *context)</td></tr>
+<tr class="separator:a41729b1987bfaf3172e9ea79913876dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e69e6940dbc0ea35bbb5eb085163177"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#a9e69e6940dbc0ea35bbb5eb085163177">QUESO::c_evaluate_derivative</a> (const gsl_vector *x, <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *context, gsl_vector *derivative)</td></tr>
+<tr class="separator:a9e69e6940dbc0ea35bbb5eb085163177"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadca5d879e57d8f597a440c33950256e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#aadca5d879e57d8f597a440c33950256e">QUESO::c_evaluate_with_derivative</a> (const gsl_vector *x, <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *context, double *f, gsl_vector *derivative)</td></tr>
+<tr class="separator:aadca5d879e57d8f597a440c33950256e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:55 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

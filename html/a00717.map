@@ -1,2 +1,10 @@
-<map id="src/stats/inc/ValidationCycle.h" name="src/stats/inc/ValidationCycle.h">
+<map id="src/contrib/ANN/src/kd_pr_search.cpp" name="src/contrib/ANN/src/kd_pr_search.cpp">
+<area shape="rect" id="node3" href="$a00303.html" title="kd_pr_search.h" alt="" coords="112,101,232,131"/>
+<area shape="rect" id="node5" href="$a00309.html" title="kd_tree.h" alt="" coords="19,256,104,285"/>
+<area shape="rect" id="node25" href="$a00311.html" title="kd_util.h" alt="" coords="23,179,100,208"/>
+<area shape="rect" id="node28" href="$a00313.html" title="pr_queue.h" alt="" coords="124,179,220,208"/>
+<area shape="rect" id="node31" href="$a00287.html" title="ANN/ANNperf.h" alt="" coords="248,256,371,285"/>
+<area shape="rect" id="node34" href="$a00314.html" title="pr_queue_k.h" alt="" coords="244,179,354,208"/>
+<area shape="rect" id="node7" href="$a00288.html" title="ANN/ANNx.h" alt="" coords="114,333,218,363"/>
+<area shape="rect" id="node11" href="$a00286.html" title="ANN/ANN.h" alt="" coords="236,411,332,440"/>
 </map>

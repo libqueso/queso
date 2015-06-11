@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/core/inc/DistArray.h Source File</title>
+<title>queso-0.53.0: doxygen/txt_common/lgpl.page Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,124 +43,18 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_1df83ded4604fcab59464c552d0ec4a5.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_b94eb579aaeed4b4e325ac218f95a22c.html">doxygen</a></li><li class="navelem"><a class="el" href="dir_682f74691d76d599aecee942c5156bc6.html">txt_common</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">DistArray.h</div>  </div>
+<div class="title">lgpl.page</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00238.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor,</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_DIST_ARRAY_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_DIST_ARRAY_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/Map.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;EpetraExt_DistArray.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;ostream&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00050.html">   56</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00050.html">DistArray</a></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="a00050.html#a54e6413babda861c8bf5213888c9b9f0">DistArray</a>();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="a00050.html#a54e6413babda861c8bf5213888c9b9f0">DistArray</a>(<span class="keyword">const</span> <a class="code" href="a00118.html">Map</a>&amp; inputMap,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                   <span class="keyword">const</span> <span class="keywordtype">int</span>         inputRowSize);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="a00050.html#a54e6413babda861c8bf5213888c9b9f0">DistArray</a>(<span class="keyword">const</span> <a class="code" href="a00050.html">DistArray&lt;T&gt;</a>&amp; src);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; <a class="code" href="a00050.html#a8091b856529984e5c307e37e5438bfa4">~DistArray</a>();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <a class="code" href="a00050.html">DistArray&lt;T&gt;</a>&amp; <a class="code" href="a00050.html#a6ec9bfcdf00351c8fb9b18dfeab59026">operator= </a>(<span class="keyword">const</span> <a class="code" href="a00050.html">DistArray&lt;T&gt;</a>&amp; rhs);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        T&amp;   <a class="code" href="a00050.html#a910410bb8104a49f71a8a14700d4681a">operator    ()</a>(<span class="keywordtype">int</span> localElementId, <span class="keywordtype">int</span> colId);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">const</span> T&amp;   <a class="code" href="a00050.html#a910410bb8104a49f71a8a14700d4681a">operator    ()</a>(<span class="keywordtype">int</span> localElementId, <span class="keywordtype">int</span> colId) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">int</span>  <a class="code" href="a00050.html#a74e491ed573af8b81f701e2ca136206e">GlobalLength</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">int</span>  <a class="code" href="a00050.html#af4a798f5defa6a37dfc82175c7f92f83">MyLength</a>    () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordtype">int</span>  <a class="code" href="a00050.html#ac20dd88a7b36e19948c39b8f1a1ab805">RowSize</a>     () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00050.html#ad9d1da6bb1947b03a01cf1fd43bc5780">print</a>       (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00050.html#ae1dba6a1558a662e92cb3a823f379fda">  106</a></span>&#160;  <span class="keyword">friend</span> std::ostream &amp; operator&lt;&lt;(std::ostream&amp; os, const DistArray&lt;T&gt;&amp; obj)</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    obj.print(os);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="a00050.html#a415ab5d9ac5074d71497e1ab4c9460f8">copy</a>        (<span class="keyword">const</span> <a class="code" href="a00050.html">DistArray&lt;T&gt;</a>&amp; src);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="a00050.html#aeb1c8299dc302d01ae2fbdafb82b7b37">  119</a></span>&#160;  <a class="code" href="a00118.html">Map</a>                   <a class="code" href="a00050.html#aeb1c8299dc302d01ae2fbdafb82b7b37">m_Map</a>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor"></span>  EpetraExt::DistArray&lt;T&gt;*     m_epetraDistArray;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="a00050.html#a663f89dc740471dafcf8b526c255d385">  123</a></span>&#160;<span class="preprocessor"></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                 <a class="code" href="a00050.html#a663f89dc740471dafcf8b526c255d385">m_rowSize</a>;</div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="a00050.html#af1cfbc37cbe9b608d2c2174811e1987c">  124</a></span>&#160;  std::vector&lt;std::vector&lt;T&gt; &gt; <a class="code" href="a00050.html#af1cfbc37cbe9b608d2c2174811e1987c">m_elements</a>;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor"></span>};</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif // UQ_DIST_ARRAY_H</span></div>
-<div class="ttc" id="a00050_html_a663f89dc740471dafcf8b526c255d385"><div class="ttname"><a href="a00050.html#a663f89dc740471dafcf8b526c255d385">QUESO::DistArray::m_rowSize</a></div><div class="ttdeci">unsigned int m_rowSize</div><div class="ttdef"><b>Definition:</b> <a href="a00238_source.html#l00123">DistArray.h:123</a></div></div>
-<div class="ttc" id="a00050_html_af1cfbc37cbe9b608d2c2174811e1987c"><div class="ttname"><a href="a00050.html#af1cfbc37cbe9b608d2c2174811e1987c">QUESO::DistArray::m_elements</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; T &gt; &gt; m_elements</div><div class="ttdef"><b>Definition:</b> <a href="a00238_source.html#l00124">DistArray.h:124</a></div></div>
-<div class="ttc" id="a00050_html_a415ab5d9ac5074d71497e1ab4c9460f8"><div class="ttname"><a href="a00050.html#a415ab5d9ac5074d71497e1ab4c9460f8">QUESO::DistArray::copy</a></div><div class="ttdeci">void copy(const DistArray&lt; T &gt; &amp;src)</div><div class="ttdoc">Copies the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00170">DistArray.C:170</a></div></div>
-<div class="ttc" id="a00050_html"><div class="ttname"><a href="a00050.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00238_source.html#l00056">DistArray.h:56</a></div></div>
-<div class="ttc" id="a00050_html_af4a798f5defa6a37dfc82175c7f92f83"><div class="ttname"><a href="a00050.html#af4a798f5defa6a37dfc82175c7f92f83">QUESO::DistArray::MyLength</a></div><div class="ttdeci">int MyLength() const </div><div class="ttdoc">Returns the length of the locally owned array. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00147">DistArray.C:147</a></div></div>
-<div class="ttc" id="a00050_html_aeb1c8299dc302d01ae2fbdafb82b7b37"><div class="ttname"><a href="a00050.html#aeb1c8299dc302d01ae2fbdafb82b7b37">QUESO::DistArray::m_Map</a></div><div class="ttdeci">Map m_Map</div><div class="ttdef"><b>Definition:</b> <a href="a00238_source.html#l00119">DistArray.h:119</a></div></div>
-<div class="ttc" id="a00118_html"><div class="ttname"><a href="a00118.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00256_source.html#l00049">Map.h:49</a></div></div>
-<div class="ttc" id="a00050_html_ac20dd88a7b36e19948c39b8f1a1ab805"><div class="ttname"><a href="a00050.html#ac20dd88a7b36e19948c39b8f1a1ab805">QUESO::DistArray::RowSize</a></div><div class="ttdeci">int RowSize() const </div><div class="ttdoc">Returns the row size, that is, the amount of data associated with each element. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00158">DistArray.C:158</a></div></div>
-<div class="ttc" id="a00050_html_a6ec9bfcdf00351c8fb9b18dfeab59026"><div class="ttname"><a href="a00050.html#a6ec9bfcdf00351c8fb9b18dfeab59026">QUESO::DistArray::operator=</a></div><div class="ttdeci">DistArray&lt; T &gt; &amp; operator=(const DistArray&lt; T &gt; &amp;rhs)</div><div class="ttdoc">Assignment operator. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00098">DistArray.C:98</a></div></div>
-<div class="ttc" id="a00050_html_a74e491ed573af8b81f701e2ca136206e"><div class="ttname"><a href="a00050.html#a74e491ed573af8b81f701e2ca136206e">QUESO::DistArray::GlobalLength</a></div><div class="ttdeci">int GlobalLength() const </div><div class="ttdoc">Returns the global length of the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00136">DistArray.C:136</a></div></div>
-<div class="ttc" id="a00050_html_a54e6413babda861c8bf5213888c9b9f0"><div class="ttname"><a href="a00050.html#a54e6413babda861c8bf5213888c9b9f0">QUESO::DistArray::DistArray</a></div><div class="ttdeci">DistArray()</div><div class="ttdoc">Default constructor. Do not call this directly. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00036">DistArray.C:36</a></div></div>
-<div class="ttc" id="a00050_html_ad9d1da6bb1947b03a01cf1fd43bc5780"><div class="ttname"><a href="a00050.html#ad9d1da6bb1947b03a01cf1fd43bc5780">QUESO::DistArray::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00178">DistArray.C:178</a></div></div>
-<div class="ttc" id="a00050_html_a8091b856529984e5c307e37e5438bfa4"><div class="ttname"><a href="a00050.html#a8091b856529984e5c307e37e5438bfa4">QUESO::DistArray::~DistArray</a></div><div class="ttdeci">~DistArray()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00082">DistArray.C:82</a></div></div>
-<div class="ttc" id="a00050_html_a910410bb8104a49f71a8a14700d4681a"><div class="ttname"><a href="a00050.html#a910410bb8104a49f71a8a14700d4681a">QUESO::DistArray::operator()</a></div><div class="ttdeci">T &amp; operator()(int localElementId, int colId)</div><div class="ttdoc">Returns a reference to the colId column component of the localElementId local element. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00114">DistArray.C:114</a></div></div>
+<a href="a00238.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

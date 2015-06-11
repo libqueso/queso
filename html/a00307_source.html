@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: src/misc/inc/ArrayOfOneDTables.h Source File</title>
+<title>queso-0.53.0: src/contrib/ANN/src/kd_split.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -43,90 +43,113 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_88826aa2a10e1882b573f502bc7f4b55.html">misc</a></li><li class="navelem"><a class="el" href="dir_c2e907ccdf1bb9500d3a3d017a89ba74.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_bd26773dc971f4fa3aa1d8bd68fbf230.html">contrib</a></li><li class="navelem"><a class="el" href="dir_9b88879957fe8db0821d93727895fef3.html">ANN</a></li><li class="navelem"><a class="el" href="dir_162f6fcbd574a601bad28c5358416498.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ArrayOfOneDTables.h</div>  </div>
+<div class="title">kd_split.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00307.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor,</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
+<a href="a00307.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// File:                        kd_split.h</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Programmer:          Sunil Arya and David Mount</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// Description:         Methods for splitting kd-trees</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Last modified:       01/04/05 (Version 1.0)</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (c) 1997-2005 University of Maryland and Sunil Arya and</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// David Mount.  All Rights Reserved.</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// This software and related documentation is part of the Approximate</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Nearest Neighbor Library (ANN).  This software is provided under</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// the provisions of the Lesser GNU Public License (LGPL).  See the</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// file ../ReadMe.txt for further information.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// The University of Maryland (U.M.) and the authors make no</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// representations about the suitability or fitness of this software for</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// any purpose.  It is provided &quot;as is&quot; without express or implied</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// warranty.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// History:</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//      Revision 0.1  03/04/98</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//              Initial release</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_ARRAY_OF_ONE_D_TABLES_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ARRAY_OF_ONE_D_TABLES_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef ANN_KD_SPLIT_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ANN_KD_SPLIT_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00011.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00011.html">ArrayOfOneDTables</a></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="a00011.html#ae36f0c33595a2d46d08eced253d1eef3">ArrayOfOneDTables</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* prefix, <span class="keyword">const</span> <a class="code" href="a00177.html">VectorSpace&lt;V,M&gt;</a>&amp; rowSpace);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00011.html#a233bf24beaf3adabca4735eb7a88c966">~ArrayOfOneDTables</a>();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span>                       <a class="code" href="a00011.html#ad52be35568cf8c325569b4ae272acab9">setOneDTable</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rowId, <span class="keyword">const</span> std::vector&lt;double&gt;&amp; values);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">const</span> std::vector&lt;double&gt;&amp; <a class="code" href="a00011.html#ade48785a66524243c5a22ec39bc6de2d">oneDTable</a>   (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rowId) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">void</span>                       <a class="code" href="a00011.html#aec66e8a1e7f0baf3adc29332590ea1af">print</a>       (std::ostream&amp; os)   <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00011.html#a51d23742e1c418efc4e829cb06fcda76">   75</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp;          <a class="code" href="a00011.html#a51d23742e1c418efc4e829cb06fcda76">m_env</a>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00011.html#ae9bfd81e226ee5712cd160031f96d4d2">   76</a></span>&#160;        std::string                      <a class="code" href="a00011.html#ae9bfd81e226ee5712cd160031f96d4d2">m_prefix</a>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00011.html#a476632866ae0eebc389f19b8b83cc324">   77</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00177.html">VectorSpace&lt;V,M&gt;</a>&amp;         <a class="code" href="a00011.html#a476632866ae0eebc389f19b8b83cc324">m_rowSpace</a>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00011.html#ad5e13befcb2e58dde1c13e396388a696">   78</a></span>&#160;  <a class="code" href="a00050.html">DistArray&lt;std::vector&lt;double&gt;</a>*&gt; <a class="code" href="a00011.html#ad5e13befcb2e58dde1c13e396388a696">m_oneDTables</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif // UQ_ARRAY_OF_ONE_D_TABLES_H</span></div>
-<div class="ttc" id="a00011_html_ad5e13befcb2e58dde1c13e396388a696"><div class="ttname"><a href="a00011.html#ad5e13befcb2e58dde1c13e396388a696">QUESO::ArrayOfOneDTables::m_oneDTables</a></div><div class="ttdeci">DistArray&lt; std::vector&lt; double &gt; * &gt; m_oneDTables</div><div class="ttdef"><b>Definition:</b> <a href="a00307_source.html#l00078">ArrayOfOneDTables.h:78</a></div></div>
-<div class="ttc" id="a00011_html_ade48785a66524243c5a22ec39bc6de2d"><div class="ttname"><a href="a00011.html#ade48785a66524243c5a22ec39bc6de2d">QUESO::ArrayOfOneDTables::oneDTable</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; oneDTable(unsigned int rowId) const </div><div class="ttdoc">Returns the array located at position rowId of the one-dimensional table. </div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00080">ArrayOfOneDTables.C:80</a></div></div>
-<div class="ttc" id="a00011_html_a51d23742e1c418efc4e829cb06fcda76"><div class="ttname"><a href="a00011.html#a51d23742e1c418efc4e829cb06fcda76">QUESO::ArrayOfOneDTables::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00307_source.html#l00075">ArrayOfOneDTables.h:75</a></div></div>
-<div class="ttc" id="a00050_html"><div class="ttname"><a href="a00050.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00238_source.html#l00056">DistArray.h:56</a></div></div>
-<div class="ttc" id="a00011_html_ae9bfd81e226ee5712cd160031f96d4d2"><div class="ttname"><a href="a00011.html#ae9bfd81e226ee5712cd160031f96d4d2">QUESO::ArrayOfOneDTables::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00307_source.html#l00076">ArrayOfOneDTables.h:76</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00239_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00011_html_ae36f0c33595a2d46d08eced253d1eef3"><div class="ttname"><a href="a00011.html#ae36f0c33595a2d46d08eced253d1eef3">QUESO::ArrayOfOneDTables::ArrayOfOneDTables</a></div><div class="ttdeci">ArrayOfOneDTables(const char *prefix, const VectorSpace&lt; V, M &gt; &amp;rowSpace)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00033">ArrayOfOneDTables.C:33</a></div></div>
-<div class="ttc" id="a00011_html_a233bf24beaf3adabca4735eb7a88c966"><div class="ttname"><a href="a00011.html#a233bf24beaf3adabca4735eb7a88c966">QUESO::ArrayOfOneDTables::~ArrayOfOneDTables</a></div><div class="ttdeci">~ArrayOfOneDTables()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00049">ArrayOfOneDTables.C:49</a></div></div>
-<div class="ttc" id="a00011_html_a476632866ae0eebc389f19b8b83cc324"><div class="ttname"><a href="a00011.html#a476632866ae0eebc389f19b8b83cc324">QUESO::ArrayOfOneDTables::m_rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; m_rowSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00307_source.html#l00077">ArrayOfOneDTables.h:77</a></div></div>
-<div class="ttc" id="a00011_html_ad52be35568cf8c325569b4ae272acab9"><div class="ttname"><a href="a00011.html#ad52be35568cf8c325569b4ae272acab9">QUESO::ArrayOfOneDTables::setOneDTable</a></div><div class="ttdeci">void setOneDTable(unsigned int rowId, const std::vector&lt; double &gt; &amp;values)</div><div class="ttdoc">Sets the one-dimensional table. </div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00059">ArrayOfOneDTables.C:59</a></div></div>
-<div class="ttc" id="a00011_html"><div class="ttname"><a href="a00011.html">QUESO::ArrayOfOneDTables</a></div><div class="ttdoc">Class to accommodate arrays of one-dimensional tables. </div><div class="ttdef"><b>Definition:</b> <a href="a00307_source.html#l00046">ArrayOfOneDTables.h:46</a></div></div>
-<div class="ttc" id="a00177_html"><div class="ttname"><a href="a00177.html">QUESO::VectorSpace</a></div><div class="ttdoc">A class representing a vector space. </div><div class="ttdef"><b>Definition:</b> <a href="a00207_source.html#l00046">VectorSet.h:46</a></div></div>
-<div class="ttc" id="a00011_html_aec66e8a1e7f0baf3adc29332590ea1af"><div class="ttname"><a href="a00011.html#aec66e8a1e7f0baf3adc29332590ea1af">QUESO::ArrayOfOneDTables::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the values in this array of tables. </div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00100">ArrayOfOneDTables.C:100</a></div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00309.html">kd_tree.h</a>&quot;</span>                                    <span class="comment">// kd-tree definitions</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//      External entry points</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">//              These are all splitting procedures for kd-trees.</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00306.html#a40f559e8137bf18a6f072d33d40fabb6">kd_split</a>(                                                  <span class="comment">// standard (optimized) kd-splitter</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>           pa,                             <span class="comment">// point array (unaltered)</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <a class="code" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>                     pidx,                   <span class="comment">// point indices (permuted on return)</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">const</span> <a class="code" href="a00020.html">ANNorthRect</a>       &amp;bnds,                  <span class="comment">// bounding rectangle for cell</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">int</span>                                     n,                              <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">int</span>                                     <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,                    <span class="comment">// dimension of space</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">int</span>                                     &amp;cut_dim,               <span class="comment">// cutting dimension (returned)</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>                        &amp;cut_val,               <span class="comment">// cutting value (returned)</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">int</span>                                     &amp;n_lo);                 <span class="comment">// num of points on low side (returned)</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00306.html#a7709666b3446757acd5589b4aaa14784">midpt_split</a>(                                               <span class="comment">// midpoint kd-splitter</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>           pa,                             <span class="comment">// point array (unaltered)</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <a class="code" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>                     pidx,                   <span class="comment">// point indices (permuted on return)</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">const</span> <a class="code" href="a00020.html">ANNorthRect</a>       &amp;bnds,                  <span class="comment">// bounding rectangle for cell</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">int</span>                                     n,                              <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">int</span>                                     <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,                    <span class="comment">// dimension of space</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">int</span>                                     &amp;cut_dim,               <span class="comment">// cutting dimension (returned)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>                        &amp;cut_val,               <span class="comment">// cutting value (returned)</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">int</span>                                     &amp;n_lo);                 <span class="comment">// num of points on low side (returned)</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00306.html#a6d5f8c8dc552d75ade33052dc7f20ab7">sl_midpt_split</a>(                                    <span class="comment">// sliding midpoint kd-splitter</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>           pa,                             <span class="comment">// point array (unaltered)</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <a class="code" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>                     pidx,                   <span class="comment">// point indices (permuted on return)</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keyword">const</span> <a class="code" href="a00020.html">ANNorthRect</a>       &amp;bnds,                  <span class="comment">// bounding rectangle for cell</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordtype">int</span>                                     n,                              <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">int</span>                                     <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,                    <span class="comment">// dimension of space</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">int</span>                                     &amp;cut_dim,               <span class="comment">// cutting dimension (returned)</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>                        &amp;cut_val,               <span class="comment">// cutting value (returned)</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordtype">int</span>                                     &amp;n_lo);                 <span class="comment">// num of points on low side (returned)</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00306.html#ab6167ffd4cda270c15d2eca1bbce4e9d">fair_split</a>(                                                <span class="comment">// fair-split kd-splitter</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>           pa,                             <span class="comment">// point array (unaltered)</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>                     pidx,                   <span class="comment">// point indices (permuted on return)</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">const</span> <a class="code" href="a00020.html">ANNorthRect</a>       &amp;bnds,                  <span class="comment">// bounding rectangle for cell</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordtype">int</span>                                     n,                              <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">int</span>                                     <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,                    <span class="comment">// dimension of space</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordtype">int</span>                                     &amp;cut_dim,               <span class="comment">// cutting dimension (returned)</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>                        &amp;cut_val,               <span class="comment">// cutting value (returned)</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordtype">int</span>                                     &amp;n_lo);                 <span class="comment">// num of points on low side (returned)</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00306.html#ae4399675d75267ad56169a2072c7a2ba">sl_fair_split</a>(                                             <span class="comment">// sliding fair-split kd-splitter</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>           pa,                             <span class="comment">// point array (unaltered)</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>                     pidx,                   <span class="comment">// point indices (permuted on return)</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keyword">const</span> <a class="code" href="a00020.html">ANNorthRect</a>       &amp;bnds,                  <span class="comment">// bounding rectangle for cell</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">int</span>                                     n,                              <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">int</span>                                     <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,                    <span class="comment">// dimension of space</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">int</span>                                     &amp;cut_dim,               <span class="comment">// cutting dimension (returned)</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>                        &amp;cut_val,               <span class="comment">// cutting value (returned)</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">int</span>                                     &amp;n_lo);                 <span class="comment">// num of points on low side (returned)</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="a00306_html_ae4399675d75267ad56169a2072c7a2ba"><div class="ttname"><a href="a00306.html#ae4399675d75267ad56169a2072c7a2ba">sl_fair_split</a></div><div class="ttdeci">void sl_fair_split(ANNpointArray pa, ANNidxArray pidx, const ANNorthRect &amp;bnds, int n, int dim, int &amp;cut_dim, ANNcoord &amp;cut_val, int &amp;n_lo)</div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00346">kd_split.cpp:346</a></div></div>
+<div class="ttc" id="a00286_html_ab066cd4e4fffad67a16b64d9a28a86e4"><div class="ttname"><a href="a00286.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a></div><div class="ttdeci">double ANNcoord</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00158">ANN.h:158</a></div></div>
+<div class="ttc" id="a00309_html"><div class="ttname"><a href="a00309.html">kd_tree.h</a></div></div>
+<div class="ttc" id="a00286_html_a402299ac00a81ad80f09a0eb84ba4059"><div class="ttname"><a href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a></div><div class="ttdeci">ANNpoint * ANNpointArray</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00376">ANN.h:376</a></div></div>
+<div class="ttc" id="a00306_html_a6d5f8c8dc552d75ade33052dc7f20ab7"><div class="ttname"><a href="a00306.html#a6d5f8c8dc552d75ade33052dc7f20ab7">sl_midpt_split</a></div><div class="ttdeci">void sl_midpt_split(ANNpointArray pa, ANNidxArray pidx, const ANNorthRect &amp;bnds, int n, int dim, int &amp;cut_dim, ANNcoord &amp;cut_val, int &amp;n_lo)</div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00146">kd_split.cpp:146</a></div></div>
+<div class="ttc" id="a00020_html"><div class="ttname"><a href="a00020.html">ANNorthRect</a></div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00091">ANNx.h:91</a></div></div>
+<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00306_html_a7709666b3446757acd5589b4aaa14784"><div class="ttname"><a href="a00306.html#a7709666b3446757acd5589b4aaa14784">midpt_split</a></div><div class="ttdeci">void midpt_split(ANNpointArray pa, ANNidxArray pidx, const ANNorthRect &amp;bnds, int n, int dim, int &amp;cut_dim, ANNcoord &amp;cut_val, int &amp;n_lo)</div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00076">kd_split.cpp:76</a></div></div>
+<div class="ttc" id="a00306_html_a40f559e8137bf18a6f072d33d40fabb6"><div class="ttname"><a href="a00306.html#a40f559e8137bf18a6f072d33d40fabb6">kd_split</a></div><div class="ttdeci">void kd_split(ANNpointArray pa, ANNidxArray pidx, const ANNorthRect &amp;bnds, int n, int dim, int &amp;cut_dim, ANNcoord &amp;cut_val, int &amp;n_lo)</div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00044">kd_split.cpp:44</a></div></div>
+<div class="ttc" id="a00286_html_a6cc54f9929727736423d719870cf1a5b"><div class="ttname"><a href="a00286.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a></div><div class="ttdeci">ANNidx * ANNidxArray</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00378">ANN.h:378</a></div></div>
+<div class="ttc" id="a00306_html_ab6167ffd4cda270c15d2eca1bbce4e9d"><div class="ttname"><a href="a00306.html#ab6167ffd4cda270c15d2eca1bbce4e9d">fair_split</a></div><div class="ttdeci">void fair_split(ANNpointArray pa, ANNidxArray pidx, const ANNorthRect &amp;bnds, int n, int dim, int &amp;cut_dim, ANNcoord &amp;cut_val, int &amp;n_lo)</div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00243">kd_split.cpp:243</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:54 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.52.0: QUESO::PoweredJointPdf&lt; V, M &gt; Class Template Reference</title>
+<title>queso-0.53.0: QUESO::InterpolationSurrogateData&lt; V, M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.52.0
+   <div id="projectname">queso-0.53.0
    </div>
   </td>
  </tr>
@@ -45,139 +45,111 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00500.html">QUESO</a></li><li class="navelem"><a class="el" href="a00137.html">PoweredJointPdf</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00137.html">InterpolationSurrogateData</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a01178.html">List of all members</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="a01598.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::PoweredJointPdf&lt; V, M &gt; Class Template Reference</div>  </div>
+<div class="title">QUESO::InterpolationSurrogateData&lt; V, M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A class for handling a powered joint PDFs.  
- <a href="a00137.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="a00387_source.html">PoweredJointPdf.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for QUESO::PoweredJointPdf&lt; V, M &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="a01179.png" border="0" usemap="#_q_u_e_s_o_1_1_powered_joint_pdf_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_powered_joint_pdf_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_powered_joint_pdf_3_01_v_00_01_m_01_4_inherit__map">
-<area shape="rect" id="node2" href="a00020.html" title="A templated (base) class for handling joint PDFs. " alt="" coords="28,102,193,149"/><area shape="rect" id="node4" href="a00026.html" title="A templated (base) class for handling scalar functions. " alt="" coords="5,6,216,53"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for QUESO::PoweredJointPdf&lt; V, M &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="a01180.png" border="0" usemap="#_q_u_e_s_o_1_1_powered_joint_pdf_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_powered_joint_pdf_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_powered_joint_pdf_3_01_v_00_01_m_01_4_coll__map">
-<area shape="rect" id="node2" href="a00020.html" title="A templated (base) class for handling joint PDFs. " alt="" coords="1076,5,1241,51"/><area shape="rect" id="node4" href="a00026.html" title="A templated (base) class for handling scalar functions. " alt="" coords="809,5,1020,51"/><area shape="rect" id="node6" href="a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,168,648,197"/><area shape="rect" id="node12" href="a00052.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,257,1024,287"/><area shape="rect" id="node18" href="a00132.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,137,988,167"/><area shape="rect" id="node8" href="a00034.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,120,195,149"/><area shape="rect" id="node10" href="a00139.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,173,175,203"/><area shape="rect" id="node15" href="a00053.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,283,205,312"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<p><code>#include &lt;<a class="el" href="a00629_source.html">InterpolationSurrogateBase.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:aaad4fce3dbea49b17af2ac3101e757c1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#aaad4fce3dbea49b17af2ac3101e757c1">PoweredJointPdf</a> (const char *prefix, const <a class="el" href="a00020.html">BaseJointPdf</a>&lt; V, M &gt; &amp;srcDensity, double exponent)</td></tr>
-<tr class="memdesc:aaad4fce3dbea49b17af2ac3101e757c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#aaad4fce3dbea49b17af2ac3101e757c1">More...</a><br/></td></tr>
-<tr class="separator:aaad4fce3dbea49b17af2ac3101e757c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc4364733cade0f91fd9927e68d1fe85"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#abc4364733cade0f91fd9927e68d1fe85">~PoweredJointPdf</a> ()</td></tr>
-<tr class="memdesc:abc4364733cade0f91fd9927e68d1fe85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#abc4364733cade0f91fd9927e68d1fe85">More...</a><br/></td></tr>
-<tr class="separator:abc4364733cade0f91fd9927e68d1fe85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Math methods</div></td></tr>
-<tr class="memitem:a916888a016a1cd9aea0a7789be0f6957"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a916888a016a1cd9aea0a7789be0f6957">actualValue</a> (const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td></tr>
-<tr class="memdesc:a916888a016a1cd9aea0a7789be0f6957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actual value of the powered PDF.  <a href="#a916888a016a1cd9aea0a7789be0f6957">More...</a><br/></td></tr>
-<tr class="separator:a916888a016a1cd9aea0a7789be0f6957"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addcc8c32b3dc30d22fb1e4a8350a14e3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#addcc8c32b3dc30d22fb1e4a8350a14e3">lnValue</a> (const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td></tr>
-<tr class="memdesc:addcc8c32b3dc30d22fb1e4a8350a14e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logarithm of the value of the powered PDF.  <a href="#addcc8c32b3dc30d22fb1e4a8350a14e3">More...</a><br/></td></tr>
-<tr class="separator:addcc8c32b3dc30d22fb1e4a8350a14e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a306c48af4e2954a002f873e25b4c3499"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a306c48af4e2954a002f873e25b4c3499">setNormalizationStyle</a> (unsigned int value) const </td></tr>
-<tr class="memdesc:a306c48af4e2954a002f873e25b4c3499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a value to be used in the normalization style of the powered PDF (ie, protected attribute m_srcDensity).  <a href="#a306c48af4e2954a002f873e25b4c3499">More...</a><br/></td></tr>
-<tr class="separator:a306c48af4e2954a002f873e25b4c3499"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4d7e2a318f317652ebbf926d8a3391c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#ae4d7e2a318f317652ebbf926d8a3391c">computeLogOfNormalizationFactor</a> (unsigned int numSamples, bool updateFactorInternally) const </td></tr>
-<tr class="memdesc:ae4d7e2a318f317652ebbf926d8a3391c"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Computes the logarithm of the normalization factor.  <a href="#ae4d7e2a318f317652ebbf926d8a3391c">More...</a><br/></td></tr>
-<tr class="separator:ae4d7e2a318f317652ebbf926d8a3391c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00020"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00020')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00020.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:ae1f0870366a17d71e05a2f84ec49e06e inherit pub_methods_a00020"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ae1f0870366a17d71e05a2f84ec49e06e">BaseJointPdf</a> (const char *prefix, const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00026.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>)</td></tr>
-<tr class="memdesc:ae1f0870366a17d71e05a2f84ec49e06e inherit pub_methods_a00020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ae1f0870366a17d71e05a2f84ec49e06e">More...</a><br/></td></tr>
-<tr class="separator:ae1f0870366a17d71e05a2f84ec49e06e inherit pub_methods_a00020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f41f5dc30ddfd59e149c3a748898553 inherit pub_methods_a00020"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a9f41f5dc30ddfd59e149c3a748898553">~BaseJointPdf</a> ()</td></tr>
-<tr class="memdesc:a9f41f5dc30ddfd59e149c3a748898553 inherit pub_methods_a00020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a9f41f5dc30ddfd59e149c3a748898553">More...</a><br/></td></tr>
-<tr class="separator:a9f41f5dc30ddfd59e149c3a748898553 inherit pub_methods_a00020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2903b3f031e68907fe7422fedc83e5dc inherit pub_methods_a00020"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a2903b3f031e68907fe7422fedc83e5dc">setLogOfNormalizationFactor</a> (double value) const </td></tr>
-<tr class="memdesc:a2903b3f031e68907fe7422fedc83e5dc inherit pub_methods_a00020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a logarithmic value to be used in the normalization factor (stored in the protected attribute m_normalizationStyle.)  <a href="#a2903b3f031e68907fe7422fedc83e5dc">More...</a><br/></td></tr>
-<tr class="separator:a2903b3f031e68907fe7422fedc83e5dc inherit pub_methods_a00020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00026"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00026')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00026.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a68ab7c82be7eba7bd5d51ce8d85c65f0 inherit pub_methods_a00026"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a68ab7c82be7eba7bd5d51ce8d85c65f0">BaseScalarFunction</a> (const char *prefix, const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00026.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>)</td></tr>
-<tr class="memdesc:a68ab7c82be7eba7bd5d51ce8d85c65f0 inherit pub_methods_a00026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a68ab7c82be7eba7bd5d51ce8d85c65f0">More...</a><br/></td></tr>
-<tr class="separator:a68ab7c82be7eba7bd5d51ce8d85c65f0 inherit pub_methods_a00026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f96de783e174cfe84682766f5957969 inherit pub_methods_a00026"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a6f96de783e174cfe84682766f5957969">~BaseScalarFunction</a> ()</td></tr>
-<tr class="memdesc:a6f96de783e174cfe84682766f5957969 inherit pub_methods_a00026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a6f96de783e174cfe84682766f5957969">More...</a><br/></td></tr>
-<tr class="separator:a6f96de783e174cfe84682766f5957969 inherit pub_methods_a00026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0937628825249dd36ded3ce0c7959ac inherit pub_methods_a00026"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a> () const </td></tr>
-<tr class="memdesc:ad0937628825249dd36ded3ce0c7959ac inherit pub_methods_a00026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the protected attribute <code>m_domainSet:</code> domain set of the scalar function.  <a href="#ad0937628825249dd36ded3ce0c7959ac">More...</a><br/></td></tr>
-<tr class="separator:ad0937628825249dd36ded3ce0c7959ac inherit pub_methods_a00026"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21701f37c66f20a34b9737ca9597bce0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a21701f37c66f20a34b9737ca9597bce0">InterpolationSurrogateData</a> (const <a class="el" href="a00057.html">BoxSubset</a>&lt; V, M &gt; &amp;domain, const std::vector&lt; unsigned int &gt; &amp;n_points)</td></tr>
+<tr class="separator:a21701f37c66f20a34b9737ca9597bce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1288c3f669ad7f986a6a58b641b0689c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a1288c3f669ad7f986a6a58b641b0689c">~InterpolationSurrogateData</a> ()</td></tr>
+<tr class="separator:a1288c3f669ad7f986a6a58b641b0689c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c42798f990362f9aabdaad53030ccdc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00057.html">BoxSubset</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a8c42798f990362f9aabdaad53030ccdc">get_paramDomain</a> () const </td></tr>
+<tr class="separator:a8c42798f990362f9aabdaad53030ccdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa131e0d33c63b666460c17628da198a7"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; unsigned int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#aa131e0d33c63b666460c17628da198a7">get_n_points</a> () const </td></tr>
+<tr class="separator:aa131e0d33c63b666460c17628da198a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b67d4708ee4f7b336070ded21040fd8"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a6b67d4708ee4f7b336070ded21040fd8">get_values</a> () const </td></tr>
+<tr class="separator:a6b67d4708ee4f7b336070ded21040fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85f02e6ba0b4d152aa820e99ba0b7be5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a85f02e6ba0b4d152aa820e99ba0b7be5">get_values</a> ()</td></tr>
+<tr class="separator:a85f02e6ba0b4d152aa820e99ba0b7be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0af08dbf7e164feec96044ba4d8fcaa"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#af0af08dbf7e164feec96044ba4d8fcaa">get_value</a> (unsigned int n) const </td></tr>
+<tr class="separator:af0af08dbf7e164feec96044ba4d8fcaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10f91d8b742ce0043fc7234211e68a55"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a10f91d8b742ce0043fc7234211e68a55">n_values</a> () const </td></tr>
+<tr class="separator:a10f91d8b742ce0043fc7234211e68a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbc532a95cf4c31b9b6844730d5eb6f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#abbc532a95cf4c31b9b6844730d5eb6f8">set_values</a> (std::vector&lt; double &gt; &amp;values)</td></tr>
+<tr class="memdesc:abbc532a95cf4c31b9b6844730d5eb6f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set all values. Dimension must be consistent with internal m_values.  <a href="#abbc532a95cf4c31b9b6844730d5eb6f8">More...</a><br/></td></tr>
+<tr class="separator:abbc532a95cf4c31b9b6844730d5eb6f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9902158fa031623279dbb1f8a29678ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a9902158fa031623279dbb1f8a29678ec">set_value</a> (unsigned int n, double value)</td></tr>
+<tr class="separator:a9902158fa031623279dbb1f8a29678ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37ffa23a53ee1bd3421cea490338f967"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a> () const </td></tr>
+<tr class="memdesc:a37ffa23a53ee1bd3421cea490338f967"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dimension of parameter space.  <a href="#a37ffa23a53ee1bd3421cea490338f967">More...</a><br/></td></tr>
+<tr class="separator:a37ffa23a53ee1bd3421cea490338f967"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7edffeac45d6efb9b0bed02f21bc00cc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a7edffeac45d6efb9b0bed02f21bc00cc">x_min</a> (unsigned int <a class="el" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>) const </td></tr>
+<tr class="memdesc:a7edffeac45d6efb9b0bed02f21bc00cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lower bound of domain along dimension dim.  <a href="#a7edffeac45d6efb9b0bed02f21bc00cc">More...</a><br/></td></tr>
+<tr class="separator:a7edffeac45d6efb9b0bed02f21bc00cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a830f9e41a1b266a46e73bd544d9ef0c0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a830f9e41a1b266a46e73bd544d9ef0c0">x_max</a> (unsigned int <a class="el" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>) const </td></tr>
+<tr class="memdesc:a830f9e41a1b266a46e73bd544d9ef0c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Upper bound of domain along dimension dim.  <a href="#a830f9e41a1b266a46e73bd544d9ef0c0">More...</a><br/></td></tr>
+<tr class="separator:a830f9e41a1b266a46e73bd544d9ef0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79de31ae1c7a13a1c0fa6e8ccc3bfdc1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a79de31ae1c7a13a1c0fa6e8ccc3bfdc1">spacing</a> (unsigned int <a class="el" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>) const </td></tr>
+<tr class="memdesc:a79de31ae1c7a13a1c0fa6e8ccc3bfdc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spacing between points along dimension dim.  <a href="#a79de31ae1c7a13a1c0fa6e8ccc3bfdc1">More...</a><br/></td></tr>
+<tr class="separator:a79de31ae1c7a13a1c0fa6e8ccc3bfdc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24b14db4fa4eb1a6b47486554a130e7d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a24b14db4fa4eb1a6b47486554a130e7d">get_x</a> (unsigned int <a class="el" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>, unsigned int index) const </td></tr>
+<tr class="memdesc:a24b14db4fa4eb1a6b47486554a130e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get spatial coordinate value at the node index along coordinate direction dim.  <a href="#a24b14db4fa4eb1a6b47486554a130e7d">More...</a><br/></td></tr>
+<tr class="separator:a24b14db4fa4eb1a6b47486554a130e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95960919c0adf0953dfcc647e82c13cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a95960919c0adf0953dfcc647e82c13cb">sync_values</a> (unsigned int root)</td></tr>
+<tr class="memdesc:a95960919c0adf0953dfcc647e82c13cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sync values across all processors from root processor.  <a href="#a95960919c0adf0953dfcc647e82c13cb">More...</a><br/></td></tr>
+<tr class="separator:a95960919c0adf0953dfcc647e82c13cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a80cd4ecb6f5dc0e1f61d0317ef07a616"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00020.html">BaseJointPdf</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">m_srcDensity</a></td></tr>
-<tr class="separator:a80cd4ecb6f5dc0e1f61d0317ef07a616"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a867f4a159b1bf2419ef049507306ce79"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a867f4a159b1bf2419ef049507306ce79">m_exponent</a></td></tr>
-<tr class="separator:a867f4a159b1bf2419ef049507306ce79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00020"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00020')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00020.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a138c99bcef7a67077d9612bddfdcb896 inherit pro_attribs_a00020"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a138c99bcef7a67077d9612bddfdcb896">m_normalizationStyle</a></td></tr>
-<tr class="separator:a138c99bcef7a67077d9612bddfdcb896 inherit pro_attribs_a00020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae82d4191f17af8c7a26226d127bc7850 inherit pro_attribs_a00020"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a></td></tr>
-<tr class="separator:ae82d4191f17af8c7a26226d127bc7850 inherit pro_attribs_a00020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00026"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00026')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00026.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:adf44141aeb765d97613286f88f235f04 inherit pro_attribs_a00026"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00018.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a></td></tr>
-<tr class="separator:adf44141aeb765d97613286f88f235f04 inherit pro_attribs_a00026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e81dc902aca6a546877da99b2f4a169 inherit pro_attribs_a00026"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></td></tr>
-<tr class="separator:a6e81dc902aca6a546877da99b2f4a169 inherit pro_attribs_a00026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab81be32259b9764250660a035439fda8 inherit pro_attribs_a00026"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00176.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ab81be32259b9764250660a035439fda8">m_domainSet</a></td></tr>
-<tr class="memdesc:ab81be32259b9764250660a035439fda8 inherit pro_attribs_a00026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Domain set of the scalar function.  <a href="#ab81be32259b9764250660a035439fda8">More...</a><br/></td></tr>
-<tr class="separator:ab81be32259b9764250660a035439fda8 inherit pro_attribs_a00026"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a58611c92684ffc4cdab38e49ff2efc87"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a58611c92684ffc4cdab38e49ff2efc87">InterpolationSurrogateData</a> ()</td></tr>
+<tr class="separator:a58611c92684ffc4cdab38e49ff2efc87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a619d249f00fec5fb88d53587b511c1ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a619d249f00fec5fb88d53587b511c1ce">check_dim_consistency</a> () const </td></tr>
+<tr class="memdesc:a619d249f00fec5fb88d53587b511c1ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function for constructor.  <a href="#a619d249f00fec5fb88d53587b511c1ce">More...</a><br/></td></tr>
+<tr class="separator:a619d249f00fec5fb88d53587b511c1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d11f99a8d5d93d2d43009fbd3b86f0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a9d11f99a8d5d93d2d43009fbd3b86f0e">init_values</a> (const std::vector&lt; unsigned int &gt; &amp;n_points)</td></tr>
+<tr class="memdesc:a9d11f99a8d5d93d2d43009fbd3b86f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function for sizing m_values.  <a href="#a9d11f99a8d5d93d2d43009fbd3b86f0e">More...</a><br/></td></tr>
+<tr class="separator:a9d11f99a8d5d93d2d43009fbd3b86f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_a00020"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_a00020')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="a00020.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a7b7bdd13d2de51198bf75d522e02545b inherit pro_methods_a00020"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a7b7bdd13d2de51198bf75d522e02545b">commonComputeLogOfNormalizationFactor</a> (unsigned int numSamples, bool updateFactorInternally) const </td></tr>
-<tr class="memdesc:a7b7bdd13d2de51198bf75d522e02545b inherit pro_methods_a00020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common method (to the derived classes) to compute the logarithm of the normalization factor.  <a href="#a7b7bdd13d2de51198bf75d522e02545b">More...</a><br/></td></tr>
-<tr class="separator:a7b7bdd13d2de51198bf75d522e02545b inherit pro_methods_a00020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a12ae16e2a85b4d099c1d34f781820c24"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00057.html">BoxSubset</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">m_domain</a></td></tr>
+<tr class="memdesc:a12ae16e2a85b4d099c1d34f781820c24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameter domain over which we use surrogate.  <a href="#a12ae16e2a85b4d099c1d34f781820c24">More...</a><br/></td></tr>
+<tr class="separator:a12ae16e2a85b4d099c1d34f781820c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a906b89eebfdfbb450eecee7ee973ad7a"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; unsigned int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">m_n_points</a></td></tr>
+<tr class="memdesc:a906b89eebfdfbb450eecee7ee973ad7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector to store number of points in each coordinate direction  <a href="#a906b89eebfdfbb450eecee7ee973ad7a">More...</a><br/></td></tr>
+<tr class="separator:a906b89eebfdfbb450eecee7ee973ad7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72eae554878b708747b7c24437f4d45f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a></td></tr>
+<tr class="memdesc:a72eae554878b708747b7c24437f4d45f"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector to store values to be interpolated  <a href="#a72eae554878b708747b7c24437f4d45f">More...</a><br/></td></tr>
+<tr class="separator:a72eae554878b708747b7c24437f4d45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class V, class M&gt;<br/>
-class QUESO::PoweredJointPdf&lt; V, M &gt;</h3>
+<div class="textblock"><h3>template&lt;typename V, typename M&gt;<br/>
+class QUESO::InterpolationSurrogateData&lt; V, M &gt;</h3>
 
-<p>A class for handling a powered joint PDFs. </p>
-<p>This class allows the mathematical definition of a Powered Joint PDF. </p>
 
-<p>Definition at line <a class="el" href="a00387_source.html#l00049">49</a> of file <a class="el" href="a00387_source.html">PoweredJointPdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00629_source.html#l00034">34</a> of file <a class="el" href="a00629_source.html">InterpolationSurrogateBase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aaad4fce3dbea49b17af2ac3101e757c1"></a>
+<a class="anchor" id="a21701f37c66f20a34b9737ca9597bce0"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00137.html">QUESO::PoweredJointPdf</a>&lt; V, M &gt;::<a class="el" href="a00137.html">PoweredJointPdf</a> </td>
+          <td class="memname"><a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::<a class="el" href="a00137.html">InterpolationSurrogateData</a> </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>prefix</em>, </td>
+          <td class="paramtype">const <a class="el" href="a00057.html">BoxSubset</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>domain</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00020.html">BaseJointPdf</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>srcDensity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>exponent</em>&#160;</td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>n_points</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -187,69 +159,80 @@ template&lt;class V , class M &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
-<p>Constructs a new object of the class, given a prefix, the domain set and the exponent of the powered PDF. </p>
+<p>Definition at line <a class="el" href="a00641_source.html#l00038">38</a> of file <a class="el" href="a00641_source.html">InterpolationSurrogateData.C</a>.</p>
 
-<p>Definition at line <a class="el" href="a00472_source.html#l00033">33</a> of file <a class="el" href="a00472_source.html">PoweredJointPdf.C</a>.</p>
-
-<p>References <a class="el" href="a00274_source.html#l00436">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00199_source.html#l00077">QUESO::BaseScalarFunction&lt; V, M &gt;::m_env</a>, <a class="el" href="a00199_source.html#l00078">QUESO::BaseScalarFunction&lt; V, M &gt;::m_prefix</a>, and <a class="el" href="a00274_source.html#l00305">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  BaseJointPdf&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;pow&quot;</span>).c_str(),srcDensity.domainSet()),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00137.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">m_srcDensity</a>            (srcDensity),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00137.html#a867f4a159b1bf2419ef049507306ce79">m_exponent</a>              (exponent)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    *<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering PoweredJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00026.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    *<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In PoweredJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                          <span class="comment">//&lt;&lt; &quot;, prefix = &quot;     &lt;&lt; m_prefix</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    *<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving PoweredJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00026.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00026_html_a6e81dc902aca6a546877da99b2f4a169"><div class="ttname"><a href="a00026.html#a6e81dc902aca6a546877da99b2f4a169">QUESO::BaseScalarFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00078">ScalarFunction.h:78</a></div></div>
-<div class="ttc" id="a00137_html_a867f4a159b1bf2419ef049507306ce79"><div class="ttname"><a href="a00137.html#a867f4a159b1bf2419ef049507306ce79">QUESO::PoweredJointPdf::m_exponent</a></div><div class="ttdeci">double m_exponent</div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00092">PoweredJointPdf.h:92</a></div></div>
-<div class="ttc" id="a00137_html_a80cd4ecb6f5dc0e1f61d0317ef07a616"><div class="ttname"><a href="a00137.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">QUESO::PoweredJointPdf::m_srcDensity</a></div><div class="ttdeci">const BaseJointPdf&lt; V, M &gt; &amp; m_srcDensity</div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00091">PoweredJointPdf.h:91</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00026_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00026.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00077">ScalarFunction.h:77</a></div></div>
+<p>References <a class="el" href="a00641_source.html#l00051">QUESO::InterpolationSurrogateData&lt; V, M &gt;::check_dim_consistency()</a>, <a class="el" href="a00641_source.html#l00070">QUESO::InterpolationSurrogateData&lt; V, M &gt;::init_values()</a>, and <a class="el" href="a00631_source.html#l00112">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_n_points</a>.</p>
+<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    : <a class="code" href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">m_domain</a>(domain),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <a class="code" href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">m_n_points</a>(n_points)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">// This checks that the dimension of n_points and the domain are consistent</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    this-&gt;<a class="code" href="a00137.html#a619d249f00fec5fb88d53587b511c1ce">check_dim_consistency</a>();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// Size m_values</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    this-&gt;<a class="code" href="a00137.html#a9d11f99a8d5d93d2d43009fbd3b86f0e">init_values</a>(this-&gt;<a class="code" href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">m_n_points</a>);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="ttc" id="a00137_html_a12ae16e2a85b4d099c1d34f781820c24"><div class="ttname"><a href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">QUESO::InterpolationSurrogateData::m_domain</a></div><div class="ttdeci">const BoxSubset&lt; V, M &gt; &amp; m_domain</div><div class="ttdoc">Parameter domain over which we use surrogate. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00107">InterpolationSurrogateData.h:107</a></div></div>
+<div class="ttc" id="a00137_html_a906b89eebfdfbb450eecee7ee973ad7a"><div class="ttname"><a href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">QUESO::InterpolationSurrogateData::m_n_points</a></div><div class="ttdeci">const std::vector&lt; unsigned int &gt; &amp; m_n_points</div><div class="ttdoc">vector to store number of points in each coordinate direction </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00112">InterpolationSurrogateData.h:112</a></div></div>
+<div class="ttc" id="a00137_html_a9d11f99a8d5d93d2d43009fbd3b86f0e"><div class="ttname"><a href="a00137.html#a9d11f99a8d5d93d2d43009fbd3b86f0e">QUESO::InterpolationSurrogateData::init_values</a></div><div class="ttdeci">void init_values(const std::vector&lt; unsigned int &gt; &amp;n_points)</div><div class="ttdoc">Helper function for sizing m_values. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00070">InterpolationSurrogateData.C:70</a></div></div>
+<div class="ttc" id="a00137_html_a619d249f00fec5fb88d53587b511c1ce"><div class="ttname"><a href="a00137.html#a619d249f00fec5fb88d53587b511c1ce">QUESO::InterpolationSurrogateData::check_dim_consistency</a></div><div class="ttdeci">void check_dim_consistency() const </div><div class="ttdoc">Helper function for constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00051">InterpolationSurrogateData.C:51</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="abc4364733cade0f91fd9927e68d1fe85"></a>
+<a class="anchor" id="a1288c3f669ad7f986a6a58b641b0689c"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V , class M &gt; </div>
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00137.html">QUESO::PoweredJointPdf</a>&lt; V, M &gt;::~<a class="el" href="a00137.html">PoweredJointPdf</a> </td>
+          <td class="memname"><a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::~<a class="el" href="a00137.html">InterpolationSurrogateData</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Destructor. </p>
-
-<p>Definition at line <a class="el" href="a00472_source.html#l00062">62</a> of file <a class="el" href="a00472_source.html">PoweredJointPdf.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00631_source.html#l00043">43</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{};</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a58611c92684ffc4cdab38e49ff2efc87"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::<a class="el" href="a00137.html">InterpolationSurrogateData</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a916888a016a1cd9aea0a7789be0f6957"></a>
+<a class="anchor" id="a619d249f00fec5fb88d53587b511c1ce"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -259,357 +242,684 @@ template&lt;class V , class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="a00137.html">QUESO::PoweredJointPdf</a>&lt; V, M &gt;::actualValue </td>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::check_dim_consistency </td>
           <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>domainVector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const V *&#160;</td>
-          <td class="paramname"><em>domainDirection</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">V *&#160;</td>
-          <td class="paramname"><em>gradVector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">M *&#160;</td>
-          <td class="paramname"><em>hessianMatrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">V *&#160;</td>
-          <td class="paramname"><em>hessianEffect</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Actual value of the powered PDF. </p>
-<p>Finds the actual value using <a class="el" href="a00020.html#a3c367a0cc3fb707a136c5df47dd414c1" title="Actual value of the PDF (scalar function). ">BaseJointPdf::actualValue()</a> and apply it to the power of <code>this</code> PDF, which given by <code>exponent</code>, and multiplies it by the normalization factor, which is given by exp(m_logOfNormalizationFactor). </p>
-
-<p>Implements <a class="el" href="a00020.html#a3c367a0cc3fb707a136c5df47dd414c1">QUESO::BaseJointPdf&lt; V, M &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00472_source.html#l00076">76</a> of file <a class="el" href="a00472_source.html">PoweredJointPdf.C</a>.</p>
-
-<p>References <a class="el" href="a00237_source.html#l00223">UQ_FATAL_TEST_MACRO</a>.</p>
-<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    *<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering PoweredJointPdf&lt;V,M&gt;::actualValue()&quot;</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(domainVector.sizeLocal() != this-&gt;<a class="code" href="a00026.html#ab81be32259b9764250660a035439fda8">m_domainSet</a>.vectorSpace().dimLocal(),</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                      <a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                      <span class="stringliteral">&quot;PoweredJointPdf&lt;V,M&gt;::actualValue()&quot;</span>,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                      <span class="stringliteral">&quot;invalid input&quot;</span>);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordtype">double</span> value = <a class="code" href="a00137.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">m_srcDensity</a>.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>((domainDirection || gradVector || hessianMatrix || hessianEffect),</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                      <a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                      <span class="stringliteral">&quot;PoweredJointPdf&lt;V,M&gt;::actualValue()&quot;</span>,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                      <span class="stringliteral">&quot;incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations&quot;</span>);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordtype">double</span> returnValue = pow(value,<a class="code" href="a00137.html#a867f4a159b1bf2419ef049507306ce79">m_exponent</a>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  returnValue *= exp(<a class="code" href="a00020.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a>); <span class="comment">// [PDF-08] ???</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    *<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving PoweredJointPdf&lt;V,M&gt;::actualValue()&quot;</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, returnValue = &quot;</span>  &lt;&lt; returnValue</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordflow">return</span> returnValue;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
-<div class="ttc" id="a00018_html_a78b57112bbd0e6dd0e8afec00b40ffa7"><div class="ttname"><a href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">QUESO::BaseEnvironment::worldRank</a></div><div class="ttdeci">int worldRank() const </div><div class="ttdoc">Returns the process world rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00235">Environment.C:235</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00020_html_ae82d4191f17af8c7a26226d127bc7850"><div class="ttname"><a href="a00020.html#ae82d4191f17af8c7a26226d127bc7850">QUESO::BaseJointPdf::m_logOfNormalizationFactor</a></div><div class="ttdeci">double m_logOfNormalizationFactor</div><div class="ttdef"><b>Definition:</b> <a href="a00373_source.html#l00104">JointPdf.h:104</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00137_html_a867f4a159b1bf2419ef049507306ce79"><div class="ttname"><a href="a00137.html#a867f4a159b1bf2419ef049507306ce79">QUESO::PoweredJointPdf::m_exponent</a></div><div class="ttdeci">double m_exponent</div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00092">PoweredJointPdf.h:92</a></div></div>
-<div class="ttc" id="a00137_html_a80cd4ecb6f5dc0e1f61d0317ef07a616"><div class="ttname"><a href="a00137.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">QUESO::PoweredJointPdf::m_srcDensity</a></div><div class="ttdeci">const BaseJointPdf&lt; V, M &gt; &amp; m_srcDensity</div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00091">PoweredJointPdf.h:91</a></div></div>
-<div class="ttc" id="a00026_html_ab81be32259b9764250660a035439fda8"><div class="ttname"><a href="a00026.html#ab81be32259b9764250660a035439fda8">QUESO::BaseScalarFunction::m_domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_domainSet</div><div class="ttdoc">Domain set of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00081">ScalarFunction.h:81</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00026_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00026.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00077">ScalarFunction.h:77</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="ae4d7e2a318f317652ebbf926d8a3391c"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double <a class="el" href="a00137.html">QUESO::PoweredJointPdf</a>&lt; V, M &gt;::computeLogOfNormalizationFactor </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>numSamples</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>updateFactorInternally</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>TODO: Computes the logarithm of the normalization factor. </p>
-<dl class="todo"><dt><b><a class="el" href="a00501.html#_todo000042">Todo:</a></b></dt><dd>: implement me! </dd></dl>
-
-<p>Implements <a class="el" href="a00020.html#a99d8ab490b093abffd6068b6ea5263bb">QUESO::BaseJointPdf&lt; V, M &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00472_source.html#l00151">151</a> of file <a class="el" href="a00472_source.html">PoweredJointPdf.C</a>.</p>
-
-<p>References <a class="el" href="a00237_source.html#l00223">UQ_FATAL_TEST_MACRO</a>.</p>
-<div class="fragment"><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;{</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordtype">double</span> value = 0.;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keywordtype">double</span> volume = <a class="code" href="a00026.html#ab81be32259b9764250660a035439fda8">m_domainSet</a>.volume();</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="keywordflow">if</span> (((boost::math::isnan)(volume)) ||</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      (volume == -INFINITY         ) ||</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      (volume ==  INFINITY         ) ||</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      (volume &lt;= 0.                )) {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">// Do nothing</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  }</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                        <a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                        <span class="stringliteral">&quot;PoweredJointPdf&lt;V,M&gt;::lnValue()&quot;</span>,</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                        <span class="stringliteral">&quot;incomplete code for computeLogOfNormalizationFactor()&quot;</span>);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;}</div>
-<div class="ttc" id="a00018_html_a78b57112bbd0e6dd0e8afec00b40ffa7"><div class="ttname"><a href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">QUESO::BaseEnvironment::worldRank</a></div><div class="ttdeci">int worldRank() const </div><div class="ttdoc">Returns the process world rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00235">Environment.C:235</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00026_html_ab81be32259b9764250660a035439fda8"><div class="ttname"><a href="a00026.html#ab81be32259b9764250660a035439fda8">QUESO::BaseScalarFunction::m_domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_domainSet</div><div class="ttdoc">Domain set of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00081">ScalarFunction.h:81</a></div></div>
-<div class="ttc" id="a00026_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00026.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00077">ScalarFunction.h:77</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="addcc8c32b3dc30d22fb1e4a8350a14e3"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double <a class="el" href="a00137.html">QUESO::PoweredJointPdf</a>&lt; V, M &gt;::lnValue </td>
-          <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>domainVector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const V *&#160;</td>
-          <td class="paramname"><em>domainDirection</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">V *&#160;</td>
-          <td class="paramname"><em>gradVector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">M *&#160;</td>
-          <td class="paramname"><em>hessianMatrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">V *&#160;</td>
-          <td class="paramname"><em>hessianEffect</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Logarithm of the value of the powered PDF. </p>
-<p>Finds the logarithm of actual value using <a class="el" href="a00020.html#aaeb1d91fd791399a502f451b07bb1bfe" title="Logarithm of the value of the function. ">BaseJointPdf::lnValue()</a> and multiplies by the power of <code>this</code> PDF, which given by <code>exponent</code>, and then adds the normalization factor, which is given by m_logOfNormalizationFactor. </p>
-
-<p>Implements <a class="el" href="a00020.html#aaeb1d91fd791399a502f451b07bb1bfe">QUESO::BaseJointPdf&lt; V, M &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00472_source.html#l00116">116</a> of file <a class="el" href="a00472_source.html">PoweredJointPdf.C</a>.</p>
-
-<p>References <a class="el" href="a00237_source.html#l00223">UQ_FATAL_TEST_MACRO</a>.</p>
-<div class="fragment"><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;{</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    *<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering PoweredJointPdf&lt;V,M&gt;::lnValue()&quot;</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordtype">double</span> value = <a class="code" href="a00137.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">m_srcDensity</a>.lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <a class="code" href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>((domainDirection || gradVector || hessianMatrix || hessianEffect),</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                      <a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                      <span class="stringliteral">&quot;PoweredJointPdf&lt;V,M&gt;::lnValue()&quot;</span>,</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                      <span class="stringliteral">&quot;incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations&quot;</span>);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="keywordtype">double</span> returnValue = <a class="code" href="a00137.html#a867f4a159b1bf2419ef049507306ce79">m_exponent</a>*value;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  returnValue += <a class="code" href="a00020.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a>; <span class="comment">// [PDF-08] ???</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    *<a class="code" href="a00026.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving PoweredJointPdf&lt;V,M&gt;::lnValue()&quot;</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, returnValue = &quot;</span>  &lt;&lt; returnValue</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keywordflow">return</span> returnValue;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
-<div class="ttc" id="a00018_html_a78b57112bbd0e6dd0e8afec00b40ffa7"><div class="ttname"><a href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">QUESO::BaseEnvironment::worldRank</a></div><div class="ttdeci">int worldRank() const </div><div class="ttdoc">Returns the process world rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00235">Environment.C:235</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00020_html_ae82d4191f17af8c7a26226d127bc7850"><div class="ttname"><a href="a00020.html#ae82d4191f17af8c7a26226d127bc7850">QUESO::BaseJointPdf::m_logOfNormalizationFactor</a></div><div class="ttdeci">double m_logOfNormalizationFactor</div><div class="ttdef"><b>Definition:</b> <a href="a00373_source.html#l00104">JointPdf.h:104</a></div></div>
-<div class="ttc" id="a00237_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00237.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00223">Defines.h:223</a></div></div>
-<div class="ttc" id="a00137_html_a867f4a159b1bf2419ef049507306ce79"><div class="ttname"><a href="a00137.html#a867f4a159b1bf2419ef049507306ce79">QUESO::PoweredJointPdf::m_exponent</a></div><div class="ttdeci">double m_exponent</div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00092">PoweredJointPdf.h:92</a></div></div>
-<div class="ttc" id="a00137_html_a80cd4ecb6f5dc0e1f61d0317ef07a616"><div class="ttname"><a href="a00137.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">QUESO::PoweredJointPdf::m_srcDensity</a></div><div class="ttdeci">const BaseJointPdf&lt; V, M &gt; &amp; m_srcDensity</div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00091">PoweredJointPdf.h:91</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00026_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00026.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00077">ScalarFunction.h:77</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a306c48af4e2954a002f873e25b4c3499"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="a00137.html">QUESO::PoweredJointPdf</a>&lt; V, M &gt;::setNormalizationStyle </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Sets a value to be used in the normalization style of the powered PDF (ie, protected attribute m_srcDensity). </p>
+<p>Helper function for constructor. </p>
 
-<p>Reimplemented from <a class="el" href="a00020.html#ab11f1d096f82cc7857cefe1b92f6b28e">QUESO::BaseJointPdf&lt; V, M &gt;</a>.</p>
+<p>Definition at line <a class="el" href="a00641_source.html#l00051">51</a> of file <a class="el" href="a00641_source.html">InterpolationSurrogateData.C</a>.</p>
 
-<p>Definition at line <a class="el" href="a00472_source.html#l00068">68</a> of file <a class="el" href="a00472_source.html">PoweredJointPdf.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="a00137.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">m_srcDensity</a>.setNormalizationStyle(value);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
-<div class="ttc" id="a00137_html_a80cd4ecb6f5dc0e1f61d0317ef07a616"><div class="ttname"><a href="a00137.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">QUESO::PoweredJointPdf::m_srcDensity</a></div><div class="ttdeci">const BaseJointPdf&lt; V, M &gt; &amp; m_srcDensity</div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00091">PoweredJointPdf.h:91</a></div></div>
+<p>References <a class="el" href="a00284_source.html#l00081">dim</a>, and <a class="el" href="a00319_source.html#l00047">queso_error_msg</a>.</p>
+
+<p>Referenced by <a class="el" href="a00641_source.html#l00038">QUESO::InterpolationSurrogateData&lt; V, M &gt;::InterpolationSurrogateData()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span>( this-&gt;<a class="code" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>() != this-&gt;<a class="code" href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">m_n_points</a>.size() )</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        std::stringstream vspace_dim;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        vspace_dim &lt;&lt; this-&gt;<a class="code" href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">m_domain</a>.vectorSpace().dimGlobal();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        std::stringstream n_points_dim;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        n_points_dim &lt;&lt; this-&gt;<a class="code" href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">m_n_points</a>.size();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        std::string error = <span class="stringliteral">&quot;ERROR: Mismatch between dimension of parameter space and number of points\n.&quot;</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        error += <span class="stringliteral">&quot;        domain dimension = &quot;</span> + vspace_dim.str() + <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        error += <span class="stringliteral">&quot;        points dimension = &quot;</span> + n_points_dim.str() + <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <a class="code" href="a00319.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(error);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  }</div>
+<div class="ttc" id="a00137_html_a37ffa23a53ee1bd3421cea490338f967"><div class="ttname"><a href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">QUESO::InterpolationSurrogateData::dim</a></div><div class="ttdeci">unsigned int dim() const </div><div class="ttdoc">Dimension of parameter space. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00072">InterpolationSurrogateData.h:72</a></div></div>
+<div class="ttc" id="a00319_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00319.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00047">asserts.h:47</a></div></div>
+<div class="ttc" id="a00137_html_a12ae16e2a85b4d099c1d34f781820c24"><div class="ttname"><a href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">QUESO::InterpolationSurrogateData::m_domain</a></div><div class="ttdeci">const BoxSubset&lt; V, M &gt; &amp; m_domain</div><div class="ttdoc">Parameter domain over which we use surrogate. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00107">InterpolationSurrogateData.h:107</a></div></div>
+<div class="ttc" id="a00137_html_a906b89eebfdfbb450eecee7ee973ad7a"><div class="ttname"><a href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">QUESO::InterpolationSurrogateData::m_n_points</a></div><div class="ttdeci">const std::vector&lt; unsigned int &gt; &amp; m_n_points</div><div class="ttdoc">vector to store number of points in each coordinate direction </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00112">InterpolationSurrogateData.h:112</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a37ffa23a53ee1bd3421cea490338f967"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::dim </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dimension of parameter space. </p>
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00072">72</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>References <a class="el" href="a00631_source.html#l00107">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_domain</a>.</p>
+
+<p>Referenced by <a class="el" href="a00631_source.html#l00080">QUESO::InterpolationSurrogateData&lt; V, M &gt;::x_max()</a>, and <a class="el" href="a00631_source.html#l00076">QUESO::InterpolationSurrogateData&lt; V, M &gt;::x_min()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    { <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">m_domain</a>.vectorSpace().dimGlobal(); };</div>
+<div class="ttc" id="a00137_html_a12ae16e2a85b4d099c1d34f781820c24"><div class="ttname"><a href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">QUESO::InterpolationSurrogateData::m_domain</a></div><div class="ttdeci">const BoxSubset&lt; V, M &gt; &amp; m_domain</div><div class="ttdoc">Parameter domain over which we use surrogate. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00107">InterpolationSurrogateData.h:107</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aa131e0d33c63b666460c17628da198a7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;unsigned int&gt;&amp; <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::get_n_points </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00048">48</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>References <a class="el" href="a00631_source.html#l00112">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_n_points</a>.</p>
+
+<p>Referenced by <a class="el" href="a00644_source.html#l00184">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;::write()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    { <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">m_n_points</a>; };</div>
+<div class="ttc" id="a00137_html_a906b89eebfdfbb450eecee7ee973ad7a"><div class="ttname"><a href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">QUESO::InterpolationSurrogateData::m_n_points</a></div><div class="ttdeci">const std::vector&lt; unsigned int &gt; &amp; m_n_points</div><div class="ttdoc">vector to store number of points in each coordinate direction </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00112">InterpolationSurrogateData.h:112</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a8c42798f990362f9aabdaad53030ccdc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00057.html">BoxSubset</a>&lt;V,M&gt;&amp; <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::get_paramDomain </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00045">45</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>References <a class="el" href="a00631_source.html#l00107">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_domain</a>.</p>
+
+<p>Referenced by <a class="el" href="a00640_source.html#l00139">QUESO::InterpolationSurrogateBuilder&lt; V, M &gt;::sync_data()</a>, and <a class="el" href="a00644_source.html#l00184">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;::write()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    { <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">m_domain</a>; };</div>
+<div class="ttc" id="a00137_html_a12ae16e2a85b4d099c1d34f781820c24"><div class="ttname"><a href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">QUESO::InterpolationSurrogateData::m_domain</a></div><div class="ttdeci">const BoxSubset&lt; V, M &gt; &amp; m_domain</div><div class="ttdoc">Parameter domain over which we use surrogate. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00107">InterpolationSurrogateData.h:107</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af0af08dbf7e164feec96044ba4d8fcaa"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::get_value </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00057">57</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>References <a class="el" href="a00631_source.html#l00120">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_values</a>, and <a class="el" href="a00319_source.html#l00155">queso_assert_less</a>.</p>
+
+<p>Referenced by <a class="el" href="a00644_source.html#l00184">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;::write()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    { <a class="code" href="a00319.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a>(n,this-&gt;<a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>.size());</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>[n]; };</div>
+<div class="ttc" id="a00319_html_a02c59e9150c230713f39314a442e2768"><div class="ttname"><a href="a00319.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a></div><div class="ttdeci">#define queso_assert_less(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00155">asserts.h:155</a></div></div>
+<div class="ttc" id="a00137_html_a72eae554878b708747b7c24437f4d45f"><div class="ttname"><a href="a00137.html#a72eae554878b708747b7c24437f4d45f">QUESO::InterpolationSurrogateData::m_values</a></div><div class="ttdeci">std::vector&lt; double &gt; m_values</div><div class="ttdoc">vector to store values to be interpolated </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00120">InterpolationSurrogateData.h:120</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6b67d4708ee4f7b336070ded21040fd8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;double&gt;&amp; <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::get_values </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00051">51</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>References <a class="el" href="a00631_source.html#l00120">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_values</a>.</p>
+<div class="fragment"><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    { <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>; };</div>
+<div class="ttc" id="a00137_html_a72eae554878b708747b7c24437f4d45f"><div class="ttname"><a href="a00137.html#a72eae554878b708747b7c24437f4d45f">QUESO::InterpolationSurrogateData::m_values</a></div><div class="ttdeci">std::vector&lt; double &gt; m_values</div><div class="ttdoc">vector to store values to be interpolated </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00120">InterpolationSurrogateData.h:120</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a85f02e6ba0b4d152aa820e99ba0b7be5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt;&amp; <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::get_values </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00054">54</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>References <a class="el" href="a00631_source.html#l00120">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_values</a>.</p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    { <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>; };</div>
+<div class="ttc" id="a00137_html_a72eae554878b708747b7c24437f4d45f"><div class="ttname"><a href="a00137.html#a72eae554878b708747b7c24437f4d45f">QUESO::InterpolationSurrogateData::m_values</a></div><div class="ttdeci">std::vector&lt; double &gt; m_values</div><div class="ttdoc">vector to store values to be interpolated </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00120">InterpolationSurrogateData.h:120</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a24b14db4fa4eb1a6b47486554a130e7d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::get_x </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get spatial coordinate value at the node index along coordinate direction dim. </p>
+
+<p>Definition at line <a class="el" href="a00641_source.html#l00109">109</a> of file <a class="el" href="a00641_source.html">InterpolationSurrogateData.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">double</span> <a class="code" href="a00137.html#a7edffeac45d6efb9b0bed02f21bc00cc">x_min</a> = this-&gt;<a class="code" href="a00137.html#a7edffeac45d6efb9b0bed02f21bc00cc">x_min</a>(<a class="code" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">double</span> <a class="code" href="a00137.html#a79de31ae1c7a13a1c0fa6e8ccc3bfdc1">spacing</a> = this-&gt;<a class="code" href="a00137.html#a79de31ae1c7a13a1c0fa6e8ccc3bfdc1">spacing</a>(<a class="code" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">return</span> x_min + spacing*index;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  }</div>
+<div class="ttc" id="a00137_html_a37ffa23a53ee1bd3421cea490338f967"><div class="ttname"><a href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">QUESO::InterpolationSurrogateData::dim</a></div><div class="ttdeci">unsigned int dim() const </div><div class="ttdoc">Dimension of parameter space. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00072">InterpolationSurrogateData.h:72</a></div></div>
+<div class="ttc" id="a00137_html_a7edffeac45d6efb9b0bed02f21bc00cc"><div class="ttname"><a href="a00137.html#a7edffeac45d6efb9b0bed02f21bc00cc">QUESO::InterpolationSurrogateData::x_min</a></div><div class="ttdeci">double x_min(unsigned int dim) const </div><div class="ttdoc">Lower bound of domain along dimension dim. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00076">InterpolationSurrogateData.h:76</a></div></div>
+<div class="ttc" id="a00137_html_a79de31ae1c7a13a1c0fa6e8ccc3bfdc1"><div class="ttname"><a href="a00137.html#a79de31ae1c7a13a1c0fa6e8ccc3bfdc1">QUESO::InterpolationSurrogateData::spacing</a></div><div class="ttdeci">double spacing(unsigned int dim) const </div><div class="ttdoc">Spacing between points along dimension dim. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00099">InterpolationSurrogateData.C:99</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9d11f99a8d5d93d2d43009fbd3b86f0e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::init_values </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>n_points</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper function for sizing m_values. </p>
+
+<p>Definition at line <a class="el" href="a00641_source.html#l00070">70</a> of file <a class="el" href="a00641_source.html">InterpolationSurrogateData.C</a>.</p>
+
+<p>References <a class="el" href="a00289_source.html#l00041">it</a>.</p>
+
+<p>Referenced by <a class="el" href="a00641_source.html#l00038">QUESO::InterpolationSurrogateData&lt; V, M &gt;::InterpolationSurrogateData()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_total_points = 1.0;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">for</span>( std::vector&lt;unsigned int&gt;::const_iterator <a class="code" href="a00289.html#a76868a71f10b10fd75a76f81ad936660">it</a> = n_points.begin();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;         <a class="code" href="a00289.html#a76868a71f10b10fd75a76f81ad936660">it</a> != n_points.end(); ++<a class="code" href="a00289.html#a76868a71f10b10fd75a76f81ad936660">it</a> )</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        n_total_points *= *<a class="code" href="a00289.html#a76868a71f10b10fd75a76f81ad936660">it</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    this-&gt;<a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>.resize(n_total_points);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
+<div class="ttc" id="a00289_html_a76868a71f10b10fd75a76f81ad936660"><div class="ttname"><a href="a00289.html#a76868a71f10b10fd75a76f81ad936660">it</a></div><div class="ttdeci">that you receive source code or can get it if you want it</div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00041">License.txt:41</a></div></div>
+<div class="ttc" id="a00137_html_a72eae554878b708747b7c24437f4d45f"><div class="ttname"><a href="a00137.html#a72eae554878b708747b7c24437f4d45f">QUESO::InterpolationSurrogateData::m_values</a></div><div class="ttdeci">std::vector&lt; double &gt; m_values</div><div class="ttdoc">vector to store values to be interpolated </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00120">InterpolationSurrogateData.h:120</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a10f91d8b742ce0043fc7234211e68a55"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::n_values </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00061">61</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>References <a class="el" href="a00631_source.html#l00120">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_values</a>.</p>
+
+<p>Referenced by <a class="el" href="a00640_source.html#l00139">QUESO::InterpolationSurrogateBuilder&lt; V, M &gt;::sync_data()</a>, and <a class="el" href="a00644_source.html#l00184">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;::write()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    { <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>.size(); };</div>
+<div class="ttc" id="a00137_html_a72eae554878b708747b7c24437f4d45f"><div class="ttname"><a href="a00137.html#a72eae554878b708747b7c24437f4d45f">QUESO::InterpolationSurrogateData::m_values</a></div><div class="ttdeci">std::vector&lt; double &gt; m_values</div><div class="ttdoc">vector to store values to be interpolated </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00120">InterpolationSurrogateData.h:120</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9902158fa031623279dbb1f8a29678ec"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::set_value </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00641_source.html#l00091">91</a> of file <a class="el" href="a00641_source.html">InterpolationSurrogateData.C</a>.</p>
+
+<p>References <a class="el" href="a00319_source.html#l00155">queso_assert_less</a>.</p>
+
+<p>Referenced by <a class="el" href="a00640_source.html#l00139">QUESO::InterpolationSurrogateBuilder&lt; V, M &gt;::sync_data()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="a00319.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a>( n, <a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>.size() );</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    this-&gt;<a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>[n] = value;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
+<div class="ttc" id="a00319_html_a02c59e9150c230713f39314a442e2768"><div class="ttname"><a href="a00319.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a></div><div class="ttdeci">#define queso_assert_less(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00155">asserts.h:155</a></div></div>
+<div class="ttc" id="a00137_html_a72eae554878b708747b7c24437f4d45f"><div class="ttname"><a href="a00137.html#a72eae554878b708747b7c24437f4d45f">QUESO::InterpolationSurrogateData::m_values</a></div><div class="ttdeci">std::vector&lt; double &gt; m_values</div><div class="ttdoc">vector to store values to be interpolated </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00120">InterpolationSurrogateData.h:120</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="abbc532a95cf4c31b9b6844730d5eb6f8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::set_values </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set all values. Dimension must be consistent with internal m_values. </p>
+<p>This does a full copy of the values vector. This is mainly for testing, users are encouraged to use the <a class="el" href="a00136.html" title="Build interpolation-based surrogate. ">InterpolationSurrogateBuilder</a>. </p>
+
+<p>Definition at line <a class="el" href="a00641_source.html#l00083">83</a> of file <a class="el" href="a00641_source.html">InterpolationSurrogateData.C</a>.</p>
+
+<p>References <a class="el" href="a00319_source.html#l00149">queso_assert_equal_to</a>.</p>
+<div class="fragment"><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="a00319.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( values.size(), <a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>.size() );</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    this-&gt;<a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a> = values;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  }</div>
+<div class="ttc" id="a00319_html_a67de25b43faabd8d10a0827676e54a49"><div class="ttname"><a href="a00319.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a></div><div class="ttdeci">#define queso_assert_equal_to(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00149">asserts.h:149</a></div></div>
+<div class="ttc" id="a00137_html_a72eae554878b708747b7c24437f4d45f"><div class="ttname"><a href="a00137.html#a72eae554878b708747b7c24437f4d45f">QUESO::InterpolationSurrogateData::m_values</a></div><div class="ttdeci">std::vector&lt; double &gt; m_values</div><div class="ttdoc">vector to store values to be interpolated </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00120">InterpolationSurrogateData.h:120</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a79de31ae1c7a13a1c0fa6e8ccc3bfdc1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::spacing </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>dim</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spacing between points along dimension dim. </p>
+
+<p>Definition at line <a class="el" href="a00641_source.html#l00099">99</a> of file <a class="el" href="a00641_source.html">InterpolationSurrogateData.C</a>.</p>
+
+<p>References <a class="el" href="a00284_source.html#l00081">dim</a>.</p>
+<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_intervals = this-&gt;<a class="code" href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">m_n_points</a>[<a class="code" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>]-1;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">double</span> <a class="code" href="a00137.html#a7edffeac45d6efb9b0bed02f21bc00cc">x_min</a> = this-&gt;<a class="code" href="a00137.html#a7edffeac45d6efb9b0bed02f21bc00cc">x_min</a>(<a class="code" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">double</span> <a class="code" href="a00137.html#a830f9e41a1b266a46e73bd544d9ef0c0">x_max</a> = this-&gt;<a class="code" href="a00137.html#a830f9e41a1b266a46e73bd544d9ef0c0">x_max</a>(<a class="code" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">return</span> (x_max-x_min)/n_intervals;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
+<div class="ttc" id="a00137_html_a37ffa23a53ee1bd3421cea490338f967"><div class="ttname"><a href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">QUESO::InterpolationSurrogateData::dim</a></div><div class="ttdeci">unsigned int dim() const </div><div class="ttdoc">Dimension of parameter space. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00072">InterpolationSurrogateData.h:72</a></div></div>
+<div class="ttc" id="a00137_html_a7edffeac45d6efb9b0bed02f21bc00cc"><div class="ttname"><a href="a00137.html#a7edffeac45d6efb9b0bed02f21bc00cc">QUESO::InterpolationSurrogateData::x_min</a></div><div class="ttdeci">double x_min(unsigned int dim) const </div><div class="ttdoc">Lower bound of domain along dimension dim. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00076">InterpolationSurrogateData.h:76</a></div></div>
+<div class="ttc" id="a00137_html_a906b89eebfdfbb450eecee7ee973ad7a"><div class="ttname"><a href="a00137.html#a906b89eebfdfbb450eecee7ee973ad7a">QUESO::InterpolationSurrogateData::m_n_points</a></div><div class="ttdeci">const std::vector&lt; unsigned int &gt; &amp; m_n_points</div><div class="ttdoc">vector to store number of points in each coordinate direction </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00112">InterpolationSurrogateData.h:112</a></div></div>
+<div class="ttc" id="a00137_html_a830f9e41a1b266a46e73bd544d9ef0c0"><div class="ttname"><a href="a00137.html#a830f9e41a1b266a46e73bd544d9ef0c0">QUESO::InterpolationSurrogateData::x_max</a></div><div class="ttdeci">double x_max(unsigned int dim) const </div><div class="ttdoc">Upper bound of domain along dimension dim. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00080">InterpolationSurrogateData.h:80</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a95960919c0adf0953dfcc647e82c13cb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::sync_values </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>root</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sync values across all processors from root processor. </p>
+<p>m_values may only be set on one processor, so this method is used for MPI_Bcast'ing those values to all processors. This calls MPI_Bcast, which is collective, so this <em>MUST</em> be called from all processors in env.fullComm(). </p>
+
+<p>Definition at line <a class="el" href="a00641_source.html#l00118">118</a> of file <a class="el" href="a00641_source.html">InterpolationSurrogateData.C</a>.</p>
+
+<p>References <a class="el" href="a00383_source.html#l00133">QUESO::MpiComm::Bcast()</a>.</p>
+
+<p>Referenced by <a class="el" href="a00640_source.html#l00139">QUESO::InterpolationSurrogateBuilder&lt; V, M &gt;::sync_data()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    MpiComm full_comm = this-&gt;<a class="code" href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">m_domain</a>.env().fullComm();</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    full_comm.Bcast( &amp;this-&gt;<a class="code" href="a00137.html#a72eae554878b708747b7c24437f4d45f">m_values</a>[0], this-&gt;<a class="code" href="a00137.html#a10f91d8b742ce0043fc7234211e68a55">n_values</a>(),</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                     MPI_DOUBLE, root,</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                     <span class="stringliteral">&quot;InterpolationSurrogateData::sync_values()&quot;</span>,</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                     <span class="stringliteral">&quot;MpiComm::Bcast() failed!&quot;</span> );</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  }</div>
+<div class="ttc" id="a00137_html_a10f91d8b742ce0043fc7234211e68a55"><div class="ttname"><a href="a00137.html#a10f91d8b742ce0043fc7234211e68a55">QUESO::InterpolationSurrogateData::n_values</a></div><div class="ttdeci">unsigned int n_values() const </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00061">InterpolationSurrogateData.h:61</a></div></div>
+<div class="ttc" id="a00137_html_a12ae16e2a85b4d099c1d34f781820c24"><div class="ttname"><a href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">QUESO::InterpolationSurrogateData::m_domain</a></div><div class="ttdeci">const BoxSubset&lt; V, M &gt; &amp; m_domain</div><div class="ttdoc">Parameter domain over which we use surrogate. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00107">InterpolationSurrogateData.h:107</a></div></div>
+<div class="ttc" id="a00137_html_a72eae554878b708747b7c24437f4d45f"><div class="ttname"><a href="a00137.html#a72eae554878b708747b7c24437f4d45f">QUESO::InterpolationSurrogateData::m_values</a></div><div class="ttdeci">std::vector&lt; double &gt; m_values</div><div class="ttdoc">vector to store values to be interpolated </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00120">InterpolationSurrogateData.h:120</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a830f9e41a1b266a46e73bd544d9ef0c0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::x_max </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>dim</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Upper bound of domain along dimension dim. </p>
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00080">80</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>References <a class="el" href="a00631_source.html#l00072">QUESO::InterpolationSurrogateData&lt; V, M &gt;::dim()</a>, and <a class="el" href="a00631_source.html#l00107">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_domain</a>.</p>
+
+<p>Referenced by <a class="el" href="a00644_source.html#l00184">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;::write()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    { <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">m_domain</a>.maxValues()[<a class="code" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>]; };</div>
+<div class="ttc" id="a00137_html_a37ffa23a53ee1bd3421cea490338f967"><div class="ttname"><a href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">QUESO::InterpolationSurrogateData::dim</a></div><div class="ttdeci">unsigned int dim() const </div><div class="ttdoc">Dimension of parameter space. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00072">InterpolationSurrogateData.h:72</a></div></div>
+<div class="ttc" id="a00137_html_a12ae16e2a85b4d099c1d34f781820c24"><div class="ttname"><a href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">QUESO::InterpolationSurrogateData::m_domain</a></div><div class="ttdeci">const BoxSubset&lt; V, M &gt; &amp; m_domain</div><div class="ttdoc">Parameter domain over which we use surrogate. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00107">InterpolationSurrogateData.h:107</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a7edffeac45d6efb9b0bed02f21bc00cc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::x_min </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>dim</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Lower bound of domain along dimension dim. </p>
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00076">76</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>References <a class="el" href="a00631_source.html#l00072">QUESO::InterpolationSurrogateData&lt; V, M &gt;::dim()</a>, and <a class="el" href="a00631_source.html#l00107">QUESO::InterpolationSurrogateData&lt; V, M &gt;::m_domain</a>.</p>
+
+<p>Referenced by <a class="el" href="a00644_source.html#l00184">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;::write()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    { <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">m_domain</a>.minValues()[<a class="code" href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">dim</a>]; };</div>
+<div class="ttc" id="a00137_html_a37ffa23a53ee1bd3421cea490338f967"><div class="ttname"><a href="a00137.html#a37ffa23a53ee1bd3421cea490338f967">QUESO::InterpolationSurrogateData::dim</a></div><div class="ttdeci">unsigned int dim() const </div><div class="ttdoc">Dimension of parameter space. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00072">InterpolationSurrogateData.h:72</a></div></div>
+<div class="ttc" id="a00137_html_a12ae16e2a85b4d099c1d34f781820c24"><div class="ttname"><a href="a00137.html#a12ae16e2a85b4d099c1d34f781820c24">QUESO::InterpolationSurrogateData::m_domain</a></div><div class="ttdeci">const BoxSubset&lt; V, M &gt; &amp; m_domain</div><div class="ttdoc">Parameter domain over which we use surrogate. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00107">InterpolationSurrogateData.h:107</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a867f4a159b1bf2419ef049507306ce79"></a>
+<a class="anchor" id="a12ae16e2a85b4d099c1d34f781820c24"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V , class M &gt; </div>
+template&lt;typename V, typename M&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="a00137.html">QUESO::PoweredJointPdf</a>&lt; V, M &gt;::m_exponent</td>
+          <td class="memname">const <a class="el" href="a00057.html">BoxSubset</a>&lt;V,M&gt;&amp; <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::m_domain</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00387_source.html#l00092">92</a> of file <a class="el" href="a00387_source.html">PoweredJointPdf.h</a>.</p>
+<p>Parameter domain over which we use surrogate. </p>
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00107">107</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00631_source.html#l00072">QUESO::InterpolationSurrogateData&lt; V, M &gt;::dim()</a>, <a class="el" href="a00631_source.html#l00045">QUESO::InterpolationSurrogateData&lt; V, M &gt;::get_paramDomain()</a>, <a class="el" href="a00631_source.html#l00080">QUESO::InterpolationSurrogateData&lt; V, M &gt;::x_max()</a>, and <a class="el" href="a00631_source.html#l00076">QUESO::InterpolationSurrogateData&lt; V, M &gt;::x_min()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a80cd4ecb6f5dc0e1f61d0317ef07a616"></a>
+<a class="anchor" id="a906b89eebfdfbb450eecee7ee973ad7a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V , class M &gt; </div>
+template&lt;typename V, typename M&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00020.html">BaseJointPdf</a>&lt;V,M&gt;&amp; <a class="el" href="a00137.html">QUESO::PoweredJointPdf</a>&lt; V, M &gt;::m_srcDensity</td>
+          <td class="memname">const std::vector&lt;unsigned int&gt;&amp; <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::m_n_points</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00387_source.html#l00091">91</a> of file <a class="el" href="a00387_source.html">PoweredJointPdf.h</a>.</p>
+<p>vector to store number of points in each coordinate direction </p>
+<p>We assume that the spacing in each coordinate direction is constant so we only need to know the number of points. </p>
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00112">112</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00631_source.html#l00048">QUESO::InterpolationSurrogateData&lt; V, M &gt;::get_n_points()</a>, and <a class="el" href="a00641_source.html#l00038">QUESO::InterpolationSurrogateData&lt; V, M &gt;::InterpolationSurrogateData()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a72eae554878b708747b7c24437f4d45f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V, typename M&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; <a class="el" href="a00137.html">QUESO::InterpolationSurrogateData</a>&lt; V, M &gt;::m_values</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>vector to store values to be interpolated </p>
+<p>These will be stored in a particular ordering. Helper functions will provide mapping between grid coordinates and a global coordinate; the global coordinate will be used to index into the values. </p>
+<dl class="todo"><dt><b><a class="el" href="a00651.html#_todo000062">Todo:</a></b></dt><dd>We currently store all values reside on all processes. Generalization would be to partition values across processes allocated for the subenvironment. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00631_source.html#l00120">120</a> of file <a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00631_source.html#l00057">QUESO::InterpolationSurrogateData&lt; V, M &gt;::get_value()</a>, <a class="el" href="a00631_source.html#l00051">QUESO::InterpolationSurrogateData&lt; V, M &gt;::get_values()</a>, and <a class="el" href="a00631_source.html#l00061">QUESO::InterpolationSurrogateData&lt; V, M &gt;::n_values()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/stats/inc/<a class="el" href="a00387_source.html">PoweredJointPdf.h</a></li>
-<li>src/stats/src/<a class="el" href="a00472_source.html">PoweredJointPdf.C</a></li>
+<li>src/surrogates/inc/<a class="el" href="a00629_source.html">InterpolationSurrogateBase.h</a></li>
+<li>src/surrogates/inc/<a class="el" href="a00631_source.html">InterpolationSurrogateData.h</a></li>
+<li>src/surrogates/src/<a class="el" href="a00641_source.html">InterpolationSurrogateData.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Apr 23 2015 19:30:57 for queso-0.52.0
+Generated on Thu Jun 11 2015 13:52:36 for queso-0.53.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>
