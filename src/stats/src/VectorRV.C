@@ -203,8 +203,6 @@ ComputeCovCorrMatricesBetweenVectorRvs(
         P_M&                          pqCorrMatrix)
 {
   // Check input data consistency
-  const BaseEnvironment& env = paramRv.env();
-
   bool useOnlyInter0Comm = (paramRv.imageSet().vectorSpace().numOfProcsForStorage() == 1) &&
                            (qoiRv.imageSet().vectorSpace().numOfProcsForStorage()   == 1);
 
