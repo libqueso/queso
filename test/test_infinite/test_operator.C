@@ -15,6 +15,7 @@
 #include <libmesh/numeric_vector.h>
 #include <libmesh/elem.h>
 #include <libmesh/dof_map.h>
+#include <queso/EnvironmentOptions.h>
 #include <queso/FunctionOperatorBuilder.h>
 #include <queso/LibMeshFunction.h>
 #include <queso/LibMeshNegativeLaplacianOperator.h>
