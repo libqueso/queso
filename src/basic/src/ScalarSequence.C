@@ -2604,14 +2604,11 @@ ScalarSequence<T>::subWriteContents(
 template <class T>
 void
 ScalarSequence<T>::subWriteContents( // rr0
-  unsigned int       initialPos,
-  unsigned int       numPos,
+  unsigned int       /* initialPos */,
+  unsigned int       /* numPos */,
   std::ofstream&     ofs,
-  const std::string& fileType) const // "m or hdf"
+  const std::string& /* fileType */) const // "m or hdf"
 {
-  if (initialPos) {}; // just to remove compiler warning
-  if (numPos)     {}; // just to remove compiler warning
-  if (&fileType)  {}; // just to remove compiler warning
   ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
       << ","                                                    << 1
       << ");"
