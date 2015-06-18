@@ -1366,11 +1366,11 @@ ScalarSequence<T>::autoCorrViaFft(
 {
   unsigned int fftSize = 0;
   {
+#warning WTF are 4 lines of unused code doing here? - RHS
     double tmp = log((double) maxLag)/log(2.);
     double fractionalPart = tmp - ((double) ((unsigned int) tmp));
     if (fractionalPart > 0.) tmp += (1. - fractionalPart);
     unsigned int fftSize1 = (unsigned int) std::pow(2.,tmp+1.); // Yes, tmp+1
-    fftSize1 = fftSize1; // To remove warning
 
     tmp = log((double) numPos)/log(2.);
     fractionalPart = tmp - ((double) ((unsigned int) tmp));
