@@ -108,47 +108,48 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   V residual(gpSpace.zeroVector());
   M covMatrix(residual);
 
-  V *scenario1;
-  V *scenario2;
-  V *parameter1;
-  V *parameter2;
+  V domainVectorParameter(*(this->m_simulationParameters[0]));
+  for (unsigned int k = 0; k < dimParameter; k++) {
+    queso_assert (!isnan(domainVector[k]));
+    domainVectorParameter[k] = domainVector[k];
+  }
 
   // This for loop is a disaster and could do with a *lot* of optimisation
   for (unsigned int i = 0; i < totalRuns; i++) {
-    for (unsigned int j = 0; j < totalRuns; j++) {
-      // Decide whether to do experiment part of the covariance matrix
-      // Get i-th simulation-parameter pair
-      if (i < this->m_numExperiments) {
-        // Experiment scenario (known)
-        scenario1 = new V(*((this->m_experimentScenarios)[i]));
 
-        // Experiment parameter (unknown)
-        parameter1 = new V(*((this->m_simulationParameters)[0]));
-        for (unsigned int k = 0; k < dimParameter; k++) {
-          queso_assert (!isnan(domainVector[k]));
-          (*parameter1)[k] = domainVector[k];
-        }
-      }
-      else {
-        scenario1 =
-          new V(*((this->m_simulationScenarios)[i-this->m_numExperiments]));
-        parameter1 =
-          new V(*((this->m_simulationParameters)[i-this->m_numExperiments]));
-      }
+     const V* scenario1;
+     const V* parameter1;
+
+    // Decide whether to do experiment part of the covariance matrix
+    // Get i-th simulation-parameter pair
+    if (i < this->m_numExperiments) {
+      // Experiment scenario (known)
+      scenario1 = (this->m_experimentScenarios)[i];
+
+      // Experiment parameter (unknown)
+      parameter1 = &domainVectorParameter;
+    }
+    else {
+      scenario1 =
+        (this->m_simulationScenarios)[i-this->m_numExperiments];
+      parameter1 =
+        (this->m_simulationParameters)[i-this->m_numExperiments];
+    }
+
+    for (unsigned int j = 0; j < totalRuns; j++) {
+
+       const V* scenario2;
+       const V* parameter2;
 
       if (j < this->m_numExperiments) {
-        scenario2 = new V(*((this->m_experimentScenarios)[j]));
-        parameter2 = new V(*((this->m_simulationParameters)[0]));
-        for (unsigned int k = 0; k < dimParameter; k++) {
-          queso_assert (!isnan(domainVector[k]));
-          (*parameter2)[k] = domainVector[k];
-        }
+        scenario2 = (this->m_experimentScenarios)[j];
+        parameter2 = &domainVectorParameter;
       }
       else {
         scenario2 =
-          new V(*((this->m_simulationScenarios)[j-this->m_numExperiments]));
+          (this->m_simulationScenarios)[j-this->m_numExperiments];
         parameter2 =
-          new V(*((this->m_simulationParameters)[j-this->m_numExperiments]));
+          (this->m_simulationParameters)[j-this->m_numExperiments];
       }
 
       // Emulator component
@@ -184,15 +185,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           covMatrix(i*numOutputs+k, j*numOutputs+l) =
             prodScenario * prodParameter / emPrecision;
 
-      delete scenario1;
-      delete scenario2;
-      delete parameter1;
-      delete parameter2;
-
       // If we're in the experiment cross correlation part, need extra foo
       if (i < this->m_numExperiments && j < this->m_numExperiments) {
-        scenario1 = new V(*((this->m_simulationScenarios)[i]));
-        scenario2 = new V(*((this->m_simulationScenarios)[j]));
+        scenario1 = (this->m_simulationScenarios)[i];
+        scenario2 = (this->m_simulationScenarios)[j];
         prodDiscrepancy = 1.0;
         unsigned int discrepancyCorrStrStart = dimParameter +
                                                dimParameter +
@@ -222,9 +218,6 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                 experimentalError;
             }
           }
-
-        delete scenario1;
-        delete scenario2;
       }
     }
 
