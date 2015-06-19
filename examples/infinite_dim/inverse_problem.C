@@ -2,10 +2,6 @@
 #include <cmath>
 #include <string>
 
-// GSL includes
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
-
 // Boost includes
 #include <boost/math/constants/constants.hpp>
 
@@ -20,6 +16,7 @@
 #include <libmesh/explicit_system.h>
 
 // QUESO includes
+#include <queso/Defines.h>
 #include <queso/FunctionOperatorBuilder.h>
 #include <queso/LibMeshFunction.h>
 #include <queso/LibMeshNegativeLaplacianOperator.h>
@@ -27,6 +24,10 @@
 #include <queso/InfiniteDimensionalLikelihoodBase.h>
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 #include <queso/InfiniteDimensionalMCMCSampler.h>
+
+// GSL includes
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_randist.h>
 
 // The likelihood object subclass
 class Likelihood : public QUESO::InfiniteDimensionalLikelihoodBase

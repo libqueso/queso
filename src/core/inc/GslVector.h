@@ -32,6 +32,7 @@
 
 #include <queso/Defines.h>
 #include <queso/Vector.h>
+
 #include <gsl/gsl_vector.h>
 
 namespace QUESO {

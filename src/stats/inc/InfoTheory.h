@@ -30,7 +30,6 @@
 
 #include <ANN/ANN.h>
 #include <ANN/ANNx.h>
-#include <gsl/gsl_sf_psi.h>
 
 // TODO: create InfoTheoryOptions
 #define UQ_INFTH_ANN_NO_SMP        10000

@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Defines.h>
 #include <queso/RngGsl.h>
 #include <gsl/gsl_randist.h>
 #include <mpi.h>
