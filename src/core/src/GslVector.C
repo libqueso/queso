@@ -226,18 +226,6 @@ GslVector::operator-=(const GslVector& rhs)
   return *this;
 }
 
-double&
-GslVector::operator[](unsigned int i)
-{
-  return *gsl_vector_ptr(m_vec,i);
-}
-
-const double&
-GslVector::operator[](unsigned int i) const
-{
-  return *gsl_vector_const_ptr(m_vec,i);
-}
-
 void
 GslVector::copy(const GslVector& src)
 {
