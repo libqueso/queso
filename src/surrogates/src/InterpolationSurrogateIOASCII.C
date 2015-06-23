@@ -48,7 +48,7 @@ namespace QUESO
                                                  int reading_rank )
   {
     // Root processor
-    int root = reading_rank;
+    unsigned int root = reading_rank;
 
     MpiComm full_comm = env.fullComm();
 

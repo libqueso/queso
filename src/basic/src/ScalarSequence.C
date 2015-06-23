@@ -1366,11 +1366,11 @@ ScalarSequence<T>::autoCorrViaFft(
 {
   unsigned int fftSize = 0;
   {
+#warning WTF are 4 lines of unused code doing here? - RHS
     double tmp = log((double) maxLag)/log(2.);
     double fractionalPart = tmp - ((double) ((unsigned int) tmp));
     if (fractionalPart > 0.) tmp += (1. - fractionalPart);
     unsigned int fftSize1 = (unsigned int) std::pow(2.,tmp+1.); // Yes, tmp+1
-    fftSize1 = fftSize1; // To remove warning
 
     tmp = log((double) numPos)/log(2.);
     fractionalPart = tmp - ((double) ((unsigned int) tmp));
@@ -2604,14 +2604,11 @@ ScalarSequence<T>::subWriteContents(
 template <class T>
 void
 ScalarSequence<T>::subWriteContents( // rr0
-  unsigned int       initialPos,
-  unsigned int       numPos,
+  unsigned int       /* initialPos */,
+  unsigned int       /* numPos */,
   std::ofstream&     ofs,
-  const std::string& fileType) const // "m or hdf"
+  const std::string& /* fileType */) const // "m or hdf"
 {
-  if (initialPos) {}; // just to remove compiler warning
-  if (numPos)     {}; // just to remove compiler warning
-  if (&fileType)  {}; // just to remove compiler warning
   ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
       << ","                                                    << 1
       << ");"

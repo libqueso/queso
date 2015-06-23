@@ -1909,11 +1909,9 @@ SequenceOfVectors<V,M>::unifiedReadContents(
 //---------------------------------------------------
 template <class V, class M>
 void
-SequenceOfVectors<V,M>::select(const std::vector<unsigned int>& idsOfUniquePositions)
+SequenceOfVectors<V,M>::select(const std::vector<unsigned int>& /* idsOfUniquePositions */)
 {
   queso_error_msg("Code is not complete yet");
-
-  if (&idsOfUniquePositions) {}; // just to remove compiler warning
 
   return;
 }

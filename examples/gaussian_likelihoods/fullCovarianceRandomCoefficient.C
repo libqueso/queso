@@ -72,9 +72,6 @@ int main(int argc, char ** argv) {
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "param_", 2, NULL);
 
-  double min_val = 0.0;
-  double max_val = 1.0;
-
   QUESO::GslVector paramMins(paramSpace.zeroVector());
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
 
