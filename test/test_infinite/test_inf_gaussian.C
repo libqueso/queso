@@ -6,6 +6,7 @@
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
+#include <queso/EnvironmentOptions.h>
 #include <queso/FunctionOperatorBuilder.h>
 #include <queso/LibMeshFunction.h>
 #include <queso/LibMeshNegativeLaplacianOperator.h>
