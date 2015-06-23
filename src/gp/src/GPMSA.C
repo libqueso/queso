@@ -77,20 +77,20 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                                        V * hessianEffect) const
 {
   // Components of domainVector:
-  // theta(1)
+  // theta(1)                     // = "theta", "t" in Higdon et. al. 2008
   // theta(2)
   // ...
   // theta(dimParameterSpace)
-  // emulator_mean
-  // emulator_precision
-  // emulator_corr_strength(1)
-  // ...
+  // emulator_mean                // = "mu"
+  // emulator_precision           // = "lambda_eta"
+  // emulator_corr_strength(1)    // = "rho_eta"
+  // ...                          // dimScenario = "p_x", dimParameter = "p_t"
   // emulator_corr_strength(dimScenario + dimParameter)
-  // discrepancy_precision
-  // discrepancy_corr_strength(1)
+  // discrepancy_precision        // = "lambda_delta"
+  // discrepancy_corr_strength(1) // = "rho_delta"
   // ...
   // discrepancy_corr_strength(dimScenario)
-  // emulator_data_precision(1)
+  // emulator_data_precision(1)   // = "small white noise"
 
   // Construct covariance matrix
   unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;
