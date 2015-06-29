@@ -240,6 +240,7 @@ tga2_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle2/src $(QUESO_CPPFLA
 
 dist_tga2_gsl_DATA =
 dist_tga2_gsl_DATA += $(tga2_gsl_DATA)
+dist_tga2_gsl_DATA +=	${tga2_gslinputdata_DATA}
 dist_tga2_gsl_DATA +=	${tga2_gsl_HEADERS}
 dist_tga2_gsl_DATA +=	${tga2_gsl_SOURCES}
 
