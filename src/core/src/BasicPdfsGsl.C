@@ -23,6 +23,7 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/BasicPdfsGsl.h>
+#include <queso/Defines.h>
 #include <gsl/gsl_randist.h>
 #include <mpi.h>
 #include <math.h>

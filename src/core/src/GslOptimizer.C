@@ -24,13 +24,15 @@
 
 #include <iostream>
 
-#include <gsl/gsl_multimin.h>
-#include <gsl/gsl_blas.h>
+#include <queso/Defines.h>
 #include <queso/GslVector.h>
 #include <queso/VectorSpace.h>
 #include <queso/ScalarFunction.h>
 #include <queso/GslOptimizer.h>
 #include <queso/OptimizerMonitor.h>
+
+#include <gsl/gsl_multimin.h>
+#include <gsl/gsl_blas.h>
 
 namespace QUESO {
 

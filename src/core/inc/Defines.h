@@ -50,6 +50,14 @@
 //! This define is deprecated.  Remove any #ifdef statements in user code.
 #define QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
 
+// Use GSL inline functions
+#define HAVE_INLINE
+
+// And only do GSL range-checking if we're really debugging
+#ifndef DEBUG
+#define GSL_RANGE_CHECK_OFF
+#endif
+
 #include <iostream>
 #include <stdlib.h> // For exit()
 #include <set>

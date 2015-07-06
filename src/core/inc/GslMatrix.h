@@ -29,10 +29,12 @@
     \brief QUESO matrix class using GSL.
 */
 
+#include <queso/Defines.h>
+#include <queso/GslVector.h>
 #include <queso/Matrix.h>
+
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_permutation.h>
-#include <queso/GslVector.h>
 
 namespace QUESO {
 

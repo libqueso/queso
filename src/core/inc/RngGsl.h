@@ -26,6 +26,8 @@
 #define UQ_RNG_GSL_H
 
 #include <queso/RngBase.h>
+
+#include <queso/Defines.h>
 #include <gsl/gsl_rng.h>
 
 
