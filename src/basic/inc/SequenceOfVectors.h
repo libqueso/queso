@@ -411,6 +411,21 @@ private:
                                            unsigned int                         paramId,
                                            std::vector<double>&                 rawData) const;
 
+  //! Helper function to write matlab-specific header info for vectors
+  void writeSubMatlabHeader(std::ofstream & ofs,
+                            double sequenceSize,
+                            double vectorSizeLocal) const;
+
+  void writeUnifiedMatlabHeader(std::ofstream & ofs,
+                                double sequenceSize,
+                                double vectorSizeLocal) const;
+
+  //! Helper function to write plain txt info for vectors
+  void writeTxtHeader(std::ofstream & ofs,
+                      double sequenceSize,
+                      double vectorSizeLocal) const;
+
+
   using BaseVectorSequence<V,M>::m_env;
   using BaseVectorSequence<V,M>::m_vectorSpace;
   using BaseVectorSequence<V,M>::m_name;

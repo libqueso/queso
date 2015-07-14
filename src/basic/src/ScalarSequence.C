@@ -2607,19 +2607,24 @@ ScalarSequence<T>::subWriteContents( // rr0
   unsigned int       /* initialPos */,
   unsigned int       /* numPos */,
   std::ofstream&     ofs,
-  const std::string& /* fileType */) const // "m or hdf"
+  const std::string& fileType) const
 {
-  ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
-      << ","                                                    << 1
-      << ");"
-      << std::endl;
-  ofs << m_name << "_sub" << m_env.subIdString() << " = [";
+  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+    this->writeSubMatlabHeader(ofs, this->subSequenceSize());
+  }
+  else if (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT) {
+    this->writeTxtHeader(ofs, this->subSequenceSize());
+  }
+
   unsigned int chainSize = this->subSequenceSize();
   for (unsigned int j = 0; j < chainSize; ++j) {
     ofs << m_seq[j]
         << std::endl;
   }
-  ofs << "];\n";
+
+  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+    ofs << "];\n";
+  }
 
   return;
 }
@@ -2688,13 +2693,19 @@ ScalarSequence<T>::unifiedWriteContents(
           //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 001 \n" << std::endl;
 
           unsigned int chainSize = this->subSequenceSize();
-          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+          if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+              (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
+
+            // Write header info
             if (r == 0) {
-              *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
-                                        << ","                                 << 1
-                                        << ");"
-                                        << std::endl;
-              *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
+              if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+                this->writeUnifiedMatlabHeader(*unifiedFilePtrSet.ofsVar,
+                    this->subSequenceSize()*m_env.inter0Comm().NumProc());
+              }
+              else {  // It's definitely txt if we get in here
+                this->writeTxtHeader(*unifiedFilePtrSet.ofsVar,
+                    this->subSequenceSize()*m_env.inter0Comm().NumProc());
+              }
             }
 
             for (unsigned int j = 0; j < chainSize; ++j) {
@@ -2703,7 +2714,7 @@ ScalarSequence<T>::unifiedWriteContents(
             }
 
             m_env.closeFile(unifiedFilePtrSet,fileType);
-    }
+          }
 #ifdef QUESO_HAS_HDF5
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
             unsigned int numParams = 1; // m_vectorSpace.dimLocal();
@@ -2795,13 +2806,18 @@ ScalarSequence<T>::unifiedWriteContents(
     } // for r
 
     if (m_env.inter0Rank() == 0) {
-      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+      if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+          (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
         FilePtrSetStruct unifiedFilePtrSet;
         if (m_env.openUnifiedOutputFile(fileName,
                                         fileType,
                                         false, // Yes, 'writeOver = false' in order to close the array for matlab
                                         unifiedFilePtrSet)) {
-          *unifiedFilePtrSet.ofsVar << "];\n";
+
+          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+            *unifiedFilePtrSet.ofsVar << "];\n";
+          }
+
           m_env.closeFile(unifiedFilePtrSet,fileType);
         }
       }
@@ -2824,6 +2840,39 @@ ScalarSequence<T>::unifiedWriteContents(
 
   return;
 }
+
+template <class T>
+void
+ScalarSequence<T>::writeUnifiedMatlabHeader(std::ofstream & ofs,
+    double sequenceSize) const
+{
+  ofs << m_name << "_unified" << " = zeros(" << sequenceSize
+      << ","                                 << 1
+      << ");"
+      << std::endl;
+  ofs << m_name << "_unified" << " = [";
+}
+
+template <class T>
+void
+ScalarSequence<T>::writeSubMatlabHeader(std::ofstream & ofs,
+    double sequenceSize) const
+{
+  ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << sequenceSize
+      << ","                                                    << 1
+      << ");"
+      << std::endl;
+  ofs << m_name << "_sub" << m_env.subIdString() << " = [";
+}
+
+template <class T>
+void
+ScalarSequence<T>::writeTxtHeader(std::ofstream & ofs,
+    double sequenceSize) const
+{
+  ofs << sequenceSize << " " << 1 << std::endl;
+}
+
 // --------------------------------------------------
 template <class T>
 void
@@ -2832,6 +2881,7 @@ ScalarSequence<T>::unifiedReadContents(
   const std::string& inputFileType,
   const unsigned int subReadSize)
 {
+  queso_require_not_equal_to_msg(inputFileType, UQ_FILE_EXTENSION_FOR_TXT_FORMAT, "reading txt files is not yet supported");
   std::string fileType(inputFileType);
 #ifdef QUESO_HAS_HDF5
   // Do nothing
@@ -2889,11 +2939,12 @@ ScalarSequence<T>::unifiedReadContents(
         if (m_env.openUnifiedInputFile(fileName,
                                        fileType,
                                        unifiedFilePtrSet)) {
-          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+          if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+              (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
             if (r == 0) {
               // Read number of chain positions in the file by taking care of the first line,
               // which resembles something like 'variable_name = zeros(n_positions,m_params);'
-        std::string tmpString;
+              std::string tmpString;
 
               // Read 'variable name' string
               *unifiedFilePtrSet.ifsVar >> tmpString;

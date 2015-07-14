@@ -1317,7 +1317,8 @@ SequenceOfVectors<V,M>::subWriteContents(
 {
   queso_require_msg(filePtrSet.ofsVar, "filePtrSet.ofsVar should not be NULL");
 
-  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT ||
+      fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT) {
     this->subWriteContents(initialPos,
                            numPos,
                            *filePtrSet.ofsVar,
@@ -1339,18 +1340,22 @@ SequenceOfVectors<V,M>::subWriteContents(
   unsigned int       initialPos,
   unsigned int       numPos,
   std::ofstream&     ofs,
-  const std::string& fileType) const // "m or hdf"
+  const std::string& fileType) const
 {
   queso_require_less_equal_msg((initialPos+numPos), this->subSequenceSize(), "invalid routine input parameters");
 
-  if (fileType.c_str()) {}; // just to avoid compiler warning
-
   if (initialPos == 0) {
-    ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
-        << ","                                                    << this->vectorSizeLocal()
-        << ");"
-        << std::endl;
-    ofs << m_name << "_sub" << m_env.subIdString() << " = [";
+    if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+      // Need sub matlab header here since this is subWriteContents
+      this->writeSubMatlabHeader(ofs,
+                                 this->subSequenceSize(),
+                                 this->vectorSizeLocal());
+    }
+    else if (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT) {
+      this->writeTxtHeader(ofs,
+                           this->subSequenceSize(),
+                           this->vectorSizeLocal());
+    }
   }
 
   for (unsigned int j = initialPos; j < initialPos+numPos; ++j) {
@@ -1365,12 +1370,47 @@ SequenceOfVectors<V,M>::subWriteContents(
     m_seq[j]->setPrintHorizontally(savedVectorPrintState);
     m_seq[j]->setPrintScientific  (savedVectorPrintScientific);
   }
-  if ((initialPos+numPos) == this->subSequenceSize()) {
+
+  // Write Matlab-specific ending if desired
+  if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) &&
+      ((initialPos + numPos) == this->subSequenceSize())) {
     ofs << "];\n";
   }
-
-  return;
 }
+
+template <class V, class M>
+void
+SequenceOfVectors<V,M>::writeSubMatlabHeader(std::ofstream & ofs,
+    double sequenceSize, double vectorSizeLocal) const
+{
+  ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << sequenceSize
+      << ","                                                    << vectorSizeLocal
+      << ");"
+      << std::endl;
+  ofs << m_name << "_sub" << m_env.subIdString() << " = [";
+}
+
+template <class V, class M>
+void
+SequenceOfVectors<V,M>::writeUnifiedMatlabHeader(std::ofstream & ofs,
+    double sequenceSize, double vectorSizeLocal) const
+{
+  ofs << m_name << "_unified" << " = zeros(" << sequenceSize
+                            << ","           << vectorSizeLocal
+                            << ");"
+                            << std::endl;
+  ofs<< m_name << "_unified" << " = [";
+}
+
+template <class V, class M>
+void
+SequenceOfVectors<V,M>::writeTxtHeader(std::ofstream & ofs,
+    double sequenceSize, double vectorSizeLocal) const
+{
+  ofs << sequenceSize << " " << vectorSizeLocal
+      << std::endl;
+}
+
 //---------------------------------------------------
 template <class V, class M>
 void
@@ -1457,13 +1497,20 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
           }
 
           unsigned int chainSize = this->subSequenceSize();
-          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+          if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+              (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
             if (r == 0) {
-              *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
-                                        << ","                                 << this->vectorSizeLocal()
-                                        << ");"
-                                        << std::endl;
-              *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
+              if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+                // Need unified matlab header here since this is unifiedWriteContents
+                writeUnifiedMatlabHeader(*unifiedFilePtrSet.ofsVar,
+                    this->subSequenceSize()*m_env.inter0Comm().NumProc(),
+                    this->vectorSizeLocal());
+              }
+              else {  // If we get here it's definitely a txt file not matlab
+                writeTxtHeader(*unifiedFilePtrSet.ofsVar,
+                    this->subSequenceSize()*m_env.inter0Comm().NumProc(),
+                    this->vectorSizeLocal());
+              }
             }
 
             for (unsigned int j = 0; j < chainSize; ++j) { // 2013-02-23
@@ -1609,13 +1656,18 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
     } // for r
 
     if (m_env.inter0Rank() == 0) {
-      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+      if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+          (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
         FilePtrSetStruct unifiedFilePtrSet;
         if (m_env.openUnifiedOutputFile(fileName,
                                         fileType,
                                         false, // Yes, 'writeOver = false' in order to close the array for matlab
                                         unifiedFilePtrSet)) {
-          *unifiedFilePtrSet.ofsVar << "];\n";
+
+          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+            *unifiedFilePtrSet.ofsVar << "];\n";
+          }
+
           m_env.closeFile(unifiedFilePtrSet,fileType);
         }
       }
@@ -1702,7 +1754,8 @@ SequenceOfVectors<V,M>::unifiedReadContents(
         if (m_env.openUnifiedInputFile(fileName,
                                        fileType,
                                        unifiedFilePtrSet)) {
-          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+          if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+              (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
             if (r == 0) {
               // Read number of chain positions in the file by taking care of the first line,
               // which resembles something like 'variable_name = zeros(n_positions,m_params);'
