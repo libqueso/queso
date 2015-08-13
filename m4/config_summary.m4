@@ -43,6 +43,12 @@ echo Optional Features:
 
 # Optional Features Enabled?
 
+if test "$HAVE_MPI" = "0"; then
+  echo '   'Link with MPI.............. : no
+else
+  echo '   'Link with MPI.............. : yes
+fi
+
 if test "$HAVE_GRVY" = "0"; then
   echo '   'Link with GRVY............. : no
 else

@@ -75,17 +75,32 @@ else
    AC_MSG_RESULT(no)
 fi
 
+#############################################
+# Check if the user explicitly disabled mpi #
+#############################################
+AC_ARG_ENABLE(mpi,
+              AS_HELP_STRING([--disable-mpi],
+                             [build without message passing support]),
+              [enable_mpi=no],
+              [enable_mpi=yes])
+
 #-------------------
 # Compilers and MPI
 #-------------------
-
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_FC
 AC_LANG([C])
-ACX_MPI([CC="$MPICC"], [AC_MSG_ERROR([Could not find MPI.])])
+
+if test "x$enable_mpi" = "xyes"; then
+    ACX_MPI(CC="$MPICC", [AC_MSG_ERROR([Could not find MPI.])])
+fi
+
 AC_LANG([C++])
-ACX_MPI([CXX="$MPICXX"], [AC_MSG_ERROR([Could not find MPI.])])
+
+if test "x$enable_mpi" = "xyes"; then
+    ACX_MPI(CXX="$MPICXX", [AC_MSG_ERROR([Could not find MPI.])])
+fi
 
 #-------------------------
 # External Library Checks
