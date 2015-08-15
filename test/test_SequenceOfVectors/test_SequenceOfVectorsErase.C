@@ -10,7 +10,9 @@
 #include <queso/SequenceOfVectors.h>
 
 int main(int argc, char **argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
+#endif
 
   QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
@@ -21,7 +23,11 @@ int main(int argc, char **argv) {
   options.m_checkingLevel = 1;
   options.m_displayVerbosity = 55;
 
+#ifdef QUESO_HAS_MPI
   QUESO::FullEnvironment env(MPI_COMM_WORLD, "", "", &options);
+#else
+  QUESO::FullEnvironment env("", "", &options);
+#endif
 
   // Create a vector space
   std::vector<std::string> names(1);
@@ -53,6 +59,8 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
   return 1;
 }

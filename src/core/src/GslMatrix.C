@@ -1685,7 +1685,7 @@ GslMatrix::mpiSum( const MpiComm& comm, GslMatrix& M_global ) const
 	}
     }
 
-  comm.Allreduce((void*) &local[0], (void*) &global[0], size, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+  comm.Allreduce<double>(&local[0], &global[0], size, RawValue_MPI_SUM,
                  "GslMatrix::mpiSum()",
                  "failed MPI.Allreduce()");
 

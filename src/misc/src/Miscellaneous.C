@@ -486,7 +486,7 @@ MiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not' 
 
   double localValue = (double) inputValue;
   double sumValue = 0.;
-  comm.Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+  comm.Allreduce<double>(&localValue, &sumValue, (int) 1, RawValue_MPI_SUM,
                  whereString,
                  "failed MPI on 'sumValue' inside MiscCheckForSameValueInAllNodes()");
 
@@ -496,7 +496,7 @@ MiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not' 
 #if 1
   unsigned int boolResult = 0;
   if (testValue > acceptableTreshold) boolResult = 1;
-  comm.Allreduce((void *) &boolResult, (void *) &boolSum, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+  comm.Allreduce<unsigned int>(&boolResult, &boolSum, (int) 1, RawValue_MPI_SUM,
                  whereString,
                  "failed MPI on 'boolSum' inside MiscCheckForSameValueInAllNodes()");
 

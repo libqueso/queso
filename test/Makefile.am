@@ -53,6 +53,7 @@ check_PROGRAMS += test_BoostInputOptionsParser
 check_PROGRAMS += test_NoInputFile
 check_PROGRAMS += test_optimizer_options
 check_PROGRAMS += test_SharedPtr
+check_PROGRAMS += test_serialEnv
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -131,6 +132,7 @@ test_BoostInputOptionsParser_SOURCES = test_InputOptionsParser/test_BoostInputOp
 test_NoInputFile_SOURCES = test_StatisticalInverseProblem/test_NoInputFile.C
 test_optimizer_options_SOURCES = test_optimizer/test_optimizer_options.C
 test_SharedPtr_SOURCES = pointers/test_SharedPtr.C
+test_serialEnv_SOURCES = test_Environment/test_serialEnv.C
 
 # Files to freedom stamp
 srcstamp =
@@ -181,6 +183,7 @@ srcstamp += $(test_BoostInputOptionsParser_SOURCES)
 srcstamp += $(test_NoInputFile_SOURCES)
 srcstamp += $(test_optimizer_options_SOURCES)
 srcstamp += $(test_SharedPtr_SOURCES)
+srcstamp += $(test_serialEnv_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -231,6 +234,7 @@ TESTS += $(top_builddir)/test/test_BoostInputOptionsParser
 TESTS += $(top_builddir)/test/test_NoInputFile
 TESTS += $(top_builddir)/test/test_optimizer_options
 TESTS += $(top_builddir)/test/test_SharedPtr
+TESTS += $(top_builddir)/test/test_serialEnv
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -260,6 +264,7 @@ EXTRA_DIST += test_InputOptionsParser/test_options_good.txt.in
 EXTRA_DIST += test_InputOptionsParser/test_options_bad.txt.in
 EXTRA_DIST += test_InputOptionsParser/test_options_default.txt.in
 EXTRA_DIST += test_optimizer/input_test_optimizer_options.in
+EXTRA_DIST += test_Environment/input_test_serialEnv.in
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
@@ -276,6 +281,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/test_outputNoInputFile
 	rm -rf $(top_builddir)/test/test_output_interp_surrogates
 	rm -rf $(top_builddir)/test/output_test_optimizer_options
+	rm -rf $(top_builddir)/test/output_test_serialEnv
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno

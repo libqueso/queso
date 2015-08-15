@@ -211,3 +211,6 @@ test/output_test_optimizer_options
 test/test_optimizer/input_test_optimizer_options
 test/test_optimizer_options
 test/test_SharedPtr
+test/output_test_serialEnv
+test/test_Environment/input_test_serialEnv
+test/test_serialEnv

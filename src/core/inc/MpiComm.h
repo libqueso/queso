@@ -31,13 +31,17 @@
 #include <Epetra_MpiComm.h>
 #endif
 
+#ifdef QUESO_HAS_MPI
 #include <mpi.h>
+#endif
 
 namespace QUESO {
 
+#ifdef QUESO_HAS_MPI
 typedef MPI_Comm     RawType_MPI_Comm ;
 typedef MPI_Group    RawType_MPI_Group ;
 typedef MPI_Datatype RawType_MPI_Datatype ;
+typedef MPI_Datatype data_type ;
 typedef MPI_Op       RawType_MPI_Op ;
 typedef MPI_Status   RawType_MPI_Status ;
 #define RawValue_MPI_COMM_SELF  MPI_COMM_SELF
@@ -50,11 +54,141 @@ typedef MPI_Status   RawType_MPI_Status ;
 #define RawValue_MPI_MIN        MPI_MIN
 #define RawValue_MPI_MAX        MPI_MAX
 #define RawValue_MPI_SUM        MPI_SUM
+#else
+typedef int RawType_MPI_Comm;
+typedef int RawType_MPI_Group;
+typedef int RawType_MPI_Datatype;
+struct data_type { };
+typedef int RawType_MPI_Op;
+typedef int RawType_MPI_Status;
+#define RawValue_MPI_COMM_SELF   0
+#define RawValue_MPI_IN_PLACE    0
+#define RawValue_MPI_ANY_SOURCE -1
+#define RawValue_MPI_CHAR        0
+#define RawValue_MPI_INT         1
+#define RawValue_MPI_DOUBLE      2
+#define RawValue_MPI_UNSIGNED    3
+#define RawValue_MPI_MIN         0
+#define RawValue_MPI_MAX         1
+#define RawValue_MPI_SUM         2
+#endif
 
-}  // End namespace QUESO
+/**
+ * Encapsulates the MPI_Datatype.  Taken from libmesh.
+ */
+class DataType
+{
+public:
+  DataType () : _datatype() {}
 
+  DataType (const DataType &other) :
+    _datatype(other._datatype)
+  {}
 
-namespace QUESO {
+  DataType (const RawType_MPI_Datatype &type) :
+    _datatype(type)
+  {}
+
+#ifdef QUESO_HAS_MPI
+  DataType (const DataType &other, unsigned int count)
+  {
+    // FIXME - if we nest an inner type here will we run into bug
+    // https://github.com/libMesh/libmesh/issues/631 again?
+    MPI_Type_contiguous(count, other._datatype, &_datatype);
+    this->commit();
+  }
+#else
+  DataType (const DataType &, unsigned int)
+  {
+  }
+#endif
+
+  DataType & operator = (const DataType &other)
+  { _datatype = other._datatype; return *this; }
+
+  DataType & operator = (const RawType_MPI_Datatype &type)
+  { _datatype = type; return *this; }
+
+  operator const RawType_MPI_Datatype & () const
+  { return _datatype; }
+
+  operator RawType_MPI_Datatype & ()
+  { return _datatype; }
+
+  void commit ()
+  {
+#ifdef QUESO_HAS_MPI
+    MPI_Type_commit (&_datatype);
+#endif
+  }
+
+  void free ()
+  {
+#ifdef QUESO_HAS_MPI
+    MPI_Type_free (&_datatype);
+#endif
+  }
+
+protected:
+  RawType_MPI_Datatype _datatype;
+};
+
+/**
+ * Templated class to provide the appropriate MPI datatype
+ * for use with built-in C types or simple C++ constructions.
+ *
+ * More complicated data types may need to provide a pointer-to-T so
+ * that we can use MPI_Address without constructing a new T.
+ */
+template <typename T>
+class StandardType : public DataType
+{
+#ifdef QUESO_HAS_CXX11  // This macro isn't defined (yet)
+    // Get a slightly better compiler diagnostic if we have C++11
+  static_assert(dependent_false<T>::value,
+                "Only specializations of StandardType may be used, did you forget to include a header file (e.g. parallel_algebra.h)?");
+#endif
+
+ /*
+  * The unspecialized class is useless, so we make its constructor
+  * private to catch mistakes at compile-time rather than link-time.
+  * Specializations should have a public constructor of the same
+  * form.
+  */
+private:
+  StandardType(const T* example = NULL);
+};
+
+#ifdef QUESO_HAS_MPI
+
+#define STANDARD_TYPE(cxxtype,mpitype)                                  \
+  template<>                                                            \
+  class StandardType<cxxtype> : public DataType                         \
+  {                                                                     \
+  public:                                                               \
+    explicit                                                            \
+      StandardType(const cxxtype* = NULL) : DataType(mpitype) {}        \
+  }
+
+#else
+
+#define STANDARD_TYPE(cxxtype,mpitype)                          \
+  template<>                                                    \
+  class StandardType<cxxtype> : public DataType                 \
+  {                                                             \
+  public:                                                       \
+    explicit                                                    \
+      StandardType(const cxxtype* = NULL) : DataType() {}       \
+  }
+
+#endif
+
+STANDARD_TYPE(char,MPI_CHAR);
+STANDARD_TYPE(int,MPI_INT);
+STANDARD_TYPE(unsigned int,MPI_UNSIGNED);
+STANDARD_TYPE(double,MPI_DOUBLE);
+
+class BaseEnvironment;
 
 /*! \file MpiComm.h
     \brief MPI Communicator Class.
@@ -68,20 +202,30 @@ namespace QUESO {
     the user from the specifics of communication that are not required for normal
     manipulation of linear algebra objects.
 */
-
-
-class BaseEnvironment;
-
 class MpiComm
 {
 public:
    //! @name Constructor/Destructor methods
   //@{
 
-  //! QUESO MpiComm MPI Constructor.
-  /*! This constructs an MpiComm that uses the given "raw" MPI communicator underneath.
-   * The MPI_Comm must be valid for the lifetime of this MpiComm.*/
+  //! QUESO MpiComm MPI parallel constructor.
+  /*!
+   * This constructs an MpiComm that uses the given "raw" MPI communicator
+   * underneath.  MPI_Init *must* have been called before instantiating an
+   * object of this type.
+   *
+   * The MPI_Comm must be valid for the lifetime of this MpiComm.
+   */
   MpiComm(const BaseEnvironment& env, RawType_MPI_Comm inputRawComm);
+
+  //! QUESO MpiComm MPI serial constructor.
+  /*!
+   * This constructs an MpiComm that defaults to MPI_COMM_SELF
+   * underneath.  MPI_Init need not be called before using this constructor.
+   *
+   * The MPI_Comm must be valid for the lifetime of this MpiComm.
+   */
+  MpiComm(const BaseEnvironment& env);
 
   //! Copy Constructor.
   /** Makes an exact copy of an existing MpiComm instance.*/
@@ -117,9 +261,23 @@ public:
    * \param count number of elements in send buffer
    * \param datatype data type of elements of send buffer
    * \param op operation
-   * \param recvbuf (output) starting address of receive buffer*/
+   * \param recvbuf (output) starting address of receive buffer
+   *
+   * This method is deprecated.  Use the templated Allreduce method instead.
+   */
   void               Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype datatype,
 			       RawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const;
+
+  //! Combines values from all processes and distributes the result back to all processes
+  /*!
+   * \param sendbuf starting address of send buffer containing elements of type T
+   * \param count number of elements in send buffer
+   * \param op operation
+   * \param recvbuf (output) starting address of receive buffer containing elements of type T
+   */
+  template <typename T>
+  void Allreduce(const T * sendbuf, T * recvbuf, int count, RawType_MPI_Op op,
+                 const char* whereMsg, const char* whatMsg) const;
 
   //! Pause every process in *this communicator until all the processes reach this point.
   /*! Blocks the caller until all processes in the communicator have called it; that is,
@@ -142,11 +300,26 @@ public:
    * \param recvcount number of elements for any single receive
    * \param recvtype data type of recv buffer elements
    * \param root rank of receiving process
-   * \param recvbuf (output) address of receive buffer */
+   * \param recvbuf (output) address of receive buffer
+   *
+   * This method is deprecated.  Use the templated Gather method instead.
+   */
   void               Gather   (void *sendbuf, int sendcnt, RawType_MPI_Datatype sendtype,
                                void *recvbuf, int recvcount, RawType_MPI_Datatype recvtype,
                                int root,
                                const char* whereMsg, const char* whatMsg) const;
+
+  //! Gather values from each process to collect on all processes.
+  /*!
+   * \param sendbuf starting address of send buffer containing elements of type T
+   * \param sendcnt number of elements in send buffer
+   * \param recvcount number of elements for any single receive
+   * \param root rank of receiving process
+   * \param recvbuf (output) address of receive buffer containing elements of type T
+   */
+  template <typename T>
+  void Gather(const T * sendbuf, int sendcnt, T * recvbuf, int recvcount, int root,
+              const char * whereMsg, const char * whatMsg) const;
 
  //! Gathers into specified locations from all processes in a group
  /*! \param sendbuf starting address of send buffer
@@ -162,6 +335,22 @@ public:
                                void *recvbuf, int *recvcnts, int *displs, RawType_MPI_Datatype recvtype,
                                int root,
                                const char* whereMsg, const char* whatMsg) const;
+
+  //! Gathers into specified locations from all processes in a group
+  /*!
+   * \param sendbuf starting address of send buffer containing elements of type T
+   * \param sendcnt number of elements in send buffer
+   * \param recvcnts integer array (of length group size) containing the number
+   * of elements that are received from each process
+   * \param displs integer array (of length group size). Entry i specifies the
+   * displacement relative to recvbuf at which to place the incoming data from
+   * process i
+   * \param root rank of receiving process
+   */
+  template <typename T>
+  void Gatherv(const T * sendbuf, int sendcnt, T * recvbuf, int * recvcnts,
+               int * displs, int root, const char * whereMsg,
+               const char * whatMsg) const;
 
   //! Blocking receive of data from this process to another process.
   /*!\param buf (output) initial address of receive buffer

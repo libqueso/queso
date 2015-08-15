@@ -26,6 +26,7 @@
 #include <queso/InterpolationSurrogateBuilder.h>
 
 // QUESO
+#include <queso/MpiComm.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/InterpolationSurrogateHelper.h>
@@ -156,17 +157,15 @@ namespace QUESO
 
         /*! \todo Would be more efficient to pack local_n and local_values
             togethers and do Gatherv only once. */
-        inter0comm.Gatherv( &local_n[0], local_n.size(), MPI_UNSIGNED,
-                            &all_indices[0], &m_njobs[0], &strides[0], MPI_UNSIGNED,
-                            0 /*root*/,
-                            "InterpolationSurrogateBuilder::sync_data()",
-                            "MpiComm::gatherv() failed!" );
+        inter0comm.template Gatherv<unsigned int>(&local_n[0], local_n.size(),
+            &all_indices[0], &m_njobs[0], &strides[0],
+            0 /*root*/, "InterpolationSurrogateBuilder::sync_data()",
+            "MpiComm::gatherv() failed!");
 
-        inter0comm.Gatherv( &local_values[0], local_values.size(), MPI_DOUBLE,
-                            &all_values[0], &m_njobs[0], &strides[0], MPI_DOUBLE,
-                            0 /*root*/,
-                            "InterpolationSurrogateBuilder::sync_data()",
-                            "MpiComm::gatherv() failed!" );
+        inter0comm.template Gatherv<double>(&local_values[0],
+            local_values.size(), &all_values[0], &m_njobs[0], &strides[0],
+            0 /*root*/, "InterpolationSurrogateBuilder::sync_data()",
+            "MpiComm::gatherv() failed!");
 
         // Now set the values.
         /* PB: Although we are guaranteed per-rank ordering of the data we gathered,

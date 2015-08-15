@@ -49,16 +49,23 @@
 int main(int argc, char* argv[])
 {
   // Initialize QUESO environment
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
   QUESO::FullEnvironment* env =
     new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
+#else
+  QUESO::FullEnvironment* env =
+    new QUESO::FullEnvironment(argv[1],"",NULL);
+#endif
 
   // Call application
   computeGravityAndTraveledDistance(*env);
 
   // Finalize QUESO environment
   delete env;
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

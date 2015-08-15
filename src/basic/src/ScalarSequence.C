@@ -152,7 +152,7 @@ ScalarSequence<T>::unifiedSequenceSize(bool useOnlyInter0Comm) const
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       unsigned int subNumSamples = this->subSequenceSize();
-      m_env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&subNumSamples, &unifiedNumSamples, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedSequenceSize()",
                                    "failed MPI.Allreduce() for unifiedSequenceSize()");
     }
@@ -252,7 +252,7 @@ ScalarSequence<T>::getUnifiedContentsAtProc0Only(
       // Use MPI_Gatherv for the case different nodes have different amount of data // KAUST4
       //******************************************************************
       std::vector<int> recvcnts(m_env.inter0Comm().NumProc(),0); // '0' is NOT the correct value for recvcnts[0]
-      m_env.inter0Comm().Gather((void *) &auxSubSize, 1, RawValue_MPI_INT, (void *) &recvcnts[0], (int) 1, RawValue_MPI_INT, 0,
+      m_env.inter0Comm().template Gather<int>(&auxSubSize, 1, &recvcnts[0], (int) 1, 0,
                                 "ScalarSequence<T>::getUnifiedContentsAtProc0Only()",
                                 "failed MPI.Gather()");
       if (m_env.inter0Rank() == 0) {
@@ -281,9 +281,11 @@ ScalarSequence<T>::getUnifiedContentsAtProc0Only(
         }
       }
 #endif
-      m_env.inter0Comm().Gatherv((void *) &m_seq[0], auxSubSize, RawValue_MPI_DOUBLE, (void *) &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], RawValue_MPI_DOUBLE, 0,
-                                 "ScalarSequence<T>::getUnifiedContentsAtProc0Only()",
-                                 "failed MPI.Gatherv()");
+
+      m_env.inter0Comm().template Gatherv<double>(&m_seq[0], auxSubSize,
+          &outputVec[0], (int *) &recvcnts[0], (int *) &displs[0], 0,
+          "ScalarSequence<T>::getUnifiedContentsAtProc0Only()",
+          "failed MPI.Gatherv()");
 
 #if 0 // for debug only
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -908,7 +910,7 @@ ScalarSequence<T>::unifiedMeanExtra(
       //          << std::endl;
       //sleep(1);
       unsigned int unifiedNumPos = 0;
-      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&numPos, &unifiedNumPos, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedMeanExtra()",
                                    "failed MPI.Allreduce() for numPos");
 
@@ -919,7 +921,7 @@ ScalarSequence<T>::unifiedMeanExtra(
                                 << std::endl;
       }
 
-      m_env.inter0Comm().Allreduce((void *) &localSum, (void *) &unifiedMeanValue, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<double>(&localSum, &unifiedMeanValue, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedMeanExtra()",
                                    "failed MPI.Allreduce() for sum");
 
@@ -1097,11 +1099,11 @@ ScalarSequence<T>::unifiedSampleVarianceExtra(
       }
 
       unsigned int unifiedNumPos = 0;
-      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&numPos, &unifiedNumPos, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedSampleVarianceExtra()",
                                    "failed MPI.Allreduce() for numPos");
 
-      m_env.inter0Comm().Allreduce((void *) &localSamValue, (void *) &unifiedSamValue, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<double>(&localSamValue, &unifiedSamValue, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedSampleVarianceExtra()",
                                    "failed MPI.Allreduce() for samValue");
 
@@ -1184,11 +1186,11 @@ ScalarSequence<T>::unifiedSampleStd(
       }
 
       unsigned int unifiedNumPos = 0;
-      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&numPos, &unifiedNumPos, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedSampleStd()",
                                    "failed MPI.Allreduce() for numPos");
 
-      m_env.inter0Comm().Allreduce((void *) &localStdValue, (void *) &unifiedStdValue, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<double>(&localStdValue, &unifiedStdValue, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedSampleStd()",
                                    "failed MPI.Allreduce() for stdValue");
 
@@ -1271,11 +1273,11 @@ ScalarSequence<T>::unifiedPopulationVariance(
       }
 
       unsigned int unifiedNumPos = 0;
-      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&numPos, &unifiedNumPos, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedPopulationVariance()",
                                    "failed MPI.Allreduce() for numPos");
 
-      m_env.inter0Comm().Allreduce((void *) &localPopValue, (void *) &unifiedPopValue, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<double>(&localPopValue, &unifiedPopValue, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedPopulationVariance()",
                                    "failed MPI.Allreduce() for popValue");
 
@@ -1567,7 +1569,7 @@ ScalarSequence<T>::unifiedMinMaxExtra(
       for (unsigned int i = 0; i < sendBuf.size(); ++i) {
         sendBuf[i] = minValue;
       }
-      m_env.inter0Comm().Allreduce((void *) &sendBuf[0], (void *) &unifiedMinValue, (int) sendBuf.size(), RawValue_MPI_DOUBLE, RawValue_MPI_MIN,
+      m_env.inter0Comm().template Allreduce<double>(&sendBuf[0], &unifiedMinValue, (int) sendBuf.size(), RawValue_MPI_MIN,
                                    "ScalarSequence<T>::unifiedMinMaxExtra()",
                                    "failed MPI.Allreduce() for min");
 
@@ -1575,7 +1577,7 @@ ScalarSequence<T>::unifiedMinMaxExtra(
       for (unsigned int i = 0; i < sendBuf.size(); ++i) {
         sendBuf[i] = maxValue;
       }
-      m_env.inter0Comm().Allreduce((void *) &sendBuf[0], (void *) &unifiedMaxValue, (int) sendBuf.size(), RawValue_MPI_DOUBLE, RawValue_MPI_MAX,
+      m_env.inter0Comm().template Allreduce<double>(&sendBuf[0], &unifiedMaxValue, (int) sendBuf.size(), RawValue_MPI_MAX,
                                    "ScalarSequence<T>::unifiedMinMaxExtra()",
                                    "failed MPI.Allreduce() for max");
 
@@ -1708,7 +1710,7 @@ ScalarSequence<T>::unifiedHistogram(
         }
       }
 
-      m_env.inter0Comm().Allreduce((void *) &localBins[0], (void *) &unifiedBins[0], (int) localBins.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&localBins[0], &unifiedBins[0], (int) localBins.size(), RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedHistogram()",
                                    "failed MPI.Allreduce() for bins");
 
@@ -1964,7 +1966,7 @@ ScalarSequence<T>::unifiedSort(
                                "failed MPI.Bcast() for unified data size");
 
       unsigned int sumOfNumPos = 0;
-      m_env.inter0Comm().Allreduce((void *) &localNumPos, (void *) &sumOfNumPos, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&localNumPos, &sumOfNumPos, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedSort()",
                                    "failed MPI.Allreduce() for data size");
 
@@ -2138,7 +2140,7 @@ ScalarSequence<T>::unifiedInterQuantileRange(
 
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
       unsigned int sumOfLocalSizes = 0;
-      m_env.inter0Comm().Allreduce((void *) &localDataSize, (void *) &sumOfLocalSizes, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&localDataSize, &sumOfLocalSizes, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedInterQuantileRange()",
                                    "failed MPI.Allreduce() for data size");
 
@@ -2277,7 +2279,7 @@ ScalarSequence<T>::unifiedScaleForKde(
                                                            unifiedMeanValue);
 
       unsigned int unifiedDataSize = 0;
-      m_env.inter0Comm().Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&localDataSize, &unifiedDataSize, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedScaleForKde()",
                                    "failed MPI.Allreduce() for data size");
 
@@ -2371,7 +2373,7 @@ ScalarSequence<T>::unifiedGaussian1dKde(
 
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
       unsigned int unifiedDataSize = 0;
-      m_env.inter0Comm().Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&localDataSize, &unifiedDataSize, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedGaussian1dKde()",
                                    "failed MPI.Allreduce() for data size");
 
@@ -2392,7 +2394,7 @@ ScalarSequence<T>::unifiedGaussian1dKde(
       for (unsigned int j = 0; j < numEvals; ++j) {
         unifiedDensityValues[j] = 0.;
       }
-      m_env.inter0Comm().Allreduce((void *) &densityValues[0], (void *) &unifiedDensityValues[0], (int) numEvals, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<double>(&densityValues[0], &unifiedDensityValues[0], (int) numEvals, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedGaussian1dKde()",
                                    "failed MPI.Allreduce() for density values");
 
@@ -3476,11 +3478,11 @@ ScalarSequence<T>::unifiedMeanCltStd(
       }
 
       unsigned int unifiedNumPos = 0;
-      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&numPos, &unifiedNumPos, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedMeanCltStd()",
                                    "failed MPI.Allreduce() for numPos");
 
-      m_env.inter0Comm().Allreduce((void *) &localStdValue, (void *) &unifiedStdValue, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<double>(&localStdValue, &unifiedStdValue, (int) 1, RawValue_MPI_SUM,
                                    "ScalarSequence<T>::unifiedMeanCltStd()",
                                    "failed MPI.Allreduce() for stdValue");
 
@@ -4094,12 +4096,12 @@ ComputeCovCorrBetweenScalarSequences(
   // Compute unified covariance
   if (env.inter0Rank() >= 0) {
     unsigned int unifiedNumSamples = 0;
-    env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+    env.inter0Comm().template Allreduce<unsigned int>(&subNumSamples, &unifiedNumSamples, (int) 1, RawValue_MPI_SUM,
                                "ComputeCovCorrBetweenScalarSequences()",
                                "failed MPI.Allreduce() for subNumSamples");
 
     double aux = 0.;
-    env.inter0Comm().Allreduce((void *) &covValue, (void *) &aux, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+    env.inter0Comm().template Allreduce<double>(&covValue, &aux, (int) 1, RawValue_MPI_SUM,
                                "ComputeCovCorrBetweenScalarSequences()",
                                "failed MPI.Allreduce() for a matrix position");
     covValue = aux/((double) (unifiedNumSamples-1)); // Yes, '-1' in order to compensate for the 'N-1' denominator factor in the calculations of sample variances above (whose square roots will be used below)

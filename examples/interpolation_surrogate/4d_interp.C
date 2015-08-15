@@ -24,6 +24,7 @@
 
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/MpiComm.h>
 #include <queso/BoxSubset.h>
 #include <queso/LinearLagrangeInterpolationSurrogate.h>
 #include <queso/InterpolationSurrogateBuilder.h>
@@ -62,8 +63,12 @@ int main(int argc, char ** argv)
     }
   std::string filename = argv[1];
 
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
   QUESO::FullEnvironment env(MPI_COMM_WORLD, filename.c_str(), "", NULL);
+#else
+  QUESO::FullEnvironment env(filename.c_str(), "", NULL);
+#endif
 
   // Define the parameter space. It's 4-dimensional in this example.
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>
@@ -166,10 +171,12 @@ int main(int argc, char ** argv)
                     << "======================================" << std::endl;
         }
 
-      MPI_Barrier(MPI_COMM_WORLD);
+      env.fullComm().Barrier();
     }
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

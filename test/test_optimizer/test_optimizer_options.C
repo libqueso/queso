@@ -40,9 +40,12 @@ public:
 };
 
 int main(int argc, char ** argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-
   QUESO::FullEnvironment env(MPI_COMM_WORLD, "test_optimizer/input_test_optimizer_options", "", NULL);
+#else
+  QUESO::FullEnvironment env("test_optimizer/input_test_optimizer_options", "", NULL);
+#endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "space_", 1, NULL);
