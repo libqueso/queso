@@ -2777,6 +2777,9 @@ ComputeCovCorrMatricesBetweenVectorSequences(
         P_M&                                pqCovMatrix,
         P_M&                                pqCorrMatrix)
 {
+  queso_require_greater_equal_msg(subNumSamples, 2,
+      "must provide at least 2 samples to compute correlation matrices");
+
   // Check input data consistency
   const BaseEnvironment& env = subPSeq.vectorSpace().zeroVector().env();
 
@@ -2838,6 +2841,14 @@ ComputeCovCorrMatricesBetweenVectorSequences(
                                      subNumSamples,
                                      unifiedMeanQ,
                                      unifiedSampleVarianceQ);
+
+  // Check the variance is positive in every component
+  double minSampleVarianceP;
+  double minSampleVarianceQ;
+  minSampleVarianceP = unifiedSampleVarianceP.getMinValue();
+  minSampleVarianceQ = unifiedSampleVarianceQ.getMinValue();
+  queso_require_greater_msg(minSampleVarianceP, 0, "sample variance is not positive");
+  queso_require_greater_msg(minSampleVarianceQ, 0, "sample variance is not positive");
 
   // Compute unified covariance matrix
   if (useOnlyInter0Comm) {
