@@ -86,6 +86,7 @@ public:
   const std::vector<V *> & m_simulationScenarios;
   const std::vector<V *> & m_simulationParameters;
   const std::vector<V *> & m_simulationOutputs;
+        std::vector<V *>   m_SVDsimulationOutputs;
   const std::vector<V *> & m_experimentScenarios;
   const std::vector<V *> & m_experimentOutputs;
 

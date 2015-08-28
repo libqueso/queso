@@ -60,12 +60,44 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   m_experimentErrors(m_experimentErrors),
   m_totalPrior(m_totalPrior)
 {
+  queso_assert_greater(m_numSimulations, 0);
+
+  M simulation_matrix(m_simulationOutputs[0]->env(),
+                      m_simulationOutputs[0]->map(),
+                      m_numSimulations);
+
+  unsigned int numOutputs = this->m_experimentOutputSpace.dimLocal();
+
+  for (unsigned int i=0; i != numOutputs; ++i)
+    for (unsigned int j=0; j != m_numSimulations; ++j)
+      simulation_matrix(i,j) = 
+        (*m_simulationOutputs[j])[i];
+
+  const M& matU = simulation_matrix.svdMatU();
+
+
+  VectorSpace<V, M> oneDSpace(m_simulationOutputs[0]->env(), "", 1, NULL);
+
+  // FIXME
+  const unsigned int MAX_SVD_SIMULATIONS = 5;
+  const unsigned int num_svd_simulations =
+    std::max(MAX_SVD_SIMULATIONS, m_numSimulations);
+  m_SVDsimulationOutputs.resize
+    (num_svd_simulations,
+     new V(oneDSpace.zeroVector()));
+  for (unsigned int k = 0; k != num_svd_simulations; ++k)
+    {
+      V& SVDsimulation = *m_SVDsimulationOutputs[k];
+      for (unsigned int i=0; i != numOutputs; ++i)
+        SVDsimulation[i] = matU(i,k);
+    }
 }
 
 template <class V, class M>
 GPMSAEmulator<V, M>::~GPMSAEmulator()
 {
-  // Do nothing?
+  for (unsigned int k = 0; k != m_SVDsimulationOutputs.size(); ++k)
+    delete m_SVDsimulationOutputs[k];
 }
 
 template <class V, class M>
