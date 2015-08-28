@@ -31,6 +31,12 @@ BaseOptimizer::BaseOptimizer()
     m_tolerance(1e-3),
     m_finiteDifferenceStepSize(1e-4)
 {
+  m_optionsObj.reset(new OptimizerOptions);
+}
+
+BaseOptimizer::BaseOptimizer(const OptimizerOptions & options)
+  : m_optionsObj(options.clone())
+{
 }
 
 BaseOptimizer::~BaseOptimizer()

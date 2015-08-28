@@ -78,6 +78,7 @@ libqueso_la_SOURCES += core/src/DistArray.C
 libqueso_la_SOURCES += core/src/Optimizer.C
 libqueso_la_SOURCES += core/src/GslOptimizer.C
 libqueso_la_SOURCES += core/src/OptimizerMonitor.C
+libqueso_la_SOURCES += core/src/OptimizerOptions.C
 libqueso_la_SOURCES += core/src/BaseInputOptionsParser.C
 libqueso_la_SOURCES += core/src/BoostInputOptionsParser.C
 
@@ -306,6 +307,7 @@ libqueso_include_HEADERS += core/inc/Vector.h
 libqueso_include_HEADERS += core/inc/Optimizer.h
 libqueso_include_HEADERS += core/inc/GslOptimizer.h
 libqueso_include_HEADERS += core/inc/OptimizerMonitor.h
+libqueso_include_HEADERS += core/inc/OptimizerOptions.h
 libqueso_include_HEADERS += core/inc/BaseInputOptionsParser.h
 libqueso_include_HEADERS += core/inc/BoostInputOptionsParser.h
 

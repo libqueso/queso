@@ -25,6 +25,9 @@
 #ifndef UQ_BASE_OPTIMIZER_H
 #define UQ_BASE_OPTIMIZER_H
 
+#include <queso/SharedPtr.h>
+#include <queso/OptimizerOptions.h>
+
 namespace QUESO {
 
 /*!
@@ -45,6 +48,9 @@ class BaseOptimizer {
 public:
   //! Default constructor.
   BaseOptimizer();
+
+  //! Constructor that takes an options object
+  BaseOptimizer(const OptimizerOptions & options);
 
   //! Destructor
   virtual ~BaseOptimizer();
@@ -87,6 +93,9 @@ protected:
   unsigned int m_maxIterations;
   double m_tolerance;
   double m_finiteDifferenceStepSize;
+
+private:
+  SharedPtr<const OptimizerOptions>::Type m_optionsObj;
 };
 
 }  // End namespace QUESO

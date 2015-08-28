@@ -56,6 +56,7 @@ BUILT_SOURCES += MpiComm.h
 BUILT_SOURCES += OperatorBase.h
 BUILT_SOURCES += Optimizer.h
 BUILT_SOURCES += OptimizerMonitor.h
+BUILT_SOURCES += OptimizerOptions.h
 BUILT_SOURCES += RngBase.h
 BUILT_SOURCES += RngBoost.h
 BUILT_SOURCES += RngGsl.h
@@ -298,6 +299,8 @@ OperatorBase.h: $(top_srcdir)/src/core/inc/OperatorBase.h
 Optimizer.h: $(top_srcdir)/src/core/inc/Optimizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 OptimizerMonitor.h: $(top_srcdir)/src/core/inc/OptimizerMonitor.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+OptimizerOptions.h: $(top_srcdir)/src/core/inc/OptimizerOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
