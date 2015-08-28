@@ -51,6 +51,7 @@ check_PROGRAMS += test_InterpolationSurrogateHelper
 check_PROGRAMS += test_build_InterpolationSurrogateBuilder
 check_PROGRAMS += test_BoostInputOptionsParser
 check_PROGRAMS += test_NoInputFile
+check_PROGRAMS += test_optimizer_options
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -127,6 +128,7 @@ test_InterpolationSurrogateHelper_SOURCES = test_InterpolationSurrogate/test_Int
 test_build_InterpolationSurrogateBuilder_SOURCES = test_InterpolationSurrogate/test_build_InterpolationSurrogateBuilder.C
 test_BoostInputOptionsParser_SOURCES = test_InputOptionsParser/test_BoostInputOptionsParser.C
 test_NoInputFile_SOURCES = test_StatisticalInverseProblem/test_NoInputFile.C
+test_optimizer_options_SOURCES = test_optimizer/test_optimizer_options.C
 
 # Files to freedom stamp
 srcstamp =
@@ -175,6 +177,7 @@ srcstamp += $(test_InterpolationSurrogateHelper_SOURCES)
 srcstamp += $(test_build_InterpolationSurrogateBuilder_SOURCES)
 srcstamp += $(test_BoostInputOptionsParser_SOURCES)
 srcstamp += $(test_NoInputFile_SOURCES)
+srcstamp += $(test_optimizer_options_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -223,6 +226,7 @@ TESTS += $(top_builddir)/test/test_InterpolationSurrogateHelper
 TESTS += $(top_builddir)/test/test_build_InterpolationSurrogateBuilder
 TESTS += $(top_builddir)/test/test_BoostInputOptionsParser
 TESTS += $(top_builddir)/test/test_NoInputFile
+TESTS += $(top_builddir)/test/test_optimizer_options
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -251,6 +255,7 @@ EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
 EXTRA_DIST += test_InputOptionsParser/test_options_good.txt.in
 EXTRA_DIST += test_InputOptionsParser/test_options_bad.txt.in
 EXTRA_DIST += test_InputOptionsParser/test_options_default.txt.in
+EXTRA_DIST += test_optimizer/input_test_optimizer_options.in
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
@@ -266,6 +271,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/test_adaptedcov_output
 	rm -rf $(top_builddir)/test/test_outputNoInputFile
 	rm -rf $(top_builddir)/test/test_output_interp_surrogates
+	rm -rf $(top_builddir)/test/output_test_optimizer_options
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno

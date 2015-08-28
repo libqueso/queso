@@ -218,6 +218,7 @@ AC_CONFIG_FILES([
   test/test_InputOptionsParser/test_options_good.txt
   test/test_InputOptionsParser/test_options_bad.txt
   test/test_InputOptionsParser/test_options_default.txt
+  test/test_optimizer/input_test_optimizer_options
 ])
 
 AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh
