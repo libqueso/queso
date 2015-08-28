@@ -206,3 +206,6 @@ test/test_InterpolationSurrogateHelper
 test/test_build_InterpolationSurrogateBuilder
 test/test_write_InterpolationSurrogateBuilder_1.dat
 test/test_write_InterpolationSurrogateBuilder_2.dat
+test/output_test_optimizer_options
+test/test_optimizer/input_test_optimizer_options
+test/test_optimizer_options
