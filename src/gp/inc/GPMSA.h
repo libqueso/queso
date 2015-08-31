@@ -36,6 +36,7 @@
 #include <queso/BetaVectorRV.h>
 #include <queso/UniformVectorRV.h>
 #include <queso/GPMSAOptions.h>
+#include <queso/ScopedPtr.h>
 
 namespace QUESO {
 
@@ -293,74 +294,75 @@ public:
   void setUpHyperpriors();
 
   // Domains for all the hyperpriors
-  VectorSpace<V, M> * oneDSpace;
+  typename ScopedPtr<VectorSpace<V, M> >::Type oneDSpace;
 
   // Emulator mean
-  V * emulatorMeanMin;
-  V * emulatorMeanMax;
-  BoxSubset<V, M> * emulatorMeanDomain;
+  typename ScopedPtr<V>::Type emulatorMeanMin;
+  typename ScopedPtr<V>::Type emulatorMeanMax;
+  typename ScopedPtr<BoxSubset<V, M> >::Type emulatorMeanDomain;
 
   // Emulator precision
-  V * emulatorPrecisionMin;
-  V * emulatorPrecisionMax;
-  BoxSubset<V, M> * emulatorPrecisionDomain;
+  typename ScopedPtr<V>::Type emulatorPrecisionMin;
+  typename ScopedPtr<V>::Type emulatorPrecisionMax;
+  typename ScopedPtr<BoxSubset<V, M> >::Type emulatorPrecisionDomain;
 
   // Emulator correlation strength
-  VectorSpace<V, M> * emulatorCorrelationSpace;
-  V * emulatorCorrelationMin;
-  V * emulatorCorrelationMax;
-  BoxSubset<V, M> * emulatorCorrelationDomain;
+  typename ScopedPtr<VectorSpace<V, M> >::Type emulatorCorrelationSpace;
+  typename ScopedPtr<V>::Type emulatorCorrelationMin;
+  typename ScopedPtr<V>::Type emulatorCorrelationMax;
+  typename ScopedPtr<BoxSubset<V, M> >::Type emulatorCorrelationDomain;
 
   // Discrepancy precision
-  V * discrepancyPrecisionMin;
-  V * discrepancyPrecisionMax;
-  BoxSubset<V, M> * discrepancyPrecisionDomain;
+  typename ScopedPtr<V>::Type discrepancyPrecisionMin;
+  typename ScopedPtr<V>::Type discrepancyPrecisionMax;
+  typename ScopedPtr<BoxSubset<V, M> >::Type discrepancyPrecisionDomain;
 
   // Discrepancy correlation strength
-  VectorSpace<V, M> * discrepancyCorrelationSpace;
-  V * discrepancyCorrelationMin;
-  V * discrepancyCorrelationMax;
-  BoxSubset<V, M> * discrepancyCorrelationDomain;
+  typename ScopedPtr<VectorSpace<V, M> >::Type discrepancyCorrelationSpace;
+  typename ScopedPtr<V>::Type discrepancyCorrelationMin;
+  typename ScopedPtr<V>::Type discrepancyCorrelationMax;
+  typename ScopedPtr<BoxSubset<V, M> >::Type discrepancyCorrelationDomain;
 
   // Emulator data precision
-  V * emulatorDataPrecisionMin;
-  V * emulatorDataPrecisionMax;
-  BoxSubset<V, M> * emulatorDataPrecisionDomain;
+  typename ScopedPtr<V>::Type emulatorDataPrecisionMin;
+  typename ScopedPtr<V>::Type emulatorDataPrecisionMax;
+  typename ScopedPtr<BoxSubset<V, M> >::Type emulatorDataPrecisionDomain;
 
   // Now form full prior
-  VectorSpace<V, M> * totalSpace;
-  V * totalMins;
-  V * totalMaxs;
+  typename ScopedPtr<VectorSpace<V, M> >::Type totalSpace;
+  typename ScopedPtr<V>::Type totalMins;
+  typename ScopedPtr<V>::Type totalMaxs;
 
-  BoxSubset<V, M> * totalDomain;
+  typename ScopedPtr<BoxSubset<V, M> >::Type totalDomain;
 
   std::vector<const BaseVectorRV<V, M> *> priors;
 
   // The hyperpriors
-  UniformVectorRV<V, M> * m_emulatorMean;  // scalar
-  GammaVectorRV<V, M> * m_emulatorPrecision;  // (scalar) gamma(a, b) shape-rate
-  BetaVectorRV<V, M> * m_emulatorCorrelationStrength;  // (dim scenariosspace + dim parameterspace)
-  GammaVectorRV<V, M> * m_discrepancyPrecision;  // (scalar) shape-rate
-  BetaVectorRV<V, M> * m_discrepancyCorrelationStrength;  // (dim scenariospace)
-  GammaVectorRV<V, M> * m_emulatorDataPrecision;  // (scalar) shape-rate
-  ConcatenatedVectorRV<V, M> * m_totalPrior;  // prior for joint parameters and hyperparameters
+  typename ScopedPtr<UniformVectorRV<V, M> >::Type m_emulatorMean;  // scalar
+  typename ScopedPtr<GammaVectorRV<V, M> >::Type m_emulatorPrecision;  // (scalar) gamma(a, b) shape-rate
+  typename ScopedPtr<BetaVectorRV<V, M> >::Type m_emulatorCorrelationStrength;  // (dim scenariosspace + dim parameterspace)
+  typename ScopedPtr<GammaVectorRV<V, M> >::Type m_discrepancyPrecision;  // (scalar) shape-rate
+  typename ScopedPtr<BetaVectorRV<V, M> >::Type m_discrepancyCorrelationStrength;  // (dim scenariospace)
+  typename ScopedPtr<GammaVectorRV<V, M> >::Type m_emulatorDataPrecision;  // (scalar) shape-rate
+  typename ScopedPtr<ConcatenatedVectorRV<V, M> >::Type m_totalPrior;  // prior for joint parameters and hyperparameters
 
-  V * m_emulatorPrecisionShapeVec;
-  V * m_emulatorPrecisionScaleVec;
-  V * m_emulatorCorrelationStrengthAlphaVec;
-  V * m_emulatorCorrelationStrengthBetaVec;
-  V * m_discrepancyPrecisionShapeVec;
-  V * m_discrepancyPrecisionScaleVec;
-  V * m_discrepancyCorrelationStrengthAlphaVec;
-  V * m_discrepancyCorrelationStrengthBetaVec;
-  V * m_emulatorDataPrecisionShapeVec;
-  V * m_emulatorDataPrecisionScaleVec;
+  typename ScopedPtr<V>::Type m_emulatorPrecisionShapeVec;
+  typename ScopedPtr<V>::Type m_emulatorPrecisionScaleVec;
+  typename ScopedPtr<V>::Type m_emulatorCorrelationStrengthAlphaVec;
+  typename ScopedPtr<V>::Type m_emulatorCorrelationStrengthBetaVec;
+  typename ScopedPtr<V>::Type m_discrepancyPrecisionShapeVec;
+  typename ScopedPtr<V>::Type m_discrepancyPrecisionScaleVec;
+  typename ScopedPtr<V>::Type m_discrepancyCorrelationStrengthAlphaVec;
+  typename ScopedPtr<V>::Type m_discrepancyCorrelationStrengthBetaVec;
+  typename ScopedPtr<V>::Type m_emulatorDataPrecisionShapeVec;
+  typename ScopedPtr<V>::Type m_emulatorDataPrecisionScaleVec;
 
   // The gaussian process object to build
-  GPMSAEmulator<V, M> * gpmsaEmulator;
+  typename ScopedPtr<GPMSAEmulator<V, M> >::Type gpmsaEmulator;
   bool m_constructedGP;
 
 private:
+  bool allocated_m_opts;
   GPMSAOptions * m_opts;
 
 };

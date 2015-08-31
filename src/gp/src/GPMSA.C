@@ -345,7 +345,8 @@ GPMSAFactory<V, M>::GPMSAFactory(
     m_experimentOutputs(numExperiments, (V *)NULL),
     m_numSimulationAdds(0),
     m_numExperimentAdds(0),
-    priors(7, (const BaseVectorRV<V, M> *)NULL)  // Needed for gcc 4.3.2
+    priors(7, (const BaseVectorRV<V, M> *)NULL),  // Needed for gcc 4.3.2
+    m_constructedGP(false)
 {
   // We should have the same number of outputs from both simulations
   // and experiments
@@ -358,21 +359,26 @@ GPMSAFactory<V, M>::GPMSAFactory(
   }
 
   if (opts != NULL) {
+    allocated_m_opts = false;
     this->m_opts = opts;
   }
   else {
     // Create a default one
+    allocated_m_opts = true;
     this->m_opts = new GPMSAOptions(this->m_env, "");
   }
 
   this->setUpHyperpriors();
-  this->m_constructedGP = false;
+
+  // FIXME: WTF? - RHS
+  // this->m_constructedGP = false;
 }
 
 template <class V, class M>
 GPMSAFactory<V, M>::~GPMSAFactory()
 {
-  // Do nothing
+  if (this->allocated_m_opts)
+    delete this->m_opts;
 }
 
 template <class V, class M>
@@ -550,7 +556,8 @@ GPMSAFactory<V, M>::addSimulation(V & simulationScenario,
       (this->m_numExperimentAdds == this->m_numExperiments) &&
       (this->m_constructedGP == false)) {
     this->m_constructedGP = true;
-    this->gpmsaEmulator = new GPMSAEmulator<V, M>(
+    this->gpmsaEmulator.reset
+      (new GPMSAEmulator<V, M>(
         this->prior().imageSet(),
         this->m_scenarioSpace,
         this->m_parameterSpace,
@@ -564,7 +571,7 @@ GPMSAFactory<V, M>::addSimulation(V & simulationScenario,
         this->m_experimentScenarios,
         this->m_experimentOutputs,
         *(this->m_experimentErrors),
-        *(this->m_totalPrior));
+        *(this->m_totalPrior)));
   }
 }
 
@@ -601,7 +608,8 @@ GPMSAFactory<V, M>::addExperiments(
       (this->m_numExperimentAdds == this->m_numExperiments) &&
       (this->m_constructedGP == false)) {
     this->m_constructedGP = true;
-    this->gpmsaEmulator = new GPMSAEmulator<V, M>(
+    this->gpmsaEmulator.reset
+      (new GPMSAEmulator<V, M>(
         this->prior().imageSet(),
         this->m_scenarioSpace,
         this->m_parameterSpace,
@@ -615,7 +623,7 @@ GPMSAFactory<V, M>::addExperiments(
         this->m_experimentScenarios,
         this->m_experimentOutputs,
         *(this->m_experimentErrors),
-        *(this->m_totalPrior));
+        *(this->m_totalPrior)));
   }
 }
 
@@ -649,150 +657,178 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   double emulatorDataPrecisionShape = this->m_opts->m_emulatorDataPrecisionShape;
   double emulatorDataPrecisionScale = this->m_opts->m_emulatorDataPrecisionScale;
 
-  this->oneDSpace = new VectorSpace<V, M>(this->m_env, "", 1, NULL);
+  this->oneDSpace.reset
+    (new VectorSpace<V, M>(this->m_env, "", 1, NULL));
 
   // Emulator mean
-  this->emulatorMeanMin = new V(this->oneDSpace->zeroVector());
-  this->emulatorMeanMax = new V(this->oneDSpace->zeroVector());
+  this->emulatorMeanMin.reset(new V(this->oneDSpace->zeroVector()));
+  this->emulatorMeanMax.reset(new V(this->oneDSpace->zeroVector()));
   this->emulatorMeanMin->cwSet(-INFINITY);
   this->emulatorMeanMax->cwSet(INFINITY);
 
-  this->emulatorMeanDomain = new BoxSubset<V, M>(
-      "",
-      *(this->oneDSpace),
-      *(this->emulatorMeanMin),
-      *(this->emulatorMeanMax));
+  this->emulatorMeanDomain.reset
+    (new BoxSubset<V, M>
+      ("",
+       *(this->oneDSpace),
+       *(this->emulatorMeanMin),
+       *(this->emulatorMeanMax)));
 
-  this->m_emulatorMean = new UniformVectorRV<V, M>(
-      "",
-      *(this->emulatorMeanDomain));
+  this->m_emulatorMean.reset
+    (new UniformVectorRV<V, M>
+     ("",
+      *(this->emulatorMeanDomain)));
 
   // Emulator precision
-  this->emulatorPrecisionMin = new V(this->oneDSpace->zeroVector());
-  this->emulatorPrecisionMax = new V(this->oneDSpace->zeroVector());
-  this->m_emulatorPrecisionShapeVec = new V(this->oneDSpace->zeroVector());
-  this->m_emulatorPrecisionScaleVec = new V(this->oneDSpace->zeroVector());
+  this->emulatorPrecisionMin.reset(new V(this->oneDSpace->zeroVector()));
+  this->emulatorPrecisionMax.reset(new V(this->oneDSpace->zeroVector()));
+  this->m_emulatorPrecisionShapeVec.reset(new V(this->oneDSpace->zeroVector()));
+  this->m_emulatorPrecisionScaleVec.reset(new V(this->oneDSpace->zeroVector()));
   this->emulatorPrecisionMin->cwSet(0.3);
   this->emulatorPrecisionMax->cwSet(INFINITY);
   this->m_emulatorPrecisionShapeVec->cwSet(emulatorPrecisionShape);
   this->m_emulatorPrecisionScaleVec->cwSet(emulatorPrecisionScale);
 
-  this->emulatorPrecisionDomain = new BoxSubset<V, M>(
-      "",
+  this->emulatorPrecisionDomain.reset
+    (new BoxSubset<V, M>
+     ("",
       *(this->oneDSpace),
       *(this->emulatorPrecisionMin),
-      *(this->emulatorPrecisionMax));
+      *(this->emulatorPrecisionMax)));
 
-  this->m_emulatorPrecision = new GammaVectorRV<V, M>("",
+  this->m_emulatorPrecision.reset
+    (new GammaVectorRV<V, M>
+     ("",
       *(this->emulatorPrecisionDomain),
       *(this->m_emulatorPrecisionShapeVec),
-      *(this->m_emulatorPrecisionScaleVec));
+      *(this->m_emulatorPrecisionScaleVec)));
 
   // Emulator correlation strength
   unsigned int dimScenario = (this->scenarioSpace()).dimLocal();
   unsigned int dimParameter = (this->parameterSpace()).dimLocal();
-  this->emulatorCorrelationSpace = new VectorSpace<V, M>(
-      this->m_env,
+  this->emulatorCorrelationSpace.reset
+    (new VectorSpace<V, M>
+     (this->m_env,
       "",
       dimScenario + dimParameter,
-      NULL);
+      NULL));
 
-  this->emulatorCorrelationMin = new V(
-      this->emulatorCorrelationSpace->zeroVector());
-  this->emulatorCorrelationMax = new V(
-      this->emulatorCorrelationSpace->zeroVector());
-  this->m_emulatorCorrelationStrengthAlphaVec = new V(
-      this->emulatorCorrelationSpace->zeroVector());
-  this->m_emulatorCorrelationStrengthBetaVec = new V(
-      this->emulatorCorrelationSpace->zeroVector());
+  this->emulatorCorrelationMin.reset
+    (new V(this->emulatorCorrelationSpace->zeroVector()));
+  this->emulatorCorrelationMax.reset
+    (new V(this->emulatorCorrelationSpace->zeroVector()));
+  this->m_emulatorCorrelationStrengthAlphaVec.reset
+    (new V(this->emulatorCorrelationSpace->zeroVector()));
+  this->m_emulatorCorrelationStrengthBetaVec.reset
+    (new V(this->emulatorCorrelationSpace->zeroVector()));
   this->emulatorCorrelationMin->cwSet(0);
   this->emulatorCorrelationMax->cwSet(1);
   this->m_emulatorCorrelationStrengthAlphaVec->cwSet(emulatorCorrelationStrengthAlpha);
   this->m_emulatorCorrelationStrengthBetaVec->cwSet(emulatorCorrelationStrengthBeta);
 
-  this->emulatorCorrelationDomain = new BoxSubset<V, M>(
-      "",
+  this->emulatorCorrelationDomain.reset
+    (new BoxSubset<V, M>
+     ("",
       *(this->emulatorCorrelationSpace),
       *(this->emulatorCorrelationMin),
-      *(this->emulatorCorrelationMax));
+      *(this->emulatorCorrelationMax)));
 
-  this->m_emulatorCorrelationStrength = new BetaVectorRV<V, M>("",
+  this->m_emulatorCorrelationStrength.reset
+    (new BetaVectorRV<V, M>
+     ("",
       *(this->emulatorCorrelationDomain),
       *(this->m_emulatorCorrelationStrengthAlphaVec),
-      *(this->m_emulatorCorrelationStrengthBetaVec));
+      *(this->m_emulatorCorrelationStrengthBetaVec)));
 
   // Discrepancy precision
-  this->discrepancyPrecisionMin = new V(this->oneDSpace->zeroVector());
-  this->discrepancyPrecisionMax = new V(this->oneDSpace->zeroVector());
-  this->m_discrepancyPrecisionShapeVec = new V(this->oneDSpace->zeroVector());
-  this->m_discrepancyPrecisionScaleVec = new V(this->oneDSpace->zeroVector());
+  this->discrepancyPrecisionMin.reset
+    (new V(this->oneDSpace->zeroVector()));
+  this->discrepancyPrecisionMax.reset 
+    (new V(this->oneDSpace->zeroVector()));
+  this->m_discrepancyPrecisionShapeVec.reset
+    (new V(this->oneDSpace->zeroVector()));
+  this->m_discrepancyPrecisionScaleVec.reset
+    (new V(this->oneDSpace->zeroVector()));
   this->discrepancyPrecisionMin->cwSet(0);
   this->discrepancyPrecisionMax->cwSet(INFINITY);
   this->m_discrepancyPrecisionShapeVec->cwSet(discrepancyPrecisionShape);
   this->m_discrepancyPrecisionScaleVec->cwSet(discrepancyPrecisionScale);
 
-  this->discrepancyPrecisionDomain = new BoxSubset<V, M>(
-      "",
+  this->discrepancyPrecisionDomain.reset
+    (new BoxSubset<V, M>
+     ("",
       *(this->oneDSpace),
       *(this->discrepancyPrecisionMin),
-      *(this->emulatorPrecisionMax));
+      *(this->emulatorPrecisionMax)));
 
-  this->m_discrepancyPrecision = new GammaVectorRV<V, M>("",
+  this->m_discrepancyPrecision.reset
+    (new GammaVectorRV<V, M>
+     ("",
       *(this->discrepancyPrecisionDomain),
       *(this->m_discrepancyPrecisionShapeVec),
-      *(this->m_discrepancyPrecisionScaleVec));
+      *(this->m_discrepancyPrecisionScaleVec)));
 
   // Discrepancy correlation strength
-  this->discrepancyCorrelationSpace = new VectorSpace<V, M>(
-      this->m_env,
+  this->discrepancyCorrelationSpace.reset
+    (new VectorSpace<V, M>
+     (this->m_env,
       "",
       dimScenario,
-      NULL);
+      NULL));
 
-  this->discrepancyCorrelationMin = new V(
-      this->discrepancyCorrelationSpace->zeroVector());
-  this->discrepancyCorrelationMax = new V(
-      this->discrepancyCorrelationSpace->zeroVector());
-  this->m_discrepancyCorrelationStrengthAlphaVec = new V(
-      this->discrepancyCorrelationSpace->zeroVector());
-  this->m_discrepancyCorrelationStrengthBetaVec = new V(
-      this->discrepancyCorrelationSpace->zeroVector());
+  this->discrepancyCorrelationMin.reset
+    (new V(this->discrepancyCorrelationSpace->zeroVector()));
+  this->discrepancyCorrelationMax.reset
+    (new V(this->discrepancyCorrelationSpace->zeroVector()));
+  this->m_discrepancyCorrelationStrengthAlphaVec.reset
+    (new V(this->discrepancyCorrelationSpace->zeroVector()));
+  this->m_discrepancyCorrelationStrengthBetaVec.reset
+    (new V(this->discrepancyCorrelationSpace->zeroVector()));
   this->discrepancyCorrelationMin->cwSet(0);
   this->discrepancyCorrelationMax->cwSet(1);
   this->m_discrepancyCorrelationStrengthAlphaVec->cwSet(discrepancyCorrelationStrengthAlpha);
   this->m_discrepancyCorrelationStrengthBetaVec->cwSet(discrepancyCorrelationStrengthBeta);
 
-  this->discrepancyCorrelationDomain = new BoxSubset<V, M>(
-      "",
+  this->discrepancyCorrelationDomain.reset
+    (new BoxSubset<V, M>
+     ("",
       *(this->discrepancyCorrelationSpace),
       *(this->discrepancyCorrelationMin),
-      *(this->discrepancyCorrelationMax));
+      *(this->discrepancyCorrelationMax)));
 
-  this->m_discrepancyCorrelationStrength = new BetaVectorRV<V, M>("",
+  this->m_discrepancyCorrelationStrength.reset
+    (new BetaVectorRV<V, M>
+     ("",
       *(this->discrepancyCorrelationDomain),
       *(this->m_discrepancyCorrelationStrengthAlphaVec),
-      *(this->m_discrepancyCorrelationStrengthBetaVec));
+      *(this->m_discrepancyCorrelationStrengthBetaVec)));
 
   // Emulator data precision
-  this->emulatorDataPrecisionMin = new V(this->oneDSpace->zeroVector());
-  this->emulatorDataPrecisionMax = new V(this->oneDSpace->zeroVector());
-  this->m_emulatorDataPrecisionShapeVec = new V(this->oneDSpace->zeroVector());
-  this->m_emulatorDataPrecisionScaleVec = new V(this->oneDSpace->zeroVector());
+  this->emulatorDataPrecisionMin.reset
+    (new V(this->oneDSpace->zeroVector()));
+  this->emulatorDataPrecisionMax.reset
+    (new V(this->oneDSpace->zeroVector()));
+  this->m_emulatorDataPrecisionShapeVec.reset
+    (new V(this->oneDSpace->zeroVector()));
+  this->m_emulatorDataPrecisionScaleVec.reset
+    (new V(this->oneDSpace->zeroVector()));
   this->emulatorDataPrecisionMin->cwSet(60.0);
   this->emulatorDataPrecisionMax->cwSet(1e5);
   this->m_emulatorDataPrecisionShapeVec->cwSet(emulatorDataPrecisionShape);
   this->m_emulatorDataPrecisionScaleVec->cwSet(emulatorDataPrecisionScale);
 
-  this->emulatorDataPrecisionDomain = new BoxSubset<V, M>(
-      "",
+  this->emulatorDataPrecisionDomain.reset
+    (new BoxSubset<V, M>
+     ("",
       *(this->oneDSpace),
       *(this->emulatorDataPrecisionMin),
-      *(this->emulatorDataPrecisionMax));
+      *(this->emulatorDataPrecisionMax)));
 
-  this->m_emulatorDataPrecision = new GammaVectorRV<V, M>("",
+  this->m_emulatorDataPrecision.reset
+    (new GammaVectorRV<V, M>
+     ("",
       *(this->emulatorDataPrecisionDomain),
       *(this->m_emulatorDataPrecisionShapeVec),
-      *(this->m_emulatorDataPrecisionScaleVec));
+      *(this->m_emulatorDataPrecisionScaleVec)));
 
   // Now form full prior
   unsigned int dimSum = 4 +
@@ -801,13 +837,14 @@ GPMSAFactory<V, M>::setUpHyperpriors()
                         dimScenario +
                         dimScenario;  // yum
 
-  this->totalSpace = new VectorSpace<V, M>(
-      this->m_env,
+  this->totalSpace.reset
+    (new VectorSpace<V, M>
+     (this->m_env,
       "",
       dimSum,
-      NULL);
-  this->totalMins = new V(this->totalSpace->zeroVector());
-  this->totalMaxs = new V(this->totalSpace->zeroVector());
+      NULL));
+  this->totalMins.reset(new V(this->totalSpace->zeroVector()));
+  this->totalMaxs.reset(new V(this->totalSpace->zeroVector()));
 
   // Hackety hack McHackington.  There's no better way to do this unfortunately
   this->totalMins->cwSet(0);
@@ -825,25 +862,27 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   // Max discrepancy precision
   (*(this->totalMaxs))[dimScenario+dimParameter+dimParameter+2] = INFINITY;
 
-  this->totalDomain = new BoxSubset<V, M>(
-      "",
+  this->totalDomain.reset
+    (new BoxSubset<V, M>
+     ("",
       *(this->totalSpace),
       *(this->totalMins),
-      *(this->totalMaxs));
+      *(this->totalMaxs)));
 
   this->priors[0] = &(this->m_parameterPrior);
-  this->priors[1] = this->m_emulatorMean;
-  this->priors[2] = this->m_emulatorPrecision;
-  this->priors[3] = this->m_emulatorCorrelationStrength;
-  this->priors[4] = this->m_discrepancyPrecision;
-  this->priors[5] = this->m_discrepancyCorrelationStrength;
-  this->priors[6] = this->m_emulatorDataPrecision;
+  this->priors[1] = this->m_emulatorMean.get();
+  this->priors[2] = this->m_emulatorPrecision.get();
+  this->priors[3] = this->m_emulatorCorrelationStrength.get();
+  this->priors[4] = this->m_discrepancyPrecision.get();
+  this->priors[5] = this->m_discrepancyCorrelationStrength.get();
+  this->priors[6] = this->m_emulatorDataPrecision.get();
 
   // Finally
-  this->m_totalPrior = new ConcatenatedVectorRV<V, M>(
-      "",
+  this->m_totalPrior.reset
+    (new ConcatenatedVectorRV<V, M>
+     ("",
       this->priors,
-      *(this->totalDomain));
+      *(this->totalDomain)));
 }
 
 }  // End namespace QUESO
