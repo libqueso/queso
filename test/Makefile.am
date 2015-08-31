@@ -52,6 +52,7 @@ check_PROGRAMS += test_build_InterpolationSurrogateBuilder
 check_PROGRAMS += test_BoostInputOptionsParser
 check_PROGRAMS += test_NoInputFile
 check_PROGRAMS += test_optimizer_options
+check_PROGRAMS += test_SharedPtr
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -129,6 +130,7 @@ test_build_InterpolationSurrogateBuilder_SOURCES = test_InterpolationSurrogate/t
 test_BoostInputOptionsParser_SOURCES = test_InputOptionsParser/test_BoostInputOptionsParser.C
 test_NoInputFile_SOURCES = test_StatisticalInverseProblem/test_NoInputFile.C
 test_optimizer_options_SOURCES = test_optimizer/test_optimizer_options.C
+test_SharedPtr_SOURCES = pointers/test_SharedPtr.C
 
 # Files to freedom stamp
 srcstamp =
@@ -178,6 +180,7 @@ srcstamp += $(test_build_InterpolationSurrogateBuilder_SOURCES)
 srcstamp += $(test_BoostInputOptionsParser_SOURCES)
 srcstamp += $(test_NoInputFile_SOURCES)
 srcstamp += $(test_optimizer_options_SOURCES)
+srcstamp += $(test_SharedPtr_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -227,6 +230,7 @@ TESTS += $(top_builddir)/test/test_build_InterpolationSurrogateBuilder
 TESTS += $(top_builddir)/test/test_BoostInputOptionsParser
 TESTS += $(top_builddir)/test/test_NoInputFile
 TESTS += $(top_builddir)/test/test_optimizer_options
+TESTS += $(top_builddir)/test/test_SharedPtr
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
