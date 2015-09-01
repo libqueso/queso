@@ -562,7 +562,8 @@ BaseEnvironment::openOutputFile(
         //////////////////////////////////////////////////////////////
         // Write over an eventual pre-existing file
         //////////////////////////////////////////////////////////////
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+            (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                 std::ofstream::out | std::ofstream::trunc);
         }
@@ -586,7 +587,8 @@ BaseEnvironment::openOutputFile(
         //////////////////////////////////////////////////////////////
         // Write at the end of an eventual pre-existing file
         //////////////////////////////////////////////////////////////
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+            (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
 #if 0
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                 std::ofstream::in);
@@ -740,7 +742,8 @@ BaseEnvironment::openUnifiedOutputFile(
         ////////////////////////////////////////////////////////////////
         // Write over an eventual pre-existing file
         ////////////////////////////////////////////////////////////////
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+            (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"."+fileType).c_str(),
                                                 std::ofstream::out | std::ofstream::trunc);
         }
@@ -770,7 +773,8 @@ BaseEnvironment::openUnifiedOutputFile(
         // Write at the end of an eventual pre-existing file
         // 'm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
         ////////////////////////////////////////////////////////////////
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+            (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"."+fileType).c_str(),
                                                 std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
         }
@@ -893,7 +897,8 @@ BaseEnvironment::openInputFile(
       int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
       queso_require_greater_equal_msg(irtrn, 0, "unable to verify input path");
 
-      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+      if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+          (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
         filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
                                               std::ofstream::in);
         if ((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)) {
@@ -985,7 +990,8 @@ BaseEnvironment::openUnifiedInputFile(
       int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
       queso_require_greater_equal_msg(irtrn, 0, "unable to verify input path");
 
-      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+      if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+          (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
         filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
                                               std::ofstream::in);
         if ((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)) {
@@ -1046,7 +1052,8 @@ BaseEnvironment::closeFile(
   }
 #endif
 
-  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+  if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+      (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
     //filePtrSet.ofsVar->close(); // close() crashes on Mac; need to use delete(); why? prudenci 2010/June
     delete filePtrSet.ofsVar;
     filePtrSet.ofsVar = NULL;
