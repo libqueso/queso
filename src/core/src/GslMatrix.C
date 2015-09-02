@@ -214,32 +214,7 @@ GslMatrix::operator-=(const GslMatrix& rhs)
   return *this;
 }
 
-// Acessor methods (operators) ----------------------------------------
-double&
-GslMatrix::operator()(unsigned int i, unsigned int j)
-{
-  this->resetLU();
-  if ((i >= m_mat->size1) ||
-      (j >= m_mat->size2)) {
-    std::cerr << "In GslMatrix::operator(i,j)"
-              << ": i = " << i
-              << ", j = " << j
-              << ", m_mat->size1 = " << m_mat->size1
-              << ", m_mat->size2 = " << m_mat->size2
-              << std::endl;
-    queso_require_less_msg(i, m_mat->size1, "i is too large");
-    queso_require_less_msg(j, m_mat->size2, "j is too large");
-  }
-  return *gsl_matrix_ptr(m_mat,i,j);
-}
 
-const double&
-GslMatrix::operator()(unsigned int i, unsigned int j) const
-{
-  queso_require_less_msg(i, m_mat->size1, "i is too large");
-  queso_require_less_msg(j, m_mat->size2, "j is too large");
-  return *gsl_matrix_const_ptr(m_mat,i,j);
-}
 
 void
 GslMatrix::copy(const GslMatrix& src)
