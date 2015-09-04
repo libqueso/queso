@@ -219,16 +219,17 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
       // If we're in the experiment cross correlation part, need extra foo
       if (i < this->m_numExperiments && j < this->m_numExperiments) {
-        scenario1 = (this->m_simulationScenarios)[i];
-        scenario2 = (this->m_simulationScenarios)[j];
+        V* cross_scenario1 = (this->m_simulationScenarios)[i];
+        V* cross_scenario2 = (this->m_simulationScenarios)[j];
         prodDiscrepancy = 1.0;
         unsigned int discrepancyCorrStrStart = dimParameter +
                                                dimParameter +
                                                dimScenario + 3;
         for (unsigned int k = 0; k < dimScenario; k++) {
-          prodDiscrepancy *= std::pow(domainVector[discrepancyCorrStrStart+k],
-                                      4.0 * ((*scenario1)[k] - (*scenario2)[k]) *
-                                            ((*scenario1)[k] - (*scenario2)[k]));
+          prodDiscrepancy *=
+            std::pow(domainVector[discrepancyCorrStrStart+k], 4.0 *
+                     ((*cross_scenario1)[k] - (*cross_scenario2)[k]) *
+                     ((*cross_scenario1)[k] - (*cross_scenario2)[k]));
         }
 
         const double denominator = domainVector[discrepancyCorrStrStart-1]; 
