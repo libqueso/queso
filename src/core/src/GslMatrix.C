@@ -692,15 +692,17 @@ GslMatrix::filterLargeValues(double thresholdValue)
 GslMatrix
 GslMatrix::transpose() const
 {
-  unsigned int nRows = this->numRowsLocal();
+  unsigned int nRows = this->numRowsGlobal();
   unsigned int nCols = this->numCols();
 
-  queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
+  const MpiComm & comm = this->map().Comm();
+  Map serial_map(nCols, 0, comm);
 
-  GslMatrix mat(m_env,m_map,nCols);
+  GslMatrix mat(m_env,serial_map,nRows);
+
   for (unsigned int row = 0; row < nRows; ++row) {
     for (unsigned int col = 0; col < nCols; ++col) {
-      mat(row,col) = (*this)(col,row);
+      mat(col,row) = (*this)(row,col);
     }
   }
 
