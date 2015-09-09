@@ -92,15 +92,20 @@ AC_PROG_CXX
 AC_PROG_FC
 AC_LANG([C])
 
+HAVE_MPI=0
 if test "x$enable_mpi" = "xyes"; then
     ACX_MPI(CC="$MPICC", [AC_MSG_ERROR([Could not find MPI.])])
+    HAVE_MPI=1
 fi
 
 AC_LANG([C++])
 
 if test "x$enable_mpi" = "xyes"; then
     ACX_MPI(CXX="$MPICXX", [AC_MSG_ERROR([Could not find MPI.])])
+    HAVE_MPI=1
 fi
+AC_SUBST(HAVE_MPI)
+AM_CONDITIONAL(MPI_ENABLED, test x$HAVE_MPI = x1)
 
 #-------------------------
 # External Library Checks

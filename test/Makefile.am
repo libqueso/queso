@@ -237,6 +237,10 @@ TESTS += $(top_builddir)/test/test_SharedPtr
 TESTS += $(top_builddir)/test/test_serialEnv
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
+if ! MPI_ENABLED
+XFAIL_TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+endif
+
 
 EXTRA_DIST =
 EXTRA_DIST += common/compare.pl

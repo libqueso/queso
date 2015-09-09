@@ -45,7 +45,6 @@ typedef MPI_Datatype data_type ;
 typedef MPI_Op       RawType_MPI_Op ;
 typedef MPI_Status   RawType_MPI_Status ;
 #define RawValue_MPI_COMM_SELF  MPI_COMM_SELF
-#define RawValue_MPI_IN_PLACE   MPI_IN_PLACE
 #define RawValue_MPI_ANY_SOURCE MPI_ANY_SOURCE
 #define RawValue_MPI_CHAR       MPI_CHAR
 #define RawValue_MPI_INT        MPI_INT
@@ -62,7 +61,6 @@ struct data_type { };
 typedef int RawType_MPI_Op;
 typedef int RawType_MPI_Status;
 #define RawValue_MPI_COMM_SELF   0
-#define RawValue_MPI_IN_PLACE    0
 #define RawValue_MPI_ANY_SOURCE -1
 #define RawValue_MPI_CHAR        0
 #define RawValue_MPI_INT         1
