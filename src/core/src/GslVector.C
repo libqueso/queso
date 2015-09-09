@@ -643,7 +643,7 @@ GslVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
   // Check number of participant nodes
   double localNumNodes = 1.;
   double totalNumNodes = 0.;
-  bcastComm.Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+  bcastComm.Allreduce<double>(&localNumNodes, &totalNumNodes, (int) 1, RawValue_MPI_SUM,
                       "GslVector::mpiBcast()",
                       "failed MPI.Allreduce() for numNodes");
   queso_require_equal_to_msg(((int) totalNumNodes), bcastComm.NumProc(), "inconsistent numNodes");
@@ -651,7 +651,7 @@ GslVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
   // Check that all participant nodes have the same vector size
   double localVectorSize  = this->sizeLocal();
   double sumOfVectorSizes = 0.;
-  bcastComm.Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+  bcastComm.Allreduce<double>(&localVectorSize, &sumOfVectorSizes, (int) 1, RawValue_MPI_SUM,
                       "GslVector::mpiBcast()",
                       "failed MPI.Allreduce() for vectorSize");
 
@@ -698,7 +698,7 @@ GslVector::mpiAllReduce(RawType_MPI_Op mpiOperation, const MpiComm& opComm, GslV
   for (unsigned int i = 0; i < size; ++i) {
     double srcValue = (*this)[i];
     double resultValue = 0.;
-    opComm.Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, RawValue_MPI_DOUBLE, mpiOperation,
+    opComm.Allreduce<double>(&srcValue, &resultValue, (int) 1, mpiOperation,
                      "GslVector::mpiAllReduce()",
                      "failed MPI.Allreduce()");
     resultVec[i] = resultValue;
@@ -721,7 +721,7 @@ GslVector::mpiAllQuantile(double probability, const MpiComm& opComm, GslVector& 
   for (unsigned int i = 0; i < size; ++i) {
     double auxDouble = (int) (*this)[i];
     std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
-    opComm.Gather((void *) &auxDouble, 1, RawValue_MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, RawValue_MPI_DOUBLE, 0,
+    opComm.Gather<double>(&auxDouble, 1, &vecOfDoubles[0], (int) 1, 0,
                   "GslVector::mpiAllQuantile()",
                   "failed MPI.Gather()");
 

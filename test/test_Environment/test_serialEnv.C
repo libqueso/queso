@@ -12,13 +12,9 @@ class Likelihood : public QUESO::BaseScalarFunction<V, M>
 public:
 
   Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain)
-    : QUESO::BaseScalarFunction<V, M>(prefix, domain)
-  {
-  }
+    : QUESO::BaseScalarFunction<V, M>(prefix, domain) {}
 
-  virtual ~Likelihood()
-  {
-  }
+  virtual ~Likelihood() {}
 
   virtual double lnValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const
@@ -37,12 +33,8 @@ public:
 };
 
 int main(int argc, char ** argv) {
-#ifdef QUESO_HAS_MPI
-  MPI_Init(&argc, &argv);
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
-#else
-  QUESO::FullEnvironment env(argv[1], "", NULL);
-#endif
+  QUESO::FullEnvironment env("test_Environment/input_test_serialEnv", "",
+      NULL);
 
   QUESO::VectorSpace<> paramSpace(env, "param_", 1, NULL);
 
@@ -71,10 +63,6 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(0, 0) = 0.1;
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
-
-#ifdef QUESO_HAS_MPI
-  MPI_Finalize();
-#endif
 
   return 0;
 }

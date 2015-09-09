@@ -33,8 +33,12 @@ double two_d_fn( double x, double y );
 
 int main(int argc, char ** argv)
 {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
   QUESO::FullEnvironment env(MPI_COMM_WORLD, "test_InterpolationSurrogate/queso_input.txt", "", NULL);
+#else
+  QUESO::FullEnvironment env("test_InterpolationSurrogate/queso_input.txt", "", NULL);
+#endif
 
   int return_flag = 0;
 
@@ -106,6 +110,9 @@ int main(int argc, char ** argv)
       return_flag = 1;
     }
 
+#ifdef QUESO_HAS_MPI
+  MPI_Finalize();
+#endif
   return return_flag;
 }
 

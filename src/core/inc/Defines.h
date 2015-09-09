@@ -44,8 +44,9 @@
 #define QUESO_HAS_ANN
 #endif
 
-//! This define is deprecated.  Remove any #ifdef statements in user code.
+#ifdef QUESO_HAVE_MPI
 #define QUESO_HAS_MPI
+#endif
 
 //! This define is deprecated.  Remove any #ifdef statements in user code.
 #define QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
@@ -62,7 +63,11 @@
 #include <stdlib.h> // For exit()
 #include <set>
 #include <vector>
+
+#ifdef QUESO_HAS_MPI
 #include <mpi.h>
+#endif
+
 #include <queso/asserts.h> // for queso_error handler
 
 namespace QUESO {
