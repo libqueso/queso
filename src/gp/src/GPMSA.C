@@ -62,42 +62,55 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 {
   queso_assert_greater(m_numSimulations, 0);
 
-  M simulation_matrix(m_simulationOutputs[0]->env(),
-                      m_simulationOutputs[0]->map(),
-                      m_numSimulations);
+  const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
+
+  queso_assert_equal_to(comm.NumProc(), 1);
+
+  Map serial_map(m_numSimulations, 0, comm);
 
   unsigned int numOutputs = this->m_experimentOutputSpace.dimLocal();
 
-  for (unsigned int i=0; i != numOutputs; ++i)
-    for (unsigned int j=0; j != m_numSimulations; ++j)
+  const BaseEnvironment &env = m_simulationOutputs[0]->env();
+
+  M simulation_matrix(env, serial_map, numOutputs);
+
+  for (unsigned int i=0; i != m_numSimulations; ++i)
+    for (unsigned int j=0; j != numOutputs; ++j)
       simulation_matrix(i,j) = 
-        (*m_simulationOutputs[j])[i];
+        (*m_simulationOutputs[i])[j];
 
-  const M& matU = simulation_matrix.svdMatU();
+  // GSL only finds left singular vectors if n_rows>=n_columns, so we need to
+  // calculate them indirectly from the eigenvalues of M^T*M
 
+  M S_trans(simulation_matrix.transpose());
 
-  VectorSpace<V, M> oneDSpace(m_simulationOutputs[0]->env(), "", 1, NULL);
+  M SM_squared(S_trans*simulation_matrix);
 
-  // FIXME
-  const unsigned int MAX_SVD_SIMULATIONS = 5;
-  const unsigned int num_svd_simulations =
-    std::max(MAX_SVD_SIMULATIONS, m_numSimulations);
-  m_SVDsimulationOutputs.resize
-    (num_svd_simulations,
-     new V(oneDSpace.zeroVector()));
-  for (unsigned int k = 0; k != num_svd_simulations; ++k)
-    {
-      V& SVDsimulation = *m_SVDsimulationOutputs[k];
-      for (unsigned int i=0; i != numOutputs; ++i)
-        SVDsimulation[i] = matU(i,k);
-    }
+  M SM_singularVectors(env, SM_squared.map(), numOutputs);
+  V SM_singularValues(env, SM_squared.map());
+
+  SM_squared.eigen(SM_singularValues, &SM_singularVectors);
+
+  const unsigned int MAX_SVD_TERMS =
+    std::min(m_numSimulations,(unsigned int)(5));
+  const unsigned int num_svd_terms =
+    std::min(MAX_SVD_TERMS, numOutputs);
+
+  // Copy only those vectors we want
+  m_TruncatedSVD_simulationOutputs.reset
+    (new M(m_simulationOutputs[0]->env(),
+           m_simulationOutputs[0]->map(),
+           num_svd_terms));
+
+  for (unsigned int i=0; i != numOutputs; ++i)
+    for (unsigned int k = 0; k != num_svd_terms; ++k)
+      (*m_TruncatedSVD_simulationOutputs)(i,k) = SM_singularVectors(i,k);
 }
 
 template <class V, class M>
 GPMSAEmulator<V, M>::~GPMSAEmulator()
 {
-  for (unsigned int k = 0; k != m_SVDsimulationOutputs.size(); ++k)
-    delete m_SVDsimulationOutputs[k];
+  // heap allocations get deleted via ScopedPtr
 }
 
 template <class V, class M>
