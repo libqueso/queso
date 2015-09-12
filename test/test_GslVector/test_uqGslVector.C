@@ -79,9 +79,9 @@ int main(int argc, char **argv) {
   }
 
   // Testing concatenate so we need a bigger param space
-  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> big_param_space(*env,
-      "", 6, NULL);
-  QUESO::GslVector v4(big_param_space.zeroVector());
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> *big_param_space =
+    new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env, "", 6, NULL);
+  QUESO::GslVector v4(big_param_space->zeroVector());
   v4.cwSetConcatenated(v1, v3);
 
   for (i = 0; i < v1.sizeLocal(); i++) {
@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
   std::vector<const QUESO::GslVector*> vecs;
   vecs.push_back(&v1);
   vecs.push_back(&v3);
-  QUESO::GslVector v5(big_param_space.zeroVector());
+  QUESO::GslVector v5(big_param_space->zeroVector());
   v5.cwSetConcatenated(vecs);
   for (i = 0; i < v5.sizeLocal(); i++) {
     if (std::abs(v5[i] - v4[i]) > TOL) {
@@ -226,6 +226,8 @@ int main(int argc, char **argv) {
     std::cerr << "division test failed" << std::endl;
     return 1;
   }
+  delete big_param_space;
+  delete param_space;
   delete env;
 
 #ifdef QUESO_HAS_MPI
