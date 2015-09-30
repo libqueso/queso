@@ -137,6 +137,19 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // discrepancy_corr_strength(dimScenario)
   // emulator_data_precision(1)   // = "small white noise"
 
+  // Other variables:
+  // m_numSimulations             // = "m"
+  // m_numExperiments             // = "n"
+  // m_simulationScenarios        // = "eta"
+  // m_experimentScenarios        // = "y"
+  // dimScenario                  // = "p_x", "n_eta"
+  //                              // "n_y" := sum(n_y_i)
+  //                              //      (== n*n_eta for us for now)
+  // num_svd_terms                // = "p_eta"
+  // num_discrepancy_bases        // = "p_delta"
+  // m_TruncatedSVD_simulationOutputs  // = "K"
+
+
   // Construct covariance matrix
   unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;
   unsigned int numOutputs = this->m_experimentOutputSpace.dimLocal();
