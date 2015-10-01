@@ -4,7 +4,14 @@ Simulation, and Optimization.
 -----------------------------------------------------
 
 Version 0.54.0
-  * Make MPI an optional dependency
+  * Fix memory leak in test_GslVector
+  * Make MPI optional
+  * Optimise GSLMatrix::operator() and GslVector::operator[]
+  * Add 'txt' file output option
+  * Add SharedPtr
+  * Add input file options for optimisation and monitoring
+  * Fix some compiler warnings
+  * Fix HDF5 #include issues
 
 Version 0.53.0
   * Add linear interpolation surrogates
