@@ -87,9 +87,13 @@ public:
       const BoostInputOptionsParser & parser);
 
 protected:
-  const std::string & m_filename;
-  typename ScopedPtr<boost::program_options::options_description>::Type m_optionsDescription;
-  typename ScopedPtr<boost::program_options::variables_map>::Type m_optionsMap;
+  // Needs to be a copy, not a reference; we don't want to force users
+  // to keep their strings around and non-temporary, and we don't have
+  // a non-temporary "" string for internal use.
+  const std::string m_filename;
+
+  ScopedPtr<boost::program_options::options_description>::Type m_optionsDescription;
+  ScopedPtr<boost::program_options::variables_map>::Type m_optionsMap;
 
 private:
   bool m_scannedInputFile;

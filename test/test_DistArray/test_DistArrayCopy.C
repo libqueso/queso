@@ -1,4 +1,3 @@
-#include <mpi.h>
 #include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
 #include <queso/MpiComm.h>
@@ -6,13 +5,20 @@
 #include <queso/DistArray.h>
 
 int main(int argc, char **argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
+#endif
 
   QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
 
+#ifdef QUESO_HAS_MPI
   QUESO::FullEnvironment *env =
     new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
+#else
+  QUESO::FullEnvironment *env =
+    new QUESO::FullEnvironment("", "", &options);
+#endif
 
   const QUESO::MpiComm & comm = env->fullComm();
 
@@ -28,6 +34,8 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
   return 1;
 }

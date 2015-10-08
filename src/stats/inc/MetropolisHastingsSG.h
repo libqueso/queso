@@ -87,7 +87,7 @@ struct MHRawChainInfoStruct
   void reset ();
 
   //! Calculates the MPI sum of \c this.
-  void mpiSum(const MpiComm& comm, MHRawChainInfoStruct& sumInfo) const;
+  void mpiSum(const MpiComm& comm, MHRawChainInfoStruct& sumInfo);
   //@}
 
   double       runTime;

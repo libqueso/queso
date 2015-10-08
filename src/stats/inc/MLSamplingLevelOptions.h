@@ -247,6 +247,9 @@ public:
   std::string                        m_rawChainDataOutputFileName;
 
   //! Type of output file for raw chain.
+  /*!
+   * See MhOptionsValues::m_rawChainDataOutputFileType
+   */
   std::string                        m_rawChainDataOutputFileType;
 
   //! Whether or not subEnvs will write to output file for raw chain.
@@ -393,7 +396,10 @@ private:
   std::string                   m_option_rawChain_measureRunTimes;
   std::string                   m_option_rawChain_dataOutputPeriod;
   std::string                   m_option_rawChain_dataOutputFileName;
+
+  //! Option name for MLSamplingLevelOptions::m_rawChainDataOutputFileType.  Option name is m_prefix + "ml_rawChain_dataOutputFileType"
   std::string                   m_option_rawChain_dataOutputFileType;
+
   std::string                   m_option_rawChain_dataOutputAllowAll;
   std::string                   m_option_rawChain_dataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS

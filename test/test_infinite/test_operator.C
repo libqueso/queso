@@ -15,13 +15,12 @@
 #include <libmesh/numeric_vector.h>
 #include <libmesh/elem.h>
 #include <libmesh/dof_map.h>
+#include <queso/EnvironmentOptions.h>
 #include <queso/FunctionOperatorBuilder.h>
 #include <queso/LibMeshFunction.h>
 #include <queso/LibMeshNegativeLaplacianOperator.h>
 #include <queso/InfiniteDimensionalGaussian.h>
 #endif  // QUESO_HAVE_LIBMESH
-
-#include <mpi.h>
 
 #define TEST_TOL 1e-8
 #define INTEGRATE_TOL 1e-2
@@ -33,8 +32,12 @@ int main(int argc, char **argv)
   QUESO::EnvOptionsValues opts;
   opts.m_seed = -1;
 
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
   QUESO::FullEnvironment env(MPI_COMM_WORLD, "", "", &opts);
+#else
+  QUESO::FullEnvironment env("", "", &opts);
+#endif
 
 #ifdef LIBMESH_DEFAULT_SINGLE_PRECISION
   // SLEPc currently gives us a nasty crash with Real==float
@@ -118,7 +121,9 @@ int main(int argc, char **argv)
   }
 }
 #endif  // LIBMESH_HAVE_SLEPC
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
   return 0;
 #else
   return 77;

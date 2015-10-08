@@ -290,7 +290,24 @@ public:
    */
   std::string                        m_rawChainDataOutputFileName;
 
-  //! The filetype of m_rawChainDataOutputFileName.  Only "m" (matlab) is currently supported.  Default is "m"
+  //! The filetype of m_rawChainDataOutputFileName
+  /*!
+   * Only "m" (matlab) and "txt" are currently supported.
+   *
+   * If "m", the raw chain data that is written will be matlab-friendly.  I.e.,
+   * arrays will be set up with the correct dimensions.  The first dimension
+   * is the sample dimension and the second dimension (for high-dimensional
+   * statistical inverse problems) is the parameter dimension.
+   *
+   * If "txt", none of the matlab-specific information is written to the file.
+   * Instead, space-delimited column data is written.  The first line
+   * specifies the dimensions of the saved array data.  The first dimension
+   * is the sample dimension and the second dimension is the parameter
+   * dimension.  For example, if the first line written is "12 34" then the
+   * following 12 lines are samples that live in a 34-dimensional space.
+   *
+   * Default is "m"
+   */
   std::string                        m_rawChainDataOutputFileType;
 
   //! Toggle for whether or not to allow all processes to write Markov chain output to a file

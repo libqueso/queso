@@ -27,6 +27,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/GPMSA.h>
 #include <queso/GslOptimizer.h>
+#include <queso/OptimizerMonitor.h>
 
 namespace QUESO {
 
@@ -257,11 +258,25 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   // user-provided initial seed, or use the user-provided seed for a
   // deterministic optimisation instead and seed the chain with the result of
   // the optimisation
-  if (this->m_seedWithMAPEstimator) {
+  if (this->m_seedWithMAPEstimator ||
+      m_optionsObj->m_seedWithMAPEstimator) {
+    // Unfortunately, I didn't have the foresight to make this an input file
+    // option from the beginning, hence needing to check two flags
+
     // Do optimisation before sampling
     GslOptimizer optimizer(*m_solutionPdf);
     optimizer.setInitialPoint(dynamic_cast<const GslVector &>(initialValues));
-    optimizer.minimize();
+
+    OptimizerMonitor monitor(m_env);
+    monitor.set_display_output(true, true);
+
+    // If the input file option is set, then use the monitor, otherwise don't
+    if (m_optionsObj->m_useOptimizerMonitor) {
+      optimizer.minimize(&monitor);
+    }
+    else {
+      optimizer.minimize();
+    }
 
     // Compute output realizer: Metropolis-Hastings approach
     m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(

@@ -26,6 +26,9 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
+#include <queso/Defines.h>
+#include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
+
 namespace QUESO {
 
 // Default constructor -----------------------------
@@ -203,8 +206,6 @@ ComputeCovCorrMatricesBetweenVectorRvs(
         P_M&                          pqCorrMatrix)
 {
   // Check input data consistency
-  const BaseEnvironment& env = paramRv.env();
-
   bool useOnlyInter0Comm = (paramRv.imageSet().vectorSpace().numOfProcsForStorage() == 1) &&
                            (qoiRv.imageSet().vectorSpace().numOfProcsForStorage()   == 1);
 

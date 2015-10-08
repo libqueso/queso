@@ -41,6 +41,9 @@
 #define UQ_SIP_SOLVER_ODV                  "bayes_mc" // Bayesian formula + Metropolis-Hastings
 #endif
 
+#define UQ_SIP_SEEDWITHMAPESTIMATOR 0
+#define UQ_SIP_USEOPTIMIZERMONITOR 1
+
 namespace boost {
   namespace program_options {
     class options_description;
@@ -99,7 +102,8 @@ public:
   std::string            m_solverString;
 #endif
 
-  //MhOptionsValues m_mhOptionsValues;
+  bool m_seedWithMAPEstimator;
+  bool m_useOptimizerMonitor;
 
 private:
   BoostInputOptionsParser * m_parser;
@@ -112,6 +116,8 @@ private:
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   std::string                   m_option_solver;
 #endif
+  std::string m_option_seedWithMAPEstimator;
+  std::string m_option_useOptimizerMonitor;
 
   //! Copies the option values from \c src to \c this.
   void copy(const SipOptionsValues& src);
@@ -121,10 +127,6 @@ private:
   friend std::ostream & operator<<(std::ostream & os,
       const SipOptionsValues & obj);
 };
-
-// --------------------------------------------------
-// --------------------------------------------------
-// --------------------------------------------------
 
 /*! \class StatisticalInverseProblemOptions
  *  \brief This class reads option values for a Statistical Inverse Problem from an input file.
@@ -168,7 +170,6 @@ public:
 private:
   //! Define my SIP options as the default options.
   void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
-
   //! Gets the option values of the SIP.
   void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
 
@@ -182,6 +183,8 @@ private:
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   std::string                   m_option_solver;
 #endif
+  std::string m_option_seedWithMAPEstimator;
+  std::string m_option_useOptimizerMonitor;
 };
 
 //! Prints the object \c obj, overloading an operator.

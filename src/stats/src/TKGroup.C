@@ -36,9 +36,9 @@ BaseTKGroup<V,M>::BaseTKGroup()
   m_env                  (*m_emptyEnv),
   m_prefix               (""),
   m_vectorSpace          (NULL),
-  m_scales               (0),
-  m_preComputingPositions(NULL),
-  m_rvs                  (0)
+  m_scales               (),
+  m_preComputingPositions(),
+  m_rvs                  ()
 {
 }
 // Constructor with values---------------------------

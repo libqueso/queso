@@ -417,10 +417,22 @@ class FullEnvironment : public BaseEnvironment {
 public:
     //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor.
-  /*! It initializes the full communicator, reads the options, deals with multiple sub-environments,
-   * e.g. dealing with sub/self/inter0-communicators, handles path for output files. */
+  //! Parallel constructor.
+  /*!
+   * Initializes the full communicator, reads the options, deals with multiple
+   * sub-environments, e.g. dealing with sub/self/inter0-communicators, handles
+   * path for output files.
+   */
+#ifdef QUESO_HAS_MPI
   FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* alternativeOptionsValues);
+#endif
+
+  //! Serial constructor.
+  /*!
+   * No communicator is passed. Output path handling is exactly as in the
+   * parallel ctor.
+   */
+  FullEnvironment(const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* alternativeOptionsValues);
 
   //! Destructor
  ~FullEnvironment();

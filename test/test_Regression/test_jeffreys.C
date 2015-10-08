@@ -107,17 +107,24 @@ void compute(const QUESO::FullEnvironment& env) {
 
 int main(int argc, char ** argv) {
   //init env
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
   // Step 1: Set up QUESO environment
   QUESO::FullEnvironment* env =
     new QUESO::FullEnvironment(MPI_COMM_WORLD,"test_Regression/jeffreys_input.txt","",NULL);
+#else
+  QUESO::FullEnvironment* env =
+    new QUESO::FullEnvironment("test_Regression/jeffreys_input.txt","",NULL);
+#endif
 
   //compute
   compute(*env);
 
   //finalize enviroment
   delete env;
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

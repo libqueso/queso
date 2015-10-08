@@ -65,15 +65,15 @@ public:
 };
 
 int main(int argc, char ** argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-
   QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
+#else
+  QUESO::FullEnvironment env(argv[1], "", NULL);
+#endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "param_", 2, NULL);
-
-  double min_val = 0.0;
-  double max_val = 1.0;
 
   QUESO::GslVector paramMins(paramSpace.zeroVector());
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
@@ -131,7 +131,9 @@ int main(int argc, char ** argv) {
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

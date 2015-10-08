@@ -63,6 +63,8 @@ boost::shared_ptr<FunctionBase> InfiniteDimensionalGaussian::draw()
     (this->coeffs)[i] = env.rngObject()->gaussianSample(this->beta);
   }
 
+#warning We never use the mean?
+
   boost::shared_ptr<FunctionBase> f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
   return f;
 }

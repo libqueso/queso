@@ -64,18 +64,13 @@ BaseVectorCdf<V,M>::pdfSupport() const
 template<class V, class M>
 void
 BaseVectorCdf<V,M>::subWriteContents(
-  const std::string&            varNamePrefix,
-  const std::string&            fileName,
-  const std::string&            fileType,
-  const std::set<unsigned int>& allowedSubEnvIds) const
+  const std::string&            /* varNamePrefix */,
+  const std::string&            /* fileName */,
+  const std::string&            /* fileType */,
+  const std::set<unsigned int>& /* allowedSubEnvIds */) const
 {
   std::cerr << "WARNING: BaseVectorCdf<V,M>::subWriteContents() being used..."
             << std::endl;
-
-  if (&varNamePrefix)    {}; // just to remove compiler warning
-  if (&fileName)         {}; // just to remove compiler warning
-  if (&fileType)         {}; // just to remove compiler warning
-  if (&allowedSubEnvIds) {}; // just to remove compiler warning
   return;
 }
 

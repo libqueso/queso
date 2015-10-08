@@ -57,7 +57,7 @@ struct likelihoodData {
   double samplingVar;                  // input
   std::vector<double> dataSet;         // input
 };
-unsigned long likelihoodCalls = 0;     // output
+unsigned int likelihoodCalls = 0;     // output
 
 // evaluate log likelihood
 template<class P_V,class P_M>
@@ -159,17 +159,14 @@ void GaussianMean1DRegressionCompute(const QUESO::BaseEnvironment& env,
   std::vector<int> unifiedNs(env.inter0Comm().NumProc());
   std::vector<double> unifiedMeans(env.inter0Comm().NumProc());
   std::vector<double> unifiedM2s(env.inter0Comm().NumProc());
-  MPI_Gather(&N, 1, MPI_INT, &(unifiedNs[0]), 1, MPI_INT, 0,
-      env.inter0Comm().Comm());
-  MPI_Gather(&subMean, 1, MPI_DOUBLE, &(unifiedMeans[0]), 1, MPI_DOUBLE, 0,
-      env.inter0Comm().Comm());
-  MPI_Gather(&subM2, 1, MPI_DOUBLE, &(unifiedM2s[0]), 1, MPI_DOUBLE, 0,
-      env.inter0Comm().Comm());
+  env.inter0Comm().Gather<int>(&N, 1, &(unifiedNs[0]), 1, 0, "", "");
+  env.inter0Comm().Gather<double>(&subMean, 1, &(unifiedMeans[0]), 1, 0, "", "");
+  env.inter0Comm().Gather<double>(&subM2, 1, &(unifiedM2s[0]), 1, 0, "", "");
 
   // get the total number of likelihood calls at proc 0
-  unsigned long totalLikelihoodCalls = 0;
-  MPI_Reduce(&likelihoodCalls, &totalLikelihoodCalls, 1, MPI_UNSIGNED_LONG,
-      MPI_SUM, 0, env.inter0Comm().Comm());
+  unsigned int totalLikelihoodCalls = 0;
+  env.inter0Comm().Allreduce<unsigned int>(&likelihoodCalls, &totalLikelihoodCalls, 1,
+      RawValue_MPI_SUM, "", "");
 
   // compute global posterior mean and std via Chan algorithm, output results on proc 0
   if (env.inter0Rank() == 0) {
@@ -210,9 +207,13 @@ int main(int argc, char* argv[]) {
   //************************************************
   // Initialize environments
   //************************************************
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+#else
+  int rank = 0;
+#endif
 
   // variables to be filled by command line and/or input file values
   std::string inputFile;
@@ -251,7 +252,11 @@ int main(int argc, char* argv[]) {
   } catch (std::exception& e) {
     if(rank == 0)
       std::cout<<"Caught exception: "<<e.what()<<std::endl;
+#ifdef QUESO_HAS_MPI
     MPI_Abort(MPI_COMM_WORLD, -1);
+#else
+    exit(1);
+#endif
   }
   boost::program_options::notify(vm);
 
@@ -262,7 +267,9 @@ int main(int argc, char* argv[]) {
         << ")>" << std::endl;
       std::cout << visible << std::endl;
     }
+#ifdef QUESO_HAS_MPI
     MPI_Finalize();
+#endif
     return 1;
   }
 
@@ -273,7 +280,11 @@ int main(int argc, char* argv[]) {
   } catch (std::exception& e) {
     if(rank == 0)
       std::cout << "Caught exception: " << e.what() << std::endl;
+#ifdef QUESO_HAS_MPI
     MPI_Abort(MPI_COMM_WORLD, -1);
+#else
+    exit(1);
+#endif
   }
   boost::program_options::notify(vm);
   config_stream.close();
@@ -298,10 +309,17 @@ int main(int argc, char* argv[]) {
   }
 
    // initilize environment
+#ifdef QUESO_HAS_MPI
   QUESO::FullEnvironment env(MPI_COMM_WORLD,  // MPI communicator
 			     inputFile.c_str(),  // input file name
 			     "",                 // name prefix
 			     NULL );             // alt options
+#else
+  QUESO::FullEnvironment env(  // No MPI communicator
+           inputFile.c_str(),  // input file name
+           "",                 // name prefix
+           NULL );             // alt options
+#endif
 
   // reset seed to value in input file + fullRank
   env.resetSeed(env.seed() + env.fullRank());
@@ -310,7 +328,9 @@ int main(int argc, char* argv[]) {
   GaussianMean1DRegressionCompute<QUESO::GslVector, QUESO::GslMatrix>(env,
       priorMean, priorVar, dat);
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

@@ -32,6 +32,7 @@
 
 #include <queso/Defines.h>
 #include <queso/Vector.h>
+
 #include <gsl/gsl_vector.h>
 
 namespace QUESO {
@@ -255,6 +256,23 @@ GslVector operator+    (const GslVector& x,   const GslVector& y  );
 GslVector operator-    (const GslVector& x,   const GslVector& y  );
 bool             operator==   (const GslVector& lhs, const GslVector& rhs);
 std::ostream&    operator<<   (std::ostream& os,            const GslVector& obj);
+
+
+inline
+double&
+GslVector::operator[](unsigned int i)
+{
+  return *gsl_vector_ptr(m_vec,i);
+}
+
+
+inline
+const double&
+GslVector::operator[](unsigned int i) const
+{
+  return *gsl_vector_const_ptr(m_vec,i);
+}
+
 
 }  // End namespace QUESO
 

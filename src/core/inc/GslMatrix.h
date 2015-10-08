@@ -29,10 +29,12 @@
     \brief QUESO matrix class using GSL.
 */
 
+#include <queso/Defines.h>
+#include <queso/GslVector.h>
 #include <queso/Matrix.h>
+
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_permutation.h>
-#include <queso/GslVector.h>
 
 namespace QUESO {
 
@@ -99,10 +101,23 @@ public:
   //! @name Accessor methods
   //@{
   //! Element access method (non-const).
-  double& operator()(unsigned int i, unsigned int j);
+  double& operator()(unsigned int i, unsigned int j)
+  {
+    // Changing the matrix changes its decomposition(s).  We'll
+    // invalidate for now; recalculate later if needed.
+    this->resetLU();
+    queso_require_less_msg(i, m_mat->size1, "i is too large");
+    queso_require_less_msg(j, m_mat->size2, "j is too large");
+    return *gsl_matrix_ptr(m_mat,i,j);
+  }
 
   //! Element access method (const).
-  const double& operator()(unsigned int i, unsigned int j) const;
+  const double& operator()(unsigned int i, unsigned int j) const
+  {
+    queso_require_less_msg(i, m_mat->size1, "i is too large");
+    queso_require_less_msg(j, m_mat->size2, "j is too large");
+    return *gsl_matrix_ptr(m_mat,i,j);
+  }
 
 
   //@}
