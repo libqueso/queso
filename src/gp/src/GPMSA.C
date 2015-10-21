@@ -135,7 +135,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // discrepancy_corr_strength(1) // = "rho_delta"
   // ...
   // discrepancy_corr_strength(dimScenario)
-  // emulator_data_precision(1)   // = "small white noise"
+  // emulator_data_precision(1)   // = "small white noise", "small ridge"
 
   // Other variables:
   // m_numSimulations             // = "m"
@@ -148,6 +148,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // num_svd_terms                // = "p_eta"
   // num_discrepancy_bases        // = "p_delta"
   // m_TruncatedSVD_simulationOutputs  // = "K"
+  // covMatrix                    // = "Sigma_D"
 
 
   // Construct covariance matrix
@@ -210,9 +211,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           (this->m_simulationParameters)[j-this->m_numExperiments];
       }
 
-      // Emulator component
+      // Emulator component       // = first term in (1)
       prodScenario = 1.0;
-      prodParameter = 1.0;
       unsigned int emulatorCorrStrStart = dimParameter + 2;
       for (unsigned int k = 0; k < dimScenario; k++) {
         prodScenario *= std::pow(domainVector[emulatorCorrStrStart+k],
@@ -222,6 +222,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
       queso_assert (!isnan(prodScenario));
 
+      // = second term in (1)
+      prodParameter = 1.0;
       for (unsigned int k = 0; k < dimParameter; k++) {
         queso_assert (!isnan(domainVector[emulatorCorrStrStart+dimScenario+k]));
         queso_assert (!isnan((*parameter1)[k]));
@@ -235,15 +237,17 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       queso_assert (!isnan(prodParameter));
 
       // emulator precision
-      double emPrecision = domainVector[dimParameter+1];
+      const double emPrecision = domainVector[dimParameter+1];
       queso_assert_greater(emPrecision, 0);
 
+      // coefficient in (1)
       for (unsigned int k = 0; k != numOutputs; ++k)
         for (unsigned int l = 0; l != numOutputs; ++l)
           covMatrix(i*numOutputs+k, j*numOutputs+l) =
             prodScenario * prodParameter / emPrecision;
 
-      // If we're in the experiment cross correlation part, need extra foo
+      // If we're in the experiment cross correlation part, need extra
+      // foo: Sigma_delta and Sigma_y
       if (i < this->m_numExperiments && j < this->m_numExperiments) {
         V* cross_scenario1 = (this->m_simulationScenarios)[i];
         V* cross_scenario2 = (this->m_simulationScenarios)[j];
@@ -258,6 +262,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                      ((*cross_scenario1)[k] - (*cross_scenario2)[k]));
         }
 
+        // = lambda_delta
         const double denominator = domainVector[discrepancyCorrStrStart-1]; 
         queso_assert_greater(denominator, 0);
         queso_assert (!isnan(prodDiscrepancy));
@@ -265,9 +270,11 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         for (unsigned int k = 0; k != numOutputs; ++k)
           for (unsigned int l = 0; l != numOutputs; ++l) {
             {
+              // Sigma_delta term from below (3)
               covMatrix(i*numOutputs+k, j*numOutputs+l) +=
                 prodDiscrepancy / denominator;
 
+              // Sigma_y term from below (3)
               const double experimentalError = 
                 (this->m_experimentErrors)(i*numOutputs+k, j*numOutputs+l);
 
@@ -281,6 +288,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     }
 
     // Add small white noise component to diagonal to make stuff +ve def
+    // = "small ridge"
     unsigned int dimSum = 4 +
                           dimParameter +
                           dimParameter +
@@ -294,7 +302,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       covMatrix(i*numOutputs+k, i*numOutputs+k) += nugget;
   }
 
-  // Form residual = D - mean
+  // Form residual = D - mean // = D - mu*1 in (3)
+  // We don't subtract off mean here because we expect normalized data
   for (unsigned int i = 0; i < this->m_numExperiments; i++) {
     for (unsigned int k = 0; k != numOutputs; ++k)
       residual[i*numOutputs+k] =
@@ -307,10 +316,12 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   }
 
   // Solve covMatrix * sol = residual
+  // = Sigma_D^-1 * (D - mu 1) from (3)
   V sol(covMatrix.invertMultiply(residual));
 
-  // There's no dot product function in GslVector.
+  // Premultiply by residual^T as in (3)
   double minus_2_log_lhd = 0.0;
+  // There's no dot product function in GslVector.
   for (unsigned int i = 0; i < totalOutputs; i++) {
     minus_2_log_lhd += sol[i] * residual[i];
   }
@@ -330,6 +341,10 @@ if (isnan(minus_2_log_lhd))
 
   queso_assert_greater(minus_2_log_lhd, 0);
 
+  // FIXME: missing ln(det(Sigma_D)) term!
+  // minus_2_log_lhd += std::log(covMatrix.determinant());
+
+  // Multiply by -1/2 coefficient from (3)
   return -0.5 * minus_2_log_lhd;
 }
 
