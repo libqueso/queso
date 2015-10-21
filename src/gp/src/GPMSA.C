@@ -342,7 +342,7 @@ if (isnan(minus_2_log_lhd))
   queso_assert_greater(minus_2_log_lhd, 0);
 
   // FIXME: missing ln(det(Sigma_D)) term!
-  // minus_2_log_lhd += std::log(covMatrix.determinant());
+  minus_2_log_lhd += std::log(covMatrix.determinant());
 
   // Multiply by -1/2 coefficient from (3)
   return -0.5 * minus_2_log_lhd;
