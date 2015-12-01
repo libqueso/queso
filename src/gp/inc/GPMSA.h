@@ -90,6 +90,7 @@ public:
   const std::vector<V *> & m_experimentScenarios;
   const std::vector<V *> & m_experimentOutputs;
 
+  unsigned int num_svd_terms;
   typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
 
   // Total observation error covriance matrix

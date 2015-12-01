@@ -93,8 +93,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 
   const unsigned int MAX_SVD_TERMS =
     std::min(m_numSimulations,(unsigned int)(5));
-  const unsigned int num_svd_terms =
-    std::min(MAX_SVD_TERMS, numOutputs);
+  num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
 
   // Copy only those vectors we want
   m_TruncatedSVD_simulationOutputs.reset
@@ -125,9 +124,11 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // theta(1)                     // = "theta", "t" in Higdon et. al. 2008
   // theta(2)
   // ...
-  // theta(dimParameterSpace)
+  // theta(dimParameter)
   // emulator_mean                // = "mu"
-  // emulator_precision           // = "lambda_eta"
+  // emulator_precision(1)        // = "lambda_eta" in scalar case,
+  // ...                          //   "lambda_{wi}" in vector
+  // emulator_precision(num_svd_terms)
   // emulator_corr_strength(1)    // = "rho_eta"
   // ...                          // dimScenario = "p_x", dimParameter = "p_t"
   // emulator_corr_strength(dimScenario + dimParameter)
@@ -147,7 +148,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   //                              //      (== n*n_eta for us for now)
   // num_svd_terms                // = "p_eta"
   // num_discrepancy_bases        // = "p_delta"
-  // m_TruncatedSVD_simulationOutputs  // = "K"
+  // m_TruncatedSVD_simulationOutputs  // = "K_eta"
   // covMatrix                    // = "Sigma_D"
 
 
@@ -213,7 +214,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
       // Emulator component       // = first term in (1)
       prodScenario = 1.0;
-      unsigned int emulatorCorrStrStart = dimParameter + 2;
+      unsigned int emulatorCorrStrStart =
+        dimParameter + 1 + num_svd_terms;
       for (unsigned int k = 0; k < dimScenario; k++) {
         prodScenario *= std::pow(domainVector[emulatorCorrStrStart+k],
                                  4.0 * ((*scenario1)[k] - (*scenario2)[k]) *
@@ -237,14 +239,18 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       queso_assert (!isnan(prodParameter));
 
       // emulator precision
-      const double emPrecision = domainVector[dimParameter+1];
-      queso_assert_greater(emPrecision, 0);
+      for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
+        {
+          const double emulator_precision =
+            domainVector[dimParameter+basis+1];
+          queso_assert_greater(emulator_precision, 0);
 
-      // coefficient in (1)
-      for (unsigned int k = 0; k != numOutputs; ++k)
-        for (unsigned int l = 0; l != numOutputs; ++l)
-          covMatrix(i*numOutputs+k, j*numOutputs+l) =
-            prodScenario * prodParameter / emPrecision;
+          // coefficient in (1)
+          for (unsigned int k = 0; k != numOutputs; ++k)
+            for (unsigned int l = 0; l != numOutputs; ++l)
+              covMatrix(i*numOutputs+k, j*numOutputs+l) =
+                prodScenario * prodParameter / emulator_precision;
+        }
 
       // If we're in the experiment cross correlation part, need extra
       // foo: Sigma_delta and Sigma_y
@@ -253,8 +259,9 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         V* cross_scenario2 = (this->m_simulationScenarios)[j];
         prodDiscrepancy = 1.0;
         unsigned int discrepancyCorrStrStart = dimParameter +
+                                               num_svd_terms +
                                                dimParameter +
-                                               dimScenario + 3;
+                                               dimScenario + 2;
         for (unsigned int k = 0; k < dimScenario; k++) {
           prodDiscrepancy *=
             std::pow(domainVector[discrepancyCorrStrStart+k], 4.0 *
@@ -289,7 +296,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
     // Add small white noise component to diagonal to make stuff +ve def
     // = "small ridge"
-    unsigned int dimSum = 4 +
+    unsigned int dimSum = 3 +
+                          num_svd_terms +
                           dimParameter +
                           dimParameter +
                           dimScenario +
