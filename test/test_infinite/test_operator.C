@@ -15,6 +15,7 @@
 #include <libmesh/numeric_vector.h>
 #include <libmesh/elem.h>
 #include <libmesh/dof_map.h>
+#include <libmesh/system_norm.h>
 #include <queso/EnvironmentOptions.h>
 #include <queso/FunctionOperatorBuilder.h>
 #include <queso/LibMeshFunction.h>
@@ -71,7 +72,7 @@ int main(int argc, char **argv)
   for (i = 0; i < builder.num_req_eigenpairs; i++) {
     eig_sys.get_eigenpair(i);
     norms[i] = eig_sys.calculate_norm(*eig_sys.solution,
-                                      libMeshEnums::L2);
+                                      libMesh::SystemNorm(libMeshEnums::L2));
     if (abs(norms[i] - 1.0) > TEST_TOL) {
       return 1;
     }
