@@ -1185,6 +1185,39 @@ GslMatrix::multiply(
   return;
 }
 
+GslMatrix
+GslMatrix::multiply(
+  const GslMatrix & X) const
+{
+  GslMatrix Y(m_env,m_map,X.numCols());
+  this->multiply(X,Y);
+
+  return Y;
+}
+
+
+
+void
+GslMatrix::multiply(
+  const GslMatrix & X,
+        GslMatrix & Y) const
+{
+  queso_require_equal_to_msg(this->numCols(), X.numRowsGlobal(), "matrix and X have incompatible sizes");
+  queso_require_equal_to_msg(this->numRowsGlobal(), Y.numRowsGlobal(), "matrix and Y have incompatible sizes");
+  queso_require_equal_to_msg(X.numCols(), Y.numCols(), "X and Y have incompatible sizes");
+
+  const unsigned int m_s = this->numRowsGlobal();
+  const unsigned int p_s = this->numCols();
+  const unsigned int n_s = X.numCols();
+
+  for (unsigned int k=0; k<p_s; k++)
+    for (unsigned int j=0; j<n_s; j++)
+      if (X(k,j) != 0.)
+        for (unsigned int i=0; i<m_s; i++)
+          Y(i,j) += (*this)(i,k) * X(k,j);
+}
+
+
 GslVector
 GslMatrix::invertMultiply(
   const GslVector& b) const
