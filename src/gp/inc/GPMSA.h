@@ -93,6 +93,12 @@ public:
   unsigned int num_svd_terms;
   typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
 
+  // Matrix of svd basis vectors
+  typename ScopedPtr<M>::Type K;
+
+  // Saved calculation of K*K^T, to be used for LU invert-multiplies
+  typename ScopedPtr<M>::Type KKT;
+
   // Total observation error covriance matrix
   const M & m_experimentErrors;
 

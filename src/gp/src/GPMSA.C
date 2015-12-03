@@ -104,6 +104,27 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   for (unsigned int i=0; i != numOutputs; ++i)
     for (unsigned int k = 0; k != num_svd_terms; ++k)
       (*m_TruncatedSVD_simulationOutputs)(i,k) = SM_singularVectors(i,k);
+
+  Map copied_map(numOutputs * m_numSimulations, 0,
+                 m_simulationOutputs[0]->map().Comm());
+
+  K.reset
+    (new M(m_simulationOutputs[0]->env(), copied_map,
+           m_numSimulations));
+  for (unsigned int k=0; k != num_svd_terms; ++k)
+    for (unsigned int i1=0; i1 != m_numSimulations; ++i1)
+      for (unsigned int i2=0; i2 != numOutputs; ++i2)
+        {
+          const unsigned int i = i1 * numOutputs + i2;
+          const unsigned int j = k * m_numSimulations + i1;
+          (*K)(i,j) = SM_singularVectors(i2,k);
+        }
+
+  KKT.reset
+    (new M(m_simulationOutputs[0]->env(), copied_map,
+           numOutputs * m_numSimulations));
+
+  K->multiply(K->transpose(), *KKT);
 }
 
 template <class V, class M>
