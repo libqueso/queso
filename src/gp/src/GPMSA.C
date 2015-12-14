@@ -42,6 +42,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const std::vector<V *> & m_simulationOutputs,
     const std::vector<V *> & m_experimentScenarios,
     const std::vector<V *> & m_experimentOutputs,
+    const std::vector<V>   & m_discrepancyBases,
     const M & m_experimentErrors,
     const ConcatenatedVectorRV<V, M> & m_totalPrior)
   :
@@ -57,6 +58,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   m_simulationOutputs(m_simulationOutputs),
   m_experimentScenarios(m_experimentScenarios),
   m_experimentOutputs(m_experimentOutputs),
+  m_discrepancyBases(m_discrepancyBases),
   m_experimentErrors(m_experimentErrors),
   m_totalPrior(m_totalPrior)
 {
@@ -641,6 +643,7 @@ GPMSAFactory<V, M>::addSimulation(V & simulationScenario,
         this->m_simulationOutputs,
         this->m_experimentScenarios,
         this->m_experimentOutputs,
+        this->m_discrepancyBases,
         *(this->m_experimentErrors),
         *(this->m_totalPrior)));
   }
@@ -693,10 +696,29 @@ GPMSAFactory<V, M>::addExperiments(
         this->m_simulationOutputs,
         this->m_experimentScenarios,
         this->m_experimentOutputs,
+        this->m_discrepancyBases,
         *(this->m_experimentErrors),
         *(this->m_totalPrior)));
   }
 }
+
+
+template <class V, class M>
+void
+GPMSAFactory<V, M>::setDiscrepancyBases(
+    const std::vector<V *> & discrepancyBases)
+{
+  m_discrepancyBases.clear();
+
+  for (unsigned int i = 0; i < discrepancyBases.size(); i++) {
+    m_discrepancyBases.push_back(*(discrepancyBases[i]));
+  }
+
+  // We should not yet have constructed the underlying GP model
+  queso_assert_equal_to(this->m_constructedGP, false);
+}
+
+
 
 template <class V, class M>
 const ConcatenatedVectorRV<V, M> &

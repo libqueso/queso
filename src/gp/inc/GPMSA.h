@@ -59,6 +59,7 @@ public:
                 const std::vector<V *> & m_simulationOutputs,
                 const std::vector<V *> & m_experimentScenarios,
                 const std::vector<V *> & m_experimentOutputs,
+                const std::vector<V>   & m_discrepancyBases,
                 const M & m_experimentErrors,
                 const ConcatenatedVectorRV<V, M> & m_totalPrior);
 
@@ -89,6 +90,8 @@ public:
   const std::vector<V *> & m_simulationOutputs;
   const std::vector<V *> & m_experimentScenarios;
   const std::vector<V *> & m_experimentOutputs;
+
+        std::vector<V>     m_discrepancyBases;
 
   unsigned int num_svd_terms;
   typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
@@ -257,6 +260,20 @@ public:
                       const std::vector<V *> & experimentOutputs,
                       const M * experimentErrors);
 
+  //! Add all discrepancy bases to \c this
+  /*!
+   * This method takes a vector of *all* the bases to use in the
+   * discrepancy model and stores a copy.
+   *
+   * The user is responsible for normalizing each basis vector to be
+   * consistent with the discrepancy precision coefficients which will
+   * multiply them.
+   *
+   * If no discrepancy basis is provided, a single "1 for each output"
+   * vector will be used.
+   */
+  void setDiscrepancyBases(const std::vector<V *> & discrepancyBases);
+
   const ConcatenatedVectorRV<V, M> & prior() const;
 
   void print(std::ostream& os) const;
@@ -284,6 +301,8 @@ public:
   std::vector<V *> m_simulationOutputs;
   std::vector<V *> m_experimentScenarios;
   std::vector<V *> m_experimentOutputs;
+
+  std::vector<V> m_discrepancyBases;
 
   // Total observation error covriance matrix
   const M * m_experimentErrors;
