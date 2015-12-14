@@ -426,6 +426,17 @@ GPMSAFactory<V, M>::GPMSAFactory(
   queso_assert_equal_to(simulationOutputSpace.dimGlobal(),
                         experimentOutputSpace.dimGlobal());
 
+  // Set up the default discrepancy basis:
+  {
+    const unsigned int numOutputs =
+      this->m_experimentOutputSpace.dimLocal();
+    const Map & output_map = experimentOutputSpace.map();
+    V all_ones_basis(env, output_map);
+    for (unsigned int i=0; i != numOutputs; ++i)
+      all_ones_basis[i] = 1;
+    m_discrepancyBases.push_back(all_ones_basis);
+  }
+
   // DM: Not sure if the logic in these 3 if-blocks is correct
   if ((opts == NULL) && (this->m_env.optionsInputFileName() == "")) {
     queso_error_msg("Must options object or an input file");
