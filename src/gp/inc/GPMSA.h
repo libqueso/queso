@@ -271,6 +271,11 @@ public:
    *
    * If no discrepancy basis is provided, a single "1 for each output"
    * vector will be used.
+   *
+   * For now we will assume that outputs are the same for each
+   * experiment (tau_ij and phi_ij are independent of i, in the
+   * notation of Higdon et al), and so each discrepancy basis can be
+   * expressed as a vector indexed by output index.
    */
   void setDiscrepancyBases(const std::vector<V *> & discrepancyBases);
 
