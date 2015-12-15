@@ -127,6 +127,20 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
            numOutputs * m_numSimulations));
 
   K->multiply(K->transpose(), *KKT);
+
+  Map outputs_map(numOutputs, 0, comm);
+
+  for (unsigned int i = 0; i != m_numExperiments; ++i)
+    {
+      M D_i(m_simulationOutputs[0]->env(), outputs_map,
+            (unsigned int)(m_discrepancyBases.size()));
+
+      for (unsigned int j=0; j != numOutputs; ++j)
+        for (unsigned int k=0; k != m_discrepancyBases.size(); ++k)
+          D_i(j,k) = m_discrepancyBases[k][j];
+
+      m_discrepancyMatrices.push_back(D_i);
+    }
 }
 
 template <class V, class M>

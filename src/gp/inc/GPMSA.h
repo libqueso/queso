@@ -93,6 +93,8 @@ public:
 
         std::vector<V>     m_discrepancyBases;
 
+  std::vector<M> m_discrepancyMatrices;
+
   unsigned int num_svd_terms;
   typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
 
