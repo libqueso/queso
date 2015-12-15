@@ -60,6 +60,7 @@ public:
                 const std::vector<V *> & m_experimentScenarios,
                 const std::vector<V *> & m_experimentOutputs,
                 const std::vector<V>   & m_discrepancyBases,
+                const std::vector<M>   & m_observationErrorMatrices,
                 const M & m_experimentErrors,
                 const ConcatenatedVectorRV<V, M> & m_totalPrior);
 
@@ -94,6 +95,8 @@ public:
         std::vector<V>     m_discrepancyBases;
 
   std::vector<M> m_discrepancyMatrices;
+
+  const std::vector<M> & m_observationErrorMatrices;
 
   unsigned int num_svd_terms;
   typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
@@ -281,6 +284,10 @@ public:
    */
   void setDiscrepancyBases(const std::vector<V *> & discrepancyBases);
 
+  M & getObservationErrorCovariance(unsigned int simulationNumber);
+
+  const M & getObservationErrorCovariance(unsigned int simulationNumber) const;
+
   const ConcatenatedVectorRV<V, M> & prior() const;
 
   void print(std::ostream& os) const;
@@ -310,6 +317,8 @@ public:
   std::vector<V *> m_experimentOutputs;
 
   std::vector<V> m_discrepancyBases;
+
+  std::vector<M> m_observationErrorMatrices;
 
   // Total observation error covriance matrix
   const M * m_experimentErrors;

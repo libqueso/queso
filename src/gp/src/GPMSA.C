@@ -43,6 +43,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const std::vector<V *> & m_experimentScenarios,
     const std::vector<V *> & m_experimentOutputs,
     const std::vector<V>   & m_discrepancyBases,
+    const std::vector<M>   & m_observationErrorMatrices,
     const M & m_experimentErrors,
     const ConcatenatedVectorRV<V, M> & m_totalPrior)
   :
@@ -59,6 +60,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   m_experimentScenarios(m_experimentScenarios),
   m_experimentOutputs(m_experimentOutputs),
   m_discrepancyBases(m_discrepancyBases),
+  m_observationErrorMatrices(m_observationErrorMatrices),
   m_experimentErrors(m_experimentErrors),
   m_totalPrior(m_totalPrior)
 {
@@ -440,15 +442,23 @@ GPMSAFactory<V, M>::GPMSAFactory(
   queso_assert_equal_to(simulationOutputSpace.dimGlobal(),
                         experimentOutputSpace.dimGlobal());
 
-  // Set up the default discrepancy basis:
   {
     const unsigned int numOutputs =
       this->m_experimentOutputSpace.dimLocal();
     const Map & output_map = experimentOutputSpace.map();
+
+    // Set up the default discrepancy basis:
     V all_ones_basis(env, output_map);
     for (unsigned int i=0; i != numOutputs; ++i)
       all_ones_basis[i] = 1;
     m_discrepancyBases.push_back(all_ones_basis);
+
+    // Set up the default observation error covariance matrix:
+
+    M identity_matrix(env, output_map, 1.0);
+
+    for (unsigned int i = 0; i != numExperiments; ++i)
+      m_observationErrorMatrices.push_back(identity_matrix);
   }
 
   // DM: Not sure if the logic in these 3 if-blocks is correct
@@ -669,6 +679,7 @@ GPMSAFactory<V, M>::addSimulation(V & simulationScenario,
         this->m_experimentScenarios,
         this->m_experimentOutputs,
         this->m_discrepancyBases,
+        this->m_observationErrorMatrices,
         *(this->m_experimentErrors),
         *(this->m_totalPrior)));
   }
@@ -722,6 +733,7 @@ GPMSAFactory<V, M>::addExperiments(
         this->m_experimentScenarios,
         this->m_experimentOutputs,
         this->m_discrepancyBases,
+        this->m_observationErrorMatrices,
         *(this->m_experimentErrors),
         *(this->m_totalPrior)));
   }
@@ -741,6 +753,31 @@ GPMSAFactory<V, M>::setDiscrepancyBases(
 
   // We should not yet have constructed the underlying GP model
   queso_assert_equal_to(this->m_constructedGP, false);
+}
+
+
+
+template <class V, class M>
+M &
+GPMSAFactory<V, M>::getObservationErrorCovariance
+  (unsigned int simulationNumber)
+{
+  queso_assert_less(simulationNumber, m_numSimulations);
+  queso_assert_equal_to(m_observationErrorMatrices.size(), m_numSimulations);
+
+  return m_observationErrorMatrices[simulationNumber];
+}
+
+
+template <class V, class M>
+const M &
+GPMSAFactory<V, M>::getObservationErrorCovariance
+  (unsigned int simulationNumber) const
+{
+  queso_assert_less(simulationNumber, m_numSimulations);
+  queso_assert_equal_to(m_observationErrorMatrices.size(), m_numSimulations);
+
+  return m_observationErrorMatrices[simulationNumber];
 }
 
 
