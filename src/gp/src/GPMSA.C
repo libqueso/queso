@@ -99,7 +99,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     std::min(m_numSimulations,(unsigned int)(5));
   num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
 
-  // Copy only those vectors we want
+  // Copy only those vectors we want into K_eta
   m_TruncatedSVD_simulationOutputs.reset
     (new M(m_simulationOutputs[0]->env(),
            m_simulationOutputs[0]->map(),
@@ -142,6 +142,52 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
           D_i(j,k) = m_discrepancyBases[k][j];
 
       m_discrepancyMatrices.push_back(D_i);
+    }
+
+  // Create the giant B matrix!
+  // We build B from two parts, the diag(D_i)*P_D^T block and
+  // the diag(K_i)*P_K^T block, but we build simultaneously so we only
+  // need one loop over experiments.
+  // Since P_D and P_K are permutation matrices we'll just apply the
+  // permutations as we insert.
+
+  const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
+  const unsigned int Brows = m_numExperiments * numOutputs * 2;
+  const unsigned int Bcols =
+    m_numExperiments * (num_discrepancy_bases + num_svd_terms);
+
+  const Map B_row_map(Brows, 0, comm);
+
+  M B(m_simulationOutputs[0]->env(), B_row_map, Bcols);
+
+  for (unsigned int ex = 0; ex != m_numExperiments; ++ex)
+    {
+      const M & D_i = m_discrepancyMatrices[ex];
+
+      for (unsigned int outi = 0; outi != numOutputs; ++outi)
+        {
+          unsigned int i = ex*numOutputs+outi;
+          for (unsigned int outj = 0; outj != num_discrepancy_bases; ++outj)
+            {
+              unsigned int j = ex + m_numExperiments * outj;
+
+              B(i,j) = D_i(outi,outj);
+            }
+        }
+
+      // For the multivariate case, the bases K_eta computed from
+      // simulator outputs are the same as the bases K_i which apply
+      // to quantities of interest, because simulator outputs are QoIs
+      // alone.
+      //
+      // FIXME - we need to interpolate K_i in the functional case.
+
+      for (unsigned int outi = 0; outi != numOutputs; ++outi)
+        {
+          for (unsigned int outj = 0; outj != numOutputs; ++outj)
+            {
+            }
+        }
     }
 }
 
