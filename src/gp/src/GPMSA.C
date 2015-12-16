@@ -144,12 +144,18 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
       m_discrepancyMatrices.push_back(D_i);
     }
 
-  // Create the giant B matrix!
+  // Create the giant matrices!
+
   // We build B from two parts, the diag(D_i)*P_D^T block and
   // the diag(K_i)*P_K^T block, but we build simultaneously so we only
   // need one loop over experiments.
   // Since P_D and P_K are permutation matrices we'll just apply the
   // permutations as we insert.
+
+  // W_y is simple block diagonal.
+
+  // Neither of these ought to be dense matrices but we're sacrificing
+  // efficiency for clarity for now.
 
   const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
   const unsigned int Brows = m_numExperiments * numOutputs * 2;
@@ -158,7 +164,19 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 
   const Map B_row_map(Brows, 0, comm);
 
-  M B(m_simulationOutputs[0]->env(), B_row_map, Bcols);
+  m_BMatrix.reset
+    (new M(m_simulationOutputs[0]->env(), B_row_map, Bcols));
+
+  const unsigned int Wyrows = m_numExperiments * numOutputs;
+
+  const Map Wy_row_map(Wyrows, 0, comm);
+
+  m_observationErrorMatrix.reset
+    (new M(m_simulationOutputs[0]->env(), Wy_row_map, Wyrows));
+
+  M& B = *m_BMatrix;
+
+  M& Wy = *m_observationErrorMatrix;
 
   for (unsigned int ex = 0; ex != m_numExperiments; ++ex)
     {
@@ -184,8 +202,11 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 
       for (unsigned int outi = 0; outi != numOutputs; ++outi)
         {
+          unsigned int i = ex*numOutputs+outi;
           for (unsigned int outj = 0; outj != numOutputs; ++outj)
             {
+              unsigned int j = ex*numOutputs+outj;
+              Wy(i,j) = m_observationErrorMatrices[ex](outi,outj);
             }
         }
     }
@@ -235,7 +256,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // num_discrepancy_bases        // = "p_delta"
   // m_TruncatedSVD_simulationOutputs  // = "K_eta"
   // covMatrix                    // = "Sigma_D"
-
+  // m_discrepancyMatrices        // = "D_i"
+  // m_observationErrorMatrices   // = "W_i"
+  // m_observationErrorMatrix     // = "W_y"
+  // m_BMatrix                    // = "B"
 
   // Construct covariance matrix
   unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;

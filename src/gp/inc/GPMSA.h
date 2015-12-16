@@ -96,7 +96,12 @@ public:
 
   std::vector<M> m_discrepancyMatrices;
 
+  typename ScopedPtr<M>::Type m_BMatrix;
+
   const std::vector<M> & m_observationErrorMatrices;
+
+  // Block diagonal matrix; sacrificing efficiency for clarity
+  typename ScopedPtr<M>::Type m_observationErrorMatrix;
 
   unsigned int num_svd_terms;
   typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
