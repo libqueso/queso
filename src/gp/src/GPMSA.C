@@ -158,7 +158,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   // efficiency for clarity for now.
 
   const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
-  const unsigned int Brows = m_numExperiments * numOutputs * 2;
+  const unsigned int Brows = m_numExperiments * numOutputs;
   const unsigned int Bcols =
     m_numExperiments * (num_discrepancy_bases + num_svd_terms);
 
@@ -191,25 +191,33 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 
               B(i,j) = D_i(outi,outj);
             }
-        }
 
-      // For the multivariate case, the bases K_eta computed from
-      // simulator outputs are the same as the bases K_i which apply
-      // to quantities of interest, because simulator outputs are QoIs
-      // alone.
-      //
-      // FIXME - we need to interpolate K_i in the functional case.
+          for (unsigned int outj = 0; outj != num_svd_terms; ++outj)
+            {
+              unsigned int j = ex +
+                m_numExperiments * (num_discrepancy_bases + outj);
 
-      for (unsigned int outi = 0; outi != numOutputs; ++outi)
-        {
-          unsigned int i = ex*numOutputs+outi;
+              B(i,j) = D_i(outi,outj);
+            }
+
+          // For the multivariate case, the bases K_eta computed from
+          // simulator outputs are the same as the bases K_i which
+          // apply to quantities of interest, because simulator
+          // outputs are QoIs alone.
+          //
+          // FIXME - we need to interpolate K_i in the functional case.
+
           for (unsigned int outj = 0; outj != numOutputs; ++outj)
             {
+              // No fancy perturbation here
               unsigned int j = ex*numOutputs+outj;
+
               Wy(i,j) = m_observationErrorMatrices[ex](outi,outj);
             }
         }
     }
+
+  M BT_Wy_B = B.transpose() * Wy * B;
 }
 
 template <class V, class M>
