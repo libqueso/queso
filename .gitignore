@@ -214,3 +214,7 @@ test/test_SharedPtr
 test/output_test_serialEnv
 test/test_Environment/input_test_serialEnv
 test/test_serialEnv
+test/output_test_setSequenceGenerator
+test/test_setSequenceGenerator
+test/output_test_randomWalkTK
+test/test_randomWalkTK

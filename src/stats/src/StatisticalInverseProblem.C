@@ -49,7 +49,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_subSolutionMdf          (NULL),
   m_subSolutionCdf          (NULL),
   m_solutionRealizer        (NULL),
-  m_mhSeqGenerator          (NULL),
+  m_mhSeqGenerator          (),
   m_mlSampler               (NULL),
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
@@ -96,6 +96,17 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
 
   queso_require_equal_to_msg(priorRv.imageSet().vectorSpace().dimLocal(), postRv.imageSet().vectorSpace().dimLocal(), "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
 
+  m_solutionDomain = InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
+
+  m_solutionPdf = new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                       m_priorRv.pdf(),
+                                                       m_likelihoodFunction,
+                                                       1.,
+                                                       *m_solutionDomain);
+
+  m_postRv.setPdf(*m_solutionPdf);
+  m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving StatisticalInverseProblem<P_V,P_M>::constructor()"
                             << ": prefix = " << m_optionsObj->m_prefix
@@ -121,7 +132,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_subSolutionMdf          (NULL),
   m_subSolutionCdf          (NULL),
   m_solutionRealizer        (NULL),
-  m_mhSeqGenerator          (NULL),
+  m_mhSeqGenerator          (),
   m_mlSampler               (NULL),
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
@@ -185,7 +196,6 @@ StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
     delete m_logTargetValues;
   }
   if (m_mlSampler       ) delete m_mlSampler;
-  if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_subSolutionCdf  ) delete m_subSolutionCdf;
   if (m_subSolutionMdf  ) delete m_subSolutionMdf;
@@ -232,7 +242,6 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   }
 
   if (m_mlSampler       ) delete m_mlSampler;
-  if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_subSolutionCdf  ) delete m_subSolutionCdf;
   if (m_subSolutionMdf  ) delete m_subSolutionMdf;
@@ -279,15 +288,19 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
     }
 
     // Compute output realizer: Metropolis-Hastings approach
-    m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(
-        m_optionsObj->m_prefix.c_str(), alternativeOptionsValues,
-        m_postRv, optimizer.minimizer(), initialProposalCovMatrix);
+    if (!m_mhSeqGenerator) {
+      m_mhSeqGenerator.reset(new MetropolisHastingsSG<P_V, P_M>(
+          m_optionsObj->m_prefix.c_str(), alternativeOptionsValues,
+          m_postRv, optimizer.minimizer(), initialProposalCovMatrix));
+    }
   }
   else {
     // Compute output realizer: Metropolis-Hastings approach
-    m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(
-        m_optionsObj->m_prefix.c_str(), alternativeOptionsValues, m_postRv,
-        initialValues, initialProposalCovMatrix);
+    if (!m_mhSeqGenerator) {
+      m_mhSeqGenerator.reset(new MetropolisHastingsSG<P_V, P_M>(
+          m_optionsObj->m_prefix.c_str(), alternativeOptionsValues, m_postRv,
+          initialValues, initialProposalCovMatrix));
+    }
   }
 
 
@@ -395,7 +408,6 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
   }
 
   if (m_mlSampler       ) delete m_mlSampler;
-  if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_subSolutionCdf  ) delete m_subSolutionCdf;
   if (m_subSolutionMdf  ) delete m_subSolutionMdf;
@@ -445,10 +457,18 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
 }
 
 template <class P_V, class P_M>
-const MetropolisHastingsSG<P_V, P_M> &
+const SequenceGenerator<P_V, P_M> &
 StatisticalInverseProblem<P_V, P_M>::sequenceGenerator() const
 {
   return *m_mhSeqGenerator;
+}
+
+template <class P_V, class P_M>
+void
+StatisticalInverseProblem<P_V, P_M>::setSequenceGenerator(
+    typename SharedPtr<SequenceGenerator<P_V, P_M> >::Type sequenceGenerator)
+{
+  m_mhSeqGenerator = sequenceGenerator;
 }
 
 //--------------------------------------------------

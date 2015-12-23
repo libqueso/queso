@@ -155,6 +155,7 @@ BUILT_SOURCES += ModelValidation.h
 BUILT_SOURCES += MonteCarloSG.h
 BUILT_SOURCES += MonteCarloSGOptions.h
 BUILT_SOURCES += PoweredJointPdf.h
+BUILT_SOURCES += RandomWalkSG.h
 BUILT_SOURCES += SampledScalarCdf.h
 BUILT_SOURCES += SampledVectorCdf.h
 BUILT_SOURCES += SampledVectorMdf.h
@@ -162,6 +163,7 @@ BUILT_SOURCES += ScalarCdf.h
 BUILT_SOURCES += ScalarCovarianceFunction.h
 BUILT_SOURCES += ScalarGaussianRandomField.h
 BUILT_SOURCES += ScaledCovMatrixTKGroup.h
+BUILT_SOURCES += SequenceGenerator.h
 BUILT_SOURCES += SequentialVectorRealizer.h
 BUILT_SOURCES += StatisticalForwardProblem.h
 BUILT_SOURCES += StatisticalForwardProblemOptions.h
@@ -497,6 +499,8 @@ MonteCarloSGOptions.h: $(top_srcdir)/src/stats/inc/MonteCarloSGOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 PoweredJointPdf.h: $(top_srcdir)/src/stats/inc/PoweredJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+RandomWalkSG.h: $(top_srcdir)/src/stats/inc/RandomWalkSG.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SampledScalarCdf.h: $(top_srcdir)/src/stats/inc/SampledScalarCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SampledVectorCdf.h: $(top_srcdir)/src/stats/inc/SampledVectorCdf.h
@@ -510,6 +514,8 @@ ScalarCovarianceFunction.h: $(top_srcdir)/src/stats/inc/ScalarCovarianceFunction
 ScalarGaussianRandomField.h: $(top_srcdir)/src/stats/inc/ScalarGaussianRandomField.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ScaledCovMatrixTKGroup.h: $(top_srcdir)/src/stats/inc/ScaledCovMatrixTKGroup.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+SequenceGenerator.h: $(top_srcdir)/src/stats/inc/SequenceGenerator.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SequentialVectorRealizer.h: $(top_srcdir)/src/stats/inc/SequentialVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
