@@ -246,7 +246,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // emulator_corr_strength(1)    // = "rho_eta"
   // ...                          // dimScenario = "p_x", dimParameter = "p_t"
   // emulator_corr_strength(dimScenario + dimParameter)
-  // discrepancy_precision        // = "lambda_delta"
+  // discrepancy_precision(1)     // = "lambda_delta" in scalar case,
+  //                              //   "lambda_{vi}" in vector
+  // ...
+  // discrepancy_precision(F)     // FIXME: F = 1, |G_1| = p_delta, for now.
   // discrepancy_corr_strength(1) // = "rho_delta"
   // ...
   // discrepancy_corr_strength(dimScenario)
@@ -257,6 +260,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // m_numExperiments             // = "n"
   // m_simulationScenarios        // = "eta"
   // m_experimentScenarios        // = "y"
+  // m_experimentErrors           // = "Sigma_y"
   // dimScenario                  // = "p_x", "n_eta"
   //                              // "n_y" := sum(n_y_i)
   //                              //      (== n*n_eta for us for now)
@@ -268,6 +272,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // m_observationErrorMatrices   // = "W_i"
   // m_observationErrorMatrix     // = "W_y"
   // m_BMatrix                    // = "B"
+  // num_discrepancy_groups       // = "F"
 
   // Construct covariance matrix
   unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;
@@ -334,7 +339,9 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       unsigned int emulatorCorrStrStart =
         dimParameter + 1 + num_svd_terms;
       for (unsigned int k = 0; k < dimScenario; k++) {
-        prodScenario *= std::pow(domainVector[emulatorCorrStrStart+k],
+        const double & emulator_corr_strength =
+          domainVector[emulatorCorrStrStart+k];
+        prodScenario *= std::pow(emulator_corr_strength,
                                  4.0 * ((*scenario1)[k] - (*scenario2)[k]) *
                                        ((*scenario1)[k] - (*scenario2)[k]));
       }
@@ -347,8 +354,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         queso_assert (!isnan(domainVector[emulatorCorrStrStart+dimScenario+k]));
         queso_assert (!isnan((*parameter1)[k]));
         queso_assert (!isnan((*parameter2)[k]));
+        const double & emulator_corr_strength =
+          domainVector[emulatorCorrStrStart+dimScenario+k];
         prodParameter *= std::pow(
-            domainVector[emulatorCorrStrStart+dimScenario+k],
+            emulator_corr_strength,
             4.0 * ((*parameter1)[k] - (*parameter2)[k]) *
                   ((*parameter1)[k] - (*parameter2)[k]));
       }
@@ -380,33 +389,38 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                                                dimParameter +
                                                dimScenario + 2;
         for (unsigned int k = 0; k < dimScenario; k++) {
+          const double & discrepancy_corr_strength = 
+            domainVector[discrepancyCorrStrStart+k];
           prodDiscrepancy *=
-            std::pow(domainVector[discrepancyCorrStrStart+k], 4.0 *
+            std::pow(discrepancy_corr_strength, 4.0 *
                      ((*cross_scenario1)[k] - (*cross_scenario2)[k]) *
                      ((*cross_scenario1)[k] - (*cross_scenario2)[k]));
         }
 
-        // = lambda_delta
-        const double denominator = domainVector[discrepancyCorrStrStart-1]; 
-        queso_assert_greater(denominator, 0);
+        const double discrepancy_precision =
+          domainVector[discrepancyCorrStrStart-1];
+        queso_assert_greater(discrepancy_precision, 0);
         queso_assert (!isnan(prodDiscrepancy));
 
         for (unsigned int k = 0; k != numOutputs; ++k)
-          for (unsigned int l = 0; l != numOutputs; ++l) {
-            {
-              // Sigma_delta term from below (3)
-              covMatrix(i*numOutputs+k, j*numOutputs+l) +=
-                prodDiscrepancy / denominator;
+          {
+            // Sigma_delta term from below (3) in univariate case
+            // Sigma_v term from p. 576 in multivariate case
+            covMatrix(i*numOutputs+k, j*numOutputs+k) +=
+              prodDiscrepancy / discrepancy_precision;
 
-              // Sigma_y term from below (3)
-              const double experimentalError = 
-                (this->m_experimentErrors)(i*numOutputs+k, j*numOutputs+l);
+            // Experimental error comes in via K in the multivariate
+            // case
+            if (numOutputs == 1)
+              {
+                // Sigma_y term from below (3)
+                const double experimentalError =
+                  (this->m_experimentErrors)(i,j);
 
-              queso_assert_greater_equal (experimentalError, 0);
+                queso_assert_greater_equal (experimentalError, 0);
 
-              covMatrix(i*numOutputs+k, j*numOutputs+l) +=
-                experimentalError;
-            }
+                covMatrix(i,j) += experimentalError;
+              }
           }
       }
     }
