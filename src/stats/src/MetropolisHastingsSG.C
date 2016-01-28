@@ -118,13 +118,13 @@ MHRawChainInfoStruct::copy(const MHRawChainInfoStruct& rhs)
 }
 //---------------------------------------------------
 void
-MHRawChainInfoStruct::mpiSum(const MpiComm& comm, MHRawChainInfoStruct& sumInfo) const
+MHRawChainInfoStruct::mpiSum(const MpiComm& comm, MHRawChainInfoStruct& sumInfo)
 {
-  comm.Allreduce((void *) &runTime, (void *) &sumInfo.runTime, (int) 7, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+  comm.Allreduce<double>(&runTime, &sumInfo.runTime, (int) 7, RawValue_MPI_SUM,
                  "MHRawChainInfoStruct::mpiSum()",
                  "failed MPI.Allreduce() for sum of doubles");
 
-  comm.Allreduce((void *) &numTargetCalls, (void *) &sumInfo.numTargetCalls, (int) 5, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+  comm.Allreduce<unsigned int>(&numTargetCalls, &sumInfo.numTargetCalls, (int) 5, RawValue_MPI_SUM,
                  "MHRawChainInfoStruct::mpiSum()",
                  "failed MPI.Allreduce() for sum of unsigned ints");
 

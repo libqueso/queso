@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.53.1], [queso-users@googlegroups.com])
+AC_INIT([queso], [0.54.0], [queso-users@googlegroups.com])
 PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
 AC_SUBST([PACKAGE_DESCRIPTION])
 PACKAGE_URL="https://github.com/libqueso/queso"
@@ -75,17 +75,37 @@ else
    AC_MSG_RESULT(no)
 fi
 
+#############################################
+# Check if the user explicitly disabled mpi #
+#############################################
+AC_ARG_ENABLE(mpi,
+              AS_HELP_STRING([--disable-mpi],
+                             [build without message passing support]),
+              [enable_mpi=no],
+              [enable_mpi=yes])
+
 #-------------------
 # Compilers and MPI
 #-------------------
-
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_FC
 AC_LANG([C])
-ACX_MPI([CC="$MPICC"], [AC_MSG_ERROR([Could not find MPI.])])
+
+HAVE_MPI=0
+if test "x$enable_mpi" = "xyes"; then
+    ACX_MPI(CC="$MPICC", [AC_MSG_ERROR([Could not find MPI.])])
+    HAVE_MPI=1
+fi
+
 AC_LANG([C++])
-ACX_MPI([CXX="$MPICXX"], [AC_MSG_ERROR([Could not find MPI.])])
+
+if test "x$enable_mpi" = "xyes"; then
+    ACX_MPI(CXX="$MPICXX", [AC_MSG_ERROR([Could not find MPI.])])
+    HAVE_MPI=1
+fi
+AC_SUBST(HAVE_MPI)
+AM_CONDITIONAL(MPI_ENABLED, test x$HAVE_MPI = x1)
 
 #-------------------------
 # External Library Checks
@@ -124,6 +144,7 @@ AC_LANG([C++])
 BOOST_REQUIRE([1.35])
 BOOST_PROGRAM_OPTIONS
 BOOST_FIND_HEADER([boost/scoped_ptr.hpp])
+BOOST_FIND_HEADER([boost/shared_ptr.hpp])
 AC_CACHE_SAVE
 
 # Check for GLPK (optional)
@@ -218,6 +239,8 @@ AC_CONFIG_FILES([
   test/test_InputOptionsParser/test_options_good.txt
   test/test_InputOptionsParser/test_options_bad.txt
   test/test_InputOptionsParser/test_options_default.txt
+  test/test_optimizer/input_test_optimizer_options
+  test/test_Environment/input_test_serialEnv
 ])
 
 AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh

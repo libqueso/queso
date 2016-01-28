@@ -41,16 +41,20 @@ SipOptionsValues::SipOptionsValues()
   m_help(UQ_SIP_HELP),
   m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
   m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),
+  m_seedWithMAPEstimator(UQ_SIP_SEEDWITHMAPESTIMATOR),
+  m_useOptimizerMonitor(UQ_SIP_USEOPTIMIZERMONITOR),
 //m_dataOutputAllowedSet(),
   m_parser(NULL),
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
-  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet"),
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_option_solver              (m_prefix + "solver"              ),
   m_solverString        (UQ_SIP_SOLVER_ODV)
 #endif
+  m_option_seedWithMAPEstimator(m_prefix + "seedWithMAPEstimator"),
+  m_option_useOptimizerMonitor(m_prefix + "useOptimizerMonitor")
 {
 }
 
@@ -61,16 +65,20 @@ SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
   m_help(UQ_SIP_HELP),
   m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
   m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV),
+  m_seedWithMAPEstimator(UQ_SIP_SEEDWITHMAPESTIMATOR),
+  m_useOptimizerMonitor(UQ_SIP_USEOPTIMIZERMONITOR),
 //m_dataOutputAllowedSet(),
   m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
-  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet"),
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_option_solver              (m_prefix + "solver"              ),
   m_solverString        (UQ_SIP_SOLVER_ODV)
 #endif
+  m_option_seedWithMAPEstimator(m_prefix + "seedWithMAPEstimator"),
+  m_option_useOptimizerMonitor(m_prefix + "useOptimizerMonitor")
 {
   m_parser->registerOption<std::string>(m_option_help, UQ_SIP_HELP, "produce help message for statistical inverse problem");
   m_parser->registerOption<bool       >(m_option_computeSolution,      UQ_SIP_COMPUTE_SOLUTION_ODV       , "compute solution process"                            );
@@ -79,6 +87,8 @@ SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_parser->registerOption<std::string>(m_option_solver,               UQ_SIP_SOLVER_ODV                 , "algorithm for calibration"                           );
 #endif
+  m_parser->registerOption<bool       >(m_option_seedWithMAPEstimator, UQ_SIP_SEEDWITHMAPESTIMATOR       , "toggle for seeding chain at MAP"                     );
+  m_parser->registerOption<bool       >(m_option_useOptimizerMonitor,  UQ_SIP_USEOPTIMIZERMONITOR        , "toggle for using optimizer monitor (prints diagnostics");
 
   m_parser->scanInputFile();
 
@@ -89,6 +99,8 @@ SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_parser->getOption<std::string>(m_option_solver,               m_solver);
 #endif
+  m_parser->getOption<bool       >(m_option_seedWithMAPEstimator, m_seedWithMAPEstimator);
+  m_parser->getOption<bool       >(m_option_useOptimizerMonitor,  m_useOptimizerMonitor);
 
   checkOptions();
 }
@@ -125,9 +137,8 @@ SipOptionsValues::copy(const SipOptionsValues& src)
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_solverString         = src.m_solverString;
 #endif
-//m_mhOptionsValues      = src.m_mhOptionsValues;
-
-  return;
+  m_seedWithMAPEstimator = src.m_seedWithMAPEstimator;
+  m_useOptimizerMonitor = src.m_useOptimizerMonitor;
 }
 
 std::ostream &
@@ -162,10 +173,12 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
-  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet"),
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_option_solver              (m_prefix + "solver"              )
 #endif
+  m_option_seedWithMAPEstimator(m_prefix + "seedWithMAPEstimator"),
+  m_option_useOptimizerMonitor(m_prefix + "useOptimizerMonitor")
 {
   queso_deprecated();
   queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the absence of an options input file");
@@ -184,10 +197,12 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
-  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet")
+  m_option_dataOutputAllowedSet(m_prefix + "dataOutputAllowedSet"),
 #ifdef UQ_SIP_READS_SOLVER_OPTION
   m_option_solver              (m_prefix + "solver"              )
 #endif
+  m_option_seedWithMAPEstimator(m_prefix + "seedWithMAPEstimator"),
+  m_option_useOptimizerMonitor(m_prefix + "useOptimizerMonitor")
 {
   queso_deprecated();
 
@@ -216,11 +231,7 @@ StatisticalInverseProblemOptions::scanOptionsValues()
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
-  //std::cout << "scan 000\n"
-  //          << std::endl;
   getMyOptionValues              (*m_optionsDesc);
-  //std::cout << "scan 001\n"
-  //          << std::endl;
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In StatisticalInverseProblemOptions::scanOptionsValues()"
@@ -248,11 +259,13 @@ StatisticalInverseProblemOptions::print(std::ostream& os) const
 #ifdef UQ_SIP_READS_SOLVER_OPTION
      << "\n" << m_option_solver << " = " << m_ov.m_solverString
 #endif
+  os << "\n" << m_option_seedWithMAPEstimator << " = " << m_ov.m_seedWithMAPEstimator
+     << "\n" << m_option_useOptimizerMonitor << " = " << m_ov.m_useOptimizerMonitor;
   os << std::endl;
 
   return;
 }
-// Private methods ---------------------------------
+
 void
 StatisticalInverseProblemOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
@@ -266,9 +279,9 @@ StatisticalInverseProblemOptions::defineMyOptions(boost::program_options::option
 #ifdef UQ_SIP_READS_SOLVER_OPTION
     (m_option_solver.c_str(),               boost::program_options::value<std::string>()->default_value(UQ_SIP_SOLVER_ODV                 ), "algorithm for calibration"                           )
 #endif
+    (m_option_seedWithMAPEstimator.c_str(), boost::program_options::value<bool>()->default_value(UQ_SIP_SEEDWITHMAPESTIMATOR), "toggle optimisation of posterior pdf before sampling")
+    (m_option_useOptimizerMonitor.c_str(), boost::program_options::value<bool>()->default_value(UQ_SIP_USEOPTIMIZERMONITOR), "toggle printing of optimisation progress when seed with MAP estimator")
   ;
-
-  return;
 }
 //--------------------------------------------------
 void
@@ -310,7 +323,13 @@ StatisticalInverseProblemOptions::getMyOptionValues(boost::program_options::opti
   }
 #endif
 
-  return;
+  if (m_env.allOptionsMap().count(m_option_seedWithMAPEstimator)) {
+    m_ov.m_seedWithMAPEstimator = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_seedWithMAPEstimator]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_useOptimizerMonitor)) {
+    m_ov.m_useOptimizerMonitor = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_useOptimizerMonitor]).as<bool>();
+  }
 }
 
 // --------------------------------------------------

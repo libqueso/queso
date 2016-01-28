@@ -44,9 +44,12 @@ public:
 };
 
 int main(int argc, char ** argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-
   QUESO::FullEnvironment env(MPI_COMM_WORLD, "", "", NULL);
+#else
+  QUESO::FullEnvironment env("", "", NULL);
+#endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "space_", 3, NULL);
@@ -100,6 +103,10 @@ int main(int argc, char ** argv) {
   optimizer.minimize(&monitor);
 
   monitor.print(std::cout,false);
+
+#ifdef QUESO_HAS_MPI
+  MPI_Finalize();
+#endif
 
   return 0;
 }

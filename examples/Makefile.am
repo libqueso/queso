@@ -436,6 +436,20 @@ dist_interpsurrg_DATA += ${4d_interp_read_SOURCES}
 dist_interpsurrg_DATA += interpolation_surrogate/input.in
 dist_interpsurrg_DATA += interpolation_surrogate/4d_interp_data_coarse.dat
 
+#####################
+# SharedPtr example #
+#####################
+pointersdir = $(prefix)/examples/pointers
+
+pointers_PROGRAMS = example_SharedPtr
+
+example_SharedPtr_SOURCES = pointers/example_SharedPtr.C
+example_SharedPtr_LDADD = $(top_builddir)/src/libqueso.la
+example_SharedPtr_CPPFLAGS = $(QUESO_CPPFLAGS)
+
+dist_pointers_DATA =
+dist_pointers_DATA += ${example_SharedPtr_SOURCES}
+
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif

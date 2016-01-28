@@ -9,6 +9,9 @@
 #include <queso/SequenceOfVectors.h>
 
 int main(int argc, char **argv) {
+#ifndef QUESO_HAS_MPI
+  return 77;
+#else
   MPI_Init(&argc, &argv);
 
   QUESO::EnvOptionsValues options;
@@ -69,4 +72,5 @@ int main(int argc, char **argv) {
   MPI_Finalize();
 
   return 0;
+#endif
 }

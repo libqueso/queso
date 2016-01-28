@@ -29,7 +29,11 @@
 #include <stdexcept>
 #include <string>
 #include <exception>    // std::set_terminate
-#include <mpi.h>        // for MPI_ABORT in uncaught exceptions
+
+#ifdef QUESO_HAS_MPI
+#include <mpi.h>
+#endif
+
 #include <stdlib.h>     // exit(1)
 
 namespace QUESO

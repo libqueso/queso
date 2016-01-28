@@ -26,6 +26,7 @@
 #include <queso/InterpolationSurrogateIOASCII.h>
 
 // QUESO
+#include <queso/MpiComm.h>
 #include <queso/StreamUtilities.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -70,7 +71,7 @@ namespace QUESO
       }
 
     // Broadcast the parsed dimension
-    full_comm.Bcast( &dim, 1, MPI_UNSIGNED, root,
+    full_comm.Bcast( &dim, 1, RawValue_MPI_UNSIGNED, root,
                      "InterpolationSurrogateIOASCII::read()",
                      "MpiComm::Bcast() failed!" );
 
@@ -99,7 +100,7 @@ namespace QUESO
       }
 
     // Broadcast m_n_points
-    full_comm.Bcast( &this->m_n_points[0], dim, MPI_UNSIGNED, root,
+    full_comm.Bcast( &this->m_n_points[0], dim, RawValue_MPI_UNSIGNED, root,
                      "InterpolationSurrogateIOASCII::read()",
                      "MpiComm::Bcast() failed!" );
 
@@ -123,11 +124,11 @@ namespace QUESO
       }
 
     // Broadcast the bounds
-    full_comm.Bcast( &param_mins[0], dim, MPI_DOUBLE, root,
+    full_comm.Bcast( &param_mins[0], dim, RawValue_MPI_DOUBLE, root,
                      "InterpolationSurrogateIOASCII::read()",
                      "MpiComm::Bcast() failed!" );
 
-    full_comm.Bcast( &param_maxs[0], dim, MPI_DOUBLE, root,
+    full_comm.Bcast( &param_maxs[0], dim, RawValue_MPI_DOUBLE, root,
                      "InterpolationSurrogateIOASCII::read()",
                      "MpiComm::Bcast() failed!" );
 

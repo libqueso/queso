@@ -23,7 +23,6 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/BasicPdfsBoost.h>
-#include <mpi.h>
 
 namespace QUESO {
 

@@ -486,6 +486,15 @@ private:
   /*! This routine deletes all stored computed scalars. */
   void         copy                         (const ScalarSequence<T>& src);
 
+  //! Helper function to write header info for matlab files from all chains
+  void writeUnifiedMatlabHeader(std::ofstream & ofs, double sequenceSize) const;
+
+  //! Helper function to write header info for matlab files from one chain
+  void writeSubMatlabHeader(std::ofstream & ofs, double sequenceSize) const;
+
+  //! Helper function to write txt info for matlab files
+  void writeTxtHeader(std::ofstream & ofs, double sequenceSize) const;
+
   //! Extracts a sequence of scalars.
   /*! The sequence of scalars has size \c numPos, and it will be extracted starting at position
    * (\c initialPos) of \c this sequence of scalars, given spacing \c spacing.*/

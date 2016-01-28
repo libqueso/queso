@@ -6,8 +6,6 @@
 #include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
 
-#include <mpi.h>
-
 #define TOL 1e-10
 
 int checkLinearSpacing(const QUESO::GslVector &v, double d1, double d2) {
@@ -29,12 +27,18 @@ int main(int argc, char **argv) {
   double d1 = 0.0;
   double d2 = 1.0;
 
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
+#endif
 
   QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
 
+#ifdef QUESO_HAS_MPI
   QUESO::FullEnvironment *env = new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
+#else
+  QUESO::FullEnvironment *env = new QUESO::FullEnvironment("", "", &options);
+#endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> *param_space =
     new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env, "param_", 3, NULL);
@@ -75,9 +79,9 @@ int main(int argc, char **argv) {
   }
 
   // Testing concatenate so we need a bigger param space
-  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> big_param_space(*env,
-      "", 6, NULL);
-  QUESO::GslVector v4(big_param_space.zeroVector());
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> *big_param_space =
+    new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env, "", 6, NULL);
+  QUESO::GslVector v4(big_param_space->zeroVector());
   v4.cwSetConcatenated(v1, v3);
 
   for (i = 0; i < v1.sizeLocal(); i++) {
@@ -95,7 +99,7 @@ int main(int argc, char **argv) {
   std::vector<const QUESO::GslVector*> vecs;
   vecs.push_back(&v1);
   vecs.push_back(&v3);
-  QUESO::GslVector v5(big_param_space.zeroVector());
+  QUESO::GslVector v5(big_param_space->zeroVector());
   v5.cwSetConcatenated(vecs);
   for (i = 0; i < v5.sizeLocal(); i++) {
     if (std::abs(v5[i] - v4[i]) > TOL) {
@@ -222,8 +226,12 @@ int main(int argc, char **argv) {
     std::cerr << "division test failed" << std::endl;
     return 1;
   }
+  delete big_param_space;
+  delete param_space;
   delete env;
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
   return 0;
 }

@@ -18,7 +18,9 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
+#endif
 
   // hit with exception
   try
@@ -28,7 +30,9 @@ int main(int argc, char **argv)
   catch(...)
     {
       printf("Caught QUESO exception!\n");
+#ifdef QUESO_HAS_MPI
       MPI_Finalize();
+#endif
       return 0;
     }
 

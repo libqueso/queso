@@ -1,5 +1,3 @@
-#include <mpi.h>
-
 #include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
 #include <queso/VectorSpace.h>
@@ -10,12 +8,18 @@
 #define TOL 1e-10
 
 int main(int argc, char **argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
+#endif
 
   QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
 
+#ifdef QUESO_HAS_MPI
   QUESO::FullEnvironment env(MPI_COMM_WORLD, "", "", &options);
+#else
+  QUESO::FullEnvironment env("", "", &options);
+#endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "param_", 3, NULL);
@@ -64,6 +68,8 @@ int main(int argc, char **argv) {
     queso_error_msg("TEST: GslBlockMatrix::invertMultiply failed.");
   }
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
   return 0;
 }

@@ -92,8 +92,8 @@ protected:
   // a non-temporary "" string for internal use.
   const std::string m_filename;
 
-  typename ScopedPtr<boost::program_options::options_description>::Type m_optionsDescription;
-  typename ScopedPtr<boost::program_options::variables_map>::Type m_optionsMap;
+  ScopedPtr<boost::program_options::options_description>::Type m_optionsDescription;
+  ScopedPtr<boost::program_options::variables_map>::Type m_optionsMap;
 
 private:
   bool m_scannedInputFile;

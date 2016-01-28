@@ -562,7 +562,8 @@ BaseEnvironment::openOutputFile(
         //////////////////////////////////////////////////////////////
         // Write over an eventual pre-existing file
         //////////////////////////////////////////////////////////////
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+            (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                 std::ofstream::out | std::ofstream::trunc);
         }
@@ -586,7 +587,8 @@ BaseEnvironment::openOutputFile(
         //////////////////////////////////////////////////////////////
         // Write at the end of an eventual pre-existing file
         //////////////////////////////////////////////////////////////
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+            (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
 #if 0
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                 std::ofstream::in);
@@ -740,7 +742,8 @@ BaseEnvironment::openUnifiedOutputFile(
         ////////////////////////////////////////////////////////////////
         // Write over an eventual pre-existing file
         ////////////////////////////////////////////////////////////////
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+            (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"."+fileType).c_str(),
                                                 std::ofstream::out | std::ofstream::trunc);
         }
@@ -770,7 +773,8 @@ BaseEnvironment::openUnifiedOutputFile(
         // Write at the end of an eventual pre-existing file
         // 'm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
         ////////////////////////////////////////////////////////////////
-        if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+            (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"."+fileType).c_str(),
                                                 std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
         }
@@ -893,7 +897,8 @@ BaseEnvironment::openInputFile(
       int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
       queso_require_greater_equal_msg(irtrn, 0, "unable to verify input path");
 
-      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+      if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+          (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
         filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
                                               std::ofstream::in);
         if ((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)) {
@@ -985,7 +990,8 @@ BaseEnvironment::openUnifiedInputFile(
       int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
       queso_require_greater_equal_msg(irtrn, 0, "unable to verify input path");
 
-      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+      if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+          (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
         filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
                                               std::ofstream::in);
         if ((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)) {
@@ -1046,7 +1052,8 @@ BaseEnvironment::closeFile(
   }
 #endif
 
-  if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+  if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+      (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
     //filePtrSet.ofsVar->close(); // close() crashes on Mac; need to use delete(); why? prudenci 2010/June
     delete filePtrSet.ofsVar;
     filePtrSet.ofsVar = NULL;
@@ -1104,6 +1111,7 @@ EmptyEnvironment::print(std::ostream& os) const
 //*****************************************************
 // Full Environment
 //*****************************************************
+#ifdef QUESO_HAS_MPI
 FullEnvironment::FullEnvironment(
   RawType_MPI_Comm             inputComm,
   const char*                    passedOptionsInputFileName,
@@ -1123,6 +1131,7 @@ FullEnvironment::FullEnvironment(
   queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed to get world fullRank()");
 
   m_fullComm = new MpiComm(*this,inputComm);
+
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
 
@@ -1363,6 +1372,236 @@ FullEnvironment::FullEnvironment(
 
   return;
 }
+#endif  // QUESO_HAS_MPI
+
+FullEnvironment::FullEnvironment(
+  const char*                    passedOptionsInputFileName,
+  const char*                    prefix,
+  EnvOptionsValues* alternativeOptionsValues)
+  :
+  BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
+{
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "Entering FullEnv" << std::endl;
+#endif
+
+  m_worldRank = 0;
+
+  m_fullComm = new MpiComm(*this);
+  m_fullRank     = 0;
+  m_fullCommSize = 1;
+
+#ifndef QUESO_HAS_MPI
+  m_fullGroup = 0;
+#endif
+
+  // saving old uncaught exception handler, invoking queso_terminate
+  old_terminate_handler = std::set_terminate(queso_terminate_handler);
+
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "In FullEnv, finished dealing with MPI initially" << std::endl;
+#endif
+
+  //////////////////////////////////////////////////
+  // Read options
+  //////////////////////////////////////////////////
+  // If NULL, we create one
+  if (m_optionsObj == NULL) {
+    EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
+
+    // If there's an input file, we grab the options from there.  Otherwise the
+    // defaults are used
+    if (m_optionsInputFileName != "") {
+      m_allOptionsMap  = new boost::program_options::variables_map();
+      m_allOptionsDesc = new boost::program_options::options_description("Allowed options");
+
+      readOptionsInputFile();
+    }
+
+    // We did this dance because scanOptionsValues is not a const method, but
+    // m_optionsObj is a pointer to const
+    m_optionsObj = tempOptions;
+  }
+
+  // If help option was supplied, print info
+  if (m_optionsObj->m_help != "") {
+    // We write to std::cout because subDisplayFile() isn't ready yet?
+    std::cout << (*m_optionsObj) << std::endl;
+  }
+
+  queso_require_equal_to_msg(
+      fullComm().NumProc() % m_optionsObj->m_numSubEnvironments, 0,
+      "total number of processors in environment must be multiple of the specified number of subEnvironments");
+
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "In FullEnv, finished scanning options" << std::endl;
+#endif
+
+  // Only display these messages if the user wants them
+  // NOTE: This got moved below the Read Options section
+  // because we need the options to be read to know what
+  // the verbosity level is.
+  if (this->displayVerbosity() > 0) {
+    //////////////////////////////////////////////////
+    // Display main initial messages
+    // 'std::cout' is for: main trace messages + synchronized trace messages + error messages prior to 'exit()' or 'abort()'
+    //////////////////////////////////////////////////
+    /*int iRC = 0;*/
+    /*iRC = */gettimeofday(&m_timevalBegin, NULL);
+
+    QUESO_version_print(std::cout);
+
+    std::cout << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
+              << std::endl;
+  }
+
+  m_subId = 0;
+  char tmpSubId[16];
+  sprintf(tmpSubId,"%u",m_subId);
+  m_subIdString = tmpSubId;
+
+  if (m_optionsObj->m_subDisplayAllowAll) {
+    m_optionsObj->m_subDisplayAllowedSet.insert((unsigned int) m_subId);
+  }
+
+  int fullRanksOfMySubEnvironment = 1;
+
+#ifndef QUESO_HAS_MPI
+  m_subGroup = 0;
+#endif
+
+  m_subComm = new MpiComm(*this);
+  m_subRank     = 0;
+  m_subCommSize = 1;
+
+  //////////////////////////////////////////////////
+  // Deal with multiple subEnvironments: create the self communicator
+  //////////////////////////////////////////////////
+  m_selfComm = new MpiComm(*this);
+
+  //////////////////////////////////////////////////
+  // Deal with multiple subEnvironments: create the inter0 communicator
+  //////////////////////////////////////////////////
+  int fullRanksOfInter0 = 0;
+#ifndef QUESO_HAS_MPI
+  m_inter0Group = 0;
+#endif
+  m_inter0Comm = new MpiComm(*this);
+  m_inter0Rank     = 0;
+  m_inter0CommSize = 1;
+
+  if (m_optionsObj->m_subDisplayAllowAll) {
+    // This situation has been already taken care of above
+  }
+  else if (m_optionsObj->m_subDisplayAllowInter0) {
+    if (m_inter0Rank >= 0) {
+      m_optionsObj->m_subDisplayAllowedSet.insert((unsigned int) m_subId);
+    }
+  }
+
+
+  //////////////////////////////////////////////////
+  // Open "screen" file
+  //////////////////////////////////////////////////
+  bool openFile = false;
+  if ((m_subRank                                               == 0                                              ) &&
+      (m_optionsObj->m_subDisplayFileName                 != UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE             ) &&
+      (m_optionsObj->m_subDisplayAllowedSet.find(m_subId) != m_optionsObj->m_subDisplayAllowedSet.end())) {
+    openFile = true;
+  }
+
+  if (openFile && m_worldRank == 0) {
+    //////////////////////////////////////////////////////////////////
+    // Verify parent directory exists (for cases when a user
+    // specifies a relative path for the desired output file).
+    //////////////////////////////////////////////////////////////////
+    int irtrn = CheckFilePath((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+    queso_require_greater_equal_msg(irtrn, 0, "unable to verify output path");
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  // Ensure that rank 0 has created path, if necessary, before other tasks use it
+  ////////////////////////////////////////////////////////////////////
+  m_fullComm->Barrier();
+
+  if (openFile) {
+    //////////////////////////////////////////////////////////////////
+    // Always write over an eventual pre-existing file
+    //////////////////////////////////////////////////////////////////
+    m_subDisplayFile = new std::ofstream((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
+                                         std::ofstream::out | std::ofstream::trunc);
+    queso_require_msg((m_subDisplayFile && m_subDisplayFile->is_open()), "failed to open sub screen file");
+
+    QUESO_version_print(*m_subDisplayFile);
+
+    *m_subDisplayFile << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
+                      << std::endl;
+  }
+
+  //////////////////////////////////////////////////
+  // Debug message related to subEnvironments
+  //////////////////////////////////////////////////
+  if (this->displayVerbosity() >= 2) {
+    for (int i = 0; i < m_fullCommSize; ++i) {
+      if (i == m_fullRank) {
+        //std::cout << "In FullEnvironment::commonConstructor()"
+        std::cout << "MPI node of worldRank "             << m_worldRank
+                  << " has fullRank "                     << m_fullRank
+                  << ", belongs to subEnvironment of id " << m_subId
+                  << ", and has subRank "                 << m_subRank
+                  << std::endl;
+
+        std::cout << "MPI node of worldRank " << m_worldRank
+                  << " belongs to sub communicator with full ranks";
+          std::cout << " " << fullRanksOfMySubEnvironment;
+  std::cout << "\n";
+
+        if (m_inter0Comm) {
+          std::cout << "MPI node of worldRank " << m_worldRank
+                    << " also belongs to inter0 communicator with full ranks";
+            std::cout << " " << fullRanksOfInter0;
+          std::cout << ", and has inter0Rank " << m_inter0Rank;
+        }
+  std::cout << "\n";
+
+  std::cout << std::endl;
+      }
+      m_fullComm->Barrier();
+    }
+  }
+
+  //////////////////////////////////////////////////
+  // Deal with seed
+  //////////////////////////////////////////////////
+  if (m_optionsObj->m_rngType == "gsl") {
+    m_rngObject = new RngGsl(m_optionsObj->m_seed,m_worldRank);
+    m_basicPdfs = new BasicPdfsGsl(m_worldRank);
+  }
+  else if (m_optionsObj->m_rngType == "boost") {
+    m_rngObject = new RngBoost(m_optionsObj->m_seed,m_worldRank);
+    m_basicPdfs = new BasicPdfsBoost(m_worldRank);
+  }
+  else {
+    std::cerr << "In Environment::constructor()"
+              << ": rngType = " << m_optionsObj->m_rngType
+              << std::endl;
+    queso_error_msg("the requested 'rngType' is not supported yet");
+  }
+
+  //////////////////////////////////////////////////
+  // Leave commonConstructor()
+  //////////////////////////////////////////////////
+  m_fullComm->Barrier();
+  m_fullEnvIsReady = true;
+
+  if ((m_subDisplayFile) && (this->displayVerbosity() >= 5)) {
+    *m_subDisplayFile << "Done with initializations at FullEnvironment::commonConstructor()"
+                      << std::endl;
+  }
+
+  return;
+}
+
 //-------------------------------------------------------
 FullEnvironment::~FullEnvironment()
 {
@@ -1377,6 +1616,7 @@ FullEnvironment::print(std::ostream& os) const
 
 void queso_terminate_handler()
 {
+#ifdef QUESO_HAS_MPI
   int mpi_initialized;
   MPI_Initialized (&mpi_initialized);
 
@@ -1392,6 +1632,9 @@ void queso_terminate_handler()
       // their own terminate handler that we want to call.
       old_terminate_handler();
     }
+#else
+  old_terminate_handler();
+#endif
   exit(1);
 }
 

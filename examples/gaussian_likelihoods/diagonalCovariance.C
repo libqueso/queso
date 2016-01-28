@@ -59,9 +59,12 @@ public:
 };
 
 int main(int argc, char ** argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-
   QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
+#else
+  QUESO::FullEnvironment env(argv[1], "", NULL);
+#endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "param_", 1, NULL);
@@ -116,7 +119,9 @@ int main(int argc, char ** argv) {
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

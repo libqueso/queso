@@ -9,7 +9,9 @@
 #include <queso/VectorSpace.h>
 
 int main(int argc, char **argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
+#endif
 
   QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
@@ -20,8 +22,13 @@ int main(int argc, char **argv) {
   options.m_checkingLevel = 1;
   options.m_displayVerbosity = 20;
 
+#ifdef QUESO_HAS_MPI
   QUESO::FullEnvironment *env = new QUESO::FullEnvironment(MPI_COMM_WORLD, "",
       "", &options);
+#else
+  QUESO::FullEnvironment *env = new QUESO::FullEnvironment("",
+      "", &options);
+#endif
 
   std::vector<std::string> names(1);
   names[0] = "my_name";
@@ -76,7 +83,9 @@ int main(int argc, char **argv) {
   std::cout << std::endl;
 
   delete diag_matrix;
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

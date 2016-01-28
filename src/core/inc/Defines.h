@@ -44,8 +44,9 @@
 #define QUESO_HAS_ANN
 #endif
 
-//! This define is deprecated.  Remove any #ifdef statements in user code.
+#ifdef QUESO_HAVE_MPI
 #define QUESO_HAS_MPI
+#endif
 
 //! This define is deprecated.  Remove any #ifdef statements in user code.
 #define QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
@@ -62,7 +63,11 @@
 #include <stdlib.h> // For exit()
 #include <set>
 #include <vector>
+
+#ifdef QUESO_HAS_MPI
 #include <mpi.h>
+#endif
+
 #include <queso/asserts.h> // for queso_error handler
 
 namespace QUESO {
@@ -95,6 +100,7 @@ const int UQ_INVALID_SPACE_COMPONENT_ID_RC = -10;
 const int UQ_MATRIX_SVD_FAILED_RC          = -11;
 
 #define UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT "m"
+#define UQ_FILE_EXTENSION_FOR_TXT_FORMAT    "txt"
 #define UQ_FILE_EXTENSION_FOR_HDF_FORMAT    "h5"
 
 

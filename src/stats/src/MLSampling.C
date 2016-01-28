@@ -172,7 +172,7 @@ MLSampling<P_V,P_M>::decideOnBalancedChains_all(
       // Gather information at proc 0: number of chains and positions per node
       //////////////////////////////////////////////////////////////////////////
       unsigned int auxUInt = indexOfFirstWeight;
-      m_env.inter0Comm().Gather((void *) &auxUInt, 1, RawValue_MPI_UNSIGNED, (void *) &allFirstIndexes[0], (int) 1, RawValue_MPI_UNSIGNED, 0, // LOAD BALANCE
+      m_env.inter0Comm().template Gather<unsigned int>(&auxUInt, 1, &allFirstIndexes[0], (int) 1, 0, // LOAD BALANCE
                                 "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                                 "failed MPI.Gather() for first indexes");
 
@@ -181,7 +181,7 @@ MLSampling<P_V,P_M>::decideOnBalancedChains_all(
       }
 
       auxUInt = indexOfLastWeight;
-      m_env.inter0Comm().Gather((void *) &auxUInt, 1, RawValue_MPI_UNSIGNED, (void *) &allLastIndexes[0], (int) 1, RawValue_MPI_UNSIGNED, 0, // LOAD BALANCE
+      m_env.inter0Comm().template Gather<unsigned int>(&auxUInt, 1, &allLastIndexes[0], (int) 1, 0, // LOAD BALANCE
                                 "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                                 "failed MPI.Gather() for last indexes");
 
@@ -416,7 +416,7 @@ MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
   std::vector<double> auxBuf(1,0.);
   double minRatio = 0.;
   auxBuf[0] = finalRatioOfPosPerNode;
-  m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &minRatio, (int) auxBuf.size(), RawValue_MPI_DOUBLE, RawValue_MPI_MIN, // LOAD BALANCE
+  m_env.inter0Comm().template Allreduce<double>(&auxBuf[0], &minRatio, (int) auxBuf.size(), RawValue_MPI_MIN, // LOAD BALANCE
                                "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                                "failed MPI.Allreduce() for min");
   //std::cout << m_env.worldRank() << ", minRatio = " << minRatio << std::endl;
@@ -424,7 +424,7 @@ MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
 
   double maxRatio = 0.;
   auxBuf[0] = finalRatioOfPosPerNode;
-  m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &maxRatio, (int) auxBuf.size(), RawValue_MPI_DOUBLE, RawValue_MPI_MAX, // LOAD BALANCE
+  m_env.inter0Comm().template Allreduce<double>(&auxBuf[0], &maxRatio, (int) auxBuf.size(), RawValue_MPI_MAX, // LOAD BALANCE
                                "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                                "failed MPI.Allreduce() for max");
   //std::cout << m_env.worldRank() << ", maxRatio = " << maxRatio << std::endl;
@@ -526,19 +526,19 @@ MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(
 
   unsigned int minModifiedSubNumSamples = 0;
   auxBuf[0] = subNumSamples;
-  m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &minModifiedSubNumSamples, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MIN,
+  m_env.inter0Comm().template Allreduce<unsigned int>(&auxBuf[0], &minModifiedSubNumSamples, (int) auxBuf.size(), RawValue_MPI_MIN,
                                "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                                "failed MPI.Allreduce() for min");
 
   unsigned int maxModifiedSubNumSamples = 0;
   auxBuf[0] = subNumSamples;
-  m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &maxModifiedSubNumSamples, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MAX,
+  m_env.inter0Comm().template Allreduce<unsigned int>(&auxBuf[0], &maxModifiedSubNumSamples, (int) auxBuf.size(), RawValue_MPI_MAX,
                                "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                                "failed MPI.Allreduce() for max");
 
   unsigned int sumModifiedSubNumSamples = 0;
   auxBuf[0] = subNumSamples;
-  m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &sumModifiedSubNumSamples, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+  m_env.inter0Comm().template Allreduce<unsigned int>(&auxBuf[0], &sumModifiedSubNumSamples, (int) auxBuf.size(), RawValue_MPI_SUM,
                                "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                                "failed MPI.Allreduce() for sum");
 
@@ -672,19 +672,19 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
 
     unsigned int minNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
-    m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MIN, // LOAD BALANCE
+    m_env.inter0Comm().template Allreduce<unsigned int>(&auxBuf[0], &minNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_MIN, // LOAD BALANCE
                                  "MLSampling<P_V,P_M>::generateBalLinkedChains_all()",
                                  "failed MPI.Allreduce() for min");
 
     unsigned int maxNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
-    m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MAX, // LOAD BALANCE
+    m_env.inter0Comm().template Allreduce<unsigned int>(&auxBuf[0], &maxNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_MAX, // LOAD BALANCE
                                  "MLSampling<P_V,P_M>::generateBalLinkedChains_all()",
                                  "failed MPI.Allreduce() for max");
 
     unsigned int sumNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
-    m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_SUM, // LOAD BALANCE
+    m_env.inter0Comm().template Allreduce<unsigned int>(&auxBuf[0], &sumNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_SUM, // LOAD BALANCE
                                  "MLSampling<P_V,P_M>::generateBalLinkedChains_all()",
                                  "failed MPI.Allreduce() for sum");
 
@@ -937,19 +937,19 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
 
     unsigned int minNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
-    m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MIN,
+    m_env.inter0Comm().template Allreduce<unsigned int>(&auxBuf[0], &minNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_MIN,
                                  "MLSampling<P_V,P_M>::generateUnbLinkedChains_all()",
                                  "failed MPI.Allreduce() for min");
 
     unsigned int maxNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
-    m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MAX,
+    m_env.inter0Comm().template Allreduce<unsigned int>(&auxBuf[0], &maxNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_MAX,
                                  "MLSampling<P_V,P_M>::generateUnbLinkedChains_all()",
                                  "failed MPI.Allreduce() for max");
 
     unsigned int sumNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
-    m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+    m_env.inter0Comm().template Allreduce<unsigned int>(&auxBuf[0], &sumNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_SUM,
                                  "MLSampling<P_V,P_M>::generateUnbLinkedChains_all()",
                                  "failed MPI.Allreduce() for sum");
 
@@ -1940,9 +1940,11 @@ MLSampling<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
                                  "failed MPI.Gatherv()");
     }
 #else
-    m_env.inter0Comm().Gatherv((void *) &sendbuf[0], (int) sendcnt, RawValue_MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], RawValue_MPI_DOUBLE, r, // LOAD BALANCE
-                               "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
-                               "failed MPI.Gatherv()");
+    m_env.inter0Comm().template Gatherv<double>(&sendbuf[0], (int) sendcnt,
+        &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0],
+        r, // LOAD BALANCE
+        "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
+        "failed MPI.Gatherv()");
 #endif
 
     //////////////////////////////////////////////////////////////////////////
@@ -2309,7 +2311,7 @@ MLSampling<P_V,P_M>::generateSequence_Level0_all(
 
     if (m_env.inter0Rank() >= 0) {
       unsigned int tmpSize = currOptions.m_rawChainSize;
-      m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&tmpSize, &unifiedRequestedNumSamples, (int) 1, RawValue_MPI_SUM,
                                    "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for requested num samples in level 0");
     }
@@ -2455,7 +2457,7 @@ MLSampling<P_V,P_M>::generateSequence_Step01_inter0(
       unsigned int tmpSize = currOptions->m_rawChainSize;
       // This computed 'unifiedRequestedNumSamples' needs to be recomputed only at the last
       // level, when 'currOptions' is replaced by 'lastLevelOptions' (see step 3 of 11)
-      m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&tmpSize, &unifiedRequestedNumSamples, (int) 1, RawValue_MPI_SUM,
                                    "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for requested num samples in step 1");
 
@@ -2717,7 +2719,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
           }
 #endif
         }
-        m_env.inter0Comm().Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+        m_env.inter0Comm().template Allreduce<double>(&subWeightRatioSum, &unifiedWeightRatioSum, (int) 1, RawValue_MPI_SUM,
                                      "MLSampling<P_V,P_M>::generateSequence()",
                                      "failed MPI.Allreduce() for weight ratio sum");
 
@@ -2775,7 +2777,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
 
         double subQuantity = effectiveSampleSize;
         effectiveSampleSize = 0.;
-        m_env.inter0Comm().Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+        m_env.inter0Comm().template Allreduce<double>(&subQuantity, &effectiveSampleSize, (int) 1, RawValue_MPI_SUM,
                                      "MLSampling<P_V,P_M>::generateSequence()",
                                      "failed MPI.Allreduce() for effective sample size");
 
@@ -2964,7 +2966,7 @@ MLSampling<P_V,P_M>::generateSequence_Step04_inter0(
           double localValue = subCovMatrix(i,j);
           double sumValue = 0.;
           if (m_env.inter0Rank() >= 0) {
-            m_env.inter0Comm().Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+            m_env.inter0Comm().template Allreduce<double>(&localValue, &sumValue, (int) 1, RawValue_MPI_SUM,
                                          "MLSampling<P_V,P_M>::generateSequence()",
                                          "failed MPI.Allreduce() for cov matrix");
           }
@@ -3573,7 +3575,7 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
         if (m_env.inter0Rank() >= 0) { // KAUST
           // If only one cov matrix is used, then the rejection should be assessed among all inter0Comm nodes // KAUST3
           unsigned int nowUnifiedRejections = 0;
-          m_env.inter0Comm().Allreduce((void *) &nowRejections, (void *) &nowUnifiedRejections, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+          m_env.inter0Comm().template Allreduce<unsigned int>(&nowRejections, &nowUnifiedRejections, (int) 1, RawValue_MPI_SUM,
                                        "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
                                        "failed MPI.Allreduce() for now rejections");
 
@@ -3947,7 +3949,7 @@ MLSampling<P_V,P_M>::generateSequence_Step11_inter0(
     // Check if unified size of generated chain matches the unified requested size // KAUST
     unsigned int tmpSize = currChain.subSequenceSize();
     unsigned int unifiedGeneratedNumSamples = 0;
-    m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedGeneratedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+    m_env.inter0Comm().template Allreduce<unsigned int>(&tmpSize, &unifiedGeneratedNumSamples, (int) 1, RawValue_MPI_SUM,
                                  "MLSampling<P_V,P_M>::generateSequence()",
                                  "failed MPI.Allreduce() for generated num samples in step 11");
     //std::cout << "unifiedGeneratedNumSamples = "   << unifiedGeneratedNumSamples
@@ -3957,7 +3959,7 @@ MLSampling<P_V,P_M>::generateSequence_Step11_inter0(
   }
 
   // Compute unified number of rejections
-  m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRejections, (void *) &unifiedNumberOfRejections, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+  m_env.inter0Comm().template Allreduce<unsigned int>(&cumulativeRawChainRejections, &unifiedNumberOfRejections, (int) 1, RawValue_MPI_SUM,
                                "MLSampling<P_V,P_M>::generateSequence()",
                                "failed MPI.Allreduce() for number of rejections");
 
@@ -4376,7 +4378,7 @@ MLSampling<P_V,P_M>::generateSequence(
         // It is necessary to recompute 'currUnifiedRequestedNumSamples' because
         // 'currOptions' has just been replaced by 'lastLevelOptions'
         unsigned int tmpSize = currOptions->m_rawChainSize;
-        m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &currUnifiedRequestedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+        m_env.inter0Comm().template Allreduce<unsigned int>(&tmpSize, &currUnifiedRequestedNumSamples, (int) 1, RawValue_MPI_SUM,
                                      "MLSampling<P_V,P_M>::generateSequence()",
                                      "failed MPI.Allreduce() for requested num samples in step 3");
       }
@@ -4668,33 +4670,33 @@ MLSampling<P_V,P_M>::generateSequence(
 
     if (m_env.inter0Rank() >= 0) {
       double minCumulativeRawChainRunTime = 0.;
-      m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRunTime, (void *) &minCumulativeRawChainRunTime, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_MIN,
+      m_env.inter0Comm().template Allreduce<double>(&cumulativeRawChainRunTime, &minCumulativeRawChainRunTime, (int) 1, RawValue_MPI_MIN,
                                    "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for min cumulative raw chain run time");
 
       double maxCumulativeRawChainRunTime = 0.;
-      m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRunTime, (void *) &maxCumulativeRawChainRunTime, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_MAX,
+      m_env.inter0Comm().template Allreduce<double>(&cumulativeRawChainRunTime, &maxCumulativeRawChainRunTime, (int) 1, RawValue_MPI_MAX,
                                    "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for max cumulative raw chain run time");
 
       double avgCumulativeRawChainRunTime = 0.;
-      m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRunTime, (void *) &avgCumulativeRawChainRunTime, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<double>(&cumulativeRawChainRunTime, &avgCumulativeRawChainRunTime, (int) 1, RawValue_MPI_SUM,
                                    "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for sum cumulative raw chain run time");
       avgCumulativeRawChainRunTime /= ((double) m_env.inter0Comm().NumProc());
 
       double minLevelRunTime = 0.;
-      m_env.inter0Comm().Allreduce((void *) &levelRunTime, (void *) &minLevelRunTime, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_MIN,
+      m_env.inter0Comm().template Allreduce<double>(&levelRunTime, &minLevelRunTime, (int) 1, RawValue_MPI_MIN,
                                    "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for min level run time");
 
       double maxLevelRunTime = 0.;
-      m_env.inter0Comm().Allreduce((void *) &levelRunTime, (void *) &maxLevelRunTime, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_MAX,
+      m_env.inter0Comm().template Allreduce<double>(&levelRunTime, &maxLevelRunTime, (int) 1, RawValue_MPI_MAX,
                                    "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for max level run time");
 
       double avgLevelRunTime = 0.;
-      m_env.inter0Comm().Allreduce((void *) &levelRunTime, (void *) &avgLevelRunTime, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<double>(&levelRunTime, &avgLevelRunTime, (int) 1, RawValue_MPI_SUM,
                                    "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for sum level run time");
       avgLevelRunTime /= ((double) m_env.inter0Comm().NumProc());

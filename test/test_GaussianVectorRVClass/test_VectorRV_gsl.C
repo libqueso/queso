@@ -24,10 +24,16 @@ int require_close(double a, double b, double tol) {
 }
 
 int main(int argc, char ** argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
+#endif
 
   EnvOptionsValues envOptionsValues;
+#ifdef QUESO_HAS_MPI
   FullEnvironment env(MPI_COMM_WORLD, "", "", &envOptionsValues);
+#else
+  FullEnvironment env("", "", &envOptionsValues);
+#endif
 
   VectorSpace<GslVector, GslMatrix> imageSpace(env, "test_space", 2, NULL);
   Map eMap(2, 0, env.fullComm());
@@ -73,7 +79,9 @@ int main(int argc, char ** argv) {
   std::cout << myRealization;
 
   // finalize
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

@@ -1673,7 +1673,7 @@ TeuchosMatrix::mpiSum( const MpiComm& comm, TeuchosMatrix& M_global ) const
 	  }
   }
 
-  comm.Allreduce((void*) &local[0], (void*) &global[0], size, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+  comm.Allreduce<double>(&local[0], &global[0], size, RawValue_MPI_SUM,
                  "TeuchosMatrix::mpiSum()",
                  "failed MPI.Allreduce()");
 

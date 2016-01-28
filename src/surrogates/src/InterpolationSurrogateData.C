@@ -26,6 +26,7 @@
 #include <queso/InterpolationSurrogateData.h>
 
 // QUESO
+#include <queso/MpiComm.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
@@ -120,7 +121,7 @@ namespace QUESO
     MpiComm full_comm = this->m_domain.env().fullComm();
 
     full_comm.Bcast( &this->m_values[0], this->n_values(),
-                     MPI_DOUBLE, root,
+                     RawValue_MPI_DOUBLE, root,
                      "InterpolationSurrogateData::sync_values()",
                      "MpiComm::Bcast() failed!" );
   }

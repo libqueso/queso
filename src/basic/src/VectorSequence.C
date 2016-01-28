@@ -76,7 +76,7 @@ BaseVectorSequence<V,M>::unifiedSequenceSize() const
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       unsigned int subNumSamples = this->subSequenceSize();
-      m_env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      m_env.inter0Comm().template Allreduce<unsigned int>(&subNumSamples, &unifiedNumSamples, (int) 1, RawValue_MPI_SUM,
                                    "BaseVectorSequence<V,M>::unifiedSequenceSize()",
                                    "failed MPI.Allreduce() for unifiedSequenceSize()");
     }
@@ -442,7 +442,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
   for (unsigned int i = 0; i < sendbufPos.size(); ++i) {
     sendbufPos[i] = subMaxValue;
   }
-  m_env.inter0Comm().Allreduce((void *) &sendbufPos[0], (void *) &unifiedMaxValue, (int) sendbufPos.size(), RawValue_MPI_DOUBLE, RawValue_MPI_MAX,
+  m_env.inter0Comm().template Allreduce<double>(&sendbufPos[0], &unifiedMaxValue, (int) sendbufPos.size(), RawValue_MPI_MAX,
                                "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                                "failed MPI.Allreduce() for max");
 
@@ -474,7 +474,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
   std::vector<int> auxBuf(1,0);
   int unifiedNumPos = 0; // Yes, 'int', due to MPI to be used soon
   auxBuf[0] = subNumPos;
-  m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &unifiedNumPos, (int) auxBuf.size(), RawValue_MPI_INT, RawValue_MPI_SUM,
+  m_env.inter0Comm().template Allreduce<int>(&auxBuf[0], &unifiedNumPos, (int) auxBuf.size(), RawValue_MPI_SUM,
                                "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                                "failed MPI.Allreduce() for sum");
 
@@ -488,7 +488,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
   unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
 
   std::vector<int> recvcntsPos(Np,0); // '0' is NOT the correct value for recvcntsPos[0]
-  m_env.inter0Comm().Gather((void *) &subNumPos, 1, RawValue_MPI_INT, (void *) &recvcntsPos[0], (int) 1, RawValue_MPI_INT, 0,
+  m_env.inter0Comm().template Gather<int>(&subNumPos, 1, &recvcntsPos[0], (int) 1, 0,
                             "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                             "failed MPI.Gatherv()");
   if (m_env.inter0Rank() == 0) {
@@ -515,7 +515,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
   unsigned int dimSize = m_vectorSpace.dimLocal();
   int subNumDbs = subNumPos * dimSize; // Yes, 'int', due to MPI to be used soon
   std::vector<int> recvcntsDbs(Np,0); // '0' is NOT the correct value for recvcntsDbs[0]
-  m_env.inter0Comm().Gather((void *) &subNumDbs, 1, RawValue_MPI_INT, (void *) &recvcntsDbs[0], (int) 1, RawValue_MPI_INT, 0,
+  m_env.inter0Comm().template Gather<int>(&subNumDbs, 1, &recvcntsDbs[0], (int) 1, 0,
                             "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                             "failed MPI.Gatherv()");
   if (m_env.inter0Rank() == 0) {
@@ -548,9 +548,10 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
   std::vector<double> recvbufDbs(unifiedNumPos * dimSize);
 
   // Gather up all states that attain maxima and store then in recvbufDbs
-  m_env.inter0Comm().Gatherv((void *) &sendbufDbs[0], (int) subNumDbs, RawValue_MPI_DOUBLE, (void *) &recvbufDbs[0], (int *) &recvcntsDbs[0], (int *) &displsDbs[0], RawValue_MPI_DOUBLE, 0,
-                             "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
-                             "failed MPI.Gatherv()");
+  m_env.inter0Comm().template Gatherv<double>(&sendbufDbs[0], (int) subNumDbs,
+      &recvbufDbs[0], (int *) &recvcntsDbs[0], (int *) &displsDbs[0], 0,
+      "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
+      "failed MPI.Gatherv()");
 
   //******************************************************************
   // Transfer data from 'recvbuf' to 'unifiedPositionsOfMaximum'
@@ -2777,6 +2778,9 @@ ComputeCovCorrMatricesBetweenVectorSequences(
         P_M&                                pqCovMatrix,
         P_M&                                pqCorrMatrix)
 {
+  queso_require_greater_equal_msg(subNumSamples, 2,
+      "must provide at least 2 samples to compute correlation matrices");
+
   // Check input data consistency
   const BaseEnvironment& env = subPSeq.vectorSpace().zeroVector().env();
 
@@ -2839,18 +2843,26 @@ ComputeCovCorrMatricesBetweenVectorSequences(
                                      unifiedMeanQ,
                                      unifiedSampleVarianceQ);
 
+  // Check the variance is positive in every component
+  double minSampleVarianceP;
+  double minSampleVarianceQ;
+  minSampleVarianceP = unifiedSampleVarianceP.getMinValue();
+  minSampleVarianceQ = unifiedSampleVarianceQ.getMinValue();
+  queso_require_greater_msg(minSampleVarianceP, 0, "sample variance is not positive");
+  queso_require_greater_msg(minSampleVarianceQ, 0, "sample variance is not positive");
+
   // Compute unified covariance matrix
   if (useOnlyInter0Comm) {
     if (env.inter0Rank() >= 0) {
       unsigned int unifiedNumSamples = 0;
-      env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+      env.inter0Comm().template Allreduce<unsigned int>(&subNumSamples, &unifiedNumSamples, (int) 1, RawValue_MPI_SUM,
                                  "ComputeCovCorrMatricesBetweenVectorSequences()",
                                  "failed MPI.Allreduce() for subNumSamples");
 
       for (unsigned i = 0; i < numRowsLocal; ++i) {
         for (unsigned j = 0; j < numCols; ++j) {
           double aux = 0.;
-          env.inter0Comm().Allreduce((void *) &pqCovMatrix(i,j), (void *) &aux, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+          env.inter0Comm().template Allreduce<double>(&pqCovMatrix(i,j), &aux, (int) 1, RawValue_MPI_SUM,
                                      "ComputeCovCorrMatricesBetweenVectorSequences()",
                                      "failed MPI.Allreduce() for a matrix position");
           pqCovMatrix(i,j) = aux/((double) (unifiedNumSamples-1)); // Yes, '-1' in order to compensate for the 'N-1' denominator factor in the calculations of sample variances above (whose square roots will be used below)

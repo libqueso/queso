@@ -7,5 +7,9 @@ before_script:
   - sudo apt-get install -q build-essential
   - sudo apt-get install -q libgsl0-dev
   - sudo apt-get install -q openmpi-bin openmpi-dev
-  - sudo apt-get install -q libboost-all-dev
-script: ./bootstrap && CC="mpicc" CXX="mpicxx" ./configure && make -j2 && make check
+  - sudo apt-get install -q libboost-dev libboost-math-dev libboost-program-options-dev
+script:
+  - ./bootstrap
+  - ./configure CC="mpicc" CXX="mpicxx"
+  - make -j4
+  - make check -j4

@@ -23,7 +23,6 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/BasicPdfsBase.h>
-#include <mpi.h>
 
 namespace QUESO {
 

@@ -102,8 +102,13 @@ class BayesianInverseProblem
 public:
   BayesianInverseProblem(unsigned int likelihoodFlag)
   {
+#ifdef QUESO_HAS_MPI
     this->env = new QUESO::FullEnvironment(MPI_COMM_WORLD,
         "test_gaussian_likelihoods/gaussian_consistency_input.txt", "", NULL);
+#else
+    this->env = new QUESO::FullEnvironment(
+        "test_gaussian_likelihoods/gaussian_consistency_input.txt", "", NULL);
+#endif
 
     this->paramSpace =
       new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env,
@@ -198,7 +203,9 @@ public:
 };
 
 int main(int argc, char ** argv) {
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
+#endif
 
   // Instantiate each inverse problem
   BayesianInverseProblem<QUESO::GslVector, QUESO::GslMatrix> b1(1);
@@ -217,7 +224,9 @@ int main(int argc, char ** argv) {
     }
   }
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

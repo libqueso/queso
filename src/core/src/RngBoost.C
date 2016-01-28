@@ -23,7 +23,6 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/RngBoost.h>
-#include <mpi.h>
 
 namespace QUESO {
 

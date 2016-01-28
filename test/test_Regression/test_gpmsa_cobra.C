@@ -88,11 +88,16 @@ int main(int argc, char ** argv) {
   unsigned int numEta = 1;  // Number of responses the model is returning
   unsigned int experimentSize = 1;  // Size of each experiment
 
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 
   // Step 1: Set up QUESO environment
   QUESO::FullEnvironment env(MPI_COMM_WORLD,
       "test_Regression/gpmsa_cobra_input.txt", "", NULL);
+#else
+  QUESO::FullEnvironment env(
+      "test_Regression/gpmsa_cobra_input.txt", "", NULL);
+#endif
 
   // Step 2: Set up prior for calibration parameters
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
@@ -274,7 +279,9 @@ int main(int argc, char ** argv) {
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

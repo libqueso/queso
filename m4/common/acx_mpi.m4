@@ -176,6 +176,7 @@ if test x = x"$MPILIBS"; then
         :
 else
         ifelse([$1],,[AC_DEFINE(HAVE_MPI,1,[Define if you have the MPI library.])],[$1])
+        AC_DEFINE(HAVE_MPI,1,[Define if you have the MPI library.])
         :
 fi
 ])dnl ACX_MPI
