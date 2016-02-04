@@ -126,7 +126,7 @@ JeffreysJointPdf<V,M>::lnValue(
     }
   else {
     pdf = pdf * (1.0 / domainVector[i]);
-    result = -log(pdf);
+    result = std::log(pdf);
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
