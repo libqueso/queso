@@ -243,7 +243,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // emulator_precision(1)        // = "lambda_eta" in scalar case,
   // ...                          //   "lambda_{wi}" in vector
   // emulator_precision(num_svd_terms)
-  // emulator_corr_strength(1)    // = "rho_eta"
+  // emulator_corr_strength(1)    // = "rho_{eta k}"
   // ...                          // dimScenario = "p_x", dimParameter = "p_t"
   // emulator_corr_strength(dimScenario + dimParameter)
   // discrepancy_precision(1)     // = "lambda_delta" in scalar case,
@@ -267,7 +267,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // num_svd_terms                // = "p_eta"
   // num_discrepancy_bases        // = "p_delta"
   // m_TruncatedSVD_simulationOutputs  // = "K_eta"
-  // covMatrix                    // = "Sigma_D"
+  // covMatrix                    // = "Sigma_D" in scalar case,
+  //                                   "Sigma_zhat" in vector
   // m_discrepancyMatrices        // = "D_i"
   // m_observationErrorMatrices   // = "W_i"
   // m_observationErrorMatrix     // = "W_y"
@@ -364,7 +365,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
       queso_assert (!isnan(prodParameter));
 
-      // emulator precision
+      // Sigma_eta in scalar case,
+      // Sigma_u in vector case
       for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
         {
           const double emulator_precision =
@@ -379,7 +381,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         }
 
       // If we're in the experiment cross correlation part, need extra
-      // foo: Sigma_delta and Sigma_y
+      // foo: Sigma_delta/Sigma_v and Sigma_y
       if (i < this->m_numExperiments && j < this->m_numExperiments) {
         V* cross_scenario1 = (this->m_simulationScenarios)[i];
         V* cross_scenario2 = (this->m_simulationScenarios)[j];
