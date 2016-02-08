@@ -276,9 +276,13 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // num_discrepancy_groups       // = "F"
 
   // Construct covariance matrix
-  unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;
-  unsigned int numOutputs = this->m_experimentOutputSpace.dimLocal();
-  unsigned int totalOutputs = totalRuns * numOutputs;
+  const unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;
+  const unsigned int numOutputs = this->m_experimentOutputSpace.dimLocal();
+  const unsigned int totalOutputs = totalRuns * numOutputs;
+  const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
+  const unsigned int residualSize = (numOutputs == 1) ?  totalOutputs :
+    totalOutputs * num_svd_terms + m_numExperiments * num_discrepancy_bases;
+
   double prodScenario = 1.0;
   double prodParameter = 1.0;
   double prodDiscrepancy = 1.0;
@@ -287,7 +291,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
   // This is cumbersome.  All I want is a matrix.
   VectorSpace<V, M> gpSpace(this->m_scenarioSpace.env(), "",
-                            totalOutputs, NULL);
+                            residualSize, NULL);
   V residual(gpSpace.zeroVector());
   M covMatrix(residual);
 
@@ -369,15 +373,18 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       // Sigma_u in vector case
       for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
         {
+          // Offset in vector case
+          const unsigned int offset = (numOutputs == 1) ?
+            0 : m_numExperiments * num_discrepancy_bases;
+
+          // coefficient in (1)
           const double emulator_precision =
             domainVector[dimParameter+basis+1];
           queso_assert_greater(emulator_precision, 0);
 
-          // coefficient in (1)
-          for (unsigned int k = 0; k != numOutputs; ++k)
-            for (unsigned int l = 0; l != numOutputs; ++l)
-              covMatrix(i*numOutputs+k, j*numOutputs+l) =
-                prodScenario * prodParameter / emulator_precision;
+          covMatrix(offset+basis*m_numSimulations+i,
+                    offset+basis*m_numSimulations+j) =
+            prodScenario * prodParameter / emulator_precision;
         }
 
       // If we're in the experiment cross correlation part, need extra
@@ -404,25 +411,25 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         queso_assert_greater(discrepancy_precision, 0);
         queso_assert (!isnan(prodDiscrepancy));
 
-        for (unsigned int k = 0; k != numOutputs; ++k)
-          {
             // Sigma_delta term from below (3) in univariate case
             // Sigma_v term from p. 576 in multivariate case
-            covMatrix(i*numOutputs+k, j*numOutputs+k) +=
-              prodDiscrepancy / discrepancy_precision;
+        const double R_v = prodDiscrepancy / discrepancy_precision;
+        for (unsigned int disc = 0; disc != num_discrepancy_bases;
+             ++disc)
+          covMatrix(disc*m_numExperiments+i,
+                    disc*m_numExperiments+j) += R_v;
 
-            // Experimental error comes in via K in the multivariate
-            // case
-            if (numOutputs == 1)
-              {
-                // Sigma_y term from below (3)
-                const double experimentalError =
-                  (this->m_experimentErrors)(i,j);
+        // Experimental error comes in via K in the multivariate
+        // case
+        if (numOutputs == 1)
+          {
+            // Sigma_y term from below (3)
+            const double experimentalError =
+              (this->m_experimentErrors)(i,j);
 
-                queso_assert_greater_equal (experimentalError, 0);
+            queso_assert_greater_equal (experimentalError, 0);
 
-                covMatrix(i,j) += experimentalError;
-              }
+            covMatrix(i,j) += experimentalError;
           }
       }
     }
@@ -439,8 +446,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     queso_assert_greater(domainVector[dimSum-1], 0);
     double nugget = 1.0 / domainVector[dimSum-1];
 
-    for (unsigned int k = 0; k != numOutputs; ++k)
-      covMatrix(i*numOutputs+k, i*numOutputs+k) += nugget;
+    for (unsigned int disc = 0; disc != num_discrepancy_bases;
+         ++disc)
+      covMatrix(disc*m_numExperiments+i,
+                disc*m_numExperiments+j) += nugget;
   }
 
   // Form residual = D - mean // = D - mu*1 in (3)
