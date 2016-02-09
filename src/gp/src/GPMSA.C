@@ -250,7 +250,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   //                              //   "lambda_{vi}" in vector
   // ...
   // discrepancy_precision(F)     // FIXME: F = 1, |G_1| = p_delta, for now.
-  // discrepancy_corr_strength(1) // = "rho_delta"
+  // discrepancy_corr_strength(1) // = "rho_{deltak}"
   // ...
   // discrepancy_corr_strength(dimScenario)
   // emulator_data_precision(1)   // = "small white noise", "small ridge"
@@ -370,7 +370,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       queso_assert (!isnan(prodParameter));
 
       // Sigma_eta in scalar case,
-      // Sigma_u in vector case
+      // [Sigma_u, Sigma_uw; Sigma_uw^T, Sigma_w] in vector case
       for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
         {
           // Offset in vector case
@@ -411,8 +411,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         queso_assert_greater(discrepancy_precision, 0);
         queso_assert (!isnan(prodDiscrepancy));
 
-            // Sigma_delta term from below (3) in univariate case
-            // Sigma_v term from p. 576 in multivariate case
+        // Sigma_delta term from below (3) in univariate case
+        // Sigma_v term from p. 576 in multivariate case
         const double R_v = prodDiscrepancy / discrepancy_precision;
         for (unsigned int disc = 0; disc != num_discrepancy_bases;
              ++disc)
@@ -420,7 +420,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                     disc*m_numExperiments+j) += R_v;
 
         // Experimental error comes in via K in the multivariate
-        // case
+        // case, but comes in via Sigma_y in the univariate case here
         if (numOutputs == 1)
           {
             // Sigma_y term from below (3)
