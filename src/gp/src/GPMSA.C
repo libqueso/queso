@@ -286,6 +286,14 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   unsigned int dimScenario = (this->m_scenarioSpace).dimLocal();
   unsigned int dimParameter = (this->m_parameterSpace).dimLocal();
 
+  // Offset for Sigma_eta equivalent in vector case
+  const unsigned int offset1 = (numOutputs == 1) ?
+    0 : m_numExperiments * num_discrepancy_bases;
+
+  // Offset for lambda_eta term in zhat covariance in vector case
+  const unsigned int offset2 = (numOutputs == 1) ?
+    0 : m_numExperiments * (num_discrepancy_bases + num_svd_terms);
+
   // This is cumbersome.  All I want is a matrix.
   VectorSpace<V, M> gpSpace(this->m_scenarioSpace.env(), "",
                             residualSize, NULL);
@@ -370,17 +378,13 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       // [Sigma_u, Sigma_uw; Sigma_uw^T, Sigma_w] in vector case
       for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
         {
-          // Offset in vector case
-          const unsigned int offset = (numOutputs == 1) ?
-            0 : m_numExperiments * num_discrepancy_bases;
-
           // coefficient in (1)
           const double emulator_precision =
             domainVector[dimParameter+basis+1];
           queso_assert_greater(emulator_precision, 0);
 
-          covMatrix(offset+basis*m_numSimulations+i,
-                    offset+basis*m_numSimulations+j) =
+          covMatrix(offset1+basis*m_numSimulations+i,
+                    offset1+basis*m_numSimulations+j) =
             prodScenario * prodParameter / emulator_precision;
         }
 
