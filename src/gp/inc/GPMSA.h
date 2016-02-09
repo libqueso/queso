@@ -103,14 +103,17 @@ public:
   // Block diagonal matrix; sacrificing efficiency for clarity
   typename ScopedPtr<M>::Type m_observationErrorMatrix;
 
+  // Cachable intermediate calculation
+  typename ScopedPtr<M>::Type BT_Wy_B_inv;
+
   unsigned int num_svd_terms;
   typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
 
   // Matrix of svd basis vectors
   typename ScopedPtr<M>::Type K;
 
-  // Saved calculation of K*K^T, to be used for LU invert-multiplies
-  typename ScopedPtr<M>::Type KKT;
+  // Cached calculation of (K^T*K)^-1
+  typename ScopedPtr<M>::Type K_KT_inv;
 
   // Total observation error covriance matrix
   const M & m_experimentErrors;

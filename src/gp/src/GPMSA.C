@@ -124,11 +124,8 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
           (*K)(i,j) = SM_singularVectors(i2,k);
         }
 
-  KKT.reset
-    (new M(m_simulationOutputs[0]->env(), copied_map,
-           numOutputs * m_numSimulations));
-
-  K->multiply(K->transpose(), *KKT);
+  K_KT_inv.reset
+    (new M((*K * K->transpose()).inverse()));
 
   Map outputs_map(numOutputs, 0, comm);
 
@@ -217,7 +214,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
         }
     }
 
-  M BT_Wy_B = B.transpose() * Wy * B;
+  BT_Wy_B_inv.reset(new M((B.transpose() * Wy * B).inverse()));
 }
 
 template <class V, class M>
