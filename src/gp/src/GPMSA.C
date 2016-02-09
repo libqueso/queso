@@ -449,7 +449,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     for (unsigned int disc = 0; disc != num_discrepancy_bases;
          ++disc)
       covMatrix(disc*m_numExperiments+i,
-                disc*m_numExperiments+j) += nugget;
+                disc*m_numExperiments+i) += nugget;
   }
 
   // Form residual = D - mean // = D - mu*1 in (3)
