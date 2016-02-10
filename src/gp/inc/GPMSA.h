@@ -353,6 +353,7 @@ public:
   typename ScopedPtr<BoxSubset<V, M> >::Type emulatorMeanDomain;
 
   // Emulator precision
+  typename ScopedPtr<VectorSpace<V, M> >::Type emulatorPrecisionSpace;
   typename ScopedPtr<V>::Type emulatorPrecisionMin;
   typename ScopedPtr<V>::Type emulatorPrecisionMax;
   typename ScopedPtr<BoxSubset<V, M> >::Type emulatorPrecisionDomain;
@@ -390,7 +391,7 @@ public:
 
   // The hyperpriors
   typename ScopedPtr<UniformVectorRV<V, M> >::Type m_emulatorMean;  // scalar
-  typename ScopedPtr<GammaVectorRV<V, M> >::Type m_emulatorPrecision;  // (scalar) gamma(a, b) shape-rate
+  typename ScopedPtr<GammaVectorRV<V, M> >::Type m_emulatorPrecision;  // (dim num_svd_terms) gamma(a, b) shape-rate
   typename ScopedPtr<BetaVectorRV<V, M> >::Type m_emulatorCorrelationStrength;  // (dim scenariosspace + dim parameterspace)
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_discrepancyPrecision;  // (scalar) shape-rate
   typename ScopedPtr<BetaVectorRV<V, M> >::Type m_discrepancyCorrelationStrength;  // (dim scenariospace)

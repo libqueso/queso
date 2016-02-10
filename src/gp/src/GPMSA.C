@@ -918,6 +918,14 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   double emulatorDataPrecisionShape = this->m_opts->m_emulatorDataPrecisionShape;
   double emulatorDataPrecisionScale = this->m_opts->m_emulatorDataPrecisionScale;
 
+  const unsigned int numOutputs =
+    m_experimentOutputSpace.dimLocal();
+
+  const unsigned int MAX_SVD_TERMS =
+    std::min(m_numSimulations,(unsigned int)(5));
+  const unsigned int num_svd_terms =
+    std::min(MAX_SVD_TERMS, numOutputs);
+
   this->oneDSpace.reset
     (new VectorSpace<V, M>(this->m_env, "", 1, NULL));
 
@@ -940,10 +948,21 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       *(this->emulatorMeanDomain)));
 
   // Emulator precision
-  this->emulatorPrecisionMin.reset(new V(this->oneDSpace->zeroVector()));
-  this->emulatorPrecisionMax.reset(new V(this->oneDSpace->zeroVector()));
-  this->m_emulatorPrecisionShapeVec.reset(new V(this->oneDSpace->zeroVector()));
-  this->m_emulatorPrecisionScaleVec.reset(new V(this->oneDSpace->zeroVector()));
+  this->emulatorPrecisionSpace.reset
+    (new VectorSpace<V, M>
+     (this->m_env,
+      "",
+      num_svd_terms,
+      NULL));
+
+  this->emulatorPrecisionMin.reset
+    (new V(this->emulatorPrecisionSpace->zeroVector()));
+  this->emulatorPrecisionMax.reset
+    (new V(this->emulatorPrecisionSpace->zeroVector()));
+  this->m_emulatorPrecisionShapeVec.reset
+    (new V(this->emulatorPrecisionSpace->zeroVector()));
+  this->m_emulatorPrecisionScaleVec.reset
+    (new V(this->emulatorPrecisionSpace->zeroVector()));
   this->emulatorPrecisionMin->cwSet(0.3);
   this->emulatorPrecisionMax->cwSet(INFINITY);
   this->m_emulatorPrecisionShapeVec->cwSet(emulatorPrecisionShape);
@@ -952,7 +971,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   this->emulatorPrecisionDomain.reset
     (new BoxSubset<V, M>
      ("",
-      *(this->oneDSpace),
+      *(this->emulatorPrecisionSpace),
       *(this->emulatorPrecisionMin),
       *(this->emulatorPrecisionMax)));
 
@@ -1092,7 +1111,8 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       *(this->m_emulatorDataPrecisionScaleVec)));
 
   // Now form full prior
-  unsigned int dimSum = 4 +
+  unsigned int dimSum = 3 +
+                        num_svd_terms +
                         dimParameter +
                         dimParameter +
                         dimScenario +
@@ -1113,15 +1133,23 @@ GPMSAFactory<V, M>::setUpHyperpriors()
 
   (*(this->totalMins))[dimParameter] = -INFINITY;  // Min mean
   (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
-  (*(this->totalMins))[dimParameter+1] = 0.3;  // Min emulator precision
-  (*(this->totalMaxs))[dimParameter+1] = INFINITY;  // Max emulator precision
-  (*(this->totalMins))[dimSum-1] = 60.0;  // Min emulator data precision
-  (*(this->totalMaxs))[dimSum-1] = 1e5;  // Max emulator data precision
 
+  for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
+    {
+      // Min emulator precision
+      (*(this->totalMins))[dimParameter+1+basis] = 0.3;
+      // Max emulator precision
+      (*(this->totalMaxs))[dimParameter+1+basis] = INFINITY;
+    }
+
+  // FIXME: F = 1 for now
   // Min discrepancy precision
   (*(this->totalMins))[dimScenario+dimParameter+dimParameter+2] = 0;
   // Max discrepancy precision
   (*(this->totalMaxs))[dimScenario+dimParameter+dimParameter+2] = INFINITY;
+
+  (*(this->totalMins))[dimSum-1] = 60.0;  // Min emulator data precision
+  (*(this->totalMaxs))[dimSum-1] = 1e5;  // Max emulator data precision
 
   this->totalDomain.reset
     (new BoxSubset<V, M>
