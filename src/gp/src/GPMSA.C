@@ -72,7 +72,8 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 
   Map serial_map(m_numSimulations, 0, comm);
 
-  unsigned int numOutputs = this->m_experimentOutputSpace.dimLocal();
+  const unsigned int numOutputs =
+    this->m_experimentOutputSpace.dimLocal();
 
   const BaseEnvironment &env = m_simulationOutputs[0]->env();
 
@@ -444,8 +445,9 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                           dimScenario +
                           dimScenario;  // yum
 
-    queso_assert_greater(domainVector[dimSum-1], 0);
-    double nugget = 1.0 / domainVector[dimSum-1];
+    const double emulator_data_precision = domainVector[dimSum-1];
+    queso_assert_greater(emulator_data_precision, 0);
+    double nugget = 1.0 / emulator_data_precision;
 
     for (unsigned int disc = 0; disc != num_discrepancy_bases;
          ++disc)
