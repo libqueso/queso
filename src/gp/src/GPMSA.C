@@ -238,9 +238,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // ...
   // theta(dimParameter)
   // emulator_mean                // = "mu"
-  // emulator_precision(1)        // = "lambda_eta" in scalar case,
-  // ...                          //   "lambda_{wi}" in vector
-  // emulator_precision(num_svd_terms)
+  // emulator_precision           // = "lambda_eta"
+  // weights_precision(1)        //   "lambda_{wi}" in vector case
+  // ...
+  // weights_precision(num_svd_terms)
   // emulator_corr_strength(1)    // = "rho_{eta k}"
   // ...                          // dimScenario = "p_x", dimParameter = "p_t"
   // emulator_corr_strength(dimScenario + dimParameter)
@@ -380,13 +381,15 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
         {
           // coefficient in (1)
-          const double emulator_precision =
-            domainVector[dimParameter+basis+1];
-          queso_assert_greater(emulator_precision, 0);
+          // The relevant precision for Sigma_eta is lambda_eta; for
+          // Sigma_uw etc. it's lambda_wi and we skip lambda_eta
+          const double relevant_precision =
+            domainVector[dimParameter+basis+1+(numOutputs>1)];
+          queso_assert_greater(relevant_precision, 0);
 
           covMatrix(offset1+basis*m_numSimulations+i,
                     offset1+basis*m_numSimulations+j) =
-            prodScenario * prodParameter / emulator_precision;
+            prodScenario * prodParameter / relevant_precision;
         }
 
       // If we're in the experiment cross correlation part, need extra
@@ -398,7 +401,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         unsigned int discrepancyCorrStrStart = dimParameter +
                                                num_svd_terms +
                                                dimParameter +
-                                               dimScenario + 2;
+                                               dimScenario + 2 +
+                                               (numOutputs > 1);
         for (unsigned int k = 0; k < dimScenario; k++) {
           const double & discrepancy_corr_strength = 
             domainVector[discrepancyCorrStrStart+k];
@@ -439,6 +443,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     // Add small white noise component to diagonal to make stuff +ve def
     // = "small ridge"
     unsigned int dimSum = 3 +
+                          (numOutputs > 1) +
                           num_svd_terms +
                           dimParameter +
                           dimParameter +
@@ -952,7 +957,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     (new VectorSpace<V, M>
      (this->m_env,
       "",
-      num_svd_terms,
+      num_svd_terms + (numOutputs > 1),
       NULL));
 
   this->emulatorPrecisionMin.reset
@@ -1112,6 +1117,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
 
   // Now form full prior
   unsigned int dimSum = 3 +
+                        (numOutputs > 1) +
                         num_svd_terms +
                         dimParameter +
                         dimParameter +
