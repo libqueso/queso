@@ -514,7 +514,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
       V yhat(*BT_Wy_B_inv * (B.transpose() * (Wy * y)));
 
-      queso_assert_equal_to(yhat.size(), yhat_size);
+      queso_assert_equal_to(yhat.sizeGlobal(), yhat_size);
 
       V etahat(*KT_K_inv * (K->transpose() * eta));
 
