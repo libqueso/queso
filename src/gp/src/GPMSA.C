@@ -173,7 +173,6 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     (new M(m_simulationOutputs[0]->env(), Wy_row_map, Wyrows));
 
   M& B = *m_BMatrix;
-
   M& Wy = *m_observationErrorMatrix;
 
   for (unsigned int ex = 0; ex != m_numExperiments; ++ex)
@@ -297,10 +296,9 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     0 : m_numExperiments * (num_discrepancy_bases + num_svd_terms);
 
   // This is cumbersome.  All I want is a matrix.
-  VectorSpace<V, M> gpSpace(this->m_scenarioSpace.env(), "",
-                            residualSize, NULL);
-  V residual(gpSpace.zeroVector());
-  M covMatrix(residual);
+  const MpiComm & comm = domainVector.map().Comm();
+  Map z_map(residualSize, 0, comm);
+  M covMatrix(this->m_env, z_map, residualSize);
 
   V domainVectorParameter(*(this->m_simulationParameters[0]));
   for (unsigned int k = 0; k < dimParameter; k++) {
@@ -481,38 +479,86 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       for (unsigned int i=0; i != KT_K_size; ++i)
         for (unsigned int j=0; j != KT_K_size; ++j)
           covMatrix(i+offset2,j+offset2) +=
-            (*KT_K_inv)(i,j) * inv_lambda_y;
+            (*KT_K_inv)(i,j) * inv_emulator_precision;
     }
 
-  // Form residual = D - mean // = D - mu*1 in (3)
-  // We don't subtract off mean here because we expect normalized data
-  for (unsigned int i = 0; i < this->m_numExperiments; i++) {
-    for (unsigned int k = 0; k != numOutputs; ++k)
-      residual[i*numOutputs+k] =
-        (*((this->m_experimentOutputs)[i]))[k];
-  }
-  for (unsigned int i = 0; i < this->m_numSimulations; i++) {
-    for (unsigned int k = 0; k != numOutputs; ++k)
-      residual[(i+this->m_numExperiments)*numOutputs+k] =
-        (*((this->m_simulationOutputs)[i]))[k];
-  }
+  typename ScopedPtr<V>::Type residual;
+
+  if (numOutputs > 1)
+    {
+      Map y_map(m_numExperiments * numOutputs, 0, comm);
+      Map eta_map(m_numSimulations * numOutputs, 0, comm);
+
+      const unsigned int yhat_size = 
+        m_numExperiments * (num_discrepancy_bases + num_svd_terms);
+
+      Map zhat_map(yhat_size + m_numSimulations, 0, comm);
+
+      V y(this->m_env, y_map);
+      V eta(this->m_env, eta_map);
+
+      for (unsigned int i = 0; i < this->m_numExperiments; i++) {
+        for (unsigned int k = 0; k != numOutputs; ++k)
+          y[i*numOutputs+k] =
+            (*((this->m_experimentOutputs)[i]))[k];
+      }
+
+      for (unsigned int i = 0; i < this->m_numSimulations; i++) {
+        for (unsigned int k = 0; k != numOutputs; ++k)
+          eta[(i+this->m_numExperiments)*numOutputs+k] =
+            (*((this->m_simulationOutputs)[i]))[k];
+      }
+
+      M& B = *m_BMatrix;
+      M& Wy = *m_observationErrorMatrix;
+
+      V yhat(*BT_Wy_B_inv * (B.transpose() * (Wy * y)));
+
+      queso_assert_equal_to(yhat.size(), yhat_size);
+
+      V etahat(*KT_K_inv * (K->transpose() * eta));
+
+      residual.reset(new V(this->m_env, zhat_map));
+      for (unsigned int i = 0; i < yhat_size; ++i)
+        (*residual)[i] = yhat[i];
+
+      for (unsigned int i = 0; i < m_numSimulations; ++i)
+        (*residual)[yhat_size+i] = etahat[i];
+    }
+  else
+    {
+      residual.reset(new V (this->m_env, z_map));
+
+      // Form residual = D - mean // = D - mu*1 in (3)
+      // We don't subtract off mean here because we expect normalized data
+      for (unsigned int i = 0; i < this->m_numExperiments; i++) {
+        for (unsigned int k = 0; k != numOutputs; ++k)
+          (*residual)[i*numOutputs+k] =
+            (*((this->m_experimentOutputs)[i]))[k];
+      }
+      for (unsigned int i = 0; i < this->m_numSimulations; i++) {
+        for (unsigned int k = 0; k != numOutputs; ++k)
+          (*residual)[(i+this->m_numExperiments)*numOutputs+k] =
+            (*((this->m_simulationOutputs)[i]))[k];
+      }
+    }
 
   // Solve covMatrix * sol = residual
   // = Sigma_D^-1 * (D - mu 1) from (3)
-  V sol(covMatrix.invertMultiply(residual));
+  V sol(covMatrix.invertMultiply(*residual));
 
   // Premultiply by residual^T as in (3)
   double minus_2_log_lhd = 0.0;
   // There's no dot product function in GslVector.
   for (unsigned int i = 0; i < totalOutputs; i++) {
-    minus_2_log_lhd += sol[i] * residual[i];
+    minus_2_log_lhd += sol[i] * (*residual)[i];
   }
 
 if (isnan(minus_2_log_lhd))
   for (unsigned int i = 0; i < totalOutputs; i++) {
     if (isnan(sol[i]))
       std::cout << "NaN sol[" << i << ']' << std::endl;
-    if (isnan(residual[i]))
+    if (isnan((*residual)[i]))
       std::cout << "NaN residual[" << i << ']' << std::endl;
 
     std::cout << "Covariance Matrix:" << std::endl;
