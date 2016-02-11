@@ -214,3 +214,4 @@ test/test_SharedPtr
 test/output_test_serialEnv
 test/test_Environment/input_test_serialEnv
 test/test_serialEnv
+test/test_jeffreys_pdf
