@@ -125,8 +125,8 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
           (*K)(i,j) = SM_singularVectors(i2,k);
         }
 
-  K_KT_inv.reset
-    (new M((*K * K->transpose()).inverse()));
+  KT_K_inv.reset
+    (new M((K->transpose() * *K).inverse()));
 
   Map outputs_map(numOutputs, 0, comm);
 

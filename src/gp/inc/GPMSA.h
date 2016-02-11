@@ -113,7 +113,7 @@ public:
   typename ScopedPtr<M>::Type K;
 
   // Cached calculation of (K^T*K)^-1
-  typename ScopedPtr<M>::Type K_KT_inv;
+  typename ScopedPtr<M>::Type KT_K_inv;
 
   // Total observation error covriance matrix
   const M & m_experimentErrors;
