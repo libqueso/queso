@@ -460,6 +460,30 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                 disc*m_numExperiments+i) += nugget;
   }
 
+  // If we're in the multivariate case, we've built the full Sigma_z
+  // matrix; now add the remaining Sigma_zhat terms
+  if (numOutputs > 1)
+    {
+      // FIXME
+      const double lambda_y = 1.0;
+      const double inv_lambda_y = 1.0/lambda_y;
+
+      unsigned int BT_Wy_B_size = BT_Wy_B_inv->numCols();
+      for (unsigned int i=0; i != BT_Wy_B_size; ++i)
+        for (unsigned int j=0; j != BT_Wy_B_size; ++j)
+          covMatrix(i,j) += (*BT_Wy_B_inv)(i,j) * inv_lambda_y;
+
+      const double emulator_precision =
+        domainVector[dimParameter+1];
+      const double inv_emulator_precision = 1.0/emulator_precision;
+
+      unsigned int KT_K_size = KT_K_inv->numCols();
+      for (unsigned int i=0; i != KT_K_size; ++i)
+        for (unsigned int j=0; j != KT_K_size; ++j)
+          covMatrix(i+offset2,j+offset2) +=
+            (*KT_K_inv)(i,j) * inv_lambda_y;
+    }
+
   // Form residual = D - mean // = D - mu*1 in (3)
   // We don't subtract off mean here because we expect normalized data
   for (unsigned int i = 0; i < this->m_numExperiments; i++) {
