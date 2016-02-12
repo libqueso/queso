@@ -214,7 +214,14 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
         }
     }
 
-  BT_Wy_B_inv.reset(new M((B.transpose() * Wy * B).inverse()));
+  M BT_Wy_B (B.transpose() * Wy * B);
+
+  // Adding a "small ridge" to make sure this is invertible, as on
+  // p.577 - using 1e-4 from discussion notes.
+  for (unsigned int i=0; i != Brows; ++i)
+    BT_Wy_B(i,i) += 1.e-4;
+
+  BT_Wy_B_inv.reset(new M(BT_Wy_B.inverse()));
 }
 
 template <class V, class M>
