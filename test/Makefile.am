@@ -55,6 +55,7 @@ check_PROGRAMS += test_optimizer_options
 check_PROGRAMS += test_SharedPtr
 check_PROGRAMS += test_serialEnv
 check_PROGRAMS += test_jeffreys_pdf
+check_PROGRAMS += test_gaussian_pdf_gradient
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -135,6 +136,7 @@ test_optimizer_options_SOURCES = test_optimizer/test_optimizer_options.C
 test_SharedPtr_SOURCES = pointers/test_SharedPtr.C
 test_serialEnv_SOURCES = test_Environment/test_serialEnv.C
 test_jeffreys_pdf_SOURCES = test_pdfs/test_jeffreys_pdf.C
+test_gaussian_pdf_gradient_SOURCES = test_pdfs/test_gaussian_pdf_gradient.C
 
 # Files to freedom stamp
 srcstamp =
@@ -187,6 +189,7 @@ srcstamp += $(test_optimizer_options_SOURCES)
 srcstamp += $(test_SharedPtr_SOURCES)
 srcstamp += $(test_serialEnv_SOURCES)
 srcstamp += $(test_jeffreys_pdf_SOURCES)
+srcstamp += $(test_gaussian_pdf_gradient_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -239,6 +242,7 @@ TESTS += $(top_builddir)/test/test_optimizer_options
 TESTS += $(top_builddir)/test/test_SharedPtr
 TESTS += $(top_builddir)/test/test_serialEnv
 TESTS += $(top_builddir)/test/test_jeffreys_pdf
+TESTS += $(top_builddir)/test/test_gaussian_pdf_gradient
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 if ! MPI_ENABLED
