@@ -1120,7 +1120,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
      ("",
       *(this->oneDSpace),
       *(this->discrepancyPrecisionMin),
-      *(this->emulatorPrecisionMax)));
+      *(this->discrepancyPrecisionMax)));
 
   this->m_discrepancyPrecision.reset
     (new GammaVectorRV<V, M>
