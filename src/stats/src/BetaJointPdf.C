@@ -74,6 +74,11 @@ BetaJointPdf<V,M>::actualValue(
   double value = std::exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 
   if (gradVector) {
+    // DM: This transformation may have issues near the boundary.  I haven't
+    // fully explored this yet.
+    //
+    // This evaluation is also normalised (if m_normalizationStyle is zero) and
+    // so the gradient in physical space contains the normalisation constant.
     (*gradVector) *= value;
   }
 
@@ -102,15 +107,9 @@ BetaJointPdf<V,M>::lnValue(
     }
 
     if (gradVector) {
-      (*gradVector)[i] = (m_alpha[i] - 1.0) *
-        std::pow(domainVector[i], m_alpha[i] - 2.0) *
-        std::pow(1.0 - domainVector[i], m_beta[i] - 1.0) +
-        (1.0 - m_beta[i]) *
-        std::pow(domainVector[i], m_alpha[i] - 1.0) *
-        std::pow(1.0 - domainVector[i], m_beta[i] - 2.0);
-
       // We're computing grad of log of p which is p' / p
-      (*gradVector)[i] = (*gradVector)[i] / std::exp(aux);
+      (*gradVector)[i] = (m_alpha[i] - 1.0) / domainVector[i] +
+        (1.0 - m_beta[i]) / (1.0 - domainVector[i]);
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
