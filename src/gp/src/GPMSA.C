@@ -266,9 +266,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // m_simulationScenarios        // = "eta"
   // m_experimentScenarios        // = "y"
   // m_experimentErrors           // = "Sigma_y"
-  // dimScenario                  // = "p_x", "n_eta"
+  // numOutputs                   // = "n_eta"
   //                              // "n_y" := sum(n_y_i)
   //                              //      (== n*n_eta for us for now)
+  // dimScenario                  // = "p_x"
   // num_svd_terms                // = "p_eta"
   // num_discrepancy_bases        // = "p_delta"
   // m_TruncatedSVD_simulationOutputs  // = "K_eta"
