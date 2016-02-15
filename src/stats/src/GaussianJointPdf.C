@@ -148,7 +148,8 @@ GaussianJointPdf<V,M>::actualValue(
     returnValue = 0.;
   }
   else {
-    // Already normalised
+    // Already normalised (so the gradient will have the normalisation constant
+    // in it)
     returnValue = std::exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 
     if (gradVector) {
