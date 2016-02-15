@@ -115,7 +115,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 
   K.reset
     (new M(m_simulationOutputs[0]->env(), copied_map,
-           m_numSimulations));
+           m_numSimulations * num_svd_terms));
   for (unsigned int k=0; k != num_svd_terms; ++k)
     for (unsigned int i1=0; i1 != m_numSimulations; ++i1)
       for (unsigned int i2=0; i2 != numOutputs; ++i2)
@@ -179,6 +179,13 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     {
       const M & D_i = m_discrepancyMatrices[ex];
 
+      // For the multivariate case, the bases K_eta computed from
+      // simulator outputs are the same as the bases K_i which apply
+      // to quantities of interest, because simulator outputs are QoIs
+      // alone.
+      //
+      // FIXME - we need to interpolate K_i in the functional case.
+
       for (unsigned int outi = 0; outi != numOutputs; ++outi)
         {
           unsigned int i = ex*numOutputs+outi;
@@ -194,15 +201,8 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
               unsigned int j = ex +
                 m_numExperiments * (num_discrepancy_bases + outj);
 
-              B(i,j) = D_i(outi,outj);
+              B(i,j) = (*m_TruncatedSVD_simulationOutputs)(outi,outj);
             }
-
-          // For the multivariate case, the bases K_eta computed from
-          // simulator outputs are the same as the bases K_i which
-          // apply to quantities of interest, because simulator
-          // outputs are QoIs alone.
-          //
-          // FIXME - we need to interpolate K_i in the functional case.
 
           for (unsigned int outj = 0; outj != numOutputs; ++outj)
             {
