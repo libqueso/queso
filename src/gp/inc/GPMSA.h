@@ -62,7 +62,10 @@ public:
                 const std::vector<V>   & m_discrepancyBases,
                 const std::vector<M>   & m_observationErrorMatrices,
                 const M & m_experimentErrors,
-                const ConcatenatedVectorRV<V, M> & m_totalPrior);
+                const ConcatenatedVectorRV<V, M> & m_totalPrior,
+                const V & residual_in,
+                const M & BT_Wy_B_inv_in,
+                const M & KT_K_inv_in);
 
   virtual ~GPMSAEmulator();
 
@@ -94,26 +97,21 @@ public:
 
         std::vector<V>     m_discrepancyBases;
 
-  std::vector<M> m_discrepancyMatrices;
-
-  typename ScopedPtr<M>::Type m_BMatrix;
-
   const std::vector<M> & m_observationErrorMatrices;
 
-  // Block diagonal matrix; sacrificing efficiency for clarity
-  typename ScopedPtr<M>::Type m_observationErrorMatrix;
+  //
+  // Intermediate calculations cached by factory
+  //
+  const V & residual;
 
-  // Cachable intermediate calculation
-  typename ScopedPtr<M>::Type BT_Wy_B_inv;
+  const M & BT_Wy_B_inv;
 
+  const M & KT_K_inv;
+
+  //
+  // Intermediate calculations we can cache
+  //
   unsigned int num_svd_terms;
-  typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
-
-  // Matrix of svd basis vectors
-  typename ScopedPtr<M>::Type K;
-
-  // Cached calculation of (K^T*K)^-1
-  typename ScopedPtr<M>::Type KT_K_inv;
 
   // Total observation error covriance matrix
   const M & m_experimentErrors;
@@ -341,6 +339,9 @@ public:
   // The emulator state
   // const V & m_emulator;
 
+  // Build the emulator once all data has been added
+  void setUpEmulator();
+
   // All the GP priors information for a scalar GP follows:
   void setUpHyperpriors();
 
@@ -421,6 +422,30 @@ public:
   // The gaussian process object to build
   typename ScopedPtr<GPMSAEmulator<V, M> >::Type gpmsaEmulator;
   bool m_constructedGP;
+
+  // Block diagonal matrix; sacrificing efficiency for clarity
+  typename ScopedPtr<M>::Type m_observationErrorMatrix;
+
+  //
+  // Intermediate calculations we can cache
+  //
+  typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
+
+  std::vector<M> m_discrepancyMatrices;
+
+  typename ScopedPtr<M>::Type m_BMatrix;
+
+  // Matrix of svd basis vectors
+  typename ScopedPtr<M>::Type K;
+
+  typename ScopedPtr<V>::Type residual;
+
+  // Cached calculation of (B^T*W_y*B)^-1
+  typename ScopedPtr<M>::Type BT_Wy_B_inv;
+
+  // Cached calculation of (K^T*K)^-1
+  typename ScopedPtr<M>::Type KT_K_inv;
+
 
 private:
   bool allocated_m_opts;

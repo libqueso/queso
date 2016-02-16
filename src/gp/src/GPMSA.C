@@ -45,7 +45,10 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const std::vector<V>   & m_discrepancyBases,
     const std::vector<M>   & m_observationErrorMatrices,
     const M & m_experimentErrors,
-    const ConcatenatedVectorRV<V, M> & m_totalPrior)
+    const ConcatenatedVectorRV<V, M> & m_totalPrior,
+    const V & residual_in,
+    const M & BT_Wy_B_inv_in,
+    const M & KT_K_inv_in)
   :
   BaseScalarFunction<V, M>("", m_totalPrior.imageSet()),
   m_scenarioSpace(m_scenarioSpace),
@@ -62,7 +65,10 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   m_discrepancyBases(m_discrepancyBases),
   m_observationErrorMatrices(m_observationErrorMatrices),
   m_experimentErrors(m_experimentErrors),
-  m_totalPrior(m_totalPrior)
+  m_totalPrior(m_totalPrior),
+  residual(residual_in),
+  BT_Wy_B_inv(BT_Wy_B_inv_in),
+  KT_K_inv(KT_K_inv_in)
 {
   queso_assert_greater(m_numSimulations, 0);
 
@@ -70,158 +76,12 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 
   queso_assert_equal_to(comm.NumProc(), 1);
 
-  Map serial_map(m_numSimulations, 0, comm);
-
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
-
-  const BaseEnvironment &env = m_simulationOutputs[0]->env();
-
-  M simulation_matrix(env, serial_map, numOutputs);
-
-  for (unsigned int i=0; i != m_numSimulations; ++i)
-    for (unsigned int j=0; j != numOutputs; ++j)
-      simulation_matrix(i,j) = 
-        (*m_simulationOutputs[i])[j];
-
-  // GSL only finds left singular vectors if n_rows>=n_columns, so we need to
-  // calculate them indirectly from the eigenvalues of M^T*M
-
-  M S_trans(simulation_matrix.transpose());
-
-  M SM_squared(S_trans*simulation_matrix);
-
-  M SM_singularVectors(env, SM_squared.map(), numOutputs);
-  V SM_singularValues(env, SM_squared.map());
-
-  SM_squared.eigen(SM_singularValues, &SM_singularVectors);
 
   const unsigned int MAX_SVD_TERMS =
     std::min(m_numSimulations,(unsigned int)(5));
   num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
-
-  // Copy only those vectors we want into K_eta
-  m_TruncatedSVD_simulationOutputs.reset
-    (new M(m_simulationOutputs[0]->env(),
-           m_simulationOutputs[0]->map(),
-           num_svd_terms));
-
-  for (unsigned int i=0; i != numOutputs; ++i)
-    for (unsigned int k = 0; k != num_svd_terms; ++k)
-      (*m_TruncatedSVD_simulationOutputs)(i,k) = SM_singularVectors(i,k);
-
-  Map copied_map(numOutputs * m_numSimulations, 0,
-                 m_simulationOutputs[0]->map().Comm());
-
-  K.reset
-    (new M(m_simulationOutputs[0]->env(), copied_map,
-           m_numSimulations * num_svd_terms));
-  for (unsigned int k=0; k != num_svd_terms; ++k)
-    for (unsigned int i1=0; i1 != m_numSimulations; ++i1)
-      for (unsigned int i2=0; i2 != numOutputs; ++i2)
-        {
-          const unsigned int i = i1 * numOutputs + i2;
-          const unsigned int j = k * m_numSimulations + i1;
-          (*K)(i,j) = SM_singularVectors(i2,k);
-        }
-
-  KT_K_inv.reset
-    (new M((K->transpose() * *K).inverse()));
-
-  Map outputs_map(numOutputs, 0, comm);
-
-  for (unsigned int i = 0; i != m_numExperiments; ++i)
-    {
-      M D_i(m_simulationOutputs[0]->env(), outputs_map,
-            (unsigned int)(m_discrepancyBases.size()));
-
-      for (unsigned int j=0; j != numOutputs; ++j)
-        for (unsigned int k=0; k != m_discrepancyBases.size(); ++k)
-          D_i(j,k) = m_discrepancyBases[k][j];
-
-      m_discrepancyMatrices.push_back(D_i);
-    }
-
-  // Create the giant matrices!
-
-  // We build B from two parts, the diag(D_i)*P_D^T block and
-  // the diag(K_i)*P_K^T block, but we build simultaneously so we only
-  // need one loop over experiments.
-  // Since P_D and P_K are permutation matrices we'll just apply the
-  // permutations as we insert.
-
-  // W_y is simple block diagonal.
-
-  // Neither of these ought to be dense matrices but we're sacrificing
-  // efficiency for clarity for now.
-
-  const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
-  const unsigned int Brows = m_numExperiments * numOutputs;
-  const unsigned int Bcols =
-    m_numExperiments * (num_discrepancy_bases + num_svd_terms);
-
-  const Map B_row_map(Brows, 0, comm);
-
-  m_BMatrix.reset
-    (new M(m_simulationOutputs[0]->env(), B_row_map, Bcols));
-
-  const unsigned int Wyrows = m_numExperiments * numOutputs;
-
-  const Map Wy_row_map(Wyrows, 0, comm);
-
-  m_observationErrorMatrix.reset
-    (new M(m_simulationOutputs[0]->env(), Wy_row_map, Wyrows));
-
-  M& B = *m_BMatrix;
-  M& Wy = *m_observationErrorMatrix;
-
-  for (unsigned int ex = 0; ex != m_numExperiments; ++ex)
-    {
-      const M & D_i = m_discrepancyMatrices[ex];
-
-      // For the multivariate case, the bases K_eta computed from
-      // simulator outputs are the same as the bases K_i which apply
-      // to quantities of interest, because simulator outputs are QoIs
-      // alone.
-      //
-      // FIXME - we need to interpolate K_i in the functional case.
-
-      for (unsigned int outi = 0; outi != numOutputs; ++outi)
-        {
-          unsigned int i = ex*numOutputs+outi;
-          for (unsigned int outj = 0; outj != num_discrepancy_bases; ++outj)
-            {
-              unsigned int j = ex + m_numExperiments * outj;
-
-              B(i,j) = D_i(outi,outj);
-            }
-
-          for (unsigned int outj = 0; outj != num_svd_terms; ++outj)
-            {
-              unsigned int j = ex +
-                m_numExperiments * (num_discrepancy_bases + outj);
-
-              B(i,j) = (*m_TruncatedSVD_simulationOutputs)(outi,outj);
-            }
-
-          for (unsigned int outj = 0; outj != numOutputs; ++outj)
-            {
-              // No fancy perturbation here
-              unsigned int j = ex*numOutputs+outj;
-
-              Wy(i,j) = m_observationErrorMatrices[ex](outi,outj);
-            }
-        }
-    }
-
-  M BT_Wy_B (B.transpose() * Wy * B);
-
-  // Adding a "small ridge" to make sure this is invertible, as on
-  // p.577 - using 1e-4 from discussion notes.
-  for (unsigned int i=0; i != Brows; ++i)
-    BT_Wy_B(i,i) += 1.e-4;
-
-  BT_Wy_B_inv.reset(new M(BT_Wy_B.inverse()));
 }
 
 template <class V, class M>
@@ -478,99 +338,39 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       const double lambda_y = 1.0;
       const double inv_lambda_y = 1.0/lambda_y;
 
-      unsigned int BT_Wy_B_size = BT_Wy_B_inv->numCols();
+      unsigned int BT_Wy_B_size = BT_Wy_B_inv.numCols();
       for (unsigned int i=0; i != BT_Wy_B_size; ++i)
         for (unsigned int j=0; j != BT_Wy_B_size; ++j)
-          covMatrix(i,j) += (*BT_Wy_B_inv)(i,j) * inv_lambda_y;
+          covMatrix(i,j) += BT_Wy_B_inv(i,j) * inv_lambda_y;
 
       const double emulator_precision =
         domainVector[dimParameter+1];
       const double inv_emulator_precision = 1.0/emulator_precision;
 
-      unsigned int KT_K_size = KT_K_inv->numCols();
+      unsigned int KT_K_size = KT_K_inv.numCols();
       for (unsigned int i=0; i != KT_K_size; ++i)
         for (unsigned int j=0; j != KT_K_size; ++j)
           covMatrix(i+offset2,j+offset2) +=
-            (*KT_K_inv)(i,j) * inv_emulator_precision;
+            KT_K_inv(i,j) * inv_emulator_precision;
     }
 
-  typename ScopedPtr<V>::Type residual;
-
-  if (numOutputs > 1)
-    {
-      Map y_map(m_numExperiments * numOutputs, 0, comm);
-      Map eta_map(m_numSimulations * numOutputs, 0, comm);
-
-      const unsigned int yhat_size = 
-        m_numExperiments * (num_discrepancy_bases + num_svd_terms);
-
-      Map zhat_map(yhat_size + m_numSimulations, 0, comm);
-
-      V y(this->m_env, y_map);
-      V eta(this->m_env, eta_map);
-
-      for (unsigned int i = 0; i < this->m_numExperiments; i++) {
-        for (unsigned int k = 0; k != numOutputs; ++k)
-          y[i*numOutputs+k] =
-            (*((this->m_experimentOutputs)[i]))[k];
-      }
-
-      for (unsigned int i = 0; i < this->m_numSimulations; i++) {
-        for (unsigned int k = 0; k != numOutputs; ++k)
-          eta[(i+this->m_numExperiments)*numOutputs+k] =
-            (*((this->m_simulationOutputs)[i]))[k];
-      }
-
-      M& B = *m_BMatrix;
-      M& Wy = *m_observationErrorMatrix;
-
-      V yhat(*BT_Wy_B_inv * (B.transpose() * (Wy * y)));
-
-      queso_assert_equal_to(yhat.sizeGlobal(), yhat_size);
-
-      V etahat(*KT_K_inv * (K->transpose() * eta));
-
-      residual.reset(new V(this->m_env, zhat_map));
-      for (unsigned int i = 0; i < yhat_size; ++i)
-        (*residual)[i] = yhat[i];
-
-      for (unsigned int i = 0; i < m_numSimulations; ++i)
-        (*residual)[yhat_size+i] = etahat[i];
-    }
-  else
-    {
-      residual.reset(new V (this->m_env, z_map));
-
-      // Form residual = D - mean // = D - mu*1 in (3)
-      // We don't subtract off mean here because we expect normalized data
-      for (unsigned int i = 0; i < this->m_numExperiments; i++) {
-        for (unsigned int k = 0; k != numOutputs; ++k)
-          (*residual)[i*numOutputs+k] =
-            (*((this->m_experimentOutputs)[i]))[k];
-      }
-      for (unsigned int i = 0; i < this->m_numSimulations; i++) {
-        for (unsigned int k = 0; k != numOutputs; ++k)
-          (*residual)[(i+this->m_numExperiments)*numOutputs+k] =
-            (*((this->m_simulationOutputs)[i]))[k];
-      }
-    }
 
   // Solve covMatrix * sol = residual
   // = Sigma_D^-1 * (D - mu 1) from (3)
-  V sol(covMatrix.invertMultiply(*residual));
+  V sol(covMatrix.invertMultiply(residual));
 
   // Premultiply by residual^T as in (3)
   double minus_2_log_lhd = 0.0;
   // There's no dot product function in GslVector.
   for (unsigned int i = 0; i < totalOutputs; i++) {
-    minus_2_log_lhd += sol[i] * (*residual)[i];
+    minus_2_log_lhd += sol[i] * residual[i];
   }
 
 if (isnan(minus_2_log_lhd))
   for (unsigned int i = 0; i < totalOutputs; i++) {
     if (isnan(sol[i]))
       std::cout << "NaN sol[" << i << ']' << std::endl;
-    if (isnan((*residual)[i]))
+    if (isnan(residual[i]))
       std::cout << "NaN residual[" << i << ']' << std::endl;
 
     std::cout << "Covariance Matrix:" << std::endl;
@@ -668,8 +468,6 @@ GPMSAFactory<V, M>::GPMSAFactory(
     allocated_m_opts = true;
     this->m_opts = new GPMSAOptions(this->m_env, "");
   }
-
-  this->setUpHyperpriors();
 
   // FIXME: WTF? - RHS
   // this->m_constructedGP = false;
@@ -856,25 +654,7 @@ GPMSAFactory<V, M>::addSimulation(V & simulationScenario,
   if ((this->m_numSimulationAdds == this->m_numSimulations) &&
       (this->m_numExperimentAdds == this->m_numExperiments) &&
       (this->m_constructedGP == false)) {
-    this->m_constructedGP = true;
-    this->gpmsaEmulator.reset
-      (new GPMSAEmulator<V, M>(
-        this->prior().imageSet(),
-        this->m_scenarioSpace,
-        this->m_parameterSpace,
-        this->m_simulationOutputSpace,
-        this->m_experimentOutputSpace,
-        this->m_numSimulations,
-        this->m_numExperiments,
-        this->m_simulationScenarios,
-        this->m_simulationParameters,
-        this->m_simulationOutputs,
-        this->m_experimentScenarios,
-        this->m_experimentOutputs,
-        this->m_discrepancyBases,
-        this->m_observationErrorMatrices,
-        *(this->m_experimentErrors),
-        *(this->m_totalPrior)));
+    this->setUpEmulator();
   }
 }
 
@@ -890,6 +670,195 @@ GPMSAFactory<V, M>::addSimulations(
         *(simulationOutputs[i]));
   }
 }
+
+
+
+template <class V, class M>
+void
+GPMSAFactory<V, M>::setUpEmulator()
+{
+  const unsigned int numOutputs =
+    this->m_experimentOutputSpace.dimLocal();
+  const unsigned int MAX_SVD_TERMS =
+    std::min(m_numSimulations,(unsigned int)(5));
+  const unsigned int num_svd_terms =
+    std::min(MAX_SVD_TERMS, numOutputs);
+
+  const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
+
+  Map serial_map(m_numSimulations, 0, comm);
+
+  const BaseEnvironment &env = m_simulationOutputs[0]->env();
+
+  M simulation_matrix(env, serial_map, numOutputs);
+
+  for (unsigned int i=0; i != m_numSimulations; ++i)
+    for (unsigned int j=0; j != numOutputs; ++j)
+      simulation_matrix(i,j) = 
+        (*m_simulationOutputs[i])[j];
+
+  // GSL only finds left singular vectors if n_rows>=n_columns, so we need to
+  // calculate them indirectly from the eigenvalues of M^T*M
+
+  M S_trans(simulation_matrix.transpose());
+
+  M SM_squared(S_trans*simulation_matrix);
+
+  M SM_singularVectors(env, SM_squared.map(), numOutputs);
+  V SM_singularValues(env, SM_squared.map());
+
+  SM_squared.eigen(SM_singularValues, &SM_singularVectors);
+
+  // Copy only those vectors we want into K_eta
+  m_TruncatedSVD_simulationOutputs.reset
+    (new M(m_simulationOutputs[0]->env(),
+           m_simulationOutputs[0]->map(),
+           num_svd_terms));
+
+  for (unsigned int i=0; i != numOutputs; ++i)
+    for (unsigned int k = 0; k != num_svd_terms; ++k)
+      (*m_TruncatedSVD_simulationOutputs)(i,k) = SM_singularVectors(i,k);
+
+  Map copied_map(numOutputs * m_numSimulations, 0,
+                 m_simulationOutputs[0]->map().Comm());
+
+  K.reset
+    (new M(m_simulationOutputs[0]->env(), copied_map,
+           m_numSimulations * num_svd_terms));
+  for (unsigned int k=0; k != num_svd_terms; ++k)
+    for (unsigned int i1=0; i1 != m_numSimulations; ++i1)
+      for (unsigned int i2=0; i2 != numOutputs; ++i2)
+        {
+          const unsigned int i = i1 * numOutputs + i2;
+          const unsigned int j = k * m_numSimulations + i1;
+          (*K)(i,j) = SM_singularVectors(i2,k);
+        }
+
+  KT_K_inv.reset
+    (new M((K->transpose() * *K).inverse()));
+
+  Map outputs_map(numOutputs, 0, comm);
+
+  for (unsigned int i = 0; i != m_numExperiments; ++i)
+    {
+      M D_i(m_simulationOutputs[0]->env(), outputs_map,
+            (unsigned int)(m_discrepancyBases.size()));
+
+      for (unsigned int j=0; j != numOutputs; ++j)
+        for (unsigned int k=0; k != m_discrepancyBases.size(); ++k)
+          D_i(j,k) = m_discrepancyBases[k][j];
+
+      m_discrepancyMatrices.push_back(D_i);
+    }
+
+  // Create the giant matrices!
+
+  // We build B from two parts, the diag(D_i)*P_D^T block and
+  // the diag(K_i)*P_K^T block, but we build simultaneously so we only
+  // need one loop over experiments.
+  // Since P_D and P_K are permutation matrices we'll just apply the
+  // permutations as we insert.
+
+  // W_y is simple block diagonal.
+
+  // Neither of these ought to be dense matrices but we're sacrificing
+  // efficiency for clarity for now.
+
+  const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
+  const unsigned int Brows = m_numExperiments * numOutputs;
+  const unsigned int Bcols =
+    m_numExperiments * (num_discrepancy_bases + num_svd_terms);
+
+  const Map B_row_map(Brows, 0, comm);
+
+  m_BMatrix.reset
+    (new M(m_simulationOutputs[0]->env(), B_row_map, Bcols));
+
+  const unsigned int Wyrows = m_numExperiments * numOutputs;
+
+  const Map Wy_row_map(Wyrows, 0, comm);
+
+  m_observationErrorMatrix.reset
+    (new M(m_simulationOutputs[0]->env(), Wy_row_map, Wyrows));
+
+  M& B = *m_BMatrix;
+  M& Wy = *m_observationErrorMatrix;
+
+  for (unsigned int ex = 0; ex != m_numExperiments; ++ex)
+    {
+      const M & D_i = m_discrepancyMatrices[ex];
+
+      // For the multivariate case, the bases K_eta computed from
+      // simulator outputs are the same as the bases K_i which apply
+      // to quantities of interest, because simulator outputs are QoIs
+      // alone.
+      //
+      // FIXME - we need to interpolate K_i in the functional case.
+
+      for (unsigned int outi = 0; outi != numOutputs; ++outi)
+        {
+          unsigned int i = ex*numOutputs+outi;
+          for (unsigned int outj = 0; outj != num_discrepancy_bases; ++outj)
+            {
+              unsigned int j = ex + m_numExperiments * outj;
+
+              B(i,j) = D_i(outi,outj);
+            }
+
+          for (unsigned int outj = 0; outj != num_svd_terms; ++outj)
+            {
+              unsigned int j = ex +
+                m_numExperiments * (num_discrepancy_bases + outj);
+
+              B(i,j) = (*m_TruncatedSVD_simulationOutputs)(outi,outj);
+            }
+
+          for (unsigned int outj = 0; outj != numOutputs; ++outj)
+            {
+              // No fancy perturbation here
+              unsigned int j = ex*numOutputs+outj;
+
+              Wy(i,j) = m_observationErrorMatrices[ex](outi,outj);
+            }
+        }
+    }
+
+  M BT_Wy_B (B.transpose() * Wy * B);
+
+  // Adding a "small ridge" to make sure this is invertible, as on
+  // p.577 - using 1e-4 from discussion notes.
+  for (unsigned int i=0; i != Brows; ++i)
+    BT_Wy_B(i,i) += 1.e-4;
+
+  BT_Wy_B_inv.reset(new M(BT_Wy_B.inverse()));
+
+  this->setUpHyperpriors();
+
+  this->m_constructedGP = true;
+  this->gpmsaEmulator.reset
+    (new GPMSAEmulator<V, M>(
+      this->prior().imageSet(),
+      this->m_scenarioSpace,
+      this->m_parameterSpace,
+      this->m_simulationOutputSpace,
+      this->m_experimentOutputSpace,
+      this->m_numSimulations,
+      this->m_numExperiments,
+      this->m_simulationScenarios,
+      this->m_simulationParameters,
+      this->m_simulationOutputs,
+      this->m_experimentScenarios,
+      this->m_experimentOutputs,
+      this->m_discrepancyBases,
+      this->m_observationErrorMatrices,
+      *(this->m_experimentErrors),
+      *(this->m_totalPrior),
+      *this->residual,
+      *this->BT_Wy_B_inv,
+      *this->KT_K_inv));
+}
+
+
 
 template <class V, class M>
 void
@@ -910,25 +879,7 @@ GPMSAFactory<V, M>::addExperiments(
   if ((this->m_numSimulationAdds == this->m_numSimulations) &&
       (this->m_numExperimentAdds == this->m_numExperiments) &&
       (this->m_constructedGP == false)) {
-    this->m_constructedGP = true;
-    this->gpmsaEmulator.reset
-      (new GPMSAEmulator<V, M>(
-        this->prior().imageSet(),
-        this->m_scenarioSpace,
-        this->m_parameterSpace,
-        this->m_simulationOutputSpace,
-        this->m_experimentOutputSpace,
-        this->m_numSimulations,
-        this->m_numExperiments,
-        this->m_simulationScenarios,
-        this->m_simulationParameters,
-        this->m_simulationOutputs,
-        this->m_experimentScenarios,
-        this->m_experimentOutputs,
-        this->m_discrepancyBases,
-        this->m_observationErrorMatrices,
-        *(this->m_experimentErrors),
-        *(this->m_totalPrior)));
+    this->setUpEmulator();
   }
 }
 
@@ -994,8 +945,111 @@ template <class V, class M>
 void
 GPMSAFactory<V, M>::setUpHyperpriors()
 {
+  const unsigned int numOutputs =
+    this->m_experimentOutputSpace.dimLocal();
+  const unsigned int MAX_SVD_TERMS =
+    std::min(m_numSimulations,(unsigned int)(5));
+  const unsigned int num_svd_terms =
+    std::min(MAX_SVD_TERMS, numOutputs);
+  const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
+
+  const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
+
+  unsigned int rank_B;
+  if (m_BMatrix->numRowsGlobal() > m_BMatrix->numCols())
+    rank_B = m_BMatrix->rank(0, 1.e-4);
+  else
+    rank_B = m_BMatrix->transpose().rank(0, 1.e-4);
+
   double emulatorPrecisionShape = this->m_opts->m_emulatorPrecisionShape;
   double emulatorPrecisionScale = this->m_opts->m_emulatorPrecisionScale;
+
+  double observationalPrecisionShape = this->m_opts->m_observationalPrecisionShape;
+  double observationalPrecisionScale = this->m_opts->m_observationalPrecisionScale;
+
+  if (numOutputs > 1)
+    {
+      Map y_map(m_numExperiments * numOutputs, 0, comm);
+      Map eta_map(m_numSimulations * numOutputs, 0, comm);
+
+      const unsigned int yhat_size = 
+        m_numExperiments * (num_discrepancy_bases + num_svd_terms);
+
+      Map zhat_map(yhat_size + m_numSimulations, 0, comm);
+
+      V y(this->m_env, y_map);
+      V eta(this->m_env, eta_map);
+
+      for (unsigned int i = 0; i < this->m_numExperiments; i++) {
+        for (unsigned int k = 0; k != numOutputs; ++k)
+          y[i*numOutputs+k] =
+            (*((this->m_experimentOutputs)[i]))[k];
+      }
+
+      for (unsigned int i = 0; i < this->m_numSimulations; i++) {
+        for (unsigned int k = 0; k != numOutputs; ++k)
+          eta[(i+this->m_numExperiments)*numOutputs+k] =
+            (*((this->m_simulationOutputs)[i]))[k];
+      }
+
+      M& B = *m_BMatrix;
+      M& Wy = *m_observationErrorMatrix;
+
+      V yhat(*BT_Wy_B_inv * (B.transpose() * (Wy * y)));
+
+      queso_assert_equal_to(yhat.sizeGlobal(), yhat_size);
+
+      V etahat(*KT_K_inv * (K->transpose() * eta));
+
+      residual.reset(new V(this->m_env, zhat_map));
+      for (unsigned int i = 0; i < yhat_size; ++i)
+        (*residual)[i] = yhat[i];
+
+      for (unsigned int i = 0; i < m_numSimulations; ++i)
+        (*residual)[yhat_size+i] = etahat[i];
+
+      emulatorPrecisionShape +=
+        (this->m_numSimulations * (numOutputs - num_svd_terms)) / 2.0;
+
+      V eta_temp(eta);
+      eta_temp -= *K * etahat;
+
+      emulatorPrecisionScale +=
+        scalarProduct(eta, eta_temp) / 2.0;
+
+      observationalPrecisionShape +=
+        (this->m_numExperiments * numOutputs - rank_B) / 2.0;
+
+      V y_temp(Wy * y);
+      y_temp -= Wy * B * yhat;
+
+      observationalPrecisionScale +=
+        scalarProduct(y, y_temp) / 2.0;
+    }
+  else
+    {
+      const unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;
+      const unsigned int totalOutputs = totalRuns * numOutputs;
+      const unsigned int residualSize = (numOutputs == 1) ?  totalOutputs :
+        totalOutputs * num_svd_terms + m_numExperiments * num_discrepancy_bases;
+      Map z_map(residualSize, 0, comm);
+      residual.reset(new V (this->m_env, z_map));
+
+      // Form residual = D - mean // = D - mu*1 in (3)
+      // We don't subtract off mean here because we expect normalized data
+      for (unsigned int i = 0; i < this->m_numExperiments; i++) {
+        for (unsigned int k = 0; k != numOutputs; ++k)
+          (*residual)[i*numOutputs+k] =
+            (*((this->m_experimentOutputs)[i]))[k];
+      }
+      for (unsigned int i = 0; i < this->m_numSimulations; i++) {
+        for (unsigned int k = 0; k != numOutputs; ++k)
+          (*residual)[(i+this->m_numExperiments)*numOutputs+k] =
+            (*((this->m_simulationOutputs)[i]))[k];
+      }
+    }
+
+
   double emulatorCorrelationStrengthAlpha = this->m_opts->m_emulatorCorrelationStrengthAlpha;
   double emulatorCorrelationStrengthBeta = this->m_opts->m_emulatorCorrelationStrengthBeta;
   double discrepancyPrecisionShape = this->m_opts->m_discrepancyPrecisionShape;
@@ -1004,14 +1058,6 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   double discrepancyCorrelationStrengthBeta = this->m_opts->m_discrepancyCorrelationStrengthBeta;
   double emulatorDataPrecisionShape = this->m_opts->m_emulatorDataPrecisionShape;
   double emulatorDataPrecisionScale = this->m_opts->m_emulatorDataPrecisionScale;
-
-  const unsigned int numOutputs =
-    m_experimentOutputSpace.dimLocal();
-
-  const unsigned int MAX_SVD_TERMS =
-    std::min(m_numSimulations,(unsigned int)(5));
-  const unsigned int num_svd_terms =
-    std::min(MAX_SVD_TERMS, numOutputs);
 
   this->oneDSpace.reset
     (new VectorSpace<V, M>(this->m_env, "", 1, NULL));
