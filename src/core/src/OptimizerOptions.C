@@ -90,6 +90,7 @@ OptimizerOptions::checkOptions()
 {
   queso_require_greater_msg(m_tolerance, 0, "optimizer tolerance must be > 0");
   queso_require_greater_msg(m_finiteDifferenceStepSize, 0, "finite difference step must be > 0");
+  queso_require_greater_msg(m_maxIterations, 0, "max iterations must be > 0");
 }
 
 SharedPtr<const OptimizerOptions>::Type
