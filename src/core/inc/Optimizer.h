@@ -25,7 +25,7 @@
 #ifndef UQ_BASE_OPTIMIZER_H
 #define UQ_BASE_OPTIMIZER_H
 
-#include <queso/SharedPtr.h>
+#include <queso/ScopedPtr.h>
 #include <queso/OptimizerOptions.h>
 
 namespace QUESO {
@@ -95,7 +95,7 @@ protected:
   double m_finiteDifferenceStepSize;
 
 private:
-  SharedPtr<const OptimizerOptions>::Type m_optionsObj;
+  ScopedPtr<OptimizerOptions>::Type m_optionsObj;
 };
 
 }  // End namespace QUESO
