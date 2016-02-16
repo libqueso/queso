@@ -50,7 +50,7 @@ public:
   BaseOptimizer();
 
   //! Constructor that takes an options object
-  BaseOptimizer(const OptimizerOptions & options);
+  BaseOptimizer(OptimizerOptions options);
 
   //! Destructor
   virtual ~BaseOptimizer();

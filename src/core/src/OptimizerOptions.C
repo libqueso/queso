@@ -81,6 +81,21 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
   checkOptions();
 }
 
+OptimizerOptions::OptimizerOptions(const OptimizerOptions & rhs)
+  :
+    m_prefix(rhs.m_prefix),
+    m_help(rhs.m_help),
+    m_maxIterations(rhs.m_maxIterations),
+    m_tolerance(rhs.m_tolerance),
+    m_finiteDifferenceStepSize(rhs.m_finiteDifferenceStepSize),
+    m_parser(rhs.m_parser),  // We'll never touch the input file in a copied object
+    m_option_help(rhs.m_option_help),
+    m_option_maxIterations(rhs.m_option_maxIterations),
+    m_option_tolerance(rhs.m_option_tolerance),
+    m_option_finiteDifferenceStepSize(rhs.m_option_finiteDifferenceStepSize)
+{
+}
+
 OptimizerOptions::~OptimizerOptions()
 {
 }
@@ -91,11 +106,6 @@ OptimizerOptions::checkOptions()
   queso_require_greater_msg(m_tolerance, 0, "optimizer tolerance must be > 0");
   queso_require_greater_msg(m_finiteDifferenceStepSize, 0, "finite difference step must be > 0");
   queso_require_greater_msg(m_maxIterations, 0, "max iterations must be > 0");
-}
-
-SharedPtr<const OptimizerOptions>::Type
-OptimizerOptions::clone() const
-{
 }
 
 std::ostream &

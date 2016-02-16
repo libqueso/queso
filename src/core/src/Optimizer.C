@@ -34,9 +34,9 @@ BaseOptimizer::BaseOptimizer()
   m_optionsObj.reset(new OptimizerOptions);
 }
 
-BaseOptimizer::BaseOptimizer(const OptimizerOptions & options)
-  : m_optionsObj(options.clone())
+BaseOptimizer::BaseOptimizer(OptimizerOptions options)
 {
+  m_optionsObj.reset(new OptimizerOptions(options));
 }
 
 BaseOptimizer::~BaseOptimizer()
@@ -46,37 +46,37 @@ BaseOptimizer::~BaseOptimizer()
 unsigned int
 BaseOptimizer::getMaxIterations() const
 {
-  return this->m_maxIterations;
+  return this->m_optionsObj->m_maxIterations;
 }
 
 double
 BaseOptimizer::getTolerance() const
 {
-  return this->m_tolerance;
+  return this->m_optionsObj->m_tolerance;
 }
 
 double
 BaseOptimizer::getFiniteDifferenceStepSize() const
 {
-  return this->m_finiteDifferenceStepSize;
+  return this->m_optionsObj->m_finiteDifferenceStepSize;
 }
 
 void
 BaseOptimizer::setMaxIterations(unsigned int maxIterations)
 {
-  this->m_maxIterations = maxIterations;
+  this->m_optionsObj->m_maxIterations = maxIterations;
 }
 
 void
 BaseOptimizer::setTolerance(double tolerance)
 {
-  this->m_tolerance = tolerance;
+  this->m_optionsObj->m_tolerance = tolerance;
 }
 
 void
 BaseOptimizer::setFiniteDifferenceStepSize(double h)
 {
-  this->m_finiteDifferenceStepSize = h;
+  this->m_optionsObj->m_finiteDifferenceStepSize = h;
 }
 
 }  // End namespace QUESO

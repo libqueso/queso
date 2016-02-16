@@ -60,11 +60,12 @@ public:
   //! A constructor that takes the environment for parsing input file options
   OptimizerOptions(const BaseEnvironment * env, const char * prefix = "");
 
+  //! Copy constructor
+  OptimizerOptions(const OptimizerOptions & rhs);
+
   //! Destructor
   virtual ~OptimizerOptions();
   //@}
-
-  SharedPtr<const OptimizerOptions>::Type clone() const;
 
   std::string m_prefix;
 
