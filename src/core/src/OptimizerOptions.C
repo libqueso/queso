@@ -32,7 +32,7 @@
 namespace QUESO {
 
 OptimizerOptions::OptimizerOptions()
-  : m_prefix("ip_"),
+  : m_prefix("ip_optimizer_"),
     m_help(UQ_OPT_HELP),
     m_maxIterations(UQ_OPT_MAX_ITERATIONS),
     m_tolerance(UQ_OPT_TOLERANCE),
