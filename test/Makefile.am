@@ -61,6 +61,7 @@ check_PROGRAMS += test_log_normal_pdf_gradient
 check_PROGRAMS += test_beta_pdf_gradient
 check_PROGRAMS += test_intercomm0_gravity
 check_PROGRAMS += test_seq_of_vec_hdf5_write
+check_PROGRAMS += test_optimizer_input_parameters
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -155,6 +156,7 @@ test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.h
 test_intercomm0_gravity_CPPFLAGS = -I$(srcdir)/test_intercomm0 $(AM_CPPFLAGS)
 
 test_seq_of_vec_hdf5_write_SOURCES = test_SequenceOfVectors/test_HDF5Write.C
+test_optimizer_input_parameters_SOURCES = test_optimizer/test_optimizer_input_parameters.C
 
 # Files to freedom stamp
 srcstamp =
@@ -213,6 +215,7 @@ srcstamp += $(test_log_normal_pdf_gradient_SOURCES)
 srcstamp += $(test_beta_pdf_gradient_SOURCES)
 srcstamp += $(test_intercomm0_gravity_SOURCES)
 srcstamp += $(test_seq_of_vec_hdf5_write_SOURCES)
+srcstamp += $(test_optimizer_input_parameters_SOURCES)
 
 TESTS =
 TESTS += test_uqEnvironmentNonFatal
@@ -271,6 +274,7 @@ TESTS += test_log_normal_pdf_gradient
 TESTS += test_beta_pdf_gradient
 TESTS += test_intercomm0/test_intercomm0_gravity_run.sh
 TESTS += test_seq_of_vec_hdf5_write
+TESTS += test_optimizer_input_parameters
 
 XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
@@ -312,6 +316,7 @@ EXTRA_DIST += test_Environment/input_test_serialEnv
 EXTRA_DIST += test_intercomm0/gravity_1proc.txt
 EXTRA_DIST += test_intercomm0/gravity_2proc.txt
 EXTRA_DIST += test_intercomm0/test_intercomm0_gravity_run.sh
+EXTRA_DIST += test_optimizer/input_test_optimizer_input_parameters
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt

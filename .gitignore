@@ -207,3 +207,4 @@ test/test_intercomm0/gravity_1proc.txt
 test/test_intercomm0/gravity_2proc.txt
 test/test_intercomm0/test_intercomm0_gravity_run.sh
 test/test_seq_of_vec_hdf5_write
+test/test_optimizer_input_parameters
