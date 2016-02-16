@@ -233,10 +233,10 @@ GPMSAEmulator<V, M>::~GPMSAEmulator()
 template <class V, class M>
 double
 GPMSAEmulator<V, M>::lnValue(const V & domainVector,
-                                       const V * domainDirection,
-                                       V * gradVector,
-                                       M * hessianMatrix,
-                                       V * hessianEffect) const
+                                       const V * /* domainDirection */,
+                                       V * /* gradVector */,
+                                       M * /* hessianMatrix */,
+                                       V * /* hessianEffect */) const
 {
   // Components of domainVector:
   // theta(1)                     // = "theta", "t" in Higdon et. al. 2008
@@ -586,11 +586,11 @@ if (isnan(minus_2_log_lhd))
 
 template <class V, class M>
 double
-GPMSAEmulator<V, M>::actualValue(const V & domainVector,
-                                           const V * domainDirection,
-                                           V * gradVector,
-                                           M * hessianMatrix,
-                                           V * hessianEffect) const
+GPMSAEmulator<V, M>::actualValue(const V & /* domainVector */,
+                                           const V * /* domainDirection */,
+                                           V * /* gradVector */,
+                                           M * /* hessianMatrix */,
+                                           V * /* hessianEffect */) const
 {
   // Do nothing?
   return 1.0;
@@ -980,7 +980,7 @@ GPMSAFactory<V, M>::prior() const
 
 template <class V, class M>
 void
-GPMSAFactory<V, M>::print(std::ostream& os) const
+GPMSAFactory<V, M>::print(std::ostream& /* os */) const
 {
   // Do nothing
 }
