@@ -176,6 +176,27 @@ GslOptimizer::GslOptimizer(
   m_fstep_size.cwSet(0.1);
 }
 
+GslOptimizer::GslOptimizer(
+    OptimizerOptions options,
+    const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction)
+  : BaseOptimizer(options),
+    m_objectiveFunction(objectiveFunction),
+    m_initialPoint(new GslVector(objectiveFunction.domainSet().
+          vectorSpace().zeroVector())),
+    m_minimizer(new GslVector(this->m_objectiveFunction.domainSet().
+        vectorSpace().zeroVector())),
+    m_solver_type(BFGS2),
+    m_fstep_size(this->m_objectiveFunction.domainSet().vectorSpace().zeroVector()),
+    m_fdfstep_size(1.0),
+    m_line_tol(0.1)
+{
+  // We initialize the minimizer to GSL_NAN just in case the optimization fails
+  m_minimizer->cwSet(GSL_NAN);
+
+  // Set to documented default value.
+  m_fstep_size.cwSet(0.1);
+}
+
 GslOptimizer::~GslOptimizer()
 {
   delete this->m_initialPoint;

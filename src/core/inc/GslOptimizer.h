@@ -56,6 +56,17 @@ public:
   GslOptimizer(
       const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction);
 
+
+  //! Constructs an object that will maximize a scalar function
+  /*!
+   * The function \c objectiveFunction is the function that will be maximized.
+   * This constructor allows the passing of custom options to optimizer to
+   * modify things like tolerance, maximum number of iterations, and finite
+   * difference step size.
+   */
+  GslOptimizer(OptimizerOptions options,
+               const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction);
+
   //! Destructor
   virtual ~GslOptimizer();
 
