@@ -280,6 +280,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // m_observationErrorMatrix     // = "W_y"
   // m_BMatrix                    // = "B"
   // num_discrepancy_groups       // = "F"
+  // m_emulatorPrecisionShapeVec          // = "a_eta"
+  // 1.0/m_emulatorPrecisionScaleVec      // = "b_eta"
+  // m_observationalPrecisionShapeVec     // = "a_y"
+  // 1.0/m_observationalPrecisionScaleVec // = "b_y"
 
   // Construct covariance matrix
   const unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;
