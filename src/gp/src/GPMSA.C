@@ -1302,19 +1302,25 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   (*(this->totalMins))[dimParameter] = -INFINITY;  // Min mean
   (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
 
-  for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
-    {
-      // Min emulator precision
-      (*(this->totalMins))[dimParameter+1+basis] = 0.3;
-      // Max emulator precision
-      (*(this->totalMaxs))[dimParameter+1+basis] = INFINITY;
-    }
+  // Min emulator precision
+  (*(this->totalMins))[dimParameter+1] = 0.3;
+  // Max emulator precision
+  (*(this->totalMaxs))[dimParameter+1] = INFINITY;
+
+  if (numOutputs > 1)
+    for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
+      {
+        // Min weights precision
+        (*(this->totalMins))[dimParameter+2+basis] = 0.3;
+        // Max weights precision
+        (*(this->totalMaxs))[dimParameter+2+basis] = INFINITY;
+      }
 
   // FIXME: F = 1 for now
   // Min discrepancy precision
-  (*(this->totalMins))[dimScenario+dimParameter+dimParameter+2] = 0;
+  (*(this->totalMins))[dimParameter+1+(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = 0;
   // Max discrepancy precision
-  (*(this->totalMaxs))[dimScenario+dimParameter+dimParameter+2] = INFINITY;
+  (*(this->totalMaxs))[dimParameter+1+(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = INFINITY;
 
   (*(this->totalMins))[dimSum-1] = 60.0;  // Min emulator data precision
   (*(this->totalMaxs))[dimSum-1] = 1e5;  // Max emulator data precision
