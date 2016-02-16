@@ -27,9 +27,9 @@
 namespace QUESO {
 
 BaseOptimizer::BaseOptimizer()
-  : m_maxIterations(100),
-    m_tolerance(1e-3),
-    m_finiteDifferenceStepSize(1e-4)
+  : m_maxIterations(UQ_OPT_MAX_ITERATIONS),
+    m_tolerance(UQ_OPT_TOLERANCE),
+    m_finiteDifferenceStepSize(UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE)
 {
   m_optionsObj.reset(new OptimizerOptions);
 }
