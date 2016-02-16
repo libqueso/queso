@@ -987,7 +987,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
 
       for (unsigned int i = 0; i < this->m_numSimulations; i++) {
         for (unsigned int k = 0; k != numOutputs; ++k)
-          eta[(i+this->m_numExperiments)*numOutputs+k] =
+          eta[i*numOutputs+k] =
             (*((this->m_simulationOutputs)[i]))[k];
       }
 
