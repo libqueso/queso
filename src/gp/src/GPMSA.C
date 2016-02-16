@@ -1102,6 +1102,41 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       *(this->m_emulatorCorrelationStrengthAlphaVec),
       *(this->m_emulatorCorrelationStrengthBetaVec)));
 
+  // Observation precision
+  this->observationalPrecisionSpace.reset
+    (new VectorSpace<V, M>
+     (this->m_env,
+      "",
+      num_svd_terms + (numOutputs > 1),
+      NULL));
+
+  this->observationalPrecisionMin.reset
+    (new V(this->observationalPrecisionSpace->zeroVector()));
+  this->observationalPrecisionMax.reset
+    (new V(this->observationalPrecisionSpace->zeroVector()));
+  this->m_observationalPrecisionShapeVec.reset
+    (new V(this->observationalPrecisionSpace->zeroVector()));
+  this->m_observationalPrecisionScaleVec.reset
+    (new V(this->observationalPrecisionSpace->zeroVector()));
+  this->observationalPrecisionMin->cwSet(0.3);
+  this->observationalPrecisionMax->cwSet(INFINITY);
+  this->m_observationalPrecisionShapeVec->cwSet(observationalPrecisionShape);
+  this->m_observationalPrecisionScaleVec->cwSet(observationalPrecisionScale);
+
+  this->observationalPrecisionDomain.reset
+    (new BoxSubset<V, M>
+     ("",
+      *(this->observationalPrecisionSpace),
+      *(this->observationalPrecisionMin),
+      *(this->observationalPrecisionMax)));
+
+  this->m_observationalPrecision.reset
+    (new GammaVectorRV<V, M>
+     ("",
+      *(this->observationalPrecisionDomain),
+      *(this->m_observationalPrecisionShapeVec),
+      *(this->m_observationalPrecisionScaleVec)));
+
   // Discrepancy precision
   this->discrepancyPrecisionMin.reset
     (new V(this->oneDSpace->zeroVector()));

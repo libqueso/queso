@@ -364,6 +364,12 @@ public:
   typename ScopedPtr<V>::Type emulatorCorrelationMax;
   typename ScopedPtr<BoxSubset<V, M> >::Type emulatorCorrelationDomain;
 
+  // Observational precision
+  typename ScopedPtr<VectorSpace<V, M> >::Type observationalPrecisionSpace;
+  typename ScopedPtr<V>::Type observationalPrecisionMin;
+  typename ScopedPtr<V>::Type observationalPrecisionMax;
+  typename ScopedPtr<BoxSubset<V, M> >::Type observationalPrecisionDomain;
+
   // Discrepancy precision
   typename ScopedPtr<V>::Type discrepancyPrecisionMin;
   typename ScopedPtr<V>::Type discrepancyPrecisionMax;
@@ -392,6 +398,7 @@ public:
   // The hyperpriors
   typename ScopedPtr<UniformVectorRV<V, M> >::Type m_emulatorMean;  // scalar
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_emulatorPrecision;  // (dim num_svd_terms) gamma(a, b) shape-rate
+  typename ScopedPtr<GammaVectorRV<V, M> >::Type m_observationalPrecision;  // scalar gamma(a, b) shape-rate
   typename ScopedPtr<BetaVectorRV<V, M> >::Type m_emulatorCorrelationStrength;  // (dim scenariosspace + dim parameterspace)
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_discrepancyPrecision;  // (scalar) shape-rate
   typename ScopedPtr<BetaVectorRV<V, M> >::Type m_discrepancyCorrelationStrength;  // (dim scenariospace)
@@ -400,6 +407,8 @@ public:
 
   typename ScopedPtr<V>::Type m_emulatorPrecisionShapeVec;
   typename ScopedPtr<V>::Type m_emulatorPrecisionScaleVec;
+  typename ScopedPtr<V>::Type m_observationalPrecisionShapeVec;
+  typename ScopedPtr<V>::Type m_observationalPrecisionScaleVec;
   typename ScopedPtr<V>::Type m_emulatorCorrelationStrengthAlphaVec;
   typename ScopedPtr<V>::Type m_emulatorCorrelationStrengthBetaVec;
   typename ScopedPtr<V>::Type m_discrepancyPrecisionShapeVec;
