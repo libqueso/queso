@@ -30,7 +30,6 @@
 #define UQ_OPT_HELP ""
 
 // _ODV = option default value
-#define UQ_OPT_COMPUTE_SOLUTION_ODV 1
 #define UQ_OPT_MAX_ITERATIONS 100
 #define UQ_OPT_TOLERANCE 1e-3
 #define UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE 1e-4
