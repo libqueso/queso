@@ -381,6 +381,15 @@ if (isnan(minus_2_log_lhd))
 
   queso_assert_greater(minus_2_log_lhd, 0);
 
+  double cov_det = covMatrix.determinant();
+
+  if (cov_det <= 0)
+    {
+      std::cout << "Non-positive determinant for covMatrix = " << std::endl;
+      covMatrix.print(std::cout);
+      queso_error();
+    }
+
   minus_2_log_lhd += std::log(covMatrix.determinant());
 
   // Multiply by -1/2 coefficient from (3)
