@@ -287,6 +287,7 @@ int main(int argc, char ** argv) {
   paramInitials[15]  = 10.0; // discrepancy precision
   paramInitials[16]  = 0.97; // discrepancy corr str
   paramInitials[17]  = 8000.0; // emulator data precision
+  paramInitials[18]  = 1.0;  // observation error precision
 
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
@@ -313,6 +314,7 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(15, 15) = 1.3417 / scale;  // discrepancy precision
   proposalCovMatrix(16, 16) = 0.3461 / scale;  // discrepancy corr str
   proposalCovMatrix(17, 17) = 495.3 / scale;  // emulator data precision
+  proposalCovMatrix(18, 18) = 0.4953 / scale;  // observation error precision
 
   // Square to get variances
   for (unsigned int i = 0; i < 16; i++) {

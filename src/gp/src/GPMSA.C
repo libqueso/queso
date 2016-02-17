@@ -119,6 +119,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // ...
   // discrepancy_corr_strength(dimScenario)
   // emulator_data_precision(1)   // = "small white noise", "small ridge"
+  // observation_error_precision  // = "lambda_y", only in vector case
 
   // Other variables:
   // m_numSimulations             // = "m"
@@ -158,6 +159,15 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   double prodDiscrepancy = 1.0;
   unsigned int dimScenario = (this->m_scenarioSpace).dimLocal();
   unsigned int dimParameter = (this->m_parameterSpace).dimLocal();
+
+  // Length of prior+hyperprior inputs
+  unsigned int dimSum = 3 +
+                        (numOutputs > 1) * 2 +
+                        num_svd_terms +
+                        dimParameter +
+                        dimParameter +
+                        dimScenario +
+                        dimScenario;  // yum
 
   // Offset for Sigma_eta equivalent in vector case
   const unsigned int offset1 = (numOutputs == 1) ?
@@ -325,15 +335,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
     // Add small white noise component to diagonal to make stuff +ve def
     // = "small ridge"
-    unsigned int dimSum = 3 +
-                          (numOutputs > 1) +
-                          num_svd_terms +
-                          dimParameter +
-                          dimParameter +
-                          dimScenario +
-                          dimScenario;  // yum
-
-    const double emulator_data_precision = domainVector[dimSum-1];
+    const double emulator_data_precision = domainVector[dimSum-1-(numOutputs>1)];
     queso_assert_greater(emulator_data_precision, 0);
     double nugget = 1.0 / emulator_data_precision;
 
@@ -347,8 +349,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // matrix; now add the remaining Sigma_zhat terms
   if (numOutputs > 1)
     {
-      // FIXME
-      const double lambda_y = 1.0;
+      const double lambda_y = domainVector[dimSum-1];
       const double inv_lambda_y = 1.0/lambda_y;
 
       unsigned int BT_Wy_B_size = BT_Wy_B_inv.numCols();
@@ -1175,7 +1176,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     (new VectorSpace<V, M>
      (this->m_env,
       "",
-      num_svd_terms + (numOutputs > 1),
+      1,
       NULL));
 
   this->observationalPrecisionMin.reset
@@ -1298,7 +1299,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
 
   // Now form full prior
   unsigned int dimSum = 3 +
-                        (numOutputs > 1) +
+                        (numOutputs > 1) * 2 +
                         num_svd_terms +
                         dimParameter +
                         dimParameter +
@@ -1341,8 +1342,13 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   // Max discrepancy precision
   (*(this->totalMaxs))[dimParameter+1+(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = INFINITY;
 
-  (*(this->totalMins))[dimSum-1] = 60.0;  // Min emulator data precision
-  (*(this->totalMaxs))[dimSum-1] = 1e5;  // Max emulator data precision
+  (*(this->totalMins))[dimSum-1-(numOutputs>1)] = 60.0;  // Min emulator data precision
+  (*(this->totalMaxs))[dimSum-1-(numOutputs>1)] = 1e5;   // Max emulator data precision
+
+  if (numOutputs>1) {
+    (*(this->totalMins))[dimSum-1] = 0.3;      // Min observation error precision
+    (*(this->totalMaxs))[dimSum-1] = INFINITY; // Max observation error precision
+  }
 
   this->totalDomain.reset
     (new BoxSubset<V, M>
@@ -1358,6 +1364,8 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   this->priors[4] = this->m_discrepancyPrecision.get();
   this->priors[5] = this->m_discrepancyCorrelationStrength.get();
   this->priors[6] = this->m_emulatorDataPrecision.get();
+  if (numOutputs > 1)
+    this->priors.push_back(this->m_observationalPrecision.get());
 
   // Finally
   this->m_totalPrior.reset
