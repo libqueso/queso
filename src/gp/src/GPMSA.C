@@ -163,6 +163,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   const unsigned int offset1 = (numOutputs == 1) ?
     0 : m_numExperiments * num_discrepancy_bases;
 
+  // Offset for Sigma_w in vector case
+  const unsigned int offset1b = offset1 +
+    m_numExperiments * num_svd_terms;
+
   // Offset for lambda_eta term in zhat covariance in vector case
   const unsigned int offset2 = (numOutputs == 1) ?
     0 : m_numExperiments * (num_discrepancy_bases + num_svd_terms);
@@ -257,8 +261,17 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
             domainVector[dimParameter+basis+1+(numOutputs>1)];
           queso_assert_greater(relevant_precision, 0);
 
-          covMatrix(offset1+basis*m_numSimulations+i,
-                    offset1+basis*m_numSimulations+j) =
+          const unsigned int stridei =
+            (i < this->m_numExperiments) ? m_numExperiments : m_numSimulations;
+          const unsigned int offseti =
+            (i < this->m_numExperiments) ? offset1 : offset1b - m_numExperiments;
+          const unsigned int stridej =
+            (j < this->m_numExperiments) ? m_numExperiments : m_numSimulations;
+          const unsigned int offsetj =
+            (j < this->m_numExperiments) ? offset1 : offset1b - m_numExperiments;
+
+          covMatrix(offseti+basis*stridei+i,
+                    offsetj+basis*stridej+j) =
             prodScenario * prodParameter / relevant_precision;
         }
 
