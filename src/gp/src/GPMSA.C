@@ -151,7 +151,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   const unsigned int totalOutputs = totalRuns * numOutputs;
   const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
   const unsigned int residualSize = (numOutputs == 1) ?  totalOutputs :
-    totalOutputs * num_svd_terms + m_numExperiments * num_discrepancy_bases;
+    totalRuns * num_svd_terms + m_numExperiments * num_discrepancy_bases;
 
   double prodScenario = 1.0;
   double prodParameter = 1.0;
@@ -362,12 +362,12 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // Premultiply by residual^T as in (3)
   double minus_2_log_lhd = 0.0;
   // There's no dot product function in GslVector.
-  for (unsigned int i = 0; i < totalOutputs; i++) {
+  for (unsigned int i = 0; i < residualSize; i++) {
     minus_2_log_lhd += sol[i] * residual[i];
   }
 
 if (isnan(minus_2_log_lhd))
-  for (unsigned int i = 0; i < totalOutputs; i++) {
+  for (unsigned int i = 0; i < residualSize; i++) {
     if (isnan(sol[i]))
       std::cout << "NaN sol[" << i << ']' << std::endl;
     if (isnan(residual[i]))
@@ -974,7 +974,10 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       const unsigned int yhat_size = 
         m_numExperiments * (num_discrepancy_bases + num_svd_terms);
 
-      Map zhat_map(yhat_size + m_numSimulations, 0, comm);
+      const unsigned int etahat_size =
+        m_numSimulations * num_svd_terms;
+
+      Map zhat_map(yhat_size + etahat_size, 0, comm);
 
       V y(this->m_env, y_map);
       V eta(this->m_env, eta_map);
@@ -1004,7 +1007,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       for (unsigned int i = 0; i < yhat_size; ++i)
         (*residual)[i] = yhat[i];
 
-      for (unsigned int i = 0; i < m_numSimulations; ++i)
+      for (unsigned int i = 0; i < etahat_size; ++i)
         (*residual)[yhat_size+i] = etahat[i];
 
       emulatorPrecisionShape +=
@@ -1028,23 +1031,17 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   else
     {
       const unsigned int totalRuns = this->m_numExperiments + this->m_numSimulations;
-      const unsigned int totalOutputs = totalRuns * numOutputs;
-      const unsigned int residualSize = (numOutputs == 1) ?  totalOutputs :
-        totalOutputs * num_svd_terms + m_numExperiments * num_discrepancy_bases;
-      Map z_map(residualSize, 0, comm);
+      Map z_map(totalRuns, 0, comm);
       residual.reset(new V (this->m_env, z_map));
 
       // Form residual = D - mean // = D - mu*1 in (3)
       // We don't subtract off mean here because we expect normalized data
       for (unsigned int i = 0; i < this->m_numExperiments; i++) {
-        for (unsigned int k = 0; k != numOutputs; ++k)
-          (*residual)[i*numOutputs+k] =
-            (*((this->m_experimentOutputs)[i]))[k];
+        (*residual)[i] = (*((this->m_experimentOutputs)[i]))[0];
       }
       for (unsigned int i = 0; i < this->m_numSimulations; i++) {
-        for (unsigned int k = 0; k != numOutputs; ++k)
-          (*residual)[(i+this->m_numExperiments)*numOutputs+k] =
-            (*((this->m_simulationOutputs)[i]))[k];
+        (*residual)[i+this->m_numExperiments] =
+          (*((this->m_simulationOutputs)[i]))[0];
       }
     }
 
