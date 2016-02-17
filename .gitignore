@@ -217,3 +217,4 @@ test/test_serialEnv
 test/test_jeffreys_pdf
 test/test_gaussian_pdf_gradient
 test/test_log_normal_pdf_gradient
+test/test_beta_pdf_gradient
