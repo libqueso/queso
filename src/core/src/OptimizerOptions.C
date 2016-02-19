@@ -37,11 +37,19 @@ OptimizerOptions::OptimizerOptions()
     m_maxIterations(UQ_OPT_MAX_ITERATIONS),
     m_tolerance(UQ_OPT_TOLERANCE),
     m_finiteDifferenceStepSize(UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE),
+    m_solverType(UQ_OPT_SOLVER_TYPE),
+    m_fstepSize(UQ_OPT_FSTEP_SIZE),
+    m_fdfstepSize(UQ_OPT_FDFSTEP_SIZE),
+    m_lineTolerance(UQ_OPT_LINE_TOLERANCE),
     m_parser(NULL),
     m_option_help(m_prefix + "help"),
     m_option_maxIterations(m_prefix + "maxIterations"),
     m_option_tolerance(m_prefix + "tolerance"),
-    m_option_finiteDifferenceStepSize(m_prefix + "finiteDifferenceStepSize")
+    m_option_finiteDifferenceStepSize(m_prefix + "finiteDifferenceStepSize"),
+    m_option_solverType(m_prefix + "solverType"),
+    m_option_fstepSize(m_prefix + "fstepSize"),
+    m_option_fdfstepSize(m_prefix + "fdfStepSize"),
+    m_option_lineTolerance(m_prefix + "lineTolerance")
 {
 }
 
@@ -52,11 +60,19 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
     m_maxIterations(UQ_OPT_MAX_ITERATIONS),
     m_tolerance(UQ_OPT_TOLERANCE),
     m_finiteDifferenceStepSize(UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE),
+    m_solverType(UQ_OPT_SOLVER_TYPE),
+    m_fstepSize(UQ_OPT_FSTEP_SIZE),
+    m_fdfstepSize(UQ_OPT_FDFSTEP_SIZE),
+    m_lineTolerance(UQ_OPT_LINE_TOLERANCE),
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
     m_option_help(m_prefix + "help"),
     m_option_maxIterations(m_prefix + "maxIterations"),
     m_option_tolerance(m_prefix + "tolerance"),
-    m_option_finiteDifferenceStepSize(m_prefix + "finiteDifferenceStepSize")
+    m_option_finiteDifferenceStepSize(m_prefix + "finiteDifferenceStepSize"),
+    m_option_solverType(m_prefix + "solverType"),
+    m_option_fstepSize(m_prefix + "fstepSize"),
+    m_option_fdfstepSize(m_prefix + "fdfStepSize"),
+    m_option_lineTolerance(m_prefix + "lineTolerance")
 {
   m_parser->registerOption<std::string>(m_option_help, UQ_OPT_HELP,
       "produce help message for statistical inverse problem");
@@ -69,6 +85,14 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
   m_parser->registerOption<double>(m_option_finiteDifferenceStepSize,
       UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE,
       "if no deriv is given, do finite difference with this step size");
+  m_parser->registerOption<std::string>(m_option_solverType, UQ_OPT_SOLVER_TYPE,
+      "which optimisation algorithm to use");
+  m_parser->registerOption<double>(m_option_fstepSize, UQ_OPT_FSTEP_SIZE,
+      "sets the step size used in gradient-free solvers");
+  m_parser->registerOption<double>(m_option_fdfstepSize, UQ_OPT_FDFSTEP_SIZE,
+      "sets the step size used in gradient-based solvers");
+  m_parser->registerOption<double>(m_option_lineTolerance, UQ_OPT_LINE_TOLERANCE,
+      "sets the line minimisation tolerance");
 
   m_parser->scanInputFile();
 
@@ -77,6 +101,10 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
   m_parser->getOption<double>(m_option_tolerance, m_tolerance);
   m_parser->getOption<double>(m_option_finiteDifferenceStepSize,
       m_finiteDifferenceStepSize);
+  m_parser->getOption<std::string>(m_option_solverType, m_solverType);
+  m_parser->getOption<double>(m_option_fstepSize, m_fstepSize);
+  m_parser->getOption<double>(m_option_fdfstepSize, m_fdfstepSize);
+  m_parser->getOption<double>(m_option_lineTolerance, m_lineTolerance);
 
   checkOptions();
 }
@@ -88,11 +116,19 @@ OptimizerOptions::OptimizerOptions(const OptimizerOptions & rhs)
     m_maxIterations(rhs.m_maxIterations),
     m_tolerance(rhs.m_tolerance),
     m_finiteDifferenceStepSize(rhs.m_finiteDifferenceStepSize),
+    m_solverType(rhs.m_solverType),
+    m_fstepSize(rhs.m_fstepSize),
+    m_fdfstepSize(rhs.m_fdfstepSize),
+    m_lineTolerance(rhs.m_lineTolerance),
     m_parser(rhs.m_parser),  // We'll never touch the input file in a copied object
     m_option_help(rhs.m_option_help),
     m_option_maxIterations(rhs.m_option_maxIterations),
     m_option_tolerance(rhs.m_option_tolerance),
-    m_option_finiteDifferenceStepSize(rhs.m_option_finiteDifferenceStepSize)
+    m_option_finiteDifferenceStepSize(rhs.m_option_finiteDifferenceStepSize),
+    m_option_solverType(rhs.m_option_solverType),
+    m_option_fstepSize(rhs.m_option_fstepSize),
+    m_option_fdfstepSize(rhs.m_option_fdfstepSize),
+    m_option_lineTolerance(rhs.m_option_lineTolerance)
 {
 }
 
@@ -106,6 +142,9 @@ OptimizerOptions::checkOptions()
   queso_require_greater_msg(m_tolerance, 0, "optimizer tolerance must be > 0");
   queso_require_greater_msg(m_finiteDifferenceStepSize, 0, "finite difference step must be > 0");
   queso_require_greater_msg(m_maxIterations, 0, "max iterations must be > 0");
+  queso_require_greater_msg(m_fstepSize, 0, "fstepSize must be > 0");
+  queso_require_greater_msg(m_fdfstepSize, 0, "fdfstepSize must be > 0");
+  queso_require_greater_msg(m_lineTolerance, 0, "line tolerance must be > 0");
 }
 
 std::ostream &
@@ -115,6 +154,10 @@ operator<<(std::ostream& os, const OptimizerOptions & obj)
      << "\n" << obj.m_option_tolerance << " = " << obj.m_tolerance;
   os << "\n" << obj.m_option_finiteDifferenceStepSize << " = "
              << obj.m_finiteDifferenceStepSize;
+  os << "\n" << obj.m_option_solverType << " = " << obj.m_solverType;
+  os << "\n" << obj.m_option_fstepSize << " = " << obj.m_fstepSize;
+  os << "\n" << obj.m_option_fdfstepSize << " = " << obj.m_fdfstepSize;
+  os << "\n" << obj.m_option_lineTolerance << " = " << obj.m_lineTolerance;
   os << std::endl;
   return os;
 }

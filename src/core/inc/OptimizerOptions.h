@@ -33,6 +33,10 @@
 #define UQ_OPT_MAX_ITERATIONS 100
 #define UQ_OPT_TOLERANCE 1e-3
 #define UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE 1e-4
+#define UQ_OPT_SOLVER_TYPE "bfgs2"
+#define UQ_OPT_FSTEP_SIZE 0.1
+#define UQ_OPT_FDFSTEP_SIZE 1.0
+#define UQ_OPT_LINE_TOLERANCE 0.1
 
 namespace QUESO {
 
@@ -75,6 +79,10 @@ public:
   unsigned int m_maxIterations;
   double m_tolerance;
   double m_finiteDifferenceStepSize;
+  std::string m_solverType;
+  double m_fstepSize;
+  double m_fdfstepSize;
+  double m_lineTolerance;
 
 private:
   BoostInputOptionsParser * m_parser;
@@ -84,6 +92,10 @@ private:
   std::string m_option_maxIterations;
   std::string m_option_tolerance;
   std::string m_option_finiteDifferenceStepSize;
+  std::string m_option_solverType;
+  std::string m_option_fstepSize;
+  std::string m_option_fdfstepSize;
+  std::string m_option_lineTolerance;
 
   void checkOptions();
 
