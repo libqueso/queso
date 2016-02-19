@@ -166,14 +166,14 @@ GslOptimizer::GslOptimizer(
         vectorSpace().zeroVector())),
     m_solver_type(BFGS2),
     m_fstep_size(this->m_objectiveFunction.domainSet().vectorSpace().zeroVector()),
-    m_fdfstep_size(1.0),
-    m_line_tol(0.1)
+    m_fdfstep_size(getFdfstepSize()),
+    m_line_tol(getLineTolerance())
 {
   // We initialize the minimizer to GSL_NAN just in case the optimization fails
   m_minimizer->cwSet(GSL_NAN);
 
   // Set to documented default value.
-  m_fstep_size.cwSet(0.1);
+  m_fstep_size.cwSet(getFstepSize());
 }
 
 GslOptimizer::GslOptimizer(
@@ -187,14 +187,14 @@ GslOptimizer::GslOptimizer(
         vectorSpace().zeroVector())),
     m_solver_type(BFGS2),
     m_fstep_size(this->m_objectiveFunction.domainSet().vectorSpace().zeroVector()),
-    m_fdfstep_size(1.0),
-    m_line_tol(0.1)
+    m_fdfstep_size(getFdfstepSize()),
+    m_line_tol(getLineTolerance())
 {
   // We initialize the minimizer to GSL_NAN just in case the optimization fails
   m_minimizer->cwSet(GSL_NAN);
 
   // Set to documented default value.
-  m_fstep_size.cwSet(0.1);
+  m_fstep_size.cwSet(getFstepSize());
 }
 
 GslOptimizer::~GslOptimizer()
@@ -335,7 +335,7 @@ void GslOptimizer::minimize_with_gradient( unsigned int dim, OptimizerMonitor* m
   minusLogPosterior.fdf = &c_evaluate_with_derivative;
   minusLogPosterior.params = (void *)(this);
 
-  gsl_multimin_fdfminimizer_set(solver, &minusLogPosterior, x, m_fdfstep_size, m_line_tol);
+  gsl_multimin_fdfminimizer_set(solver, &minusLogPosterior, x, getFdfstepSize(), getLineTolerance());
 
   int status;
   size_t iter = 0;
@@ -555,12 +555,19 @@ void
 GslOptimizer::setFstepSize(double fstepSize)
 {
   this->m_optionsObj->m_fstepSize = fstepSize;
+
+  GslVector fstepSizeVector(
+      objectiveFunction().domainSet().vectorSpace().zeroVector());
+  fstepSizeVector.cwSet(fstepSize);
+
+  this->set_step_size(fstepSizeVector);
 }
 
 void
 GslOptimizer::setFdfstepSize(double fdfstepSize)
 {
   this->m_optionsObj->m_fdfstepSize = fdfstepSize;
+  this->set_step_size(fdfstepSize);
 }
 
 void
