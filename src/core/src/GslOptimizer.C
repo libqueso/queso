@@ -252,6 +252,7 @@ GslOptimizer::minimizer() const
 
 void GslOptimizer::set_solver_type( SolverType solver )
 {
+  queso_deprecated();
   m_solver_type = solver;
 }
 
@@ -487,11 +488,13 @@ void GslOptimizer::minimize_no_gradient( unsigned int dim, OptimizerMonitor* mon
 
 void GslOptimizer::set_step_size( const GslVector& step_size )
 {
+  queso_deprecated();
   m_fstep_size = step_size;
 }
 
 void GslOptimizer::set_step_size( double step_size )
 {
+  queso_deprecated();
   m_fdfstep_size = step_size;
 }
 
@@ -537,6 +540,7 @@ GslOptimizer::SolverType GslOptimizer::string_to_enum( std::string& solver )
 
 void GslOptimizer::set_solver_type( std::string& solver )
 {
+  queso_deprecated()
   this->set_solver_type( this->string_to_enum(solver) );
 }
 
