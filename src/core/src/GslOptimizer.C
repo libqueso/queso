@@ -510,7 +510,11 @@ GslOptimizer::SolverType GslOptimizer::string_to_enum( std::string& solver )
     solver_type = BFGS;
   else if( solver == std::string("bfgs2") )
     solver_type = BFGS2;
-  else if( solver == std::string("steepest_decent") )
+  else if( solver == std::string("steepest_decent") ) {
+    queso_deprecated();
+    solver_type = STEEPEST_DESCENT;
+  }
+  else if( solver == std::string("steepest_descent") )
     solver_type = STEEPEST_DESCENT;
   else if( solver == std::string("nelder_mead") )
     solver_type = NELDER_MEAD;
@@ -527,7 +531,7 @@ GslOptimizer::SolverType GslOptimizer::string_to_enum( std::string& solver )
                     << "                           polak_ribiere_cg" << std::endl
                     << "                           bfgs" << std::endl
                     << "                           bfgs2" << std::endl
-                    << "                           steepest_decent" << std::endl
+                    << "                           steepest_descent" << std::endl
                     << "                           nelder_mead" << std::endl
                     << "                           nelder_mead2" << std::endl
                     << "                           nelder_mead2_rand" << std::endl;
