@@ -174,6 +174,9 @@ GslOptimizer::GslOptimizer(
 
   // Set to documented default value.
   m_fstep_size.cwSet(getFstepSize());
+
+  // Set solver type to the one set in the options object
+  setSolverType(getSolverType());
 }
 
 GslOptimizer::GslOptimizer(
@@ -195,6 +198,9 @@ GslOptimizer::GslOptimizer(
 
   // Set to documented default value.
   m_fstep_size.cwSet(getFstepSize());
+
+  // Set solver type to the one set in the options object
+  setSolverType(getSolverType());
 }
 
 GslOptimizer::~GslOptimizer()
@@ -218,6 +224,7 @@ void GslOptimizer::minimize(OptimizerMonitor* monitor) {
   unsigned int dim = this->m_objectiveFunction.domainSet().vectorSpace().
     zeroVector().sizeLocal();
 
+  // We use m_solver_type here because we need the enum
   if( this->solver_needs_gradient(m_solver_type) )
     {
       this->minimize_with_gradient( dim, monitor );
@@ -298,6 +305,7 @@ void GslOptimizer::minimize_with_gradient( unsigned int dim, OptimizerMonitor* m
   // Tell GSL which solver we're using
   const gsl_multimin_fdfminimizer_type* type = NULL;
 
+  // We use m_solver_type here because we need the enum
   switch(m_solver_type)
     {
     case(FLETCHER_REEVES_CG):
