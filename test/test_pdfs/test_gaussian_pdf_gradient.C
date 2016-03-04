@@ -59,25 +59,33 @@ int main(int argc, char ** argv)
   var(1,1) = 6.0;
   var(2,2) = 7.0;
 
-  // Check the zero-gradient case
+  // Construct a Gaussian PDF
   QUESO::GaussianJointPdf<> pdf("", paramDomain, mean, var);
 
+  // Vectors to store gradient calculations
   QUESO::GslVector lnGradVector(paramSpace.zeroVector());
   QUESO::GslVector gradVector(paramSpace.zeroVector());
+
+  // Where to evaluate the gradient.  Evaluating at the mean (the mode for a
+  // Gaussian) should give a gradient consisting of a vector of zeros.
   QUESO::GslVector point(mean);
 
+  // We are testing that the gradient of log of the pdf is all zeros
   double lnPdfValue1 = pdf.lnValue(point, NULL, &lnGradVector, NULL, NULL);
   queso_require_less_equal_msg(std::abs(lnGradVector[0]), TOL, "grad log gaussian pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(lnGradVector[1]), TOL, "grad log gaussian pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(lnGradVector[2]), TOL, "grad log gaussian pdf values are incorrect");
 
+  // We are testing that the of the pdf is all zeros
   double pdfValue1 = pdf.actualValue(point, NULL, &gradVector, NULL, NULL);
   queso_require_less_equal_msg(std::abs(gradVector[0]), TOL, "grad guassian pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(gradVector[1]), TOL, "grad guassian pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(gradVector[2]), TOL, "grad guassian pdf values are incorrect");
 
 
-  // Check the 1-gradient case (in log space)
+  // Now construct another Gaussian.  This time we're constructing a Gaussian
+  // that we know will have a gradient consisting entirely of ones (in log
+  // space).
   mean[0] = 0.0;
   mean[1] = 0.0;
   mean[2] = 0.0;
