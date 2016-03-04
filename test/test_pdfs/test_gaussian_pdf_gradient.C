@@ -27,7 +27,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/GaussianJointPdf.h>
 
-#define TOL 1e-15
+#define TOL 1e-14
 
 int main(int argc, char ** argv)
 {
