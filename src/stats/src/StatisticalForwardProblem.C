@@ -279,17 +279,21 @@ StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
                               << ": instantiating cov and corr matrices"
                               << std::endl;
     }
-    pqCovarianceMatrix = new P_M(m_env,
-                                 m_paramRv.imageSet().vectorSpace().map(),       // number of rows
-                                 m_qoiRv.imageSet().vectorSpace().dimGlobal());  // number of cols
-    pqCorrelationMatrix = new P_M(m_env,
-                                  m_paramRv.imageSet().vectorSpace().map(),      // number of rows
-                                  m_qoiRv.imageSet().vectorSpace().dimGlobal()); // number of cols
-    ComputeCovCorrMatricesBetweenVectorSequences(*m_paramChain,
-                                                   *m_qoiChain,
-                                                   std::min(m_paramRv.realizer().subPeriod(),m_qoiRv.realizer().subPeriod()), // FIX ME: might be INFINITY
-                                                   *pqCovarianceMatrix,
-                                                   *pqCorrelationMatrix);
+
+    // Only compute correlations on the inter0Comm communicator
+    if (m_env.subRank() == 0) {
+      pqCovarianceMatrix = new P_M(m_env,
+                                   m_paramRv.imageSet().vectorSpace().map(),       // number of rows
+                                   m_qoiRv.imageSet().vectorSpace().dimGlobal());  // number of cols
+      pqCorrelationMatrix = new P_M(m_env,
+                                    m_paramRv.imageSet().vectorSpace().map(),      // number of rows
+                                    m_qoiRv.imageSet().vectorSpace().dimGlobal()); // number of cols
+      ComputeCovCorrMatricesBetweenVectorSequences(*m_paramChain,
+                                                     *m_qoiChain,
+                                                     std::min(m_paramRv.realizer().subPeriod(),m_qoiRv.realizer().subPeriod()), // FIX ME: might be INFINITY
+                                                     *pqCovarianceMatrix,
+                                                     *pqCorrelationMatrix);
+    }
   }
 
   // Write data out
