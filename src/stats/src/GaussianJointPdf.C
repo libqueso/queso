@@ -200,7 +200,17 @@ GaussianJointPdf<V,M>::lnValue(
     if (m_diagonalCovMatrix) {
       returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
 
-      // Compute the gradient of log of the pdf
+      // Compute the gradient of log of the pdf.
+      // The log of a Gaussian pdf is:
+      // f(x) = - 1/2 (x - \mu)^T \Sigma^{-1} (x - \mu)
+      // Therefore
+      // \frac{df}{dx}(x) = - (x - \mu)^T \Sigma^{-1}
+      //                  = - (\Sigma^{-1}^T (x - \mu))^T
+      //                  = - (\Sigma^{-1} (x - \mu))^T
+      //                  = - \Sigma^{-1} (x - \mu)  (row/column vector doesn't matter)
+      //
+      // So if \Sigma is diagonal we have a component-wise product of two
+      // vectors (x - \mu) and the diagonal elements of \Sigma^{-1}
       if (gradVector) {
         (*gradVector) = diffVec;  // Copy
         (*gradVector) /= this->lawVarVector();
@@ -218,6 +228,14 @@ GaussianJointPdf<V,M>::lnValue(
       V tmpVec = this->m_lawCovMatrix->invertMultiply(diffVec);
       returnValue = (diffVec*tmpVec).sumOfComponents();
 
+      // Compute the gradient of log of the pdf.
+      // The log of a Gaussian pdf is:
+      // f(x) = - 1/2 (x - \mu)^T \Sigma^{-1} (x - \mu)
+      // Therefore
+      // \frac{df}{dx}(x) = - (x - \mu)^T \Sigma^{-1}
+      //                  = - (\Sigma^{-1}^T (x - \mu))^T
+      //                  = - (\Sigma^{-1} (x - \mu))^T
+      //                  = - \Sigma^{-1} (x - \mu)  (row/column vector doesn't matter)
       if (gradVector) {
         (*gradVector) = tmpVec;
         (*gradVector) *= -1.0;
