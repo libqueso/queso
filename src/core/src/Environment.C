@@ -112,6 +112,10 @@ FilePtrSetStruct::FilePtrSetStruct()
   :
   ofsVar(NULL),
   ifsVar(NULL)
+#ifdef QUESO_HAS_HDF5
+  ,  // lol
+  h5Var(-1)
+#endif
 {
 }
 
