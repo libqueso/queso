@@ -600,9 +600,22 @@ BaseEnvironment::openOutputFile(
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                 std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
         }
+#ifdef QUESO_HAS_HDF5
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-          queso_error_msg("hdf file type not supported yet");
+          std::string fullFileName =
+            baseFileName+"_sub"+this->subIdString()+"."+fileType;
+
+          // Use H5F_ACC_EXCL because not overwriting, so fail on existing file
+          filePtrSet.h5Var = H5Fcreate(fullFileName.c_str(),
+                                       H5F_ACC_EXCL,
+                                       H5P_DEFAULT,
+                                       H5P_DEFAULT);
+
+          queso_require_greater_equal_msg(
+              filePtrSet.h5Var, 0,
+              "error opening file `" << fullFileName << "`");
         }
+#endif
         else {
           queso_error_msg("invalid file type");
         }
@@ -653,7 +666,15 @@ BaseEnvironment::openOutputFile(
                   << "'"
                   << std::endl;
       }
-      queso_require_msg((filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()), "failed to open output file");
+
+      // Check the file actually opened
+      if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+          (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
+        queso_require_msg(
+            (filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()),
+            "failed to open output file");
+      }
+
     }
     else {
       returnValue = false;
