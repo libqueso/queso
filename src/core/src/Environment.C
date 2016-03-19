@@ -654,22 +654,6 @@ BaseEnvironment::openOutputFile(
           }
         } // only for matlab formats
       }
-      if (filePtrSet.ofsVar != NULL) {
-        if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-          *this->subDisplayFile() << "In BaseEnvironment::openOutputFile()"
-                                  << ", subId = "     << this->subId()
-                                  << ": succeeded on opening output file with base name '" << baseFileName << "." << fileType
-                                  << "'"
-                                  << ", writeOver = " << writeOver
-                                  << std::endl;
-        }
-      }
-      else {
-        std::cerr << "In BaseEnvironment::openOutputFile()"
-                  << ": failed to open output file with base name '" << baseFileName << "." << fileType
-                  << "'"
-                  << std::endl;
-      }
 
       // Check the file actually opened
       if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
@@ -678,7 +662,6 @@ BaseEnvironment::openOutputFile(
             (filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()),
             "failed to open output file");
       }
-
     }
     else {
       returnValue = false;
