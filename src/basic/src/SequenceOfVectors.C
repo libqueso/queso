@@ -1313,20 +1313,96 @@ SequenceOfVectors<V,M>::subWriteContents(
   unsigned int        initialPos,
   unsigned int        numPos,
   FilePtrSetStruct& filePtrSet,
-  const std::string&  fileType) const // "m or hdf"
+  const std::string&  fileType) const
 {
-  queso_require_msg(filePtrSet.ofsVar, "filePtrSet.ofsVar should not be NULL");
-
   if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT ||
       fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT) {
+    queso_require_msg(filePtrSet.ofsVar, "filePtrSet.ofsVar should not be NULL");
     this->subWriteContents(initialPos,
                            numPos,
                            *filePtrSet.ofsVar,
                            fileType);
   }
+#ifdef QUESO_HAS_HDF5
   else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-    queso_error_msg("hdf file type not supported yet");
+
+    // Check the file is still legit
+    queso_require_greater_equal_msg(
+        filePtrSet.h5Var,
+        0,
+        "filePtrSet.h5Var should not be non-negative");
+
+    // Sanity check extent
+    queso_require_less_equal_msg(
+        (initialPos+numPos),
+        this->subSequenceSize(),
+        "invalid routine input parameters");
+
+    unsigned int numParams = m_vectorSpace.dimLocal();
+    unsigned int chainSize = this->subSequenceSize();
+    hsize_t dims[2] = { chainSize, numParams };
+
+    // Create dataspace
+    hid_t dataspace_id = H5Screate_simple(2, dims, dims);
+
+    // Sanity check dataspace
+    queso_require_greater_equal_msg(
+        dataspace_id,
+        0,
+        "error creating dataspace with id: " << dataspace_id);
+
+    // Create dataset
+    hid_t dataset_id = H5Dcreate(filePtrSet.h5Var,
+                                 "samples",
+                                 H5T_IEEE_F64LE,
+                                 dataspace_id,
+                                 H5P_DEFAULT,
+                                 H5P_DEFAULT,
+                                 H5P_DEFAULT);
+
+    // Sanity check dataset
+    queso_require_greater_equal_msg(
+        dataset_id,
+        0,
+        "error creating dataset with id: " << dataset_id);
+
+    // This is so egregiously awfully badly terribly horrific I want to die.
+    //
+    // And, of course, if any of the subsequent H5* sanity check fail we
+    // throw an exception and leak a metric fuckton of memory.
+    double * data = (double *)malloc(numParams * chainSize * sizeof(double));
+
+    for (unsigned int i = 0; i < chainSize; i++) {
+      V tmpVec(*(m_seq[i]));
+      for (unsigned int j = 0; j < numParams; j++) {
+        data[numParams*i+j] = tmpVec[j];
+      }
+    }
+
+    // Write the dataset
+    herr_t status = H5Dwrite(
+        dataset_id,
+        H5T_NATIVE_DOUBLE,  // The type in memory
+        H5S_ALL,  // The dataspace in memory
+        dataspace_id,  // The file dataspace
+        H5P_DEFAULT,  // Xfer property list
+        data);
+
+    // Sanity check the write
+    queso_require_greater_equal_msg(
+        status,
+        0,
+        "error writing dataset to file with id: " << filePtrSet.h5Var);
+
+    // Clean up
+    free(data);
+    H5Dclose(dataset_id);
+    H5Sclose(dataspace_id);
+
+    // Should we close the file too?  It's unclear.
+
   }
+#endif
   else {
     queso_error_msg("invalid file type");
   }
