@@ -51,7 +51,6 @@ GslVector::GslVector(const BaseEnvironment& env, const Map& map)
   //          << "\n  map.NumMyElements()     = " << map.NumMyElements()
   //          << std::endl;
 
-  //std::cout << "Leaving GslVector::constructor(1)" << std::endl;
 }
 
 GslVector::GslVector(const BaseEnvironment& env, const Map& map, double value)
@@ -1091,7 +1090,6 @@ GslVector::abs() const
     }
 
   return abs_of_this_vec;
-
 }
 
 std::ostream&
