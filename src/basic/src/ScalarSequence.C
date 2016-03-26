@@ -2607,8 +2607,6 @@ ScalarSequence<T>::subWriteContents(
 
     m_env.closeFile(filePtrSet,fileType);
   }
-
-  return;
 }
 // --------------------------------------------------
 template <class T>
