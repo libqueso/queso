@@ -2601,9 +2601,50 @@ ScalarSequence<T>::subWriteContents(
                              *filePtrSet.ofsVar,
                              fileType);
     }
+#ifdef QUESO_HAS_HDF5
     else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-      // Do nothing
+
+      // Create dataspace
+      hsize_t dims[1] = { this->subSequenceSize() };
+      hid_t dataspace_id = H5Screate_simple(1, dims, dims);
+      queso_require_greater_equal_msg(
+          dataspace_id,
+          0,
+          "error create dataspace with id: " << dataspace_id);
+
+      // Create dataset
+      hid_t dataset_id = H5Dcreate(filePtrSet.h5Var,
+                                   "samples",
+                                   H5T_IEEE_F64LE,
+                                   dataspace_id,
+                                   H5P_DEFAULT,
+                                   H5P_DEFAULT,
+                                   H5P_DEFAULT);
+
+      queso_require_greater_equal_msg(
+          dataset_id,
+          0,
+          "error creating dataset with id: " << dataset_id);
+
+      // Write the dataset
+      herr_t status = H5Dwrite(
+          dataset_id,
+          H5T_NATIVE_DOUBLE,  // The type in memory
+          H5S_ALL,  // The dataspace in memory
+          dataspace_id,  // The file dataspace
+          H5P_DEFAULT,  // Xfer property list
+          &m_seq[0]);
+
+      queso_require_greater_equal_msg(
+          status,
+          0,
+          "error writing dataset to file with id: " << filePtrSet.h5Var);
+
+      // Clean up
+      H5Dclose(dataset_id);
+      H5Sclose(dataspace_id);
     }
+#endif
 
     m_env.closeFile(filePtrSet,fileType);
   }
