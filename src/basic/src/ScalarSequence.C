@@ -2614,7 +2614,7 @@ ScalarSequence<T>::subWriteContents(
 
       // Create dataset
       hid_t dataset_id = H5Dcreate(filePtrSet.h5Var,
-                                   "samples",
+                                   "data",
                                    H5T_IEEE_F64LE,
                                    dataspace_id,
                                    H5P_DEFAULT,
@@ -2775,7 +2775,7 @@ ScalarSequence<T>::unifiedWriteContents(
               hid_t dataspace = H5Screate_simple(1, dimsf, NULL); // HDF5_rank = 2
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data space created" << std::endl;
               hid_t dataset = H5Dcreate2(unifiedFilePtrSet.h5Var,
-                                         "seq_of_vectors",
+                                         "data",
                                          datatype,
                                          dataspace,
                                          H5P_DEFAULT,  // Link creation property list
@@ -3070,7 +3070,7 @@ ScalarSequence<T>::unifiedReadContents(
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
             if (r == 0) {
               hid_t dataset = H5Dopen2(unifiedFilePtrSet.h5Var,
-                                       "seq_of_vectors",
+                                       "data",
                                        H5P_DEFAULT); // Dataset access property list
               hid_t datatype  = H5Dget_type(dataset);
               H5T_class_t t_class = H5Tget_class(datatype);
