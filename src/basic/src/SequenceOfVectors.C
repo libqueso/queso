@@ -1621,8 +1621,8 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
               hid_t datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data type created" << std::endl;
               hsize_t dimsf[2];
-              dimsf[0] = numParams;
-              dimsf[1] = chainSize;
+              dimsf[0] = chainSize;
+              dimsf[1] = numParams;
               hid_t dataspace = H5Screate_simple(2, dimsf, NULL); // HDF5_rank = 2
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data space created" << std::endl;
               hid_t dataset = H5Dcreate2(unifiedFilePtrSet.h5Var,
@@ -1639,20 +1639,15 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
               iRC = gettimeofday(&timevalBegin,NULL);
               if (iRC) {}; // just to remover compiler warning
 
-              //double* dataOut[numParams]; // avoid compiler warning
-        std::vector<double*> dataOut((size_t) numParams,NULL);
-              dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
-              for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
-                dataOut[i] = dataOut[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
-              }
-              //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, memory allocated" << std::endl;
-              for (unsigned int j = 0; j < chainSize; ++j) {
-                V tmpVec(*(m_seq[j]));
-                for (unsigned int i = 0; i < numParams; ++i) {
-                  dataOut[i][j] = tmpVec[i];
+              double * data;
+              data = (double *)malloc(numParams * chainSize * sizeof(double));
+
+              for (unsigned int i = 0; i < chainSize; ++i) {
+                V tmpVec(*(m_seq[i]));
+                for (unsigned int j = 0; j < numParams; ++j) {
+                  data[numParams*i+j] = tmpVec[j];
                 }
               }
-              //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, memory filled" << std::endl;
 
               herr_t status;
               status = H5Dwrite(dataset,
@@ -1660,7 +1655,7 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
                                 H5S_ALL,
                                 H5S_ALL,
                                 H5P_DEFAULT,
-                                (void*) dataOut[0]);
+                                data);
               if (status) {}; // just to remover compiler warning
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data written" << std::endl;
 
@@ -1685,10 +1680,7 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data space closed" << std::endl;
               H5Tclose(datatype);
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data type closed" << std::endl;
-              //free(dataOut[0]); // related to the changes above for compiler warning
-              for (unsigned int tmpIndex = 0; tmpIndex < dataOut.size(); tmpIndex++) {
-                free (dataOut[tmpIndex]);
-              }
+              free(data);
             }
             else {
               queso_error_msg("hdf file type not supported for multiple sub-environments yet");
