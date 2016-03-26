@@ -279,6 +279,8 @@ AC_CONFIG_FILES([
   chmod +x test/test_intercomm0/test_intercomm0_gravity_run.sh
 ])
 
+AC_CONFIG_FILES(src/apps/queso-config, [chmod +x src/apps/queso-config])
+
 dnl ----------------------------------------------
 dnl Collect files for licence header stamping here
 dnl ----------------------------------------------
