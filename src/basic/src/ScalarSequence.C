@@ -2770,10 +2770,9 @@ ScalarSequence<T>::unifiedWriteContents(
             if (r == 0) {
               hid_t datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data type created" << std::endl;
-              hsize_t dimsf[2];
-              dimsf[0] = numParams;
-              dimsf[1] = chainSize;
-              hid_t dataspace = H5Screate_simple(2, dimsf, NULL); // HDF5_rank = 2
+              hsize_t dimsf[1];
+              dimsf[0] = chainSize;
+              hid_t dataspace = H5Screate_simple(1, dimsf, NULL); // HDF5_rank = 2
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data space created" << std::endl;
               hid_t dataset = H5Dcreate2(unifiedFilePtrSet.h5Var,
                                          "seq_of_vectors",
@@ -2789,21 +2788,6 @@ ScalarSequence<T>::unifiedWriteContents(
               iRC = gettimeofday(&timevalBegin,NULL);
               if (iRC) {}; // just to remove compiler warning
 
-              //double* dataOut[numParams]; // avoid compiler warning
-        std::vector<double*> dataOut((size_t) numParams,NULL);
-              dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
-              for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
-                dataOut[i] = dataOut[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
-              }
-              //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, memory allocated" << std::endl;
-              for (unsigned int j = 0; j < chainSize; ++j) {
-                T tmpScalar = m_seq[j];
-                for (unsigned int i = 0; i < numParams; ++i) {
-                  dataOut[i][j] = tmpScalar;
-                }
-              }
-              //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, memory filled" << std::endl;
-
               herr_t status;
               //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 002 \n" << std::endl;
               status = H5Dwrite(dataset,
@@ -2811,7 +2795,7 @@ ScalarSequence<T>::unifiedWriteContents(
                                 H5S_ALL,
                                 H5S_ALL,
                                 H5P_DEFAULT,
-                                (void*) dataOut[0]);
+                                &m_seq[0]);
               if (status) {}; // just to remove compiler warning
 
               //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 003 \n" << std::endl;
@@ -2838,10 +2822,6 @@ ScalarSequence<T>::unifiedWriteContents(
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data space closed" << std::endl;
               H5Tclose(datatype);
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data type closed" << std::endl;
-              //free(dataOut[0]); // related to the changes above for compiler warning
-              for (unsigned int tmpIndex = 0; tmpIndex < dataOut.size(); tmpIndex++) {
-                free (dataOut[tmpIndex]);
-              }
             }
             else {
               queso_error_msg("hdf file type not supported for multiple sub-environments yet");
