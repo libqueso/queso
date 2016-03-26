@@ -2593,10 +2593,18 @@ ScalarSequence<T>::subWriteContents(
                            false, // A 'true' causes problems when the user chooses (via options
                                   // in the input file) to use just one file for all outputs.
                            filePtrSet)) {
-    this->subWriteContents(initialPos,
-                           numPos,
-                           *filePtrSet.ofsVar,
-                           fileType);
+
+    if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT ||
+        fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT) {
+      this->subWriteContents(initialPos,
+                             numPos,
+                             *filePtrSet.ofsVar,
+                             fileType);
+    }
+    else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+      // Do nothing
+    }
+
     m_env.closeFile(filePtrSet,fileType);
   }
 
