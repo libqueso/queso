@@ -57,12 +57,15 @@ int main(int argc, char ** argv)
 
   QUESO::BetaJointPdf<> pdf("", paramDomain, alpha, beta);
 
+  // This point is the mode of the beta distribution defined above
   QUESO::GslVector point(paramSpace.zeroVector());
   point[0] = (alpha[0] - 1.0) / (alpha[0] + beta[0] - 2.0);
 
   QUESO::GslVector lnGradVector(paramSpace.zeroVector());
   QUESO::GslVector gradVector(paramSpace.zeroVector());
 
+  // Here we test the gradient of the log pdf and the gradient of the pdf are
+  // zero, as we expect.
   double lnPdfValue1 = pdf.lnValue(point, NULL, &lnGradVector, NULL, NULL);
   double pdfValue1 = pdf.actualValue(point, NULL, &gradVector, NULL, NULL);
 
