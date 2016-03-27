@@ -38,7 +38,7 @@ namespace QUESO
 #ifdef QUESO_HAVE_CXX11_ISNAN
 #define QUESO_ISNAN(arg) std::isnan(arg)
 #elif QUESO_HAVE_BOOST_MATH_SPECIAL_FUNCTIONS_HPP
-#define QUESO_ISNAN(arg) QUESO_ISNAN(arg)
+#define QUESO_ISNAN(arg) (boost::math::isnan)(arg)
 #else
 #     error "No valid definition for is_nan found!"
 #endif
