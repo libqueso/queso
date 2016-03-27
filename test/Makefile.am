@@ -57,6 +57,7 @@ check_PROGRAMS += test_serialEnv
 check_PROGRAMS += test_jeffreys_pdf
 check_PROGRAMS += test_gaussian_pdf_gradient
 check_PROGRAMS += test_log_normal_pdf_gradient
+check_PROGRAMS += test_beta_pdf_gradient
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -139,6 +140,7 @@ test_serialEnv_SOURCES = test_Environment/test_serialEnv.C
 test_jeffreys_pdf_SOURCES = test_pdfs/test_jeffreys_pdf.C
 test_gaussian_pdf_gradient_SOURCES = test_pdfs/test_gaussian_pdf_gradient.C
 test_log_normal_pdf_gradient_SOURCES = test_pdfs/test_log_normal_pdf_gradient.C
+test_beta_pdf_gradient_SOURCES = test_pdfs/test_beta_pdf_gradient.C
 
 # Files to freedom stamp
 srcstamp =
@@ -193,6 +195,7 @@ srcstamp += $(test_serialEnv_SOURCES)
 srcstamp += $(test_jeffreys_pdf_SOURCES)
 srcstamp += $(test_gaussian_pdf_gradient_SOURCES)
 srcstamp += $(test_log_normal_pdf_gradient_SOURCES)
+srcstamp += $(test_beta_pdf_gradient_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -247,6 +250,7 @@ TESTS += $(top_builddir)/test/test_serialEnv
 TESTS += $(top_builddir)/test/test_jeffreys_pdf
 TESTS += $(top_builddir)/test/test_gaussian_pdf_gradient
 TESTS += $(top_builddir)/test/test_log_normal_pdf_gradient
+TESTS += $(top_builddir)/test/test_beta_pdf_gradient
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 if ! MPI_ENABLED
