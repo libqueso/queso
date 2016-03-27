@@ -42,6 +42,14 @@ namespace QUESO
 #else
 #     error "No valid definition for is_nan found!"
 #endif
+
+#ifdef QUESO_HAVE_CXX11_ISFINITE
+#define QUESO_ISFINITE(arg) std::isfinite(arg)
+#elif QUESO_HAVE_BOOST_MATH_SPECIAL_FUNCTIONS_HPP
+#define QUESO_ISFINITE(arg) (boost::math::isfinite)(arg)
+#else
+#     error "No valid definition for isfinite found!"
+#endif
 } // end namespace QUESO
 
 #endif // UQ_MATH_MACROS_H
