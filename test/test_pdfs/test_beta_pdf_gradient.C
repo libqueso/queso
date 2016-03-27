@@ -26,7 +26,7 @@
 #include <queso/GslVector.h>
 #include <queso/BetaJointPdf.h>
 
-#define TOL 1e-15
+#define TOL 1e-14
 
 int main(int argc, char ** argv)
 {
