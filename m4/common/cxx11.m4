@@ -29,3 +29,29 @@ AC_DEFUN([QUESO_TEST_CXX11_ISNAN],
 
     AM_CONDITIONAL(HAVE_CXX11_ISNAN, test x$have_cxx11_isnan == xyes)
   ])
+
+AC_DEFUN([QUESO_TEST_CXX11_ISFINITE],
+  [
+    have_cxx11_isfinite=no
+
+    # Only run the test if enablecxx11==yes
+    if (test "x$enablecxx11" = "xyes"); then
+      AC_MSG_CHECKING(for C++11 std::isfinite support)
+      AC_LANG_PUSH([C++])
+
+      AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+                        [[#include<cmath>]],
+                        [[bool isnan = std::isfinite(1);]])]
+      ,[
+        AC_MSG_RESULT(yes)
+        AC_DEFINE(HAVE_CXX11_ISFINITE, 1, [Flag indicating whether compiler supports std::isfinite;])
+        have_cxx11_isfinite=yes
+      ],[
+        AC_MSG_RESULT(no)
+      ])
+
+      AC_LANG_POP([C++])
+    fi
+
+    AM_CONDITIONAL(HAVE_CXX11_ISFINITE, test x$have_cxx11_isfinite == xyes)
+  ])
