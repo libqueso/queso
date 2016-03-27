@@ -106,6 +106,10 @@ BetaJointPdf<V,M>::lnValue(
       aux = (m_alpha[i]-1.)*log(domainVector[i]) + (m_beta[i]-1.)*log(1.-domainVector[i]);
     }
 
+    // The log of the beta pdf is
+    // f(x) = (alpha - 1) * log(x) + (beta - 1) * log(1 - x)
+    // Therefore
+    // df/dx (x) = ((alpha - 1) / x) + ((1 - beta) / (1 - x))
     if (gradVector) {
       // We're computing grad of log of p which is p' / p
       (*gradVector)[i] = (m_alpha[i] - 1.0) / domainVector[i] +
@@ -123,7 +127,7 @@ BetaJointPdf<V,M>::lnValue(
     }
     result += aux;
   }
-  result += m_logOfNormalizationFactor; // [PDF-05]
+  result += m_logOfNormalizationFactor;
 
   return result;
 }
