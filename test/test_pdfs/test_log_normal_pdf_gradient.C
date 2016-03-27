@@ -60,6 +60,7 @@ int main(int argc, char ** argv)
 
   QUESO::LogNormalJointPdf<> pdf("", paramDomain, mean, var);
 
+  // This point is the mode of the log normal distribution defined above
   QUESO::GslVector point(paramSpace.zeroVector());
   point[0] = std::exp(mean[0] - var[0]);
   point[1] = std::exp(mean[1] - var[1]);
@@ -68,6 +69,8 @@ int main(int argc, char ** argv)
   QUESO::GslVector lnGradVector(paramSpace.zeroVector());
   QUESO::GslVector gradVector(paramSpace.zeroVector());
 
+  // Here we test the gradient of the log of the pdf and the gradient of the
+  // pdf are zero at the mode, as we expect.
   double lnPdfValue1 = pdf.lnValue(point, NULL, &lnGradVector, NULL, NULL);
   queso_require_less_equal_msg(std::abs(lnGradVector[0]), TOL, "grad log log_normal pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(lnGradVector[1]), TOL, "grad log log_normal pdf values are incorrect");
