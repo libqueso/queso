@@ -173,6 +173,11 @@ LogNormalJointPdf<V,M>::lnValue(
       for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
         diffVec[i] = std::log(domainVector[i]) - this->lawExpVector()[i];
 
+        // Compute the gradient of log of the PDF
+        // The log of a log normal pdf is:
+        // f(x) = -log(x \sigma sqrt(2 \pi)) - ((log(x) - \mu)^2 / (2 \sigma^2))
+        // Therefore
+        // \frac{df}{dx}(x) = -1/x - (log(x) - \mu) / (x \sigma^2)
         if (gradVector) {
           (*gradVector)[i] = -(1.0 / domainVector[i]) -
             diffVec[i] / (domainVector[i] * this->lawVarVector()[i]);
