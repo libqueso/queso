@@ -103,22 +103,28 @@ LogNormalJointPdf<V,M>::actualValue(
 
   queso_require_equal_to_msg(domainVector.sizeLocal(), this->m_domainSet.vectorSpace().dimLocal(), "invalid input");
 
-  queso_require_msg(!(gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = 0.;
 
   V zeroVector(domainVector);
   zeroVector.cwSet(0.);
   if (domainVector.atLeastOneComponentSmallerOrEqualThan(zeroVector)) {
+    // What should the gradient be here?
     returnValue = 0.;
   }
-  else if (this->m_domainSet.contains(domainVector) == false) { // prudenci 2011-Oct-04
+  else if (this->m_domainSet.contains(domainVector) == false) {
+    // What should the gradient be here?
     returnValue = 0.;
   }
   else {
+    // Already normalised
     returnValue = std::exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+
+    if (gradVector) {
+      (*gradVector) *= returnValue;
+    }
   }
-  //returnValue *= exp(m_logOfNormalizationFactor); // No need, because 'lnValue()' is called right above // [PDF-10]
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
     *m_env.subDisplayFile() << "Leaving LogNormalJointPdf<V,M>::actualValue()"
@@ -147,18 +153,18 @@ LogNormalJointPdf<V,M>::lnValue(
                             << std::endl;
   }
 
-  queso_require_msg(!(gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
-
-  if (domainDirection) {}; // just to remove compiler warning
+  queso_require_msg(!(domainDirection || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = 0.;
 
   V zeroVector(domainVector);
   zeroVector.cwSet(0.);
   if (domainVector.atLeastOneComponentSmallerOrEqualThan(zeroVector)) {
+    // What should the gradient be here?
     returnValue = -INFINITY;
   }
-  else if (this->m_domainSet.contains(domainVector) == false) { // prudenci 2011-Oct-04
+  else if (this->m_domainSet.contains(domainVector) == false) {
+    // What should the gradient be here?
     returnValue = -INFINITY;
   }
   else {
@@ -166,9 +172,20 @@ LogNormalJointPdf<V,M>::lnValue(
       V diffVec(zeroVector);
       for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
         diffVec[i] = std::log(domainVector[i]) - this->lawExpVector()[i];
+
+        // Compute the gradient of log of the PDF
+        // The log of a log normal pdf is:
+        // f(x) = -log(x \sigma sqrt(2 \pi)) - ((log(x) - \mu)^2 / (2 \sigma^2))
+        // Therefore
+        // \frac{df}{dx}(x) = -1/x - (log(x) - \mu) / (x \sigma^2)
+        if (gradVector) {
+          (*gradVector)[i] = -(1.0 / domainVector[i]) -
+            diffVec[i] / (domainVector[i] * this->lawVarVector()[i]);
+        }
       }
       returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
       returnValue *= -0.5;
+
       if (m_normalizationStyle == 0) {
         for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
           returnValue -= std::log(domainVector[i] * std::sqrt(2. * M_PI * this->lawVarVector()[i])); // Contribution of 1/(x\sqrt{2\pi\sigma^2})
@@ -178,7 +195,7 @@ LogNormalJointPdf<V,M>::lnValue(
     else {
       queso_error_msg("situation with a non-diagonal covariance matrix makes no sense");
     }
-    returnValue += m_logOfNormalizationFactor; // [PDF-10]
+    returnValue += m_logOfNormalizationFactor;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
