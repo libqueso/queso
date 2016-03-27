@@ -580,7 +580,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
       (y.outOfTargetSupport() == false)) {
     if ((x.logTarget() == -INFINITY) ||
         (x.logTarget() ==  INFINITY) ||
-        ( (boost::math::isnan)(x.logTarget())      )) {
+        ( QUESO_ISNAN(x.logTarget())      )) {
       std::cerr << "WARNING In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                 << ", worldRank "       << m_env.worldRank()
                 << ", fullRank "        << m_env.fullRank()
@@ -596,7 +596,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
     }
     else if ((y.logTarget() == -INFINITY           ) ||
              (y.logTarget() ==  INFINITY           ) ||
-             ( (boost::math::isnan)(y.logTarget()) )) {
+             ( QUESO_ISNAN(y.logTarget()) )) {
       std::cerr << "WARNING In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                 << ", worldRank "       << m_env.worldRank()
                 << ", fullRank "        << m_env.fullRank()
@@ -712,7 +712,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
 
   if ((inputPositionsData[0]->logTarget() == -INFINITY           ) ||
       (inputPositionsData[0]->logTarget() ==  INFINITY           ) ||
-      ( (boost::math::isnan)(inputPositionsData[0]->logTarget()) )) {
+      ( QUESO_ISNAN(inputPositionsData[0]->logTarget()) )) {
     std::cerr << "WARNING In MetropolisHastingsSG<P_V,P_M>::alpha(vec)"
               << ", worldRank "      << m_env.worldRank()
               << ", fullRank "       << m_env.fullRank()
@@ -730,7 +730,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   }
   else if ((inputPositionsData[inputSize - 1]->logTarget() == -INFINITY           ) ||
            (inputPositionsData[inputSize - 1]->logTarget() ==  INFINITY           ) ||
-           ( (boost::math::isnan)(inputPositionsData[inputSize - 1]->logTarget()) )) {
+           ( QUESO_ISNAN(inputPositionsData[inputSize - 1]->logTarget()) )) {
     std::cerr << "WARNING In MetropolisHastingsSG<P_V,P_M>::alpha(vec)"
               << ", worldRank "      << m_env.worldRank()
               << ", fullRank "       << m_env.fullRank()

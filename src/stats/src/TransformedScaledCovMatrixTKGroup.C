@@ -26,6 +26,7 @@
 #include <queso/InvLogitGaussianJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <boost/math/special_functions.hpp>
 
 namespace QUESO {
 

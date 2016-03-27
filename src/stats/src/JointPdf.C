@@ -79,7 +79,7 @@ BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(unsigned int numSamples
   double value = 0.;
 
   double volume = m_domainSet.volume();
-  if (((boost::math::isnan)(volume)) ||
+  if ((QUESO_ISNAN(volume)) ||
       (volume == -INFINITY         ) ||
       (volume ==  INFINITY         ) ||
       (volume <= 0.                )) {
