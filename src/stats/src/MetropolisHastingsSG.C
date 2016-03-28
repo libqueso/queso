@@ -2615,7 +2615,7 @@ MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
     double min_val = min_domain_bounds[i];
     double max_val = max_domain_bounds[i];
 
-    if (boost::math::isfinite(min_val) && boost::math::isfinite(max_val)) {
+    if (QUESO_ISFINITE(min_val) && QUESO_ISFINITE(max_val)) {
       if (m_initialProposalCovMatrix(i, i) >= max_val - min_val) {
         // User is trying to specify a uniform proposal distribution, which
         // is unsupported.  Throw an error for now.
