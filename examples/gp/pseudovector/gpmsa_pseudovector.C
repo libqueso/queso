@@ -289,7 +289,7 @@ int main(int argc, char ** argv) {
   // Setting the proposal covariance matrix by hand.  This requires great
   // forethough, and can generally be referred to as a massive hack.  These
   // values were taken from the gpmsa matlab code and fiddled with.
-  double scale = 600.0;
+  double scale = 60000.0;
   proposalCovMatrix(0, 0)   = 3.1646 / 10.0;  // param 1
   proposalCovMatrix(1, 1)   = 3.1341 / 10.0;  // param 2
   proposalCovMatrix(2, 2)   = 3.1508 / 10.0;  // param 3
