@@ -135,18 +135,18 @@ double LibMeshFunction::L2_norm() const {
   return norm;
 }
 
-boost::shared_ptr<FunctionBase> LibMeshFunction::zero_clone() const
+typename SharedPtr<FunctionBase>::Type LibMeshFunction::zero_clone() const
 {
   LibMeshFunction * clone = new LibMeshFunction(this->builder,
       this->equation_systems->get_mesh());
   clone->equation_systems->get_system<libMesh::ExplicitSystem>(
       "Function").solution->zero();
 
-  boost::shared_ptr<FunctionBase> ptr(clone);
+  typename SharedPtr<FunctionBase>::Type ptr(clone);
   return ptr;
 }
 
-boost::shared_ptr<libMesh::EquationSystems>
+SharedPtr<libMesh::EquationSystems>::Type
 LibMeshFunction::get_equation_systems() const {
   return this->equation_systems;
 }

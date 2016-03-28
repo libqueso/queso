@@ -22,6 +22,10 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <algorithm>
+
+#include <unistd.h> // sleep
+
 #include <queso/MLSampling.h>
 #include <queso/InstantiateIntersection.h>
 #include <queso/GslVector.h>

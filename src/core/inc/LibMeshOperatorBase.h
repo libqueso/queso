@@ -32,7 +32,7 @@
 #include <string>
 #include <set>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <queso/SharedPtr.h>
 #include <queso/FunctionBase.h>
 #include <queso/OperatorBase.h>
 #include <libmesh/system.h>
@@ -112,11 +112,11 @@ public:
    *  where the lambda are eigenvalues of the precision operator, \c this, and
    *  the \phi(x) are eigenfunctions of the precision operator, \c this
    */
-  virtual boost::shared_ptr<FunctionBase>
+  virtual typename SharedPtr<FunctionBase>::Type
   inverse_kl_transform(std::vector<double> & xi, double alpha) const;
 
 protected:
-  boost::shared_ptr<libMesh::EquationSystems> equation_systems;
+  typename SharedPtr<libMesh::EquationSystems>::Type equation_systems;
 
   const FunctionOperatorBuilder & builder;
 

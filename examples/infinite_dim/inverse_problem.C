@@ -2,9 +2,6 @@
 #include <cmath>
 #include <string>
 
-// Boost includes
-#include <boost/math/constants/constants.hpp>
-
 // LibMesh includes
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
