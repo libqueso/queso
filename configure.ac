@@ -133,6 +133,7 @@ if (test "x$enablecxx11" = "xyes"); then
   QUESO_TEST_CXX11_ISNAN
   QUESO_TEST_CXX11_ISFINITE
   QUESO_TEST_CXX11_UNIQUE_PTR
+  QUESO_TEST_CXX11_SHARED_PTR
 fi
 
 #-------------------------
