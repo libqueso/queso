@@ -241,6 +241,8 @@ AC_CONFIG_FILES([
   test/test_InputOptionsParser/test_options_default.txt
   test/test_optimizer/input_test_optimizer_options
   test/test_Environment/input_test_serialEnv
+  test/test_intercomm0/gravity_1proc.txt
+  test/test_intercomm0/gravity_2proc.txt
 ])
 
 AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh
@@ -268,6 +270,13 @@ AC_CONFIG_FILES([
 ],
 [
   chmod +x test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+])
+
+AC_CONFIG_FILES([
+  test/test_intercomm0/test_intercomm0_gravity_run.sh
+],
+[
+  chmod +x test/test_intercomm0/test_intercomm0_gravity_run.sh
 ])
 
 dnl ----------------------------------------------
