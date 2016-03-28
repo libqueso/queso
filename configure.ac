@@ -130,6 +130,7 @@ if (test "x$enablecxx11" = "xyes"); then
   # one is found.  See ax_cxx_compile_stdcxx_11.m4 for details.
   # --------------------------------------------------------------
   AX_CXX_COMPILE_STDCXX_11([noext],[optional])
+  QUESO_TEST_CXX11_ISNAN
 fi
 
 #-------------------------
@@ -170,6 +171,7 @@ BOOST_REQUIRE([1.35])
 BOOST_PROGRAM_OPTIONS
 BOOST_FIND_HEADER([boost/scoped_ptr.hpp])
 BOOST_FIND_HEADER([boost/shared_ptr.hpp])
+BOOST_FIND_HEADER([boost/math/special_functions.hpp])
 AC_CACHE_SAVE
 
 # Check for GLPK (optional)
