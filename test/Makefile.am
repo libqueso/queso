@@ -58,6 +58,7 @@ check_PROGRAMS += test_jeffreys_pdf
 check_PROGRAMS += test_gaussian_pdf_gradient
 check_PROGRAMS += test_log_normal_pdf_gradient
 check_PROGRAMS += test_beta_pdf_gradient
+check_PROGRAMS += test_intercomm0_gravity
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -142,6 +143,13 @@ test_gaussian_pdf_gradient_SOURCES = test_pdfs/test_gaussian_pdf_gradient.C
 test_log_normal_pdf_gradient_SOURCES = test_pdfs/test_log_normal_pdf_gradient.C
 test_beta_pdf_gradient_SOURCES = test_pdfs/test_beta_pdf_gradient.C
 
+test_intercomm0_gravity_SOURCES =
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_likelihood.C
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_main.C
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.C
+test_intercomm0_gravity_CPPFLAGS = -Itest_intercomm0 $(AM_CPPFLAGS)
+
+
 # Files to freedom stamp
 srcstamp =
 srcstamp += $(test_uqEnvironmentNonFatal_SOURCES)
@@ -196,6 +204,7 @@ srcstamp += $(test_jeffreys_pdf_SOURCES)
 srcstamp += $(test_gaussian_pdf_gradient_SOURCES)
 srcstamp += $(test_log_normal_pdf_gradient_SOURCES)
 srcstamp += $(test_beta_pdf_gradient_SOURCES)
+srcstamp += $(test_intercomm0_gravity_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -251,6 +260,7 @@ TESTS += $(top_builddir)/test/test_jeffreys_pdf
 TESTS += $(top_builddir)/test/test_gaussian_pdf_gradient
 TESTS += $(top_builddir)/test/test_log_normal_pdf_gradient
 TESTS += $(top_builddir)/test/test_beta_pdf_gradient
+TESTS += $(top_builddir)/test/test_intercomm0/test_intercomm0_gravity_run.sh
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 if ! MPI_ENABLED
@@ -285,6 +295,9 @@ EXTRA_DIST += test_InputOptionsParser/test_options_bad.txt.in
 EXTRA_DIST += test_InputOptionsParser/test_options_default.txt.in
 EXTRA_DIST += test_optimizer/input_test_optimizer_options.in
 EXTRA_DIST += test_Environment/input_test_serialEnv.in
+EXTRA_DIST += test_intercomm0/gravity_1proc.txt.in
+EXTRA_DIST += test_intercomm0/gravity_2proc.txt.in
+EXTRA_DIST += test_intercomm0/test_intercomm0_gravity_run.sh.in
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
@@ -302,6 +315,8 @@ clean-local:
 	rm -rf $(top_builddir)/test/test_output_interp_surrogates
 	rm -rf $(top_builddir)/test/output_test_optimizer_options
 	rm -rf $(top_builddir)/test/output_test_serialEnv
+	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_1
+	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_2
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
