@@ -26,6 +26,7 @@ echo
 echo Debug mode.................... : $enable_debug
 echo C++ compiler.................. : $CXX
 echo C++ compiler flags............ : $CXXFLAGS
+echo C Preprocessor flags.......... : $QUESO_CPPFLAGS
 echo ' '
 echo GSL_LIBS...................... : $GSL_LIBS
 ###echo GRVY DIR...................... : $GRVY_PREFIX
