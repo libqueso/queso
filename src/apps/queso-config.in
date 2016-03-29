@@ -19,8 +19,6 @@ usage ()
   echo "usage: $0 --cppflags --cxxflags --include --libs"
   echo "       $0 --cxx"
   echo "       $0 --cc"
-  echo "       $0 --fc"
-  echo "       $0 --fflags"
   echo "       $0 --version"
   echo "       $0 --host"
   echo "       $0 --ldflags"
@@ -50,14 +48,6 @@ while [ "x$1" != "x" ]; do
 	    return_val="@CC@ $return_val"
 	    ;;
 
-	"--f77")
-	    return_val="@F77@ $return_val"
-	    ;;
-
-	"--fc")
-	    return_val="@FC@ $return_val"
-	    ;;
-
 	"--cppflags")
 	    return_val="@QUESO_CPPFLAGS@ $return_val"
 	    ;;
@@ -68,10 +58,6 @@ while [ "x$1" != "x" ]; do
 
 	"--cflags")
 	    return_val="${CFLAGS} $return_val"
-	    ;;
-
-	"--fflags")
-	    return_val="@FFLAGS@ $return_val"
 	    ;;
 
 	"--include")
