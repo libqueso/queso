@@ -2,7 +2,7 @@ if SVN_CHECKOUT
 BUILT_SOURCES = .license.stamp
 endif
 
-AM_CPPFLAGS =
+AM_CPPFLAGS = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I.
 AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS += -I$(TRILINOS_INCLUDE)

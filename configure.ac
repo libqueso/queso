@@ -68,8 +68,8 @@ AC_ARG_ENABLE(debug, [  --enable-debug=[no/yes] turn on debugging
                      [default=$debug_default]],, enable_debug=$debug_default)
 
 if test "x$enable_debug" = "xyes"; then
-   CFLAGS="$CFLAGS -DDEBUG"
-   CXXFLAGS="$CXXFLAGS -DDEBUG"
+   QUESO_CPPFLAGS="$CPPFLAGS -DDEBUG"
+   AC_SUBST(QUESO_CPPFLAGS)
    AC_MSG_RESULT(yes)
 else
    AC_MSG_RESULT(no)
@@ -278,6 +278,8 @@ AC_CONFIG_FILES([
 [
   chmod +x test/test_intercomm0/test_intercomm0_gravity_run.sh
 ])
+
+AC_CONFIG_FILES(src/apps/queso-config, [chmod +x src/apps/queso-config])
 
 dnl ----------------------------------------------
 dnl Collect files for licence header stamping here

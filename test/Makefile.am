@@ -62,7 +62,7 @@ check_PROGRAMS += test_intercomm0_gravity
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
-AM_CPPFLAGS =
+AM_CPPFLAGS = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I.
 AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
