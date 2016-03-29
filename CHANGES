@@ -4,6 +4,9 @@ Simulation, and Optimization.
 -----------------------------------------------------
 
 Version 0.55.0
+  * Fix bug in JeffreysJointPdf
+  * Adding gradient support for Beta, Log Normal, and Gaussian PDFs
+  * Fix MLE/MAP bug when subEnvironments have more than one MPI process
   * Add support for HDF5 output
 
 Version 0.54.0
