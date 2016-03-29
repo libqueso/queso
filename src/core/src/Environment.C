@@ -112,6 +112,10 @@ FilePtrSetStruct::FilePtrSetStruct()
   :
   ofsVar(NULL),
   ifsVar(NULL)
+#ifdef QUESO_HAS_HDF5
+  ,  // lol
+  h5Var(-1)
+#endif
 {
 }
 
@@ -600,9 +604,22 @@ BaseEnvironment::openOutputFile(
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(),
                                                 std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
         }
+#ifdef QUESO_HAS_HDF5
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-          queso_error_msg("hdf file type not supported yet");
+          std::string fullFileName =
+            baseFileName+"_sub"+this->subIdString()+"."+fileType;
+
+          // Use H5F_ACC_EXCL because not overwriting, so fail on existing file
+          filePtrSet.h5Var = H5Fcreate(fullFileName.c_str(),
+                                       H5F_ACC_EXCL,
+                                       H5P_DEFAULT,
+                                       H5P_DEFAULT);
+
+          queso_require_greater_equal_msg(
+              filePtrSet.h5Var, 0,
+              "error opening file `" << fullFileName << "`");
         }
+#endif
         else {
           queso_error_msg("invalid file type");
         }
@@ -637,23 +654,14 @@ BaseEnvironment::openOutputFile(
           }
         } // only for matlab formats
       }
-      if (filePtrSet.ofsVar != NULL) {
-        if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-          *this->subDisplayFile() << "In BaseEnvironment::openOutputFile()"
-                                  << ", subId = "     << this->subId()
-                                  << ": succeeded on opening output file with base name '" << baseFileName << "." << fileType
-                                  << "'"
-                                  << ", writeOver = " << writeOver
-                                  << std::endl;
-        }
+
+      // Check the file actually opened
+      if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+          (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
+        queso_require_msg(
+            (filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()),
+            "failed to open output file");
       }
-      else {
-        std::cerr << "In BaseEnvironment::openOutputFile()"
-                  << ": failed to open output file with base name '" << baseFileName << "." << fileType
-                  << "'"
-                  << std::endl;
-      }
-      queso_require_msg((filePtrSet.ofsVar && filePtrSet.ofsVar->is_open()), "failed to open output file");
     }
     else {
       returnValue = false;

@@ -59,6 +59,7 @@ check_PROGRAMS += test_gaussian_pdf_gradient
 check_PROGRAMS += test_log_normal_pdf_gradient
 check_PROGRAMS += test_beta_pdf_gradient
 check_PROGRAMS += test_intercomm0_gravity
+check_PROGRAMS += test_seq_of_vec_hdf5_write
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -149,6 +150,7 @@ test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_main.C
 test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.C
 test_intercomm0_gravity_CPPFLAGS = -Itest_intercomm0 $(AM_CPPFLAGS)
 
+test_seq_of_vec_hdf5_write_SOURCES = test_SequenceOfVectors/test_HDF5Write.C
 
 # Files to freedom stamp
 srcstamp =
@@ -205,6 +207,7 @@ srcstamp += $(test_gaussian_pdf_gradient_SOURCES)
 srcstamp += $(test_log_normal_pdf_gradient_SOURCES)
 srcstamp += $(test_beta_pdf_gradient_SOURCES)
 srcstamp += $(test_intercomm0_gravity_SOURCES)
+srcstamp += $(test_seq_of_vec_hdf5_write_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -261,6 +264,7 @@ TESTS += $(top_builddir)/test/test_gaussian_pdf_gradient
 TESTS += $(top_builddir)/test/test_log_normal_pdf_gradient
 TESTS += $(top_builddir)/test/test_beta_pdf_gradient
 TESTS += $(top_builddir)/test/test_intercomm0/test_intercomm0_gravity_run.sh
+TESTS += $(top_builddir)/test/test_seq_of_vec_hdf5_write
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 if ! MPI_ENABLED
@@ -304,6 +308,7 @@ CLEANFILES += test_Environment/debug_output_sub0.txt
 CLEANFILES += gslvector_out_sub0.m
 CLEANFILES += test_write_InterpolationSurrogateBuilder_1.dat
 CLEANFILES += test_write_InterpolationSurrogateBuilder_2.dat
+CLEANFILES += output_test_hdf5_sub0.h5
 
 clean-local:
 	rm -rf $(top_builddir)/test/chain0
