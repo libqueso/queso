@@ -130,11 +130,12 @@ if (test "x$enablecxx11" = "xyes"); then
   # one is found.  See ax_cxx_compile_stdcxx_11.m4 for details.
   # --------------------------------------------------------------
   AX_CXX_COMPILE_STDCXX_11([noext],[optional])
-  QUESO_TEST_CXX11_ISNAN
-  QUESO_TEST_CXX11_ISFINITE
-  QUESO_TEST_CXX11_UNIQUE_PTR
-  QUESO_TEST_CXX11_SHARED_PTR
 fi
+
+QUESO_TEST_CXX11_ISNAN
+QUESO_TEST_CXX11_ISFINITE
+QUESO_TEST_CXX11_UNIQUE_PTR
+QUESO_TEST_CXX11_SHARED_PTR
 
 #-------------------------
 # External Library Checks
