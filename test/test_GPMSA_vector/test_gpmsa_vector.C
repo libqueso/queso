@@ -7,13 +7,17 @@
 
 #include <cstdio>
 
-// Read in data files
-double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
-    const std::vector<QUESO::GslVector *> & simulationParameters,
-    const std::vector<QUESO::GslVector *> & simulationOutputs,
-    const std::vector<QUESO::GslVector *> & experimentScenarios,
-    const std::vector<QUESO::GslVector *> & experimentOutputs) {
+// Read in data files.  Return std deviations for each output.
+std::vector<double>
+readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
+         const std::vector<QUESO::GslVector *> & simulationParameters,
+         const std::vector<QUESO::GslVector *> & simulationOutputs,
+         const std::vector<QUESO::GslVector *> & experimentScenarios,
+         const std::vector<QUESO::GslVector *> & experimentOutputs) {
   FILE * fp_in = fopen("test_Regression/dakota_pstudy.dat", "r");
+  if (!fp_in)
+    queso_error_msg("Cannot find dakota_pstudy.dat");
+
   unsigned int i, id, size = 512;
   double k_tmasl, k_tmoml, k_tnrgl, k_xkwlx, k_cd, pressure;
   char line[size];
@@ -24,6 +28,9 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
 
   double meansim = 0;
   double m2sim = 0;
+
+  double meanexpsim = 0;
+  double m2expsim = 0;
 
   // First line is a header, so we ignore it
   fgets(line, size, fp_in);
@@ -40,28 +47,44 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
     (*(simulationParameters[i]))[4] = (k_cd    - mins[4]) / (maxs[4] - mins[4]);
 
     (*(simulationOutputs[i]))[0] = pressure;
+
+    double exp_pressure = std::exp(pressure);
+    (*(simulationOutputs[i]))[1] = exp_pressure;
+
     i++;
 
     double delta = pressure - meansim;
     meansim += delta / i;
     m2sim += delta * (pressure - meansim);
+
+    double delta2 = exp_pressure - meanexpsim;
+    meanexpsim += delta2 / i;
+    m2expsim += delta2 * (exp_pressure - meanexpsim);
   }
 
   double stdsim = m2sim / (double)(i - 1);
+  double stdexpsim = m2expsim / (double)(i - 1);
 
   // The user is required to standardise the experimental and simulation data
   for (unsigned int j = 0; j < i; j++) {
     (*(simulationOutputs[j]))[0] -= meansim;
     (*(simulationOutputs[j]))[0] /= stdsim;
+
+    (*(simulationOutputs[j]))[1] -= meanexpsim;
+    (*(simulationOutputs[j]))[1] /= stdexpsim;
   }
 
   fclose(fp_in);  // Done with simulation data
 
   // Read in experimental data
   fp_in = fopen("test_Regression/ctf_dat.txt", "r");
+  if (!fp_in)
+    queso_error_msg("Cannot find ctf_dat.txt");
+
   i = 0;
   while (fscanf(fp_in, "%lf\n", &pressure) != EOF) {
     (*(experimentOutputs[i]))[0] = pressure;
+    (*(experimentOutputs[i]))[1] = std::exp(pressure);
     i++;
   }
 
@@ -69,6 +92,9 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
   for (unsigned int j = 0; j < i; j++) {
     (*(experimentOutputs[j]))[0] -= meansim;
     (*(experimentOutputs[j]))[0] /= stdsim;
+
+    (*(experimentOutputs[j]))[1] -= meanexpsim;
+    (*(experimentOutputs[j]))[1] /= stdexpsim;
   }
 
   fclose(fp_in);
@@ -76,7 +102,10 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
   // Returning standard deviation of data (simulation data is treated as
   // plentiful and the standard deviation of this data is treated as the 'true'
   // standard deviation of the data.  This can be argued.)
-  return stdsim;
+  std::vector<double> allstds;
+  allstds.push_back(stdsim);
+  allstds.push_back(stdexpsim);
+  return allstds;
 }
 
 int main(int argc, char ** argv) {
@@ -85,18 +114,23 @@ int main(int argc, char ** argv) {
   unsigned int numUncertainVars = 5;  // Number of things to calibrate
   unsigned int numSimulations = 50;  // Number of simulations
   unsigned int numConfigVars = 1;  // Dimension of configuration space
-  unsigned int numEta = 1;  // Number of responses the model is returning
-  unsigned int experimentSize = 1;  // Size of each experiment
+
+  // Number of outputs the experiment is returning.
+  // For simplicity, this test will be isomorphic to the GPMSA scalar
+  // test: Eta0 will be the same, and Eta1 will be exp(Eta0)
+  unsigned int experimentSize = 2;      // Size of each experiment
+  unsigned int numEta = experimentSize;
 
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 
   // Step 1: Set up QUESO environment
   QUESO::FullEnvironment env(MPI_COMM_WORLD,
-      "test_Regression/gpmsa_cobra_input.txt", "", NULL);
+                             "test_GPMSA_vector/gpmsa_vector_input.txt",
+                             "", NULL);
 #else
-  QUESO::FullEnvironment env(
-      "test_Regression/gpmsa_cobra_input.txt", "", NULL);
+  QUESO::FullEnvironment env("test_GPMSA_vector/gpmsa_vector_input.txt",
+                             "", NULL);
 #endif
 
   // Step 2: Set up prior for calibration parameters
@@ -201,19 +235,26 @@ int main(int argc, char ** argv) {
     experimentVecs[i] = new QUESO::GslVector(experimentSpace.zeroVector());
   }
 
-  // Read in data and store the standard deviation of the simulation data.  We
-  // will need the standard deviation when we pass the experiment error
-  // covariance matrix to QUESO.
-  double stdsim = readData(simulationScenarios,
-                           paramVecs,
-                           outputVecs,
-                           experimentScenarios,
-                           experimentVecs);
+  // Read in data and store the standard deviations of the simulation
+  // data.  We will need the standard deviation when we pass the
+  // experiment error covariance matrix to QUESO.
+  std::vector<double> stdsim =
+    readData(simulationScenarios,
+             paramVecs,
+             outputVecs,
+             experimentScenarios,
+             experimentVecs);
 
   for (unsigned int i = 0; i < numExperiments; i++) {
-    // Passing in error of experiments (standardised).
-    experimentMat(i, i) = (0.025 / stdsim) * (0.025 / stdsim);
-  }
+      for (unsigned int j = 0; j < experimentSize; j++) {
+          // Passing in error of experiments (standardised).
+          // The "magic number" here will in practice be an estimate
+          // of experimental error.  In this test example it is pulled
+          // from our posterior.
+          experimentMat(experimentSize*i+j, experimentSize*i+j) =
+            (0.025 / stdsim[j]) * (0.025 / stdsim[j]);
+        }
+    }
 
   // Add simulation and experimental data
   gpmsaFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
@@ -238,15 +279,18 @@ int main(int argc, char ** argv) {
   paramInitials[4] = 0.5; // param 5
   paramInitials[5]  = 0.4;  // not used.  emulator mean
   paramInitials[6]  = 0.4; // emulator precision
-  paramInitials[7]  = 0.97; // emulator corr str
-  paramInitials[8]  = 0.97; // emulator corr str
+  paramInitials[7]  = 0.4; // weights0 precision
+  paramInitials[8]  = 0.4; // weights1 precision
   paramInitials[9]  = 0.97; // emulator corr str
-  paramInitials[10]  = 0.97; // emulator corr str
-  paramInitials[11]  = 0.20; // emulator corr str
-  paramInitials[12]  = 0.80; // emulator corr str
-  paramInitials[13]  = 10.0; // discrepancy precision
-  paramInitials[14]  = 0.97; // discrepancy corr str
-  paramInitials[15]  = 8000.0; // emulator data precision
+  paramInitials[10] = 0.97; // emulator corr str
+  paramInitials[11] = 0.97; // emulator corr str
+  paramInitials[12]  = 0.97; // emulator corr str
+  paramInitials[13]  = 0.20; // emulator corr str
+  paramInitials[14]  = 0.80; // emulator corr str
+  paramInitials[15]  = 10.0; // discrepancy precision
+  paramInitials[16]  = 0.97; // discrepancy corr str
+  paramInitials[17]  = 8000.0; // emulator data precision
+  paramInitials[18]  = 1.0;  // observation error precision
 
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
@@ -254,7 +298,7 @@ int main(int argc, char ** argv) {
   // Setting the proposal covariance matrix by hand.  This requires great
   // forethough, and can generally be referred to as a massive hack.  These
   // values were taken from the gpmsa matlab code and fiddled with.
-  double scale = 600.0;
+  double scale = 3000.0;
   proposalCovMatrix(0, 0)   = 3.1646 / 10.0;  // param 1
   proposalCovMatrix(1, 1)   = 3.1341 / 10.0;  // param 2
   proposalCovMatrix(2, 2)   = 3.1508 / 10.0;  // param 3
@@ -262,15 +306,18 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(4, 4)   = 0.6719 / 10.0;  // param 5
   proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used.  emulator mean
   proposalCovMatrix(6, 6)   = 0.4953 / scale;  // emulator precision
-  proposalCovMatrix(7, 7)   = 0.6058 / scale;  // emulator corr str
-  proposalCovMatrix(8, 8)   = 7.6032e-04 / scale;  // emulator corr str
-  proposalCovMatrix(9, 9)   = 8.3815e-04 / scale;  // emulator corr str
-  proposalCovMatrix(10, 10) = 7.5412e-04 / scale;  // emulator corr str
-  proposalCovMatrix(11, 11) = 0.2682 / scale;  // emulator corr str
-  proposalCovMatrix(12, 12) = 0.0572 / scale;  // emulator corr str
-  proposalCovMatrix(13, 13) = 1.3417 / scale;  // discrepancy precision
-  proposalCovMatrix(14, 14) = 0.3461 / scale;  // discrepancy corr str
-  proposalCovMatrix(15, 15) = 495.3 / scale;  // emulator data precision
+  proposalCovMatrix(7, 7)   = 0.4953 / scale;  // weights0 precision
+  proposalCovMatrix(8, 8)   = 0.4953 / scale;  // weights1 precision
+  proposalCovMatrix(9, 9)   = 0.6058 / scale;  // emulator corr str
+  proposalCovMatrix(10, 10) = 7.6032e-04 / scale;  // emulator corr str
+  proposalCovMatrix(11, 11) = 8.3815e-04 / scale;  // emulator corr str
+  proposalCovMatrix(12, 12) = 7.5412e-04 / scale;  // emulator corr str
+  proposalCovMatrix(13, 13) = 0.2682 / scale;  // emulator corr str
+  proposalCovMatrix(14, 14) = 0.0572 / scale;  // emulator corr str
+  proposalCovMatrix(15, 15) = 1.3417 / scale;  // discrepancy precision
+  proposalCovMatrix(16, 16) = 0.3461 / scale;  // discrepancy corr str
+  proposalCovMatrix(17, 17) = 495.3 / scale;  // emulator data precision
+  proposalCovMatrix(18, 18) = 0.4953 / scale;  // observation error precision
 
   // Square to get variances
   for (unsigned int i = 0; i < 16; i++) {

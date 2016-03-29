@@ -10,11 +10,11 @@ RUNDIR=`pwd`
 
 . $COMMONDIR/verify.sh
 
-SOLDIR="@builddir@/test_gpmsa_cobra_output"
-EXE="@builddir@/test_gpmsa_cobra"  # executable name
-SOLREFS="@builddir@/test_Regression"
-INFILE="@builddir@/test_Regression/gpmsa_cobra_input.txt"
-TESTNAME='Test Cobra GPMSA'
+SOLDIR="@builddir@/test_gpmsa_vector_output"
+EXE="@builddir@/test_gpmsa_vector"  # executable name
+SOLREFS="@builddir@/test_GPMSA_vector"
+INFILE="@builddir@/test_GPMSA_vector/gpmsa_vector_input.txt"
+TESTNAME='Test Multivariate GPMSA'
 
 rm -f $SOLDIR/*.m
 rm -f $SOLDIR/*.txt
@@ -22,7 +22,7 @@ rm -f $SOLDIR/*.txt
 verify_file_exists $EXE
 verify_file_exists $INFILE
 
-rm -rf ./test_gpmsa_cobra_output
+rm -rf ./test_gpmsa_vector_output
 
 if [ $SAVELOG -eq 1 ];then
     ./$EXE
@@ -31,7 +31,7 @@ else
 fi
 
 verify_file_exists $SOLDIR/ip_raw_chain.m
-verify_file_exists $SOLREFS/test_gpmsa_cobra_samples.m
+verify_file_exists $SOLREFS/test_gpmsa_vector_samples.m
 
-$COMMONDIR/compare.pl $SOLDIR/ip_raw_chain.m $SOLREFS/test_gpmsa_cobra_samples.m
+$COMMONDIR/compare.pl $SOLDIR/ip_raw_chain.m $SOLREFS/test_gpmsa_vector_samples.m
 exit $?
