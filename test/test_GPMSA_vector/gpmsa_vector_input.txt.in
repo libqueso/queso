@@ -3,7 +3,7 @@
 ###############################################
 #env_help                = anything
 env_numSubEnvironments   = 1
-env_subDisplayFileName   = test_gpmsa_cobra_output/display
+env_subDisplayFileName   = test_gpmsa_vector_output/display
 env_subDisplayAllowAll   = 0
 env_subDisplayAllowedSet = 0
 env_displayVerbosity     = 2
@@ -15,14 +15,14 @@ env_seed                 = -1
 ###############################################
 #ip_help                 = anything
 ip_computeSolution      = 1
-ip_dataOutputFileName   = test_gpmsa_cobra_output/sipOutput
+ip_dataOutputFileName   = test_gpmsa_vector_output/sipOutput
 ip_dataOutputAllowedSet = 0
 
 ###############################################
 # 'ip_': information for Metropolis-Hastings algorithm
 ###############################################
 #ip_mh_help                 = anything
-ip_mh_dataOutputFileName   = test_gpmsa_cobra_output/sipOutput
+ip_mh_dataOutputFileName   = test_gpmsa_vector_output/sipOutput
 ip_mh_dataOutputAllowedSet = 0 1
 
 ip_mh_rawChain_dataInputFileName    = .
@@ -30,7 +30,7 @@ ip_mh_rawChain_size                 = 1000
 ip_mh_rawChain_generateExtra        = 0
 ip_mh_rawChain_displayPeriod        = 2000
 ip_mh_rawChain_measureRunTimes      = 1
-ip_mh_rawChain_dataOutputFileName   = test_gpmsa_cobra_output/ip_raw_chain
+ip_mh_rawChain_dataOutputFileName   = test_gpmsa_vector_output/ip_raw_chain
 ip_mh_rawChain_dataOutputAllowedSet = 0 1
 ip_mh_rawChain_computeStats         = 1
 
