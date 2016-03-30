@@ -208,8 +208,6 @@ AC_CONFIG_FILES([
   src/contrib/ANN/test/Makefile
   src/core/inc/queso.h
   examples/Makefile
-  examples/infinite_dim/inverse_options
-  examples/infinite_dim/parallel_inverse_options
   test/Makefile
   test/t01_valid_cycle/Makefile
   test/t02_sip_sfp/Makefile
@@ -217,74 +215,9 @@ AC_CONFIG_FILES([
   test/t04_bimodal/Makefile
   test/gsl_tests/Makefile
   test/gsl_tests/input
-  test/test_infinite/inf_options
-  test/test_Regression/GaussianMean1DRegression_options
-  test/test_Regression/gpmsa_cobra_input.txt
-  test/test_Regression/test_gpmsa_cobra_samples.m
-  test/test_Regression/ctf_dat.txt
-  test/test_Regression/dakota_pstudy.dat
-  test/test_GPMSA_vector/gpmsa_vector_input.txt
-  test/test_GPMSA_vector/test_gpmsa_vector_samples.m
-  test/test_StatisticalInverseProblem/both_input.txt
-  test/test_StatisticalInverseProblem/llhdout_input.txt
-  test/test_StatisticalInverseProblem/neither_input.txt
-  test/test_StatisticalInverseProblem/targetout_input.txt
-  test/test_Regression/jeffreys_input.txt
-  test/test_Regression/test_jeffreys_samples.m
-  test/test_Regression/adaptedcov_input.txt
-  test/test_gaussian_likelihoods/queso_input.txt
-  test/test_InterpolationSurrogate/queso_input.txt
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
-  test/test_gaussian_likelihoods/gaussian_consistency_input.txt
-  test/test_InputOptionsParser/test_options_good.txt
-  test/test_InputOptionsParser/test_options_bad.txt
-  test/test_InputOptionsParser/test_options_default.txt
-  test/test_optimizer/input_test_optimizer_options
-  test/test_Environment/input_test_serialEnv
-  test/test_intercomm0/gravity_1proc.txt
-  test/test_intercomm0/gravity_2proc.txt
-])
-
-AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh
-],
-[
-  chmod +x test/test_Regression/test_cobra_samples_diff.sh
-])
-
-AC_CONFIG_FILES([test/test_GPMSA_vector/test_gpmsa_samples_diff.sh
-],
-[
-  chmod +x test/test_GPMSA_vector/test_gpmsa_samples_diff.sh
-])
-
-AC_CONFIG_FILES([
-  test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
-],
-[
-  chmod +x test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
-])
-
-AC_CONFIG_FILES([
-  test/test_Regression/test_jeffreys_samples_diff.sh
-],
-[
-  chmod +x test/test_Regression/test_jeffreys_samples_diff.sh
-])
-
-AC_CONFIG_FILES([
-  test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
-],
-[
-  chmod +x test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
-])
-
-AC_CONFIG_FILES([
-  test/test_intercomm0/test_intercomm0_gravity_run.sh
-],
-[
-  chmod +x test/test_intercomm0/test_intercomm0_gravity_run.sh
 ])
 
 AC_CONFIG_FILES(src/apps/queso-config, [chmod +x src/apps/queso-config])

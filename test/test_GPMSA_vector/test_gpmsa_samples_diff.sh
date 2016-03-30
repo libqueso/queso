@@ -10,10 +10,10 @@ RUNDIR=`pwd`
 
 . $COMMONDIR/verify.sh
 
-SOLDIR="@builddir@/test_gpmsa_vector_output"
-EXE="@builddir@/test_gpmsa_vector"  # executable name
-SOLREFS="@builddir@/test_GPMSA_vector"
-INFILE="@builddir@/test_GPMSA_vector/gpmsa_vector_input.txt"
+SOLDIR="${QUESO_TEST_BUILDDIR}/test_gpmsa_vector_output"
+EXE="${QUESO_TEST_BUILDDIR}/test_gpmsa_vector"  # executable name
+SOLREFS="${QUESO_TEST_SRCDIR}/test_GPMSA_vector"
+INFILE="${QUESO_TEST_SRCDIR}/test_GPMSA_vector/gpmsa_vector_input.txt"
 TESTNAME='Test Multivariate GPMSA'
 
 rm -f $SOLDIR/*.m
