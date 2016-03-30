@@ -377,6 +377,33 @@ dist_gpmsa_scalar_DATA += gp/scalar/dakota_pstudy.dat
 dist_gpmsa_scalar_DATA += gp/scalar/gpmsa_input.txt
 dist_gpmsa_scalar_DATA += gp/scalar/ctf_dat.txt
 
+gpmsa_pseudovectordir = $(prefix)/examples/gp/pseudovector
+
+gpmsa_pseudovector_PROGRAMS = gpmsa_pseudovector
+gpmsa_pseudovector_SOURCES = gp/pseudovector/gpmsa_pseudovector.C
+gpmsa_pseudovector_LDADD = $(top_builddir)/src/libqueso.la
+gpmsa_pseudovector_CPPFLAGS = -I$(top_srcdir)/examples/gp/pseudovector $(AM_CPPFLAGS)
+
+dist_gpmsa_pseudovector_DATA =
+dist_gpmsa_pseudovector_DATA += ${gpmsa_pseudovector_SOURCES}
+dist_gpmsa_pseudovector_DATA += gp/scalar/dakota_pstudy.dat
+dist_gpmsa_pseudovector_DATA += gp/pseudovector/gpmsa_input.txt
+dist_gpmsa_pseudovector_DATA += gp/scalar/ctf_dat.txt
+
+gpmsa_vectordir = $(prefix)/examples/gp/vector
+
+gpmsa_vector_PROGRAMS = gpmsa_vector
+gpmsa_vector_SOURCES = gp/vector/gpmsa_vector.C
+gpmsa_vector_LDADD = $(top_builddir)/src/libqueso.la
+gpmsa_vector_CPPFLAGS = -I$(top_srcdir)/examples/gp/vector $(AM_CPPFLAGS)
+
+dist_gpmsa_vector_DATA =
+dist_gpmsa_vector_DATA += ${gpmsa_vector_SOURCES}
+dist_gpmsa_vector_DATA += gp/scalar/dakota_pstudy.dat
+dist_gpmsa_vector_DATA += gp/vector/gpmsa_input.txt
+dist_gpmsa_vector_DATA += gp/scalar/ctf_dat.txt
+
+
 #######################################
 # Canned Gaussian likelihood examples #
 #######################################

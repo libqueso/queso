@@ -223,6 +223,8 @@ AC_CONFIG_FILES([
   test/test_Regression/test_gpmsa_cobra_samples.m
   test/test_Regression/ctf_dat.txt
   test/test_Regression/dakota_pstudy.dat
+  test/test_GPMSA_vector/gpmsa_vector_input.txt
+  test/test_GPMSA_vector/test_gpmsa_vector_samples.m
   test/test_StatisticalInverseProblem/both_input.txt
   test/test_StatisticalInverseProblem/llhdout_input.txt
   test/test_StatisticalInverseProblem/neither_input.txt
@@ -249,6 +251,12 @@ AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh
 ],
 [
   chmod +x test/test_Regression/test_cobra_samples_diff.sh
+])
+
+AC_CONFIG_FILES([test/test_GPMSA_vector/test_gpmsa_samples_diff.sh
+],
+[
+  chmod +x test/test_GPMSA_vector/test_gpmsa_samples_diff.sh
 ])
 
 AC_CONFIG_FILES([

@@ -25,6 +25,7 @@ check_PROGRAMS += test_inf_options
 check_PROGRAMS += test_SequenceOfVectorsErase
 check_PROGRAMS += test_GaussianMean1DRegression
 check_PROGRAMS += test_gpmsa_cobra
+check_PROGRAMS += test_gpmsa_vector
 check_PROGRAMS += test_LlhdTargetOutput
 check_PROGRAMS += test_jeffreys
 check_PROGRAMS += test_gsloptimizer
@@ -110,6 +111,7 @@ test_SequenceOfVectorsErase_SOURCES = test_SequenceOfVectors/test_SequenceOfVect
 test_GaussianMean1DRegression_SOURCES = test_Regression/test_GaussianMean1DRegression.C
 test_GaussianMean1DRegression_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 test_gpmsa_cobra_SOURCES = test_Regression/test_gpmsa_cobra.C
+test_gpmsa_vector_SOURCES = test_GPMSA_vector/test_gpmsa_vector.C
 test_LlhdTargetOutput_SOURCES = test_StatisticalInverseProblem/test_LlhdTargetOutput.C
 test_jeffreys_SOURCES = test_Regression/test_jeffreys.C
 test_gsloptimizer_SOURCES = test_optimizer/test_gsloptimizer.C
@@ -177,6 +179,7 @@ srcstamp += $(test_inf_gaussian_SOURCES)
 srcstamp += $(test_inf_options_SOURCES)
 srcstamp += $(test_GaussianMean1DRegression_SOURCES)
 srcstamp += $(test_gpmsa_cobra_SOURCES)
+srcstamp += $(test_gpmsa_vector_SOURCES)
 srcstamp += $(test_LlhdTargetOutput_SOURCES)
 srcstamp += $(test_jeffreys_SOURCES)
 srcstamp += $(test_gsloptimizer_SOURCES)
@@ -230,6 +233,7 @@ TESTS += $(top_builddir)/test/test_inf_options
 TESTS += $(top_builddir)/test/test_SequenceOfVectorsErase
 TESTS += $(top_builddir)/test/test_GaussianMean1DRegression
 TESTS += $(top_builddir)/test/test_Regression/test_cobra_samples_diff.sh
+TESTS += $(top_builddir)/test/test_GPMSA_vector/test_gpmsa_samples_diff.sh
 TESTS += $(top_builddir)/test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
 TESTS += $(top_builddir)/test/test_Regression/test_jeffreys_samples_diff.sh
 TESTS += $(top_builddir)/test/test_gsloptimizer
@@ -282,6 +286,8 @@ EXTRA_DIST += test_Regression/test_cobra_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_gpmsa_cobra_samples.m.in
 EXTRA_DIST += test_Regression/ctf_dat.txt.in
 EXTRA_DIST += test_Regression/dakota_pstudy.dat.in
+EXTRA_DIST += test_GPMSA_vector/gpmsa_vector_input.txt.in
+EXTRA_DIST += test_GPMSA_vector/test_gpmsa_samples_diff.sh.in
 EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt.in
 EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt.in
 EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt.in
@@ -315,6 +321,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/outputData
 	rm -rf $(top_builddir)/test/test_output_gaussian_likelihoods
 	rm -rf $(top_builddir)/test/test_gpmsa_cobra_output
+	rm -rf $(top_builddir)/test/test_gpmsa_vector_output
 	rm -rf $(top_builddir)/test/test_adaptedcov_output
 	rm -rf $(top_builddir)/test/test_outputNoInputFile
 	rm -rf $(top_builddir)/test/test_output_interp_surrogates

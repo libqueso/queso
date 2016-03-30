@@ -197,6 +197,17 @@ public:
   //! This function multiplies \c this matrix by vector \c x and returns the resulting vector.
   GslVector  multiply                  (const GslVector& x) const;
 
+  //! This function multiplies \c this matrix by vector \c x and fills
+  //the preallocated vector \c y.
+  void       multiply                  (const GslVector& x, GslVector& y) const;
+
+  //! This function multiplies \c this matrix by matrix \c X and returns the resulting matrix.
+  GslMatrix  multiply                  (const GslMatrix& X) const;
+
+  //! This function multiplies \c this matrix by matrix \c X and fills
+  //the preallocated zeroed matrix \c Y.
+  void       multiply                  (const GslMatrix& X, GslMatrix& Y) const;
+
   //! This function calculates the inverse of \c this matrix and multiplies it with vector \c b.
   /*! It calls void GslMatrix::invertMultiply(const GslVector& b, GslVector& x) internally.*/
   GslVector  invertMultiply            (const GslVector& b) const;
@@ -390,9 +401,6 @@ private:
 
   //! In this function resets the LU decomposition of \c this matrix, as well as deletes the private member pointers, if existing.
   void              resetLU                   ();
-
-  //! This function multiplies \c this matrix by vector \c x and stores the resulting vector in \c y.
-  void              multiply                  (const GslVector& x, GslVector& y) const;
 
   //! This function factorizes the M-by-N matrix A into the singular value decomposition A = U S V^T for M >= N. On output the matrix A is replaced by U.
   int               internalSvd               () const;
