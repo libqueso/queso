@@ -150,7 +150,7 @@ test_intercomm0_gravity_SOURCES =
 test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_likelihood.C
 test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_main.C
 test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.C
-test_intercomm0_gravity_CPPFLAGS = -Itest_intercomm0 $(AM_CPPFLAGS)
+test_intercomm0_gravity_CPPFLAGS = -I$(srcdir)/test_intercomm0 $(AM_CPPFLAGS)
 
 test_seq_of_vec_hdf5_write_SOURCES = test_SequenceOfVectors/test_HDF5Write.C
 
