@@ -59,7 +59,7 @@ gaussian_random_field_genmesh_CPPFLAGS = $(AM_CPPFLAGS)
 dist_gaussian_random_field_genmesh_DATA = $(gaussian_random_field_genmesh_SOURCES) $(gaussian_random_field_genmesh_DATA)
 
 invprobdir = $(prefix)/examples/infinite_dim
-invprob_DATA = $(top_srcdir)/examples/infinite_dim/inverse_options.in
+invprob_DATA = infinite_dim/inverse_options
 invprob_PROGRAMS = inverse_problem
 inverse_problem_SOURCES = infinite_dim/inverse_problem.C
 inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
@@ -68,7 +68,7 @@ dist_invprob_DATA = $(inverse_problem_SOURCES) $(invprob_DATA)
 
 # Parallel inverse problem example
 parinvprobdir = $(prefix)/examples/infinite_dim
-parinvprob_DATA = $(top_srcdir)/examples/infinite_dim/parallel_inverse_options.in
+parinvprob_DATA = infinite_dim/parallel_inverse_options
 parinvprob_PROGRAMS = parallel_inverse_problem
 parallel_inverse_problem_SOURCES = infinite_dim/parallel_inverse_problem.C
 parallel_inverse_problem_LDADD = $(top_builddir)/src/libqueso.la

@@ -1,5 +1,8 @@
 SUBDIRS    = t01_valid_cycle t02_sip_sfp t03_sequence t04_bimodal
 
+AM_TESTS_ENVIRONMENT  = QUESO_TEST_SRCDIR=$(srcdir); export QUESO_TEST_SRCDIR;
+AM_TESTS_ENVIRONMENT += QUESO_TEST_BUILDDIR=$(builddir); export QUESO_TEST_BUILDDIR;
+
 if GIT_CLONE
 BUILT_SOURCES = .license.stamp
 endif
@@ -213,66 +216,66 @@ srcstamp += $(test_intercomm0_gravity_SOURCES)
 srcstamp += $(test_seq_of_vec_hdf5_write_SOURCES)
 
 TESTS =
-TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
-TESTS += $(top_builddir)/test/test_uqGslVector
-TESTS += $(top_builddir)/test/test_uqGaussianVectorRVClass
-TESTS += $(top_builddir)/test/test_VectorPdf_gsl
-TESTS += $(top_builddir)/test/test_VectorRV_gsl
-TESTS += $(top_builddir)/test/test_VectorRealizer_gsl
-TESTS += $(top_builddir)/test/test_uqGslMatrix
-TESTS += $(top_builddir)/test/test_uqTeuchosVector
-TESTS += $(top_builddir)/test/test_uqexception
-TESTS += $(top_builddir)/test/test_DistArrayCopy
-TESTS += $(top_builddir)/test/test_DistArrayEquals
-TESTS += $(top_builddir)/test/test_DistArrayMisc
-TESTS += $(top_builddir)/test/test_GslVectorSpaceMisc
-TESTS += $(top_builddir)/test/test_IntersectionSubsetContains
-TESTS += $(top_builddir)/test/test_operator
-TESTS += $(top_builddir)/test/test_inf_gaussian
-TESTS += $(top_builddir)/test/test_inf_options
-TESTS += $(top_builddir)/test/test_SequenceOfVectorsErase
-TESTS += $(top_builddir)/test/test_GaussianMean1DRegression
-TESTS += $(top_builddir)/test/test_Regression/test_cobra_samples_diff.sh
-TESTS += $(top_builddir)/test/test_GPMSA_vector/test_gpmsa_samples_diff.sh
-TESTS += $(top_builddir)/test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
-TESTS += $(top_builddir)/test/test_Regression/test_jeffreys_samples_diff.sh
-TESTS += $(top_builddir)/test/test_gsloptimizer
-TESTS += $(top_builddir)/test/test_seedwithmap
-TESTS += $(top_builddir)/test/test_seedwithmap_fd
-TESTS += $(top_builddir)/test/test_logitadaptedcov
-TESTS += $(top_builddir)/test/test_scalarCovariance
-TESTS += $(top_builddir)/test/test_diagonalCovariance
-TESTS += $(top_builddir)/test/test_fullCovariance
-TESTS += $(top_builddir)/test/test_blockDiagonalCovariance
-TESTS += $(top_builddir)/test/test_GslBlockMatrixInvertMultiply
-TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
-TESTS += $(top_builddir)/test/test_fullCovarianceRandomCoefficient
-TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceRandomCoefficients
-TESTS += $(top_builddir)/test/test_fullCovarianceChain
-TESTS += $(top_builddir)/test/test_diagonalCovarianceChain
-TESTS += $(top_builddir)/test/test_scalarCovarianceChain
-TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceChain
-TESTS += $(top_builddir)/test/test_1D_LinearLagrangeInterpolationSurrogate
-TESTS += $(top_builddir)/test/test_2D_LinearLagrangeInterpolationSurrogate
-TESTS += $(top_builddir)/test/test_3D_LinearLagrangeInterpolationSurrogate
-TESTS += $(top_builddir)/test/test_4D_LinearLagrangeInterpolationSurrogate
-TESTS += $(top_builddir)/test/test_InterpolationSurrogateHelper
-TESTS += $(top_builddir)/test/test_build_InterpolationSurrogateBuilder
-TESTS += $(top_builddir)/test/test_BoostInputOptionsParser
-TESTS += $(top_builddir)/test/test_NoInputFile
-TESTS += $(top_builddir)/test/test_optimizer_options
-TESTS += $(top_builddir)/test/test_SharedPtr
-TESTS += $(top_builddir)/test/test_serialEnv
-TESTS += $(top_builddir)/test/test_jeffreys_pdf
-TESTS += $(top_builddir)/test/test_gaussian_pdf_gradient
-TESTS += $(top_builddir)/test/test_log_normal_pdf_gradient
-TESTS += $(top_builddir)/test/test_beta_pdf_gradient
-TESTS += $(top_builddir)/test/test_intercomm0/test_intercomm0_gravity_run.sh
-TESTS += $(top_builddir)/test/test_seq_of_vec_hdf5_write
+TESTS += test_uqEnvironmentNonFatal
+TESTS += test_uqGslVector
+TESTS += test_uqGaussianVectorRVClass
+TESTS += test_VectorPdf_gsl
+TESTS += test_VectorRV_gsl
+TESTS += test_VectorRealizer_gsl
+TESTS += test_uqGslMatrix
+TESTS += test_uqTeuchosVector
+TESTS += test_uqexception
+TESTS += test_DistArrayCopy
+TESTS += test_DistArrayEquals
+TESTS += test_DistArrayMisc
+TESTS += test_GslVectorSpaceMisc
+TESTS += test_IntersectionSubsetContains
+TESTS += test_operator
+TESTS += test_inf_gaussian
+TESTS += test_inf_options
+TESTS += test_SequenceOfVectorsErase
+TESTS += test_GaussianMean1DRegression
+TESTS += test_Regression/test_cobra_samples_diff.sh
+TESTS += test_GPMSA_vector/test_gpmsa_samples_diff.sh
+TESTS += test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+TESTS += test_Regression/test_jeffreys_samples_diff.sh
+TESTS += test_gsloptimizer
+TESTS += test_seedwithmap
+TESTS += test_seedwithmap_fd
+TESTS += test_logitadaptedcov
+TESTS += test_scalarCovariance
+TESTS += test_diagonalCovariance
+TESTS += test_fullCovariance
+TESTS += test_blockDiagonalCovariance
+TESTS += test_GslBlockMatrixInvertMultiply
+TESTS += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+TESTS += test_fullCovarianceRandomCoefficient
+TESTS += test_blockDiagonalCovarianceRandomCoefficients
+TESTS += test_fullCovarianceChain
+TESTS += test_diagonalCovarianceChain
+TESTS += test_scalarCovarianceChain
+TESTS += test_blockDiagonalCovarianceChain
+TESTS += test_1D_LinearLagrangeInterpolationSurrogate
+TESTS += test_2D_LinearLagrangeInterpolationSurrogate
+TESTS += test_3D_LinearLagrangeInterpolationSurrogate
+TESTS += test_4D_LinearLagrangeInterpolationSurrogate
+TESTS += test_InterpolationSurrogateHelper
+TESTS += test_build_InterpolationSurrogateBuilder
+TESTS += test_BoostInputOptionsParser
+TESTS += test_NoInputFile
+TESTS += test_optimizer_options
+TESTS += test_SharedPtr
+TESTS += test_serialEnv
+TESTS += test_jeffreys_pdf
+TESTS += test_gaussian_pdf_gradient
+TESTS += test_log_normal_pdf_gradient
+TESTS += test_beta_pdf_gradient
+TESTS += test_intercomm0/test_intercomm0_gravity_run.sh
+TESTS += test_seq_of_vec_hdf5_write
 
-XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
+XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
-XFAIL_TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+XFAIL_TESTS += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 endif
 
 
