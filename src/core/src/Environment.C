@@ -161,6 +161,35 @@ BaseEnvironment::BaseEnvironment(
 {
   if (passedOptionsInputFileName) m_optionsInputFileName     = passedOptionsInputFileName;
 }
+
+BaseEnvironment::BaseEnvironment(
+  const std::string&             passedOptionsInputFileName,
+  EnvOptionsValues* alternativeOptionsValues)
+  :
+  m_fullEnvIsReady             (false),
+  m_worldRank                  (-1),
+  m_fullComm                   (NULL),
+  m_fullRank                   (-1),
+  m_fullCommSize               (1),
+  m_optionsInputFileName       (passedOptionsInputFileName),
+  m_optionsInputFileAccessState(true),
+  m_allOptionsDesc             (NULL),
+  m_allOptionsMap              (NULL),
+  m_subComm                    (NULL),
+  m_subRank                    (-1),
+  m_subCommSize                (1),
+  m_selfComm                   (NULL),
+  m_inter0Comm                 (NULL),
+  m_inter0Rank                 (-1),
+  m_inter0CommSize             (1),
+  m_subDisplayFile             (NULL),
+  m_rngObject                  (NULL),
+  m_basicPdfs                  (NULL),
+  m_exceptionalCircumstance    (false),
+  m_optionsObj                 (alternativeOptionsValues)
+{
+}
+
 // Destructor -------------------------------------------
 BaseEnvironment::~BaseEnvironment()
 {
@@ -1128,6 +1157,24 @@ FullEnvironment::FullEnvironment(
   :
   BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
 {
+  this->construct(inputComm, prefix);
+}
+
+FullEnvironment::FullEnvironment(
+  RawType_MPI_Comm             inputComm,
+  const std::string&           passedOptionsInputFileName,
+  const std::string&           prefix,
+  EnvOptionsValues* alternativeOptionsValues)
+  :
+  BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
+{
+  this->construct(inputComm, prefix.c_str());
+}
+
+void
+FullEnvironment::construct (RawType_MPI_Comm inputComm,
+                            const char *prefix)
+{
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering FullEnv" << std::endl;
 #endif
@@ -1388,6 +1435,22 @@ FullEnvironment::FullEnvironment(
   EnvOptionsValues* alternativeOptionsValues)
   :
   BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
+{
+  this->construct(prefix);
+}
+
+FullEnvironment::FullEnvironment(
+  const std::string&             passedOptionsInputFileName,
+  const std::string&             prefix,
+  EnvOptionsValues* alternativeOptionsValues)
+  :
+  BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
+{
+  this->construct(prefix.c_str());
+}
+
+void
+FullEnvironment::construct (const char *prefix)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering FullEnv" << std::endl;
