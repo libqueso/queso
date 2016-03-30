@@ -33,8 +33,12 @@ public:
 };
 
 int main(int argc, char ** argv) {
-  QUESO::FullEnvironment env("test_Environment/input_test_serialEnv", "",
-      NULL);
+  std::string inputFileName = "test_Environment/input_test_serialEnv";
+  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+    if (test_srcdir)
+      inputFileName = test_srcdir + ('/' + inputFileName);
+
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 
   QUESO::VectorSpace<> paramSpace(env, "param_", 1, NULL);
 

@@ -44,7 +44,7 @@
 #define PI 3.14159265358979323846
 
 // default input file name
-const std::string inputFileODV = "test_Regression/GaussianMean1DRegression_options";
+std::string inputFileODV = "test_Regression/GaussianMean1DRegression_options";
 
 // default option values
 const double priorMeanODV = 0.0;
@@ -214,6 +214,11 @@ int main(int argc, char* argv[]) {
 #else
   int rank = 0;
 #endif
+
+  // Find correct file for out-of-source builds
+  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  if (test_srcdir)
+    inputFileODV = test_srcdir + ('/' + inputFileODV);
 
   // variables to be filled by command line and/or input file values
   std::string inputFile;

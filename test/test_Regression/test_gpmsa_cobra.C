@@ -88,15 +88,18 @@ int main(int argc, char ** argv) {
   unsigned int numEta = 1;  // Number of responses the model is returning
   unsigned int experimentSize = 1;  // Size of each experiment
 
+  std::string inputFileName = "test_Regression/gpmsa_cobra_input.txt";
+  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+    if (test_srcdir)
+      inputFileName = test_srcdir + ('/' + inputFileName);
+
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 
   // Step 1: Set up QUESO environment
-  QUESO::FullEnvironment env(MPI_COMM_WORLD,
-      "test_Regression/gpmsa_cobra_input.txt", "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 #else
-  QUESO::FullEnvironment env(
-      "test_Regression/gpmsa_cobra_input.txt", "", NULL);
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 #endif
 
   // Step 2: Set up prior for calibration parameters

@@ -121,16 +121,18 @@ int main(int argc, char ** argv) {
   unsigned int experimentSize = 2;      // Size of each experiment
   unsigned int numEta = experimentSize;
 
+  std::string inputFileName = "test_GPMSA_vector/gpmsa_vector_input.txt";
+  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+    if (test_srcdir)
+      inputFileName = test_srcdir + ('/' + inputFileName);
+
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 
   // Step 1: Set up QUESO environment
-  QUESO::FullEnvironment env(MPI_COMM_WORLD,
-                             "test_GPMSA_vector/gpmsa_vector_input.txt",
-                             "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 #else
-  QUESO::FullEnvironment env("test_GPMSA_vector/gpmsa_vector_input.txt",
-                             "", NULL);
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 #endif
 
   // Step 2: Set up prior for calibration parameters

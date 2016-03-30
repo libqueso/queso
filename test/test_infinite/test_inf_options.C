@@ -39,7 +39,11 @@ double Likelihood::evaluate(QUESO::FunctionBase &flow)
 int main(int argc, char **argv)
 {
 #ifdef QUESO_HAVE_LIBMESH
-  const char * in_file_name = "test_infinite/inf_options";
+  std::string in_file_name = "test_infinite/inf_options";
+  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+    if (test_srcdir)
+      in_file_name = test_srcdir + ('/' + in_file_name);
+
   const char * prefix = "";
   const unsigned int num_pairs = 5;
   const double alpha = 3.0;

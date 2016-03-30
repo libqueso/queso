@@ -33,11 +33,16 @@ double one_d_fn( double x );
 
 int main(int argc, char ** argv)
 {
+  std::string inputFileName = "test_InterpolationSurrogate/queso_input.txt";
+  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+    if (test_srcdir)
+      inputFileName = test_srcdir + ('/' + inputFileName);
+
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, "test_InterpolationSurrogate/queso_input.txt", "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 #else
-  QUESO::FullEnvironment env("test_InterpolationSurrogate/queso_input.txt", "", NULL);
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 #endif
 
   int return_flag = 0;
