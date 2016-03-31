@@ -1,7 +1,6 @@
 SUBDIRS    = t01_valid_cycle t02_sip_sfp t03_sequence t04_bimodal
 
 AM_TESTS_ENVIRONMENT  = QUESO_TEST_SRCDIR=$(srcdir); export QUESO_TEST_SRCDIR;
-AM_TESTS_ENVIRONMENT += QUESO_TEST_BUILDDIR=$(builddir); export QUESO_TEST_BUILDDIR;
 
 if GIT_CLONE
 BUILT_SOURCES = .license.stamp
