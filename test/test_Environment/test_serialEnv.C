@@ -6,6 +6,8 @@
 #include <queso/ScalarFunction.h>
 #include <queso/VectorSet.h>
 
+#include <cstdlib>
+
 template<class V = QUESO::GslVector, class M = QUESO::GslMatrix>
 class Likelihood : public QUESO::BaseScalarFunction<V, M>
 {

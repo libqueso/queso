@@ -6,6 +6,7 @@
 #include <queso/GPMSA.h>
 
 #include <cstdio>
+#include <cstdlib>
 
 // Read in data files.  Return std deviations for each output.
 std::vector<double>

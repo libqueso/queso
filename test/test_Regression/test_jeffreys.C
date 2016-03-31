@@ -12,6 +12,8 @@
 #include <queso/GslMatrix.h>
 #include <queso/DistArray.h>
 
+#include <cstdlib>
+
 struct qoiRoutine_DataType
 {
   double coef1;

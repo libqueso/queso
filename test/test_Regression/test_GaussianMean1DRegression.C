@@ -1,19 +1,20 @@
-#include <iostream>
-#include <sstream>
-#include <iterator>
-#include <exception>
-#include <vector>
-#include <string>
-#include <cmath>
-
-#include <boost/program_options.hpp>
-
 #include <queso/Environment.h>
 #include <queso/GslMatrix.h>
 #include <queso/GenericScalarFunction.h>
 #include <queso/GaussianVectorRV.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/ScalarSequence.h>
+
+#include <boost/program_options.hpp>
+
+#include <cmath>
+#include <cstdlib>
+#include <exception>
+#include <iostream>
+#include <iterator>
+#include <sstream>
+#include <string>
+#include <vector>
 
 // Regression Test in One Dimension (Mean of a Gaussian Model)
 //

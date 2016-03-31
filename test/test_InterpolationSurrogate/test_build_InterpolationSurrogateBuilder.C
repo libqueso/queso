@@ -22,7 +22,6 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <limits>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/BoxSubset.h>
@@ -30,6 +29,9 @@
 #include <queso/InterpolationSurrogateBuilder.h>
 #include <queso/InterpolationSurrogateDataSet.h>
 #include <queso/InterpolationSurrogateIOASCII.h>
+
+#include <cstdlib>
+#include <limits>
 
 double four_d_fn_1( double x, double y, double z, double a );
 double four_d_fn_2( double x, double y, double z, double a );

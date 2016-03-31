@@ -1,5 +1,3 @@
-#include <memory>
-#include <sstream>
 #include <queso/Environment.h>
 
 #ifdef QUESO_HAVE_LIBMESH
@@ -13,9 +11,11 @@
 #include <queso/InfiniteDimensionalLikelihoodBase.h>
 #include <queso/InfiniteDimensionalMCMCSampler.h>
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
-#endif  // QUESO_HAVE_LIBMESH
 
-#ifdef QUESO_HAVE_LIBMESH
+#include <cstdlib>
+#include <memory>
+#include <sstream>
+
 class Likelihood : public QUESO::InfiniteDimensionalLikelihoodBase {
 public:
   Likelihood();

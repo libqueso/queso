@@ -22,12 +22,14 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <limits>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/BoxSubset.h>
 #include <queso/LinearLagrangeInterpolationSurrogate.h>
 #include <queso/InterpolationSurrogateData.h>
+
+#include <cstdlib>
+#include <limits>
 
 double one_d_fn( double x );
 

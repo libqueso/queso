@@ -1,4 +1,3 @@
-#include <iomanip>
 #include <queso/Environment.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -9,6 +8,9 @@
 #include <queso/GaussianJointPdf.h>
 #include <queso/InvLogitGaussianJointPdf.h>
 #include <queso/StatisticalInverseProblem.h>
+
+#include <cstdlib>
+#include <iomanip>
 
 #define TOL 1e-13
 

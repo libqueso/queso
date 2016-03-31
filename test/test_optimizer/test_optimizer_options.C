@@ -1,5 +1,3 @@
-#include <iostream>
-#include <cmath>
 #include <queso/asserts.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -10,6 +8,10 @@
 #include <queso/GenericVectorRV.h>
 #include <queso/GslOptimizer.h>
 #include <queso/StatisticalInverseProblem.h>
+
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
 
 template <class V, class M>
 class Likelihood : public QUESO::BaseScalarFunction<V, M> {

@@ -28,6 +28,8 @@
 #include <queso/BoxSubset.h>
 #include <queso/GaussianLikelihoodFullCovarianceRandomCoefficient.h>
 
+#include <cstdlib>
+
 #define TOL 1e-8
 
 template<class V, class M>

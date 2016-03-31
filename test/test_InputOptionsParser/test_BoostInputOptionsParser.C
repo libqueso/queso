@@ -1,10 +1,11 @@
+#include <queso/asserts.h>
+#include <queso/BoostInputOptionsParser.h>
+
+#include <cstdlib>
+#include <iostream>
 #include <string>
 #include <set>
 #include <vector>
-#include <iostream>
-
-#include <queso/asserts.h>
-#include <queso/BoostInputOptionsParser.h>
 
 #define TEST_INT -1
 #define TEST_UINT 1

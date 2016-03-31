@@ -32,6 +32,8 @@
 #include <queso/GaussianLikelihoodFullCovariance.h>
 #include <queso/StatisticalInverseProblem.h>
 
+#include <cstdlib>
+
 #define TOL 1e-15
 
 // A Gaussian likelihood

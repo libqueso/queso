@@ -43,7 +43,8 @@
  * - 'gravity_qoi.h'
  */
 
-#include <cmath>
+#include <gravity_likelihood.h>
+#include <gravity_qoi.h>
 
 #include <queso/GslMatrix.h>
 #include <queso/GenericScalarFunction.h>
@@ -54,8 +55,8 @@
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/StatisticalForwardProblem.h>
 
-#include <gravity_likelihood.h>
-#include <gravity_qoi.h>
+#include <cmath>
+#include <cstdlib>
 
 int main(int argc, char* argv[])
 {

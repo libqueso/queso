@@ -6,6 +6,7 @@
 #include <queso/GPMSA.h>
 
 #include <cstdio>
+#include <cstdlib>
 
 // Read in data files
 double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
