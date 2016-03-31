@@ -62,8 +62,8 @@ public:
 int main(int argc, char ** argv) {
   std::string inputFileName = "test_gaussian_likelihoods/queso_input.txt";
   const char * test_srcdir = std::getenv("srcdir");
-    if (test_srcdir)
-      inputFileName = test_srcdir + ('/' + inputFileName);
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
 
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);

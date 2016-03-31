@@ -105,8 +105,8 @@ public:
     std::string inputFileName =
       "test_gaussian_likelihoods/gaussian_consistency_input.txt";
     const char * test_srcdir = std::getenv("srcdir");
-      if (test_srcdir)
-        inputFileName = test_srcdir + ('/' + inputFileName);
+    if (test_srcdir)
+      inputFileName = test_srcdir + ('/' + inputFileName);
 
 #ifdef QUESO_HAS_MPI
     this->env = new QUESO::FullEnvironment
