@@ -47,8 +47,8 @@ public:
 int main(int argc, char ** argv) {
   std::string inputFileName = "test_Regression/adaptedcov_input.txt";
   const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
-    if (test_srcdir)
-      inputFileName = test_srcdir + ('/' + inputFileName);
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
 
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);

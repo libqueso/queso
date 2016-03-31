@@ -78,8 +78,15 @@ TestOptionsValues::TestOptionsValues(const std::string & filename)
 
 void test_default()
 {
-  TestOptionsValues optionsValues(
-      "test_InputOptionsParser/test_options_default.txt");
+  std::string inputFileName =
+    "test_InputOptionsParser/test_options_default.txt";
+
+  // Find correct file for out-of-source builds
+  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
+  TestOptionsValues optionsValues(inputFileName);
 
   queso_require_equal_to(optionsValues.m_int, -1);
   queso_require_equal_to(optionsValues.m_unsigned_int, 1);
@@ -98,8 +105,15 @@ void test_default()
 
 void test_good()
 {
-  TestOptionsValues optionsValues(
-      "test_InputOptionsParser/test_options_good.txt");
+  std::string inputFileName =
+    "test_InputOptionsParser/test_options_good.txt";
+
+  // Find correct file for out-of-source builds
+  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
+  TestOptionsValues optionsValues(inputFileName);
 
   queso_require_equal_to(optionsValues.m_int, -2);
   queso_require_equal_to(optionsValues.m_unsigned_int, 2);
@@ -118,8 +132,15 @@ void test_good()
 
 void test_empty()
 {
-  TestOptionsValues optionsValues(
-      "test_InputOptionsParser/test_options_bad.txt");
+  std::string inputFileName =
+    "test_InputOptionsParser/test_options_bad.txt";
+
+  // Find correct file for out-of-source builds
+  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
+  TestOptionsValues optionsValues(inputFileName);
 
   queso_require_equal_to(optionsValues.m_set_unsigned_int.empty(), true);
   queso_require_equal_to(optionsValues.m_vector_double.empty(), true);

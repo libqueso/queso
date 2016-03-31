@@ -108,8 +108,8 @@ void compute(const QUESO::FullEnvironment& env) {
 int main(int argc, char ** argv) {
   std::string inputFileName = "test_Regression/jeffreys_input.txt";
   const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
-    if (test_srcdir)
-      inputFileName = test_srcdir + ('/' + inputFileName);
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
 
   //init env
 #ifdef QUESO_HAS_MPI
