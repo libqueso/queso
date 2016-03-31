@@ -82,7 +82,7 @@ void test_default()
     "test_InputOptionsParser/test_options_default.txt";
 
   // Find correct file for out-of-source builds
-  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
     inputFileName = test_srcdir + ('/' + inputFileName);
 
@@ -109,7 +109,7 @@ void test_good()
     "test_InputOptionsParser/test_options_good.txt";
 
   // Find correct file for out-of-source builds
-  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
     inputFileName = test_srcdir + ('/' + inputFileName);
 
@@ -136,7 +136,7 @@ void test_empty()
     "test_InputOptionsParser/test_options_bad.txt";
 
   // Find correct file for out-of-source builds
-  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
     inputFileName = test_srcdir + ('/' + inputFileName);
 

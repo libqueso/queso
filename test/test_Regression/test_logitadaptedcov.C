@@ -46,7 +46,7 @@ public:
 
 int main(int argc, char ** argv) {
   std::string inputFileName = "test_Regression/adaptedcov_input.txt";
-  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
     inputFileName = test_srcdir + ('/' + inputFileName);
 

@@ -216,7 +216,7 @@ int main(int argc, char* argv[]) {
 #endif
 
   // Find correct file for out-of-source builds
-  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
     inputFileODV = test_srcdir + ('/' + inputFileODV);
 

@@ -16,7 +16,7 @@ readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
          const std::vector<QUESO::GslVector *> & experimentOutputs) {
 
   std::string simulationsFileName = "test_Regression/dakota_pstudy.dat";
-  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
     simulationsFileName = test_srcdir + ('/' + simulationsFileName);
 
@@ -132,7 +132,7 @@ int main(int argc, char ** argv) {
   unsigned int numEta = experimentSize;
 
   std::string inputFileName = "test_GPMSA_vector/gpmsa_vector_input.txt";
-  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
     inputFileName = test_srcdir + ('/' + inputFileName);
 

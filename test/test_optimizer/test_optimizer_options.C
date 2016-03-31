@@ -41,7 +41,7 @@ public:
 
 int main(int argc, char ** argv) {
   std::string inputFileName = "test_optimizer/input_test_optimizer_options";
-  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  const char * test_srcdir = std::getenv("srcdir");
     if (test_srcdir)
       inputFileName = test_srcdir + ('/' + inputFileName);
 

@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 {
 #ifdef QUESO_HAVE_LIBMESH
   std::string in_file_name = "test_infinite/inf_options";
-  const char * test_srcdir = std::getenv("QUESO_TEST_SRCDIR");
+  const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
     in_file_name = test_srcdir + ('/' + in_file_name);
 
