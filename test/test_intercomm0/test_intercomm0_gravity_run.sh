@@ -2,7 +2,7 @@
 set -eu
 set -o pipefail
 
-if [ grep "QUESO_HAVE_MPI 1" ${QUESO_TOP_BUILDDIR}/config_queso.h ]; then
+if grep "QUESO_HAVE_MPI 1" ../config_queso.h 2>&1 >/dev/null; then
   mpirun -np 1 ../libtool --mode=execute ./test_intercomm0_gravity \
     test_intercomm0/gravity_1proc.txt
 
