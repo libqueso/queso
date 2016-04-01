@@ -183,6 +183,24 @@ ConcatenatedJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+ConcatenatedJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  std::vector<V*> vecs(m_densities.size(),(V*) NULL);
+  std::vector<double> values(m_densities.size(),0.);
+  double returnValue = 0.;
+  unsigned int cumulativeSize = 0;
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    vecs[i] = new V(m_densities[i]->domainSet().vectorSpace().zeroVector());
+    m_densities[i]->distributionMean(*(vecs[i]));
+    meanVector.cwSet(cumulativeSize,*(vecs[i]));
+    cumulativeSize += vecs[i]->sizeLocal();
+    delete vecs[i];
+  }
+}
+
+//--------------------------------------------------
+template<class V, class M>
 double
 ConcatenatedJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

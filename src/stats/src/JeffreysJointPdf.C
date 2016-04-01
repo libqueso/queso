@@ -136,6 +136,19 @@ JeffreysJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+JeffreysJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  // FIXME: This is an improper prior; the "mean" makes little sense.
+  // At least we can return something within the domain set.
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "Warning: JeffreysJointPdf<V,M>::distributionMean() makes little sense"
+                            << std::endl;
+  }
+  m_domainSet.centroid(meanVector);
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 JeffreysJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

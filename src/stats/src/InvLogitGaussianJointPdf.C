@@ -203,6 +203,17 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
 }
 
 template<class V, class M>
+void
+InvLogitGaussianJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  // AFAIK there's no simple closed form here, and taking the inverse
+  // transformation of the mean in the transformed space probably
+  // isn't accurate enough in cases where the mean is too near the
+  // bounds.
+  queso_not_implemented();
+}
+
+template<class V, class M>
 double
 InvLogitGaussianJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

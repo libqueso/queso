@@ -83,6 +83,9 @@ public:
   /*! The final logarithm value is the addition of all values calculated.*/
   double lnValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
 
+  //! Mean value of the underlying random variable.
+  virtual void   distributionMean (V & meanVector) const;
+
   //! Sets the normalization style of all densities to \c value.
   void   setNormalizationStyle(unsigned int value) const;
 

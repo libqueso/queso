@@ -74,6 +74,10 @@ public:
    */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
 
+  //! Mean value of the underlying random variable.  This may make no
+  //! sense for the Jeffrey's prior.
+  virtual void   distributionMean (V & meanVector) const;
+
   //TODO: do we want this part?
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/

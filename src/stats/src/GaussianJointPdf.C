@@ -270,6 +270,13 @@ GaussianJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+GaussianJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  meanVector = this->lawExpVector();
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 GaussianJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
