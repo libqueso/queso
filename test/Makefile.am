@@ -148,8 +148,10 @@ test_beta_pdf_gradient_SOURCES = test_pdfs/test_beta_pdf_gradient.C
 
 test_intercomm0_gravity_SOURCES =
 test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_likelihood.C
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_likelihood.h
 test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_main.C
 test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.C
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.h
 test_intercomm0_gravity_CPPFLAGS = -I$(srcdir)/test_intercomm0 $(AM_CPPFLAGS)
 
 test_seq_of_vec_hdf5_write_SOURCES = test_SequenceOfVectors/test_HDF5Write.C
@@ -288,6 +290,7 @@ EXTRA_DIST += test_Regression/ctf_dat.txt
 EXTRA_DIST += test_Regression/dakota_pstudy.dat
 EXTRA_DIST += test_GPMSA_vector/gpmsa_vector_input.txt
 EXTRA_DIST += test_GPMSA_vector/test_gpmsa_samples_diff.sh
+EXTRA_DIST += test_GPMSA_vector/test_gpmsa_vector_samples.m
 EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt
@@ -297,6 +300,7 @@ EXTRA_DIST += test_Regression/jeffreys_input.txt
 EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh
 EXTRA_DIST += test_Regression/test_jeffreys_samples.m
 EXTRA_DIST += test_Regression/adaptedcov_input.txt
+EXTRA_DIST += test_gaussian_likelihoods/gaussian_consistency_input.txt
 EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt
 EXTRA_DIST += test_InterpolationSurrogate/queso_input.txt
 EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
