@@ -32,6 +32,8 @@
 #include <queso/GaussianLikelihoodDiagonalCovariance.h>
 #include <queso/StatisticalInverseProblem.h>
 
+#include <cstdlib>
+
 #define TOL 1e-15
 
 // A Gaussian likelihood
@@ -106,12 +108,18 @@ class BayesianInverseProblem
 public:
   BayesianInverseProblem(unsigned int likelihoodFlag)
   {
+    std::string inputFileName =
+      "test_gaussian_likelihoods/gaussian_consistency_input.txt";
+    const char * test_srcdir = std::getenv("srcdir");
+    if (test_srcdir)
+      inputFileName = test_srcdir + ('/' + inputFileName);
+
 #ifdef QUESO_HAS_MPI
-    this->env = new QUESO::FullEnvironment(MPI_COMM_WORLD,
-        "test_gaussian_likelihoods/gaussian_consistency_input.txt", "", NULL);
+    this->env = new QUESO::FullEnvironment
+      (MPI_COMM_WORLD, inputFileName, "", NULL);
 #else
-    this->env = new QUESO::FullEnvironment(
-        "test_gaussian_likelihoods/gaussian_consistency_input.txt", "", NULL);
+    this->env = new QUESO::FullEnvironment
+      (inputFileName, "", NULL);
 #endif
 
     this->paramSpace =

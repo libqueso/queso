@@ -6,6 +6,7 @@
 #include <queso/GPMSA.h>
 
 #include <cstdio>
+#include <cstdlib>
 
 // Read in data files.  Return std deviations for each output.
 std::vector<double>
@@ -14,7 +15,13 @@ readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
          const std::vector<QUESO::GslVector *> & simulationOutputs,
          const std::vector<QUESO::GslVector *> & experimentScenarios,
          const std::vector<QUESO::GslVector *> & experimentOutputs) {
-  FILE * fp_in = fopen("test_Regression/dakota_pstudy.dat", "r");
+
+  std::string simulationsFileName = "test_Regression/dakota_pstudy.dat";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    simulationsFileName = test_srcdir + ('/' + simulationsFileName);
+
+  FILE * fp_in = fopen(simulationsFileName.c_str(), "r");
   if (!fp_in)
     queso_error_msg("Cannot find dakota_pstudy.dat");
 
@@ -77,7 +84,11 @@ readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
   fclose(fp_in);  // Done with simulation data
 
   // Read in experimental data
-  fp_in = fopen("test_Regression/ctf_dat.txt", "r");
+  std::string experimentsFileName = "test_Regression/ctf_dat.txt";
+  if (test_srcdir)
+    experimentsFileName = test_srcdir + ('/' + experimentsFileName);
+
+  fp_in = fopen(experimentsFileName.c_str(), "r");
   if (!fp_in)
     queso_error_msg("Cannot find ctf_dat.txt");
 
@@ -121,16 +132,18 @@ int main(int argc, char ** argv) {
   unsigned int experimentSize = 2;      // Size of each experiment
   unsigned int numEta = experimentSize;
 
+  std::string inputFileName = "test_GPMSA_vector/gpmsa_vector_input.txt";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 
   // Step 1: Set up QUESO environment
-  QUESO::FullEnvironment env(MPI_COMM_WORLD,
-                             "test_GPMSA_vector/gpmsa_vector_input.txt",
-                             "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 #else
-  QUESO::FullEnvironment env("test_GPMSA_vector/gpmsa_vector_input.txt",
-                             "", NULL);
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 #endif
 
   // Step 2: Set up prior for calibration parameters

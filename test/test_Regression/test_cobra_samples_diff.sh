@@ -10,10 +10,10 @@ RUNDIR=`pwd`
 
 . $COMMONDIR/verify.sh
 
-SOLDIR="@builddir@/test_gpmsa_cobra_output"
-EXE="@builddir@/test_gpmsa_cobra"  # executable name
-SOLREFS="@builddir@/test_Regression"
-INFILE="@builddir@/test_Regression/gpmsa_cobra_input.txt"
+SOLDIR="./test_gpmsa_cobra_output"
+EXE="./test_gpmsa_cobra"  # executable name
+SOLREFS="${srcdir}/test_Regression"
+INFILE="${srcdir}/test_Regression/gpmsa_cobra_input.txt"
 TESTNAME='Test Cobra GPMSA'
 
 rm -f $SOLDIR/*.m

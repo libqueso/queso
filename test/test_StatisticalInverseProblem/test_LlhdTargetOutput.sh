@@ -4,10 +4,10 @@ set -o pipefail
 
 PROG="./test_LlhdTargetOutput"
 
-INPUT_1="test_StatisticalInverseProblem/llhdout_input.txt"
-INPUT_2="test_StatisticalInverseProblem/targetout_input.txt"
-INPUT_3="test_StatisticalInverseProblem/both_input.txt"
-INPUT_4="test_StatisticalInverseProblem/neither_input.txt"
+INPUT_1="${srcdir}/test_StatisticalInverseProblem/llhdout_input.txt"
+INPUT_2="${srcdir}/test_StatisticalInverseProblem/targetout_input.txt"
+INPUT_3="${srcdir}/test_StatisticalInverseProblem/both_input.txt"
+INPUT_4="${srcdir}/test_StatisticalInverseProblem/neither_input.txt"
 
 $PROG $INPUT_1
 $PROG $INPUT_2

@@ -197,6 +197,9 @@ public:
   //! Default constructor.
   BaseEnvironment(const char* passedOptionsInputFileName, EnvOptionsValues* alternativeOptionsValues);
 
+  BaseEnvironment(const std::string & passedOptionsInputFileName,
+                  EnvOptionsValues* alternativeOptionsValues);
+
   //! Destructor
   /*! It deallocates memory and does other cleanup for the class object and its class members when
    * the object is destroyed. It displays the total run time of the combo QUESO + application using
@@ -425,6 +428,11 @@ public:
    */
 #ifdef QUESO_HAS_MPI
   FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* alternativeOptionsValues);
+
+  FullEnvironment(RawType_MPI_Comm inputComm,
+                  const std::string& passedOptionsInputFileName,
+                  const std::string& prefix,
+                  EnvOptionsValues* alternativeOptionsValues);
 #endif
 
   //! Serial constructor.
@@ -433,6 +441,10 @@ public:
    * parallel ctor.
    */
   FullEnvironment(const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* alternativeOptionsValues);
+
+  FullEnvironment(const std::string& passedOptionsInputFileName,
+                  const std::string& prefix,
+                  EnvOptionsValues* alternativeOptionsValues);
 
   //! Destructor
  ~FullEnvironment();
@@ -445,6 +457,15 @@ public:
   //@}
 
 private:
+#ifdef QUESO_HAS_MPI
+  //! Named constructor backend for multiple constructor overloads
+  void	construct(RawType_MPI_Comm inputComm,
+                  const char *prefix);
+#endif
+
+  //! Named constructor backend for multiple constructor overloads
+  void	construct(const char *prefix);
+
   //! Checks the options input file and reads the options.
   void	readOptionsInputFile();
   //void	queso_terminate_handler();

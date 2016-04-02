@@ -6,6 +6,8 @@
 #include <queso/ScalarFunction.h>
 #include <queso/VectorSet.h>
 
+#include <cstdlib>
+
 template<class V = QUESO::GslVector, class M = QUESO::GslMatrix>
 class Likelihood : public QUESO::BaseScalarFunction<V, M>
 {
@@ -33,8 +35,12 @@ public:
 };
 
 int main(int argc, char ** argv) {
-  QUESO::FullEnvironment env("test_Environment/input_test_serialEnv", "",
-      NULL);
+  std::string inputFileName = "test_Environment/input_test_serialEnv";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 
   QUESO::VectorSpace<> paramSpace(env, "param_", 1, NULL);
 

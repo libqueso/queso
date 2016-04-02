@@ -1,5 +1,3 @@
-#include <iostream>
-#include <cmath>
 #include <queso/asserts.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -10,6 +8,10 @@
 #include <queso/GenericVectorRV.h>
 #include <queso/GslOptimizer.h>
 #include <queso/StatisticalInverseProblem.h>
+
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
 
 template <class V, class M>
 class Likelihood : public QUESO::BaseScalarFunction<V, M> {
@@ -40,11 +42,16 @@ public:
 };
 
 int main(int argc, char ** argv) {
+  std::string inputFileName = "test_optimizer/input_test_optimizer_options";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, "test_optimizer/input_test_optimizer_options", "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 #else
-  QUESO::FullEnvironment env("test_optimizer/input_test_optimizer_options", "", NULL);
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 #endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,

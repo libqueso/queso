@@ -1,19 +1,20 @@
-#include <iostream>
-#include <sstream>
-#include <iterator>
-#include <exception>
-#include <vector>
-#include <string>
-#include <cmath>
-
-#include <boost/program_options.hpp>
-
 #include <queso/Environment.h>
 #include <queso/GslMatrix.h>
 #include <queso/GenericScalarFunction.h>
 #include <queso/GaussianVectorRV.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/ScalarSequence.h>
+
+#include <boost/program_options.hpp>
+
+#include <cmath>
+#include <cstdlib>
+#include <exception>
+#include <iostream>
+#include <iterator>
+#include <sstream>
+#include <string>
+#include <vector>
 
 // Regression Test in One Dimension (Mean of a Gaussian Model)
 //
@@ -44,7 +45,7 @@
 #define PI 3.14159265358979323846
 
 // default input file name
-const std::string inputFileODV = "test_Regression/GaussianMean1DRegression_options";
+std::string inputFileODV = "test_Regression/GaussianMean1DRegression_options";
 
 // default option values
 const double priorMeanODV = 0.0;
@@ -214,6 +215,11 @@ int main(int argc, char* argv[]) {
 #else
   int rank = 0;
 #endif
+
+  // Find correct file for out-of-source builds
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileODV = test_srcdir + ('/' + inputFileODV);
 
   // variables to be filled by command line and/or input file values
   std::string inputFile;

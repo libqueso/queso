@@ -28,6 +28,8 @@
 #include <queso/BoxSubset.h>
 #include <queso/GaussianLikelihoodFullCovarianceRandomCoefficient.h>
 
+#include <cstdlib>
+
 #define TOL 1e-8
 
 template<class V, class M>
@@ -59,11 +61,16 @@ public:
 };
 
 int main(int argc, char ** argv) {
+  std::string inputFileName = "test_gaussian_likelihoods/queso_input.txt";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, "test_gaussian_likelihoods/queso_input.txt", "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 #else
-  QUESO::FullEnvironment env("test_gaussian_likelihoods/queso_input.txt", "", NULL);
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 #endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
