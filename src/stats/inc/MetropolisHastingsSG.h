@@ -239,6 +239,11 @@ private:
   void adapt(unsigned int positionId,
       BaseVectorSequence<P_V, P_M> & workingChain);
 
+  //! Do delayed rejection
+  bool delayedRejection(unsigned int positionId,
+      MarkovChainPositionData<P_V> & currentPositionData,
+      MarkovChainPositionData<P_V> & currentCandidateData);
+
   //! This method reads the chain contents.
   void   readFullChain            (const std::string&                  inputFileName,
                                    const std::string&                  inputFileType,
