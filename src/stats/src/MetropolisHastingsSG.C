@@ -1469,8 +1469,6 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
   struct timeval timevalCandidate;
   struct timeval timevalTarget;
   struct timeval timevalMhAlpha;
-  struct timeval timevalDrAlpha;
-  struct timeval timevalDR;
 
   m_positionIdForDebugging = 0;
   m_stageIdForDebugging    = 0;
