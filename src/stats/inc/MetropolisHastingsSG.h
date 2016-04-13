@@ -241,19 +241,24 @@ private:
 
   //! Does delayed rejection
   /*!
-   * Based on an imminent rejection, this method computes a series of new
-   * candidates in the same proposal direction but with smaller proposal step
-   * sizes.  For each of these new candidates, we check if it will be accepted,
-   * if not we repeat the process until all the candidates have been tested.
+   * When faced with an imminent rejection, this method computes a series of
+   * new candidates in the same proposal direction but with smaller proposal
+   * step sizes.  For each of these new candidates, we check if it will be
+   * accepted, if not we repeat the process until all the candidates have been
+   * tested.
    *
-   * If there is a candidate that will be accepted, this method will return
-   * \c true, otherwise it returns \false.
+   * If there is a candidate that will be accepted, this method will return \c
+   * true, otherwise it returns \c false.
    *
    * \c currentCandidateData is updated whenever a new proposal is generated
    * throughout the delayed rejection procedure.
+   *
+   * \c delayedRejection promises not to change \c currentPositionData, because
+   * changing the current position of the Markov chain would be grossly
+   * inappropriate.
    */
   bool delayedRejection(unsigned int positionId,
-      MarkovChainPositionData<P_V> & currentPositionData,
+      const MarkovChainPositionData<P_V> & currentPositionData,
       MarkovChainPositionData<P_V> & currentCandidateData);
 
   //! This method reads the chain contents.

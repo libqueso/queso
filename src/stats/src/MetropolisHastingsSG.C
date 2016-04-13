@@ -2355,7 +2355,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 template <class P_V, class P_M>
 bool
 MetropolisHastingsSG<P_V, P_M>::delayedRejection(unsigned int positionId,
-    MarkovChainPositionData<P_V> & currentPositionData,
+    const MarkovChainPositionData<P_V> & currentPositionData,
     MarkovChainPositionData<P_V> & currentCandidateData)
 {
   if ((m_optionsObj->m_drDuringAmNonAdaptiveInt  == false     ) &&
