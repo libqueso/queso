@@ -1478,6 +1478,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
   m_rawChainInfo.reset();
 
   iRC = gettimeofday(&timevalChain, NULL);
+  queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
 
   if ((m_env.subDisplayFile()                   ) &&
       (m_optionsObj->m_totallyMute == false)) {
@@ -1527,7 +1528,10 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
   double logLikelihood = 0.;
   double logTarget     = 0.;
   if (m_computeInitialPriorAndLikelihoodValues) {
-    if (m_optionsObj->m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
+    if (m_optionsObj->m_rawChainMeasureRunTimes) {
+      iRC = gettimeofday(&timevalTarget, NULL);
+      queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
+    }
     logTarget = m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment // KEY
     if (m_optionsObj->m_rawChainMeasureRunTimes) {
       m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
@@ -1714,6 +1718,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     while (keepGeneratingCandidates) {
       if (m_optionsObj->m_rawChainMeasureRunTimes) {
         iRC = gettimeofday(&timevalCandidate, NULL);
+        queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
       }
 
       m_tk->rv(0).realizer().realization(tmpVecValues);
@@ -1770,7 +1775,10 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       logTarget     = -INFINITY;
     }
     else {
-      if (m_optionsObj->m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
+      if (m_optionsObj->m_rawChainMeasureRunTimes) {
+        iRC = gettimeofday(&timevalTarget, NULL);
+        queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
+      }
       logTarget = m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
       if (m_optionsObj->m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
       m_rawChainInfo.numTargetCalls++;
@@ -1807,7 +1815,10 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       }
     }
     else {
-      if (m_optionsObj->m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalMhAlpha, NULL);
+      if (m_optionsObj->m_rawChainMeasureRunTimes) {
+        iRC = gettimeofday(&timevalMhAlpha, NULL);
+        queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
+      }
       if (m_optionsObj->m_rawChainGenerateExtra) {
         alphaFirstCandidate = this->alpha(currentPositionData,currentCandidateData,0,1,&m_alphaQuotients[positionId]);
       }
@@ -2084,6 +2095,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
   // Get timing info if we're measuring run times
   if (m_optionsObj->m_rawChainMeasureRunTimes) {
     iRC = gettimeofday(&timevalAM, NULL);
+    queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
   }
 
   unsigned int idOfFirstPositionInSubChain = 0;
