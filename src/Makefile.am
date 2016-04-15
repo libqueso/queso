@@ -81,6 +81,7 @@ libqueso_la_SOURCES += core/src/OptimizerMonitor.C
 libqueso_la_SOURCES += core/src/OptimizerOptions.C
 libqueso_la_SOURCES += core/src/BaseInputOptionsParser.C
 libqueso_la_SOURCES += core/src/BoostInputOptionsParser.C
+libqueso_la_SOURCES += core/src/TransitionKernelFactory.C
 
 
 # Sources that need libmesh
@@ -310,6 +311,8 @@ libqueso_include_HEADERS += core/inc/OptimizerMonitor.h
 libqueso_include_HEADERS += core/inc/OptimizerOptions.h
 libqueso_include_HEADERS += core/inc/BaseInputOptionsParser.h
 libqueso_include_HEADERS += core/inc/BoostInputOptionsParser.h
+libqueso_include_HEADERS += core/inc/Factory.h
+libqueso_include_HEADERS += core/inc/TransitionKernelFactory.h
 
 # Headers that need libmesh
 libqueso_include_HEADERS += core/inc/FunctionBase.h

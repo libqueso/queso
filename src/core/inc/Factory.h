@@ -25,10 +25,13 @@
 #ifndef QUESO_FACTORY_H
 #define QUESO_FACTORY_H
 
-// C++ includes
+#include <queso/asserts.h>
+#include <queso/SharedPtr.h>
+
 #include <cstddef>
 #include <map>
 #include <string>
+#include <iostream>
 
 namespace QUESO
 {
@@ -54,13 +57,13 @@ public:
   /**
    * Builds an object of type Base identified by name.
    */
-  static UniquePtr<Base> build(const std::string & name);
+  static typename SharedPtr<Base>::Type build(const std::string & name);
 
   /**
    * Create a Base class.  Force this to be implemented
    * later.
    */
-  virtual UniquePtr<Base> create() = 0;
+  virtual typename SharedPtr<Base>::Type create() = 0;
 
 protected:
   /**
@@ -90,7 +93,7 @@ private:
   /**
    * @returns a new object of type Derived.
    */
-  virtual UniquePtr<Base> create();
+  virtual typename SharedPtr<Base>::Type create();
 };
 
 // -----------------------------------------------------
@@ -108,27 +111,27 @@ Factory<Base>::Factory(const std::string & name)
 
 template <class Base>
 inline
-UniquePtr<Base> Factory<Base>::build(const std::string & name)
+typename SharedPtr<Base>::Type Factory<Base>::build(const std::string & name)
 {
   // name not found in the map
   if (!factory_map().count(name))
     {
-      std::err << "Tried to build an unknown type: " << name << std::endl;
+      std::cerr << "Tried to build an unknown type: " << name << std::endl;
 
-      std::err << "valid options are:" << std::endl;
+      std::cerr << "valid options are:" << std::endl;
 
       for (typename std::map<std::string,Factory<Base> *>::const_iterator
              it = factory_map().begin(); it != factory_map().end(); ++it)
-        std::err << "  " << it->first << std::endl;
+        std::cerr << "  " << it->first << std::endl;
 
       queso_error_msg("Exiting...");
 
       // We'll never get here
-      return UniquePtr<Base>();
+      return typename SharedPtr<Base>::Type();
     }
 
   Factory<Base> * f = factory_map()[name];
-  return UniquePtr<Base>(f->create());
+  return typename SharedPtr<Base>::Type(f->create());
 }
 
 // Note - this cannot be inlined!
@@ -142,9 +145,9 @@ UniquePtr<Base> Factory<Base>::build(const std::string & name)
 
 template <class Derived, class Base>
 inline
-UniquePtr<Base> FactoryImp<Derived,Base>::create()
+typename SharedPtr<Base>::Type FactoryImp<Derived,Base>::create()
 {
-  return UniquePtr<Base>(new Derived);
+  return typename SharedPtr<Base>::Type(new Derived);
 }
 
 } // namespace QUESO
