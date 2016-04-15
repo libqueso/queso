@@ -132,7 +132,7 @@ int main(int argc, char ** argv) {
   unsigned int experimentSize = 2;      // Size of each experiment
   unsigned int numEta = experimentSize;
 
-  std::string inputFileName = "test_GPMSA_vector/gpmsa_vector_input.txt";
+  std::string inputFileName = "test_gpmsa/gpmsa_vector_input.txt";
   const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
     inputFileName = test_srcdir + ('/' + inputFileName);

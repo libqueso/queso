@@ -12,8 +12,8 @@ RUNDIR=`pwd`
 
 SOLDIR="./test_gpmsa_vector_output"
 EXE="./test_gpmsa_vector"  # executable name
-SOLREFS="${srcdir}/test_GPMSA_vector"
-INFILE="${srcdir}/test_GPMSA_vector/gpmsa_vector_input.txt"
+SOLREFS="${srcdir}/test_gpmsa"
+INFILE="${srcdir}/test_gpmsa/gpmsa_vector_input.txt"
 TESTNAME='Test Multivariate GPMSA'
 
 rm -f $SOLDIR/*.m
