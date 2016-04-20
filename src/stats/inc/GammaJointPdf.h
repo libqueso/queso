@@ -39,30 +39,47 @@ namespace QUESO {
 class GslVector;
 class GslMatrix;
 
-//*****************************************************
-// Gamma probability density class [PDF-06]
-//*****************************************************
 /*!
  * \class GammaJointPdf
  * \brief A class for handling Gamma joint PDFs.
  *
- * This class allows the mathematical definition of a Gamma Joint PDF.*/
-
+ * This class allows the mathematical definition of a Gamma Joint PDF.
+ */
 template <class V = GslVector, class M = GslMatrix>
 class GammaJointPdf : public BaseJointPdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Constructor
-  /*! Constructs a new object of the class, given a prefix, the domain set, and the parameters
-   * \c a and \c b of the Gamma PDF.  */
+  //! Constructor for a shape-scale parameterisation of a Gamma(a,b) pdf
+  //! defined on \c domainSet.
+  /*!
+   * Constructs a new object of the class, given a prefix, the domain set, and
+   * the parameters \c a and \c b of the Gamma PDF.
+   *
+   * The parameters \c a and \c b are the shape and scale parameters,
+   * respectively.  That is, the pdf is
+   *
+   * \f[
+   *   f(x) = C x^{a-1} \exp \left( x / b \right),
+   * \f]
+   *
+   * where \c C is a normalising constant.
+   *
+   * Indeed, \c a and \c b are vectors and in multiple dimensions the pdf is
+   * just the product of Gamma(a_i, b_i) pdfs distributions in each dimension.
+   * That is, they are independent.
+   *
+   * Note: the parameters \c a and \c b correspond to the shape and scale
+   * parameters \c k and \f$\theta\f$ in the
+   * <a href="https://en.wikipedia.org/wiki/Gamma_distribution">Wikipedia entry for the Gamma distribution</a>.
+   */
   GammaJointPdf(const char*                  prefix,
                        const VectorSet<V,M>& domainSet,
                        const V&                     a,
                        const V&                     b);
   //! Destructor
- ~GammaJointPdf();
- //@}
+  ~GammaJointPdf();
+  //@}
 
   //! @name Math methods
   //@{
