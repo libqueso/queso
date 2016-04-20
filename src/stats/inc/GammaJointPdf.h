@@ -68,6 +68,10 @@ public:
    * Indeed, \c a and \c b are vectors and in multiple dimensions the pdf is
    * just the product of Gamma(a_i, b_i) pdfs distributions in each dimension.
    * That is, they are independent.
+   *
+   * Note: the parameters \c a and \c b correspond to the shape and scale
+   * parameters \c k and \f$\theta\f$ in the
+   * <a href="https://en.wikipedia.org/wiki/Gamma_distribution">Wikipedia entry for the Gamma distribution</a>.
    */
   GammaJointPdf(const char*                  prefix,
                        const VectorSet<V,M>& domainSet,
