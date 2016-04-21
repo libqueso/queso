@@ -70,6 +70,15 @@ bool BoxSubset<V,M>::contains(const V& vec) const
 
 
 template<class V, class M>
+void BoxSubset<V,M>::centroid(V& vec) const
+{
+  vec = m_minValues;
+  vec += m_maxValues;
+  vec *= 0.5;
+}
+
+
+template<class V, class M>
 const V& BoxSubset<V,M>::minValues() const
 {
   return m_minValues;
