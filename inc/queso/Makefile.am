@@ -38,6 +38,7 @@ BUILT_SOURCES += DistArray.h
 BUILT_SOURCES += Environment.h
 BUILT_SOURCES += EnvironmentOptions.h
 BUILT_SOURCES += Factory.h
+BUILT_SOURCES += FactoryWithVectorSpace.h
 BUILT_SOURCES += FunctionBase.h
 BUILT_SOURCES += FunctionOperatorBuilder.h
 BUILT_SOURCES += GslBlockMatrix.h
@@ -267,6 +268,8 @@ Environment.h: $(top_srcdir)/src/core/inc/Environment.h
 EnvironmentOptions.h: $(top_srcdir)/src/core/inc/EnvironmentOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Factory.h: $(top_srcdir)/src/core/inc/Factory.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+FactoryWithVectorSpace.h: $(top_srcdir)/src/core/inc/FactoryWithVectorSpace.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FunctionBase.h: $(top_srcdir)/src/core/inc/FunctionBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
