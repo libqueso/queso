@@ -35,6 +35,8 @@
 
 #include <queso/GaussianJointPdf.h>
 
+#include <queso/TransitionKernelFactory.h>
+
 namespace QUESO {
 
 // Default constructor -----------------------------

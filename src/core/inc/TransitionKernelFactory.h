@@ -53,7 +53,7 @@ public:
 
 protected:
   virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk(
-      const VectorSpace<GslVector, GslMatrix> & v) = 0;
+      const VectorSpace<GslVector, GslMatrix> & v);
 
 private:
   /**

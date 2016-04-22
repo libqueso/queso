@@ -25,7 +25,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/TransitionKernelFactory.h>
-#include <queso/TKGroup.h>
+#include <queso/ScaledCovMatrixTKGroup.h>
 
 namespace QUESO
 {
@@ -37,6 +37,23 @@ Factory<BaseTKGroup<GslVector, GslMatrix> >::factory_map()
   static std::map<std::string, Factory<BaseTKGroup<GslVector, GslMatrix> > *> _factory_map;
 
   return _factory_map;
+}
+
+SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk(
+    const VectorSpace<GslVector, GslMatrix> & v)
+{
+  std::vector<double> scales(1, 1.0);
+
+  GslVector ones(v.zeroVector());
+  ones.cwSet(1.0);
+
+  GslMatrix covMatrix(ones);
+
+  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk(
+      new ScaledCovMatrixTKGroup<GslVector, GslMatrix>(
+        "", v, scales, covMatrix));
+
+  return new_tk;
 }
 
 template<>
