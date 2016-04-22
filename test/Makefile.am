@@ -61,6 +61,8 @@ check_PROGRAMS += test_log_normal_pdf_gradient
 check_PROGRAMS += test_beta_pdf_gradient
 check_PROGRAMS += test_intercomm0_gravity
 check_PROGRAMS += test_seq_of_vec_hdf5_write
+check_PROGRAMS += test_setSequenceGenerator
+check_PROGRAMS += test_customTK
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -155,6 +157,9 @@ test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.h
 test_intercomm0_gravity_CPPFLAGS = -I$(srcdir)/test_intercomm0 $(AM_CPPFLAGS)
 
 test_seq_of_vec_hdf5_write_SOURCES = test_SequenceOfVectors/test_HDF5Write.C
+test_setSequenceGenerator_SOURCES = test_sg/test_setSequenceGenerator.C
+test_customTK_SOURCES = test_sg/test_customTK.C test_sg/rwtk.C test_sg/rwtk.h
+test_customTK_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_builddir)/test/test_sg
 
 # Files to freedom stamp
 srcstamp =
@@ -213,6 +218,8 @@ srcstamp += $(test_log_normal_pdf_gradient_SOURCES)
 srcstamp += $(test_beta_pdf_gradient_SOURCES)
 srcstamp += $(test_intercomm0_gravity_SOURCES)
 srcstamp += $(test_seq_of_vec_hdf5_write_SOURCES)
+srcstamp += $(test_setSequenceGenerator_SOURCES)
+srcstamp += $(test_customTK_SOURCES)
 
 TESTS =
 TESTS += test_uqEnvironmentNonFatal
@@ -271,6 +278,8 @@ TESTS += test_log_normal_pdf_gradient
 TESTS += test_beta_pdf_gradient
 TESTS += test_intercomm0/test_intercomm0_gravity_run.sh
 TESTS += test_seq_of_vec_hdf5_write
+TESTS += test_setSequenceGenerator
+TESTS += test_customTK
 
 XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
@@ -333,6 +342,8 @@ clean-local:
 	rm -rf $(top_builddir)/test/output_test_serialEnv
 	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_1
 	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_2
+	rm -rf $(top_builddir)/test/output_test_setSequenceGenerator
+	rm -rf $(top_builddir)/test/output_test_customTK
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno

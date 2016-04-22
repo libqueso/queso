@@ -140,6 +140,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   /*! Initial chain position     */ const P_V&                          initialPosition,
   /*! Proposal cov. matrix       */ const P_M*                          inputProposalCovMatrix)
   :
+  SequenceGenerator<P_V, P_M>(prefix, alternativeOptionsValues, sourceRv, initialPosition, inputProposalCovMatrix),
   m_env                       (sourceRv.env()),
   m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
   m_targetPdf                 (sourceRv.pdf()),
@@ -221,6 +222,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   /*! Initial chain likelihood   */ double                              initialLogLikelihood,
   /*! Proposal cov. matrix       */ const P_M*                          inputProposalCovMatrix)
   :
+  SequenceGenerator<P_V, P_M>(prefix, alternativeOptionsValues, sourceRv, initialPosition, inputProposalCovMatrix),
   m_env                       (sourceRv.env()),
   m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
   m_targetPdf                 (sourceRv.pdf()),
@@ -300,6 +302,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   const P_V&                           initialPosition, // KEY
   const P_M*                           inputProposalCovMatrix)
   :
+  // FIXME: empty prefix and NULL options
+  SequenceGenerator<P_V, P_M>("", NULL, sourceRv, initialPosition, inputProposalCovMatrix),
   m_env                       (sourceRv.env()),
   m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
   m_targetPdf                 (sourceRv.pdf()),
@@ -366,6 +370,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   double                               initialLogLikelihood,
   const P_M*                           inputProposalCovMatrix)
   :
+  // FIXME: empty prefix and NULL options
+  SequenceGenerator<P_V, P_M>("", NULL, sourceRv, initialPosition, inputProposalCovMatrix),
   m_env                       (sourceRv.env()),
   m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
   m_targetPdf                 (sourceRv.pdf()),
@@ -1719,7 +1725,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
       }
 
-      m_tk->rv(0).realizer().realization(tmpVecValues);
+      propose(positionId, workingChain, tmpVecValues);
 
       if (m_numDisabledParameters > 0) { // gpmsa2
         for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
@@ -1745,7 +1751,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 
       if (m_optionsObj->m_putOutOfBoundsInChain) keepGeneratingCandidates = false;
       else                                            keepGeneratingCandidates = outOfTargetSupport;
-    }
+    }  // End while(keepGeneratingCandidates)
 
     if ((m_env.subDisplayFile()                   ) &&
         (m_env.displayVerbosity() >= 5            ) &&
@@ -2073,6 +2079,15 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
   //m_env.syncPrintDebugMsg("Leaving MetropolisHastingsSG<P_V,P_M>::generateFullChain()",3,3000000,m_env.fullComm()); // Dangerous to barrier on fullComm ... // KAUST
 
   return;
+}
+
+template <class P_V, class P_M>
+void
+MetropolisHastingsSG<P_V, P_M>::propose(unsigned int positionId,
+    const BaseVectorSequence<P_V, P_M> & workingChain,
+    P_V & proposedState) {
+
+    m_tk->rv(0).realizer().realization(proposedState);
 }
 
 template <class P_V, class P_M>

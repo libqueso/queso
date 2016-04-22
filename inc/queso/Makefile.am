@@ -162,6 +162,7 @@ BUILT_SOURCES += ScalarCdf.h
 BUILT_SOURCES += ScalarCovarianceFunction.h
 BUILT_SOURCES += ScalarGaussianRandomField.h
 BUILT_SOURCES += ScaledCovMatrixTKGroup.h
+BUILT_SOURCES += SequenceGenerator.h
 BUILT_SOURCES += SequentialVectorRealizer.h
 BUILT_SOURCES += StatisticalForwardProblem.h
 BUILT_SOURCES += StatisticalForwardProblemOptions.h
@@ -510,6 +511,8 @@ ScalarCovarianceFunction.h: $(top_srcdir)/src/stats/inc/ScalarCovarianceFunction
 ScalarGaussianRandomField.h: $(top_srcdir)/src/stats/inc/ScalarGaussianRandomField.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ScaledCovMatrixTKGroup.h: $(top_srcdir)/src/stats/inc/ScaledCovMatrixTKGroup.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+SequenceGenerator.h: $(top_srcdir)/src/stats/inc/SequenceGenerator.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SequentialVectorRealizer.h: $(top_srcdir)/src/stats/inc/SequentialVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
