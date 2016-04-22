@@ -39,6 +39,7 @@ Factory<BaseTKGroup<GslVector, GslMatrix> >::factory_map()
   return _factory_map;
 }
 
-template class TransitionKernelFactory<BaseTKGroup<GslVector, GslMatrix> >;
+template<>
+const VectorSpace<GslVector, GslMatrix> * FactoryWithVectorSpace<BaseTKGroup<GslVector, GslMatrix> >::m_vectorSpace = NULL;
 
 } // namespace QUESO

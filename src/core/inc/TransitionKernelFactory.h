@@ -25,7 +25,10 @@
 #ifndef QUESO_TK_FACTORY_H
 #define QUESO_TK_FACTORY_H
 
-#include <queso/Factory.h>
+#include <queso/FactoryWithVectorSpace.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/TKGroup.h>
 
 namespace QUESO
 {
@@ -33,15 +36,14 @@ namespace QUESO
 /**
  * TransitionKernelFactory class defintion.
  */
-template <class Base>
-class TransitionKernelFactory : public Factory<Base>
+class TransitionKernelFactory : public FactoryWithVectorSpace<BaseTKGroup<GslVector, GslMatrix> >
 {
 public:
   /**
    * Constructor. Takes the name to be mapped.
    */
   TransitionKernelFactory(const std::string & name)
-    : Factory<Base>(name)
+    : FactoryWithVectorSpace<BaseTKGroup<GslVector, GslMatrix> >(name)
   {}
 
   /**
@@ -49,12 +51,29 @@ public:
    */
   virtual ~TransitionKernelFactory() {}
 
+protected:
+  virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk(
+      const VectorSpace<GslVector, GslMatrix> & v) = 0;
+
+private:
   /**
    * Create a Base class.  Force this to be implemented
    * later.
    */
-  virtual typename SharedPtr<Base>::Type create() = 0;
+  virtual typename SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type create();
 };
+
+inline
+typename SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type TransitionKernelFactory::create()
+{
+  queso_require_msg(m_vectorSpace, "ERROR: must call set_vectorspace() before building tk!");
+
+  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk = this->build_tk(*m_vectorSpace);
+
+  queso_assert(new_tk);
+
+  return new_tk;
+}
 
 } // namespace QUESO
 
