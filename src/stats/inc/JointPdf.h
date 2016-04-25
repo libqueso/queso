@@ -76,7 +76,7 @@ public:
    * Not implemented in base class, but not pure virtual for backwards
    * compatibility reasons.
    */
-  virtual void   distributionMean               (V & meanVector) const = 0;
+  virtual void   distributionMean               (V & meanVector) const;
 
   //! Sets a value to be used in the normalization style (stored in the protected attribute m_normalizationStyle.)
   virtual void   setNormalizationStyle          (unsigned int value) const;

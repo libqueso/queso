@@ -56,7 +56,6 @@ BaseJointPdf<V,M>::~BaseJointPdf()
 {
 }
 
-#if 0
 //---------------------------------------------------
 template<class V,class M>
 void
@@ -64,7 +63,6 @@ BaseJointPdf<V,M>::distributionMean(V & meanVector) const
 {
   queso_not_implemented();
 }
-#endif
 
 // Math methods -------------------------------------
 template<class V,class M>
