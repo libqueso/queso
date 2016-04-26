@@ -59,4 +59,10 @@ SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk(
 template<>
 const VectorSpace<GslVector, GslMatrix> * FactoryWithVectorSpace<BaseTKGroup<GslVector, GslMatrix> >::m_vectorSpace = NULL;
 
+const std::vector<double> * TransitionKernelFactory::m_dr_scales = NULL;
+
+const ScalarFunctionSynchronizer<GslVector, GslMatrix> * TransitionKernelFactory::m_pdf_synchronizer = NULL;
+
+const GslMatrix * TransitionKernelFactory::m_initial_cov_matrix = NULL;
+
 } // namespace QUESO

@@ -52,8 +52,27 @@ public:
   virtual ~TransitionKernelFactory() {}
 
 protected:
+  static void set_dr_scales(const std::vector<double> & scales)
+  {
+    m_dr_scales = &scales;
+  }
+
+  static void set_pdf_synchronizer(const ScalarFunctionSynchronizer<GslVector, GslMatrix> & synchronizer)
+  {
+    m_pdf_synchronizer = &synchronizer;
+  }
+
+  static void set_initial_cov_matrix(const GslMatrix & cov_matrix)
+  {
+    m_initial_cov_matrix = &cov_matrix;
+  }
+
   virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk(
       const VectorSpace<GslVector, GslMatrix> & v);
+
+  static const std::vector<double> * m_dr_scales;
+  static const ScalarFunctionSynchronizer<GslVector, GslMatrix> * m_pdf_synchronizer;
+  static const GslMatrix * m_initial_cov_matrix;
 
 private:
   /**
@@ -67,6 +86,9 @@ inline
 typename SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type TransitionKernelFactory::create()
 {
   queso_require_msg(m_vectorSpace, "ERROR: must call set_vectorspace() before building tk!");
+  queso_require_msg(m_dr_scales, "ERROR: must call set_dr_scales() before building tk!");
+  queso_require_msg(m_pdf_synchronizer, "ERROR: must call set_pdf_synchronizer() before building tk!");
+  queso_require_msg(m_initial_cov_matrix, "ERROR: must call set_initial_cov_matrix() before building tk!");
 
   SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk = this->build_tk(*m_vectorSpace);
 
