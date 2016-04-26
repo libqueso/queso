@@ -504,6 +504,12 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
     drScalesAll[i] = m_optionsObj->m_drScalesForExtraStages[i-1];
   }
 
+  if (m_optionsObj->m_doLogitTransform) {
+    // Variable transform initial proposal cov matrix
+    transformInitialCovMatrixToGaussianSpace(
+        dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
+  }
+
   TransitionKernelFactory::set_vectorspace(m_vectorSpace);
   TransitionKernelFactory::set_options(*m_optionsObj);
   TransitionKernelFactory::set_pdf_synchronizer(*m_targetPdfSynchronizer);
@@ -544,10 +550,6 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
 
     // Decide whether or not to do logit transform
     if (m_optionsObj->m_doLogitTransform) {
-      // Variable transform initial proposal cov matrix
-      transformInitialCovMatrixToGaussianSpace(
-          dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
-
       // We need this dynamic_cast to BoxSubset so that m_tk can inspect the
       // domain bounds and do the necessary transform
       m_tk = new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
