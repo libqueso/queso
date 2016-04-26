@@ -40,11 +40,14 @@ Factory<BaseTKGroup<GslVector, GslMatrix> >::factory_map()
 }
 
 SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type
-TransitionKernelFactory::build_tk(const VectorSpace<GslVector, GslMatrix> & v)
+TransitionKernelFactory::build_tk(const VectorSpace<GslVector, GslMatrix> & v,
+    const std::vector<double> & dr_scales,
+    const ScalarFunctionSynchronizer<GslVector, GslMatrix> & pdf_synchronizer,
+    const GslMatrix & initial_cov_matrix)
 {
   SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk(
       new ScaledCovMatrixTKGroup<GslVector, GslMatrix>(
-        "", v, *m_dr_scales, *m_initial_cov_matrix));
+        "", v, dr_scales, initial_cov_matrix));
 
   return new_tk;
 }
