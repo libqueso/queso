@@ -29,6 +29,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/TKGroup.h>
+#include <queso/MetropolisHastingsSGOptions.h>
 
 namespace QUESO
 {
@@ -67,7 +68,13 @@ protected:
     m_initial_cov_matrix = &cov_matrix;
   }
 
+  static void set_options(const MhOptionsValues & options)
+  {
+    m_options = &options;
+  }
+
   virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk(
+      const MhOptionsValues & options,
       const VectorSpace<GslVector, GslMatrix> & v,
       const std::vector<double> & dr_scales,
       const ScalarFunctionSynchronizer<GslVector, GslMatrix> & pdf_synchronizer,
@@ -76,6 +83,7 @@ protected:
   static const std::vector<double> * m_dr_scales;
   static const ScalarFunctionSynchronizer<GslVector, GslMatrix> * m_pdf_synchronizer;
   static const GslMatrix * m_initial_cov_matrix;
+  static const MhOptionsValues * m_options;
 
 private:
   /**
@@ -92,8 +100,10 @@ typename SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type TransitionKernelFac
   queso_require_msg(m_dr_scales, "ERROR: must call set_dr_scales() before building tk!");
   queso_require_msg(m_pdf_synchronizer, "ERROR: must call set_pdf_synchronizer() before building tk!");
   queso_require_msg(m_initial_cov_matrix, "ERROR: must call set_initial_cov_matrix() before building tk!");
+  queso_require_msg(m_options, "ERROR: must call set_options() before building tk!");
 
   SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk = this->build_tk(
+      *m_options,
       *m_vectorSpace,
       *m_dr_scales,
       *m_pdf_synchronizer,

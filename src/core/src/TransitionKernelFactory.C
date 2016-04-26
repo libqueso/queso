@@ -40,7 +40,9 @@ Factory<BaseTKGroup<GslVector, GslMatrix> >::factory_map()
 }
 
 SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type
-TransitionKernelFactory::build_tk(const VectorSpace<GslVector, GslMatrix> & v,
+TransitionKernelFactory::build_tk(
+    const MhOptionsValues & options,
+    const VectorSpace<GslVector, GslMatrix> & v,
     const std::vector<double> & dr_scales,
     const ScalarFunctionSynchronizer<GslVector, GslMatrix> & pdf_synchronizer,
     const GslMatrix & initial_cov_matrix)
@@ -60,5 +62,7 @@ const std::vector<double> * TransitionKernelFactory::m_dr_scales = NULL;
 const ScalarFunctionSynchronizer<GslVector, GslMatrix> * TransitionKernelFactory::m_pdf_synchronizer = NULL;
 
 const GslMatrix * TransitionKernelFactory::m_initial_cov_matrix = NULL;
+
+const MhOptionsValues * TransitionKernelFactory::m_options = NULL;
 
 } // namespace QUESO
