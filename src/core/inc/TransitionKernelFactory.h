@@ -52,7 +52,6 @@ public:
    */
   virtual ~TransitionKernelFactory() {}
 
-protected:
   static void set_dr_scales(const std::vector<double> & scales)
   {
     m_dr_scales = &scales;
@@ -63,7 +62,7 @@ protected:
     m_pdf_synchronizer = &synchronizer;
   }
 
-  static void set_initial_cov_matrix(const GslMatrix & cov_matrix)
+  static void set_initial_cov_matrix(GslMatrix & cov_matrix)
   {
     m_initial_cov_matrix = &cov_matrix;
   }
@@ -73,17 +72,25 @@ protected:
     m_options = &options;
   }
 
+  static void set_target_pdf(const BaseJointPdf<GslVector, GslMatrix> & target_pdf)
+  {
+    m_target_pdf = &target_pdf;
+  }
+
+protected:
   virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk(
       const MhOptionsValues & options,
       const VectorSpace<GslVector, GslMatrix> & v,
       const std::vector<double> & dr_scales,
       const ScalarFunctionSynchronizer<GslVector, GslMatrix> & pdf_synchronizer,
-      const GslMatrix & initial_cov_matrix);
+      GslMatrix & initial_cov_matrix,
+      const BaseJointPdf<GslVector, GslMatrix> & target_pdf);
 
   static const std::vector<double> * m_dr_scales;
   static const ScalarFunctionSynchronizer<GslVector, GslMatrix> * m_pdf_synchronizer;
-  static const GslMatrix * m_initial_cov_matrix;
+  static GslMatrix * m_initial_cov_matrix;
   static const MhOptionsValues * m_options;
+  static const BaseJointPdf<GslVector, GslMatrix> * m_target_pdf;
 
 private:
   /**
@@ -101,13 +108,15 @@ typename SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type TransitionKernelFac
   queso_require_msg(m_pdf_synchronizer, "ERROR: must call set_pdf_synchronizer() before building tk!");
   queso_require_msg(m_initial_cov_matrix, "ERROR: must call set_initial_cov_matrix() before building tk!");
   queso_require_msg(m_options, "ERROR: must call set_options() before building tk!");
+  queso_require_msg(m_target_pdf, "ERROR: must call set_target_pdf() before building tk!");
 
   SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk = this->build_tk(
       *m_options,
       *m_vectorSpace,
       *m_dr_scales,
       *m_pdf_synchronizer,
-      *m_initial_cov_matrix);
+      *m_initial_cov_matrix,
+      *m_target_pdf);
 
   queso_assert(new_tk);
 

@@ -503,6 +503,15 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   for (unsigned int i = 1; i < (m_optionsObj->m_drScalesForExtraStages.size()+1); ++i) {
     drScalesAll[i] = m_optionsObj->m_drScalesForExtraStages[i-1];
   }
+
+  TransitionKernelFactory::set_vectorspace(m_vectorSpace);
+  TransitionKernelFactory::set_options(*m_optionsObj);
+  TransitionKernelFactory::set_pdf_synchronizer(*m_targetPdfSynchronizer);
+  TransitionKernelFactory::set_initial_cov_matrix(m_initialProposalCovMatrix);
+  TransitionKernelFactory::set_dr_scales(drScalesAll);
+  TransitionKernelFactory::set_target_pdf(m_targetPdf);
+  TransitionKernelFactory::build("dram");
+
   if (m_optionsObj->m_tkUseLocalHessian) { // sep2011
     m_tk = new HessianCovMatricesTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                          m_vectorSpace,
