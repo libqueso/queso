@@ -101,6 +101,7 @@ MhOptionsValues::MhOptionsValues(
     m_outputLogLikelihood                      (UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD),
     m_outputLogTarget                          (UQ_MH_SG_OUTPUT_LOG_TARGET),
     m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM),
+    m_algorithm                                (UQ_MH_SG_ALGORITHM),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     m_alternativeRawSsOptionsValues            (),
     m_alternativeFilteredSsOptionsValues       (),
@@ -164,7 +165,8 @@ MhOptionsValues::MhOptionsValues(
     m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
     m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
     m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+    m_option_algorithm                                 (m_prefix + "algorithm"                                 )
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativeRawSsOptionsValues     ) m_alternativeRawSsOptionsValues      = *alternativeRawSsOptionsValues;
@@ -238,6 +240,7 @@ MhOptionsValues::MhOptionsValues(
     m_outputLogLikelihood                      (UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD),
     m_outputLogTarget                          (UQ_MH_SG_OUTPUT_LOG_TARGET),
     m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM),
+    m_algorithm                                (UQ_MH_SG_ALGORITHM),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     m_alternativeRawSsOptionsValues            (),
     m_alternativeFilteredSsOptionsValues       (),
@@ -301,7 +304,8 @@ MhOptionsValues::MhOptionsValues(
     m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
     m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
     m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+    m_option_algorithm                                 (m_prefix + "algorithm"                                 )
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativeRawSsOptionsValues     ) m_alternativeRawSsOptionsValues      = *alternativeRawSsOptionsValues;
@@ -365,6 +369,7 @@ MhOptionsValues::MhOptionsValues(
   m_parser->registerOption<bool        >(m_option_outputLogLikelihood,                        UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               , "flag to toggle output of log likelihood values"             );
   m_parser->registerOption<bool        >(m_option_outputLogTarget,                            UQ_MH_SG_OUTPUT_LOG_TARGET                                   , "flag to toggle output of log target values"                 );
   m_parser->registerOption<bool        >(m_option_doLogitTransform,                           UQ_MH_SG_DO_LOGIT_TRANSFORM                                  , "flag to toggle logit transform for bounded domains"         );
+  m_parser->registerOption<std::string >(m_option_algorithm,                                  UQ_MH_SG_ALGORITHM                                           , "which MCMC algorithm to use"                                );
 
   m_parser->scanInputFile();
 
@@ -424,6 +429,7 @@ MhOptionsValues::MhOptionsValues(
   m_parser->getOption<bool        >(m_option_outputLogLikelihood,                        m_outputLogLikelihood);
   m_parser->getOption<bool        >(m_option_outputLogTarget,                            m_outputLogTarget);
   m_parser->getOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform);
+  m_parser->getOption<std::string >(m_option_algorithm,                                  m_algorithm);
 #else
   m_help = m_env->input()(m_option_help, UQ_MH_SG_HELP);
   m_dataOutputFileName = m_env->input()(m_option_dataOutputFileName, UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV);
@@ -536,6 +542,7 @@ MhOptionsValues::MhOptionsValues(
   m_outputLogLikelihood = m_env->input()(m_option_outputLogLikelihood, UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD);
   m_outputLogTarget = m_env->input()(m_option_outputLogTarget, UQ_MH_SG_OUTPUT_LOG_TARGET);
   m_doLogitTransform = m_env->input()(m_option_doLogitTransform, UQ_MH_SG_DO_LOGIT_TRANSFORM);
+  m_algorithm = m_env->input()(m_option_algorithm, UQ_MH_SG_ALGORITHM);
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions(env);
@@ -663,6 +670,7 @@ MhOptionsValues::copy(const MhOptionsValues& src)
   m_outputLogLikelihood                       = src.m_outputLogLikelihood;
   m_outputLogTarget                           = src.m_outputLogTarget;
   m_doLogitTransform                          = src.m_doLogitTransform;
+  m_algorithm                                 = src.m_algorithm;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeRawSsOptionsValues             = src.m_alternativeRawSsOptionsValues;
@@ -752,6 +760,7 @@ std::ostream & operator<<(std::ostream & os, const MhOptionsValues & obj)
      << "\n" << obj.m_option_outputLogLikelihood                        << " = " << obj.m_outputLogLikelihood
      << "\n" << obj.m_option_outputLogTarget                            << " = " << obj.m_outputLogTarget
      << "\n" << obj.m_option_doLogitTransform                           << " = " << obj.m_doLogitTransform
+     << "\n" << obj.m_option_algorithm                                  << " = " << obj.m_algorithm
      << std::endl;
 
   return os;

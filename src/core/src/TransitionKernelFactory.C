@@ -104,7 +104,7 @@ const MhOptionsValues * TransitionKernelFactory::m_options = NULL;
 const BaseJointPdf<GslVector, GslMatrix> * TransitionKernelFactory::m_target_pdf = NULL;
 
 // Instantiate all the transition kernel factories
-TransitionKernelFactory tk_factory_dram("dram");
+TransitionKernelFactory tk_factory_dram("random_walk");
 TransitionKernelFactory tk_factory_stochastic_newton("stochastic_newton");
 
 } // namespace QUESO

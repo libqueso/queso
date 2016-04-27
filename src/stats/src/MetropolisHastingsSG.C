@@ -516,7 +516,8 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   TransitionKernelFactory::set_initial_cov_matrix(m_initialProposalCovMatrix);
   TransitionKernelFactory::set_dr_scales(drScalesAll);
   TransitionKernelFactory::set_target_pdf(m_targetPdf);
-  TransitionKernelFactory::build("dram");
+
+  TransitionKernelFactory::build(m_optionsObj->m_algorithm);
 
   if (m_optionsObj->m_tkUseLocalHessian) { // sep2011
     m_tk = new HessianCovMatricesTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
