@@ -22,38 +22,27 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef QUESO_FACTORYWITHVECTORSPACE_H
-#define QUESO_FACTORYWITHVECTORSPACE_H
-
-#include <queso/Factory.h>
-#include <queso/VectorSpace.h>
+#include <queso/TKFactoryRandomWalk.h>
+#include <queso/ScaledCovMatrixTKGroup.h>
 
 namespace QUESO
 {
 
-/**
- * FactoryWithVectorSpace class defintion.
- */
-template <class Base>
-class FactoryWithVectorSpace : public Factory<Base>
+template <class DerivedTK>
+SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type
+TKFactoryRandomWalk<DerivedTK>::build_tk()
 {
-public:
-  FactoryWithVectorSpace(const std::string & name)
-    : Factory<Base>(name)
-  {}
+  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk;
 
-  virtual ~FactoryWithVectorSpace() {}
+  new_tk.reset(new DerivedTK(this->m_options->m_prefix.c_str(),
+                             *(this->m_vectorSpace),
+                             *(this->m_dr_scales),
+                             *(this->m_initial_cov_matrix)));
 
-  static void set_vectorspace(const VectorSpace<GslVector, GslMatrix> & v)
-  {
-    m_vectorSpace = &v;
-  }
+  return new_tk;
+}
 
-protected:
-  // We are not taking ownership of this, so we don't want it to be deleted.
-  static const VectorSpace<GslVector, GslMatrix> * m_vectorSpace;
-};
+// Instantiate all the transition kernel factories
+TKFactoryRandomWalk<ScaledCovMatrixTKGroup<GslVector, GslMatrix> > tk_factory_random_walk("random_walk");
 
 } // namespace QUESO
-
-#endif // QUESO_FACTORYWITHVECTORSPACE_H

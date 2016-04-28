@@ -84,13 +84,7 @@ public:
   }
 
 protected:
-  virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk(
-      const MhOptionsValues & options,
-      const VectorSpace<GslVector, GslMatrix> & v,
-      const std::vector<double> & dr_scales,
-      const ScalarFunctionSynchronizer<GslVector, GslMatrix> & pdf_synchronizer,
-      GslMatrix & initial_cov_matrix,
-      const BaseJointPdf<GslVector, GslMatrix> & target_pdf);
+  virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk() = 0;
 
   static const VectorSpace<GslVector, GslMatrix> * m_vectorSpace;
   static const std::vector<double> * m_dr_scales;
@@ -117,13 +111,7 @@ typename SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type TransitionKernelFac
   queso_require_msg(m_options, "ERROR: must call set_options() before building tk!");
   queso_require_msg(m_target_pdf, "ERROR: must call set_target_pdf() before building tk!");
 
-  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk = this->build_tk(
-      *m_options,
-      *m_vectorSpace,
-      *m_dr_scales,
-      *m_pdf_synchronizer,
-      *m_initial_cov_matrix,
-      *m_target_pdf);
+  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk = this->build_tk();
 
   queso_assert(new_tk);
 

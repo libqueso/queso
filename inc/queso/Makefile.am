@@ -38,7 +38,6 @@ BUILT_SOURCES += DistArray.h
 BUILT_SOURCES += Environment.h
 BUILT_SOURCES += EnvironmentOptions.h
 BUILT_SOURCES += Factory.h
-BUILT_SOURCES += FactoryWithVectorSpace.h
 BUILT_SOURCES += FunctionBase.h
 BUILT_SOURCES += FunctionOperatorBuilder.h
 BUILT_SOURCES += GslBlockMatrix.h
@@ -65,6 +64,8 @@ BUILT_SOURCES += RngBoost.h
 BUILT_SOURCES += RngGsl.h
 BUILT_SOURCES += ScopedPtr.h
 BUILT_SOURCES += SharedPtr.h
+BUILT_SOURCES += TKFactoryRandomWalk.h
+BUILT_SOURCES += TKFactoryStochasticNewton.h
 BUILT_SOURCES += TeuchosMatrix.h
 BUILT_SOURCES += TeuchosVector.h
 BUILT_SOURCES += TransitionKernelFactory.h
@@ -269,8 +270,6 @@ EnvironmentOptions.h: $(top_srcdir)/src/core/inc/EnvironmentOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Factory.h: $(top_srcdir)/src/core/inc/Factory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-FactoryWithVectorSpace.h: $(top_srcdir)/src/core/inc/FactoryWithVectorSpace.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FunctionBase.h: $(top_srcdir)/src/core/inc/FunctionBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FunctionOperatorBuilder.h: $(top_srcdir)/src/core/inc/FunctionOperatorBuilder.h
@@ -322,6 +321,10 @@ RngGsl.h: $(top_srcdir)/src/core/inc/RngGsl.h
 ScopedPtr.h: $(top_srcdir)/src/core/inc/ScopedPtr.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SharedPtr.h: $(top_srcdir)/src/core/inc/SharedPtr.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TKFactoryRandomWalk.h: $(top_srcdir)/src/core/inc/TKFactoryRandomWalk.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TKFactoryStochasticNewton.h: $(top_srcdir)/src/core/inc/TKFactoryStochasticNewton.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TeuchosMatrix.h: $(top_srcdir)/src/core/inc/TeuchosMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
