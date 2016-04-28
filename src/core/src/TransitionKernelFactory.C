@@ -90,8 +90,7 @@ TransitionKernelFactory::build_tk(
   return new_tk;
 }
 
-template<>
-const VectorSpace<GslVector, GslMatrix> * FactoryWithVectorSpace<BaseTKGroup<GslVector, GslMatrix> >::m_vectorSpace = NULL;
+const VectorSpace<GslVector, GslMatrix> * TransitionKernelFactory::m_vectorSpace = NULL;
 
 const std::vector<double> * TransitionKernelFactory::m_dr_scales = NULL;
 

@@ -25,9 +25,10 @@
 #ifndef QUESO_TK_FACTORY_H
 #define QUESO_TK_FACTORY_H
 
-#include <queso/FactoryWithVectorSpace.h>
+#include <queso/Factory.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/VectorSpace.h>
 #include <queso/TKGroup.h>
 #include <queso/MetropolisHastingsSGOptions.h>
 
@@ -37,20 +38,25 @@ namespace QUESO
 /**
  * TransitionKernelFactory class defintion.
  */
-class TransitionKernelFactory : public FactoryWithVectorSpace<BaseTKGroup<GslVector, GslMatrix> >
+class TransitionKernelFactory : public Factory<BaseTKGroup<GslVector, GslMatrix> >
 {
 public:
   /**
    * Constructor. Takes the name to be mapped.
    */
   TransitionKernelFactory(const std::string & name)
-    : FactoryWithVectorSpace<BaseTKGroup<GslVector, GslMatrix> >(name)
+    : Factory<BaseTKGroup<GslVector, GslMatrix> >(name)
   {}
 
   /**
    * Destructor. (Empty.)
    */
   virtual ~TransitionKernelFactory() {}
+
+  static void set_vectorspace(const VectorSpace<GslVector, GslMatrix> & v)
+  {
+    m_vectorSpace = &v;
+  }
 
   static void set_dr_scales(const std::vector<double> & scales)
   {
@@ -86,6 +92,7 @@ protected:
       GslMatrix & initial_cov_matrix,
       const BaseJointPdf<GslVector, GslMatrix> & target_pdf);
 
+  static const VectorSpace<GslVector, GslMatrix> * m_vectorSpace;
   static const std::vector<double> * m_dr_scales;
   static const ScalarFunctionSynchronizer<GslVector, GslMatrix> * m_pdf_synchronizer;
   static GslMatrix * m_initial_cov_matrix;
