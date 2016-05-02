@@ -151,7 +151,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_numDisabledParameters     (0), // gpmsa2
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                        (NULL),
+  m_tk                        (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -232,7 +232,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_numDisabledParameters     (0), // gpmsa2
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                        (NULL),
+  m_tk                        (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -311,7 +311,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_numDisabledParameters     (0), // gpmsa2
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                        (NULL),
+  m_tk                        (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -377,7 +377,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_numDisabledParameters     (0), // gpmsa2
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                        (NULL),
+  m_tk                        (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -445,7 +445,6 @@ MetropolisHastingsSG<P_V,P_M>::~MetropolisHastingsSG()
   m_stageIdForDebugging    = 0;
   m_idsOfUniquePositions.clear();
 
-  if (m_tk                   ) delete m_tk;
   if (m_targetPdfSynchronizer) delete m_targetPdfSynchronizer;
 
   // Only delete if the user didn't provide the options
@@ -520,10 +519,10 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type tk_ptr = TransitionKernelFactory::build(m_optionsObj->m_algorithm);
 
   if (m_optionsObj->m_tkUseLocalHessian) { // sep2011
-    m_tk = new HessianCovMatricesTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                         m_vectorSpace,
-                                                         drScalesAll,
-                                                         *m_targetPdfSynchronizer);
+    m_tk.reset(new HessianCovMatricesTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                      m_vectorSpace,
+                                                      drScalesAll,
+                                                      *m_targetPdfSynchronizer));
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
@@ -553,15 +552,15 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
     if (m_optionsObj->m_doLogitTransform) {
       // We need this dynamic_cast to BoxSubset so that m_tk can inspect the
       // domain bounds and do the necessary transform
-      m_tk = new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
+      m_tk.reset(new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
           m_optionsObj->m_prefix.c_str(),
           dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()),
-          drScalesAll, m_initialProposalCovMatrix);
+          drScalesAll, m_initialProposalCovMatrix));
     }
     else {
-      m_tk = new ScaledCovMatrixTKGroup<P_V, P_M>(
+      m_tk.reset(new ScaledCovMatrixTKGroup<P_V, P_M>(
           m_optionsObj->m_prefix.c_str(), m_vectorSpace, drScalesAll,
-          m_initialProposalCovMatrix);
+          m_initialProposalCovMatrix));
     }
 
     if ((m_env.subDisplayFile()                   ) &&
@@ -2162,7 +2161,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
       // TransformedScaledCovMatrixTKGroup
       P_V transformedTransporterVec(m_vectorSpace.zeroVector());
       dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V, P_M>* >(
-          m_tk)->transformToGaussianSpace(transporterVec,
+          m_tk.get())->transformToGaussianSpace(transporterVec,
             transformedTransporterVec);
       partialChain.setPositionValues(i, transformedTransporterVec);
     }
@@ -2342,11 +2341,11 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     // Transform the proposal covariance matrix if we have Logit transforms
     // turned on
     if (this->m_optionsObj->m_doLogitTransform) {
-      (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+      (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
     else{
-      (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+      (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
 
