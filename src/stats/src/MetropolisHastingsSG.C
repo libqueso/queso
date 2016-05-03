@@ -503,7 +503,8 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
     drScalesAll[i] = m_optionsObj->m_drScalesForExtraStages[i-1];
   }
 
-  if (m_optionsObj->m_doLogitTransform) {
+  // Only transform prop cov matrix if we're doing a logit random walk
+  if ((m_optionsObj->m_algorithm == "logit_random_walk") || m_optionsObj->m_doLogitTransform) {
     // Variable transform initial proposal cov matrix
     transformInitialCovMatrixToGaussianSpace(
         dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
