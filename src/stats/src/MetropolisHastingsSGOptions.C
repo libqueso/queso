@@ -844,7 +844,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
   m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+  m_option_algorithm                                 (m_prefix + "algorithm"                                 )
 {
   queso_deprecated();
 
@@ -923,7 +924,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
   m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+  m_option_algorithm                                 (m_prefix + "algorithm"                                 )
 {
   queso_deprecated();
 
@@ -1022,7 +1024,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
   m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+  m_option_algorithm                                 (m_prefix + "algorithm"                                 )
 {
   queso_deprecated();
 
@@ -1081,6 +1084,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_ov.m_outputLogLikelihood                       = UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD;
   m_ov.m_outputLogTarget                           = UQ_MH_SG_OUTPUT_LOG_TARGET;
   m_ov.m_doLogitTransform                          = mlOptions.m_doLogitTransform;
+  m_ov.m_algorithm                                 = mlOptions.m_algorithm;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 //m_ov.m_alternativeRawSsOptionsValues             = mlOptions.; // dakota
@@ -1233,6 +1237,7 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
      << "\n" << m_option_outputLogLikelihood                        << " = " << m_ov.m_outputLogLikelihood
      << "\n" << m_option_outputLogTarget                            << " = " << m_ov.m_outputLogTarget
      << "\n" << m_option_doLogitTransform                           << " = " << m_ov.m_doLogitTransform
+     << "\n" << m_option_algorithm                                  << " = " << m_ov.m_algorithm
      << std::endl;
 
   return;
@@ -1302,6 +1307,7 @@ MetropolisHastingsSGOptions::defineMyOptions(boost::program_options::options_des
     (m_option_outputLogLikelihood.c_str(),                        boost::program_options::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               ), "flag to toggle output of log likelihood values"             )
     (m_option_outputLogTarget.c_str(),                            boost::program_options::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_TARGET                                   ), "flag to toggle output of log target values"                 )
     (m_option_doLogitTransform.c_str(),                           boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DO_LOGIT_TRANSFORM                                  ), "flag to toggle logit transform for bounded domains"         )
+    (m_option_algorithm.c_str(),                                  boost::program_options::value<std::string >()->default_value(UQ_MH_SG_ALGORITHM                                           ), "which mcmc algorithm to use"                                )
   ;
 
   return;
@@ -1619,6 +1625,10 @@ MetropolisHastingsSGOptions::getMyOptionValues(boost::program_options::options_d
 
   if (m_env.allOptionsMap().count(m_option_doLogitTransform)) {
     m_ov.m_doLogitTransform = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_doLogitTransform]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_algorithm)) {
+    m_ov.m_algorithm = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_algorithm]).as<std::string>();
   }
 }
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS

@@ -509,6 +509,30 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
         dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
   }
 
+  // Deprecate m_doLogitTransform
+  if (m_optionsObj->m_doLogitTransform != UQ_MH_SG_DO_LOGIT_TRANSFORM) {
+    std::string msg;
+    msg = "The doLogitTransform option is deprecated.  ";
+    msg += "Use ip_mh_algorithm instead.";
+    queso_warning(msg.c_str());
+  }
+
+  // Check the user didn't ask for a logit transform and a non-logit algorithm
+  // or vice-versa
+  if (m_optionsObj->m_algorithm == "random_walk") {
+    queso_require_equal_to_msg(
+        m_optionsObj->m_doLogitTransform,
+        0,
+        "ERROR: Chosen algorithm `" << m_optionsObj->m_algorithm << "`.  Chosen logit transform? " << m_optionsObj->m_doLogitTransform << ". These two options are incompatible.");
+  }
+
+  if (m_optionsObj->m_algorithm == "logit_random_walk") {
+    queso_require_equal_to_msg(
+        m_optionsObj->m_doLogitTransform,
+        1,
+        "ERROR: Chosen algorithm `" << m_optionsObj->m_algorithm << "`.  Chosen logit transform? " << m_optionsObj->m_doLogitTransform << ". These two options are incompatible.");
+  }
+
   TransitionKernelFactory::set_vectorspace(m_vectorSpace);
   TransitionKernelFactory::set_options(*m_optionsObj);
   TransitionKernelFactory::set_pdf_synchronizer(*m_targetPdfSynchronizer);
@@ -516,7 +540,7 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   TransitionKernelFactory::set_dr_scales(drScalesAll);
   TransitionKernelFactory::set_target_pdf(m_targetPdf);
 
-  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type tk_ptr = TransitionKernelFactory::build(m_optionsObj->m_algorithm);
+  m_tk = TransitionKernelFactory::build(m_optionsObj->m_algorithm);
 
   if (m_optionsObj->m_tkUseLocalHessian) { // sep2011
     m_tk.reset(new HessianCovMatricesTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),

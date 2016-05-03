@@ -96,7 +96,7 @@
 #define UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                                1
 #define UQ_MH_SG_OUTPUT_LOG_TARGET                                    1
 #define UQ_MH_SG_DO_LOGIT_TRANSFORM                                   1
-#define UQ_MH_SG_ALGORITHM                                            "random_walk"
+#define UQ_MH_SG_ALGORITHM                                            "logit_random_walk"
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 namespace boost {
@@ -879,6 +879,7 @@ private:
   std::string                   m_option_outputLogLikelihood;
   std::string                   m_option_outputLogTarget;
   std::string                   m_option_doLogitTransform;
+  std::string                   m_option_algorithm;
 };
 
 std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptions& obj);

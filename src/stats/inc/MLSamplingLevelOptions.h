@@ -101,6 +101,7 @@
 #define UQ_ML_SAMPLING_L_AM_ETA_ODV                                           1.
 #define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                                       1.e-5
 #define UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM                                   0
+#define UQ_ML_SAMPLING_L_ALGORITHM                                            "random_walk"
 
 namespace QUESO {
 
@@ -351,6 +352,9 @@ public:
   //! Whether or not a logit transform will be done for bounded domains
   bool m_doLogitTransform;
 
+  //! Which algorithm to use for sampling
+  std::string m_algorithm;
+
 private:
   //! Copies the option values from \c srcOptions to \c this.
   void   copyOptionsValues(const MLSamplingLevelOptions& srcOptions);
@@ -437,6 +441,7 @@ private:
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
   std::string                   m_option_doLogitTransform;
+  std::string                   m_option_algorithm;
 
   void checkOptions(const BaseEnvironment * env);
 

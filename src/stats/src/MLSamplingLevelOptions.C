@@ -181,7 +181,8 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_option_am_adaptedMatrices_dataOutputAllowedSet   (m_prefix + "amAdaptedMatrices_dataOutputAllowedSet"    ),
     m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
     m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
-    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+    m_option_algorithm                                 (m_prefix + "algorithm"                                 )
 {
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   this->defineAllOptions();
@@ -264,6 +265,7 @@ MLSamplingLevelOptions::defineAllOptions()
   m_parser->registerOption<double      >(m_option_am_eta,                                     m_amEta                                    , "'am' eta"                                                        );
   m_parser->registerOption<double      >(m_option_am_epsilon,                                 m_amEpsilon                                , "'am' epsilon"                                                    );
   m_parser->registerOption<bool        >(m_option_doLogitTransform,                           UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        , "flag for doing logit transform for bounded domains"              );
+  m_parser->registerOption<std::string >(m_option_algorithm,                                  UQ_ML_SAMPLING_L_ALGORITHM                 , "which algorithm to use for sampling"                             );
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
@@ -339,6 +341,7 @@ MLSamplingLevelOptions::getAllOptions()
   m_parser->getOption<double      >(m_option_am_eta,                                     m_amEta                                    );
   m_parser->getOption<double      >(m_option_am_epsilon,                                 m_amEpsilon                                );
   m_parser->getOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform);
+  m_parser->getOption<std::string >(m_option_algorithm,                                  m_algorithm);
 #else
   m_help = m_env.input()(m_option_help,                                       UQ_ML_SAMPLING_L_HELP                      );
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
@@ -469,6 +472,7 @@ MLSamplingLevelOptions::getAllOptions()
   m_amEta                                     = m_env.input()(m_option_am_eta,                                     m_amEta                                    );
   m_amEpsilon                                 = m_env.input()(m_option_am_epsilon,                                 m_amEpsilon                                );
   m_doLogitTransform                          = m_env.input()(m_option_doLogitTransform,                           UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        );
+  m_algorithm                                 = m_env.input()(m_option_algorithm,                                  UQ_ML_SAMPLING_L_ALGORITHM                 );
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
@@ -554,6 +558,7 @@ MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptio
   m_amEta                                     = srcOptions.m_amEta;
   m_amEpsilon                                 = srcOptions.m_amEpsilon;
   m_doLogitTransform                          = srcOptions.m_doLogitTransform;
+  m_algorithm                                 = srcOptions.m_algorithm;
 
   return;
 }
@@ -809,6 +814,7 @@ MLSamplingLevelOptions::print(std::ostream& os) const
   os << "\n" << m_option_am_eta                                     << " = " << m_amEta
      << "\n" << m_option_am_epsilon                                 << " = " << m_amEpsilon
      << "\n" << m_option_doLogitTransform                           << " = " << m_doLogitTransform
+     << "\n" << m_option_algorithm                                  << " = " << m_algorithm
      << std::endl;
 
   return;
