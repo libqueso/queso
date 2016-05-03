@@ -572,21 +572,6 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
       queso_require_msg(!(m_nullInputProposalCovMatrix), "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
     }
 
-    // Decide whether or not to do logit transform
-    if (m_optionsObj->m_doLogitTransform) {
-      // We need this dynamic_cast to BoxSubset so that m_tk can inspect the
-      // domain bounds and do the necessary transform
-      m_tk.reset(new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
-          m_optionsObj->m_prefix.c_str(),
-          dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()),
-          drScalesAll, m_initialProposalCovMatrix));
-    }
-    else {
-      m_tk.reset(new ScaledCovMatrixTKGroup<P_V, P_M>(
-          m_optionsObj->m_prefix.c_str(), m_vectorSpace, drScalesAll,
-          m_initialProposalCovMatrix));
-    }
-
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
