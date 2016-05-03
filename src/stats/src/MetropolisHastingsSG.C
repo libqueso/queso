@@ -518,22 +518,6 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
     queso_warning(msg.c_str());
   }
 
-  // Check the user didn't ask for a logit transform and a non-logit algorithm
-  // or vice-versa
-  if (m_optionsObj->m_algorithm == "random_walk") {
-    queso_require_equal_to_msg(
-        m_optionsObj->m_doLogitTransform,
-        0,
-        "ERROR: Chosen algorithm `" << m_optionsObj->m_algorithm << "`.  Chosen logit transform? " << m_optionsObj->m_doLogitTransform << ". These two options are incompatible.");
-  }
-
-  if (m_optionsObj->m_algorithm == "logit_random_walk") {
-    queso_require_equal_to_msg(
-        m_optionsObj->m_doLogitTransform,
-        1,
-        "ERROR: Chosen algorithm `" << m_optionsObj->m_algorithm << "`.  Chosen logit transform? " << m_optionsObj->m_doLogitTransform << ". These two options are incompatible.");
-  }
-
   TransitionKernelFactory::set_vectorspace(m_vectorSpace);
   TransitionKernelFactory::set_options(*m_optionsObj);
   TransitionKernelFactory::set_pdf_synchronizer(*m_targetPdfSynchronizer);

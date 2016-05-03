@@ -606,6 +606,40 @@ MhOptionsValues::checkOptions(const BaseEnvironment * env)
     m_amAdaptedMatricesDataOutputAllowedSet.clear();
     m_amAdaptedMatricesDataOutputAllowedSet.insert(env->subId());
   }
+
+  if (m_algorithm == "random_walk") {
+    queso_require_equal_to_msg(
+        m_doLogitTransform,
+        0,
+        "logit transform must be off to use random_walk");
+    queso_require_equal_to_msg(
+        m_tkUseLocalHessian,
+        0,
+        "local Hessian must be off to use random_walk");
+  }
+
+  if (m_algorithm == "logit_random_walk") {
+    queso_require_equal_to_msg(
+        m_doLogitTransform,
+        1,
+        "logit transform must be on to use logit_random_walk");
+    queso_require_equal_to_msg(
+        m_tkUseLocalHessian,
+        0,
+        "local Hessian must be off to use logit_random_walk");
+  }
+
+  if (m_algorithm == "stochastic_newton") {
+    queso_require_equal_to_msg(
+        m_doLogitTransform,
+        0,
+        "logit transform must be off to use stochastic_newton");
+    queso_require_equal_to_msg(
+        m_tkUseLocalHessian,
+        1,
+        "local Hessian must be on to use stochastic_newton");
+  }
+
 }
 
 void
