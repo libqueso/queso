@@ -527,42 +527,28 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
 
   m_tk = TransitionKernelFactory::build(m_optionsObj->m_algorithm);
 
-  if (m_optionsObj->m_tkUseLocalHessian) { // sep2011
-    m_tk.reset(new HessianCovMatricesTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                      m_vectorSpace,
-                                                      drScalesAll,
-                                                      *m_targetPdfSynchronizer));
+  if (m_optionsObj->m_initialProposalCovMatrixDataInputFileName != ".") { // palms
+    std::set<unsigned int> tmpSet;
+    tmpSet.insert(m_env.subId());
+    m_initialProposalCovMatrix.subReadContents((m_optionsObj->m_initialProposalCovMatrixDataInputFileName+"_sub"+m_env.subIdString()),
+                                               m_optionsObj->m_initialProposalCovMatrixDataInputFileType,
+                                               tmpSet);
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
-                              << ": just instantiated a 'HessianCovMatrices' TK class"
+                              << ": just read initial proposal cov matrix contents = " << m_initialProposalCovMatrix
                               << std::endl;
     }
   }
   else {
-    if (m_optionsObj->m_initialProposalCovMatrixDataInputFileName != ".") { // palms
-      std::set<unsigned int> tmpSet;
-      tmpSet.insert(m_env.subId());
-      m_initialProposalCovMatrix.subReadContents((m_optionsObj->m_initialProposalCovMatrixDataInputFileName+"_sub"+m_env.subIdString()),
-                                                 m_optionsObj->m_initialProposalCovMatrixDataInputFileType,
-                                                 tmpSet);
-      if ((m_env.subDisplayFile()                   ) &&
-          (m_optionsObj->m_totallyMute == false)) {
-        *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
-                                << ": just read initial proposal cov matrix contents = " << m_initialProposalCovMatrix
-                                << std::endl;
-      }
-    }
-    else {
-      queso_require_msg(!(m_nullInputProposalCovMatrix), "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
-    }
+    queso_require_msg(!(m_nullInputProposalCovMatrix), "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
+  }
 
-    if ((m_env.subDisplayFile()                   ) &&
-        (m_optionsObj->m_totallyMute == false)) {
-      *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
-                              << ": just instantiated a 'ScaledCovMatrix' TK class"
-                              << std::endl;
-    }
+  if ((m_env.subDisplayFile()                   ) &&
+      (m_optionsObj->m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
+                            << ": just instantiated a 'ScaledCovMatrix' TK class"
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()                   ) &&
