@@ -45,4 +45,4 @@ TKFactoryRandomWalk<DerivedTK>::build_tk()
 // Instantiate all the transition kernel factories
 TKFactoryRandomWalk<ScaledCovMatrixTKGroup<GslVector, GslMatrix> > tk_factory_random_walk("random_walk");
 
-} // namespace QUESO
+}  // namespace QUESO

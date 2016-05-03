@@ -22,8 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef QUESO_TK_FACTORY_RANDOM_WALK_H
-#define QUESO_TK_FACTORY_RANDOM_WALK_H
+#ifndef QUESO_TK_FACTORY_LOGIT_RANDOM_WALK_H
+#define QUESO_TK_FACTORY_LOGIT_RANDOM_WALK_H
 
 #include <queso/TransitionKernelFactory.h>
 #include <queso/TKGroup.h>
@@ -32,23 +32,23 @@ namespace QUESO
 {
 
 /**
- * TKFactoryRandomWalk class defintion.
+ * TKFactoryLogitRandomWalk class defintion.
  */
 template <class DerivedTK>
-class TKFactoryRandomWalk : public TransitionKernelFactory
+class TKFactoryLogitRandomWalk : public TransitionKernelFactory
 {
 public:
   /**
    * Constructor. Takes the name to be mapped.
    */
-  TKFactoryRandomWalk(const std::string & name)
+  TKFactoryLogitRandomWalk(const std::string & name)
     : TransitionKernelFactory(name)
   {}
 
   /**
    * Destructor. (Empty.)
    */
-  virtual ~TKFactoryRandomWalk() {}
+  virtual ~TKFactoryLogitRandomWalk() {}
 
 protected:
   virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk();
@@ -56,4 +56,4 @@ protected:
 
 } // namespace QUESO
 
-#endif  // QUESO_TK_FACTORY_RANDOM_WALK_H
+#endif  // QUESO_TK_FACTORY_LOGIT_RANDOM_WALK_H

@@ -22,38 +22,32 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef QUESO_TK_FACTORY_RANDOM_WALK_H
-#define QUESO_TK_FACTORY_RANDOM_WALK_H
-
-#include <queso/TransitionKernelFactory.h>
-#include <queso/TKGroup.h>
+#include <queso/TKFactoryLogitRandomWalk.h>
+#include <queso/TransformedScaledCovMatrixTKGroup.h>
 
 namespace QUESO
 {
 
-/**
- * TKFactoryRandomWalk class defintion.
- */
 template <class DerivedTK>
-class TKFactoryRandomWalk : public TransitionKernelFactory
+SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type
+TKFactoryLogitRandomWalk<DerivedTK>::build_tk()
 {
-public:
-  /**
-   * Constructor. Takes the name to be mapped.
-   */
-  TKFactoryRandomWalk(const std::string & name)
-    : TransitionKernelFactory(name)
-  {}
+  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk;
 
-  /**
-   * Destructor. (Empty.)
-   */
-  virtual ~TKFactoryRandomWalk() {}
+  // Cast the domain to a box.  Might this cast fail?
+  const BoxSubset<GslVector, GslMatrix> & boxSubset =
+    dynamic_cast<const BoxSubset<GslVector, GslMatrix> & >(
+        this->m_target_pdf->domainSet());
 
-protected:
-  virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk();
-};
+  new_tk.reset(new DerivedTK(this->m_options->m_prefix.c_str(),
+                             boxSubset,
+                             *(this->m_dr_scales),
+                             *(this->m_initial_cov_matrix)));
 
-} // namespace QUESO
+  return new_tk;
+}
 
-#endif  // QUESO_TK_FACTORY_RANDOM_WALK_H
+// Instantiate all the transition kernel factories
+TKFactoryLogitRandomWalk<TransformedScaledCovMatrixTKGroup<GslVector, GslMatrix> > tk_factory_logit_random_walk("logit_random_walk");
+
+}  // namespace QUESO

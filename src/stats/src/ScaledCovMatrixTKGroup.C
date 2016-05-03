@@ -150,8 +150,6 @@ ScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMatrix)
     }
     dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[i])->updateLawCovMatrix(factor*covMatrix);
   }
-
-  return;
 }
 
 // Misc methods -------------------------------------
@@ -199,9 +197,7 @@ void
 ScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
 {
   BaseTKGroup<V,M>::clearPreComputingPositions();
-  return;
 }
-
 
 // Private methods------------------------------------
 template<class V, class M>
@@ -216,12 +212,10 @@ ScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()
     double factor = 1./m_scales[i]/m_scales[i];
     queso_require_msg(!(m_rvs[i]), "m_rvs[i] != NULL");
     m_rvs[i] = new GaussianVectorRV<V,M>(m_prefix.c_str(),
-                                                *m_vectorSpace,
-                                                m_vectorSpace->zeroVector(),
-                                                factor*m_originalCovMatrix);
+                                         *m_vectorSpace,
+                                         m_vectorSpace->zeroVector(),
+                                         factor*m_originalCovMatrix);
   }
-
-  return;
 }
 // I/O methods---------------------------------------
 template<class V, class M>
@@ -229,7 +223,6 @@ void
 ScaledCovMatrixTKGroup<V,M>::print(std::ostream& os) const
 {
   BaseTKGroup<V,M>::print(os);
-  return;
 }
 
 }  // End namespace QUESO
