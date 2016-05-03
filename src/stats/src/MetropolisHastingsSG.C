@@ -543,20 +543,6 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   else {
     queso_require_msg(!(m_nullInputProposalCovMatrix), "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
   }
-
-  if ((m_env.subDisplayFile()                   ) &&
-      (m_optionsObj->m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
-                            << ": just instantiated a 'ScaledCovMatrix' TK class"
-                            << std::endl;
-  }
-
-  if ((m_env.subDisplayFile()                   ) &&
-      (m_optionsObj->m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
-                            << std::endl;
-  }
-  return;
 }
 //--------------------------------------------------
 template<class P_V,class P_M>
