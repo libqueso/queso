@@ -503,13 +503,6 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
     drScalesAll[i] = m_optionsObj->m_drScalesForExtraStages[i-1];
   }
 
-  // Only transform prop cov matrix if we're doing a logit random walk
-  if ((m_optionsObj->m_algorithm == "logit_random_walk") || m_optionsObj->m_doLogitTransform) {
-    // Variable transform initial proposal cov matrix
-    transformInitialCovMatrixToGaussianSpace(
-        dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
-  }
-
   // Deprecate m_doLogitTransform
   if (m_optionsObj->m_doLogitTransform != UQ_MH_SG_DO_LOGIT_TRANSFORM) {
     std::string msg;
@@ -517,15 +510,6 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
     msg += "Use ip_mh_algorithm instead.";
     queso_warning(msg.c_str());
   }
-
-  TransitionKernelFactory::set_vectorspace(m_vectorSpace);
-  TransitionKernelFactory::set_options(*m_optionsObj);
-  TransitionKernelFactory::set_pdf_synchronizer(*m_targetPdfSynchronizer);
-  TransitionKernelFactory::set_initial_cov_matrix(m_initialProposalCovMatrix);
-  TransitionKernelFactory::set_dr_scales(drScalesAll);
-  TransitionKernelFactory::set_target_pdf(m_targetPdf);
-
-  m_tk = TransitionKernelFactory::build(m_optionsObj->m_algorithm);
 
   if (m_optionsObj->m_initialProposalCovMatrixDataInputFileName != ".") { // palms
     std::set<unsigned int> tmpSet;
@@ -543,6 +527,24 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   else {
     queso_require_msg(!(m_nullInputProposalCovMatrix), "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
   }
+
+  // Only transform prop cov matrix if we're doing a logit random walk.
+  // Also note we're transforming *after* we potentially read it from the input
+  // file.
+  if ((m_optionsObj->m_algorithm == "logit_random_walk") || m_optionsObj->m_doLogitTransform) {
+    // Variable transform initial proposal cov matrix
+    transformInitialCovMatrixToGaussianSpace(
+        dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
+  }
+
+  TransitionKernelFactory::set_vectorspace(m_vectorSpace);
+  TransitionKernelFactory::set_options(*m_optionsObj);
+  TransitionKernelFactory::set_pdf_synchronizer(*m_targetPdfSynchronizer);
+  TransitionKernelFactory::set_initial_cov_matrix(m_initialProposalCovMatrix);
+  TransitionKernelFactory::set_dr_scales(drScalesAll);
+  TransitionKernelFactory::set_target_pdf(m_targetPdf);
+
+  m_tk = TransitionKernelFactory::build(m_optionsObj->m_algorithm);
 }
 //--------------------------------------------------
 template<class P_V,class P_M>
