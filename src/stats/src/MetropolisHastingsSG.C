@@ -2123,7 +2123,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 
     // Transform to the space without boundaries.  This is the space
     // where the proposal distribution is Gaussian
-    if (this->m_optionsObj->m_doLogitTransform == true) {
+    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
       // Only do this when we don't use the Hessian (this may change in
       // future, but transformToGaussianSpace() is only implemented in
       // TransformedScaledCovMatrixTKGroup
