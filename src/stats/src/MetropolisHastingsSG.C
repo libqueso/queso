@@ -2308,11 +2308,11 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 
     // Transform the proposal covariance matrix if we have Logit transforms
     // turned on
-    if (this->m_optionsObj->m_doLogitTransform) {
+    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
       (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
-    else{
+    else if (this->m_optionsObj->m_algorithm == "random_walk") {
       (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
