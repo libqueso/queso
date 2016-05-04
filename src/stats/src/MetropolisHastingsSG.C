@@ -531,7 +531,7 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   // Only transform prop cov matrix if we're doing a logit random walk.
   // Also note we're transforming *after* we potentially read it from the input
   // file.
-  if ((m_optionsObj->m_algorithm == "logit_random_walk") || m_optionsObj->m_doLogitTransform) {
+  if ((m_optionsObj->m_algorithm == "logit_random_walk") && m_optionsObj->m_doLogitTransform) {
     // Variable transform initial proposal cov matrix
     transformInitialCovMatrixToGaussianSpace(
         dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
