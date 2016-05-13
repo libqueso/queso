@@ -76,12 +76,56 @@ public:
   //! If this string is non-empty, options are print to the output file
   std::string m_help;
 
+  //! The maximum number of iterations to do for optimization.  Default is 100.
   unsigned int m_maxIterations;
+
+  //! The tolerance at which optimization stops.  Default is 1e-3.
+  /*!
+   * The tolerance is measured in terms of the 2-norm of the gradient of the
+   * objective function for optimizers that use derivatives.
+   *
+   * For optimizers that do not use derivatives, the tolerance is measured in
+   * terms of the size of the size of the simplex for the simplex optimizers.
+   */
   double m_tolerance;
+
+  //! The step size used to compute gradients from finite differencing.  Default is 1e-4.
+  /*!
+   * This is only done when analytical gradients are not provided (either by
+   * the user or by QUESO).
+   */
   double m_finiteDifferenceStepSize;
+
+  //! The optimization algorithm to use.  Default is bfgs2.
+  /*!
+   *  Choices are:
+   *    - fletcher_reeves_cg
+   *    - polak_ribiere_cg
+   *    - bfgs
+   *    - bfgs2
+   *    - steepest_descent
+   *    - nelder_mead
+   *    - nelder_mead2
+   *    - nelder_mead2_rand
+   */
   std::string m_solverType;
+
+  //! The size of the initial trial steps for optimizing without gradients.  Default is 0.1
+  /*!
+   * The initial trial steps is actually a vector of size equal to the number
+   * of parameters, and this vector is set to \c m_fstepSize in each
+   * component.
+   */
   double m_fstepSize;
+
+  //! The size of the first step when optimizing with gradients.  Default is 1.0.
   double m_fdfstepSize;
+
+  //! Accuracy to which to solve line minization to.  Default is 0.1.
+  /*!
+   * The exact meaning of this parameter depends on the method used.  It's not
+   * used for algorithms that don't use derivatives.
+   */
   double m_lineTolerance;
 
 private:
@@ -89,12 +133,20 @@ private:
 
   // The input options as strings so we can parse the input file later
   std::string m_option_help;
+
+  //! Option name for OptimizerOptions::m_maxIterations.  Default is m_prefix + "optimizer_maxIterations"
   std::string m_option_maxIterations;
+  //! Option name for OptimizerOptions::m_tolerance.  Default is m_prefix + "optimizer_tolerance"
   std::string m_option_tolerance;
+  //! Option name for OptimizerOptions::m_finiteDifferenceStepSize.  Default is m_prefix + "optimizer_finiteDifferenceStepSize"
   std::string m_option_finiteDifferenceStepSize;
+  //! Option name for OptimizerOptions::m_solverType.  Default is m_prefix + "optimizer_solverType"
   std::string m_option_solverType;
+  //! Option name for OptimizerOptions::m_fstepSize.  Default is m_prefix + "optimizer_fstepSize"
   std::string m_option_fstepSize;
+  //! Option name for OptimizerOptions::m_fdfstepSize.  Default is m_prefix + "optimizer_fdfStepSize"
   std::string m_option_fdfstepSize;
+  //! Option name for OptimizerOptions::m_lineTolerance.  Default is m_prefix + "optimizer_lineTolerance"
   std::string m_option_lineTolerance;
 
   void checkOptions();
