@@ -56,6 +56,17 @@ public:
   GslOptimizer(
       const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction);
 
+
+  //! Constructs an object that will maximize a scalar function
+  /*!
+   * The function \c objectiveFunction is the function that will be maximized.
+   * This constructor allows the passing of custom options to optimizer to
+   * modify things like tolerance, maximum number of iterations, and finite
+   * difference step size.
+   */
+  GslOptimizer(OptimizerOptions options,
+               const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction);
+
   //! Destructor
   virtual ~GslOptimizer();
 
@@ -115,6 +126,30 @@ public:
    *  for more details.
    */
   void set_line_tol( double tol );
+
+  //! Gets the algorithm to use for minimisation
+  virtual std::string getSolverType() const;
+
+  //! Gets the step size to use in gradient-free solvers
+  virtual double getFstepSize() const;
+
+  //! Gets the step to use in gradient-based solvers
+  virtual double getFdfstepSize() const;
+
+  //! Gets the tolerance to use for line minimisation
+  virtual double getLineTolerance() const;
+
+  //! Sets the algorithm to use for minimisation
+  virtual void setSolverType(std::string solverType);
+
+  //! Sets the step size to use in gradient-free solvers
+  virtual void setFstepSize(double fstepSize);
+
+  //! Sets the step to use in gradient-based solvers
+  virtual void setFdfstepSize(double fdfstepSize);
+
+  //! Sets the tolerance to use for line minimisation
+  virtual void setLineTolerance(double lineTolerance);
 
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
