@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00215.html" title="Class for handling arrays of generic data. " alt="" coords="5,5,195,35"/>
+<area shape="rect" id="node1" href="$a00215.html" title="Base class for surrogates of models. " alt="" coords="5,12,195,39"/>
+<area shape="rect" id="node2" href="$a00137.html" title="Base class for interpolation&#45;based surrogates. " alt="" coords="243,5,445,46"/>
+<area shape="rect" id="node3" href="$a00157.html" title="Linear Lagrange interpolation surrogate. " alt="" coords="494,5,727,46"/>
 </map>

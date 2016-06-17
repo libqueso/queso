@@ -1,3 +1,3 @@
-<map id="QUESO::RngGsl" name="QUESO::RngGsl">
-<area shape="rect" id="node2" href="$a00183.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="5,5,144,35"/>
+<map id="QUESO::BaseOptimizer" name="QUESO::BaseOptimizer">
+<area shape="rect" id="node2" href="$a00130.html" title="A base class for handling optimisation of scalar functions. " alt="" coords="10,80,157,107"/>
 </map>

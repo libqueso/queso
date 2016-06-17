@@ -1,20 +1,2 @@
-<map id="src/contrib/ANN/include/ANN/ANNperf.h" name="src/contrib/ANN/include/ANN/ANNperf.h">
-<area shape="rect" id="node3" href="$a00292.html" title="src/contrib/ANN/src\l/ANN.cpp" alt="" coords="115,102,264,149"/>
-<area shape="rect" id="node5" href="$a00314.html" title="src/contrib/ANN/src\l/pr_queue_k.h" alt="" coords="563,102,712,149"/>
-<area shape="rect" id="node7" href="$a00301.html" title="src/contrib/ANN/src\l/kd_fix_rad_search.h" alt="" coords="215,198,369,245"/>
-<area shape="rect" id="node13" href="$a00303.html" title="src/contrib/ANN/src\l/kd_pr_search.h" alt="" coords="397,198,547,245"/>
-<area shape="rect" id="node19" href="$a00305.html" title="src/contrib/ANN/src\l/kd_search.h" alt="" coords="744,198,893,245"/>
-<area shape="rect" id="node28" href="$a00313.html" title="src/contrib/ANN/src\l/pr_queue.h" alt="" coords="339,102,488,149"/>
-<area shape="rect" id="node33" href="$a00296.html" title="src/contrib/ANN/src\l/bd_tree.cpp" alt="" coords="787,102,936,149"/>
-<area shape="rect" id="node35" href="$a00308.html" title="src/contrib/ANN/src\l/kd_tree.cpp" alt="" coords="960,102,1109,149"/>
-<area shape="rect" id="node37" href="$a00310.html" title="src/contrib/ANN/src\l/kd_util.cpp" alt="" coords="1133,102,1283,149"/>
-<area shape="rect" id="node39" href="$a00312.html" title="src/contrib/ANN/src\l/perf.cpp" alt="" coords="1307,102,1456,149"/>
-<area shape="rect" id="node41" href="$a00315.html" title="src/contrib/ANN/test\l/ann_test.cpp" alt="" coords="1480,102,1640,149"/>
-<area shape="rect" id="node25" href="$a00298.html" title="src/contrib/ANN/src\l/brute.cpp" alt="" coords="571,198,720,245"/>
-<area shape="rect" id="node9" href="$a00293.html" title="src/contrib/ANN/src\l/bd_fix_rad_search.cpp" alt="" coords="5,294,179,341"/>
-<area shape="rect" id="node11" href="$a00300.html" title="src/contrib/ANN/src\l/kd_fix_rad_search.cpp" alt="" coords="203,294,373,341"/>
-<area shape="rect" id="node15" href="$a00294.html" title="src/contrib/ANN/src\l/bd_pr_search.cpp" alt="" coords="397,294,547,341"/>
-<area shape="rect" id="node17" href="$a00302.html" title="src/contrib/ANN/src\l/kd_pr_search.cpp" alt="" coords="571,294,720,341"/>
-<area shape="rect" id="node21" href="$a00295.html" title="src/contrib/ANN/src\l/bd_search.cpp" alt="" coords="744,294,893,341"/>
-<area shape="rect" id="node23" href="$a00304.html" title="src/contrib/ANN/src\l/kd_search.cpp" alt="" coords="917,294,1067,341"/>
+<map id="src/contrib/ANN/include/ANN/ANN.h" name="src/contrib/ANN/include/ANN/ANN.h">
 </map>

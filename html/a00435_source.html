@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/misc/inc/AsciiTable.h Source File</title>
+<title>queso-0.55.0: src/misc/inc/2dArrayOfStuff.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_cef55f19861ce62c0ca627401191ab0f.html">misc</a></li><li class="navelem"><a class="el" href="dir_13f3ced7e7515c530250c895de57efa8.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_b78c18289fd7719ff0daf45dba9bb4e6.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">AsciiTable.h</div>  </div>
+<div class="title">2dArrayOfStuff.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00435.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,86 +75,57 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_ASCII_TABLE_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ASCII_TABLE_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_2D_ARRAY_OF_STUFF_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_2D_ARRAY_OF_STUFF_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/DistArray.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Map.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/Miscellaneous.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00027.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00027.html">AsciiTable</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00218.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00218.html">TwoDArray</a></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="a00218.html#a61198628e4a47604bf5ad7142b151372">TwoDArray</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00218.html#a0c81a74def0364a5ddd3e1371ca48b39">numRows</a>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00218.html#aac40245b6f6a944d62a34d44324af5b2">numCols</a>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; <a class="code" href="a00218.html#a057af83ed31f9ca5c3b4cc52b5383f70">~TwoDArray</a>();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00027.html#a4d856e0d046d823e906aa4448b5762f1">AsciiTable</a>(<span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; env,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                          <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            <a class="code" href="a00027.html#aa764ef68ef1d2ed85a4b6bd4eb0d7b17">numRows</a>,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                          <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            numExtraCols,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                    <span class="keyword">const</span> std::vector&lt;bool&gt;*      extraColIsString,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    <span class="keyword">const</span> std::string&amp;            fileName);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00027.html#a2ff35b2d6920dc9e13dd8966a76beb10">~AsciiTable</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                         <a class="code" href="a00027.html#aa764ef68ef1d2ed85a4b6bd4eb0d7b17">numRows</a>     ()                 <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00218.html#a0c81a74def0364a5ddd3e1371ca48b39">numRows</a>    ()                                 <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00218.html#aac40245b6f6a944d62a34d44324af5b2">numCols</a>    ()                                 <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00218.html#aa204b1795ea5ba9d5583b6eec598b16e">setLocation</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j, T* info);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                         <a class="code" href="a00027.html#a428f547b9f5007e673245c8d2d0be387">numCols</a>     ()                 <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00066.html">DistArray&lt;std::string&gt;</a>&amp; <a class="code" href="a00027.html#a8918d88137629c62e2408c164795479c">stringColumn</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j)   <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">const</span> V&amp;                             <a class="code" href="a00027.html#a267e1834e60c5df459122b2509e4ca9d">doubleColumn</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j)   <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">void</span>                                 <a class="code" href="a00027.html#a4e58f0ab57b3af3aa4333955175abcf3">print</a>       (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="a00160.html">Map</a>* <a class="code" href="a00027.html#aa42459bf69563f6606103c5f6da60a5a">newMap</a>(); <span class="comment">// See template specialization</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="a00027.html#a2ba907db652aa02d53d493980d7a3753">   85</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp;               <a class="code" href="a00027.html#a2ba907db652aa02d53d493980d7a3753">m_env</a>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="a00027.html#a4f772a7719d36cb0a0908eed37bd1deb">   86</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                                <a class="code" href="a00027.html#a4f772a7719d36cb0a0908eed37bd1deb">m_numRows</a>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="a00027.html#ada886c8db06d2d618f2898ad2cf2bd87">   87</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                                <a class="code" href="a00027.html#ada886c8db06d2d618f2898ad2cf2bd87">m_numCols</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="a00027.html#a1c84e461d75e0846c156617f222c2ec3">   88</a></span>&#160;  std::vector&lt;bool&gt;                           <a class="code" href="a00027.html#a1c84e461d75e0846c156617f222c2ec3">m_colIsString</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="a00027.html#adb7e4bac907ef1c93d745f02ea9f15d2">   89</a></span>&#160;  std::string                                 <a class="code" href="a00027.html#adb7e4bac907ef1c93d745f02ea9f15d2">m_fileName</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="a00027.html#a7771fe0a08a93abdeadcc5e55e350eea">   91</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00160.html">Map</a>*                           <a class="code" href="a00027.html#a7771fe0a08a93abdeadcc5e55e350eea">m_map</a>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00027.html#a14ba55d29e9a4ddeb14cd5acd8a27268">   92</a></span>&#160;  std::vector&lt;DistArray&lt;std::string&gt;*&gt; <a class="code" href="a00027.html#a14ba55d29e9a4ddeb14cd5acd8a27268">m_stringColumns</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00027.html#aa25a1d14c88cd5de341c43e052622f51">   93</a></span>&#160;  std::vector&lt;V*&gt;                             <a class="code" href="a00027.html#aa25a1d14c88cd5de341c43e052622f51">m_doubleColumns</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00027.html#a008557a6d782f76a51e72c77b3136322">readColumnsFromFile</a>();</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif // UQ_ASCII_TABLE_H</span></div>
-<div class="ttc" id="a00027_html"><div class="ttname"><a href="a00027.html">QUESO::AsciiTable</a></div><div class="ttdoc">Class for reading ASCII values from a table in a file. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00045">AsciiTable.h:45</a></div></div>
-<div class="ttc" id="a00027_html_a8918d88137629c62e2408c164795479c"><div class="ttname"><a href="a00027.html#a8918d88137629c62e2408c164795479c">QUESO::AsciiTable::stringColumn</a></div><div class="ttdeci">const DistArray&lt; std::string &gt; &amp; stringColumn(unsigned int j) const </div><div class="ttdoc">Returns the string stored in column j. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00250">AsciiTable.C:250</a></div></div>
-<div class="ttc" id="a00027_html_aa764ef68ef1d2ed85a4b6bd4eb0d7b17"><div class="ttname"><a href="a00027.html#aa764ef68ef1d2ed85a4b6bd4eb0d7b17">QUESO::AsciiTable::numRows</a></div><div class="ttdeci">unsigned int numRows() const </div><div class="ttdoc">Returns the number of rows in the table. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00236">AsciiTable.C:236</a></div></div>
-<div class="ttc" id="a00027_html_a14ba55d29e9a4ddeb14cd5acd8a27268"><div class="ttname"><a href="a00027.html#a14ba55d29e9a4ddeb14cd5acd8a27268">QUESO::AsciiTable::m_stringColumns</a></div><div class="ttdeci">std::vector&lt; DistArray&lt; std::string &gt; * &gt; m_stringColumns</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00092">AsciiTable.h:92</a></div></div>
-<div class="ttc" id="a00027_html_a7771fe0a08a93abdeadcc5e55e350eea"><div class="ttname"><a href="a00027.html#a7771fe0a08a93abdeadcc5e55e350eea">QUESO::AsciiTable::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00091">AsciiTable.h:91</a></div></div>
-<div class="ttc" id="a00027_html_a267e1834e60c5df459122b2509e4ca9d"><div class="ttname"><a href="a00027.html#a267e1834e60c5df459122b2509e4ca9d">QUESO::AsciiTable::doubleColumn</a></div><div class="ttdeci">const V &amp; doubleColumn(unsigned int j) const </div><div class="ttdoc">Returns the value (double) stored in column j. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00261">AsciiTable.C:261</a></div></div>
-<div class="ttc" id="a00027_html_a008557a6d782f76a51e72c77b3136322"><div class="ttname"><a href="a00027.html#a008557a6d782f76a51e72c77b3136322">QUESO::AsciiTable::readColumnsFromFile</a></div><div class="ttdeci">void readColumnsFromFile()</div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00090">AsciiTable.C:90</a></div></div>
-<div class="ttc" id="a00027_html_a4e58f0ab57b3af3aa4333955175abcf3"><div class="ttname"><a href="a00027.html#a4e58f0ab57b3af3aa4333955175abcf3">QUESO::AsciiTable::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the table. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00273">AsciiTable.C:273</a></div></div>
-<div class="ttc" id="a00027_html_a1c84e461d75e0846c156617f222c2ec3"><div class="ttname"><a href="a00027.html#a1c84e461d75e0846c156617f222c2ec3">QUESO::AsciiTable::m_colIsString</a></div><div class="ttdeci">std::vector&lt; bool &gt; m_colIsString</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00088">AsciiTable.h:88</a></div></div>
-<div class="ttc" id="a00027_html_a2ba907db652aa02d53d493980d7a3753"><div class="ttname"><a href="a00027.html#a2ba907db652aa02d53d493980d7a3753">QUESO::AsciiTable::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00085">AsciiTable.h:85</a></div></div>
-<div class="ttc" id="a00027_html_a4f772a7719d36cb0a0908eed37bd1deb"><div class="ttname"><a href="a00027.html#a4f772a7719d36cb0a0908eed37bd1deb">QUESO::AsciiTable::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00086">AsciiTable.h:86</a></div></div>
-<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00327_source.html#l00193">Environment.h:193</a></div></div>
-<div class="ttc" id="a00066_html"><div class="ttname"><a href="a00066.html">QUESO::DistArray&lt; std::string &gt;</a></div></div>
-<div class="ttc" id="a00027_html_aa25a1d14c88cd5de341c43e052622f51"><div class="ttname"><a href="a00027.html#aa25a1d14c88cd5de341c43e052622f51">QUESO::AsciiTable::m_doubleColumns</a></div><div class="ttdeci">std::vector&lt; V * &gt; m_doubleColumns</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00093">AsciiTable.h:93</a></div></div>
-<div class="ttc" id="a00027_html_ada886c8db06d2d618f2898ad2cf2bd87"><div class="ttname"><a href="a00027.html#ada886c8db06d2d618f2898ad2cf2bd87">QUESO::AsciiTable::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00087">AsciiTable.h:87</a></div></div>
-<div class="ttc" id="a00027_html_adb7e4bac907ef1c93d745f02ea9f15d2"><div class="ttname"><a href="a00027.html#adb7e4bac907ef1c93d745f02ea9f15d2">QUESO::AsciiTable::m_fileName</a></div><div class="ttdeci">std::string m_fileName</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00089">AsciiTable.h:89</a></div></div>
-<div class="ttc" id="a00027_html_aa42459bf69563f6606103c5f6da60a5a"><div class="ttname"><a href="a00027.html#aa42459bf69563f6606103c5f6da60a5a">QUESO::AsciiTable::newMap</a></div><div class="ttdeci">Map * newMap()</div></div>
-<div class="ttc" id="a00160_html"><div class="ttname"><a href="a00160.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00049">Map.h:49</a></div></div>
-<div class="ttc" id="a00027_html_a2ff35b2d6920dc9e13dd8966a76beb10"><div class="ttname"><a href="a00027.html#a2ff35b2d6920dc9e13dd8966a76beb10">QUESO::AsciiTable::~AsciiTable</a></div><div class="ttdeci">~AsciiTable()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00077">AsciiTable.C:77</a></div></div>
-<div class="ttc" id="a00027_html_a428f547b9f5007e673245c8d2d0be387"><div class="ttname"><a href="a00027.html#a428f547b9f5007e673245c8d2d0be387">QUESO::AsciiTable::numCols</a></div><div class="ttdeci">unsigned int numCols() const </div><div class="ttdoc">Returns the number of columns in the table. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00243">AsciiTable.C:243</a></div></div>
-<div class="ttc" id="a00027_html_a4d856e0d046d823e906aa4448b5762f1"><div class="ttname"><a href="a00027.html#a4d856e0d046d823e906aa4448b5762f1">QUESO::AsciiTable::AsciiTable</a></div><div class="ttdeci">AsciiTable(const BaseEnvironment &amp;env, unsigned int numRows, unsigned int numExtraCols, const std::vector&lt; bool &gt; *extraColIsString, const std::string &amp;fileName)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00032">AsciiTable.C:32</a></div></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  T&amp;           <a class="code" href="a00218.html#a8cf6ad7a5890835d44740aa056fc9933">operator   ()</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">const</span> T&amp;     <a class="code" href="a00218.html#a8cf6ad7a5890835d44740aa056fc9933">operator   ()</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00218.html#a26fc2685fae9aa7aa0fecfaa52e6c617">   78</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00218.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="a00218.html#adab8e60a3daa621f75681326478eb085">   79</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00218.html#adab8e60a3daa621f75681326478eb085">m_numCols</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00218.html#a89e1d31bfba6f86f5fa9c407aba7f00e">   81</a></span>&#160;  std::vector&lt;std::vector&lt;T*&gt;* &gt; <a class="code" href="a00218.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif // UQ_2D_ARRAY_OF_STUFF_H</span></div>
+<div class="ttc" id="a00218_html_a89e1d31bfba6f86f5fa9c407aba7f00e"><div class="ttname"><a href="a00218.html#a89e1d31bfba6f86f5fa9c407aba7f00e">QUESO::TwoDArray::m_data</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; T * &gt; * &gt; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00081">2dArrayOfStuff.h:81</a></div></div>
+<div class="ttc" id="a00218_html_adab8e60a3daa621f75681326478eb085"><div class="ttname"><a href="a00218.html#adab8e60a3daa621f75681326478eb085">QUESO::TwoDArray::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00079">2dArrayOfStuff.h:79</a></div></div>
+<div class="ttc" id="a00218_html"><div class="ttname"><a href="a00218.html">QUESO::TwoDArray</a></div><div class="ttdoc">Class for handling arrays of generic data. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00039">2dArrayOfStuff.h:39</a></div></div>
+<div class="ttc" id="a00218_html_a8cf6ad7a5890835d44740aa056fc9933"><div class="ttname"><a href="a00218.html#a8cf6ad7a5890835d44740aa056fc9933">QUESO::TwoDArray::operator()</a></div><div class="ttdeci">T &amp; operator()(unsigned int i, unsigned int j)</div><div class="ttdoc">Returns data stored in a specific location (non-const). </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00077">2dArrayOfStuff.C:77</a></div></div>
+<div class="ttc" id="a00218_html_aa204b1795ea5ba9d5583b6eec598b16e"><div class="ttname"><a href="a00218.html#aa204b1795ea5ba9d5583b6eec598b16e">QUESO::TwoDArray::setLocation</a></div><div class="ttdeci">void setLocation(unsigned int i, unsigned int j, T *info)</div><div class="ttdoc">Sets the data in a specific location. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00068">2dArrayOfStuff.C:68</a></div></div>
+<div class="ttc" id="a00218_html_a0c81a74def0364a5ddd3e1371ca48b39"><div class="ttname"><a href="a00218.html#a0c81a74def0364a5ddd3e1371ca48b39">QUESO::TwoDArray::numRows</a></div><div class="ttdeci">unsigned int numRows() const </div><div class="ttdoc">Number of rows in the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00056">2dArrayOfStuff.C:56</a></div></div>
+<div class="ttc" id="a00218_html_a26fc2685fae9aa7aa0fecfaa52e6c617"><div class="ttname"><a href="a00218.html#a26fc2685fae9aa7aa0fecfaa52e6c617">QUESO::TwoDArray::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00078">2dArrayOfStuff.h:78</a></div></div>
+<div class="ttc" id="a00218_html_a057af83ed31f9ca5c3b4cc52b5383f70"><div class="ttname"><a href="a00218.html#a057af83ed31f9ca5c3b4cc52b5383f70">QUESO::TwoDArray::~TwoDArray</a></div><div class="ttdeci">~TwoDArray()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00044">2dArrayOfStuff.C:44</a></div></div>
+<div class="ttc" id="a00218_html_aac40245b6f6a944d62a34d44324af5b2"><div class="ttname"><a href="a00218.html#aac40245b6f6a944d62a34d44324af5b2">QUESO::TwoDArray::numCols</a></div><div class="ttdeci">unsigned int numCols() const </div><div class="ttdoc">Number of columns in the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00062">2dArrayOfStuff.C:62</a></div></div>
+<div class="ttc" id="a00218_html_a61198628e4a47604bf5ad7142b151372"><div class="ttname"><a href="a00218.html#a61198628e4a47604bf5ad7142b151372">QUESO::TwoDArray::TwoDArray</a></div><div class="ttdeci">TwoDArray(unsigned int numRows, unsigned int numCols)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00448_source.html#l00032">2dArrayOfStuff.C:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

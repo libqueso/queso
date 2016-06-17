@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: QUESO::InterpolationSurrogateIOBase&lt; V, M &gt; Class Template Reference</title>
+<title>queso-0.55.0: QUESO::InterpolationSurrogateHelper Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -45,133 +45,60 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00141.html">InterpolationSurrogateIOBase</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00652.html">QUESO</a></li><li class="navelem"><a class="el" href="a00141.html">InterpolationSurrogateHelper</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a01610.html">List of all members</a>  </div>
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="a01615.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::InterpolationSurrogateIOBase&lt; V, M &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">QUESO::InterpolationSurrogateHelper Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for QUESO::InterpolationSurrogateIOBase&lt; V, M &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="a01611.png" border="0" usemap="#_q_u_e_s_o_1_1_interpolation_surrogate_i_o_base_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_interpolation_surrogate_i_o_base_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_interpolation_surrogate_i_o_base_3_01_v_00_01_m_01_4_inherit__map">
-<area shape="rect" id="node3" href="a00140.html" title="QUESO::InterpolationSurrogate\lIOASCII\&lt; V, M \&gt;" alt="" coords="5,102,237,149"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<p><code>#include &lt;<a class="el" href="a00636_source.html">InterpolationSurrogateHelper.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa8ba6167ceff5740cf549116c4fd99d8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#aa8ba6167ceff5740cf549116c4fd99d8">InterpolationSurrogateIOBase</a> ()</td></tr>
-<tr class="separator:aa8ba6167ceff5740cf549116c4fd99d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a8d01a394dbc01960c3adb9cb2eca1d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a0a8d01a394dbc01960c3adb9cb2eca1d">~InterpolationSurrogateIOBase</a> ()</td></tr>
-<tr class="separator:a0a8d01a394dbc01960c3adb9cb2eca1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba9b0a877cef77bbea72c95ca81910cf"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#aba9b0a877cef77bbea72c95ca81910cf">read</a> (const std::string &amp;filename, const <a class="el" href="a00081.html">FullEnvironment</a> &amp;env, const std::string &amp;vector_space_prefix, int reading_rank)=0</td></tr>
-<tr class="separator:aba9b0a877cef77bbea72c95ca81910cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa633d5e710f2e07fdb5b8740bf8a9b6f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#aa633d5e710f2e07fdb5b8740bf8a9b6f">write</a> (const std::string &amp;filename, const <a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp;<a class="el" href="a00141.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>, int writing_rank) const =0</td></tr>
-<tr class="separator:aa633d5e710f2e07fdb5b8740bf8a9b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad24e29bc8ef971a00d44b90c008208d4"><td class="memItemLeft" align="right" valign="top">const <br class="typebreak"/>
-<a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt; V, <br class="typebreak"/>
-M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#ad24e29bc8ef971a00d44b90c008208d4">data</a> () const </td></tr>
-<tr class="memdesc:ad24e29bc8ef971a00d44b90c008208d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to data object.  <a href="#ad24e29bc8ef971a00d44b90c008208d4">More...</a><br/></td></tr>
-<tr class="separator:ad24e29bc8ef971a00d44b90c008208d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5923ced1c7483db181435511c0ccc43c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a5923ced1c7483db181435511c0ccc43c">InterpolationSurrogateHelper</a> ()</td></tr>
+<tr class="separator:a5923ced1c7483db181435511c0ccc43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae24361fbce1f1746423efa60b2a7363d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#ae24361fbce1f1746423efa60b2a7363d">~InterpolationSurrogateHelper</a> ()</td></tr>
+<tr class="separator:ae24361fbce1f1746423efa60b2a7363d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a06531cf2abfd2d92e4eee8e9ca02c8ad"><td class="memItemLeft" align="right" valign="top">ScopedPtr&lt; <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt;<br class="typebreak"/>
- &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a06531cf2abfd2d92e4eee8e9ca02c8ad">m_vector_space</a></td></tr>
-<tr class="separator:a06531cf2abfd2d92e4eee8e9ca02c8ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8b1c4d297f6d576ed2328af27d823d4"><td class="memItemLeft" align="right" valign="top">ScopedPtr&lt; <a class="el" href="a00057.html">BoxSubset</a>&lt; V, M &gt;<br class="typebreak"/>
- &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#ab8b1c4d297f6d576ed2328af27d823d4">m_domain</a></td></tr>
-<tr class="separator:ab8b1c4d297f6d576ed2328af27d823d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1b0cad48d89815d90e5afbf9e1d7e0b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#ab1b0cad48d89815d90e5afbf9e1d7e0b">m_n_points</a></td></tr>
-<tr class="separator:ab1b0cad48d89815d90e5afbf9e1d7e0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98797df0b43929552ec90387f213e13c"><td class="memItemLeft" align="right" valign="top">ScopedPtr<br class="typebreak"/>
-&lt; <a class="el" href="a00137.html">InterpolationSurrogateData</a><br class="typebreak"/>
-&lt; V, M &gt; &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a98797df0b43929552ec90387f213e13c">m_data</a></td></tr>
-<tr class="separator:a98797df0b43929552ec90387f213e13c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a0249e2c31d66a94d7575e3bfaf2e5bef"><td class="memItemLeft" align="right" valign="top">static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a0249e2c31d66a94d7575e3bfaf2e5bef">coordToGlobal</a> (const std::vector&lt; unsigned int &gt; &amp;coord_indices, const std::vector&lt; unsigned int &gt; &amp;n_points)</td></tr>
+<tr class="memdesc:a0249e2c31d66a94d7575e3bfaf2e5bef"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00162.html" title="A class for partitioning vectors and matrices. ">Map</a> coordinate indices to a singal global index.  <a href="#a0249e2c31d66a94d7575e3bfaf2e5bef">More...</a><br/></td></tr>
+<tr class="separator:a0249e2c31d66a94d7575e3bfaf2e5bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80a0ec679c1ef8a72d6182e23e751213"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a80a0ec679c1ef8a72d6182e23e751213">globalToCoord</a> (unsigned int global, const std::vector&lt; unsigned int &gt; &amp;n_points, std::vector&lt; unsigned int &gt; &amp;coord_indices)</td></tr>
+<tr class="memdesc:a80a0ec679c1ef8a72d6182e23e751213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverse of coordToGlobal map.  <a href="#a80a0ec679c1ef8a72d6182e23e751213">More...</a><br/></td></tr>
+<tr class="separator:a80a0ec679c1ef8a72d6182e23e751213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:a71e8a9e84b4875253b98da9f9e9d65f4"><td class="memItemLeft" align="right" valign="top">static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00141.html#a71e8a9e84b4875253b98da9f9e9d65f4">compute_npoints_factor</a> (const std::vector&lt; unsigned int &gt; &amp;n_points, unsigned int term)</td></tr>
+<tr class="memdesc:a71e8a9e84b4875253b98da9f9e9d65f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function.  <a href="#a71e8a9e84b4875253b98da9f9e9d65f4">More...</a><br/></td></tr>
+<tr class="separator:a71e8a9e84b4875253b98da9f9e9d65f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class V, class M&gt;<br/>
-class QUESO::InterpolationSurrogateIOBase&lt; V, M &gt;</h3>
-
-
-<p>Definition at line <a class="el" href="a00635_source.html#l00035">35</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
+<div class="textblock">
+<p>Definition at line <a class="el" href="a00636_source.html#l00033">33</a> of file <a class="el" href="a00636_source.html">InterpolationSurrogateHelper.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa8ba6167ceff5740cf549116c4fd99d8"></a>
+<a class="anchor" id="a5923ced1c7483db181435511c0ccc43c"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::<a class="el" href="a00141.html">InterpolationSurrogateIOBase</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00645_source.html#l00035">35</a> of file <a class="el" href="a00645_source.html">InterpolationSurrogateIOBase.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    : <a class="code" href="a00141.html#ab8b1c4d297f6d576ed2328af27d823d4">m_domain</a>(NULL),</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      <a class="code" href="a00141.html#a98797df0b43929552ec90387f213e13c">m_data</a>(NULL)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  {}</div>
-<div class="ttc" id="a00141_html_a98797df0b43929552ec90387f213e13c"><div class="ttname"><a href="a00141.html#a98797df0b43929552ec90387f213e13c">QUESO::InterpolationSurrogateIOBase::m_data</a></div><div class="ttdeci">ScopedPtr&lt; InterpolationSurrogateData&lt; V, M &gt; &gt;::Type m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00067">InterpolationSurrogateIOBase.h:67</a></div></div>
-<div class="ttc" id="a00141_html_ab8b1c4d297f6d576ed2328af27d823d4"><div class="ttname"><a href="a00141.html#ab8b1c4d297f6d576ed2328af27d823d4">QUESO::InterpolationSurrogateIOBase::m_domain</a></div><div class="ttdeci">ScopedPtr&lt; BoxSubset&lt; V, M &gt; &gt;::Type m_domain</div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00063">InterpolationSurrogateIOBase.h:63</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a0a8d01a394dbc01960c3adb9cb2eca1d"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::~<a class="el" href="a00141.html">InterpolationSurrogateIOBase</a> </td>
+          <td class="memname">QUESO::InterpolationSurrogateHelper::InterpolationSurrogateHelper </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00635_source.html#l00041">41</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{};</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ad24e29bc8ef971a00d44b90c008208d4"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt;V,M&gt;&amp; <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::data </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
         </tr>
       </table>
   </td>
@@ -181,47 +108,56 @@ template&lt;class V , class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Reference to data object. </p>
-<p>If we read the data, then use this method to grab a reference to the data in order to construct an <a class="el" href="a00135.html" title="Base class for interpolation-based surrogates. ">InterpolationSurrogateBase</a> subclass. </p>
-
-<p>Definition at line <a class="el" href="a00635_source.html#l00056">56</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    { <span class="keywordflow">return</span> *(this-&gt;<a class="code" href="a00141.html#a98797df0b43929552ec90387f213e13c">m_data</a>.get()); };</div>
-<div class="ttc" id="a00141_html_a98797df0b43929552ec90387f213e13c"><div class="ttname"><a href="a00141.html#a98797df0b43929552ec90387f213e13c">QUESO::InterpolationSurrogateIOBase::m_data</a></div><div class="ttdeci">ScopedPtr&lt; InterpolationSurrogateData&lt; V, M &gt; &gt;::Type m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00067">InterpolationSurrogateIOBase.h:67</a></div></div>
+<p>Definition at line <a class="el" href="a00636_source.html#l00037">37</a> of file <a class="el" href="a00636_source.html">InterpolationSurrogateHelper.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{};</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aba9b0a877cef77bbea72c95ca81910cf"></a>
+<a class="anchor" id="ae24361fbce1f1746423efa60b2a7363d"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::read </td>
+          <td class="memname">QUESO::InterpolationSurrogateHelper::~InterpolationSurrogateHelper </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00636_source.html#l00039">39</a> of file <a class="el" href="a00636_source.html">InterpolationSurrogateHelper.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{};</div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a71e8a9e84b4875253b98da9f9e9d65f4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int QUESO::InterpolationSurrogateHelper::compute_npoints_factor </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>n_points</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00081.html">FullEnvironment</a> &amp;&#160;</td>
-          <td class="paramname"><em>env</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>vector_space_prefix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>reading_rank</em>&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>term</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -231,163 +167,190 @@ template&lt;class V , class M &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="a00140.html#a71a2c390a880bb92f26d8085ba5eed17">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;</a>.</p>
+<p>Helper function. </p>
+<p>coordToGlobal computes: i + j*n_points[0] + k*n_points[0]*n_points[1] + ... To compute inverse we need the product of n_points terms, depending on which term we are computing. So, given n_points and the current term, we compute the correct number of products of n_points. </p>
 
+<p>Definition at line <a class="el" href="a00646_source.html#l00095">95</a> of file <a class="el" href="a00646_source.html">InterpolationSurrogateHelper.C</a>.</p>
+
+<p>Referenced by <a class="el" href="a00646_source.html#l00068">globalToCoord()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> value = 1;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; term; d++ )</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        value *= n_points[d];</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">return</span> value;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
+</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aa633d5e710f2e07fdb5b8740bf8a9b6f"></a>
+<a class="anchor" id="a0249e2c31d66a94d7575e3bfaf2e5bef"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::write </td>
+          <td class="memname">unsigned int QUESO::InterpolationSurrogateHelper::coordToGlobal </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>coord_indices</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>writing_rank</em>&#160;</td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>n_points</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="a00140.html#a21624e30df6f98f0edc500ff72218be0">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;</a>.</p>
+<p><a class="el" href="a00162.html" title="A class for partitioning vectors and matrices. ">Map</a> coordinate indices to a singal global index. </p>
+<p>e.g. in 3-D, you pass in i,j,k and the n_points in each of the 3 directions. This function will return the corresponding global index to which the value at i,j,k can be indexed. Ordering must be consistent between coord_indices and n_points. Must be ordered in increasing dimension. e.g. x,y,z,... The user shouldn't need to call this method, this is public mainly to facilitate testing. </p>
 
+<p>Definition at line <a class="el" href="a00646_source.html#l00034">34</a> of file <a class="el" href="a00646_source.html">InterpolationSurrogateHelper.C</a>.</p>
+
+<p>References <a class="el" href="a00287_source.html#l00081">dim</a>, <a class="el" href="a00322_source.html#l00149">queso_assert_equal_to</a>, and <a class="el" href="a00322_source.html#l00155">queso_assert_less</a>.</p>
+
+<p>Referenced by <a class="el" href="a00649_source.html#l00083">QUESO::LinearLagrangeInterpolationSurrogate&lt; V, M &gt;::compute_interval_values()</a>, <a class="el" href="a00649_source.html#l00166">QUESO::LinearLagrangeInterpolationSurrogate&lt; V, M &gt;::coordsToSingle()</a>, and <a class="el" href="a00646_source.html#l00068">globalToCoord()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// Make sure the dimension is consisent</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="a00322.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( coord_indices.size(), n_points.size() );</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// The input objects implicitly carry the dimension with them</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a> = coord_indices.size();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">/* Mapping is: i + j*n_i + k*n_i*n_j + l*n_i*n_j*n_k + ...</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">       Initialize global_index to &quot;i&quot;.</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">       Then loop and build up each term.*/</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="a00322.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a>( coord_indices[0], n_points[0] );</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> global_index = coord_indices[0];</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 1; d &lt; <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; d++ )</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="a00322.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a>( coord_indices[d], n_points[d] );</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="comment">// Accumulate the current term</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> idx = coord_indices[d];</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">int</span> local_d = d-1; local_d &gt;=0; local_d -= 1)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;          {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            idx *= n_points[local_d];</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;          }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        global_index += idx;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">return</span> global_index;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  }</div>
+<div class="ttc" id="a00287_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00322_html_a67de25b43faabd8d10a0827676e54a49"><div class="ttname"><a href="a00322.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a></div><div class="ttdeci">#define queso_assert_equal_to(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00149">asserts.h:149</a></div></div>
+<div class="ttc" id="a00322_html_a02c59e9150c230713f39314a442e2768"><div class="ttname"><a href="a00322.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a></div><div class="ttdeci">#define queso_assert_less(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00155">asserts.h:155</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a98797df0b43929552ec90387f213e13c"></a>
+<a class="anchor" id="a80a0ec679c1ef8a72d6182e23e751213"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">ScopedPtr&lt;<a class="el" href="a00137.html">InterpolationSurrogateData</a>&lt;V,M&gt; &gt;::Type <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::m_data</td>
+          <td class="memname"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::InterpolationSurrogateHelper::globalToCoord </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>global</em>, </td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00635_source.html#l00067">67</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab8b1c4d297f6d576ed2328af27d823d4"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname">ScopedPtr&lt;<a class="el" href="a00057.html">BoxSubset</a>&lt;V,M&gt; &gt;::Type <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::m_domain</td>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>n_points</em>, </td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00635_source.html#l00063">63</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab1b0cad48d89815d90e5afbf9e1d7e0b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;unsigned int&gt; <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::m_n_points</td>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>coord_indices</em>&#160;</td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00635_source.html#l00065">65</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a06531cf2abfd2d92e4eee8e9ca02c8ad"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname">ScopedPtr&lt;<a class="el" href="a00228.html">VectorSpace</a>&lt;V,M&gt; &gt;::Type <a class="el" href="a00141.html">QUESO::InterpolationSurrogateIOBase</a>&lt; V, M &gt;::m_vector_space</td>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00635_source.html#l00057">57</a> of file <a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a>.</p>
+<p>Inverse of coordToGlobal map. </p>
+<p>Given the global index and the n_points in each direction, we back out the coordinate indices and return them in coord_indices. </p>
 
+<p>Definition at line <a class="el" href="a00646_source.html#l00068">68</a> of file <a class="el" href="a00646_source.html">InterpolationSurrogateHelper.C</a>.</p>
+
+<p>References <a class="el" href="a00646_source.html#l00095">compute_npoints_factor()</a>, <a class="el" href="a00646_source.html#l00034">coordToGlobal()</a>, <a class="el" href="a00287_source.html#l00081">dim</a>, and <a class="el" href="a00322_source.html#l00149">queso_assert_equal_to</a>.</p>
+
+<p>Referenced by <a class="el" href="a00643_source.html#l00187">QUESO::InterpolationSurrogateBuilder&lt; V, M &gt;::set_domain_vector()</a>, and <a class="el" href="a00649_source.html#l00177">QUESO::LinearLagrangeInterpolationSurrogate&lt; V, M &gt;::singleToCoords()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// The input object implicitly carry&#39;s the dimension</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a> = n_points.size();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    coord_indices.resize(dim);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">/* coordToGlobal computes: i + j*n_points[0] + k*n_points[0]*n_points[1] + ...</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">       so we use integer arithmetic and work backwards. */</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> tmp = global;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">int</span> d = dim-1; d &gt; 0; d -= 1 )</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> np = <a class="code" href="a00141.html#a71e8a9e84b4875253b98da9f9e9d65f4">compute_npoints_factor</a>( n_points, d );</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        coord_indices[d] = tmp/np;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        tmp -= coord_indices[d]*np;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="comment">// What&#39;s left should be our starting index</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    coord_indices[0] = tmp;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">// Sanity check: the indices we determined should map back to the global</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="a00322.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( global, <a class="code" href="a00141.html#a0249e2c31d66a94d7575e3bfaf2e5bef">coordToGlobal</a>(coord_indices,n_points) );</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  }</div>
+<div class="ttc" id="a00287_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00322_html_a67de25b43faabd8d10a0827676e54a49"><div class="ttname"><a href="a00322.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a></div><div class="ttdeci">#define queso_assert_equal_to(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00149">asserts.h:149</a></div></div>
+<div class="ttc" id="a00141_html_a71e8a9e84b4875253b98da9f9e9d65f4"><div class="ttname"><a href="a00141.html#a71e8a9e84b4875253b98da9f9e9d65f4">QUESO::InterpolationSurrogateHelper::compute_npoints_factor</a></div><div class="ttdeci">static unsigned int compute_npoints_factor(const std::vector&lt; unsigned int &gt; &amp;n_points, unsigned int term)</div><div class="ttdoc">Helper function. </div><div class="ttdef"><b>Definition:</b> <a href="a00646_source.html#l00095">InterpolationSurrogateHelper.C:95</a></div></div>
+<div class="ttc" id="a00141_html_a0249e2c31d66a94d7575e3bfaf2e5bef"><div class="ttname"><a href="a00141.html#a0249e2c31d66a94d7575e3bfaf2e5bef">QUESO::InterpolationSurrogateHelper::coordToGlobal</a></div><div class="ttdeci">static unsigned int coordToGlobal(const std::vector&lt; unsigned int &gt; &amp;coord_indices, const std::vector&lt; unsigned int &gt; &amp;n_points)</div><div class="ttdoc">Map coordinate indices to a singal global index. </div><div class="ttdef"><b>Definition:</b> <a href="a00646_source.html#l00034">InterpolationSurrogateHelper.C:34</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/surrogates/inc/<a class="el" href="a00635_source.html">InterpolationSurrogateIOBase.h</a></li>
-<li>src/surrogates/src/<a class="el" href="a00645_source.html">InterpolationSurrogateIOBase.C</a></li>
+<li>src/surrogates/inc/<a class="el" href="a00636_source.html">InterpolationSurrogateHelper.h</a></li>
+<li>src/surrogates/src/<a class="el" href="a00646_source.html">InterpolationSurrogateHelper.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:36 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:46 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

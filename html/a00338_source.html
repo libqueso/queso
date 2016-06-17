@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/core/inc/InfiniteDimensionalMCMCSampler.h Source File</title>
+<title>queso-0.55.0: src/core/inc/GslVector.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_88fac51d2e17cec13478f22fd619c260.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_8c6469bb17906efee6ca4d3fe37c75c7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">InfiniteDimensionalMCMCSampler.h</div>  </div>
+<div class="title">GslVector.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00338.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -74,140 +74,249 @@
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifdef QUESO_HAVE_HDF5</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef UQ_GSL_VECTOR_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GSL_VECTOR_H</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifndef QUESO_INFINITE_SAMPLER_H</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_INFINITE_SAMPLER_H</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Boost includes</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;boost/scoped_ptr.hpp&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;boost/shared_ptr.hpp&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;queso/Vector.h&gt;</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Queso includes</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;queso/InfiniteDimensionalMeasureBase.h&gt;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;queso/InfiniteDimensionalLikelihoodBase.h&gt;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;queso/InfiniteDimensionalMCMCSamplerOptions.h&gt;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// GSL includes</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;gsl/gsl_rng.h&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// HDF5 includes</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;hdf5.h&gt;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">class </span>InfiniteDimensionalMCMCSampler</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  InfiniteDimensionalMCMCSampler(</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keyword">const</span> BaseEnvironment&amp; env,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      InfiniteDimensionalMeasureBase &amp; prior,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      InfiniteDimensionalLikelihoodBase &amp; llhd,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      InfiniteDimensionalMCMCSamplerOptions * ov);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  ~InfiniteDimensionalMCMCSampler();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;gsl/gsl_vector.h&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00131.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00131.html">GslVector</a> : <span class="keyword">public</span> <a class="code" href="a00227.html">Vector</a></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00131.html#a692a46459578174996732d16dd089067">GslVector</a>(<span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; <a class="code" href="a00227.html#a2e2952dab0554fedd8dc9a2543715745">env</a>, <span class="keyword">const</span> <a class="code" href="a00162.html">Map</a>&amp; <a class="code" href="a00227.html#a0cbedc1f6e24c0ad3b688d201fd649a4">map</a>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="a00131.html#a692a46459578174996732d16dd089067">GslVector</a>(<span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; env, <span class="keyword">const</span> <a class="code" href="a00162.html">Map</a>&amp; map, <span class="keywordtype">double</span> value);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00131.html#a692a46459578174996732d16dd089067">GslVector</a>(<span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; env, <span class="keywordtype">double</span> d1, <span class="keywordtype">double</span> d2, <span class="keyword">const</span> <a class="code" href="a00162.html">Map</a>&amp; map); <span class="comment">// MATLAB linspace</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="a00131.html#a692a46459578174996732d16dd089067">GslVector</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp;         v, <span class="keywordtype">double</span> start, <span class="keywordtype">double</span> end);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="a00131.html#a692a46459578174996732d16dd089067">GslVector</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp;         y);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="a00131.html#a0bc3734631b7dc54adbfa1ec967f2463">~GslVector</a>();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">void</span> step();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="a00131.html">GslVector</a>&amp; <a class="code" href="a00131.html#aec9896bae67226f0f0d030d0de603956">operator= </a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">double</span> llhd_val() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <a class="code" href="a00131.html">GslVector</a>&amp; <a class="code" href="a00131.html#abc5068be9af5256983cb2c5ecdcf8229">operator*=</a>(<span class="keywordtype">double</span> a);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">double</span> acc_prob();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="a00131.html">GslVector</a>&amp; <a class="code" href="a00131.html#a254b8ce11020280e7af0eea9b7626b4e">operator/=</a>(<span class="keywordtype">double</span> a);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">double</span> avg_acc_prob();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <a class="code" href="a00131.html">GslVector</a>&amp; <a class="code" href="a00131.html#abc5068be9af5256983cb2c5ecdcf8229">operator*=</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> iteration() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="a00131.html">GslVector</a>&amp; <a class="code" href="a00131.html#a254b8ce11020280e7af0eea9b7626b4e">operator/=</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  boost::shared_ptr&lt;InfiniteDimensionalMCMCSampler&gt; clone_and_reset() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="a00131.html">GslVector</a>&amp; <a class="code" href="a00131.html#ae736e2bfbeb9f14a78f33cbbaa6acb19">operator+=</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs);</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="comment">// Current iteration</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> _iteration;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <a class="code" href="a00131.html">GslVector</a>&amp; <a class="code" href="a00131.html#ac1df668b8aa9a5e1a482ab85a1b0692d">operator-=</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">// The current value of the negative log-likelihood functional</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">double</span> _llhd_val;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="comment">// The current acceptance probability</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">double</span> _acc_prob;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordtype">double</span>&amp; <a class="code" href="a00131.html#a5fa9fb9a84749ea69919e6bc4a5ee9f9">operator[]</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i);</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="comment">// The current running mean of the acceptance probability</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordtype">double</span> _avg_acc_prob;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">// The prior measure from which to draw</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  InfiniteDimensionalMeasureBase &amp; prior;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">double</span>&amp; <a class="code" href="a00131.html#a5fa9fb9a84749ea69919e6bc4a5ee9f9">operator[]</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">// The negative log-likelihood functional.  Operates on functions.</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="comment">// Should be const?</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  InfiniteDimensionalLikelihoodBase &amp; llhd;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="comment">// Aggregate options object</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  InfiniteDimensionalMCMCSamplerOptions * m_ov;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">// The QUESO environment</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keyword">const</span> BaseEnvironment&amp; m_env;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="comment">// Pointer to the current physical state</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  boost::shared_ptr&lt;FunctionBase&gt; current_physical_state;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="comment">// Pointer to the current proposed state</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  boost::shared_ptr&lt;FunctionBase&gt; proposed_physical_state;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="comment">// Pointer to the current physical mean</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  boost::shared_ptr&lt;FunctionBase&gt; current_physical_mean;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="comment">// Pointer to the current physical variance</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  boost::shared_ptr&lt;FunctionBase&gt; current_physical_var;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="comment">// Stores the differences from the mean</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  boost::shared_ptr&lt;FunctionBase&gt; _delta;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="comment">// Stores a running sum-of-squares (kinda)</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  boost::shared_ptr&lt;FunctionBase&gt; _M2;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="comment">// A pointer to the random number generator to use.</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="comment">// Should probably use the one in the queso environment.</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  gsl_rng *r;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00131.html#ace6fb1739b7cf6456b3dcde84c766fb3">sizeLocal</a>        () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00131.html#aaaf58e9e980ce006ea4d2b7f69eb6111">sizeGlobal</a>       () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keywordtype">double</span>       <a class="code" href="a00131.html#a185bf2c6caa7da0b3418e0c8d1014fdf">norm2Sq</a>          () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordtype">double</span>       <a class="code" href="a00131.html#a3634fbeeda1a009cf14e3da4e56fc663">norm2</a>            () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="keywordtype">double</span>       <a class="code" href="a00131.html#a53702fecb316dbf31a3f9b156111d500">norm1</a>            () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordtype">double</span>       <a class="code" href="a00131.html#a46a3eabd6732f12ae8326764e3ef9921">normInf</a>          () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="keywordtype">double</span>       <a class="code" href="a00131.html#ad3fc6178cfa5c590e8bb241b791014f5">sumOfComponents</a>  () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a706d70a875a0e0c0f091e794c8baece5">cwSet</a>            (<span class="keywordtype">double</span> value);</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="comment">// HDF5 file identifier</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  hid_t _outfile;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a10ad46b42ea27ee0085d89b4e09b075f">cwSetGaussian</a>    (<span class="keywordtype">double</span> mean, <span class="keywordtype">double</span> stdDev);</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="comment">// HDF5 datasets</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  hid_t _acc_dset;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  hid_t _avg_acc_dset;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  hid_t _neg_log_llhd_dset;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  hid_t _L2_norm_samples_dset;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  hid_t _L2_norm_mean_dset;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  hid_t _L2_norm_var_dset;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keywordtype">void</span> _propose();</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="comment">// Do a metropolis random walk step</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordtype">void</span> _metropolis_hastings();</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="comment">// Increments the current iteration and updates the running mean and variance.</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="keywordtype">void</span> _update_moments();</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="comment">// Write the current state of the chain to disk</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="keywordtype">void</span> _write_state();</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="comment">// Creates a scalar dataset called \c name in \c _outfile file and returns it</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  hid_t _create_scalar_dataset(<span class="keyword">const</span> std::string &amp; name);</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="comment">// Appends to a scalar dataset in the hdf5 file</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  <span class="keywordtype">void</span> _append_scalar_dataset(hid_t dset, <span class="keywordtype">double</span> data);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;};</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="preprocessor">#endif // QUESO_INFINITE_SAMPLER_H</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">#endif  // QUESO_HAVE_HDF5</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a10ad46b42ea27ee0085d89b4e09b075f">cwSetGaussian</a>    (<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; meanVec, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; stdDevVec);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a020583cdb101420d2ac34d8cd5c4c270">cwSetUniform</a>     (<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; aVec, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; bVec);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#aa04f6e813bb7533f50b85eba3da269d5">cwSetBeta</a>        (<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; alpha, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; beta);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#ac8f6033638a8d99aa28e68cfe8ead8d3">cwSetGamma</a>       (<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; a, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; b);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a7609032ec133374fefeeb3aad12df093">cwSetInverseGamma</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; alpha, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; beta);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a6bd9c99a7de9a9203f9f12d36c1e24b6">cwSetConcatenated</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; v1, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; v2);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a6bd9c99a7de9a9203f9f12d36c1e24b6">cwSetConcatenated</a>(<span class="keyword">const</span> std::vector&lt;const GslVector* &gt;&amp; vecs);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a706d70a875a0e0c0f091e794c8baece5">cwSet</a>            (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> initialPos, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; vec);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#abddb8cf9c1a8e596b1c7f02fbad26464">cwExtract</a>        (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> initialPos, <a class="code" href="a00131.html">GslVector</a>&amp; vec) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a55254ab9351f6ef2217aa167bb9dcbd4">cwInvert</a>         ();</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a6b820b96b5b7e8a1af21c4f260a0dade">cwSqrt</a>           ();</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#ae0998a793ae43c6ac83fdc92c826f4b2">print</a>            (std::ostream&amp; os) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#ad4d0487806dd59f44a828ee228ba17b3">sort</a>             ();</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#aa4f5280c13c99ef028e7838887818c79">matlabDiff</a>       (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> firstPositionToStoreDiff, <span class="keywordtype">double</span> valueForRemainderPosition, <a class="code" href="a00131.html">GslVector</a>&amp; outputVec) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a6f463b2409b210989f45bb7c17cee3f7">matlabLinearInterpExtrap</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; x1Vec, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; y1Vec, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; x2Vec);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#aaa5bdbc03ef0ab86bad4b86b556a48d3">mpiBcast</a>         (<span class="keywordtype">int</span> srcRank, <span class="keyword">const</span> <a class="code" href="a00177.html">MpiComm</a>&amp; bcastComm);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#acfd7f057bdb82b601086e6b56281659d">mpiAllReduce</a>     (<a class="code" href="a00652.html#a75bb589f75213c4ff7d02a6b7da5bbfc">RawType_MPI_Op</a> mpiOperation, <span class="keyword">const</span> <a class="code" href="a00177.html">MpiComm</a>&amp; opComm, <a class="code" href="a00131.html">GslVector</a>&amp; resultVec) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a9c12f5d34643aa5d46f59570955339ab">mpiAllQuantile</a>   (<span class="keywordtype">double</span> probability, <span class="keyword">const</span> <a class="code" href="a00177.html">MpiComm</a>&amp; opComm, <a class="code" href="a00131.html">GslVector</a>&amp; resultVec) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#ab222530a760b07f6c22eafe92585d8c5">subWriteContents</a> (<span class="keyword">const</span> std::string&amp;            varNamePrefix,</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                                 <span class="keyword">const</span> std::string&amp;            fileName,</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                                 <span class="keyword">const</span> std::string&amp;            fileType,</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                                 <span class="keyword">const</span> std::set&lt;unsigned int&gt;&amp; allowedSubEnvIds) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#ae0047a01f01b4aaf3c67b716f4408932">subReadContents</a>  (<span class="keyword">const</span> std::string&amp;            fileName,</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                                 <span class="keyword">const</span> std::string&amp;            fileType,</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                                 <span class="keyword">const</span> std::set&lt;unsigned int&gt;&amp; allowedSubEnvIds);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keywordtype">bool</span>         <a class="code" href="a00131.html#a5b08e4ba8665bb5849da74ac42928741">atLeastOneComponentSmallerThan</a>       (<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  <span class="keywordtype">bool</span>         <a class="code" href="a00131.html#ad98d06b7c03175741c8208cfe62d8224">atLeastOneComponentBiggerThan</a>        (<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="keywordtype">bool</span>         <a class="code" href="a00131.html#a944fb91bd7f91f3987d9cfbfa3f58cfb">atLeastOneComponentSmallerOrEqualThan</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keywordtype">bool</span>         <a class="code" href="a00131.html#ac8e9dacbea49e0ee56462af34aaeeed8">atLeastOneComponentBiggerOrEqualThan</a> (<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="comment">// Necessary for GslMatrix::invertMultiply() and GslMatrix::setRow/Column</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  gsl_vector*  <a class="code" href="a00131.html#a6a668d6e6cdf69e3004e07742d066036">data</a>                          () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  <span class="keywordtype">double</span>       <a class="code" href="a00131.html#ad25b83a4bbb41d40a38b674df03e5d37">getMaxValue</a>      () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  <span class="keywordtype">double</span>       <a class="code" href="a00131.html#a77a9a42edfc1e1500ed8a31373245b9d">getMinValue</a>      () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <span class="keywordtype">int</span>          <a class="code" href="a00131.html#af27edfee48c38ffcead1bded550da0fc">getMaxValueIndex</a> () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keywordtype">int</span>          <a class="code" href="a00131.html#acb36ad4f7a2185a7abadf6b2261d1ab4">getMinValueIndex</a> () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#ae77a2147d9185b1fd9b55b836cba7496">getMaxValueAndIndex</a>( <span class="keywordtype">double</span>&amp; value, <span class="keywordtype">int</span>&amp; index );</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a22094d1f67f612646f280a700f85c542">getMinValueAndIndex</a>( <span class="keywordtype">double</span>&amp; value, <span class="keywordtype">int</span>&amp; index );</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  <a class="code" href="a00131.html">GslVector</a> <a class="code" href="a00131.html#a2e1d40289945c31fdf688fef8e9ea726">abs</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  <a class="code" href="a00131.html#a692a46459578174996732d16dd089067">GslVector</a>();</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00131.html#a95d78ab4f5b1c7f16ff453d770a955fb">copy</a>             (<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; src);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
+<div class="line"><a name="l00245"></a><span class="lineno"><a class="line" href="a00131.html#a503dd126017b7ac587ff511e8d0d833b">  245</a></span>&#160;  gsl_vector* <a class="code" href="a00131.html#a503dd126017b7ac587ff511e8d0d833b">m_vec</a>;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;};</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment">// Comments in this part of file don&#39;t appear in the doxygen docs.</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<a class="code" href="a00131.html">GslVector</a> <a class="code" href="a00652.html#a583c7692c136ba44beb81f031d8d55fc">operator/    </a>(      <span class="keywordtype">double</span> a,              <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; x  );</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<a class="code" href="a00131.html">GslVector</a> <a class="code" href="a00652.html#a583c7692c136ba44beb81f031d8d55fc">operator/    </a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; x,   <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; y  );</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<a class="code" href="a00131.html">GslVector</a> <a class="code" href="a00652.html#a1fa0d79f37a4fccc4c307456d29c4bfa">operator*    </a>(      <span class="keywordtype">double</span> a,              <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; x  );</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<a class="code" href="a00131.html">GslVector</a> <a class="code" href="a00652.html#a1fa0d79f37a4fccc4c307456d29c4bfa">operator*    </a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; x,   <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; y  );</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="keywordtype">double</span>           <a class="code" href="a00652.html#a159769395a413f58b974587d5f43bbc7">scalarProduct</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; x,   <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; y  );</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<a class="code" href="a00131.html">GslVector</a> <a class="code" href="a00652.html#a299d5db0d04a1d1a943b292585d01ad9">operator+    </a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; x,   <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; y  );</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<a class="code" href="a00131.html">GslVector</a> <a class="code" href="a00652.html#a07502ec763e41daf33325dfbda9b0102">operator-    </a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; x,   <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; y  );</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="keywordtype">bool</span>             <a class="code" href="a00652.html#a18841f416975b3d80dfefa99a9ad0c15">operator==   </a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; lhs, <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; rhs);</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;std::ostream&amp;    <a class="code" href="a00652.html#ae007c2d003b9f75b31b073ececd3120a">operator&lt;&lt;   </a>(std::ostream&amp; os,            <span class="keyword">const</span> <a class="code" href="a00131.html">GslVector</a>&amp; obj);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="keywordtype">double</span>&amp;</div>
+<div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="a00131.html#a5fa9fb9a84749ea69919e6bc4a5ee9f9">  263</a></span>&#160;<a class="code" href="a00131.html#a5fa9fb9a84749ea69919e6bc4a5ee9f9">GslVector::operator[]</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i)</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;{</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  <span class="keywordflow">return</span> *gsl_vector_ptr(<a class="code" href="a00131.html#a503dd126017b7ac587ff511e8d0d833b">m_vec</a>,i);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;}</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="keyword">const</span> <span class="keywordtype">double</span>&amp;</div>
+<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="a00131.html#a10150c873dc75f642bda5d3dd09140f1">  271</a></span>&#160;<a class="code" href="a00131.html#a5fa9fb9a84749ea69919e6bc4a5ee9f9">GslVector::operator[]</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  <span class="keywordflow">return</span> *gsl_vector_const_ptr(<a class="code" href="a00131.html#a503dd126017b7ac587ff511e8d0d833b">m_vec</a>,i);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;}</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="preprocessor">#endif // UQ_GSL_VECTOR_H</span></div>
+<div class="ttc" id="a00131_html_ae0047a01f01b4aaf3c67b716f4408932"><div class="ttname"><a href="a00131.html#ae0047a01f01b4aaf3c67b716f4408932">QUESO::GslVector::subReadContents</a></div><div class="ttdeci">void subReadContents(const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds)</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00842">GslVector.C:842</a></div></div>
+<div class="ttc" id="a00131_html_a6bd9c99a7de9a9203f9f12d36c1e24b6"><div class="ttname"><a href="a00131.html#a6bd9c99a7de9a9203f9f12d36c1e24b6">QUESO::GslVector::cwSetConcatenated</a></div><div class="ttdeci">void cwSetConcatenated(const GslVector &amp;v1, const GslVector &amp;v2)</div><div class="ttdoc">This function concatenates GslVector v1 and GslVector v2 into this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00448">GslVector.C:448</a></div></div>
+<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::Vector</a></div><div class="ttdoc">Class for vector operations (virtual). </div><div class="ttdef"><b>Definition:</b> <a href="a00360_source.html#l00047">Vector.h:47</a></div></div>
+<div class="ttc" id="a00131_html_a6b820b96b5b7e8a1af21c4f260a0dade"><div class="ttname"><a href="a00131.html#a6b820b96b5b7e8a1af21c4f260a0dade">QUESO::GslVector::cwSqrt</a></div><div class="ttdeci">void cwSqrt()</div><div class="ttdoc">This function returns component-wise the square-root of this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00520">GslVector.C:520</a></div></div>
+<div class="ttc" id="a00131_html_ad4d0487806dd59f44a828ee228ba17b3"><div class="ttname"><a href="a00131.html#ad4d0487806dd59f44a828ee228ba17b3">QUESO::GslVector::sort</a></div><div class="ttdeci">void sort()</div><div class="ttdoc">This function sorts the elements of the vector this in ascending numerical order. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00626">GslVector.C:626</a></div></div>
+<div class="ttc" id="a00131_html_ac8f6033638a8d99aa28e68cfe8ead8d3"><div class="ttname"><a href="a00131.html#ac8f6033638a8d99aa28e68cfe8ead8d3">QUESO::GslVector::cwSetGamma</a></div><div class="ttdeci">void cwSetGamma(const GslVector &amp;a, const GslVector &amp;b)</div><div class="ttdoc">This function returns a random variate from the gamma distribution with vector parameters a and b...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00422">GslVector.C:422</a></div></div>
+<div class="ttc" id="a00131_html_a5b08e4ba8665bb5849da74ac42928741"><div class="ttname"><a href="a00131.html#a5b08e4ba8665bb5849da74ac42928741">QUESO::GslVector::atLeastOneComponentSmallerThan</a></div><div class="ttdeci">bool atLeastOneComponentSmallerThan(const GslVector &amp;rhs) const </div><div class="ttdoc">This function returns true if at least one component of this is smaller than the respective component...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00975">GslVector.C:975</a></div></div>
+<div class="ttc" id="a00131_html_ae736e2bfbeb9f14a78f33cbbaa6acb19"><div class="ttname"><a href="a00131.html#ae736e2bfbeb9f14a78f33cbbaa6acb19">QUESO::GslVector::operator+=</a></div><div class="ttdeci">GslVector &amp; operator+=(const GslVector &amp;rhs)</div><div class="ttdoc">Stores in this the coordinate-wise addition of this and rhs. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00210">GslVector.C:210</a></div></div>
+<div class="ttc" id="a00131_html_a77a9a42edfc1e1500ed8a31373245b9d"><div class="ttname"><a href="a00131.html#a77a9a42edfc1e1500ed8a31373245b9d">QUESO::GslVector::getMinValue</a></div><div class="ttdeci">double getMinValue() const </div><div class="ttdoc">Returns minimum value in the vector this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01045">GslVector.C:1045</a></div></div>
+<div class="ttc" id="a00131_html_a7609032ec133374fefeeb3aad12df093"><div class="ttname"><a href="a00131.html#a7609032ec133374fefeeb3aad12df093">QUESO::GslVector::cwSetInverseGamma</a></div><div class="ttdeci">void cwSetInverseGamma(const GslVector &amp;alpha, const GslVector &amp;beta)</div><div class="ttdoc">This function returns a random variate from the inverse gamma distribution with vector parameters alp...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00435">GslVector.C:435</a></div></div>
+<div class="ttc" id="a00131_html_ae77a2147d9185b1fd9b55b836cba7496"><div class="ttname"><a href="a00131.html#ae77a2147d9185b1fd9b55b836cba7496">QUESO::GslVector::getMaxValueAndIndex</a></div><div class="ttdeci">void getMaxValueAndIndex(double &amp;value, int &amp;index)</div><div class="ttdoc">This function returns maximum value in the vector this and its the index. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01063">GslVector.C:1063</a></div></div>
+<div class="ttc" id="a00131_html_aa04f6e813bb7533f50b85eba3da269d5"><div class="ttname"><a href="a00131.html#aa04f6e813bb7533f50b85eba3da269d5">QUESO::GslVector::cwSetBeta</a></div><div class="ttdeci">void cwSetBeta(const GslVector &amp;alpha, const GslVector &amp;beta)</div><div class="ttdoc">This function returns a random variate from the beta distribution, with vector parameters alpha and b...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00365">GslVector.C:365</a></div></div>
+<div class="ttc" id="a00162_html"><div class="ttname"><a href="a00162.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00347_source.html#l00049">Map.h:49</a></div></div>
+<div class="ttc" id="a00131_html_abddb8cf9c1a8e596b1c7f02fbad26464"><div class="ttname"><a href="a00131.html#abddb8cf9c1a8e596b1c7f02fbad26464">QUESO::GslVector::cwExtract</a></div><div class="ttdeci">void cwExtract(unsigned int initialPos, GslVector &amp;vec) const </div><div class="ttdoc">This function sets the values of this starting at position initialPos ans saves them in vector vec...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00495">GslVector.C:495</a></div></div>
+<div class="ttc" id="a00131_html_ac1df668b8aa9a5e1a482ab85a1b0692d"><div class="ttname"><a href="a00131.html#ac1df668b8aa9a5e1a482ab85a1b0692d">QUESO::GslVector::operator-=</a></div><div class="ttdeci">GslVector &amp; operator-=(const GslVector &amp;rhs)</div><div class="ttdoc">Stores in this the coordinate-wise subtraction of this by rhs. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00219">GslVector.C:219</a></div></div>
+<div class="ttc" id="a00131_html_ac8e9dacbea49e0ee56462af34aaeeed8"><div class="ttname"><a href="a00131.html#ac8e9dacbea49e0ee56462af34aaeeed8">QUESO::GslVector::atLeastOneComponentBiggerOrEqualThan</a></div><div class="ttdeci">bool atLeastOneComponentBiggerOrEqualThan(const GslVector &amp;rhs) const </div><div class="ttdoc">This function returns true if at least one component of this is bigger than or equal to the respectiv...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01023">GslVector.C:1023</a></div></div>
+<div class="ttc" id="a00131_html_a6f463b2409b210989f45bb7c17cee3f7"><div class="ttname"><a href="a00131.html#a6f463b2409b210989f45bb7c17cee3f7">QUESO::GslVector::matlabLinearInterpExtrap</a></div><div class="ttdeci">void matlabLinearInterpExtrap(const GslVector &amp;x1Vec, const GslVector &amp;y1Vec, const GslVector &amp;x2Vec)</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00556">GslVector.C:556</a></div></div>
+<div class="ttc" id="a00131_html_a692a46459578174996732d16dd089067"><div class="ttname"><a href="a00131.html#a692a46459578174996732d16dd089067">QUESO::GslVector::GslVector</a></div><div class="ttdeci">GslVector()</div><div class="ttdoc">Default Constructor. </div></div>
+<div class="ttc" id="a00652_html_a1fa0d79f37a4fccc4c307456d29c4bfa"><div class="ttname"><a href="a00652.html#a1fa0d79f37a4fccc4c307456d29c4bfa">QUESO::operator*</a></div><div class="ttdeci">GslMatrix operator*(double a, const GslMatrix &amp;mat)</div><div class="ttdef"><b>Definition:</b> <a href="a00373_source.html#l01947">GslMatrix.C:1947</a></div></div>
+<div class="ttc" id="a00131_html_aaaf58e9e980ce006ea4d2b7f69eb6111"><div class="ttname"><a href="a00131.html#aaaf58e9e980ce006ea4d2b7f69eb6111">QUESO::GslVector::sizeGlobal</a></div><div class="ttdeci">unsigned int sizeGlobal() const </div><div class="ttdoc">Returns the global length of this vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00266">GslVector.C:266</a></div></div>
+<div class="ttc" id="a00131_html_ad25b83a4bbb41d40a38b674df03e5d37"><div class="ttname"><a href="a00131.html#ad25b83a4bbb41d40a38b674df03e5d37">QUESO::GslVector::getMaxValue</a></div><div class="ttdeci">double getMaxValue() const </div><div class="ttdoc">Returns the maximum value in the vector this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01039">GslVector.C:1039</a></div></div>
+<div class="ttc" id="a00131_html_a9c12f5d34643aa5d46f59570955339ab"><div class="ttname"><a href="a00131.html#a9c12f5d34643aa5d46f59570955339ab">QUESO::GslVector::mpiAllQuantile</a></div><div class="ttdeci">void mpiAllQuantile(double probability, const MpiComm &amp;opComm, GslVector &amp;resultVec) const </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00710">GslVector.C:710</a></div></div>
+<div class="ttc" id="a00131_html_a706d70a875a0e0c0f091e794c8baece5"><div class="ttname"><a href="a00131.html#a706d70a875a0e0c0f091e794c8baece5">QUESO::GslVector::cwSet</a></div><div class="ttdeci">void cwSet(double value)</div><div class="ttdoc">Component-wise sets all values to this with value. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00326">GslVector.C:326</a></div></div>
+<div class="ttc" id="a00652_html_a583c7692c136ba44beb81f031d8d55fc"><div class="ttname"><a href="a00652.html#a583c7692c136ba44beb81f031d8d55fc">QUESO::operator/</a></div><div class="ttdeci">GslVector operator/(double a, const GslVector &amp;x)</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01103">GslVector.C:1103</a></div></div>
+<div class="ttc" id="a00652_html_ae007c2d003b9f75b31b073ececd3120a"><div class="ttname"><a href="a00652.html#ae007c2d003b9f75b31b073ececd3120a">QUESO::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const BaseEnvironment &amp;obj)</div></div>
+<div class="ttc" id="a00131_html_a2e1d40289945c31fdf688fef8e9ea726"><div class="ttname"><a href="a00131.html#a2e1d40289945c31fdf688fef8e9ea726">QUESO::GslVector::abs</a></div><div class="ttdeci">GslVector abs() const </div><div class="ttdoc">This function returns absolute value of elements in this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01081">GslVector.C:1081</a></div></div>
+<div class="ttc" id="a00131_html_a185bf2c6caa7da0b3418e0c8d1014fdf"><div class="ttname"><a href="a00131.html#a185bf2c6caa7da0b3418e0c8d1014fdf">QUESO::GslVector::norm2Sq</a></div><div class="ttdeci">double norm2Sq() const </div><div class="ttdoc">Returns the 2-norm squared of this vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00274">GslVector.C:274</a></div></div>
+<div class="ttc" id="a00131_html_a0bc3734631b7dc54adbfa1ec967f2463"><div class="ttname"><a href="a00131.html#a0bc3734631b7dc54adbfa1ec967f2463">QUESO::GslVector::~GslVector</a></div><div class="ttdeci">~GslVector()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00143">GslVector.C:143</a></div></div>
+<div class="ttc" id="a00227_html_a0cbedc1f6e24c0ad3b688d201fd649a4"><div class="ttname"><a href="a00227.html#a0cbedc1f6e24c0ad3b688d201fd649a4">QUESO::Vector::map</a></div><div class="ttdeci">const Map &amp; map() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00061">Vector.C:61</a></div></div>
+<div class="ttc" id="a00131_html_aec9896bae67226f0f0d030d0de603956"><div class="ttname"><a href="a00131.html#aec9896bae67226f0f0d030d0de603956">QUESO::GslVector::operator=</a></div><div class="ttdeci">GslVector &amp; operator=(const GslVector &amp;rhs)</div><div class="ttdoc">Copies values from vector rhs to this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00149">GslVector.C:149</a></div></div>
+<div class="ttc" id="a00131_html_af27edfee48c38ffcead1bded550da0fc"><div class="ttname"><a href="a00131.html#af27edfee48c38ffcead1bded550da0fc">QUESO::GslVector::getMaxValueIndex</a></div><div class="ttdeci">int getMaxValueIndex() const </div><div class="ttdoc">This function returns the index of the maximum value in the vector this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01051">GslVector.C:1051</a></div></div>
+<div class="ttc" id="a00131_html_a5fa9fb9a84749ea69919e6bc4a5ee9f9"><div class="ttname"><a href="a00131.html#a5fa9fb9a84749ea69919e6bc4a5ee9f9">QUESO::GslVector::operator[]</a></div><div class="ttdeci">double &amp; operator[](unsigned int i)</div><div class="ttdoc">Element access method (non-const). </div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00263">GslVector.h:263</a></div></div>
+<div class="ttc" id="a00131_html_acfd7f057bdb82b601086e6b56281659d"><div class="ttname"><a href="a00131.html#acfd7f057bdb82b601086e6b56281659d">QUESO::GslVector::mpiAllReduce</a></div><div class="ttdeci">void mpiAllReduce(RawType_MPI_Op mpiOperation, const MpiComm &amp;opComm, GslVector &amp;resultVec) const </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00689">GslVector.C:689</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00330_source.html#l00193">Environment.h:193</a></div></div>
+<div class="ttc" id="a00131_html_ae0998a793ae43c6ac83fdc92c826f4b2"><div class="ttname"><a href="a00131.html#ae0998a793ae43c6ac83fdc92c826f4b2">QUESO::GslVector::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Print method. Defines the behavior of the std::ostream &amp;lt;&amp;lt; operator inherited from the Object class...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00742">GslVector.C:742</a></div></div>
+<div class="ttc" id="a00131_html_ad3fc6178cfa5c590e8bb241b791014f5"><div class="ttname"><a href="a00131.html#ad3fc6178cfa5c590e8bb241b791014f5">QUESO::GslVector::sumOfComponents</a></div><div class="ttdeci">double sumOfComponents() const </div><div class="ttdoc">Returns the sum of the components of the vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00314">GslVector.C:314</a></div></div>
+<div class="ttc" id="a00131_html_acb36ad4f7a2185a7abadf6b2261d1ab4"><div class="ttname"><a href="a00131.html#acb36ad4f7a2185a7abadf6b2261d1ab4">QUESO::GslVector::getMinValueIndex</a></div><div class="ttdeci">int getMinValueIndex() const </div><div class="ttdoc">This function returns the index of the minimum value in the vector this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01057">GslVector.C:1057</a></div></div>
+<div class="ttc" id="a00131_html_a6a668d6e6cdf69e3004e07742d066036"><div class="ttname"><a href="a00131.html#a6a668d6e6cdf69e3004e07742d066036">QUESO::GslVector::data</a></div><div class="ttdeci">gsl_vector * data() const </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00969">GslVector.C:969</a></div></div>
+<div class="ttc" id="a00131_html_a254b8ce11020280e7af0eea9b7626b4e"><div class="ttname"><a href="a00131.html#a254b8ce11020280e7af0eea9b7626b4e">QUESO::GslVector::operator/=</a></div><div class="ttdeci">GslVector &amp; operator/=(double a)</div><div class="ttdoc">Stores in this the coordinate-wise division of this by a. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00174">GslVector.C:174</a></div></div>
+<div class="ttc" id="a00131_html_ace6fb1739b7cf6456b3dcde84c766fb3"><div class="ttname"><a href="a00131.html#ace6fb1739b7cf6456b3dcde84c766fb3">QUESO::GslVector::sizeLocal</a></div><div class="ttdeci">unsigned int sizeLocal() const </div><div class="ttdoc">Returns the length of this vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00240">GslVector.C:240</a></div></div>
+<div class="ttc" id="a00131_html_abc5068be9af5256983cb2c5ecdcf8229"><div class="ttname"><a href="a00131.html#abc5068be9af5256983cb2c5ecdcf8229">QUESO::GslVector::operator*=</a></div><div class="ttdeci">GslVector &amp; operator*=(double a)</div><div class="ttdoc">Stores in this the coordinate-wise multiplication of this and a. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00165">GslVector.C:165</a></div></div>
+<div class="ttc" id="a00652_html_a07502ec763e41daf33325dfbda9b0102"><div class="ttname"><a href="a00652.html#a07502ec763e41daf33325dfbda9b0102">QUESO::operator-</a></div><div class="ttdeci">GslMatrix operator-(const GslMatrix &amp;m1, const GslMatrix &amp;m2)</div><div class="ttdef"><b>Definition:</b> <a href="a00373_source.html#l01994">GslMatrix.C:1994</a></div></div>
+<div class="ttc" id="a00131_html_a95d78ab4f5b1c7f16ff453d770a955fb"><div class="ttname"><a href="a00131.html#a95d78ab4f5b1c7f16ff453d770a955fb">QUESO::GslVector::copy</a></div><div class="ttdeci">void copy(const GslVector &amp;src)</div><div class="ttdoc">This function copies the elements of the vector src into this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00229">GslVector.C:229</a></div></div>
+<div class="ttc" id="a00131_html_a55254ab9351f6ef2217aa167bb9dcbd4"><div class="ttname"><a href="a00131.html#a55254ab9351f6ef2217aa167bb9dcbd4">QUESO::GslVector::cwInvert</a></div><div class="ttdeci">void cwInvert()</div><div class="ttdoc">This function inverts component-wise the element values of this. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00509">GslVector.C:509</a></div></div>
+<div class="ttc" id="a00131_html_a46a3eabd6732f12ae8326764e3ef9921"><div class="ttname"><a href="a00131.html#a46a3eabd6732f12ae8326764e3ef9921">QUESO::GslVector::normInf</a></div><div class="ttdeci">double normInf() const </div><div class="ttdoc">Returns the infinity-norm (maximum norm) of the vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00299">GslVector.C:299</a></div></div>
+<div class="ttc" id="a00652_html_a299d5db0d04a1d1a943b292585d01ad9"><div class="ttname"><a href="a00652.html#a299d5db0d04a1d1a943b292585d01ad9">QUESO::operator+</a></div><div class="ttdeci">GslMatrix operator+(const GslMatrix &amp;m1, const GslMatrix &amp;m2)</div><div class="ttdef"><b>Definition:</b> <a href="a00373_source.html#l01987">GslMatrix.C:1987</a></div></div>
+<div class="ttc" id="a00131_html_ad98d06b7c03175741c8208cfe62d8224"><div class="ttname"><a href="a00131.html#ad98d06b7c03175741c8208cfe62d8224">QUESO::GslVector::atLeastOneComponentBiggerThan</a></div><div class="ttdeci">bool atLeastOneComponentBiggerThan(const GslVector &amp;rhs) const </div><div class="ttdoc">This function returns true if at least one component of this is bigger than the respective component ...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00991">GslVector.C:991</a></div></div>
+<div class="ttc" id="a00131_html_a944fb91bd7f91f3987d9cfbfa3f58cfb"><div class="ttname"><a href="a00131.html#a944fb91bd7f91f3987d9cfbfa3f58cfb">QUESO::GslVector::atLeastOneComponentSmallerOrEqualThan</a></div><div class="ttdeci">bool atLeastOneComponentSmallerOrEqualThan(const GslVector &amp;rhs) const </div><div class="ttdoc">This function returns true if at least one component of this is smaller than or equal to the respecti...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01007">GslVector.C:1007</a></div></div>
+<div class="ttc" id="a00131_html_a503dd126017b7ac587ff511e8d0d833b"><div class="ttname"><a href="a00131.html#a503dd126017b7ac587ff511e8d0d833b">QUESO::GslVector::m_vec</a></div><div class="ttdeci">gsl_vector * m_vec</div><div class="ttdoc">GSL vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00245">GslVector.h:245</a></div></div>
+<div class="ttc" id="a00131_html"><div class="ttname"><a href="a00131.html">QUESO::GslVector</a></div><div class="ttdoc">Class for vector operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00049">GslVector.h:49</a></div></div>
+<div class="ttc" id="a00131_html_a53702fecb316dbf31a3f9b156111d500"><div class="ttname"><a href="a00131.html#a53702fecb316dbf31a3f9b156111d500">QUESO::GslVector::norm1</a></div><div class="ttdeci">double norm1() const </div><div class="ttdoc">Returns the 1-norm of the vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00286">GslVector.C:286</a></div></div>
+<div class="ttc" id="a00652_html_a18841f416975b3d80dfefa99a9ad0c15"><div class="ttname"><a href="a00652.html#a18841f416975b3d80dfefa99a9ad0c15">QUESO::operator==</a></div><div class="ttdeci">bool operator==(const GslVector &amp;lhs, const GslVector &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01167">GslVector.C:1167</a></div></div>
+<div class="ttc" id="a00131_html_ab222530a760b07f6c22eafe92585d8c5"><div class="ttname"><a href="a00131.html#ab222530a760b07f6c22eafe92585d8c5">QUESO::GslVector::subWriteContents</a></div><div class="ttdeci">void subWriteContents(const std::string &amp;varNamePrefix, const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds) const </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00802">GslVector.C:802</a></div></div>
+<div class="ttc" id="a00177_html"><div class="ttname"><a href="a00177.html">QUESO::MpiComm</a></div><div class="ttdoc">The QUESO MPI Communicator Class. </div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00203">MpiComm.h:203</a></div></div>
+<div class="ttc" id="a00131_html_aa4f5280c13c99ef028e7838887818c79"><div class="ttname"><a href="a00131.html#aa4f5280c13c99ef028e7838887818c79">QUESO::GslVector::matlabDiff</a></div><div class="ttdeci">void matlabDiff(unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, GslVector &amp;outputVec) const </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00531">GslVector.C:531</a></div></div>
+<div class="ttc" id="a00227_html_a2e2952dab0554fedd8dc9a2543715745"><div class="ttname"><a href="a00227.html#a2e2952dab0554fedd8dc9a2543715745">QUESO::Vector::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00054">Vector.C:54</a></div></div>
+<div class="ttc" id="a00131_html_aaa5bdbc03ef0ab86bad4b86b556a48d3"><div class="ttname"><a href="a00131.html#aaa5bdbc03ef0ab86bad4b86b556a48d3">QUESO::GslVector::mpiBcast</a></div><div class="ttdeci">void mpiBcast(int srcRank, const MpiComm &amp;bcastComm)</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00634">GslVector.C:634</a></div></div>
+<div class="ttc" id="a00131_html_a22094d1f67f612646f280a700f85c542"><div class="ttname"><a href="a00131.html#a22094d1f67f612646f280a700f85c542">QUESO::GslVector::getMinValueAndIndex</a></div><div class="ttdeci">void getMinValueAndIndex(double &amp;value, int &amp;index)</div><div class="ttdoc">This function returns minimum value in the vector this and its the index. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01072">GslVector.C:1072</a></div></div>
+<div class="ttc" id="a00652_html_a75bb589f75213c4ff7d02a6b7da5bbfc"><div class="ttname"><a href="a00652.html#a75bb589f75213c4ff7d02a6b7da5bbfc">QUESO::RawType_MPI_Op</a></div><div class="ttdeci">int RawType_MPI_Op</div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00061">MpiComm.h:61</a></div></div>
+<div class="ttc" id="a00131_html_a020583cdb101420d2ac34d8cd5c4c270"><div class="ttname"><a href="a00131.html#a020583cdb101420d2ac34d8cd5c4c270">QUESO::GslVector::cwSetUniform</a></div><div class="ttdeci">void cwSetUniform(const GslVector &amp;aVec, const GslVector &amp;bVec)</div><div class="ttdoc">This function sets component-wise a number uniformly distributed in the range of elements of [aVec...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00356">GslVector.C:356</a></div></div>
+<div class="ttc" id="a00131_html_a3634fbeeda1a009cf14e3da4e56fc663"><div class="ttname"><a href="a00131.html#a3634fbeeda1a009cf14e3da4e56fc663">QUESO::GslVector::norm2</a></div><div class="ttdeci">double norm2() const </div><div class="ttdoc">Returns the 2-norm (Euclidean norm) of the vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00280">GslVector.C:280</a></div></div>
+<div class="ttc" id="a00131_html_a10ad46b42ea27ee0085d89b4e09b075f"><div class="ttname"><a href="a00131.html#a10ad46b42ea27ee0085d89b4e09b075f">QUESO::GslVector::cwSetGaussian</a></div><div class="ttdeci">void cwSetGaussian(double mean, double stdDev)</div><div class="ttdoc">This function sets component-wise Gaussian random variates, with mean mean and standard deviation std...</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00337">GslVector.C:337</a></div></div>
+<div class="ttc" id="a00652_html_a159769395a413f58b974587d5f43bbc7"><div class="ttname"><a href="a00652.html#a159769395a413f58b974587d5f43bbc7">QUESO::scalarProduct</a></div><div class="ttdeci">double scalarProduct(const GslVector &amp;x, const GslVector &amp;y)</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l01136">GslVector.C:1136</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:40 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

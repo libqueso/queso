@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/surrogates/src/InterpolationSurrogateIOBase.C Source File</title>
+<title>queso-0.55.0: src/surrogates/src/InterpolationSurrogateDataSet.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_4fbc234301ba09cb4757c2384987a332.html">surrogates</a></li><li class="navelem"><a class="el" href="dir_1af1af64997f7c325a29ea07cc4360d4.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_b54671388bab177c11af29f6dd893ba2.html">surrogates</a></li><li class="navelem"><a class="el" href="dir_1c4a1bbec8b9e9436b29a73278884a09.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">InterpolationSurrogateIOBase.C</div>  </div>
+<div class="title">InterpolationSurrogateDataSet.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00645.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -76,7 +76,7 @@
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// This class</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/InterpolationSurrogateIOBase.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/InterpolationSurrogateDataSet.h&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// QUESO</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
@@ -85,20 +85,37 @@
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00141.html#aa8ba6167ceff5740cf549116c4fd99d8">   35</a></span>&#160;  <a class="code" href="a00141.html#aa8ba6167ceff5740cf549116c4fd99d8">InterpolationSurrogateIOBase&lt;V,M&gt;::InterpolationSurrogateIOBase</a>()</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    : m_domain(NULL),</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      m_data(NULL)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  {}</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">// end namespace QUESO</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// Instantiate</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00141.html">QUESO::InterpolationSurrogateIOBase&lt;QUESO::GslVector,QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00141_html"><div class="ttname"><a href="a00141.html">QUESO::InterpolationSurrogateIOBase</a></div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00035">InterpolationSurrogateIOBase.h:35</a></div></div>
-<div class="ttc" id="a00141_html_aa8ba6167ceff5740cf549116c4fd99d8"><div class="ttname"><a href="a00141.html#aa8ba6167ceff5740cf549116c4fd99d8">QUESO::InterpolationSurrogateIOBase::InterpolationSurrogateIOBase</a></div><div class="ttdeci">InterpolationSurrogateIOBase()</div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00035">InterpolationSurrogateIOBase.C:35</a></div></div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00140.html#a7d35bf67379e9b0afd13be28c30246fe">   35</a></span>&#160;  <a class="code" href="a00140.html#a71227219fcb0dca3198728cfecd906e4">InterpolationSurrogateDataSet&lt;V,M&gt;::InterpolationSurrogateDataSet</a>(<span class="keyword">const</span> <a class="code" href="a00057.html">BoxSubset&lt;V,M&gt;</a> &amp; domain,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                                                                    <span class="keyword">const</span> std::vector&lt;unsigned int&gt;&amp; n_points,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                                                                    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_datasets )</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    : m_datasets(n_datasets,NULL)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s = 0; s &lt; n_datasets; s++ )</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <a class="code" href="a00140.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>[s] = <span class="keyword">new</span> <a class="code" href="a00139.html">InterpolationSurrogateData&lt;V,M&gt;</a>( domain, n_points );</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00140.html#aa0af094673e17a1aee7c1e5bd0e91be2">   45</a></span>&#160;  <a class="code" href="a00140.html#aa0af094673e17a1aee7c1e5bd0e91be2">InterpolationSurrogateDataSet&lt;V,M&gt;::~InterpolationSurrogateDataSet</a>()</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">for</span>( <span class="keyword">typename</span> std::vector&lt;<a class="code" href="a00139.html">InterpolationSurrogateData&lt;V,M&gt;</a>*&gt;::iterator <a class="code" href="a00292.html#a76868a71f10b10fd75a76f81ad936660">it</a> = m_datasets.begin();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;         <a class="code" href="a00292.html#a76868a71f10b10fd75a76f81ad936660">it</a> != m_datasets.end(); ++<a class="code" href="a00292.html#a76868a71f10b10fd75a76f81ad936660">it</a> )</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keyword">delete</span> *<a class="code" href="a00292.html#a76868a71f10b10fd75a76f81ad936660">it</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;} <span class="comment">// end namespace QUESO</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Instantiate</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00140.html">QUESO::InterpolationSurrogateDataSet&lt;QUESO::GslVector,QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00140_html_a71227219fcb0dca3198728cfecd906e4"><div class="ttname"><a href="a00140.html#a71227219fcb0dca3198728cfecd906e4">QUESO::InterpolationSurrogateDataSet::InterpolationSurrogateDataSet</a></div><div class="ttdeci">InterpolationSurrogateDataSet()</div></div>
+<div class="ttc" id="a00139_html"><div class="ttname"><a href="a00139.html">QUESO::InterpolationSurrogateData</a></div><div class="ttdef"><b>Definition:</b> <a href="a00632_source.html#l00034">InterpolationSurrogateBase.h:34</a></div></div>
+<div class="ttc" id="a00140_html_a8af1851b14baab8cb2f30333cf907adc"><div class="ttname"><a href="a00140.html#a8af1851b14baab8cb2f30333cf907adc">QUESO::InterpolationSurrogateDataSet::m_datasets</a></div><div class="ttdeci">std::vector&lt; InterpolationSurrogateData&lt; V, M &gt; * &gt; m_datasets</div><div class="ttdoc">Data structure to hold all data sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00063">InterpolationSurrogateDataSet.h:63</a></div></div>
+<div class="ttc" id="a00292_html_a76868a71f10b10fd75a76f81ad936660"><div class="ttname"><a href="a00292.html#a76868a71f10b10fd75a76f81ad936660">it</a></div><div class="ttdeci">that you receive source code or can get it if you want it</div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00041">License.txt:41</a></div></div>
+<div class="ttc" id="a00140_html_aa0af094673e17a1aee7c1e5bd0e91be2"><div class="ttname"><a href="a00140.html#aa0af094673e17a1aee7c1e5bd0e91be2">QUESO::InterpolationSurrogateDataSet::~InterpolationSurrogateDataSet</a></div><div class="ttdeci">~InterpolationSurrogateDataSet()</div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00045">InterpolationSurrogateDataSet.C:45</a></div></div>
+<div class="ttc" id="a00140_html"><div class="ttname"><a href="a00140.html">QUESO::InterpolationSurrogateDataSet</a></div><div class="ttdoc">Container class for multiple, consistent InterpolationSurrogateData objects. </div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00041">InterpolationSurrogateDataSet.h:41</a></div></div>
+<div class="ttc" id="a00057_html"><div class="ttname"><a href="a00057.html">QUESO::BoxSubset</a></div><div class="ttdoc">Class representing a subset of a vector space shaped like a hypercube. </div><div class="ttdef"><b>Definition:</b> <a href="a00244_source.html#l00044">BoxSubset.h:44</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/src/ConcatenatedJointPdf.C Source File</title>
+<title>queso-0.55.0: src/stats/src/BetaJointPdf.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_4c88fa08bbee16224b3c1c0812e0e863.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_12ad124ea09f49810819695bb6998b06.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ConcatenatedJointPdf.C</div>  </div>
+<div class="title">BetaJointPdf.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00548.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,7 +75,7 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/ConcatenatedJointPdf.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/BetaJointPdf.h&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
@@ -83,208 +83,149 @@
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00058.html#aff646f6aafe63e66dca291925bad6ca1">   33</a></span>&#160;<a class="code" href="a00058.html#aff646f6aafe63e66dca291925bad6ca1">ConcatenatedJointPdf&lt;V,M&gt;::ConcatenatedJointPdf</a>(</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                     prefix,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00035.html">BaseJointPdf&lt;V,M&gt;</a>&amp; density1,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00035.html">BaseJointPdf&lt;V,M&gt;</a>&amp; density2,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet   &lt;V,M&gt;</a>&amp; concatenatedDomain)</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00053.html#a82b8baf377f485ac028207983a73618e">   33</a></span>&#160;<a class="code" href="a00053.html#a82b8baf377f485ac028207983a73618e">BetaJointPdf&lt;V,M&gt;::BetaJointPdf</a>(</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;V,M&gt;</a>&amp; domainSet,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> V&amp;                     alpha,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">const</span> V&amp;                     beta)</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  :</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00035.html">BaseJointPdf</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;concat&quot;</span>).c_str(),concatenatedDomain),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_densities             (2,(const <a class="code" href="a00035.html">BaseJointPdf</a>&lt;V,M&gt;*) NULL)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="a00058.html#a42ee130daadf7ceb0d1745011f5b1169">m_densities</a>[0] = &amp;density1;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00058.html#a42ee130daadf7ceb0d1745011f5b1169">m_densities</a>[1] = &amp;density2;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size1 = <a class="code" href="a00058.html#a42ee130daadf7ceb0d1745011f5b1169">m_densities</a>[0]-&gt;domainSet().vectorSpace().dimLocal();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size2 = <a class="code" href="a00058.html#a42ee130daadf7ceb0d1745011f5b1169">m_densities</a>[1]-&gt;domainSet().vectorSpace().dimLocal();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size  = concatenatedDomain.<a class="code" href="a00227.html#a923421590baf5bf93cf066e528f927dc">vectorSpace</a>().dimLocal();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00035.html">BaseJointPdf</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;uni&quot;</span>).c_str(),domainSet),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_alpha(alpha),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_beta (beta)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering BetaJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00041.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>((size1+size2), size, <span class="stringliteral">&quot;incompatible dimensions&quot;</span>);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00058.html#a96f8908c3ee9d975919624b37eea20bb">   53</a></span>&#160;<a class="code" href="a00058.html#aff646f6aafe63e66dca291925bad6ca1">ConcatenatedJointPdf&lt;V,M&gt;::ConcatenatedJointPdf</a>(</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                                          prefix,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">const</span> std::vector&lt;<span class="keyword">const</span> <a class="code" href="a00035.html">BaseJointPdf&lt;V,M&gt;</a>* &gt;&amp; densities,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;V,M&gt;</a>&amp;                         concatenatedDomain)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  :</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00035.html">BaseJointPdf</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;concat&quot;</span>).c_str(),concatenatedDomain),</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  m_densities             (densities.size(),(const <a class="code" href="a00035.html">BaseJointPdf</a>&lt;V,M&gt;*) NULL)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> sumSizes = 0;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; <a class="code" href="a00058.html#a42ee130daadf7ceb0d1745011f5b1169">m_densities</a>.size(); ++i) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="a00058.html#a42ee130daadf7ceb0d1745011f5b1169">m_densities</a>[i] = densities[i];</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    sumSizes += <a class="code" href="a00058.html#a42ee130daadf7ceb0d1745011f5b1169">m_densities</a>[i]-&gt;domainSet().vectorSpace().dimLocal();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size  = concatenatedDomain.<a class="code" href="a00227.html#a923421590baf5bf93cf066e528f927dc">vectorSpace</a>().dimLocal();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(sumSizes, size, <span class="stringliteral">&quot;incompatible dimensions&quot;</span>);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="a00058.html#a9b4a0c33fa7dc23034be19455de61bcd">   73</a></span>&#160;<a class="code" href="a00058.html#a9b4a0c33fa7dc23034be19455de61bcd">ConcatenatedJointPdf&lt;V,M&gt;::~ConcatenatedJointPdf</a>()</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">// Math methods-------------------------------------</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="a00058.html#a686ff513ae812f26f9a71705dd2082ad">   79</a></span>&#160;<a class="code" href="a00058.html#a686ff513ae812f26f9a71705dd2082ad">ConcatenatedJointPdf&lt;V,M&gt;::setNormalizationStyle</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> value)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; m_densities.size(); ++i) {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    m_densities[i]-&gt;setNormalizationStyle(value);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    *<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving BetaJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00041.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00053.html#aaa4264f75e61e066b44ab545a3d1ae39">   57</a></span>&#160;<a class="code" href="a00053.html#aaa4264f75e61e066b44ab545a3d1ae39">BetaJointPdf&lt;V,M&gt;::~BetaJointPdf</a>()</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// Math methods-------------------------------------</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="a00053.html#a14909bee55e4d764be71e7a313716d9b">   63</a></span>&#160;<a class="code" href="a00053.html#a14909bee55e4d764be71e7a313716d9b">BetaJointPdf&lt;V,M&gt;::actualValue</a>(</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">const</span> V&amp; domainVector,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">const</span> V* domainDirection,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        V* gradVector,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        M* hessianMatrix,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        V* hessianEffect)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="a00322.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(domainVector.sizeLocal(), this-&gt;m_domainSet.vectorSpace().dimLocal(), <span class="stringliteral">&quot;invalid input&quot;</span>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!(domainDirection || hessianMatrix || hessianEffect), <span class="stringliteral">&quot;incomplete code for hessianMatrix and hessianEffect calculations&quot;</span>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// No need to multiply by exp(m_logOfNormalizationFactor) because &#39;lnValue()&#39; is called</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">double</span> value = std::exp(this-&gt;lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">if</span> (gradVector) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// DM: This transformation may have issues near the boundary.  I haven&#39;t</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// fully explored this yet.</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// This evaluation is also normalised (if m_normalizationStyle is zero) and</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// so the gradient in physical space contains the normalisation constant.</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    (*gradVector) *= value;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="a00058.html#a7a3bbf8dab211968e9691a620fee0e4d">   89</a></span>&#160;<a class="code" href="a00058.html#a7a3bbf8dab211968e9691a620fee0e4d">ConcatenatedJointPdf&lt;V,M&gt;::actualValue</a>(</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">const</span> V&amp; domainVector,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">const</span> V* domainDirection,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        V* gradVector,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        M* hessianMatrix,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        V* hessianEffect)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering ConcatenatedJointPdf&lt;V,M&gt;::actualValue()&quot;</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(domainVector.sizeLocal(), this-&gt;m_domainSet.vectorSpace().dimLocal(), <span class="stringliteral">&quot;invalid input&quot;</span>);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <a class="code" href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!(domainDirection || gradVector || hessianMatrix || hessianEffect), <span class="stringliteral">&quot;incomplete code for gradVector, hessianMatrix and hessianEffect calculations&quot;</span>);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  std::vector&lt;V*&gt; vecs(m_densities.size(),(V*) NULL);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  std::vector&lt;double&gt; values(m_densities.size(),0.);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordtype">double</span> returnValue = 1.;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cummulativeSize = 0;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; vecs.size(); ++i) {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    vecs[i] = <span class="keyword">new</span> V(m_densities[i]-&gt;domainSet().vectorSpace().zeroVector());</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    domainVector.cwExtract(cummulativeSize,*(vecs[i]));</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    values[i] = m_densities[i]-&gt;actualValue(*(vecs[i]),NULL,NULL,NULL,NULL);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    returnValue *= values[i];</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 99)) {</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;In ConcatenatedJointPdf&lt;V,M&gt;::actualValue()&quot;</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, *(vecs[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;]) = &quot;</span>       &lt;&lt; *(vecs[i])</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: values[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span>        &lt;&lt; values[i]</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, temporary cumulative value = &quot;</span> &lt;&lt; returnValue</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    }</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    cummulativeSize += vecs[i]-&gt;sizeLocal();</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keyword">delete</span> vecs[i];</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="comment">//returnValue *= exp(m_logOfNormalizationFactor); // No need, because each PDF should be already normalized [PDF-11]</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving ConcatenatedJointPdf&lt;V,M&gt;::actualValue()&quot;</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, returnValue = &quot;</span>  &lt;&lt; returnValue</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  }</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordflow">return</span> returnValue;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;}</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="a00058.html#aca499666e5c3d3d26c562492a15ab112">  139</a></span>&#160;<a class="code" href="a00058.html#aca499666e5c3d3d26c562492a15ab112">ConcatenatedJointPdf&lt;V,M&gt;::lnValue</a>(</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="keyword">const</span> V&amp; domainVector,</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="keyword">const</span> V* domainDirection,</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        V* gradVector,</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        M* hessianMatrix,</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        V* hessianEffect)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering ConcatenatedJointPdf&lt;V,M&gt;::lnValue()&quot;</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordflow">return</span> value;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="a00053.html#a713d655107dd51eac9d1c19630359a06">   90</a></span>&#160;<a class="code" href="a00053.html#a713d655107dd51eac9d1c19630359a06">BetaJointPdf&lt;V,M&gt;::lnValue</a>(</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">const</span> V&amp; domainVector,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">const</span> V* domainDirection,</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        V* gradVector,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        M* hessianMatrix,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        V* hessianEffect)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <a class="code" href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!(domainDirection || hessianMatrix || hessianEffect), <span class="stringliteral">&quot;incomplete code for gradVector, hessianMatrix and hessianEffect calculations&quot;</span>);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordtype">double</span> aux = 0.;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordtype">double</span> result = 0.;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; domainVector.sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">if</span> (m_normalizationStyle == 0) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      aux = log(m_env.basicPdfs()-&gt;betaPdfActualValue(domainVector[i],m_alpha[i],m_beta[i]));</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      aux = (m_alpha[i]-1.)*log(domainVector[i]) + (m_beta[i]-1.)*log(1.-domainVector[i]);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">// The log of the beta pdf is</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="comment">// f(x) = (alpha - 1) * log(x) + (beta - 1) * log(1 - x)</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment">// Therefore</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="comment">// df/dx (x) = ((alpha - 1) / x) + ((1 - beta) / (1 - x))</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">if</span> (gradVector) {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <span class="comment">// We&#39;re computing grad of log of p which is p&#39; / p</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      (*gradVector)[i] = (m_alpha[i] - 1.0) / domainVector[i] +</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        (1.0 - m_beta[i]) / (1.0 - domainVector[i]);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 99)) {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;In BetaJointPdf&lt;V,M&gt;::lnValue()&quot;</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_normalizationStyle = &quot;</span>      &lt;&lt; m_normalizationStyle</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: domainVector[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span> &lt;&lt; domainVector[i]</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_alpha[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span>      &lt;&lt; m_alpha[i]</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_beta[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span>       &lt;&lt; m_beta[i]</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, log(pdf)= &quot;</span>                   &lt;&lt; aux</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    result += aux;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  result += m_logOfNormalizationFactor;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="a00053.html#aaa67d058285caffa8dcb0235fbaf7726">  137</a></span>&#160;<a class="code" href="a00053.html#aaa67d058285caffa8dcb0235fbaf7726">BetaJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="keywordtype">double</span> value = 0.;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering BetaJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  value = <a class="code" href="a00035.html#a7b7bdd13d2de51198bf75d522e02545b">BaseJointPdf&lt;V,M&gt;::commonComputeLogOfNormalizationFactor</a>(numSamples, updateFactorInternally);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving BetaJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, m_logOfNormalizationFactor = &quot;</span> &lt;&lt; m_logOfNormalizationFactor</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                            &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  }</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <a class="code" href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!(domainDirection || gradVector || hessianMatrix || hessianEffect), <span class="stringliteral">&quot;incomplete code for gradVector, hessianMatrix and hessianEffect calculations&quot;</span>);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  std::vector&lt;V*&gt; vecs(m_densities.size(),(V*) NULL);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  std::vector&lt;double&gt; values(m_densities.size(),0.);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="keywordtype">double</span> returnValue = 0.;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cummulativeSize = 0;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; vecs.size(); ++i) {</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    vecs[i] = <span class="keyword">new</span> V(m_densities[i]-&gt;domainSet().vectorSpace().zeroVector());</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    domainVector.cwExtract(cummulativeSize,*(vecs[i]));</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    values[i] = m_densities[i]-&gt;lnValue(*(vecs[i]),NULL,NULL,NULL,NULL);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    returnValue += values[i];</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 99)) {  <span class="comment">// gpmsa</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;In ConcatenatedJointPdf&lt;V,M&gt;::lnValue()&quot;</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, *(vecs[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;]) = &quot;</span>       &lt;&lt; *(vecs[i])</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: values[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span>        &lt;&lt; values[i]</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, temporary cumulative value = &quot;</span> &lt;&lt; returnValue</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    }</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    cummulativeSize += vecs[i]-&gt;sizeLocal();</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keyword">delete</span> vecs[i];</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  }</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <span class="comment">//returnValue += m_logOfNormalizationFactor; // No need, because each PDF should be already normalized [PDF-11]</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving ConcatenatedJointPdf&lt;V,M&gt;::lnValue()&quot;</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, returnValue = &quot;</span>  &lt;&lt; returnValue</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  }</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  <span class="keywordflow">return</span> returnValue;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;}</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno"><a class="line" href="a00058.html#ad960a39a781a7a891df0ae0ee4670199">  187</a></span>&#160;<a class="code" href="a00058.html#ad960a39a781a7a891df0ae0ee4670199">ConcatenatedJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordtype">double</span> value = 0.;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering ConcatenatedJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  }</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <span class="keywordtype">double</span> volume = m_domainSet.volume();</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="keywordflow">if</span> (((boost::math::isnan)(volume)) ||</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      (volume == -INFINITY         ) ||</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      (volume ==  INFINITY         ) ||</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      (volume &lt;= 0.                )) {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">// Do nothing</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; m_densities.size(); ++i) {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      m_densities[i]-&gt;computeLogOfNormalizationFactor(numSamples, updateFactorInternally);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    }</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving ConcatenatedJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, m_logOfNormalizationFactor = &quot;</span> &lt;&lt; m_logOfNormalizationFactor</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  }</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;}</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00058.html">QUESO::ConcatenatedJointPdf&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00058_html_a9b4a0c33fa7dc23034be19455de61bcd"><div class="ttname"><a href="a00058.html#a9b4a0c33fa7dc23034be19455de61bcd">QUESO::ConcatenatedJointPdf::~ConcatenatedJointPdf</a></div><div class="ttdeci">~ConcatenatedJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00073">ConcatenatedJointPdf.C:73</a></div></div>
-<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00056">JointPdf.h:56</a></div></div>
-<div class="ttc" id="a00058_html_aff646f6aafe63e66dca291925bad6ca1"><div class="ttname"><a href="a00058.html#aff646f6aafe63e66dca291925bad6ca1">QUESO::ConcatenatedJointPdf::ConcatenatedJointPdf</a></div><div class="ttdeci">ConcatenatedJointPdf(const char *prefix, const BaseJointPdf&lt; V, M &gt; &amp;density1, const BaseJointPdf&lt; V, M &gt; &amp;density2, const VectorSet&lt; V, M &gt; &amp;concatenatedDomain)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00033">ConcatenatedJointPdf.C:33</a></div></div>
-<div class="ttc" id="a00319_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00085">asserts.h:85</a></div></div>
-<div class="ttc" id="a00058_html_a7a3bbf8dab211968e9691a620fee0e4d"><div class="ttname"><a href="a00058.html#a7a3bbf8dab211968e9691a620fee0e4d">QUESO::ConcatenatedJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Calculates the actual values of each density. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00089">ConcatenatedJointPdf.C:89</a></div></div>
-<div class="ttc" id="a00319_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00069">asserts.h:69</a></div></div>
-<div class="ttc" id="a00058_html"><div class="ttname"><a href="a00058.html">QUESO::ConcatenatedJointPdf</a></div><div class="ttdoc">A class for handling concatenated PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00463_source.html#l00055">ConcatenatedJointPdf.h:55</a></div></div>
-<div class="ttc" id="a00058_html_ad960a39a781a7a891df0ae0ee4670199"><div class="ttname"><a href="a00058.html#ad960a39a781a7a891df0ae0ee4670199">QUESO::ConcatenatedJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00187">ConcatenatedJointPdf.C:187</a></div></div>
-<div class="ttc" id="a00058_html_a686ff513ae812f26f9a71705dd2082ad"><div class="ttname"><a href="a00058.html#a686ff513ae812f26f9a71705dd2082ad">QUESO::ConcatenatedJointPdf::setNormalizationStyle</a></div><div class="ttdeci">void setNormalizationStyle(unsigned int value) const </div><div class="ttdoc">Sets the normalization style of all densities to value. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00079">ConcatenatedJointPdf.C:79</a></div></div>
-<div class="ttc" id="a00058_html_a42ee130daadf7ceb0d1745011f5b1169"><div class="ttname"><a href="a00058.html#a42ee130daadf7ceb0d1745011f5b1169">QUESO::ConcatenatedJointPdf::m_densities</a></div><div class="ttdeci">std::vector&lt; const BaseJointPdf&lt; V, M &gt; * &gt; m_densities</div><div class="ttdef"><b>Definition:</b> <a href="a00463_source.html#l00103">ConcatenatedJointPdf.h:103</a></div></div>
-<div class="ttc" id="a00058_html_aca499666e5c3d3d26c562492a15ab112"><div class="ttname"><a href="a00058.html#aca499666e5c3d3d26c562492a15ab112">QUESO::ConcatenatedJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Calculates the logarithm of the values of each density. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00139">ConcatenatedJointPdf.C:139</a></div></div>
-<div class="ttc" id="a00227_html_a923421590baf5bf93cf066e528f927dc"><div class="ttname"><a href="a00227.html#a923421590baf5bf93cf066e528f927dc">QUESO::VectorSet::vectorSpace</a></div><div class="ttdeci">virtual const VectorSpace&lt; V, M &gt; &amp; vectorSpace() const =0</div><div class="ttdoc">Vector space to which this set belongs to. See template specialization. </div></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="keywordflow">return</span> value;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00053.html">QUESO::BetaJointPdf&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00400">Environment.C:400</a></div></div>
+<div class="ttc" id="a00053_html_a82b8baf377f485ac028207983a73618e"><div class="ttname"><a href="a00053.html#a82b8baf377f485ac028207983a73618e">QUESO::BetaJointPdf::BetaJointPdf</a></div><div class="ttdeci">BetaJointPdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;alpha, const V &amp;beta)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00033">BetaJointPdf.C:33</a></div></div>
+<div class="ttc" id="a00053_html_a713d655107dd51eac9d1c19630359a06"><div class="ttname"><a href="a00053.html#a713d655107dd51eac9d1c19630359a06">QUESO::BetaJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the Beta PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00090">BetaJointPdf.C:90</a></div></div>
+<div class="ttc" id="a00053_html_aaa67d058285caffa8dcb0235fbaf7726"><div class="ttname"><a href="a00053.html#aaa67d058285caffa8dcb0235fbaf7726">QUESO::BetaJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00137">BetaJointPdf.C:137</a></div></div>
+<div class="ttc" id="a00230_html"><div class="ttname"><a href="a00230.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00261_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00505_source.html#l00056">JointPdf.h:56</a></div></div>
+<div class="ttc" id="a00035_html_a7b7bdd13d2de51198bf75d522e02545b"><div class="ttname"><a href="a00035.html#a7b7bdd13d2de51198bf75d522e02545b">QUESO::BaseJointPdf::commonComputeLogOfNormalizationFactor</a></div><div class="ttdeci">double commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Common method (to the derived classes) to compute the logarithm of the normalization factor...</div><div class="ttdef"><b>Definition:</b> <a href="a00590_source.html#l00077">JointPdf.C:77</a></div></div>
+<div class="ttc" id="a00053_html_aaa4264f75e61e066b44ab545a3d1ae39"><div class="ttname"><a href="a00053.html#aaa4264f75e61e066b44ab545a3d1ae39">QUESO::BetaJointPdf::~BetaJointPdf</a></div><div class="ttdeci">~BetaJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00057">BetaJointPdf.C:57</a></div></div>
+<div class="ttc" id="a00322_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00069">asserts.h:69</a></div></div>
+<div class="ttc" id="a00322_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00322.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00085">asserts.h:85</a></div></div>
+<div class="ttc" id="a00041_html_a6e81dc902aca6a546877da99b2f4a169"><div class="ttname"><a href="a00041.html#a6e81dc902aca6a546877da99b2f4a169">QUESO::BaseScalarFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00253_source.html#l00081">ScalarFunction.h:81</a></div></div>
+<div class="ttc" id="a00041_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00041.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00253_source.html#l00080">ScalarFunction.h:80</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00278">Environment.C:278</a></div></div>
+<div class="ttc" id="a00053_html"><div class="ttname"><a href="a00053.html">QUESO::BetaJointPdf</a></div><div class="ttdoc">A class for handling Beta joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00463_source.html#l00049">BetaJointPdf.h:49</a></div></div>
+<div class="ttc" id="a00053_html_a14909bee55e4d764be71e7a313716d9b"><div class="ttname"><a href="a00053.html#a14909bee55e4d764be71e7a313716d9b">QUESO::BetaJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the Beta PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00063">BetaJointPdf.C:63</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

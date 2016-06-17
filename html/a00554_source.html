@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/src/GammaJointPdf.C Source File</title>
+<title>queso-0.55.0: src/stats/src/ExponentialMatrixCovarianceFunction.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_4c88fa08bbee16224b3c1c0812e0e863.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_12ad124ea09f49810819695bb6998b06.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GammaJointPdf.C</div>  </div>
+<div class="title">ExponentialMatrixCovarianceFunction.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00554.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,137 +75,119 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/GammaJointPdf.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/ExponentialMatrixCovarianceFunction.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00086.html#aae9aa55f730ccefa107e1163bdb8e91a">   33</a></span>&#160;<a class="code" href="a00086.html#aae9aa55f730ccefa107e1163bdb8e91a">GammaJointPdf&lt;V,M&gt;::GammaJointPdf</a>(</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;V,M&gt;</a>&amp; domainSet,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> V&amp;                     a,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">const</span> V&amp;                     b)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  :</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00035.html">BaseJointPdf</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;uni&quot;</span>).c_str(),domainSet),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_a(a),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_b(b)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GammaJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00041.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    *<a class="code" href="a00041.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving GammaJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00041.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00086.html#a457ae0ae5485dce6e68d03fc8153c2ff">   57</a></span>&#160;<a class="code" href="a00086.html#a457ae0ae5485dce6e68d03fc8153c2ff">GammaJointPdf&lt;V,M&gt;::~GammaJointPdf</a>()</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// Math methods-------------------------------------</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="a00086.html#a4907d38d266d271d34cce9be333a95df">   63</a></span>&#160;<a class="code" href="a00086.html#a4907d38d266d271d34cce9be333a95df">GammaJointPdf&lt;V,M&gt;::actualValue</a>(</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">const</span> V&amp; domainVector,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">const</span> V* domainDirection,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        V* gradVector,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        M* hessianMatrix,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        V* hessianEffect)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(domainVector.sizeLocal(), this-&gt;m_domainSet.vectorSpace().dimLocal(), <span class="stringliteral">&quot;invalid input&quot;</span>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!(domainDirection || gradVector || hessianMatrix || hessianEffect), <span class="stringliteral">&quot;incomplete code for gradVector, hessianMatrix and hessianEffect calculations&quot;</span>);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// No need to multiply by exp(m_logOfNormalizationFactor) because &#39;lnValue()&#39; is called [PDF-06]</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">return</span> exp(this-&gt;lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="a00086.html#a990337e7c25a4214b15fd71cb6deb384">   80</a></span>&#160;<a class="code" href="a00086.html#a990337e7c25a4214b15fd71cb6deb384">GammaJointPdf&lt;V,M&gt;::lnValue</a>(</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">const</span> V&amp; domainVector,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">const</span> V* domainDirection,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        V* gradVector,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        M* hessianMatrix,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        V* hessianEffect)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <a class="code" href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!(domainDirection || gradVector || hessianMatrix || hessianEffect), <span class="stringliteral">&quot;incomplete code for gradVector, hessianMatrix and hessianEffect calculations&quot;</span>);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordtype">double</span> aux = 0.;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">double</span> result = 0.;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; domainVector.sizeLocal(); ++i) {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">if</span> (m_normalizationStyle == 0) {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="comment">//aux = log(gsl_ran_gamma_pdf(domainVector[i],m_a[i],m_b[i]));</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      aux = log(m_env.basicPdfs()-&gt;gammaPdfActualValue(domainVector[i],m_a[i],m_b[i]));</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      aux = (m_a[i]-1.)*log(domainVector[i]) - domainVector[i]/m_b[i];</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 99)) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;In GammaJointPdf&lt;V,M&gt;::lnValue()&quot;</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_normalizationStyle = &quot;</span>      &lt;&lt; m_normalizationStyle</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: domainVector[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span> &lt;&lt; domainVector[i]</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_a[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span>          &lt;&lt; m_a[i]</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_b[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span>          &lt;&lt; m_b[i]</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, log(pdf)= &quot;</span>                   &lt;&lt; aux</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    result += aux;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Default constructor -----------------------------</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M, <span class="keyword">class</span> Q_V, <span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00077.html#a15ab626ab0e3ee4adcdc4460d79a8cb7">   31</a></span>&#160;<a class="code" href="a00077.html#a15ab626ab0e3ee4adcdc4460d79a8cb7">ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::ExponentialMatrixCovarianceFunction</a>(</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                      prefix,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; basicDomainSet,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;Q_V,Q_M&gt;</a>&amp; imageSet,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> Q_M&amp;                       sigmas,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> Q_M&amp;                       as)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00036.html">BaseMatrixCovarianceFunction</a>&lt;P_V,P_M,Q_V,Q_M&gt;(prefix,basicDomainSet,imageSet),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_sigmas(NULL),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_as    (NULL)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00036.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00036.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    *<a class="code" href="a00036.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00036.html#a05865387f77ce48e71ab2448982c5616">m_prefix</a></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="a00077.html#a4da6af8ffd336294a3d7a89c5258099e">m_sigmas</a> = <span class="keyword">new</span> Q_M(sigmas);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="a00077.html#a63e36890c98437a802ba59be08fb166b">m_as</a>     = <span class="keyword">new</span> Q_M(as);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> matrixOrder = <a class="code" href="a00036.html#aa6e05a29048771a3a327b82cea09d480">m_imageSet</a>.<a class="code" href="a00230.html#a923421590baf5bf93cf066e528f927dc">vectorSpace</a>().<a class="code" href="a00231.html#a5829a1f4f996f8307c840b705144d666">dimLocal</a>();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00322.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00077.html#a4da6af8ffd336294a3d7a89c5258099e">m_sigmas</a>-&gt;numRowsLocal(), matrixOrder, <span class="stringliteral">&quot;m_sigmas has invalid number of rows&quot;</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00322.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00077.html#a4da6af8ffd336294a3d7a89c5258099e">m_sigmas</a>-&gt;numCols(), matrixOrder, <span class="stringliteral">&quot;m_sigmas has invalid number of columns&quot;</span>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="a00322.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00077.html#a63e36890c98437a802ba59be08fb166b">m_as</a>-&gt;numRowsLocal(), matrixOrder, <span class="stringliteral">&quot;m_as has invalid number of rows&quot;</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00322.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00077.html#a63e36890c98437a802ba59be08fb166b">m_as</a>-&gt;numCols(), matrixOrder, <span class="stringliteral">&quot;m_as has invalid number of columns&quot;</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00036.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00036.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    *<a class="code" href="a00036.html#a2bf98f6576db775109e240a2d828c578">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00036.html#a05865387f77ce48e71ab2448982c5616">m_prefix</a></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M, <span class="keyword">class</span> Q_V, <span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00077.html#aa3141a3558de01ca06ca39698e872396">   69</a></span>&#160;<a class="code" href="a00077.html#aa3141a3558de01ca06ca39698e872396">ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::~ExponentialMatrixCovarianceFunction</a>()</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::destructor()&quot;</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">delete</span> m_as;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">delete</span> m_sigmas;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::destructor()&quot;</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// Math methods -------------------------------------</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M, <span class="keyword">class</span> Q_V, <span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="a00077.html#a039c72a29ea453320cbdb2a6e54a360a">   89</a></span>&#160;<a class="code" href="a00077.html#a039c72a29ea453320cbdb2a6e54a360a">ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::covMatrix</a>(<span class="keyword">const</span> P_V&amp; domainVector1, <span class="keyword">const</span> P_V&amp; domainVector2, Q_M&amp; imageMatrix)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::covMatrix()&quot;</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                          &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> matrixOrder = m_imageSet.vectorSpace().dimLocal();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <a class="code" href="a00322.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(imageMatrix.numRowsLocal(), matrixOrder, <span class="stringliteral">&quot;imageMatrix has invalid number of rows&quot;</span>);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <a class="code" href="a00322.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(imageMatrix.numCols(), matrixOrder, <span class="stringliteral">&quot;imageMatrix has invalid number of columns&quot;</span>);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">double</span> tmpSq = -(domainVector1 - domainVector2).norm2Sq();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; matrixOrder; ++i) {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; matrixOrder; ++j) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keywordtype">double</span> tmp = tmpSq/( (*m_sigmas)(i,j) * (*m_sigmas)(i,j) );</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      imageMatrix(i,j) = (*m_as)(i,j) * std::exp(tmp);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  result += m_logOfNormalizationFactor; <span class="comment">// [PDF-06]</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="a00086.html#a5fb1d17a267c8110442689721e74c8d4">  117</a></span>&#160;<a class="code" href="a00086.html#a5fb1d17a267c8110442689721e74c8d4">GammaJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordtype">double</span> value = 0.;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering GammaJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  value = <a class="code" href="a00035.html#a7b7bdd13d2de51198bf75d522e02545b">BaseJointPdf&lt;V,M&gt;::commonComputeLogOfNormalizationFactor</a>(numSamples, updateFactorInternally);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving GammaJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, m_logOfNormalizationFactor = &quot;</span> &lt;&lt; m_logOfNormalizationFactor</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00086.html">QUESO::GammaJointPdf&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00396">Environment.C:396</a></div></div>
-<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00086_html_a990337e7c25a4214b15fd71cb6deb384"><div class="ttname"><a href="a00086.html#a990337e7c25a4214b15fd71cb6deb384">QUESO::GammaJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the Gamma PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00080">GammaJointPdf.C:80</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00056">JointPdf.h:56</a></div></div>
-<div class="ttc" id="a00035_html_a7b7bdd13d2de51198bf75d522e02545b"><div class="ttname"><a href="a00035.html#a7b7bdd13d2de51198bf75d522e02545b">QUESO::BaseJointPdf::commonComputeLogOfNormalizationFactor</a></div><div class="ttdeci">double commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Common method (to the derived classes) to compute the logarithm of the normalization factor...</div><div class="ttdef"><b>Definition:</b> <a href="a00587_source.html#l00077">JointPdf.C:77</a></div></div>
-<div class="ttc" id="a00086_html_aae9aa55f730ccefa107e1163bdb8e91a"><div class="ttname"><a href="a00086.html#aae9aa55f730ccefa107e1163bdb8e91a">QUESO::GammaJointPdf::GammaJointPdf</a></div><div class="ttdeci">GammaJointPdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;a, const V &amp;b)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00033">GammaJointPdf.C:33</a></div></div>
-<div class="ttc" id="a00086_html_a5fb1d17a267c8110442689721e74c8d4"><div class="ttname"><a href="a00086.html#a5fb1d17a267c8110442689721e74c8d4">QUESO::GammaJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00117">GammaJointPdf.C:117</a></div></div>
-<div class="ttc" id="a00041_html_a6e81dc902aca6a546877da99b2f4a169"><div class="ttname"><a href="a00041.html#a6e81dc902aca6a546877da99b2f4a169">QUESO::BaseScalarFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00250_source.html#l00081">ScalarFunction.h:81</a></div></div>
-<div class="ttc" id="a00319_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00085">asserts.h:85</a></div></div>
-<div class="ttc" id="a00041_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00041.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00250_source.html#l00080">ScalarFunction.h:80</a></div></div>
-<div class="ttc" id="a00319_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00319.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00069">asserts.h:69</a></div></div>
-<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
-<div class="ttc" id="a00086_html"><div class="ttname"><a href="a00086.html">QUESO::GammaJointPdf</a></div><div class="ttdoc">A class for handling Gamma joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00052">GammaJointPdf.h:52</a></div></div>
-<div class="ttc" id="a00086_html_a4907d38d266d271d34cce9be333a95df"><div class="ttname"><a href="a00086.html#a4907d38d266d271d34cce9be333a95df">QUESO::GammaJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the Gamma PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00063">GammaJointPdf.C:63</a></div></div>
-<div class="ttc" id="a00086_html_a457ae0ae5485dce6e68d03fc8153c2ff"><div class="ttname"><a href="a00086.html#a457ae0ae5485dce6e68d03fc8153c2ff">QUESO::GammaJointPdf::~GammaJointPdf</a></div><div class="ttdeci">~GammaJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00057">GammaJointPdf.C:57</a></div></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 54)) {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving ExponentialMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::covMatrix()&quot;</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                          &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00400">Environment.C:400</a></div></div>
+<div class="ttc" id="a00036_html_aa6e05a29048771a3a327b82cea09d480"><div class="ttname"><a href="a00036.html#aa6e05a29048771a3a327b82cea09d480">QUESO::BaseMatrixCovarianceFunction::m_imageSet</a></div><div class="ttdeci">const VectorSet&lt; Q_V, Q_M &gt; &amp; m_imageSet</div><div class="ttdef"><b>Definition:</b> <a href="a00510_source.html#l00084">MatrixCovarianceFunction.h:84</a></div></div>
+<div class="ttc" id="a00036_html_a2bf98f6576db775109e240a2d828c578"><div class="ttname"><a href="a00036.html#a2bf98f6576db775109e240a2d828c578">QUESO::BaseMatrixCovarianceFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00510_source.html#l00081">MatrixCovarianceFunction.h:81</a></div></div>
+<div class="ttc" id="a00077_html_a15ab626ab0e3ee4adcdc4460d79a8cb7"><div class="ttname"><a href="a00077.html#a15ab626ab0e3ee4adcdc4460d79a8cb7">QUESO::ExponentialMatrixCovarianceFunction::ExponentialMatrixCovarianceFunction</a></div><div class="ttdeci">ExponentialMatrixCovarianceFunction(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;basicDomainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet, const Q_M &amp;sigmas, const Q_M &amp;as)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00031">ExponentialMatrixCovarianceFunction.C:31</a></div></div>
+<div class="ttc" id="a00230_html"><div class="ttname"><a href="a00230.html">QUESO::VectorSet&lt; P_V, P_M &gt;</a></div></div>
+<div class="ttc" id="a00036_html_a05865387f77ce48e71ab2448982c5616"><div class="ttname"><a href="a00036.html#a05865387f77ce48e71ab2448982c5616">QUESO::BaseMatrixCovarianceFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00510_source.html#l00082">MatrixCovarianceFunction.h:82</a></div></div>
+<div class="ttc" id="a00230_html_a923421590baf5bf93cf066e528f927dc"><div class="ttname"><a href="a00230.html#a923421590baf5bf93cf066e528f927dc">QUESO::VectorSet::vectorSpace</a></div><div class="ttdeci">virtual const VectorSpace&lt; V, M &gt; &amp; vectorSpace() const =0</div><div class="ttdoc">Vector space to which this set belongs to. See template specialization. </div></div>
+<div class="ttc" id="a00077_html_aa3141a3558de01ca06ca39698e872396"><div class="ttname"><a href="a00077.html#aa3141a3558de01ca06ca39698e872396">QUESO::ExponentialMatrixCovarianceFunction::~ExponentialMatrixCovarianceFunction</a></div><div class="ttdeci">virtual ~ExponentialMatrixCovarianceFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00069">ExponentialMatrixCovarianceFunction.C:69</a></div></div>
+<div class="ttc" id="a00322_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00322.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00085">asserts.h:85</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00278">Environment.C:278</a></div></div>
+<div class="ttc" id="a00077_html_a039c72a29ea453320cbdb2a6e54a360a"><div class="ttname"><a href="a00077.html#a039c72a29ea453320cbdb2a6e54a360a">QUESO::ExponentialMatrixCovarianceFunction::covMatrix</a></div><div class="ttdeci">void covMatrix(const P_V &amp;domainVector1, const P_V &amp;domainVector2, Q_M &amp;imageMatrix) const </div><div class="ttdoc">Calculates the covariance matrix, given two parameter domains. </div><div class="ttdef"><b>Definition:</b> <a href="a00554_source.html#l00089">ExponentialMatrixCovarianceFunction.C:89</a></div></div>
+<div class="ttc" id="a00077_html_a4da6af8ffd336294a3d7a89c5258099e"><div class="ttname"><a href="a00077.html#a4da6af8ffd336294a3d7a89c5258099e">QUESO::ExponentialMatrixCovarianceFunction::m_sigmas</a></div><div class="ttdeci">Q_M * m_sigmas</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00078">ExponentialMatrixCovarianceFunction.h:78</a></div></div>
+<div class="ttc" id="a00231_html_a5829a1f4f996f8307c840b705144d666"><div class="ttname"><a href="a00231.html#a5829a1f4f996f8307c840b705144d666">QUESO::VectorSpace::dimLocal</a></div><div class="ttdeci">unsigned int dimLocal() const </div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00170">VectorSpace.C:170</a></div></div>
+<div class="ttc" id="a00077_html_a63e36890c98437a802ba59be08fb166b"><div class="ttname"><a href="a00077.html#a63e36890c98437a802ba59be08fb166b">QUESO::ExponentialMatrixCovarianceFunction::m_as</a></div><div class="ttdeci">Q_M * m_as</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00079">ExponentialMatrixCovarianceFunction.h:79</a></div></div>
+<div class="ttc" id="a00036_html"><div class="ttname"><a href="a00036.html">QUESO::BaseMatrixCovarianceFunction</a></div><div class="ttdoc">A templated (base) class to accommodate covariance matrix of (random) vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00510_source.html#l00057">MatrixCovarianceFunction.h:57</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

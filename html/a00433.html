@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/misc/inc/ArrayOfOneDGrids.h File Reference</title>
+<title>queso-0.55.0: src/misc/inc/1D1DFunction.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,27 +43,30 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_cef55f19861ce62c0ca627401191ab0f.html">misc</a></li><li class="navelem"><a class="el" href="dir_13f3ced7e7515c530250c895de57efa8.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_b78c18289fd7719ff0daf45dba9bb4e6.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">ArrayOfOneDGrids.h File Reference</div>  </div>
+<div class="title">1D1DFunction.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Class to accommodate arrays of one-dimensional grid.  
-<a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;queso/OneDGrid.h&gt;</code><br/>
-<code>#include &lt;queso/VectorSpace.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;queso/ScalarSequence.h&gt;</code><br/>
+<code>#include &lt;queso/1DQuadrature.h&gt;</code><br/>
+<code>#include &lt;queso/Environment.h&gt;</code><br/>
+<code>#include &lt;queso/Defines.h&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;math.h&gt;</code><br/>
+<code>#include &lt;fstream&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for ArrayOfOneDGrids.h:</div>
+Include dependency graph for 1D1DFunction.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00852.png" border="0" usemap="#src_2misc_2inc_2_array_of_one_d_grids_8h" alt=""/></div>
-<map name="src_2misc_2inc_2_array_of_one_d_grids_8h" id="src_2misc_2inc_2_array_of_one_d_grids_8h">
+<div class="center"><img src="a00854.png" border="0" usemap="#src_2misc_2inc_21_d1_d_function_8h" alt=""/></div>
+<map name="src_2misc_2inc_21_d1_d_function_8h" id="src_2misc_2inc_21_d1_d_function_8h">
 </map>
 </div>
 </div>
@@ -71,22 +74,58 @@ Include dependency graph for ArrayOfOneDGrids.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html">QUESO::ArrayOfOneDGrids&lt; V, M &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to accommodate arrays of one-dimensional grid.  <a href="a00024.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html">QUESO::Base1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for one-dimensional functions.  <a href="a00030.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00112.html">QUESO::Generic1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for generic one-dimensional functions.  <a href="a00112.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00062.html">QUESO::Constant1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for constant one-dimensional functions.  <a href="a00062.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00156.html">QUESO::Linear1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for linear one-dimensional functions.  <a href="a00156.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00181.html">QUESO::PiecewiseLinear1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for piecewise-linear one-dimensional functions.  <a href="a00181.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00184.html">QUESO::Quadratic1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for one-dimensional quadratic functions.  <a href="a00184.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00190.html">QUESO::Sampled1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for one-dimensional sampled functions.  <a href="a00190.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00197.html">QUESO::ScalarTimesFunc1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for multiplication of a one-dimensional function by a scalar.  <a href="a00197.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.html">QUESO::FuncTimesFunc1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for multiplication of a one-dimensional function by another.  <a href="a00085.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00084.html">QUESO::FuncPlusFunc1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for addition of a one-dimensional function with another.  <a href="a00084.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00155.html">QUESO::LagrangePolynomial1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for one-dimensional Lagrange polynomials.  <a href="a00155.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00154.html">QUESO::LagrangeBasis1D1DFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for Lagrange polynomial basis.  <a href="a00154.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
+<tr class="memitem:a00652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a8c82b1fac926f75ad3e18cbd2d6a1b9d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a8c82b1fac926f75ad3e18cbd2d6a1b9d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00652.html#a8c82b1fac926f75ad3e18cbd2d6a1b9d">QUESO::SubF1F2Gaussian2dKdeIntegral</a> (const ScalarSequence&lt; T &gt; &amp;scalarSeq1, const ScalarSequence&lt; T &gt; &amp;scalarSeq2, unsigned int initialPos, double scaleValue1, double scaleValue2, const Base1D1DFunction &amp;func1, const Base1D1DFunction &amp;func2, unsigned int quadratureOrder)</td></tr>
+<tr class="memdesc:a8c82b1fac926f75ad3e18cbd2d6a1b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the integral of a 2D Gaussian KDE.  <a href="#a8c82b1fac926f75ad3e18cbd2d6a1b9d">More...</a><br/></td></tr>
+<tr class="separator:a8c82b1fac926f75ad3e18cbd2d6a1b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class to accommodate arrays of one-dimensional grid. </p>
-
-<p>Definition in file <a class="el" href="a00433_source.html">ArrayOfOneDGrids.h</a>.</p>
-</div></div><!-- contents -->
+</div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/gp/src/GPMSAOptions.C File Reference</title>
+<title>queso-0.55.0: src/gp/src/GPMSA.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,25 +43,24 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_4b3710b33bc76bf67ad04126b28c22f5.html">gp</a></li><li class="navelem"><a class="el" href="dir_c27e6041ef44d82ece3aa63cf0602348.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_b4cf28f9c7017ae598e01d89fd5623b0.html">gp</a></li><li class="navelem"><a class="el" href="dir_e7877959a931b5afcc5b6fe77bf66ee1.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">GPMSAOptions.C File Reference</div>  </div>
+<div class="title">GPMSA.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;boost/program_options.hpp&gt;</code><br/>
-<code>#include &lt;queso/GPMSAOptions.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;queso/GPMSA.h&gt;</code><br/>
+<code>#include &lt;queso/GslVector.h&gt;</code><br/>
+<code>#include &lt;queso/GslMatrix.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for GPMSAOptions.C:</div>
+Include dependency graph for GPMSA.C:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00846.png" border="0" usemap="#src_2gp_2src_2_g_p_m_s_a_options_8_c" alt=""/></div>
-<map name="src_2gp_2src_2_g_p_m_s_a_options_8_c" id="src_2gp_2src_2_g_p_m_s_a_options_8_c">
+<div class="center"><img src="a00847.png" border="0" usemap="#src_2gp_2src_2_g_p_m_s_a_8_c" alt=""/></div>
+<map name="src_2gp_2src_2_g_p_m_s_a_8_c" id="src_2gp_2src_2_g_p_m_s_a_8_c">
 </map>
 </div>
 </div>
@@ -69,219 +68,12 @@ Include dependency graph for GPMSAOptions.C:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
+<tr class="memitem:a00652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:af96761787910077ee1ab29847872ef60"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#af96761787910077ee1ab29847872ef60">UQ_GPMSA_HELP</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
-<tr class="separator:af96761787910077ee1ab29847872ef60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb09f4464432f74a92242c7523112c06"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#acb09f4464432f74a92242c7523112c06">UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV</a>&#160;&#160;&#160;5.0</td></tr>
-<tr class="separator:acb09f4464432f74a92242c7523112c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50ebd5441d0d750e5a5b51b9968e6ce6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#a50ebd5441d0d750e5a5b51b9968e6ce6">UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV</a>&#160;&#160;&#160;0.2</td></tr>
-<tr class="separator:a50ebd5441d0d750e5a5b51b9968e6ce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae947289dea29455295dc5825cb13b532"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#ae947289dea29455295dc5825cb13b532">UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV</a>&#160;&#160;&#160;1.0</td></tr>
-<tr class="separator:ae947289dea29455295dc5825cb13b532"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f173a44ff9de29d42fab8a2e644be6d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#a6f173a44ff9de29d42fab8a2e644be6d">UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV</a>&#160;&#160;&#160;0.1</td></tr>
-<tr class="separator:a6f173a44ff9de29d42fab8a2e644be6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53a537cf137b6f1da84b93ed5f647ecd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#a53a537cf137b6f1da84b93ed5f647ecd">UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV</a>&#160;&#160;&#160;1.0</td></tr>
-<tr class="separator:a53a537cf137b6f1da84b93ed5f647ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdc6832f2813b91c115c6dd8ae9718c0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#abdc6832f2813b91c115c6dd8ae9718c0">UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV</a>&#160;&#160;&#160;1e4</td></tr>
-<tr class="separator:abdc6832f2813b91c115c6dd8ae9718c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d9fda161e4d83e4b7696783e6c3744c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#a9d9fda161e4d83e4b7696783e6c3744c">UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV</a>&#160;&#160;&#160;1.0</td></tr>
-<tr class="separator:a9d9fda161e4d83e4b7696783e6c3744c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad364905f1f679c4835eea560ccd346b9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#ad364905f1f679c4835eea560ccd346b9">UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV</a>&#160;&#160;&#160;0.1</td></tr>
-<tr class="separator:ad364905f1f679c4835eea560ccd346b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3a0a7a89cc80e25f3e3fb00d13ff97b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#af3a0a7a89cc80e25f3e3fb00d13ff97b">UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV</a>&#160;&#160;&#160;3.0</td></tr>
-<tr class="separator:af3a0a7a89cc80e25f3e3fb00d13ff97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc3d9b07ace7468b8c4f7ebef0cd2b59"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00426.html#abc3d9b07ace7468b8c4f7ebef0cd2b59">UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV</a>&#160;&#160;&#160;333.333</td></tr>
-<tr class="separator:abc3d9b07ace7468b8c4f7ebef0cd2b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ad2cbfecce51160c3b71e4f14611201ef"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#ad2cbfecce51160c3b71e4f14611201ef">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const GPMSAOptions &amp;obj)</td></tr>
-<tr class="separator:ad2cbfecce51160c3b71e4f14611201ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a9d9fda161e4d83e4b7696783e6c3744c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV&#160;&#160;&#160;1.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00037">37</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad364905f1f679c4835eea560ccd346b9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV&#160;&#160;&#160;0.1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00038">38</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abdc6832f2813b91c115c6dd8ae9718c0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV&#160;&#160;&#160;1e4</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00036">36</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a53a537cf137b6f1da84b93ed5f647ecd"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV&#160;&#160;&#160;1.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00035">35</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae947289dea29455295dc5825cb13b532"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV&#160;&#160;&#160;1.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00033">33</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a6f173a44ff9de29d42fab8a2e644be6d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV&#160;&#160;&#160;0.1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00034">34</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abc3d9b07ace7468b8c4f7ebef0cd2b59"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV&#160;&#160;&#160;333.333</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00040">40</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af3a0a7a89cc80e25f3e3fb00d13ff97b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV&#160;&#160;&#160;3.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00039">39</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a50ebd5441d0d750e5a5b51b9968e6ce6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV&#160;&#160;&#160;0.2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00032">32</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acb09f4464432f74a92242c7523112c06"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV&#160;&#160;&#160;5.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00031">31</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af96761787910077ee1ab29847872ef60"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_GPMSA_HELP&#160;&#160;&#160;&quot;&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00426_source.html#l00030">30</a> of file <a class="el" href="a00426_source.html">GPMSAOptions.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00426_source.html#l00044">QUESO::GPMSAOptions::GPMSAOptions()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

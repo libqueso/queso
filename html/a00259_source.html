@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/basic/inc/VectorSpace.h Source File</title>
+<title>queso-0.55.0: src/basic/inc/VectorFunctionSynchronizer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1e11172a4448ab4d7b3d22091261e10c.html">basic</a></li><li class="navelem"><a class="el" href="dir_990ebc7eb5cbf688bd17d58c5e18d0f7.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_65433ce6240d5a25b49f68c6b447155d.html">basic</a></li><li class="navelem"><a class="el" href="dir_fb02fc46cfd827d8da56a29f890e88e7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">VectorSpace.h</div>  </div>
+<div class="title">VectorFunctionSynchronizer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00259.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,143 +75,63 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_VECTOR_SPACE_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_VECTOR_SPACE_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_VECTOR_FUNCTION_SYNCHRONIZER_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_VECTOR_FUNCTION_SYNCHRONIZER_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/DistArray.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/Map.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorFunction.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">class </span>VectorSpace : <span class="keyword">public</span> VectorSet&lt;V,M&gt;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00228.html#ab64f81dae5d122ec818fe96ea404f93c">VectorSpace</a>(<span class="keyword">const</span> BaseEnvironment&amp;   <a class="code" href="a00228.html#aa74cd0d1a8b3d599f799ef4aa2ebcfc2">env</a>,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                     <span class="keyword">const</span> <span class="keywordtype">char</span>*                     <a class="code" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                    dimGlobalValue,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                     <span class="keyword">const</span> std::vector&lt;std::string&gt;* <a class="code" href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">componentsNamesVec</a>);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="a00228.html#ab64f81dae5d122ec818fe96ea404f93c">VectorSpace</a>(<span class="keyword">const</span> VectorSpace&lt;V,M&gt;&amp;  aux);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="a00228.html#a0e543a391950b82f1107b1bd589ebd72">~VectorSpace</a>();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V = GslVector, <span class="keyword">class</span> P_M = GslMatrix, <span class="keyword">class</span> Q_V = GslVector, <span class="keyword">class</span> Q_M = GslMatrix&gt;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00228.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00228.html">VectorFunctionSynchronizer</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="a00228.html#a6ca588264a0c67e89a272d84099d8ec4">VectorFunctionSynchronizer</a>(<span class="keyword">const</span> <a class="code" href="a00044.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;</a>&amp; inputFunction,</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                                    <span class="keyword">const</span> P_V&amp;                                        auxPVec,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                    <span class="keyword">const</span> Q_V&amp;                                        auxQVec);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; <a class="code" href="a00228.html#af36b7e764244331c8b64ac53a16f5d6d">~VectorFunctionSynchronizer</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; <a class="code" href="a00228.html#a221738d8cac4be1e0516489d1520f92e">domainSet</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">const</span> BaseEnvironment&amp;  <a class="code" href="a00228.html#aa74cd0d1a8b3d599f799ef4aa2ebcfc2">env</a>                     () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">const</span> Map&amp;              <a class="code" href="a00228.html#ac2f40e646c62513ea9a6819b82e8ba24">map</a>                     () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                   <a class="code" href="a00228.html#a67b0c3620662116f5a346fdaa5faf38e">numOfProcsForStorage</a>    () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                   <a class="code" href="a00228.html#a5829a1f4f996f8307c840b705144d666">dimLocal</a>                () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                   <a class="code" href="a00228.html#acd4359dc120905c22ca1064e33787239">dimGlobal</a>               () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                   <a class="code" href="a00228.html#a6cfb48f3058abca35b23c65147217f64">globalIdOfFirstComponent</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">const</span> V&amp;                       <a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>              () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  V*                             <a class="code" href="a00228.html#a6fc1d08dfe902e83a011ea6a81aff439">newVector</a>               () <span class="keyword">const</span>; <span class="comment">// See template specialization</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  V*                             <a class="code" href="a00228.html#a6fc1d08dfe902e83a011ea6a81aff439">newVector</a>               (<span class="keywordtype">double</span> value) <span class="keyword">const</span>; <span class="comment">// See template specialization</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  V*                             <a class="code" href="a00228.html#a6fc1d08dfe902e83a011ea6a81aff439">newVector</a>               (<span class="keyword">const</span> V&amp; v) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  M*                             <a class="code" href="a00228.html#a8277f132ea382a7f49aa4a6ab7cbea1c">newMatrix</a>               () <span class="keyword">const</span>; <span class="comment">// See template specialization</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  M*                             <a class="code" href="a00228.html#a9f4ad174b63fbc0626070e0f38745e1e">newDiagMatrix</a>           (<span class="keyword">const</span> V&amp; v) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  M*                             <a class="code" href="a00228.html#a9f4ad174b63fbc0626070e0f38745e1e">newDiagMatrix</a>           (<span class="keywordtype">double</span> diagValue) <span class="keyword">const</span>; <span class="comment">// See template specialization</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  M*                             <a class="code" href="a00228.html#ab1e7c7ce9aedb494fb2a6fb1fac6a46b">newProposalMatrix</a>       (<span class="keyword">const</span> V* varVec, <span class="keyword">const</span> V* auxVec) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keyword">const</span> VectorSpace&lt;V,M&gt;&amp;       <a class="code" href="a00228.html#ab8bb323280e36a42ac04623b42369da5">vectorSpace</a>             () <span class="keyword">const</span>; <span class="comment">//</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordtype">bool</span>                           <a class="code" href="a00228.html#ab31d8677d0199e10e1aac9526e2b41e8">contains</a>                (<span class="keyword">const</span> V&amp; vec) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keyword">const</span> DistArray&lt;std::string&gt;* <a class="code" href="a00228.html#a89284638a11e1449149f471a563bb72c">componentsNamesArray</a>    () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keyword">const</span> std::vector&lt;std::string&gt;*      <a class="code" href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">componentsNamesVec</a>      () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keyword">const</span> std::string&amp;                   <a class="code" href="a00228.html#a57c65df3fa6afbcd5c019e8892f53e44">localComponentName</a>      (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> localComponentId) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordtype">void</span>                           <a class="code" href="a00228.html#adcae173f0230ef737ea592c34cad1d09">printComponentsNames</a>    (std::ostream&amp; os, <span class="keywordtype">bool</span> printHorizontally) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="keywordtype">void</span>                           <a class="code" href="a00228.html#a3a1fe3c1833380e2a0b19d35494cb635">print</a>                   (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  Map*                    <a class="code" href="a00228.html#a9549041aa8525c198155e9ba530e5aa4">newMap</a>                  (); <span class="comment">// See template specialization</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  <span class="keyword">using</span> VectorSet&lt;V,M&gt;::m_env;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keyword">using</span> VectorSet&lt;V,M&gt;::m_prefix;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  <span class="keyword">using</span> VectorSet&lt;V,M&gt;::m_volume;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno"><a class="line" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">  147</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                   <a class="code" href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">m_dimGlobal</a>;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">  150</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00160.html">Map</a>*              <a class="code" href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">m_map</a>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">  153</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                   <a class="code" href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">m_dimLocal</a>;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">  156</a></span>&#160;  <a class="code" href="a00066.html">DistArray&lt;std::string&gt;</a>* <a class="code" href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">m_componentsNamesArray</a>;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">  159</a></span>&#160;  <a class="code" href="a00066.html">DistArray&lt;std::string&gt;</a>* <a class="code" href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">m_componentsNamesVec</a>;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">  162</a></span>&#160;  std::string                    <a class="code" href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">m_emptyComponentName</a>;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">  165</a></span>&#160;  V*                             <a class="code" href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">m_zeroVector</a>;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <a class="code" href="a00228.html#ab64f81dae5d122ec818fe96ea404f93c">VectorSpace</a>();</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;};</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor">#endif // UQ_VECTOR_SPACE_H</span></div>
-<div class="ttc" id="a00228_html_a5829a1f4f996f8307c840b705144d666"><div class="ttname"><a href="a00228.html#a5829a1f4f996f8307c840b705144d666">QUESO::VectorSpace::dimLocal</a></div><div class="ttdeci">unsigned int dimLocal() const </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00170">VectorSpace.C:170</a></div></div>
-<div class="ttc" id="a00228_html_adcae173f0230ef737ea592c34cad1d09"><div class="ttname"><a href="a00228.html#adcae173f0230ef737ea592c34cad1d09">QUESO::VectorSpace::printComponentsNames</a></div><div class="ttdeci">void printComponentsNames(std::ostream &amp;os, bool printHorizontally) const </div><div class="ttdoc">Prints the local component names. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00283">VectorSpace.C:283</a></div></div>
-<div class="ttc" id="a00228_html_ab8bb323280e36a42ac04623b42369da5"><div class="ttname"><a href="a00228.html#ab8bb323280e36a42ac04623b42369da5">QUESO::VectorSpace::vectorSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; vectorSpace() const </div><div class="ttdoc">Accessor method to this. Vector space to which this vector set belongs to. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00252">VectorSpace.C:252</a></div></div>
-<div class="ttc" id="a00228_html_a7cc6bfad9eb4031dbe763728f0c25a13"><div class="ttname"><a href="a00228.html#a7cc6bfad9eb4031dbe763728f0c25a13">QUESO::VectorSpace::m_emptyComponentName</a></div><div class="ttdeci">std::string m_emptyComponentName</div><div class="ttdoc">Empty string for the components names. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00162">VectorSpace.h:162</a></div></div>
-<div class="ttc" id="a00228_html_aa315ff4efb4be69a64e341e3ebddca56"><div class="ttname"><a href="a00228.html#aa315ff4efb4be69a64e341e3ebddca56">QUESO::VectorSpace::componentsNamesVec</a></div><div class="ttdeci">const std::vector&lt; std::string &gt; * componentsNamesVec() const </div><div class="ttdoc">Access to private attribute m_componentsNamesVec. </div></div>
-<div class="ttc" id="a00228_html_a3a1fe3c1833380e2a0b19d35494cb635"><div class="ttname"><a href="a00228.html#a3a1fe3c1833380e2a0b19d35494cb635">QUESO::VectorSpace::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints only a message. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00303">VectorSpace.C:303</a></div></div>
-<div class="ttc" id="a00228_html_ac2f40e646c62513ea9a6819b82e8ba24"><div class="ttname"><a href="a00228.html#ac2f40e646c62513ea9a6819b82e8ba24">QUESO::VectorSpace::map</a></div><div class="ttdeci">const Map &amp; map() const </div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00157">VectorSpace.C:157</a></div></div>
-<div class="ttc" id="a00228_html_ad3efef4a407fdc5c98fded11f2f2444e"><div class="ttname"><a href="a00228.html#ad3efef4a407fdc5c98fded11f2f2444e">QUESO::VectorSpace::m_dimGlobal</a></div><div class="ttdeci">unsigned int m_dimGlobal</div><div class="ttdoc">Global dimension. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00147">VectorSpace.h:147</a></div></div>
-<div class="ttc" id="a00228_html_ab64f81dae5d122ec818fe96ea404f93c"><div class="ttname"><a href="a00228.html#ab64f81dae5d122ec818fe96ea404f93c">QUESO::VectorSpace::VectorSpace</a></div><div class="ttdeci">VectorSpace()</div><div class="ttdoc">Default constructor. </div></div>
-<div class="ttc" id="a00228_html_a28b5617b4b30cea1e02e4cb01fd067d8"><div class="ttname"><a href="a00228.html#a28b5617b4b30cea1e02e4cb01fd067d8">QUESO::VectorSpace::m_componentsNamesVec</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesVec</div><div class="ttdoc">Vector of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00159">VectorSpace.h:159</a></div></div>
-<div class="ttc" id="a00228_html_a752194a4dc937db4db4df2a3b207d3b9"><div class="ttname"><a href="a00228.html#a752194a4dc937db4db4df2a3b207d3b9">QUESO::VectorSpace::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00150">VectorSpace.h:150</a></div></div>
-<div class="ttc" id="a00228_html_a8277f132ea382a7f49aa4a6ab7cbea1c"><div class="ttname"><a href="a00228.html#a8277f132ea382a7f49aa4a6ab7cbea1c">QUESO::VectorSpace::newMatrix</a></div><div class="ttdeci">M * newMatrix() const </div><div class="ttdoc">Creates an empty matrix of size given by Map&amp;amp; map. See template specialization. </div></div>
-<div class="ttc" id="a00228_html_a92e963bb5cab3eecd290dfe4b8f03b04"><div class="ttname"><a href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">QUESO::VectorSpace::zeroVector</a></div><div class="ttdeci">const V &amp; zeroVector() const </div><div class="ttdoc">Returns a vector filled with zeros. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00189">VectorSpace.C:189</a></div></div>
-<div class="ttc" id="a00228_html_acd4359dc120905c22ca1064e33787239"><div class="ttname"><a href="a00228.html#acd4359dc120905c22ca1064e33787239">QUESO::VectorSpace::dimGlobal</a></div><div class="ttdeci">unsigned int dimGlobal() const </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00176">VectorSpace.C:176</a></div></div>
-<div class="ttc" id="a00228_html_a6fc1d08dfe902e83a011ea6a81aff439"><div class="ttname"><a href="a00228.html#a6fc1d08dfe902e83a011ea6a81aff439">QUESO::VectorSpace::newVector</a></div><div class="ttdeci">V * newVector() const </div><div class="ttdoc">Creates an empty vector of size given by Map&amp;amp; map. See template specialization. </div></div>
-<div class="ttc" id="a00228_html_a6cfb48f3058abca35b23c65147217f64"><div class="ttname"><a href="a00228.html#a6cfb48f3058abca35b23c65147217f64">QUESO::VectorSpace::globalIdOfFirstComponent</a></div><div class="ttdeci">unsigned int globalIdOfFirstComponent() const </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00182">VectorSpace.C:182</a></div></div>
-<div class="ttc" id="a00228_html_a57c65df3fa6afbcd5c019e8892f53e44"><div class="ttname"><a href="a00228.html#a57c65df3fa6afbcd5c019e8892f53e44">QUESO::VectorSpace::localComponentName</a></div><div class="ttdeci">const std::string &amp; localComponentName(unsigned int localComponentId) const </div><div class="ttdoc">Returns the local component names. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00271">VectorSpace.C:271</a></div></div>
-<div class="ttc" id="a00228_html_a0faa184316e08edb286a1bd0a5059b10"><div class="ttname"><a href="a00228.html#a0faa184316e08edb286a1bd0a5059b10">QUESO::VectorSpace::m_zeroVector</a></div><div class="ttdeci">V * m_zeroVector</div><div class="ttdoc">A vector of all elements equal to zero. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00165">VectorSpace.h:165</a></div></div>
-<div class="ttc" id="a00228_html_aa74cd0d1a8b3d599f799ef4aa2ebcfc2"><div class="ttname"><a href="a00228.html#aa74cd0d1a8b3d599f799ef4aa2ebcfc2">QUESO::VectorSpace::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Environment. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00151">VectorSpace.C:151</a></div></div>
-<div class="ttc" id="a00228_html_a9f4ad174b63fbc0626070e0f38745e1e"><div class="ttname"><a href="a00228.html#a9f4ad174b63fbc0626070e0f38745e1e">QUESO::VectorSpace::newDiagMatrix</a></div><div class="ttdeci">M * newDiagMatrix(const V &amp;v) const </div><div class="ttdoc">Creates a diagonal matrix with the elements and size of vector v. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00205">VectorSpace.C:205</a></div></div>
-<div class="ttc" id="a00066_html"><div class="ttname"><a href="a00066.html">QUESO::DistArray&lt; std::string &gt;</a></div></div>
-<div class="ttc" id="a00228_html_a89284638a11e1449149f471a563bb72c"><div class="ttname"><a href="a00228.html#a89284638a11e1449149f471a563bb72c">QUESO::VectorSpace::componentsNamesArray</a></div><div class="ttdeci">const DistArray&lt; std::string &gt; * componentsNamesArray() const </div><div class="ttdoc">Access to private attribute m_componentsNamesArray, which is an instance of DistArray. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00265">VectorSpace.C:265</a></div></div>
-<div class="ttc" id="a00228_html_aa6db91aca8a1f79e27d2f472528850bb"><div class="ttname"><a href="a00228.html#aa6db91aca8a1f79e27d2f472528850bb">QUESO::VectorSpace::m_dimLocal</a></div><div class="ttdeci">unsigned int m_dimLocal</div><div class="ttdoc">Local dimension (number of elements owned by the calling processor.). </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00153">VectorSpace.h:153</a></div></div>
-<div class="ttc" id="a00228_html_a9549041aa8525c198155e9ba530e5aa4"><div class="ttname"><a href="a00228.html#a9549041aa8525c198155e9ba530e5aa4">QUESO::VectorSpace::newMap</a></div><div class="ttdeci">Map * newMap()</div><div class="ttdoc">Creates a new map. See template specialization. </div></div>
-<div class="ttc" id="a00228_html_a0e543a391950b82f1107b1bd589ebd72"><div class="ttname"><a href="a00228.html#a0e543a391950b82f1107b1bd589ebd72">QUESO::VectorSpace::~VectorSpace</a></div><div class="ttdeci">~VectorSpace()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00131">VectorSpace.C:131</a></div></div>
-<div class="ttc" id="a00228_html_ab31d8677d0199e10e1aac9526e2b41e8"><div class="ttname"><a href="a00228.html#ab31d8677d0199e10e1aac9526e2b41e8">QUESO::VectorSpace::contains</a></div><div class="ttdeci">bool contains(const V &amp;vec) const </div><div class="ttdoc">Whether  vector contains vector vec. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00258">VectorSpace.C:258</a></div></div>
-<div class="ttc" id="a00160_html"><div class="ttname"><a href="a00160.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00344_source.html#l00049">Map.h:49</a></div></div>
-<div class="ttc" id="a00228_html_ab1e7c7ce9aedb494fb2a6fb1fac6a46b"><div class="ttname"><a href="a00228.html#ab1e7c7ce9aedb494fb2a6fb1fac6a46b">QUESO::VectorSpace::newProposalMatrix</a></div><div class="ttdeci">M * newProposalMatrix(const V *varVec, const V *auxVec) const </div><div class="ttdoc">Creates a diagonal matrix conditionally to values from vector varVec, guaranteeing that its values ar...</div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00214">VectorSpace.C:214</a></div></div>
-<div class="ttc" id="a00227_html_aedcd4b0f502af4c6e6df863c13cddfec"><div class="ttname"><a href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">QUESO::VectorSet::prefix</a></div><div class="ttdeci">const std::string &amp; prefix() const </div><div class="ttdoc">Access to private attribute m_prefix. </div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00084">VectorSet.C:84</a></div></div>
-<div class="ttc" id="a00228_html_a67b0c3620662116f5a346fdaa5faf38e"><div class="ttname"><a href="a00228.html#a67b0c3620662116f5a346fdaa5faf38e">QUESO::VectorSpace::numOfProcsForStorage</a></div><div class="ttdeci">unsigned int numOfProcsForStorage() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00164">VectorSpace.C:164</a></div></div>
-<div class="ttc" id="a00228_html_a6bcd9c13374cda32f043a93e171aeabf"><div class="ttname"><a href="a00228.html#a6bcd9c13374cda32f043a93e171aeabf">QUESO::VectorSpace::m_componentsNamesArray</a></div><div class="ttdeci">DistArray&lt; std::string &gt; * m_componentsNamesArray</div><div class="ttdoc">Array of strings of the type DistArray to store the names of the components. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00156">VectorSpace.h:156</a></div></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00228.html#a2b6003017f08403e8c6c006027dbe240">callFunction</a>(<span class="keyword">const</span> P_V*                    vecValues,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                    <span class="keyword">const</span> P_V*                    vecDirection,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                          Q_V*                    imageVector,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                          <a class="code" href="a00068.html">DistArray&lt;P_V*&gt;</a>* gradVectors,     <span class="comment">// Yes, &#39;P_V&#39;</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                          <a class="code" href="a00068.html">DistArray&lt;P_M*&gt;</a>* hessianMatrices, <span class="comment">// Yes, &#39;P_M&#39;</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                          <a class="code" href="a00068.html">DistArray&lt;P_V*&gt;</a>* hessianEffects) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00228.html#a36c2a9e1a2d317dddb5cf51b68e5c659">   78</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp;                     <a class="code" href="a00228.html#a36c2a9e1a2d317dddb5cf51b68e5c659">m_env</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="a00228.html#abde0efa4a6ab11898d8b0b0853d0971a">   79</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00044.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;</a>&amp; <a class="code" href="a00228.html#abde0efa4a6ab11898d8b0b0853d0971a">m_vectorFunction</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="a00228.html#af93da0ecec2b078ddacc8135f81cd996">   80</a></span>&#160;  <span class="keyword">const</span> P_V&amp;                                        <a class="code" href="a00228.html#af93da0ecec2b078ddacc8135f81cd996">m_auxPVec</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00228.html#a4fc0f69d67bfcfc200484bb741a2b75d">   81</a></span>&#160;  <span class="keyword">const</span> Q_V&amp;                                        <a class="code" href="a00228.html#a4fc0f69d67bfcfc200484bb741a2b75d">m_auxQVec</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif  // UQ_VECTOR_FUNCTION_SYNCHRONIZER_H</span></div>
+<div class="ttc" id="a00068_html"><div class="ttname"><a href="a00068.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00329_source.html#l00056">DistArray.h:56</a></div></div>
+<div class="ttc" id="a00228_html_a6ca588264a0c67e89a272d84099d8ec4"><div class="ttname"><a href="a00228.html#a6ca588264a0c67e89a272d84099d8ec4">QUESO::VectorFunctionSynchronizer::VectorFunctionSynchronizer</a></div><div class="ttdeci">VectorFunctionSynchronizer(const BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt; &amp;inputFunction, const P_V &amp;auxPVec, const Q_V &amp;auxQVec)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00033">VectorFunctionSynchronizer.C:33</a></div></div>
+<div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">QUESO::BaseVectorFunction</a></div><div class="ttdoc">A templated (base) class for handling vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00050">VectorFunction.h:50</a></div></div>
+<div class="ttc" id="a00230_html"><div class="ttname"><a href="a00230.html">QUESO::VectorSet&lt; P_V, P_M &gt;</a></div></div>
+<div class="ttc" id="a00228_html_a36c2a9e1a2d317dddb5cf51b68e5c659"><div class="ttname"><a href="a00228.html#a36c2a9e1a2d317dddb5cf51b68e5c659">QUESO::VectorFunctionSynchronizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00078">VectorFunctionSynchronizer.h:78</a></div></div>
+<div class="ttc" id="a00228_html_a4fc0f69d67bfcfc200484bb741a2b75d"><div class="ttname"><a href="a00228.html#a4fc0f69d67bfcfc200484bb741a2b75d">QUESO::VectorFunctionSynchronizer::m_auxQVec</a></div><div class="ttdeci">const Q_V &amp; m_auxQVec</div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00081">VectorFunctionSynchronizer.h:81</a></div></div>
+<div class="ttc" id="a00228_html_a2b6003017f08403e8c6c006027dbe240"><div class="ttname"><a href="a00228.html#a2b6003017f08403e8c6c006027dbe240">QUESO::VectorFunctionSynchronizer::callFunction</a></div><div class="ttdeci">void callFunction(const P_V *vecValues, const P_V *vecDirection, Q_V *imageVector, DistArray&lt; P_V * &gt; *gradVectors, DistArray&lt; P_M * &gt; *hessianMatrices, DistArray&lt; P_V * &gt; *hessianEffects) const </div><div class="ttdoc">Calls the vector-valued function which will be synchronized. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00061">VectorFunctionSynchronizer.C:61</a></div></div>
+<div class="ttc" id="a00228_html_a221738d8cac4be1e0516489d1520f92e"><div class="ttname"><a href="a00228.html#a221738d8cac4be1e0516489d1520f92e">QUESO::VectorFunctionSynchronizer::domainSet</a></div><div class="ttdeci">const VectorSet&lt; P_V, P_M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the domain set of the vector-valued function which will be synchronized. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00053">VectorFunctionSynchronizer.C:53</a></div></div>
+<div class="ttc" id="a00228_html_af93da0ecec2b078ddacc8135f81cd996"><div class="ttname"><a href="a00228.html#af93da0ecec2b078ddacc8135f81cd996">QUESO::VectorFunctionSynchronizer::m_auxPVec</a></div><div class="ttdeci">const P_V &amp; m_auxPVec</div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00080">VectorFunctionSynchronizer.h:80</a></div></div>
+<div class="ttc" id="a00228_html_abde0efa4a6ab11898d8b0b0853d0971a"><div class="ttname"><a href="a00228.html#abde0efa4a6ab11898d8b0b0853d0971a">QUESO::VectorFunctionSynchronizer::m_vectorFunction</a></div><div class="ttdeci">const BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt; &amp; m_vectorFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00079">VectorFunctionSynchronizer.h:79</a></div></div>
+<div class="ttc" id="a00228_html_af36b7e764244331c8b64ac53a16f5d6d"><div class="ttname"><a href="a00228.html#af36b7e764244331c8b64ac53a16f5d6d">QUESO::VectorFunctionSynchronizer::~VectorFunctionSynchronizer</a></div><div class="ttdeci">~VectorFunctionSynchronizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00047">VectorFunctionSynchronizer.C:47</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00330_source.html#l00193">Environment.h:193</a></div></div>
+<div class="ttc" id="a00228_html"><div class="ttname"><a href="a00228.html">QUESO::VectorFunctionSynchronizer</a></div><div class="ttdoc">A templated class for synchronizing the calls of vector-valued functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00259_source.html#l00046">VectorFunctionSynchronizer.h:46</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:40 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

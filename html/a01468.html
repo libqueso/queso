@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: Member List</title>
+<title>queso-0.55.0: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -45,31 +45,44 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00150.html">JeffreysVectorRealizer</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00652.html">QUESO</a></li><li class="navelem"><a class="el" href="a00149.html">InvLogitGaussianVectorRealizer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">QUESO::JeffreysVectorRealizer&lt; V, M &gt; Member List</div>  </div>
+<div class="title">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt; Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="a00150.html">QUESO::JeffreysVectorRealizer&lt; V, M &gt;</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a>, including all inherited members.</p>
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="a00046.html#ad77258f8737d87b5d0cd58b398939c70">BaseVectorRealizer</a>(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet, unsigned int subPeriod)</td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="a00150.html#a021a570c651d8e2145656ebc47486b30">JeffreysVectorRealizer</a>(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet)</td><td class="entry"><a class="el" href="a00150.html">QUESO::JeffreysVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a></td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00149.html#a26997119c0ae88df02e5e0966958688d">InvLogitGaussianVectorRealizer</a>(const char *prefix, const BoxSubset&lt; V, M &gt; &amp;unifiedImageBoxSubset, const V &amp;lawExpVector, const M &amp;lowerCholLawCovMatrix)</td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00149.html#ade34bd69a275bf86a19508e843d647ce">InvLogitGaussianVectorRealizer</a>(const char *prefix, const BoxSubset&lt; V, M &gt; &amp;unifiedImageBoxSubset, const V &amp;lawExpVector, const M &amp;matU, const V &amp;vecSsqrt, const M &amp;matVt)</td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a></td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00149.html#a643c2e4df3389ba3f0081b817f008528">m_lowerCholLawCovMatrix</a></td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00149.html#a126a8fc4e26d2d345928f0a384dd8ede">m_matU</a></td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00149.html#a41c7a9ee7642dd64378c55f3877c7c44">m_matVt</a></td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr><td class="entry"><a class="el" href="a00046.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="a00046.html#aeddb6129f2810fef48b4e00daa5cea7b">m_subPeriod</a></td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00046.html#a6c705235d28a3c12641da57cde948872">m_unifiedImageSet</a></td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00150.html#a505bdd78f3ef70a7227f57aa6ef6df04">realization</a>(V &amp;nextValues) const </td><td class="entry"><a class="el" href="a00150.html">QUESO::JeffreysVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00149.html#af156f64ea73062b35dcae7744efd1b39">m_unifiedImageBoxSubset</a></td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00046.html#a6c705235d28a3c12641da57cde948872">m_unifiedImageSet</a></td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00149.html#aa43d03f2e159cbaeb172d6f5ba965f77">m_unifiedLawExpVector</a></td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00149.html#ae49194239ce507b9332f79513428b162">m_unifiedLawVarVector</a></td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00149.html#ada200509b3d7f71df71f0537e77108a4">m_vecSsqrt</a></td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00149.html#a80332b86bb5d988591dcfc634bdf6abb">realization</a>(V &amp;nextValues) const </td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="a00046.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a>() const </td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="a00046.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>() const </td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="a00046.html#abc2eda9b3cea09c559c19e349c537b91">~BaseVectorRealizer</a>()</td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00150.html#a62c3dae91d392779204eba228470b65f">~JeffreysVectorRealizer</a>()</td><td class="entry"><a class="el" href="a00150.html">QUESO::JeffreysVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00149.html#a5fddb19e1f297e3c1661dc2b54c035dd">unifiedLawExpVector</a>() const </td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00149.html#a1046b2babb716e71485e64ed4cfc247e">unifiedLawVarVector</a>() const </td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00149.html#a9397e83addbebd7d0790a257b833dbe2">updateLawExpVector</a>(const V &amp;newLawExpVector)</td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00149.html#a43b28cdfcdf16eff5be6d43cca936bf9">updateLowerCholLawCovMatrix</a>(const M &amp;newLowerCholLawCovMatrix)</td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00149.html#a5f517125418b2c77e63d04bf6fc26abd">updateLowerCholLawCovMatrix</a>(const M &amp;matU, const V &amp;vecSsqrt, const M &amp;matVt)</td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00046.html#abc2eda9b3cea09c559c19e349c537b91">~BaseVectorRealizer</a>()</td><td class="entry"><a class="el" href="a00046.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00149.html#af94b989877376724d413aef59861da66">~InvLogitGaussianVectorRealizer</a>()</td><td class="entry"><a class="el" href="a00149.html">QUESO::InvLogitGaussianVectorRealizer&lt; V, M &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:35 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:45 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

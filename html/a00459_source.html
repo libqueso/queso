@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/inc/BayesianJointPdf.h Source File</title>
+<title>queso-0.55.0: src/misc/src/StdOneDGrid.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_84a4f20dccd7baf1e042e36cd61e1aee.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_4a3d6721aef5231a3f41ae337e19a0ed.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">BayesianJointPdf.h</div>  </div>
+<div class="title">StdOneDGrid.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00459.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,97 +75,88 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_BAYESIAN_JOINT_PROB_DENSITY_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_BAYESIAN_JOINT_PROB_DENSITY_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;boost/math/special_functions.hpp&gt;</span> <span class="comment">// for Boost isnan. Note parentheses are important in function call.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/JointPdf.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarFunction.h&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;queso/BoxSubset.h&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00052.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00052.html">BayesianJointPdf</a> : <span class="keyword">public</span> <a class="code" href="a00035.html">BaseJointPdf</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="a00052.html#a035122f1015976118ba96c9cd37edda0">BayesianJointPdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                           prefix,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                          <span class="keyword">const</span> <a class="code" href="a00035.html">BaseJointPdf      &lt;V,M&gt;</a>&amp; priorDensity,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                          <span class="keyword">const</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;</a>&amp; likelihoodFunction,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                          <span class="keywordtype">double</span>                                likelihoodExponent,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                          <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet         &lt;V,M&gt;</a>&amp; intersectionDomain);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="a00052.html#a060c1d9fcfd092dbc5501afaa9b362db">~BayesianJointPdf</a>();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/StdOneDGrid.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00212.html#abc4d171b8f9df81014b10ac86e84b3b2">   30</a></span>&#160;<a class="code" href="a00212.html#abc4d171b8f9df81014b10ac86e84b3b2">StdOneDGrid&lt;T&gt;::StdOneDGrid</a>(</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; env,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                   prefix,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> std::vector&lt;T&gt;&amp;         points)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00037.html">BaseOneDGrid</a>&lt;T&gt;(env,prefix),</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  m_points              (points)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    *<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering StdOneDGrid&lt;T&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00037.html#af5fa59e47fae9f6195b00e5bec8310f8">m_prefix</a></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    *<a class="code" href="a00037.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving StdOneDGrid&lt;T&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00037.html#af5fa59e47fae9f6195b00e5bec8310f8">m_prefix</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00212.html#ab001d3cccbda4c4c288e5f6a3e398574">   52</a></span>&#160;<a class="code" href="a00212.html#ab001d3cccbda4c4c288e5f6a3e398574">StdOneDGrid&lt;T&gt;::~StdOneDGrid</a>()</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="a00212.html#a006574772a0021d68c6f5c98e2db3458">   58</a></span>&#160;<a class="code" href="a00212.html#a006574772a0021d68c6f5c98e2db3458">StdOneDGrid&lt;T&gt;::size</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">return</span> m_points.size();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;T</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00212.html#a08cb60749c59ff27239c231d6a0f1eca">   65</a></span>&#160;<a class="code" href="a00212.html#a08cb60749c59ff27239c231d6a0f1eca">StdOneDGrid&lt;T&gt;::operator[]</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="a00322.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(i, m_points.size(), <span class="stringliteral">&quot;too large i&quot;</span>);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00052.html#ad67362b4ab48a722db976430cf03165e">actualValue</a>              (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00052.html#a98e54ee24452e2477469a0c84eecbfca">lnValue</a>                  (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00052.html#a7e00d685068bcf34253e5a101b539261">computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">void</span>   <a class="code" href="a00052.html#aa23751ede9ec9f2e7bdd81c5326f47d5">setNormalizationStyle</a>    (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> value) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00052.html#aaae16348ff3b0ab3c1c64605fbc1d493">lastComputedLogPrior</a>     () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00052.html#a500cbccdedf8dbc7c1f9652c262a160a">lastComputedLogLikelihood</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;::m_domainSet</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00035.html">BaseJointPdf&lt;V,M&gt;::m_logOfNormalizationFactor</a>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="a00052.html#a3cafafe8c5ea2353eedaecee156f609a">  103</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00035.html">BaseJointPdf      &lt;V,M&gt;</a>&amp; <a class="code" href="a00052.html#a3cafafe8c5ea2353eedaecee156f609a">m_priorDensity</a>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="a00052.html#a8e2506801de447f8acd187f8edfa330d">  104</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;</a>&amp; <a class="code" href="a00052.html#a8e2506801de447f8acd187f8edfa330d">m_likelihoodFunction</a>;</div>
-<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="a00052.html#a511b1e403ebcab436177491ea8f21c07">  105</a></span>&#160;  <span class="keywordtype">double</span>                                <a class="code" href="a00052.html#a511b1e403ebcab436177491ea8f21c07">m_likelihoodExponent</a>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00052.html#a2b1c5582be60a876a6dd08766e7e31ed">  106</a></span>&#160;  <span class="keyword">mutable</span> <span class="keywordtype">double</span>                        <a class="code" href="a00052.html#a2b1c5582be60a876a6dd08766e7e31ed">m_lastComputedLogPrior</a>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="a00052.html#af97f3ff0d65154366e31d14fd88ccb38">  107</a></span>&#160;  <span class="keyword">mutable</span> <span class="keywordtype">double</span>                        <a class="code" href="a00052.html#af97f3ff0d65154366e31d14fd88ccb38">m_lastComputedLogLikelihood</a>;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="a00052.html#af4252d2628298423a60335eef72136c6">  109</a></span>&#160;  <span class="keyword">mutable</span> V  <a class="code" href="a00052.html#af4252d2628298423a60335eef72136c6">m_tmpVector1</a>;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="a00052.html#a2c81721bddf0ffd5547751f1a8221a5d">  110</a></span>&#160;  <span class="keyword">mutable</span> V  <a class="code" href="a00052.html#a2c81721bddf0ffd5547751f1a8221a5d">m_tmpVector2</a>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="a00052.html#a686da1b57929c8b506a5e8fe8974603d">  111</a></span>&#160;  <span class="keyword">mutable</span> M* <a class="code" href="a00052.html#a686da1b57929c8b506a5e8fe8974603d">m_tmpMatrix</a>;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;};</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif // UQ_BAYESIAN_JOINT_PROB_DENSITY_H</span></div>
-<div class="ttc" id="a00052_html_ad67362b4ab48a722db976430cf03165e"><div class="ttname"><a href="a00052.html#ad67362b4ab48a722db976430cf03165e">QUESO::BayesianJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the PDF (scalar function). </div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00082">BayesianJointPdf.C:82</a></div></div>
-<div class="ttc" id="a00052_html_a511b1e403ebcab436177491ea8f21c07"><div class="ttname"><a href="a00052.html#a511b1e403ebcab436177491ea8f21c07">QUESO::BayesianJointPdf::m_likelihoodExponent</a></div><div class="ttdeci">double m_likelihoodExponent</div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00105">BayesianJointPdf.h:105</a></div></div>
-<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00052_html_a035122f1015976118ba96c9cd37edda0"><div class="ttname"><a href="a00052.html#a035122f1015976118ba96c9cd37edda0">QUESO::BayesianJointPdf::BayesianJointPdf</a></div><div class="ttdeci">BayesianJointPdf(const char *prefix, const BaseJointPdf&lt; V, M &gt; &amp;priorDensity, const BaseScalarFunction&lt; V, M &gt; &amp;likelihoodFunction, double likelihoodExponent, const VectorSet&lt; V, M &gt; &amp;intersectionDomain)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00033">BayesianJointPdf.C:33</a></div></div>
-<div class="ttc" id="a00052_html_aa23751ede9ec9f2e7bdd81c5326f47d5"><div class="ttname"><a href="a00052.html#aa23751ede9ec9f2e7bdd81c5326f47d5">QUESO::BayesianJointPdf::setNormalizationStyle</a></div><div class="ttdeci">void setNormalizationStyle(unsigned int value) const </div><div class="ttdoc">Sets a value to be used in the normalization style of the prior density PDF (ie, protected attribute ...</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00060">BayesianJointPdf.C:60</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00056">JointPdf.h:56</a></div></div>
-<div class="ttc" id="a00052_html_af4252d2628298423a60335eef72136c6"><div class="ttname"><a href="a00052.html#af4252d2628298423a60335eef72136c6">QUESO::BayesianJointPdf::m_tmpVector1</a></div><div class="ttdeci">V m_tmpVector1</div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00109">BayesianJointPdf.h:109</a></div></div>
-<div class="ttc" id="a00052_html_a98e54ee24452e2477469a0c84eecbfca"><div class="ttname"><a href="a00052.html#a98e54ee24452e2477469a0c84eecbfca">QUESO::BayesianJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Computes the logarithm of the value of the function. </div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00141">BayesianJointPdf.C:141</a></div></div>
-<div class="ttc" id="a00052_html_a7e00d685068bcf34253e5a101b539261"><div class="ttname"><a href="a00052.html#a7e00d685068bcf34253e5a101b539261">QUESO::BayesianJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">TODO: Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00260">BayesianJointPdf.C:260</a></div></div>
-<div class="ttc" id="a00052_html_a3cafafe8c5ea2353eedaecee156f609a"><div class="ttname"><a href="a00052.html#a3cafafe8c5ea2353eedaecee156f609a">QUESO::BayesianJointPdf::m_priorDensity</a></div><div class="ttdeci">const BaseJointPdf&lt; V, M &gt; &amp; m_priorDensity</div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00103">BayesianJointPdf.h:103</a></div></div>
-<div class="ttc" id="a00041_html"><div class="ttname"><a href="a00041.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00250_source.html#l00051">ScalarFunction.h:51</a></div></div>
-<div class="ttc" id="a00052_html_a2c81721bddf0ffd5547751f1a8221a5d"><div class="ttname"><a href="a00052.html#a2c81721bddf0ffd5547751f1a8221a5d">QUESO::BayesianJointPdf::m_tmpVector2</a></div><div class="ttdeci">V m_tmpVector2</div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00110">BayesianJointPdf.h:110</a></div></div>
-<div class="ttc" id="a00052_html_a686da1b57929c8b506a5e8fe8974603d"><div class="ttname"><a href="a00052.html#a686da1b57929c8b506a5e8fe8974603d">QUESO::BayesianJointPdf::m_tmpMatrix</a></div><div class="ttdeci">M * m_tmpMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00111">BayesianJointPdf.h:111</a></div></div>
-<div class="ttc" id="a00052_html_a8e2506801de447f8acd187f8edfa330d"><div class="ttname"><a href="a00052.html#a8e2506801de447f8acd187f8edfa330d">QUESO::BayesianJointPdf::m_likelihoodFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; V, M &gt; &amp; m_likelihoodFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00104">BayesianJointPdf.h:104</a></div></div>
-<div class="ttc" id="a00052_html_a060c1d9fcfd092dbc5501afaa9b362db"><div class="ttname"><a href="a00052.html#a060c1d9fcfd092dbc5501afaa9b362db">QUESO::BayesianJointPdf::~BayesianJointPdf</a></div><div class="ttdeci">~BayesianJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00053">BayesianJointPdf.C:53</a></div></div>
-<div class="ttc" id="a00052_html_a2b1c5582be60a876a6dd08766e7e31ed"><div class="ttname"><a href="a00052.html#a2b1c5582be60a876a6dd08766e7e31ed">QUESO::BayesianJointPdf::m_lastComputedLogPrior</a></div><div class="ttdeci">double m_lastComputedLogPrior</div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00106">BayesianJointPdf.h:106</a></div></div>
-<div class="ttc" id="a00052_html"><div class="ttname"><a href="a00052.html">QUESO::BayesianJointPdf</a></div><div class="ttdoc">A class for handling Bayesian joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00049">BayesianJointPdf.h:49</a></div></div>
-<div class="ttc" id="a00052_html_a500cbccdedf8dbc7c1f9652c262a160a"><div class="ttname"><a href="a00052.html#a500cbccdedf8dbc7c1f9652c262a160a">QUESO::BayesianJointPdf::lastComputedLogLikelihood</a></div><div class="ttdeci">double lastComputedLogLikelihood() const </div><div class="ttdoc">Returns the logarithm of the last computed likelihood value. Access to protected attribute m_lastComp...</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00075">BayesianJointPdf.C:75</a></div></div>
-<div class="ttc" id="a00052_html_af97f3ff0d65154366e31d14fd88ccb38"><div class="ttname"><a href="a00052.html#af97f3ff0d65154366e31d14fd88ccb38">QUESO::BayesianJointPdf::m_lastComputedLogLikelihood</a></div><div class="ttdeci">double m_lastComputedLogLikelihood</div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00107">BayesianJointPdf.h:107</a></div></div>
-<div class="ttc" id="a00052_html_aaae16348ff3b0ab3c1c64605fbc1d493"><div class="ttname"><a href="a00052.html#aaae16348ff3b0ab3c1c64605fbc1d493">QUESO::BayesianJointPdf::lastComputedLogPrior</a></div><div class="ttdeci">double lastComputedLogPrior() const </div><div class="ttdoc">Returns the logarithm of the last computed Prior value. Access to protected attribute m_lastComputedL...</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00068">BayesianJointPdf.C:68</a></div></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">return</span> m_points[i];</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00212.html#aaf32f8fe97724ad2d23d5be9b2faeaae">   74</a></span>&#160;<a class="code" href="a00212.html#aaf32f8fe97724ad2d23d5be9b2faeaae">StdOneDGrid&lt;T&gt;::findIntervalId</a>(<span class="keyword">const</span> T&amp; paramValue)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <a class="code" href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!((paramValue &lt; m_points[0]) || (m_points[m_points.size()-1] &lt; paramValue)), <span class="stringliteral">&quot;paramValue is out of domain&quot;</span>);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> iMax = m_points.size();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 1; <span class="comment">// Yes, &#39;1&#39;</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordflow">for</span> (i = 1; i &lt; iMax; ++i) { <span class="comment">// Yes, &#39;1&#39;</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">if</span> (paramValue &lt; m_points[i]) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      i--;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordflow">return</span> i;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00400">Environment.C:400</a></div></div>
+<div class="ttc" id="a00037_html_af5fa59e47fae9f6195b00e5bec8310f8"><div class="ttname"><a href="a00037.html#af5fa59e47fae9f6195b00e5bec8310f8">QUESO::BaseOneDGrid::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00083">OneDGrid.h:83</a></div></div>
+<div class="ttc" id="a00212_html_a08cb60749c59ff27239c231d6a0f1eca"><div class="ttname"><a href="a00212.html#a08cb60749c59ff27239c231d6a0f1eca">QUESO::StdOneDGrid::operator[]</a></div><div class="ttdeci">T operator[](unsigned int i) const </div><div class="ttdoc">Returns the position of the i-th point in the grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00065">StdOneDGrid.C:65</a></div></div>
+<div class="ttc" id="a00212_html_a006574772a0021d68c6f5c98e2db3458"><div class="ttname"><a href="a00212.html#a006574772a0021d68c6f5c98e2db3458">QUESO::StdOneDGrid::size</a></div><div class="ttdeci">unsigned int size() const </div><div class="ttdoc">Grid size; the amount of points which defines the grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00058">StdOneDGrid.C:58</a></div></div>
+<div class="ttc" id="a00212_html_ab001d3cccbda4c4c288e5f6a3e398574"><div class="ttname"><a href="a00212.html#ab001d3cccbda4c4c288e5f6a3e398574">QUESO::StdOneDGrid::~StdOneDGrid</a></div><div class="ttdeci">~StdOneDGrid()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00052">StdOneDGrid.C:52</a></div></div>
+<div class="ttc" id="a00322_html_a9fbd2830796070462f06425899f3d6d5"><div class="ttname"><a href="a00322.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a></div><div class="ttdeci">#define queso_require_less_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00087">asserts.h:87</a></div></div>
+<div class="ttc" id="a00322_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00069">asserts.h:69</a></div></div>
+<div class="ttc" id="a00037_html_a668a0033829b907fac9e13466419b7b1"><div class="ttname"><a href="a00037.html#a668a0033829b907fac9e13466419b7b1">QUESO::BaseOneDGrid::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00082">OneDGrid.h:82</a></div></div>
+<div class="ttc" id="a00212_html_aaf32f8fe97724ad2d23d5be9b2faeaae"><div class="ttname"><a href="a00212.html#aaf32f8fe97724ad2d23d5be9b2faeaae">QUESO::StdOneDGrid::findIntervalId</a></div><div class="ttdeci">unsigned int findIntervalId(const T &amp;paramValue) const </div><div class="ttdoc">Finds the ID of an interval. See template specialization. </div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00074">StdOneDGrid.C:74</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00278">Environment.C:278</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00330_source.html#l00193">Environment.h:193</a></div></div>
+<div class="ttc" id="a00037_html"><div class="ttname"><a href="a00037.html">QUESO::BaseOneDGrid</a></div><div class="ttdoc">Base class for accommodating one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00442_source.html#l00046">OneDGrid.h:46</a></div></div>
+<div class="ttc" id="a00212_html_abc4d171b8f9df81014b10ac86e84b3b2"><div class="ttname"><a href="a00212.html#abc4d171b8f9df81014b10ac86e84b3b2">QUESO::StdOneDGrid::StdOneDGrid</a></div><div class="ttdeci">StdOneDGrid(const BaseEnvironment &amp;env, const char *prefix, const std::vector&lt; T &gt; &amp;points)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00459_source.html#l00030">StdOneDGrid.C:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

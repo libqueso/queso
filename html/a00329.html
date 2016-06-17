@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/core/inc/exceptions.h File Reference</title>
+<title>queso-0.55.0: src/core/inc/DistArray.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,81 +43,51 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_88fac51d2e17cec13478f22fd619c260.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_8c6469bb17906efee6ca4d3fe37c75c7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">exceptions.h File Reference</div>  </div>
+<div class="title">DistArray.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stdexcept&gt;</code><br/>
-<code>#include &lt;string&gt;</code><br/>
-<code>#include &lt;exception&gt;</code><br/>
-<code>#include &lt;mpi.h&gt;</code><br/>
-<code>#include &lt;stdlib.h&gt;</code><br/>
+
+<p>A class to store row-oriented multi-vectors of type T.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &lt;queso/Defines.h&gt;</code><br/>
+<code>#include &lt;queso/Map.h&gt;</code><br/>
+<code>#include &lt;ostream&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for exceptions.h:</div>
+Include dependency graph for DistArray.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00751.png" border="0" usemap="#src_2core_2inc_2exceptions_8h" alt=""/></div>
-<map name="src_2core_2inc_2exceptions_8h" id="src_2core_2inc_2exceptions_8h">
+<div class="center"><img src="a00751.png" border="0" usemap="#src_2core_2inc_2_dist_array_8h" alt=""/></div>
+<map name="src_2core_2inc_2_dist_array_8h" id="src_2core_2inc_2_dist_array_8h">
 </map>
-</div>
-</div><div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00752.png" border="0" usemap="#src_2core_2inc_2exceptions_8hdep" alt=""/></div>
-<map name="src_2core_2inc_2exceptions_8hdep" id="src_2core_2inc_2exceptions_8hdep">
-<area shape="rect" id="node3" href="a00319.html" title="src/core/inc/asserts.h" alt="" coords="17,83,183,112"/></map>
 </div>
 </div>
 <p><a href="a00329_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00156.html">QUESO::LogicError</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00176.html">QUESO::NotImplemented</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.html">QUESO::FileError</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00068.html">QUESO::DistArray&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class for partitioning vectors and matrices.  <a href="a00068.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
+<tr class="memitem:a00652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:afab7833816d1d2328ca5f890ccfc4cae"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00329.html#afab7833816d1d2328ca5f890ccfc4cae">QUESO_THROW</a>(e)&#160;&#160;&#160;do { throw e; } while (0)</td></tr>
-<tr class="separator:afab7833816d1d2328ca5f890ccfc4cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="afab7833816d1d2328ca5f890ccfc4cae"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QUESO_THROW</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">e</td><td>)</td>
-          <td>&#160;&#160;&#160;do { throw e; } while (0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A class to store row-oriented multi-vectors of type T. </p>
 
-<p>Definition at line <a class="el" href="a00329_source.html#l00074">74</a> of file <a class="el" href="a00329_source.html">exceptions.h</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<p>Definition in file <a class="el" href="a00329_source.html">DistArray.h</a>.</p>
+</div></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

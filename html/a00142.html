@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: QUESO::IntersectionSubset&lt; V, M &gt; Class Template Reference</title>
+<title>queso-0.55.0: QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -45,181 +45,88 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00142.html">IntersectionSubset</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00652.html">QUESO</a></li><li class="navelem"><a class="el" href="a00142.html">InterpolationSurrogateIOASCII</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a01120.html">List of all members</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="a01616.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::IntersectionSubset&lt; V, M &gt; Class Template Reference</div>  </div>
+<div class="title">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A templated class representing the intersection of two vector sets.  
- <a href="a00142.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="a00249_source.html">IntersectionSubset.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00637_source.html">InterpolationSurrogateIOASCII.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::IntersectionSubset&lt; V, M &gt;:</div>
+Inheritance diagram for QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01121.png" border="0" usemap="#_q_u_e_s_o_1_1_intersection_subset_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_intersection_subset_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_intersection_subset_3_01_v_00_01_m_01_4_inherit__map">
-<area shape="rect" id="node2" href="a00229.html" title="A templated class for handling subsets. " alt="" coords="25,83,196,130"/><area shape="rect" id="node4" href="a00227.html" title="A templated class for handling sets. " alt="" coords="7,5,215,35"/></map>
+<div class="center"><img src="a01617.png" border="0" usemap="#_q_u_e_s_o_1_1_interpolation_surrogate_i_o_a_s_c_i_i_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_interpolation_surrogate_i_o_a_s_c_i_i_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_interpolation_surrogate_i_o_a_s_c_i_i_3_01_v_00_01_m_01_4_inherit__map">
+<area shape="rect" id="node2" href="a00143.html" title="QUESO::InterpolationSurrogate\lIOBase\&lt; V, M \&gt;" alt="" coords="5,6,205,47"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for QUESO::IntersectionSubset&lt; V, M &gt;:</div>
+Collaboration diagram for QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01122.png" border="0" usemap="#_q_u_e_s_o_1_1_intersection_subset_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_intersection_subset_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_intersection_subset_3_01_v_00_01_m_01_4_coll__map">
-<area shape="rect" id="node2" href="a00229.html" title="A templated class for handling subsets. " alt="" coords="71,523,241,570"/><area shape="rect" id="node4" href="a00227.html" title="A templated class for handling sets. " alt="" coords="52,443,260,472"/><area shape="rect" id="node6" href="a00032.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="177,296,377,325"/><area shape="rect" id="node18" href="a00175.html" title="The QUESO MPI Communicator Class. " alt="" coords="284,443,431,472"/><area shape="rect" id="node8" href="a00049.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="5,200,184,229"/><area shape="rect" id="node10" href="a00183.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="208,200,347,229"/><area shape="rect" id="node12" href="a00070.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="371,200,571,229"/><area shape="rect" id="node14" href="a00056.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="368,86,573,133"/><area shape="rect" id="node16" href="a00034.html" title="QUESO::BaseInputOptionsParser" alt="" coords="349,5,592,35"/></map>
+<div class="center"><img src="a01618.png" border="0" usemap="#_q_u_e_s_o_1_1_interpolation_surrogate_i_o_a_s_c_i_i_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_interpolation_surrogate_i_o_a_s_c_i_i_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_interpolation_surrogate_i_o_a_s_c_i_i_3_01_v_00_01_m_01_4_coll__map">
+<area shape="rect" id="node2" href="a00143.html" title="QUESO::InterpolationSurrogate\lIOBase\&lt; V, M \&gt;" alt="" coords="5,6,205,47"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods.</div></td></tr>
-<tr class="memitem:a4a0924e5e8d6089f04a3b4012cf1cd51"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#a4a0924e5e8d6089f04a3b4012cf1cd51">IntersectionSubset</a> (const char *<a class="el" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>, const <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt; &amp;<a class="el" href="a00229.html#afc859b5206bc056c66893c854c191959">vectorSpace</a>, double <a class="el" href="a00227.html#a3266f16e2672f5f3c929f22df085e545">volume</a>, const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;set1, const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;set2)</td></tr>
-<tr class="memdesc:a4a0924e5e8d6089f04a3b4012cf1cd51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default, shaped constructor.  <a href="#a4a0924e5e8d6089f04a3b4012cf1cd51">More...</a><br/></td></tr>
-<tr class="separator:a4a0924e5e8d6089f04a3b4012cf1cd51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c087a2532980355186f25f7b3c12594"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#a7c087a2532980355186f25f7b3c12594">~IntersectionSubset</a> ()</td></tr>
-<tr class="memdesc:a7c087a2532980355186f25f7b3c12594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a7c087a2532980355186f25f7b3c12594">More...</a><br/></td></tr>
-<tr class="separator:a7c087a2532980355186f25f7b3c12594"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Mathematical methods.</div></td></tr>
-<tr class="memitem:a6484888d9232f6ba88865b7a8f45d323"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#a6484888d9232f6ba88865b7a8f45d323">contains</a> (const V &amp;vec) const </td></tr>
-<tr class="memdesc:a6484888d9232f6ba88865b7a8f45d323"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether both sets m_set1 and m_set2 (class' private attributes) contain vector <code>vec</code>.  <a href="#a6484888d9232f6ba88865b7a8f45d323">More...</a><br/></td></tr>
-<tr class="separator:a6484888d9232f6ba88865b7a8f45d323"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">I/O methods.</div></td></tr>
-<tr class="memitem:ae82d30c62afbd72bc09435888d0c6cbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#ae82d30c62afbd72bc09435888d0c6cbd">print</a> (std::ostream &amp;os) const </td></tr>
-<tr class="memdesc:ae82d30c62afbd72bc09435888d0c6cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints both subsets (via protected attributes m_set1 and m_set2).  <a href="#ae82d30c62afbd72bc09435888d0c6cbd">More...</a><br/></td></tr>
-<tr class="separator:ae82d30c62afbd72bc09435888d0c6cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00229"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00229')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00229.html">QUESO::VectorSubset&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a68256de927befecd2694f873dead247a inherit pub_methods_a00229"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#a68256de927befecd2694f873dead247a">VectorSubset</a> ()</td></tr>
-<tr class="memdesc:a68256de927befecd2694f873dead247a inherit pub_methods_a00229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Constructor.  <a href="#a68256de927befecd2694f873dead247a">More...</a><br/></td></tr>
-<tr class="separator:a68256de927befecd2694f873dead247a inherit pub_methods_a00229"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a274c03af88db6d0c183c1b3acfa0d6bd inherit pub_methods_a00229"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#a274c03af88db6d0c183c1b3acfa0d6bd">VectorSubset</a> (const char *<a class="el" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>, const <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt; &amp;<a class="el" href="a00229.html#afc859b5206bc056c66893c854c191959">vectorSpace</a>, double <a class="el" href="a00227.html#a3266f16e2672f5f3c929f22df085e545">volume</a>)</td></tr>
-<tr class="memdesc:a274c03af88db6d0c183c1b3acfa0d6bd inherit pub_methods_a00229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaped constructor (with volume).  <a href="#a274c03af88db6d0c183c1b3acfa0d6bd">More...</a><br/></td></tr>
-<tr class="separator:a274c03af88db6d0c183c1b3acfa0d6bd inherit pub_methods_a00229"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a428561193ebdb3a4cce0bca42656815b inherit pub_methods_a00229"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#a428561193ebdb3a4cce0bca42656815b">~VectorSubset</a> ()</td></tr>
-<tr class="memdesc:a428561193ebdb3a4cce0bca42656815b inherit pub_methods_a00229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a428561193ebdb3a4cce0bca42656815b">More...</a><br/></td></tr>
-<tr class="separator:a428561193ebdb3a4cce0bca42656815b inherit pub_methods_a00229"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc859b5206bc056c66893c854c191959 inherit pub_methods_a00229"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#afc859b5206bc056c66893c854c191959">vectorSpace</a> () const </td></tr>
-<tr class="memdesc:afc859b5206bc056c66893c854c191959 inherit pub_methods_a00229"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00224.html" title="Class for vector operations (virtual). ">Vector</a> space to which <code>this</code> set belongs to. See template specialization.  <a href="#afc859b5206bc056c66893c854c191959">More...</a><br/></td></tr>
-<tr class="separator:afc859b5206bc056c66893c854c191959 inherit pub_methods_a00229"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00227"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00227')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00227.html">QUESO::VectorSet&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a50aa48fa7da79a12c5fbd97e011a66f1 inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#a50aa48fa7da79a12c5fbd97e011a66f1">VectorSet</a> (const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;<a class="el" href="a00227.html#aa0ed80853d166754ba6ed83e63e737aa">env</a>, const char *<a class="el" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>, double <a class="el" href="a00227.html#a3266f16e2672f5f3c929f22df085e545">volume</a>)</td></tr>
-<tr class="memdesc:a50aa48fa7da79a12c5fbd97e011a66f1 inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaped constructor.  <a href="#a50aa48fa7da79a12c5fbd97e011a66f1">More...</a><br/></td></tr>
-<tr class="separator:a50aa48fa7da79a12c5fbd97e011a66f1 inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8887f7545631fbbb6165a503f690884 inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#aa8887f7545631fbbb6165a503f690884">~VectorSet</a> ()</td></tr>
-<tr class="memdesc:aa8887f7545631fbbb6165a503f690884 inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#aa8887f7545631fbbb6165a503f690884">More...</a><br/></td></tr>
-<tr class="separator:aa8887f7545631fbbb6165a503f690884 inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0ed80853d166754ba6ed83e63e737aa inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#aa0ed80853d166754ba6ed83e63e737aa">env</a> () const </td></tr>
-<tr class="memdesc:aa0ed80853d166754ba6ed83e63e737aa inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Environment. Access to private attribute m_env.  <a href="#aa0ed80853d166754ba6ed83e63e737aa">More...</a><br/></td></tr>
-<tr class="separator:aa0ed80853d166754ba6ed83e63e737aa inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedcd4b0f502af4c6e6df863c13cddfec inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a> () const </td></tr>
-<tr class="memdesc:aedcd4b0f502af4c6e6df863c13cddfec inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to private attribute m_prefix.  <a href="#aedcd4b0f502af4c6e6df863c13cddfec">More...</a><br/></td></tr>
-<tr class="separator:aedcd4b0f502af4c6e6df863c13cddfec inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3266f16e2672f5f3c929f22df085e545 inherit pub_methods_a00227"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#a3266f16e2672f5f3c929f22df085e545">volume</a> () const </td></tr>
-<tr class="memdesc:a3266f16e2672f5f3c929f22df085e545 inherit pub_methods_a00227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set volume; access to private attribute m_volume.  <a href="#a3266f16e2672f5f3c929f22df085e545">More...</a><br/></td></tr>
-<tr class="separator:a3266f16e2672f5f3c929f22df085e545 inherit pub_methods_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a5ea5e40215b96e93eb3c93c7a812a8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#a5a5ea5e40215b96e93eb3c93c7a812a8">InterpolationSurrogateIOASCII</a> ()</td></tr>
+<tr class="separator:a5a5ea5e40215b96e93eb3c93c7a812a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a075e3639c3475e43cbead0ce4c1a655e"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#a075e3639c3475e43cbead0ce4c1a655e">~InterpolationSurrogateIOASCII</a> ()</td></tr>
+<tr class="separator:a075e3639c3475e43cbead0ce4c1a655e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71a2c390a880bb92f26d8085ba5eed17"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#a71a2c390a880bb92f26d8085ba5eed17">read</a> (const std::string &amp;filename, const <a class="el" href="a00083.html">FullEnvironment</a> &amp;env, const std::string &amp;vector_space_prefix, int reading_rank=0)</td></tr>
+<tr class="memdesc:a71a2c390a880bb92f26d8085ba5eed17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Interpolation surrogate data from filename using processor reading_rank.  <a href="#a71a2c390a880bb92f26d8085ba5eed17">More...</a><br/></td></tr>
+<tr class="separator:a71a2c390a880bb92f26d8085ba5eed17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21624e30df6f98f0edc500ff72218be0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#a21624e30df6f98f0edc500ff72218be0">write</a> (const std::string &amp;filename, const <a class="el" href="a00139.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp;<a class="el" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>, int writing_rank=0) const </td></tr>
+<tr class="memdesc:a21624e30df6f98f0edc500ff72218be0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write interpolation surrogate data to filename using processor writing_rank.  <a href="#a21624e30df6f98f0edc500ff72218be0">More...</a><br/></td></tr>
+<tr class="separator:a21624e30df6f98f0edc500ff72218be0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00143"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00143')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00143.html">QUESO::InterpolationSurrogateIOBase&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:aa8ba6167ceff5740cf549116c4fd99d8 inherit pub_methods_a00143"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00143.html#aa8ba6167ceff5740cf549116c4fd99d8">InterpolationSurrogateIOBase</a> ()</td></tr>
+<tr class="separator:aa8ba6167ceff5740cf549116c4fd99d8 inherit pub_methods_a00143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a8d01a394dbc01960c3adb9cb2eca1d inherit pub_methods_a00143"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00143.html#a0a8d01a394dbc01960c3adb9cb2eca1d">~InterpolationSurrogateIOBase</a> ()</td></tr>
+<tr class="separator:a0a8d01a394dbc01960c3adb9cb2eca1d inherit pub_methods_a00143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad24e29bc8ef971a00d44b90c008208d4 inherit pub_methods_a00143"><td class="memItemLeft" align="right" valign="top">const <br class="typebreak"/>
+<a class="el" href="a00139.html">InterpolationSurrogateData</a>&lt; V, <br class="typebreak"/>
+M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a> () const </td></tr>
+<tr class="memdesc:ad24e29bc8ef971a00d44b90c008208d4 inherit pub_methods_a00143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to data object.  <a href="#ad24e29bc8ef971a00d44b90c008208d4">More...</a><br/></td></tr>
+<tr class="separator:ad24e29bc8ef971a00d44b90c008208d4 inherit pub_methods_a00143"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a0b7b665d6b283d3cfe154f4b52f2b7f6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#a0b7b665d6b283d3cfe154f4b52f2b7f6">m_set1</a></td></tr>
-<tr class="memdesc:a0b7b665d6b283d3cfe154f4b52f2b7f6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00224.html" title="Class for vector operations (virtual). ">Vector</a> set: m_set1.  <a href="#a0b7b665d6b283d3cfe154f4b52f2b7f6">More...</a><br/></td></tr>
-<tr class="separator:a0b7b665d6b283d3cfe154f4b52f2b7f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb82477167bf58ce2a9fb79e0bbccb96"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00142.html#adb82477167bf58ce2a9fb79e0bbccb96">m_set2</a></td></tr>
-<tr class="memdesc:adb82477167bf58ce2a9fb79e0bbccb96"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00224.html" title="Class for vector operations (virtual). ">Vector</a> set: m_set2.  <a href="#adb82477167bf58ce2a9fb79e0bbccb96">More...</a><br/></td></tr>
-<tr class="separator:adb82477167bf58ce2a9fb79e0bbccb96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00229"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00229')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00229.html">QUESO::VectorSubset&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a8d1bfbac8c601b407c0a6a7af0904e2f inherit pro_attribs_a00229"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#a8d1bfbac8c601b407c0a6a7af0904e2f">m_vectorSpace</a></td></tr>
-<tr class="separator:a8d1bfbac8c601b407c0a6a7af0904e2f inherit pro_attribs_a00229"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00227"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00227')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00227.html">QUESO::VectorSet&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a77f3b57109bc1d89b4111f47458df770 inherit pro_attribs_a00227"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#a77f3b57109bc1d89b4111f47458df770">m_env</a></td></tr>
-<tr class="separator:a77f3b57109bc1d89b4111f47458df770 inherit pro_attribs_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a472995c02b59c8f3cd77230b39535cca inherit pro_attribs_a00227"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#a472995c02b59c8f3cd77230b39535cca">m_prefix</a></td></tr>
-<tr class="separator:a472995c02b59c8f3cd77230b39535cca inherit pro_attribs_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd5cdcdbcbbce29daec684437f511e9f inherit pro_attribs_a00227"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00227.html#acd5cdcdbcbbce29daec684437f511e9f">m_volume</a></td></tr>
-<tr class="separator:acd5cdcdbcbbce29daec684437f511e9f inherit pro_attribs_a00227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_a00143"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00143')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00143.html">QUESO::InterpolationSurrogateIOBase&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:a06531cf2abfd2d92e4eee8e9ca02c8ad inherit pro_attribs_a00143"><td class="memItemLeft" align="right" valign="top">ScopedPtr&lt; <a class="el" href="a00231.html">VectorSpace</a>&lt; V, M &gt;<br class="typebreak"/>
+ &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00143.html#a06531cf2abfd2d92e4eee8e9ca02c8ad">m_vector_space</a></td></tr>
+<tr class="separator:a06531cf2abfd2d92e4eee8e9ca02c8ad inherit pro_attribs_a00143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8b1c4d297f6d576ed2328af27d823d4 inherit pro_attribs_a00143"><td class="memItemLeft" align="right" valign="top">ScopedPtr&lt; <a class="el" href="a00057.html">BoxSubset</a>&lt; V, M &gt;<br class="typebreak"/>
+ &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00143.html#ab8b1c4d297f6d576ed2328af27d823d4">m_domain</a></td></tr>
+<tr class="separator:ab8b1c4d297f6d576ed2328af27d823d4 inherit pro_attribs_a00143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1b0cad48d89815d90e5afbf9e1d7e0b inherit pro_attribs_a00143"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00143.html#ab1b0cad48d89815d90e5afbf9e1d7e0b">m_n_points</a></td></tr>
+<tr class="separator:ab1b0cad48d89815d90e5afbf9e1d7e0b inherit pro_attribs_a00143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98797df0b43929552ec90387f213e13c inherit pro_attribs_a00143"><td class="memItemLeft" align="right" valign="top">ScopedPtr<br class="typebreak"/>
+&lt; <a class="el" href="a00139.html">InterpolationSurrogateData</a><br class="typebreak"/>
+&lt; V, M &gt; &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00143.html#a98797df0b43929552ec90387f213e13c">m_data</a></td></tr>
+<tr class="separator:a98797df0b43929552ec90387f213e13c inherit pro_attribs_a00143"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class V = GslVector, class M = GslMatrix&gt;<br/>
-class QUESO::IntersectionSubset&lt; V, M &gt;</h3>
+<div class="textblock"><h3>template&lt;class V, class M&gt;<br/>
+class QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;</h3>
 
-<p>A templated class representing the intersection of two vector sets. </p>
-<p>This class is used to determine if a vector belongs to the intersection of two vector sets. It is useful for handling a posterior PDF, since its domain is the intersection of the domain of the prior PDF with the domain of the likelihood function. </p>
 
-<p>Definition at line <a class="el" href="a00249_source.html#l00045">45</a> of file <a class="el" href="a00249_source.html">IntersectionSubset.h</a>.</p>
+<p>Definition at line <a class="el" href="a00637_source.html#l00033">33</a> of file <a class="el" href="a00637_source.html">InterpolationSurrogateIOASCII.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a4a0924e5e8d6089f04a3b4012cf1cd51"></a>
+<a class="anchor" id="a5a5ea5e40215b96e93eb3c93c7a812a8"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00142.html">QUESO::IntersectionSubset</a>&lt; V, M &gt;::<a class="el" href="a00142.html">IntersectionSubset</a> </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>prefix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00228.html">VectorSpace</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>vectorSpace</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>volume</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>set1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00227.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>set2</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Default, shaped constructor. </p>
-<p>Creates the class for the intersection of two vector sets, given a vector space, its volume and the sets. </p>
-
-<p>Definition at line <a class="el" href="a00271_source.html#l00035">35</a> of file <a class="el" href="a00271_source.html">IntersectionSubset.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  : VectorSubset&lt;V,M&gt;(<a class="code" href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>,<a class="code" href="a00229.html#afc859b5206bc056c66893c854c191959">vectorSpace</a>,<a class="code" href="a00227.html#a3266f16e2672f5f3c929f22df085e545">volume</a>),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="a00142.html#a0b7b665d6b283d3cfe154f4b52f2b7f6">m_set1</a>(set1),</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="a00142.html#adb82477167bf58ce2a9fb79e0bbccb96">m_set2</a>(set2)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
-<div class="ttc" id="a00142_html_a0b7b665d6b283d3cfe154f4b52f2b7f6"><div class="ttname"><a href="a00142.html#a0b7b665d6b283d3cfe154f4b52f2b7f6">QUESO::IntersectionSubset::m_set1</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_set1</div><div class="ttdoc">Vector set: m_set1. </div><div class="ttdef"><b>Definition:</b> <a href="a00249_source.html#l00082">IntersectionSubset.h:82</a></div></div>
-<div class="ttc" id="a00142_html_adb82477167bf58ce2a9fb79e0bbccb96"><div class="ttname"><a href="a00142.html#adb82477167bf58ce2a9fb79e0bbccb96">QUESO::IntersectionSubset::m_set2</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_set2</div><div class="ttdoc">Vector set: m_set2. </div><div class="ttdef"><b>Definition:</b> <a href="a00249_source.html#l00085">IntersectionSubset.h:85</a></div></div>
-<div class="ttc" id="a00227_html_a3266f16e2672f5f3c929f22df085e545"><div class="ttname"><a href="a00227.html#a3266f16e2672f5f3c929f22df085e545">QUESO::VectorSet::volume</a></div><div class="ttdeci">double volume() const </div><div class="ttdoc">Set volume; access to private attribute m_volume. </div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00091">VectorSet.C:91</a></div></div>
-<div class="ttc" id="a00229_html_afc859b5206bc056c66893c854c191959"><div class="ttname"><a href="a00229.html#afc859b5206bc056c66893c854c191959">QUESO::VectorSubset::vectorSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; vectorSpace() const </div><div class="ttdoc">Vector space to which this set belongs to. See template specialization. </div><div class="ttdef"><b>Definition:</b> <a href="a00283_source.html#l00068">VectorSubset.C:68</a></div></div>
-<div class="ttc" id="a00227_html_aedcd4b0f502af4c6e6df863c13cddfec"><div class="ttname"><a href="a00227.html#aedcd4b0f502af4c6e6df863c13cddfec">QUESO::VectorSet::prefix</a></div><div class="ttdeci">const std::string &amp; prefix() const </div><div class="ttdoc">Access to private attribute m_prefix. </div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00084">VectorSet.C:84</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a7c087a2532980355186f25f7b3c12594"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00142.html">QUESO::IntersectionSubset</a>&lt; V, M &gt;::~<a class="el" href="a00142.html">IntersectionSubset</a> </td>
+          <td class="memname"><a class="el" href="a00142.html">QUESO::InterpolationSurrogateIOASCII</a>&lt; V, M &gt;::<a class="el" href="a00142.html">InterpolationSurrogateIOASCII</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -227,16 +134,42 @@ template&lt;class V , class M &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Destructor. </p>
+<p>Definition at line <a class="el" href="a00647_source.html#l00041">41</a> of file <a class="el" href="a00647_source.html">InterpolationSurrogateIOASCII.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    : InterpolationSurrogateIOBase&lt;V,M&gt;()</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  {}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a075e3639c3475e43cbead0ce4c1a655e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="a00142.html">QUESO::InterpolationSurrogateIOASCII</a>&lt; V, M &gt;::~<a class="el" href="a00142.html">InterpolationSurrogateIOASCII</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00271_source.html#l00048">48</a> of file <a class="el" href="a00271_source.html">IntersectionSubset.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00637_source.html#l00039">39</a> of file <a class="el" href="a00637_source.html">InterpolationSurrogateIOASCII.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{};</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a6484888d9232f6ba88865b7a8f45d323"></a>
+<a class="anchor" id="a71a2c390a880bb92f26d8085ba5eed17"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -246,11 +179,33 @@ template&lt;class V , class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="a00142.html">QUESO::IntersectionSubset</a>&lt; V, M &gt;::contains </td>
+          <td class="memname"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00142.html">QUESO::InterpolationSurrogateIOASCII</a>&lt; V, M &gt;::read </td>
           <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>vec</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00083.html">FullEnvironment</a> &amp;&#160;</td>
+          <td class="paramname"><em>env</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>vector_space_prefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>reading_rank</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -260,20 +215,161 @@ template&lt;class V , class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Determines whether both sets m_set1 and m_set2 (class' private attributes) contain vector <code>vec</code>. </p>
+<p>Read Interpolation surrogate data from filename using processor reading_rank. </p>
+<p>This will read the data the file given by filename and setup all the infrastructure for <a class="el" href="a00139.html">InterpolationSurrogateData</a> so that the user can then call the <a class="el" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4" title="Reference to data object. ">data()</a> method. This can then be used to construct an Interpolation object. env.fullRank() must contain reading_rank. By default, processor 0 reads the data. </p>
 
-<p>Implements <a class="el" href="a00229.html#aa3f018d2afdf73dbe5fa7041dee47e0d">QUESO::VectorSubset&lt; V, M &gt;</a>.</p>
+<p>Implements <a class="el" href="a00143.html#aba9b0a877cef77bbea72c95ca81910cf">QUESO::InterpolationSurrogateIOBase&lt; V, M &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="a00271_source.html#l00054">54</a> of file <a class="el" href="a00271_source.html">IntersectionSubset.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">return</span> (<a class="code" href="a00142.html#a0b7b665d6b283d3cfe154f4b52f2b7f6">m_set1</a>.contains(vec) &amp;&amp; <a class="code" href="a00142.html#adb82477167bf58ce2a9fb79e0bbccb96">m_set2</a>.contains(vec));</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="ttc" id="a00142_html_a0b7b665d6b283d3cfe154f4b52f2b7f6"><div class="ttname"><a href="a00142.html#a0b7b665d6b283d3cfe154f4b52f2b7f6">QUESO::IntersectionSubset::m_set1</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_set1</div><div class="ttdoc">Vector set: m_set1. </div><div class="ttdef"><b>Definition:</b> <a href="a00249_source.html#l00082">IntersectionSubset.h:82</a></div></div>
-<div class="ttc" id="a00142_html_adb82477167bf58ce2a9fb79e0bbccb96"><div class="ttname"><a href="a00142.html#adb82477167bf58ce2a9fb79e0bbccb96">QUESO::IntersectionSubset::m_set2</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_set2</div><div class="ttdoc">Vector set: m_set2. </div><div class="ttdef"><b>Definition:</b> <a href="a00249_source.html#l00085">IntersectionSubset.h:85</a></div></div>
+<p>Definition at line <a class="el" href="a00647_source.html#l00046">46</a> of file <a class="el" href="a00647_source.html">InterpolationSurrogateIOASCII.C</a>.</p>
+
+<p>References <a class="el" href="a00386_source.html#l00181">QUESO::MpiComm::Bcast()</a>, <a class="el" href="a00287_source.html#l00081">dim</a>, <a class="el" href="a00368_source.html#l00232">QUESO::BaseEnvironment::fullComm()</a>, <a class="el" href="a00368_source.html#l00226">QUESO::BaseEnvironment::fullRank()</a>, <a class="el" href="a00322_source.html#l00047">queso_error_msg</a>, <a class="el" href="a00349_source.html#l00067">RawValue_MPI_DOUBLE</a>, <a class="el" href="a00349_source.html#l00068">RawValue_MPI_UNSIGNED</a>, and <a class="el" href="a00460_source.html#l00035">QUESO::StreamUtilities::skip_comment_lines()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// Root processor</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> root = reading_rank;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    MpiComm full_comm = env.fullComm();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    std::ifstream input;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">// Only processor 0 does the reading.</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// We&#39;ll broadcast the data as needed</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">if</span>( env.fullRank() == root )</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        input.open( filename.c_str() );</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">// skip the header</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="a00214.html#aa2ad7cb1ba55d18c3a5050ce2187022b">StreamUtilities::skip_comment_lines</a>(input, <span class="charliteral">&#39;#&#39;</span>);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// Read in dimension</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        input &gt;&gt; <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// Broadcast the parsed dimension</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    full_comm.Bcast( &amp;dim, 1, <a class="code" href="a00349.html#a06cbfbc33436f6e0dc8a48ff3c49bdfc">RawValue_MPI_UNSIGNED</a>, root,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                     <span class="stringliteral">&quot;InterpolationSurrogateIOASCII::read()&quot;</span>,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                     <span class="stringliteral">&quot;MpiComm::Bcast() failed!&quot;</span> );</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// Construct vector space</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    this-&gt;<a class="code" href="a00143.html#a06531cf2abfd2d92e4eee8e9ca02c8ad">m_vector_space</a>.reset( <span class="keyword">new</span> VectorSpace&lt;V,M&gt;(env,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                                                     vector_space_prefix.c_str(),</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                                     <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                                     NULL) );</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// Read in n_points in each dimension</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    this-&gt;<a class="code" href="a00143.html#ab1b0cad48d89815d90e5afbf9e1d7e0b">m_n_points</a>.resize(dim);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">if</span>( env.fullRank() == root )</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; d++ )</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;              <span class="comment">// Skip any comments</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;              <a class="code" href="a00214.html#aa2ad7cb1ba55d18c3a5050ce2187022b">StreamUtilities::skip_comment_lines</a>(input, <span class="charliteral">&#39;#&#39;</span>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;              <span class="comment">// Make sure file is still good</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;              <span class="keywordflow">if</span>( !input.good() )</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <a class="code" href="a00322.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;ERROR: Found unexpected end-of-file&quot;</span>);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;              input &gt;&gt; this-&gt;<a class="code" href="a00143.html#ab1b0cad48d89815d90e5afbf9e1d7e0b">m_n_points</a>[d];</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="comment">// Broadcast m_n_points</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    full_comm.Bcast( &amp;this-&gt;<a class="code" href="a00143.html#ab1b0cad48d89815d90e5afbf9e1d7e0b">m_n_points</a>[0], dim, <a class="code" href="a00349.html#a06cbfbc33436f6e0dc8a48ff3c49bdfc">RawValue_MPI_UNSIGNED</a>, root,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                     <span class="stringliteral">&quot;InterpolationSurrogateIOASCII::read()&quot;</span>,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                     <span class="stringliteral">&quot;MpiComm::Bcast() failed!&quot;</span> );</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="comment">// Read parameter bounds</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    std::vector&lt;double&gt; param_mins(dim);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    std::vector&lt;double&gt; param_maxs(dim);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordflow">if</span>( env.fullRank() == root )</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; d++ )</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;          {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="comment">// Skip any comments</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <a class="code" href="a00214.html#aa2ad7cb1ba55d18c3a5050ce2187022b">StreamUtilities::skip_comment_lines</a>(input, <span class="charliteral">&#39;#&#39;</span>);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="comment">// Make sure file is still good</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <span class="keywordflow">if</span>( !input.good() )</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;              <a class="code" href="a00322.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;ERROR: Found unexpected end-of-file&quot;</span>);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            input &gt;&gt; param_mins[d] &gt;&gt; param_maxs[d];</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;          }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">// Broadcast the bounds</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    full_comm.Bcast( &amp;param_mins[0], dim, <a class="code" href="a00349.html#ad0f503bd9fecfe4e570ca3d15aaf2518">RawValue_MPI_DOUBLE</a>, root,</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                     <span class="stringliteral">&quot;InterpolationSurrogateIOASCII::read()&quot;</span>,</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                     <span class="stringliteral">&quot;MpiComm::Bcast() failed!&quot;</span> );</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    full_comm.Bcast( &amp;param_maxs[0], dim, <a class="code" href="a00349.html#ad0f503bd9fecfe4e570ca3d15aaf2518">RawValue_MPI_DOUBLE</a>, root,</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                     <span class="stringliteral">&quot;InterpolationSurrogateIOASCII::read()&quot;</span>,</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                     <span class="stringliteral">&quot;MpiComm::Bcast() failed!&quot;</span> );</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="comment">// Construct parameter domain</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="comment">/* BoxSubset copies the incoming paramMins/paramMaxs so we don&#39;t</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">       need to cache these copies, they can die. */</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <a class="code" href="a00131.html">QUESO::GslVector</a> paramMins(this-&gt;<a class="code" href="a00143.html#a06531cf2abfd2d92e4eee8e9ca02c8ad">m_vector_space</a>-&gt;zeroVector());</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <a class="code" href="a00131.html">QUESO::GslVector</a> paramMaxs(this-&gt;<a class="code" href="a00143.html#a06531cf2abfd2d92e4eee8e9ca02c8ad">m_vector_space</a>-&gt;zeroVector());</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; d++ )</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      {</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        paramMins[d] = param_mins[d];</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        paramMaxs[d] = param_maxs[d];</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    this-&gt;<a class="code" href="a00143.html#ab8b1c4d297f6d576ed2328af27d823d4">m_domain</a>.reset( <span class="keyword">new</span> BoxSubset&lt;V,M&gt;(vector_space_prefix.c_str(),</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                                             *(this-&gt;<a class="code" href="a00143.html#a06531cf2abfd2d92e4eee8e9ca02c8ad">m_vector_space</a>.get()),</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                                             paramMins,</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                                             paramMaxs) );</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">// Construct data object</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    this-&gt;<a class="code" href="a00143.html#a98797df0b43929552ec90387f213e13c">m_data</a>.reset( <span class="keyword">new</span> InterpolationSurrogateData&lt;V,M&gt;(*(this-&gt;<a class="code" href="a00143.html#ab8b1c4d297f6d576ed2328af27d823d4">m_domain</a>.get()),</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                                                            this-&gt;<a class="code" href="a00143.html#ab1b0cad48d89815d90e5afbf9e1d7e0b">m_n_points</a>) );</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="comment">// Now read in the values</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">if</span>( env.fullRank() == root )</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; this-&gt;<a class="code" href="a00143.html#a98797df0b43929552ec90387f213e13c">m_data</a>-&gt;n_values(); n++ )</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;          {</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="comment">// Skip any comments</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <a class="code" href="a00214.html#aa2ad7cb1ba55d18c3a5050ce2187022b">StreamUtilities::skip_comment_lines</a>(input, <span class="charliteral">&#39;#&#39;</span>);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <span class="comment">// Make sure file is still good</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keywordflow">if</span>( !input.good() )</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;              <a class="code" href="a00322.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;ERROR: Found unexpected end-of-file&quot;</span>);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            <span class="keywordtype">double</span> value;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            input &gt;&gt; value;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            this-&gt;<a class="code" href="a00143.html#a98797df0b43929552ec90387f213e13c">m_data</a>-&gt;set_value( n, value );</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;          }</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="comment">// We are done parsing now, so close the file</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        input.close();</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;      }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="comment">// Broadcast the values</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    this-&gt;<a class="code" href="a00143.html#a98797df0b43929552ec90387f213e13c">m_data</a>-&gt;sync_values(root);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="comment">// Fin</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  }</div>
+<div class="ttc" id="a00349_html_a06cbfbc33436f6e0dc8a48ff3c49bdfc"><div class="ttname"><a href="a00349.html#a06cbfbc33436f6e0dc8a48ff3c49bdfc">RawValue_MPI_UNSIGNED</a></div><div class="ttdeci">#define RawValue_MPI_UNSIGNED</div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00068">MpiComm.h:68</a></div></div>
+<div class="ttc" id="a00322_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00322.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00047">asserts.h:47</a></div></div>
+<div class="ttc" id="a00287_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00143_html_a06531cf2abfd2d92e4eee8e9ca02c8ad"><div class="ttname"><a href="a00143.html#a06531cf2abfd2d92e4eee8e9ca02c8ad">QUESO::InterpolationSurrogateIOBase::m_vector_space</a></div><div class="ttdeci">ScopedPtr&lt; VectorSpace&lt; V, M &gt; &gt;::Type m_vector_space</div><div class="ttdef"><b>Definition:</b> <a href="a00638_source.html#l00057">InterpolationSurrogateIOBase.h:57</a></div></div>
+<div class="ttc" id="a00214_html_aa2ad7cb1ba55d18c3a5050ce2187022b"><div class="ttname"><a href="a00214.html#aa2ad7cb1ba55d18c3a5050ce2187022b">QUESO::StreamUtilities::skip_comment_lines</a></div><div class="ttdeci">static void skip_comment_lines(std::istream &amp;in, const char comment_start)</div><div class="ttdoc">Skips comment lines until a line without a comment character is encountered. </div><div class="ttdef"><b>Definition:</b> <a href="a00460_source.html#l00035">StreamUtilities.C:35</a></div></div>
+<div class="ttc" id="a00143_html_ab8b1c4d297f6d576ed2328af27d823d4"><div class="ttname"><a href="a00143.html#ab8b1c4d297f6d576ed2328af27d823d4">QUESO::InterpolationSurrogateIOBase::m_domain</a></div><div class="ttdeci">ScopedPtr&lt; BoxSubset&lt; V, M &gt; &gt;::Type m_domain</div><div class="ttdef"><b>Definition:</b> <a href="a00638_source.html#l00063">InterpolationSurrogateIOBase.h:63</a></div></div>
+<div class="ttc" id="a00143_html_a98797df0b43929552ec90387f213e13c"><div class="ttname"><a href="a00143.html#a98797df0b43929552ec90387f213e13c">QUESO::InterpolationSurrogateIOBase::m_data</a></div><div class="ttdeci">ScopedPtr&lt; InterpolationSurrogateData&lt; V, M &gt; &gt;::Type m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00638_source.html#l00067">InterpolationSurrogateIOBase.h:67</a></div></div>
+<div class="ttc" id="a00143_html_ab1b0cad48d89815d90e5afbf9e1d7e0b"><div class="ttname"><a href="a00143.html#ab1b0cad48d89815d90e5afbf9e1d7e0b">QUESO::InterpolationSurrogateIOBase::m_n_points</a></div><div class="ttdeci">std::vector&lt; unsigned int &gt; m_n_points</div><div class="ttdef"><b>Definition:</b> <a href="a00638_source.html#l00065">InterpolationSurrogateIOBase.h:65</a></div></div>
+<div class="ttc" id="a00131_html"><div class="ttname"><a href="a00131.html">QUESO::GslVector</a></div><div class="ttdoc">Class for vector operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00049">GslVector.h:49</a></div></div>
+<div class="ttc" id="a00349_html_ad0f503bd9fecfe4e570ca3d15aaf2518"><div class="ttname"><a href="a00349.html#ad0f503bd9fecfe4e570ca3d15aaf2518">RawValue_MPI_DOUBLE</a></div><div class="ttdeci">#define RawValue_MPI_DOUBLE</div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00067">MpiComm.h:67</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ae82d30c62afbd72bc09435888d0c6cbd"></a>
+<a class="anchor" id="a21624e30df6f98f0edc500ff72218be0"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -283,11 +379,27 @@ template&lt;class V , class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00142.html">QUESO::IntersectionSubset</a>&lt; V, M &gt;::print </td>
+          <td class="memname"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00142.html">QUESO::InterpolationSurrogateIOASCII</a>&lt; V, M &gt;::write </td>
           <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00139.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>writing_rank</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -297,85 +409,90 @@ template&lt;class V , class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Prints both subsets (via protected attributes m_set1 and m_set2). </p>
+<p>Write interpolation surrogate data to filename using processor writing_rank. </p>
+<p>env.fullRank() must contain writing_rank. By default processor 0 writes the data. </p>
 
-<p>Reimplemented from <a class="el" href="a00229.html#a62ba8816790e495f7d2302afeaecb436">QUESO::VectorSubset&lt; V, M &gt;</a>.</p>
+<p>Implements <a class="el" href="a00143.html#aa633d5e710f2e07fdb5b8740bf8a9b6f">QUESO::InterpolationSurrogateIOBase&lt; V, M &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="a00271_source.html#l00061">61</a> of file <a class="el" href="a00271_source.html">IntersectionSubset.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  os &lt;&lt; <span class="stringliteral">&quot;In IntersectionSubset&lt;V,M&gt;::print()&quot;</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;: m_set1 = &quot;</span> &lt;&lt; <a class="code" href="a00142.html#a0b7b665d6b283d3cfe154f4b52f2b7f6">m_set1</a></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;, m_set2 = &quot;</span> &lt;&lt; <a class="code" href="a00142.html#adb82477167bf58ce2a9fb79e0bbccb96">m_set2</a></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;     &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
-<div class="ttc" id="a00142_html_a0b7b665d6b283d3cfe154f4b52f2b7f6"><div class="ttname"><a href="a00142.html#a0b7b665d6b283d3cfe154f4b52f2b7f6">QUESO::IntersectionSubset::m_set1</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_set1</div><div class="ttdoc">Vector set: m_set1. </div><div class="ttdef"><b>Definition:</b> <a href="a00249_source.html#l00082">IntersectionSubset.h:82</a></div></div>
-<div class="ttc" id="a00142_html_adb82477167bf58ce2a9fb79e0bbccb96"><div class="ttname"><a href="a00142.html#adb82477167bf58ce2a9fb79e0bbccb96">QUESO::IntersectionSubset::m_set2</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_set2</div><div class="ttdoc">Vector set: m_set2. </div><div class="ttdef"><b>Definition:</b> <a href="a00249_source.html#l00085">IntersectionSubset.h:85</a></div></div>
+<p>Definition at line <a class="el" href="a00647_source.html#l00185">185</a> of file <a class="el" href="a00647_source.html">InterpolationSurrogateIOASCII.C</a>.</p>
+
+<p>References <a class="el" href="a00287_source.html#l00081">dim</a>, <a class="el" href="a00634_source.html#l00048">QUESO::InterpolationSurrogateData&lt; V, M &gt;::get_n_points()</a>, <a class="el" href="a00634_source.html#l00045">QUESO::InterpolationSurrogateData&lt; V, M &gt;::get_paramDomain()</a>, <a class="el" href="a00634_source.html#l00057">QUESO::InterpolationSurrogateData&lt; V, M &gt;::get_value()</a>, <a class="el" href="a00634_source.html#l00061">QUESO::InterpolationSurrogateData&lt; V, M &gt;::n_values()</a>, <a class="el" href="a00322_source.html#l00047">queso_error_msg</a>, <a class="el" href="a00634_source.html#l00080">QUESO::InterpolationSurrogateData&lt; V, M &gt;::x_max()</a>, and <a class="el" href="a00634_source.html#l00076">QUESO::InterpolationSurrogateData&lt; V, M &gt;::x_min()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="comment">// Make sure there are values in the data. If not the user didn&#39;t populate the data</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordflow">if</span>( !(<a class="code" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>.n_values() &gt; 0) )</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;      {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        std::string error = <span class="stringliteral">&quot;ERROR: No values found in InterpolationSurrogateData.\n&quot;</span>;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        error += <span class="stringliteral">&quot;Cannot write data without values.\n&quot;</span>;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        error += <span class="stringliteral">&quot;Use InterpolationSurrogateBuilder or the read method to populate\n&quot;</span>;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        error += <span class="stringliteral">&quot;data values.\n&quot;</span>;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <a class="code" href="a00322.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(error);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      }</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    std::ofstream output;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="comment">// Only processor 0 does the writing</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>.get_paramDomain().env().fullRank() == writing_rank )</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      {</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        output.open( filename.c_str() );</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="comment">// Write simpler header comments</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        std::string header = <span class="stringliteral">&quot;# Data for interpolation surrogate\n&quot;</span>;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        header += <span class="stringliteral">&quot;# Format is as follows:\n&quot;</span>;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        header += <span class="stringliteral">&quot;# dimension (unsigned int)\n&quot;</span>;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        header += <span class="stringliteral">&quot;# n_points in each dimension\n&quot;</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        header += <span class="stringliteral">&quot;# x_min, x_max pairs for each dimension\n&quot;</span>;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        header += <span class="stringliteral">&quot;# values for each point in parameter space\n&quot;</span>;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        header += <span class="stringliteral">&quot;# values must be ordered in structured format.\n&quot;</span>;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        output &lt;&lt; header;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="comment">// Write dimension</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a> = <a class="code" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>.get_paramDomain().vectorSpace().dimGlobal();</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        output &lt;&lt; dim &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="comment">// Write n_points</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        output &lt;&lt; <span class="stringliteral">&quot;# n_points&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; d++ )</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;          {</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            output &lt;&lt; <a class="code" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>.get_n_points()[d] &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;          }</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="comment">// Set precision for double output</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        output &lt;&lt; std::scientific &lt;&lt; std::setprecision(16);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="comment">// Write domain bounds</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        output &lt;&lt; <span class="stringliteral">&quot;# domain bounds&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; d++ )</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;          {</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            output &lt;&lt; <a class="code" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>.x_min(d) &lt;&lt; <span class="stringliteral">&quot; &quot;</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                   &lt;&lt; <a class="code" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>.x_max(d) &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;          }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="comment">// Write values</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        output &lt;&lt; <span class="stringliteral">&quot;# values&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; <a class="code" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>.n_values(); n++ )</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;          {</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            output &lt;&lt; <a class="code" href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">data</a>.get_value(n) &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;          }</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="comment">// All done</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        output.close();</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;      } <span class="comment">// data.get_paramDomain().env().fullRank() == writing_rank</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  }</div>
+<div class="ttc" id="a00322_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00322.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00047">asserts.h:47</a></div></div>
+<div class="ttc" id="a00287_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00143_html_ad24e29bc8ef971a00d44b90c008208d4"><div class="ttname"><a href="a00143.html#ad24e29bc8ef971a00d44b90c008208d4">QUESO::InterpolationSurrogateIOBase::data</a></div><div class="ttdeci">const InterpolationSurrogateData&lt; V, M &gt; &amp; data() const </div><div class="ttdoc">Reference to data object. </div><div class="ttdef"><b>Definition:</b> <a href="a00638_source.html#l00056">InterpolationSurrogateIOBase.h:56</a></div></div>
 </div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a0b7b665d6b283d3cfe154f4b52f2b7f6"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00227.html">VectorSet</a>&lt;V,M&gt;&amp; <a class="el" href="a00142.html">QUESO::IntersectionSubset</a>&lt; V, M &gt;::m_set1</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p><a class="el" href="a00224.html" title="Class for vector operations (virtual). ">Vector</a> set: m_set1. </p>
-<p>We seek the intersection of vectors set m_set1 and m_set2. </p>
-
-<p>Definition at line <a class="el" href="a00249_source.html#l00082">82</a> of file <a class="el" href="a00249_source.html">IntersectionSubset.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="adb82477167bf58ce2a9fb79e0bbccb96"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00227.html">VectorSet</a>&lt;V,M&gt;&amp; <a class="el" href="a00142.html">QUESO::IntersectionSubset</a>&lt; V, M &gt;::m_set2</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p><a class="el" href="a00224.html" title="Class for vector operations (virtual). ">Vector</a> set: m_set2. </p>
-
-<p>Definition at line <a class="el" href="a00249_source.html#l00085">85</a> of file <a class="el" href="a00249_source.html">IntersectionSubset.h</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/basic/inc/<a class="el" href="a00249_source.html">IntersectionSubset.h</a></li>
-<li>src/basic/src/<a class="el" href="a00271_source.html">IntersectionSubset.C</a></li>
+<li>src/surrogates/inc/<a class="el" href="a00637_source.html">InterpolationSurrogateIOASCII.h</a></li>
+<li>src/surrogates/src/<a class="el" href="a00647_source.html">InterpolationSurrogateIOASCII.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:46 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

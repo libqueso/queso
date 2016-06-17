@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00049.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="5,32,184,61"/>
-<area shape="rect" id="node3" href="$a00050.html" title="TODO: Base class for basic PDFs using Boost library. " alt="" coords="233,5,417,35"/>
-<area shape="rect" id="node5" href="$a00051.html" title="TODO: Base class for basic PDFs using Gsl library. " alt="" coords="243,59,408,88"/>
+<area shape="rect" id="node1" href="$a00049.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="6,31,167,57"/>
+<area shape="rect" id="node2" href="$a00050.html" title="TODO: Base class for basic PDFs using Boost library. " alt="" coords="216,5,381,32"/>
+<area shape="rect" id="node3" href="$a00051.html" title="TODO: Base class for basic PDFs using Gsl library. " alt="" coords="223,56,374,83"/>
 </map>

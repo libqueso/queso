@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/src/GaussianVectorCdf.C Source File</title>
+<title>queso-0.55.0: src/stats/src/GaussianLikelihoodFullCovariance.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_4c88fa08bbee16224b3c1c0812e0e863.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_12ad124ea09f49810819695bb6998b06.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GaussianVectorCdf.C</div>  </div>
+<div class="title">GaussianLikelihoodFullCovariance.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00565.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,109 +75,84 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/GaussianVectorCdf.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00097.html#aeb3e7d0cc777d58fb93d046a9da12071">   31</a></span>&#160;<a class="code" href="a00097.html#aeb3e7d0cc777d58fb93d046a9da12071">GaussianVectorCdf&lt;V,M&gt;::GaussianVectorCdf</a>(</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                    prefix,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;V,M&gt;</a>&amp; pdfSupport,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> V&amp;                       domainExpectedValues,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> V&amp;                       domainVarianceValues)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00043.html">BaseVectorCdf</a>&lt;V,M&gt;(prefix,pdfSupport),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_covMatrix              (m_pdfSupport.newDiagMatrix(domainVarianceValues*domainVarianceValues))</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    *<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GaussianVectorCdf&lt;V,M&gt;::constructor() [1]&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00043.html#ac88b657f25153ab6c03bd65b64cada52">m_prefix</a></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/GaussianLikelihoodFullCovariance.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00096.html#a14d099a4551a5c3e1bae3e53eca41831">   35</a></span>&#160;<a class="code" href="a00096.html#a14d099a4551a5c3e1bae3e53eca41831">GaussianLikelihoodFullCovariance&lt;V, M&gt;::GaussianLikelihoodFullCovariance</a>(</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> * prefix, <span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;V, M&gt;</a> &amp; domainSet,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">const</span> V &amp; observations, <span class="keyword">const</span> M &amp; covariance, <span class="keywordtype">double</span> covarianceCoefficient)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  : <a class="code" href="a00033.html">BaseGaussianLikelihood</a>&lt;V, M&gt;(prefix, domainSet, observations),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    m_covarianceCoefficient(covarianceCoefficient),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    m_covariance(covariance)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> (covariance.numRowsLocal() != observations.sizeLocal()) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="a00322.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;Covariance matrix not same size as observation vector&quot;</span>);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="a00097.html#a82118210a9047b9e9f393159d53d5a20">commonConstructor</a>();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    *<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving GaussianVectorCdf&lt;V,M&gt;::constructor() [1]&quot;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00043.html#ac88b657f25153ab6c03bd65b64cada52">m_prefix</a></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00097.html#a2f0d23a52c90f82877363de1155b788f">   56</a></span>&#160;<a class="code" href="a00097.html#aeb3e7d0cc777d58fb93d046a9da12071">GaussianVectorCdf&lt;V,M&gt;::GaussianVectorCdf</a>(</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                    prefix,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;V,M&gt;</a>&amp; pdfSupport,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">const</span> V&amp;                       domainExpectedValues,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">const</span> M&amp;                       covMatrix)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  :</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="a00043.html">BaseVectorCdf</a>&lt;V,M&gt;(prefix,pdfSupport),</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  m_covMatrix              (new M(covMatrix))</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    *<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GaussianVectorCdf&lt;V,M&gt;::constructor() [2]&quot;</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00043.html#ac88b657f25153ab6c03bd65b64cada52">m_prefix</a></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00096.html#a61a29a02efdf1bd36595708780bad0d1">   48</a></span>&#160;<a class="code" href="a00096.html#a61a29a02efdf1bd36595708780bad0d1">GaussianLikelihoodFullCovariance&lt;V, M&gt;::~GaussianLikelihoodFullCovariance</a>()</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00096.html#afc8f8d25936282af5d4489aa21f94937">   54</a></span>&#160;<a class="code" href="a00096.html#afc8f8d25936282af5d4489aa21f94937">GaussianLikelihoodFullCovariance&lt;V, M&gt;::actualValue</a>(<span class="keyword">const</span> V &amp; domainVector,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">const</span> V * domainDirection, V * gradVector, M * hessianMatrix,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    V * hessianEffect)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">return</span> std::exp(this-&gt;lnValue(domainVector, domainDirection, gradVector,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        hessianMatrix, hessianEffect));</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="a00096.html#a436133388a158d94bfd017cfc5d97985">   64</a></span>&#160;<a class="code" href="a00096.html#a436133388a158d94bfd017cfc5d97985">GaussianLikelihoodFullCovariance&lt;V, M&gt;::lnValue</a>(<span class="keyword">const</span> V &amp; domainVector,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">const</span> V * domainDirection, V * gradVector, M * hessianMatrix,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    V * hessianEffect)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  V modelOutput(this-&gt;m_observations, 0, 0);  <span class="comment">// At least it&#39;s not a copy</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  V weightedMisfit(this-&gt;m_observations, 0, 0);  <span class="comment">// At least it&#39;s not a copy</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="a00097.html#a82118210a9047b9e9f393159d53d5a20">commonConstructor</a>();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    *<a class="code" href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving GaussianVectorCdf&lt;V,M&gt;::constructor() [2]&quot;</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00043.html#ac88b657f25153ab6c03bd65b64cada52">m_prefix</a></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">// Destructor -------------------------------------</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00097.html#a086e92beba8cffc2d0c4822aad49dfac">   81</a></span>&#160;<a class="code" href="a00097.html#a086e92beba8cffc2d0c4822aad49dfac">GaussianVectorCdf&lt;V,M&gt;::~GaussianVectorCdf</a>()</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">delete</span> m_covMatrix;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// Math method -------------------------------------</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="a00097.html#a369ca9e3dea35ddb4799a89db47b12d6">   88</a></span>&#160;<a class="code" href="a00097.html#a369ca9e3dea35ddb4799a89db47b12d6">GaussianVectorCdf&lt;V,M&gt;::values</a>(</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">const</span> V&amp; paramValues,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        V&amp; cdfVec)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <a class="code" href="a00319.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;incomplete code&quot;</span>);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// I/O method --------------------------------------</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="a00097.html#a9afe1cc5333789fb73974a0d17e7fc0c">   98</a></span>&#160;<a class="code" href="a00097.html#a9afe1cc5333789fb73974a0d17e7fc0c">GaussianVectorCdf&lt;V,M&gt;::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">// Protected member function------------------------</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00097.html#a82118210a9047b9e9f393159d53d5a20">  106</a></span>&#160;<a class="code" href="a00097.html#a82118210a9047b9e9f393159d53d5a20">GaussianVectorCdf&lt;V,M&gt;::commonConstructor</a>()</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;{</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <a class="code" href="a00319.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;incomplete code&quot;</span>);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00396">Environment.C:396</a></div></div>
-<div class="ttc" id="a00097_html_aeb3e7d0cc777d58fb93d046a9da12071"><div class="ttname"><a href="a00097.html#aeb3e7d0cc777d58fb93d046a9da12071">QUESO::GaussianVectorCdf::GaussianVectorCdf</a></div><div class="ttdeci">GaussianVectorCdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;pdfSupport, const V &amp;domainExpectedValues, const V &amp;domainVarianceValues)</div><div class="ttdoc">TODO: Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00565_source.html#l00031">GaussianVectorCdf.C:31</a></div></div>
-<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00043_html"><div class="ttname"><a href="a00043.html">QUESO::BaseVectorCdf</a></div><div class="ttdoc">A templated (base) class for handling CDFs of vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00536_source.html#l00053">VectorCdf.h:53</a></div></div>
-<div class="ttc" id="a00319_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00319.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00047">asserts.h:47</a></div></div>
-<div class="ttc" id="a00043_html_ac88b657f25153ab6c03bd65b64cada52"><div class="ttname"><a href="a00043.html#ac88b657f25153ab6c03bd65b64cada52">QUESO::BaseVectorCdf::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00536_source.html#l00099">VectorCdf.h:99</a></div></div>
-<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
-<div class="ttc" id="a00097_html_a82118210a9047b9e9f393159d53d5a20"><div class="ttname"><a href="a00097.html#a82118210a9047b9e9f393159d53d5a20">QUESO::GaussianVectorCdf::commonConstructor</a></div><div class="ttdeci">void commonConstructor()</div><div class="ttdoc">A common constructor to be used both class constructors. </div><div class="ttdef"><b>Definition:</b> <a href="a00565_source.html#l00106">GaussianVectorCdf.C:106</a></div></div>
-<div class="ttc" id="a00097_html_a369ca9e3dea35ddb4799a89db47b12d6"><div class="ttname"><a href="a00097.html#a369ca9e3dea35ddb4799a89db47b12d6">QUESO::GaussianVectorCdf::values</a></div><div class="ttdeci">void values(const V &amp;paramValues, V &amp;cdfVec) const </div><div class="ttdoc">TODO: Returns the values of the vector CDF at each element of paramValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00565_source.html#l00088">GaussianVectorCdf.C:88</a></div></div>
-<div class="ttc" id="a00043_html_aa1effe370ac016f1fc7eaf538c5751a6"><div class="ttname"><a href="a00043.html#aa1effe370ac016f1fc7eaf538c5751a6">QUESO::BaseVectorCdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00536_source.html#l00098">VectorCdf.h:98</a></div></div>
-<div class="ttc" id="a00097_html_a9afe1cc5333789fb73974a0d17e7fc0c"><div class="ttname"><a href="a00097.html#a9afe1cc5333789fb73974a0d17e7fc0c">QUESO::GaussianVectorCdf::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the vector CDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00565_source.html#l00098">GaussianVectorCdf.C:98</a></div></div>
-<div class="ttc" id="a00097_html_a086e92beba8cffc2d0c4822aad49dfac"><div class="ttname"><a href="a00097.html#a086e92beba8cffc2d0c4822aad49dfac">QUESO::GaussianVectorCdf::~GaussianVectorCdf</a></div><div class="ttdeci">~GaussianVectorCdf()</div><div class="ttdef"><b>Definition:</b> <a href="a00565_source.html#l00081">GaussianVectorCdf.C:81</a></div></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  this-&gt;evaluateModel(domainVector, domainDirection, modelOutput, gradVector,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      hessianMatrix, hessianEffect);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// Compute misfit G(x) - y</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  modelOutput -= this-&gt;m_observations;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// Solve \Sigma u = G(x) - y for u</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  this-&gt;m_covariance.invertMultiply(modelOutput, weightedMisfit);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// Compute (G(x) - y)^T \Sigma^{-1} (G(x) - y)</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  modelOutput *= weightedMisfit;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// This is square of 2-norm</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">double</span> norm2_squared = modelOutput.sumOfComponents();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordflow">return</span> -0.5 * norm2_squared / (this-&gt;m_covarianceCoefficient);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00096.html">QUESO::GaussianLikelihoodFullCovariance&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00322_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00322.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00047">asserts.h:47</a></div></div>
+<div class="ttc" id="a00230_html"><div class="ttname"><a href="a00230.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00261_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00096_html_a436133388a158d94bfd017cfc5d97985"><div class="ttname"><a href="a00096.html#a436133388a158d94bfd017cfc5d97985">QUESO::GaussianLikelihoodFullCovariance::lnValue</a></div><div class="ttdeci">virtual double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00565_source.html#l00064">GaussianLikelihoodFullCovariance.C:64</a></div></div>
+<div class="ttc" id="a00096_html"><div class="ttname"><a href="a00096.html">QUESO::GaussianLikelihoodFullCovariance</a></div><div class="ttdoc">A class that represents a Gaussian likelihood with full covariance. </div><div class="ttdef"><b>Definition:</b> <a href="a00480_source.html#l00043">GaussianLikelihoodFullCovariance.h:43</a></div></div>
+<div class="ttc" id="a00096_html_afc8f8d25936282af5d4489aa21f94937"><div class="ttname"><a href="a00096.html#afc8f8d25936282af5d4489aa21f94937">QUESO::GaussianLikelihoodFullCovariance::actualValue</a></div><div class="ttdeci">virtual double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00565_source.html#l00054">GaussianLikelihoodFullCovariance.C:54</a></div></div>
+<div class="ttc" id="a00096_html_a14d099a4551a5c3e1bae3e53eca41831"><div class="ttname"><a href="a00096.html#a14d099a4551a5c3e1bae3e53eca41831">QUESO::GaussianLikelihoodFullCovariance::GaussianLikelihoodFullCovariance</a></div><div class="ttdeci">GaussianLikelihoodFullCovariance(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;observations, const M &amp;covariance, double covarianceCoefficient=1.0)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00565_source.html#l00035">GaussianLikelihoodFullCovariance.C:35</a></div></div>
+<div class="ttc" id="a00033_html"><div class="ttname"><a href="a00033.html">QUESO::BaseGaussianLikelihood</a></div><div class="ttdoc">Base class for canned Gaussian likelihoods. </div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00048">GaussianLikelihood.h:48</a></div></div>
+<div class="ttc" id="a00096_html_a61a29a02efdf1bd36595708780bad0d1"><div class="ttname"><a href="a00096.html#a61a29a02efdf1bd36595708780bad0d1">QUESO::GaussianLikelihoodFullCovariance::~GaussianLikelihoodFullCovariance</a></div><div class="ttdeci">virtual ~GaussianLikelihoodFullCovariance()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00565_source.html#l00048">GaussianLikelihoodFullCovariance.C:48</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

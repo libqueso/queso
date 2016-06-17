@@ -1,3 +1,4 @@
-<map id="QUESO::GaussianVectorCdf&lt; V, M &gt;" name="QUESO::GaussianVectorCdf&lt; V, M &gt;">
-<area shape="rect" id="node2" href="$a00043.html" title="A templated (base) class for handling CDFs of vector functions. " alt="" coords="17,6,199,53"/>
+<map id="QUESO::GaussianLikelihoodFullCovariance&lt; V, M &gt;" name="QUESO::GaussianLikelihoodFullCovariance&lt; V, M &gt;">
+<area shape="rect" id="node2" href="$a00033.html" title="Base class for canned Gaussian likelihoods. " alt="" coords="5,97,219,138"/>
+<area shape="rect" id="node3" href="$a00041.html" title="A templated (base) class for handling scalar functions. " alt="" coords="17,6,207,47"/>
 </map>

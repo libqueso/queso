@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/core/inc/Environment.h File Reference</title>
+<title>queso-0.55.0: src/core/inc/BoostInputOptionsParser.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,32 +43,25 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_88fac51d2e17cec13478f22fd619c260.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_8c6469bb17906efee6ca4d3fe37c75c7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">Environment.h File Reference</div>  </div>
+<div class="title">BoostInputOptionsParser.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Class to set up a <a class="el" href="a00649.html">QUESO</a> environment.  
-<a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;queso/Defines.h&gt;</code><br/>
-<code>#include &lt;queso/MpiComm.h&gt;</code><br/>
-<code>#include &lt;iostream&gt;</code><br/>
-<code>#include &lt;fstream&gt;</code><br/>
-<code>#include &lt;queso/RngBase.h&gt;</code><br/>
-<code>#include &lt;queso/BasicPdfsBase.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;queso/ScopedPtr.h&gt;</code><br/>
+<code>#include &lt;queso/BaseInputOptionsParser.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for Environment.h:</div>
+Include dependency graph for BoostInputOptionsParser.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00749.png" border="0" usemap="#src_2core_2inc_2_environment_8h" alt=""/></div>
-<map name="src_2core_2inc_2_environment_8h" id="src_2core_2inc_2_environment_8h">
+<div class="center"><img src="a00748.png" border="0" usemap="#src_2core_2inc_2_boost_input_options_parser_8h" alt=""/></div>
+<map name="src_2core_2inc_2_boost_input_options_parser_8h" id="src_2core_2inc_2_boost_input_options_parser_8h">
 </map>
 </div>
 </div>
@@ -76,47 +69,21 @@ Include dependency graph for Environment.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00079.html">QUESO::FilePtrSetStruct</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct for handling data input and output from files.  <a href="a00079.html#details">More...</a><br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html">QUESO::BaseEnvironment</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This (virtual) class sets up the environment underlying the use of the <a class="el" href="a00649.html">QUESO</a> library by an executable.  <a href="a00032.html#details">More...</a><br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00068.html">QUESO::EmptyEnvironment</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class sets up the environment underlying the use of the <a class="el" href="a00649.html">QUESO</a> library by an executable.  <a href="a00068.html#details">More...</a><br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00081.html">QUESO::FullEnvironment</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class sets up the full environment underlying the use of the <a class="el" href="a00649.html">QUESO</a> library by an executable.  <a href="a00081.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00056.html">QUESO::BoostInputOptionsParser</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00647"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00647.html">boost</a></td></tr>
+<tr class="memitem:a00650"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00650.html">boost</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00648"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html">boost::program_options</a></td></tr>
+<tr class="memitem:a00651"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00651.html">boost::program_options</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
+<tr class="memitem:a00652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a97e263e01a0ff9fad14de6a8840b007e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#a97e263e01a0ff9fad14de6a8840b007e">QUESO::queso_terminate_handler</a> ()</td></tr>
-<tr class="memdesc:a97e263e01a0ff9fad14de6a8840b007e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function for unhandled exceptions in Queso.  <a href="#a97e263e01a0ff9fad14de6a8840b007e">More...</a><br/></td></tr>
-<tr class="separator:a97e263e01a0ff9fad14de6a8840b007e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2e4805bfcc226b2ceb17c8a8dbb1297"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#ae2e4805bfcc226b2ceb17c8a8dbb1297">QUESO::QUESO_version_print</a> (std::ostream &amp;os)</td></tr>
-<tr class="separator:ae2e4805bfcc226b2ceb17c8a8dbb1297"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61ed284ac8a5002856025bf21955b215"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#a61ed284ac8a5002856025bf21955b215">QUESO::QUESO_get_numeric_version</a> ()</td></tr>
-<tr class="separator:a61ed284ac8a5002856025bf21955b215"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae007c2d003b9f75b31b073ececd3120a"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#ae007c2d003b9f75b31b073ececd3120a">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const BaseEnvironment &amp;obj)</td></tr>
-<tr class="separator:ae007c2d003b9f75b31b073ececd3120a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class to set up a <a class="el" href="a00649.html">QUESO</a> environment. </p>
-
-<p>Definition in file <a class="el" href="a00327_source.html">Environment.h</a>.</p>
-</div></div><!-- contents -->
+</div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

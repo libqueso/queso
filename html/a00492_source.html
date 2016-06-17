@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/inc/InfoTheory.h Source File</title>
+<title>queso-0.55.0: src/stats/inc/GenericVectorRealizer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_84a4f20dccd7baf1e042e36cd61e1aee.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_0f21e708b746168b296493cf5f1407d8.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">InfoTheory.h</div>  </div>
+<div class="title">GenericVectorRealizer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00492.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,105 +75,64 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_INFO_THEORY_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_INFO_THEORY_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GENERIC_REALIZER_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GENERIC_REALIZER_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_ANN</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="a00286.html">ANN/ANN.h</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="a00288.html">ANN/ANNx.h</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;gsl/gsl_sf_psi.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRealizer.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSequence.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// TODO: create InfoTheoryOptions</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define UQ_INFTH_ANN_NO_SMP        10000</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_INFTH_ANN_EPS           0.0</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_INFTH_ANN_KNN           6</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> distANN_XY( <span class="keyword">const</span> <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataX, <span class="keyword">const</span> <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataY,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                 <span class="keywordtype">double</span>* distsXY,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                 <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimX, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimY,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                 <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> xN, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> yN,</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                 <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, <span class="keywordtype">double</span> <a class="code" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a> );</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordtype">void</span> normalizeANN_XY( <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataXY, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimXY,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                      <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataX, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimX,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                      <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataY, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimY,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                      <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> N );</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> whiteningANN_X_Y( <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataX1, <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataX2,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimX, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> N1, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> N2 );</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Generic class [R-01]</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00121.html">   51</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00121.html">GenericVectorRealizer</a> : <span class="keyword">public</span> <a class="code" href="a00046.html">BaseVectorRealizer</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">double</span> computeMI_ANN( <a class="code" href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataXY,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                      <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimX, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimY,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                      <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> N, <span class="keywordtype">double</span> <a class="code" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a> );</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// Function: estimateMI_ANN (using a joint)</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// (Mutual Information)</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M&gt; <span class="keyword">class </span>RV, <span class="keyword">class </span>P_V, <span class="keyword">class </span>P_M&gt;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordtype">double</span> estimateMI_ANN( <span class="keyword">const</span> RV&lt;P_V,P_M&gt;&amp; jointRV,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                       <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> xDimSel[], <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimX,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                       <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> yDimSel[], <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimY,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> N, <span class="keywordtype">double</span> <a class="code" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a> );</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// Function: estimateMI_ANN (using two seperate RVs)</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">// (Mutual Information)</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class </span>P_V, <span class="keyword">class </span>P_M,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M&gt; <span class="keyword">class </span>RV_1,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M&gt; <span class="keyword">class </span>RV_2&gt;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keywordtype">double</span> estimateMI_ANN( <span class="keyword">const</span> RV_1&lt;P_V,P_M&gt;&amp; xRV,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                       <span class="keyword">const</span> RV_2&lt;P_V,P_M&gt;&amp; yRV,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                       <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> xDimSel[], <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimX,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                       <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> yDimSel[], <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimY,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> N, <span class="keywordtype">double</span> <a class="code" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a> );</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// Function: estimateKL_ANN</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// (Kullback-Leibler divergence)</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class </span>P_V, <span class="keyword">class </span>P_M,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M&gt; <span class="keyword">class </span>RV_1,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M&gt; <span class="keyword">class </span>RV_2&gt;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keywordtype">double</span> estimateKL_ANN( RV_1&lt;P_V,P_M&gt;&amp; xRV,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                       RV_2&lt;P_V,P_M&gt;&amp; yRV,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> xDimSel[], <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimX,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> yDimSel[], <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimY,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> xN, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> yN,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, <span class="keywordtype">double</span> <a class="code" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a> );</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">// Function: estimateCE_ANN</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">// (Cross Entropy)</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class </span>P_V, <span class="keyword">class </span>P_M,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M&gt; <span class="keyword">class </span>RV_1,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V, <span class="keyword">class</span> P_M&gt; <span class="keyword">class </span>RV_2&gt;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keywordtype">double</span> estimateCE_ANN( RV_1&lt;P_V,P_M&gt;&amp; xRV,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                       RV_2&lt;P_V,P_M&gt;&amp; yRV,</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> xDimSel[], <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimX,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> yDimSel[], <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimY,</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> xN, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> yN,</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, <span class="keywordtype">double</span> <a class="code" href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a> );</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif // QUESO_HAS_ANN</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif // UQ_INFO_THEORY_H</span></div>
-<div class="ttc" id="a00288_html"><div class="ttname"><a href="a00288.html">ANNx.h</a></div></div>
-<div class="ttc" id="a00291_html_a974b448c3d0a13d483d36ef15de369b5"><div class="ttname"><a href="a00291.html#a974b448c3d0a13d483d36ef15de369b5">eps</a></div><div class="ttdeci">double eps</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00055">ann_sample.cpp:55</a></div></div>
-<div class="ttc" id="a00286_html_a402299ac00a81ad80f09a0eb84ba4059"><div class="ttname"><a href="a00286.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a></div><div class="ttdeci">ANNpoint * ANNpointArray</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00376">ANN.h:376</a></div></div>
-<div class="ttc" id="a00286_html"><div class="ttname"><a href="a00286.html">ANN.h</a></div></div>
-<div class="ttc" id="a00291_html_ab66ed8e0098c0a86b458672a55a9cca9"><div class="ttname"><a href="a00291.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00053">ann_sample.cpp:53</a></div></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00121.html#add5488cecf1f1f0779d056012ada18d8">GenericVectorRealizer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                               <span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00046.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                               <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                 <a class="code" href="a00046.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a>,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                               <span class="keywordtype">double</span> (*routinePtr)(<span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr, V&amp; nextParamValues),</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                               <span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="a00121.html#a0daa8ba5bde1dc77da5c9f784bd76cd1">~GenericVectorRealizer</a>();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00121.html#aeb79c966ab4e20b22f75acc6b7068925">realization</a>(V&amp; nextValues) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00121.html#a913da22606696da4831afc3ef47a3a76">   76</a></span>&#160;  double (*<a class="code" href="a00121.html#a913da22606696da4831afc3ef47a3a76">m_routinePtr</a>)(<span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr, V&amp; nextParamValues);</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00121.html#ad2c00300197c0a97bc43b55ea25c16cd">   77</a></span>&#160;  <span class="keyword">const</span> <span class="keywordtype">void</span>* <a class="code" href="a00121.html#ad2c00300197c0a97bc43b55ea25c16cd">m_routineDataPtr</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00046.html">BaseVectorRealizer&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00046.html">BaseVectorRealizer&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00046.html">BaseVectorRealizer&lt;V,M&gt;::m_unifiedImageSet</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00046.html">BaseVectorRealizer&lt;V,M&gt;::m_subPeriod</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif // UQ_GENERIC_REALIZER_H</span></div>
+<div class="ttc" id="a00121_html_add5488cecf1f1f0779d056012ada18d8"><div class="ttname"><a href="a00121.html#add5488cecf1f1f0779d056012ada18d8">QUESO::GenericVectorRealizer::GenericVectorRealizer</a></div><div class="ttdeci">GenericVectorRealizer(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet, unsigned int subPeriod, double(*routinePtr)(const void *routineDataPtr, V &amp;nextParamValues), const void *routineDataPtr)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00577_source.html#l00033">GenericVectorRealizer.C:33</a></div></div>
+<div class="ttc" id="a00230_html"><div class="ttname"><a href="a00230.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00261_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00121_html_a913da22606696da4831afc3ef47a3a76"><div class="ttname"><a href="a00121.html#a913da22606696da4831afc3ef47a3a76">QUESO::GenericVectorRealizer::m_routinePtr</a></div><div class="ttdeci">double(* m_routinePtr)(const void *routineDataPtr, V &amp;nextParamValues)</div><div class="ttdef"><b>Definition:</b> <a href="a00492_source.html#l00076">GenericVectorRealizer.h:76</a></div></div>
+<div class="ttc" id="a00121_html"><div class="ttname"><a href="a00121.html">QUESO::GenericVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from generic probability density distributions. </div><div class="ttdef"><b>Definition:</b> <a href="a00492_source.html#l00051">GenericVectorRealizer.h:51</a></div></div>
+<div class="ttc" id="a00121_html_a0daa8ba5bde1dc77da5c9f784bd76cd1"><div class="ttname"><a href="a00121.html#a0daa8ba5bde1dc77da5c9f784bd76cd1">QUESO::GenericVectorRealizer::~GenericVectorRealizer</a></div><div class="ttdeci">~GenericVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00577_source.html#l00058">GenericVectorRealizer.C:58</a></div></div>
+<div class="ttc" id="a00046_html_ad9fda59efacf5bd84c472c96dfa00613"><div class="ttname"><a href="a00046.html#ad9fda59efacf5bd84c472c96dfa00613">QUESO::BaseVectorRealizer::subPeriod</a></div><div class="ttdeci">unsigned int subPeriod() const </div><div class="ttdoc">Sub-period of the realization. Access to protected attribute m_subPeriod. </div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00063">VectorRealizer.C:63</a></div></div>
+<div class="ttc" id="a00121_html_aeb79c966ab4e20b22f75acc6b7068925"><div class="ttname"><a href="a00121.html#aeb79c966ab4e20b22f75acc6b7068925">QUESO::GenericVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdef"><b>Definition:</b> <a href="a00577_source.html#l00064">GenericVectorRealizer.C:64</a></div></div>
+<div class="ttc" id="a00046_html"><div class="ttname"><a href="a00046.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00542_source.html#l00049">VectorRealizer.h:49</a></div></div>
+<div class="ttc" id="a00121_html_ad2c00300197c0a97bc43b55ea25c16cd"><div class="ttname"><a href="a00121.html#ad2c00300197c0a97bc43b55ea25c16cd">QUESO::GenericVectorRealizer::m_routineDataPtr</a></div><div class="ttdeci">const void * m_routineDataPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00492_source.html#l00077">GenericVectorRealizer.h:77</a></div></div>
+<div class="ttc" id="a00046_html_ad958991bab8d6369e8a0d66b22a237d4"><div class="ttname"><a href="a00046.html#ad958991bab8d6369e8a0d66b22a237d4">QUESO::BaseVectorRealizer::unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; unifiedImageSet() const </div><div class="ttdoc">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00070">VectorRealizer.C:70</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -1,4 +1,3 @@
-<map id="QUESO::BaseScalarCdf&lt; T &gt;" name="QUESO::BaseScalarCdf&lt; T &gt;">
-<area shape="rect" id="node3" href="$a00189.html" title="A class for handling sampled CDFs. " alt="" coords="5,83,243,112"/>
-<area shape="rect" id="node5" href="$a00210.html" title="A class for handling standard CDFs. " alt="" coords="267,83,469,112"/>
+<map id="QUESO::SampledScalarCdf&lt; T &gt;" name="QUESO::SampledScalarCdf&lt; T &gt;">
+<area shape="rect" id="node2" href="$a00039.html" title="A templated (base) class for handling CDFs. " alt="" coords="15,5,205,32"/>
 </map>

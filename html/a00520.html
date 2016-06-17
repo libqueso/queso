@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/inc/ScalarCdf.h File Reference</title>
+<title>queso-0.55.0: src/stats/inc/SampledScalarCdf.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,29 +43,26 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_84a4f20dccd7baf1e042e36cd61e1aee.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_0f21e708b746168b296493cf5f1407d8.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">ScalarCdf.h File Reference</div>  </div>
+<div class="title">SampledScalarCdf.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Classes to accommodate a cumulative distribution function.  
-<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;queso/StdOneDGrid.h&gt;</code><br/>
 <code>#include &lt;queso/Environment.h&gt;</code><br/>
+<code>#include &lt;queso/ScalarCdf.h&gt;</code><br/>
 <code>#include &lt;math.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for ScalarCdf.h:</div>
+Include dependency graph for SampledScalarCdf.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00938.png" border="0" usemap="#src_2stats_2inc_2_scalar_cdf_8h" alt=""/></div>
-<map name="src_2stats_2inc_2_scalar_cdf_8h" id="src_2stats_2inc_2_scalar_cdf_8h">
+<div class="center"><img src="a00939.png" border="0" usemap="#src_2stats_2inc_2_sampled_scalar_cdf_8h" alt=""/></div>
+<map name="src_2stats_2inc_2_sampled_scalar_cdf_8h" id="src_2stats_2inc_2_sampled_scalar_cdf_8h">
 </map>
 </div>
 </div>
@@ -73,29 +70,18 @@ Include dependency graph for ScalarCdf.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html">QUESO::BaseScalarCdf&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A templated (base) class for handling CDFs.  <a href="a00039.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00191.html">QUESO::SampledScalarCdf&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class for handling sampled CDFs.  <a href="a00191.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
+<tr class="memitem:a00652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a389e9373827829b35f2bf36df32d0ef1"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a389e9373827829b35f2bf36df32d0ef1"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00649.html#a389e9373827829b35f2bf36df32d0ef1">QUESO::horizontalDistance</a> (const BaseScalarCdf&lt; T &gt; &amp;cdf1, const BaseScalarCdf&lt; T &gt; &amp;cdf2, double <a class="el" href="a00315.html#a4904cc82627458fdf6672ccc0b2802c7">epsilon</a>)</td></tr>
-<tr class="memdesc:a389e9373827829b35f2bf36df32d0ef1"><td class="mdescLeft">&#160;</td><td class="mdescRight">It calculated the maximum horizontal distance between two CDFs.  <a href="#a389e9373827829b35f2bf36df32d0ef1">More...</a><br/></td></tr>
-<tr class="separator:a389e9373827829b35f2bf36df32d0ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Classes to accommodate a cumulative distribution function. </p>
-
-<p>Definition in file <a class="el" href="a00520_source.html">ScalarCdf.h</a>.</p>
-</div></div><!-- contents -->
+</div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

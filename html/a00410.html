@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/gp/inc/SimulationModelOptions.h File Reference</title>
+<title>queso-0.55.0: src/gp/inc/GpmsaComputerModelOptions.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,7 +43,7 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_4b3710b33bc76bf67ad04126b28c22f5.html">gp</a></li><li class="navelem"><a class="el" href="dir_65b680e7240ccdcda074c3b38bfba6ce.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_b4cf28f9c7017ae598e01d89fd5623b0.html">gp</a></li><li class="navelem"><a class="el" href="dir_ce64702489dbb32a8d0ac93a35e853be.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -53,16 +53,17 @@
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">SimulationModelOptions.h File Reference</div>  </div>
+<div class="title">GpmsaComputerModelOptions.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;queso/Environment.h&gt;</code><br/>
 <code>#include &lt;queso/BoostInputOptionsParser.h&gt;</code><br/>
+<code>#include &lt;queso/SequenceStatisticalOptions.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for SimulationModelOptions.h:</div>
+Include dependency graph for GpmsaComputerModelOptions.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00830.png" border="0" usemap="#src_2gp_2inc_2_simulation_model_options_8h" alt=""/></div>
-<map name="src_2gp_2inc_2_simulation_model_options_8h" id="src_2gp_2inc_2_simulation_model_options_8h">
+<div class="center"><img src="a00831.png" border="0" usemap="#src_2gp_2inc_2_gpmsa_computer_model_options_8h" alt=""/></div>
+<map name="src_2gp_2inc_2_gpmsa_computer_model_options_8h" id="src_2gp_2inc_2_gpmsa_computer_model_options_8h">
 </map>
 </div>
 </div>
@@ -70,300 +71,424 @@ Include dependency graph for SimulationModelOptions.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00204.html">QUESO::SmOptionsValues</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00106.html">QUESO::GcmOptionsValues</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html">QUESO::SimulationModelOptions</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00124.html">QUESO::GpmsaComputerModelOptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00647"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00647.html">boost</a></td></tr>
+<tr class="memitem:a00650"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00650.html">boost</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00648"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html">boost::program_options</a></td></tr>
+<tr class="memitem:a00651"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00651.html">boost::program_options</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
+<tr class="memitem:a00652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ae093399982cca0d24b89722d8bcd3611"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#ae093399982cca0d24b89722d8bcd3611">UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE</a>&#160;&#160;&#160;&quot;.&quot;</td></tr>
-<tr class="separator:ae093399982cca0d24b89722d8bcd3611"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe60e805696859c40dd904460936d08e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#abe60e805696859c40dd904460936d08e">UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV</a>&#160;&#160;&#160;<a class="el" href="a00410.html#ae093399982cca0d24b89722d8bcd3611">UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE</a></td></tr>
-<tr class="separator:abe60e805696859c40dd904460936d08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82548b23d7b12932dd04c1c407b4aca6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a82548b23d7b12932dd04c1c407b4aca6">UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a82548b23d7b12932dd04c1c407b4aca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e95c2e336d5d714d5a600189693dc69"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a7e95c2e336d5d714d5a600189693dc69">UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOWED_SET_ODV</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
-<tr class="separator:a7e95c2e336d5d714d5a600189693dc69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a683bcf5595dac9f028d025cf05c9c30a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a683bcf5595dac9f028d025cf05c9c30a">UQ_SIMULATION_MODEL_P_ETA_ODV</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:a683bcf5595dac9f028d025cf05c9c30a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9db40259b132e5570037d9da1ac02e77"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a9db40259b132e5570037d9da1ac02e77">UQ_SIMULATION_MODEL_ZERO_RELATIVE_SINGULAR_VALUE_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a9db40259b132e5570037d9da1ac02e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5221a6d561b4c122250a152bebea95bd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a5221a6d561b4c122250a152bebea95bd">UQ_SIMULATION_MODEL_CDF_THRESHOLD_FOR_P_ETA_ODV</a>&#160;&#160;&#160;1.</td></tr>
-<tr class="separator:a5221a6d561b4c122250a152bebea95bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73043d742f91582222804df81c7b64d5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a73043d742f91582222804df81c7b64d5">UQ_SIMULATION_MODEL_A_W_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a73043d742f91582222804df81c7b64d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04b3a52f036b302507cf7333b4839b00"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a04b3a52f036b302507cf7333b4839b00">UQ_SIMULATION_MODEL_B_W_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a04b3a52f036b302507cf7333b4839b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7d82a5688c9de186997b6f5d54d8f68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#af7d82a5688c9de186997b6f5d54d8f68">UQ_SIMULATION_MODEL_A_RHO_W_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:af7d82a5688c9de186997b6f5d54d8f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a127ca970e319251858928e8c78dc312e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a127ca970e319251858928e8c78dc312e">UQ_SIMULATION_MODEL_B_RHO_W_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a127ca970e319251858928e8c78dc312e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade55ff65941f27c73040fb52aa5df605"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#ade55ff65941f27c73040fb52aa5df605">UQ_SIMULATION_MODEL_A_ETA_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:ade55ff65941f27c73040fb52aa5df605"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaddf1137fb92a637204f972a0023ab32"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#aaddf1137fb92a637204f972a0023ab32">UQ_SIMULATION_MODEL_B_ETA_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:aaddf1137fb92a637204f972a0023ab32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a985b7329d133ea83efcf88bce0fa2d5a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a985b7329d133ea83efcf88bce0fa2d5a">UQ_SIMULATION_MODEL_A_S_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a985b7329d133ea83efcf88bce0fa2d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e653748e46d797bdfcff9b01a1ab1d0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a4e653748e46d797bdfcff9b01a1ab1d0">UQ_SIMULATION_MODEL_B_S_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a4e653748e46d797bdfcff9b01a1ab1d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cce9c7ebfa5f7a0ecb7ce7521e95f73"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a6cce9c7ebfa5f7a0ecb7ce7521e95f73">UQ_GCM_FILENAME_FOR_NO_FILE</a>&#160;&#160;&#160;&quot;.&quot;</td></tr>
+<tr class="separator:a6cce9c7ebfa5f7a0ecb7ce7521e95f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2355ba336f357e2eb6cb6f843c38c9b2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a2355ba336f357e2eb6cb6f843c38c9b2">UQ_GCM_COMPUTE_SOLUTION_ODV</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a2355ba336f357e2eb6cb6f843c38c9b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72d50ac08aa4911926873ed921e142e9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a72d50ac08aa4911926873ed921e142e9">UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a72d50ac08aa4911926873ed921e142e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e67a0a404fec583de879bae8257ba3d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a9e67a0a404fec583de879bae8257ba3d">UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV</a>&#160;&#160;&#160;<a class="el" href="a00410.html#a6cce9c7ebfa5f7a0ecb7ce7521e95f73">UQ_GCM_FILENAME_FOR_NO_FILE</a></td></tr>
+<tr class="separator:a9e67a0a404fec583de879bae8257ba3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4342ad95ecb9873f6f840ac2950ad095"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a4342ad95ecb9873f6f840ac2950ad095">UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a4342ad95ecb9873f6f840ac2950ad095"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87b8a6574745272134ec9583d522a3af"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a87b8a6574745272134ec9583d522a3af">UQ_GCM_DATA_OUTPUT_ALLOWED_SET_ODV</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
+<tr class="separator:a87b8a6574745272134ec9583d522a3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a345dcb05464f6221bef866189526054b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a345dcb05464f6221bef866189526054b">UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a345dcb05464f6221bef866189526054b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac15fbed573356459a67fdf442fd0038f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#ac15fbed573356459a67fdf442fd0038f">UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV</a>&#160;&#160;&#160;<a class="el" href="a00410.html#a6cce9c7ebfa5f7a0ecb7ce7521e95f73">UQ_GCM_FILENAME_FOR_NO_FILE</a></td></tr>
+<tr class="separator:ac15fbed573356459a67fdf442fd0038f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf96d1b92eee463b9faa47369dfb222c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#aaf96d1b92eee463b9faa47369dfb222c">UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV</a>&#160;&#160;&#160;&quot;m&quot;</td></tr>
+<tr class="separator:aaf96d1b92eee463b9faa47369dfb222c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f96a0327cfeda808b8231f34e100a9d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a6f96a0327cfeda808b8231f34e100a9d">UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a6f96a0327cfeda808b8231f34e100a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00c1221b14751b4e6298448d43767f2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a00c1221b14751b4e6298448d43767f2d">UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOWED_SET_ODV</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
+<tr class="separator:a00c1221b14751b4e6298448d43767f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad65a2a2056cbf6488321fa297a0f08a9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#ad65a2a2056cbf6488321fa297a0f08a9">UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV</a>&#160;&#160;&#160;0.</td></tr>
+<tr class="separator:ad65a2a2056cbf6488321fa297a0f08a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0848a674a137d53f4a239ba149ea4b6b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a0848a674a137d53f4a239ba149ea4b6b">UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV</a>&#160;&#160;&#160;0.</td></tr>
+<tr class="separator:a0848a674a137d53f4a239ba149ea4b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20c17a4b9505bd3f125f15a4d211ad7b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a20c17a4b9505bd3f125f15a4d211ad7b">UQ_GCM_FORM_C_MATRIX_ODV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a20c17a4b9505bd3f125f15a4d211ad7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1208f9012e56e2989669ad936a0add77"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a1208f9012e56e2989669ad936a0add77">UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a1208f9012e56e2989669ad936a0add77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad35f15ebf634e81fdc4891cf3d25157f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#ad35f15ebf634e81fdc4891cf3d25157f">UQ_GCM_PRED_LAG_ODV</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:ad35f15ebf634e81fdc4891cf3d25157f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a595669e25d77ab2564ce835d4365cf9d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a595669e25d77ab2564ce835d4365cf9d">UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a595669e25d77ab2564ce835d4365cf9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d03afc8c3c8fff1a49ef657f4caac36"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a3d03afc8c3c8fff1a49ef657f4caac36">UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a3d03afc8c3c8fff1a49ef657f4caac36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af88d70dde3281fb1cee1d6861cbb335b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#af88d70dde3281fb1cee1d6861cbb335b">UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:af88d70dde3281fb1cee1d6861cbb335b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca787ee7b06428738404035faec0c164"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#aca787ee7b06428738404035faec0c164">UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:aca787ee7b06428738404035faec0c164"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab656c45cb7187af66d7a9a8de2f1a929"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#ab656c45cb7187af66d7a9a8de2f1a929">UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:ab656c45cb7187af66d7a9a8de2f1a929"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0afcde26e1d59adcc20dae1bc42e14f5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a0afcde26e1d59adcc20dae1bc42e14f5">UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a0afcde26e1d59adcc20dae1bc42e14f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5ba220a2c0a3088e2f591da19eed3cfa"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#a5ba220a2c0a3088e2f591da19eed3cfa">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const SimulationModelOptions &amp;obj)</td></tr>
-<tr class="separator:a5ba220a2c0a3088e2f591da19eed3cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a37574e418c22634c66f8aaa4a54c0a"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html#a2a37574e418c22634c66f8aaa4a54c0a">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const GpmsaComputerModelOptions &amp;obj)</td></tr>
+<tr class="separator:a2a37574e418c22634c66f8aaa4a54c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="ade55ff65941f27c73040fb52aa5df605"></a>
+<a class="anchor" id="a72d50ac08aa4911926873ed921e142e9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_A_ETA_ODV&#160;&#160;&#160;0.</td>
+          <td class="memname">#define UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00044">44</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00036">36</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af7d82a5688c9de186997b6f5d54d8f68"></a>
+<a class="anchor" id="a2355ba336f357e2eb6cb6f843c38c9b2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_A_RHO_W_ODV&#160;&#160;&#160;0.</td>
+          <td class="memname">#define UQ_GCM_COMPUTE_SOLUTION_ODV&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00042">42</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00035">35</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a985b7329d133ea83efcf88bce0fa2d5a"></a>
+<a class="anchor" id="a4342ad95ecb9873f6f840ac2950ad095"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_A_S_ODV&#160;&#160;&#160;0.</td>
+          <td class="memname">#define UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00046">46</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00038">38</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a73043d742f91582222804df81c7b64d5"></a>
+<a class="anchor" id="a87b8a6574745272134ec9583d522a3af"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_A_W_ODV&#160;&#160;&#160;0.</td>
+          <td class="memname">#define UQ_GCM_DATA_OUTPUT_ALLOWED_SET_ODV&#160;&#160;&#160;&quot;&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00040">40</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00039">39</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aaddf1137fb92a637204f972a0023ab32"></a>
+<a class="anchor" id="a9e67a0a404fec583de879bae8257ba3d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_B_ETA_ODV&#160;&#160;&#160;0.</td>
+          <td class="memname">#define UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV&#160;&#160;&#160;<a class="el" href="a00410.html#a6cce9c7ebfa5f7a0ecb7ce7521e95f73">UQ_GCM_FILENAME_FOR_NO_FILE</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00045">45</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00037">37</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a127ca970e319251858928e8c78dc312e"></a>
+<a class="anchor" id="a6cce9c7ebfa5f7a0ecb7ce7521e95f73"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_B_RHO_W_ODV&#160;&#160;&#160;0.</td>
+          <td class="memname">#define UQ_GCM_FILENAME_FOR_NO_FILE&#160;&#160;&#160;&quot;.&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00043">43</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00032">32</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a4e653748e46d797bdfcff9b01a1ab1d0"></a>
+<a class="anchor" id="a20c17a4b9505bd3f125f15a4d211ad7b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_B_S_ODV&#160;&#160;&#160;0.</td>
+          <td class="memname">#define UQ_GCM_FORM_C_MATRIX_ODV&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00047">47</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00047">47</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a04b3a52f036b302507cf7333b4839b00"></a>
+<a class="anchor" id="a0848a674a137d53f4a239ba149ea4b6b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_B_W_ODV&#160;&#160;&#160;0.</td>
+          <td class="memname">#define UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV&#160;&#160;&#160;0.</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00041">41</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00046">46</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5221a6d561b4c122250a152bebea95bd"></a>
+<a class="anchor" id="ad65a2a2056cbf6488321fa297a0f08a9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_CDF_THRESHOLD_FOR_P_ETA_ODV&#160;&#160;&#160;1.</td>
+          <td class="memname">#define UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV&#160;&#160;&#160;0.</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00039">39</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00045">45</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a82548b23d7b12932dd04c1c407b4aca6"></a>
+<a class="anchor" id="ad35f15ebf634e81fdc4891cf3d25157f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV&#160;&#160;&#160;0</td>
+          <td class="memname">#define UQ_GCM_PRED_LAG_ODV&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00035">35</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00049">49</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7e95c2e336d5d714d5a600189693dc69"></a>
+<a class="anchor" id="af88d70dde3281fb1cee1d6861cbb335b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOWED_SET_ODV&#160;&#160;&#160;&quot;&quot;</td>
+          <td class="memname">#define UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00036">36</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00052">52</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="abe60e805696859c40dd904460936d08e"></a>
+<a class="anchor" id="a595669e25d77ab2564ce835d4365cf9d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV&#160;&#160;&#160;<a class="el" href="a00410.html#ae093399982cca0d24b89722d8bcd3611">UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE</a></td>
+          <td class="memname">#define UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00034">34</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00050">50</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae093399982cca0d24b89722d8bcd3611"></a>
+<a class="anchor" id="a3d03afc8c3c8fff1a49ef657f4caac36"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE&#160;&#160;&#160;&quot;.&quot;</td>
+          <td class="memname">#define UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00031">31</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00051">51</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a683bcf5595dac9f028d025cf05c9c30a"></a>
+<a class="anchor" id="a0afcde26e1d59adcc20dae1bc42e14f5"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_P_ETA_ODV&#160;&#160;&#160;1</td>
+          <td class="memname">#define UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00037">37</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00055">55</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9db40259b132e5570037d9da1ac02e77"></a>
+<a class="anchor" id="aca787ee7b06428738404035faec0c164"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_ZERO_RELATIVE_SINGULAR_VALUE_ODV&#160;&#160;&#160;0.</td>
+          <td class="memname">#define UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00410_source.html#l00038">38</a> of file <a class="el" href="a00410_source.html">SimulationModelOptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00410_source.html#l00053">53</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00428_source.html#l00374">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00068">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab656c45cb7187af66d7a9a8de2f1a929"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00410_source.html#l00054">54</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6f96a0327cfeda808b8231f34e100a9d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00410_source.html#l00043">43</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a00c1221b14751b4e6298448d43767f2d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOWED_SET_ODV&#160;&#160;&#160;&quot;&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00410_source.html#l00044">44</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac15fbed573356459a67fdf442fd0038f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV&#160;&#160;&#160;<a class="el" href="a00410.html#a6cce9c7ebfa5f7a0ecb7ce7521e95f73">UQ_GCM_FILENAME_FOR_NO_FILE</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00410_source.html#l00041">41</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaf96d1b92eee463b9faa47369dfb222c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV&#160;&#160;&#160;&quot;m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00410_source.html#l00042">42</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a345dcb05464f6221bef866189526054b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00410_source.html#l00040">40</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1208f9012e56e2989669ad936a0add77"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00410_source.html#l00048">48</a> of file <a class="el" href="a00410_source.html">GpmsaComputerModelOptions.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00428_source.html#l00472">QUESO::GpmsaComputerModelOptions::defineMyOptions()</a>, and <a class="el" href="a00428_source.html#l00080">QUESO::GcmOptionsValues::GcmOptionsValues()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

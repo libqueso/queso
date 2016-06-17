@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/inc/UniformVectorRV.h Source File</title>
+<title>queso-0.55.0: src/stats/inc/TransformedScaledCovMatrixTKGroup.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_84a4f20dccd7baf1e042e36cd61e1aee.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_0f21e708b746168b296493cf5f1407d8.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">UniformVectorRV.h</div>  </div>
+<div class="title">TransformedScaledCovMatrixTKGroup.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00534.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,62 +75,93 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_UNIFORM_VECTOR_RV_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_UNIFORM_VECTOR_RV_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_TRANSFORMED_SCALEDCOV_TK_GROUP_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_TRANSFORMED_SCALEDCOV_TK_GROUP_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRV.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/JointPdf.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRealizer.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/VectorCdf.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/VectorMdf.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;queso/SequenceOfVectors.h&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;queso/InfoTheory.h&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;gsl/gsl_sf_psi.h&gt;</span> <span class="comment">// todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/TKGroup.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRV.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarFunctionSynchronizer.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/InvLogitGaussianVectorRV.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00222.html">   51</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00222.html">UniformVectorRV</a> : <span class="keyword">public</span> <a class="code" href="a00047.html">BaseVectorRV</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00217.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00217.html">TransformedScaledCovMatrixTKGroup</a> : <span class="keyword">public</span> <a class="code" href="a00042.html">BaseTKGroup</a>&lt;V, M&gt; {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="a00217.html#a006be4f7f33ed5cdc9b63600f9a918e1">TransformedScaledCovMatrixTKGroup</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * prefix,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00057.html">BoxSubset&lt;V, M&gt;</a> &amp; boxSubset, <span class="keyword">const</span> std::vector&lt;double&gt; &amp; scales,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keyword">const</span> M &amp; covMatrix);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00222.html#a088f61731c268c102b4a21c503cc9844">UniformVectorRV</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                         <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00047.html#aa4dd2f036228eac1f945bacc7147a922">imageSet</a>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00222.html#a8ff6273a758739c706e8ffbaf8ca4b26">~UniformVectorRV</a>();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00217.html#a565e4b569b84e3a6034c453ac0f07408">~TransformedScaledCovMatrixTKGroup</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="a00217.html#a3be34577600a75229d9efbd156673d9e">symmetric</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00222.html#ab6dee885e568635b7b7e9675b4e66833">print</a>(std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorRV&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorRV&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorRV&lt;V,M&gt;::m_imageSet</a>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorRV&lt;V,M&gt;::m_pdf</a>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorRV&lt;V,M&gt;::m_realizer</a>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorRV&lt;V,M&gt;::m_subCdf</a>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorRV&lt;V,M&gt;::m_unifiedCdf</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorRV&lt;V,M&gt;::m_mdf</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif // UQ_UNIFORM_VECTOR_RV_H</span></div>
-<div class="ttc" id="a00222_html"><div class="ttname"><a href="a00222.html">QUESO::UniformVectorRV</a></div><div class="ttdoc">A class representing a uniform vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00534_source.html#l00051">UniformVectorRV.h:51</a></div></div>
-<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00047_html"><div class="ttname"><a href="a00047.html">QUESO::BaseVectorRV</a></div><div class="ttdoc">A templated base class for handling vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00540_source.html#l00054">VectorRV.h:54</a></div></div>
-<div class="ttc" id="a00222_html_a8ff6273a758739c706e8ffbaf8ca4b26"><div class="ttname"><a href="a00222.html#a8ff6273a758739c706e8ffbaf8ca4b26">QUESO::UniformVectorRV::~UniformVectorRV</a></div><div class="ttdeci">virtual ~UniformVectorRV()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00063">UniformVectorRV.C:63</a></div></div>
-<div class="ttc" id="a00222_html_a088f61731c268c102b4a21c503cc9844"><div class="ttname"><a href="a00222.html#a088f61731c268c102b4a21c503cc9844">QUESO::UniformVectorRV::UniformVectorRV</a></div><div class="ttdeci">UniformVectorRV(const char *prefix, const VectorSet&lt; V, M &gt; &amp;imageSet)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00035">UniformVectorRV.C:35</a></div></div>
-<div class="ttc" id="a00047_html_aa4dd2f036228eac1f945bacc7147a922"><div class="ttname"><a href="a00047.html#aa4dd2f036228eac1f945bacc7147a922">QUESO::BaseVectorRV::imageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; imageSet() const </div><div class="ttdoc">Image set of the vector RV; access to private attribute m_imageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00625_source.html#l00079">VectorRV.C:79</a></div></div>
-<div class="ttc" id="a00222_html_ab6dee885e568635b7b7e9675b4e66833"><div class="ttname"><a href="a00222.html#ab6dee885e568635b7b7e9675b4e66833">QUESO::UniformVectorRV::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00074">UniformVectorRV.C:74</a></div></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00150.html">InvLogitGaussianVectorRV&lt;V, M&gt;</a> &amp; <a class="code" href="a00217.html#a26844f7b2470fbd46fa3b1c1907acf41">rv</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> stageId) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00150.html">InvLogitGaussianVectorRV&lt;V, M&gt;</a> &amp; <a class="code" href="a00217.html#a26844f7b2470fbd46fa3b1c1907acf41">rv</a>(</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keyword">const</span> std::vector&lt;unsigned int&gt; &amp; stageIds);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00217.html#a70a7b7ccec7af14bb42a3f48cf59a92a">updateLawCovMatrix</a>(<span class="keyword">const</span> M &amp; covMatrix);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="a00217.html#a0e7dd569afbe0bef9d07b0195be79d9d">setPreComputingPosition</a>(<span class="keyword">const</span> V &amp; position, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> stageId);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00217.html#a63701e5bc18eea761c4d991a0c803beb">clearPreComputingPositions</a>();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00217.html#ae593f9ab8fa5f24dcf71f38ab74d9000">print</a>(std::ostream &amp; os) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="comment">// Convenience method that transforms a point in physical (user) space to a</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="comment">// space with no boundaries and where the proposal covariance matrix is</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">// Gaussian</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00217.html#a8b6d5160097ac03318022cdacaaa9468">transformToGaussianSpace</a>(<span class="keyword">const</span> V &amp; physicalPoint,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      V &amp; transformedPoint) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00217.html#a9c83bde628e6c46cbb6d95eb97e0bd88">setRVsWithZeroMean</a>();</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseTKGroup&lt;V, M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseTKGroup&lt;V, M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseTKGroup&lt;V, M&gt;::m_vectorSpace</a>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseTKGroup&lt;V, M&gt;::m_scales</a>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseTKGroup&lt;V, M&gt;::m_preComputingPositions</a>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseTKGroup&lt;V, M&gt;::m_rvs</a>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="a00217.html#aecf0523f914747a70b1fc11f96652bc6">  116</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00057.html">BoxSubset&lt;V, M&gt;</a> &amp; <a class="code" href="a00217.html#aecf0523f914747a70b1fc11f96652bc6">m_boxSubset</a>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="a00217.html#a40e45a9c395d4fc25b2210945c1ad588">  117</a></span>&#160;  M <a class="code" href="a00217.html#a40e45a9c395d4fc25b2210945c1ad588">m_originalCovMatrix</a>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;};</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#endif // UQ_TRANSFORMED_SCALEDCOV_TK_GROUP_H</span></div>
+<div class="ttc" id="a00217_html_a26844f7b2470fbd46fa3b1c1907acf41"><div class="ttname"><a href="a00217.html#a26844f7b2470fbd46fa3b1c1907acf41">QUESO::TransformedScaledCovMatrixTKGroup::rv</a></div><div class="ttdeci">const InvLogitGaussianVectorRV&lt; V, M &gt; &amp; rv(unsigned int stageId) const </div><div class="ttdoc">InvLogitGaussian increment property to construct a transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00079">TransformedScaledCovMatrixTKGroup.C:79</a></div></div>
+<div class="ttc" id="a00217_html_a9c83bde628e6c46cbb6d95eb97e0bd88"><div class="ttname"><a href="a00217.html#a9c83bde628e6c46cbb6d95eb97e0bd88">QUESO::TransformedScaledCovMatrixTKGroup::setRVsWithZeroMean</a></div><div class="ttdeci">void setRVsWithZeroMean()</div><div class="ttdoc">Sets the mean of the underlying Gaussian RVs to zero. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00223">TransformedScaledCovMatrixTKGroup.C:223</a></div></div>
+<div class="ttc" id="a00217_html_a3be34577600a75229d9efbd156673d9e"><div class="ttname"><a href="a00217.html#a3be34577600a75229d9efbd156673d9e">QUESO::TransformedScaledCovMatrixTKGroup::symmetric</a></div><div class="ttdeci">bool symmetric() const </div><div class="ttdoc">Whether or not the matrix is symmetric. Always &amp;#39;false&amp;#39;. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00072">TransformedScaledCovMatrixTKGroup.C:72</a></div></div>
+<div class="ttc" id="a00217_html_a565e4b569b84e3a6034c453ac0f07408"><div class="ttname"><a href="a00217.html#a565e4b569b84e3a6034c453ac0f07408">QUESO::TransformedScaledCovMatrixTKGroup::~TransformedScaledCovMatrixTKGroup</a></div><div class="ttdeci">~TransformedScaledCovMatrixTKGroup()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00066">TransformedScaledCovMatrixTKGroup.C:66</a></div></div>
+<div class="ttc" id="a00042_html"><div class="ttname"><a href="a00042.html">QUESO::BaseTKGroup</a></div><div class="ttdoc">This base class allows the representation of a transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00533_source.html#l00050">TKGroup.h:50</a></div></div>
+<div class="ttc" id="a00217_html_a63701e5bc18eea761c4d991a0c803beb"><div class="ttname"><a href="a00217.html#a63701e5bc18eea761c4d991a0c803beb">QUESO::TransformedScaledCovMatrixTKGroup::clearPreComputingPositions</a></div><div class="ttdeci">void clearPreComputingPositions()</div><div class="ttdoc">Clears the pre-computing positions m_preComputingPositions[stageId]. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00213">TransformedScaledCovMatrixTKGroup.C:213</a></div></div>
+<div class="ttc" id="a00217_html_a8b6d5160097ac03318022cdacaaa9468"><div class="ttname"><a href="a00217.html#a8b6d5160097ac03318022cdacaaa9468">QUESO::TransformedScaledCovMatrixTKGroup::transformToGaussianSpace</a></div><div class="ttdeci">void transformToGaussianSpace(const V &amp;physicalPoint, V &amp;transformedPoint) const </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00250">TransformedScaledCovMatrixTKGroup.C:250</a></div></div>
+<div class="ttc" id="a00150_html"><div class="ttname"><a href="a00150.html">QUESO::InvLogitGaussianVectorRV</a></div><div class="ttdoc">A class representing a (transformed) Gaussian vector RV with bounds. </div><div class="ttdef"><b>Definition:</b> <a href="a00501_source.html#l00045">InvLogitGaussianVectorRV.h:45</a></div></div>
+<div class="ttc" id="a00217_html"><div class="ttname"><a href="a00217.html">QUESO::TransformedScaledCovMatrixTKGroup</a></div><div class="ttdoc">This class represents a transition kernel with a scaled covariance matrix on hybrid bounded/unbounded...</div><div class="ttdef"><b>Definition:</b> <a href="a00534_source.html#l00048">TransformedScaledCovMatrixTKGroup.h:48</a></div></div>
+<div class="ttc" id="a00217_html_aecf0523f914747a70b1fc11f96652bc6"><div class="ttname"><a href="a00217.html#aecf0523f914747a70b1fc11f96652bc6">QUESO::TransformedScaledCovMatrixTKGroup::m_boxSubset</a></div><div class="ttdeci">const BoxSubset&lt; V, M &gt; &amp; m_boxSubset</div><div class="ttdef"><b>Definition:</b> <a href="a00534_source.html#l00116">TransformedScaledCovMatrixTKGroup.h:116</a></div></div>
+<div class="ttc" id="a00217_html_a006be4f7f33ed5cdc9b63600f9a918e1"><div class="ttname"><a href="a00217.html#a006be4f7f33ed5cdc9b63600f9a918e1">QUESO::TransformedScaledCovMatrixTKGroup::TransformedScaledCovMatrixTKGroup</a></div><div class="ttdeci">TransformedScaledCovMatrixTKGroup(const char *prefix, const BoxSubset&lt; V, M &gt; &amp;boxSubset, const std::vector&lt; double &gt; &amp;scales, const M &amp;covMatrix)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00033">TransformedScaledCovMatrixTKGroup.C:33</a></div></div>
+<div class="ttc" id="a00217_html_ae593f9ab8fa5f24dcf71f38ab74d9000"><div class="ttname"><a href="a00217.html#ae593f9ab8fa5f24dcf71f38ab74d9000">QUESO::TransformedScaledCovMatrixTKGroup::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00242">TransformedScaledCovMatrixTKGroup.C:242</a></div></div>
+<div class="ttc" id="a00057_html"><div class="ttname"><a href="a00057.html">QUESO::BoxSubset</a></div><div class="ttdoc">Class representing a subset of a vector space shaped like a hypercube. </div><div class="ttdef"><b>Definition:</b> <a href="a00244_source.html#l00044">BoxSubset.h:44</a></div></div>
+<div class="ttc" id="a00217_html_a40e45a9c395d4fc25b2210945c1ad588"><div class="ttname"><a href="a00217.html#a40e45a9c395d4fc25b2210945c1ad588">QUESO::TransformedScaledCovMatrixTKGroup::m_originalCovMatrix</a></div><div class="ttdeci">M m_originalCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00534_source.html#l00117">TransformedScaledCovMatrixTKGroup.h:117</a></div></div>
+<div class="ttc" id="a00217_html_a70a7b7ccec7af14bb42a3f48cf59a92a"><div class="ttname"><a href="a00217.html#a70a7b7ccec7af14bb42a3f48cf59a92a">QUESO::TransformedScaledCovMatrixTKGroup::updateLawCovMatrix</a></div><div class="ttdeci">void updateLawCovMatrix(const M &amp;covMatrix)</div><div class="ttdoc">Scales the covariance matrix of the underlying Gaussian distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00146">TransformedScaledCovMatrixTKGroup.C:146</a></div></div>
+<div class="ttc" id="a00217_html_a0e7dd569afbe0bef9d07b0195be79d9d"><div class="ttname"><a href="a00217.html#a0e7dd569afbe0bef9d07b0195be79d9d">QUESO::TransformedScaledCovMatrixTKGroup::setPreComputingPosition</a></div><div class="ttdeci">bool setPreComputingPosition(const V &amp;position, unsigned int stageId)</div><div class="ttdoc">Sets the pre-computing positions m_preComputingPositions[stageId] with a new vector of size position...</div><div class="ttdef"><b>Definition:</b> <a href="a00619_source.html#l00174">TransformedScaledCovMatrixTKGroup.C:174</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

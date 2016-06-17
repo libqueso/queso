@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/core/inc/queso.h Source File</title>
+<title>queso-0.55.0: src/core/inc/OperatorBase.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_88fac51d2e17cec13478f22fd619c260.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_8c6469bb17906efee6ca4d3fe37c75c7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">queso.h</div>  </div>
+<div class="title">OperatorBase.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00350.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -74,44 +74,51 @@
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// grvy.h: Basic API Definitions</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifndef QUESO_H_</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_H_</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Library version/build info</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00350.html#af8f8eb612ce429b5b52d7fd5e412f2dd">   34</a></span>&#160;<span class="preprocessor">#define QUESO_MAJOR_VERSION  0</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00350.html#a8aa8d2fc44e6edc52b2baa17c5001bae">   35</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_MINOR_VERSION  53</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00350.html#a73b7d04c533087e0000140cc9e19dc71">   36</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_MICRO_VERSION  0</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00350.html#ac220e0baec88681f8270678badb7bcb9">   38</a></span>&#160;<span class="preprocessor">#define QUESO_BUILD_USER     &quot;damon&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00350.html#aef2d7f6fe2a604b6dc962d9c53fbccad">   39</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_ARCH     &quot;x86_64-unknown-linux-gnu&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="a00350.html#a82f0d319c13988e6ce0abfc3e5acfafd">   40</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_HOST     &quot;zoidberg.ices.utexas.edu&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="a00350.html#ad3f2a2a9e1a0507319ca48e4a171d7c6">   41</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_DATE     &quot;2015-06-11 13:51&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="a00350.html#a8b36b33f2429f166778a0a9410259f1d">   42</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_VERSION  &quot;94c18ec&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00350.html#a4ade4ed888e8e8984634ec507e08dcf4">   44</a></span>&#160;<span class="preprocessor">#define QUESO_LIB_VERSION    &quot;0.53.0&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00350.html#a200372295aca6277053dc3198acd1fa2">   45</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_LIB_RELEASE    &quot;Development Build&quot;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00350.html#a5473b76f2474d904b914586f0e85575d">   47</a></span>&#160;<span class="preprocessor">#define QUESO_CXX            &quot;/opt/apps/ossw/libraries/mpich2/mpich2-1.4.1p1/sl6/gcc-4.7/bin/mpicxx&quot;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00350.html#a0733ab68bd215a3d12bc6aea1d80a7e5">   48</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_CXXFLAGS       &quot;-g -O2 -Wall&quot;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// External libraries</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_OPERATOR_BASE_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_OPERATOR_BASE_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;boost/shared_ptr.hpp&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/FunctionBase.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">class </span>FunctionOperatorBuilder;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00179.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00179.html">OperatorBase</a> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="a00179.html#ae9f848c2418f2dca590175a53be0b250">OperatorBase</a>();</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00350.html#a735dae31e72a24c63c02e5ed8868fcac">   52</a></span>&#160;<span class="preprocessor">#define QUESO_TRILINOS_DIR  &quot;&quot;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00350.html#aad144bff960096e3e55ea946a529dc9f">   53</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GSL_DIR       &quot;-L/opt/apps/ossw/libraries/gsl/gsl-1.15/sl6/gcc-4.7/lib -lgsl -lgslcblas -lm&quot;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00350.html#ae762ff926acfd3095751bf812077f02d">   54</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GRVY_DIR      &quot;&quot;</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00350.html#ace4c8bf4a22ac49477823be20179d3d7">   55</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GLPK_DIR      &quot;&quot;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00350.html#a204aeda021989ea37fbc54f1861cbfef">   56</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_HDF5_DIR      &quot;/opt/apps/ossw/libraries/hdf5/hdf5-1.8.9/sl6/gcc-4.7&quot;</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00179.html#a2869fcba07398fa247c0095f3e5f272d">~OperatorBase</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00179.html#ae16245b5e46e01ff81121cca14190e7f">get_eigenvalue</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00179.html#a598da528247dcaec786eee415664d42e">get_inverted_eigenvalue</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00179.html#a610fc538c34726a001d49c138a17817e">get_num_converged</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">virtual</span> boost::shared_ptr&lt;FunctionBase&gt;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="a00179.html#adb765561b8de30f081fe23c53b1a03fb">inverse_kl_transform</a>(std::vector&lt;double&gt;&amp; xi, <span class="keywordtype">double</span> alpha) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif // QUESO_OPERATOR_BASE_H</span></div>
+<div class="ttc" id="a00179_html_a610fc538c34726a001d49c138a17817e"><div class="ttname"><a href="a00179.html#a610fc538c34726a001d49c138a17817e">QUESO::OperatorBase::get_num_converged</a></div><div class="ttdeci">virtual unsigned int get_num_converged() const =0</div><div class="ttdoc">Return the number of converged eigenpairs. </div></div>
+<div class="ttc" id="a00179_html"><div class="ttname"><a href="a00179.html">QUESO::OperatorBase</a></div><div class="ttdoc">Abstract base class for operator objects. Operators are assumed to be symmetric and positive-definite...</div><div class="ttdef"><b>Definition:</b> <a href="a00350_source.html#l00045">OperatorBase.h:45</a></div></div>
+<div class="ttc" id="a00179_html_ae16245b5e46e01ff81121cca14190e7f"><div class="ttname"><a href="a00179.html#ae16245b5e46e01ff81121cca14190e7f">QUESO::OperatorBase::get_eigenvalue</a></div><div class="ttdeci">virtual double get_eigenvalue(unsigned int i) const =0</div><div class="ttdoc">Return eigenvalue i. </div></div>
+<div class="ttc" id="a00179_html_a598da528247dcaec786eee415664d42e"><div class="ttname"><a href="a00179.html#a598da528247dcaec786eee415664d42e">QUESO::OperatorBase::get_inverted_eigenvalue</a></div><div class="ttdeci">virtual double get_inverted_eigenvalue(unsigned int i) const =0</div><div class="ttdoc">Return the reciprocal of eigenvalue i. </div></div>
+<div class="ttc" id="a00179_html_a2869fcba07398fa247c0095f3e5f272d"><div class="ttname"><a href="a00179.html#a2869fcba07398fa247c0095f3e5f272d">QUESO::OperatorBase::~OperatorBase</a></div><div class="ttdeci">virtual ~OperatorBase()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00034">OperatorBase.C:34</a></div></div>
+<div class="ttc" id="a00179_html_adb765561b8de30f081fe23c53b1a03fb"><div class="ttname"><a href="a00179.html#adb765561b8de30f081fe23c53b1a03fb">QUESO::OperatorBase::inverse_kl_transform</a></div><div class="ttdeci">virtual boost::shared_ptr&lt; FunctionBase &gt; inverse_kl_transform(std::vector&lt; double &gt; &amp;xi, double alpha) const =0</div><div class="ttdoc">Given coefficients xi, computes the Karhunen-Loeve transform. </div></div>
+<div class="ttc" id="a00179_html_ae9f848c2418f2dca590175a53be0b250"><div class="ttname"><a href="a00179.html#ae9f848c2418f2dca590175a53be0b250">QUESO::OperatorBase::OperatorBase</a></div><div class="ttdeci">OperatorBase()</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00030">OperatorBase.C:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:40 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

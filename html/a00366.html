@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/core/src/EnvironmentOptions.C File Reference</title>
+<title>queso-0.55.0: src/core/src/Defines.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,7 +43,7 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_d16228283b18c448cbd408df6e1bb59e.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_637b9fe55c797d9c55ffa9eb30124a86.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -51,18 +51,15 @@
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">EnvironmentOptions.C File Reference</div>  </div>
+<div class="title">Defines.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;boost/program_options.hpp&gt;</code><br/>
-<code>#include &lt;queso/EnvironmentOptions.h&gt;</code><br/>
-<code>#include &lt;queso/Miscellaneous.h&gt;</code><br/>
-<code>#include &lt;queso/asserts.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;queso/Defines.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for EnvironmentOptions.C:</div>
+Include dependency graph for Defines.C:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00786.png" border="0" usemap="#src_2core_2src_2_environment_options_8_c" alt=""/></div>
-<map name="src_2core_2src_2_environment_options_8_c" id="src_2core_2src_2_environment_options_8_c">
+<div class="center"><img src="a00787.png" border="0" usemap="#src_2core_2src_2_defines_8_c" alt=""/></div>
+<map name="src_2core_2src_2_defines_8_c" id="src_2core_2src_2_defines_8_c">
 </map>
 </div>
 </div>
@@ -70,20 +67,18 @@ Include dependency graph for EnvironmentOptions.C:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
+<tr class="memitem:a00652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9be40334de3ec5c8894bbe0780bf954c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#a9be40334de3ec5c8894bbe0780bf954c">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const EnvOptionsValues &amp;obj)</td></tr>
-<tr class="separator:a9be40334de3ec5c8894bbe0780bf954c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19108ba91686fa96e00f6f47bed7c67f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#a19108ba91686fa96e00f6f47bed7c67f">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const EnvironmentOptions &amp;obj)</td></tr>
-<tr class="memdesc:a19108ba91686fa96e00f6f47bed7c67f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print values of the options chosen.  <a href="#a19108ba91686fa96e00f6f47bed7c67f">More...</a><br/></td></tr>
-<tr class="separator:a19108ba91686fa96e00f6f47bed7c67f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5af97e1f9320b7787efc744ef76be297"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a> ()</td></tr>
+<tr class="memdesc:a5af97e1f9320b7787efc744ef76be297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the rank of the calling process in the communicator.  <a href="#a5af97e1f9320b7787efc744ef76be297">More...</a><br/></td></tr>
+<tr class="separator:a5af97e1f9320b7787efc744ef76be297"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

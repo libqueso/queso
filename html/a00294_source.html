@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/contrib/ANN/src/bd_pr_search.cpp Source File</title>
+<title>queso-0.55.0: src/contrib/ANN/sample/ann_sample.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,19 +43,19 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_bd26773dc971f4fa3aa1d8bd68fbf230.html">contrib</a></li><li class="navelem"><a class="el" href="dir_9b88879957fe8db0821d93727895fef3.html">ANN</a></li><li class="navelem"><a class="el" href="dir_162f6fcbd574a601bad28c5358416498.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_5ebf0f177932fe2ba181ddb3e6398119.html">contrib</a></li><li class="navelem"><a class="el" href="dir_67b7d72f59e2a5482e20d8653f81e008.html">ANN</a></li><li class="navelem"><a class="el" href="dir_1bbe07b054dd4fa9fd17e51131b69a76.html">sample</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">bd_pr_search.cpp</div>  </div>
+<div class="title">ann_sample.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00294.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// File:                        bd_pr_search.cpp</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Programmer:          David Mount</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// Description:         Priority search for bd-trees</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// Last modified:       01/04/05 (Version 1.0)</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//              File:                   ann_sample.cpp</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//              Programmer:             Sunil Arya and David Mount</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//              Last modified:  03/04/98 (Release 0.1)</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">//              Description:    Sample program for ANN</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (c) 1997-2005 University of Maryland and Sunil Arya and</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// David Mount.  All Rights Reserved.</span></div>
@@ -70,69 +70,210 @@
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// any purpose.  It is provided &quot;as is&quot; without express or implied</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// warranty.</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">//History:</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//      Revision 0.1  03/04/98</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//              Initial release</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00297.html">bd_tree.h</a>&quot;</span>                                    <span class="comment">// bd-tree declarations</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00303.html">kd_pr_search.h</a>&quot;</span>                               <span class="comment">// kd priority search declarations</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//      Approximate priority searching for bd-trees.</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//              See the file kd_pr_search.cc for general information on the</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//              approximate nearest neighbor priority search algorithm.  Here</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">//              we include the extensions for shrinking nodes.</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//      bd_shrink::ann_search - search a shrinking node</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00010.html#adb5b5c04e63c394e650ae3fc7e195989">   39</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00010.html#adb5b5c04e63c394e650ae3fc7e195989">ANNbd_shrink::ann_pri_search</a>(<a class="code" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a> box_dist)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <a class="code" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a> inner_dist = 0;                                         <span class="comment">// distance to inner box</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00010.html#aa39fd79dab4163b3ff8a0af60fec9742">n_bnds</a>; i++) {                      <span class="comment">// is query point in the box?</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00010.html#af37a99b5d5b1c460e31ea5b9ca994e3f">bnds</a>[i].out(<a class="code" href="a00302.html#a525d7f7c1461455f090badced0a0d914">ANNprQ</a>)) {                              <span class="comment">// outside this bounding side?</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                                                                                                <span class="comment">// add to inner distance</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                        inner_dist = (<a class="code" href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>) <a class="code" href="a00286.html#a185e91d6668c4e876c016ef9dff4d107">ANN_SUM</a>(inner_dist, <a class="code" href="a00010.html#af37a99b5d5b1c460e31ea5b9ca994e3f">bnds</a>[i].dist(<a class="code" href="a00302.html#a525d7f7c1461455f090badced0a0d914">ANNprQ</a>));</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">if</span> (inner_dist &lt;= box_dist) {                           <span class="comment">// if inner box is closer</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c">ANN_OUT</a>] != <a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a>)               <span class="comment">// enqueue outer if not trivial</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                        <a class="code" href="a00302.html#a33f66a6eca38ed6d2de1454a10b1ff3a">ANNprBoxPQ</a>-&gt;<a class="code" href="a00022.html#ace0ac53aabbcaba22d209e3e1d987db6">insert</a>(box_dist,<a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c">ANN_OUT</a>]);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                                                                                                <span class="comment">// continue with inner child</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9">ANN_IN</a>]-&gt;<a class="code" href="a00014.html#a4241fcc04521c2b43aaa0c9069ec01a6">ann_pri_search</a>(inner_dist);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">else</span> {                                                                          <span class="comment">// if outer box is closer</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9">ANN_IN</a>] != <a class="code" href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a>)                <span class="comment">// enqueue inner if not trivial</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                        <a class="code" href="a00302.html#a33f66a6eca38ed6d2de1454a10b1ff3a">ANNprBoxPQ</a>-&gt;<a class="code" href="a00022.html#ace0ac53aabbcaba22d209e3e1d987db6">insert</a>(inner_dist,<a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9">ANN_IN</a>]);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                                                                                <span class="comment">// continue with outer child</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <a class="code" href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">child</a>[<a class="code" href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c">ANN_OUT</a>]-&gt;<a class="code" href="a00014.html#a4241fcc04521c2b43aaa0c9069ec01a6">ann_pri_search</a>(box_dist);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="a00287.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a>(3*n_bnds)                                                      <span class="comment">// increment floating ops</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="a00287.html#a68f69069cd40b0f2af289be09181d8bd">ANN_SHR</a>(1)                                                                      <span class="comment">// one more shrinking node</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
-<div class="ttc" id="a00010_html_adb5b5c04e63c394e650ae3fc7e195989"><div class="ttname"><a href="a00010.html#adb5b5c04e63c394e650ae3fc7e195989">ANNbd_shrink::ann_pri_search</a></div><div class="ttdeci">virtual void ann_pri_search(ANNdist)</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00039">bd_pr_search.cpp:39</a></div></div>
-<div class="ttc" id="a00302_html_a525d7f7c1461455f090badced0a0d914"><div class="ttname"><a href="a00302.html#a525d7f7c1461455f090badced0a0d914">ANNprQ</a></div><div class="ttdeci">ANNpoint ANNprQ</div><div class="ttdef"><b>Definition:</b> <a href="a00302_source.html#l00077">kd_pr_search.cpp:77</a></div></div>
-<div class="ttc" id="a00022_html_ace0ac53aabbcaba22d209e3e1d987db6"><div class="ttname"><a href="a00022.html#ace0ac53aabbcaba22d209e3e1d987db6">ANNpr_queue::insert</a></div><div class="ttdeci">void insert(PQkey kv, PQinfo inf)</div><div class="ttdef"><b>Definition:</b> <a href="a00313_source.html#l00084">pr_queue.h:84</a></div></div>
-<div class="ttc" id="a00303_html"><div class="ttname"><a href="a00303.html">kd_pr_search.h</a></div></div>
-<div class="ttc" id="a00302_html_a33f66a6eca38ed6d2de1454a10b1ff3a"><div class="ttname"><a href="a00302.html#a33f66a6eca38ed6d2de1454a10b1ff3a">ANNprBoxPQ</a></div><div class="ttdeci">ANNpr_queue * ANNprBoxPQ</div><div class="ttdef"><b>Definition:</b> <a href="a00302_source.html#l00080">kd_pr_search.cpp:80</a></div></div>
-<div class="ttc" id="a00288_html_adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c"><div class="ttname"><a href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c">ANN_OUT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00046">ANNx.h:46</a></div></div>
-<div class="ttc" id="a00288_html_adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9"><div class="ttname"><a href="a00288.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9">ANN_IN</a></div><div class="ttdef"><b>Definition:</b> <a href="a00288_source.html#l00046">ANNx.h:46</a></div></div>
-<div class="ttc" id="a00286_html_a185e91d6668c4e876c016ef9dff4d107"><div class="ttname"><a href="a00286.html#a185e91d6668c4e876c016ef9dff4d107">ANN_SUM</a></div><div class="ttdeci">#define ANN_SUM(x, y)</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00362">ANN.h:362</a></div></div>
-<div class="ttc" id="a00287_html_a68f69069cd40b0f2af289be09181d8bd"><div class="ttname"><a href="a00287.html#a68f69069cd40b0f2af289be09181d8bd">ANN_SHR</a></div><div class="ttdeci">#define ANN_SHR(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00134">ANNperf.h:134</a></div></div>
-<div class="ttc" id="a00308_html_aefd44c312f0116089b2cfbf80ef5c5c7"><div class="ttname"><a href="a00308.html#aefd44c312f0116089b2cfbf80ef5c5c7">KD_TRIVIAL</a></div><div class="ttdeci">ANNkd_leaf * KD_TRIVIAL</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00050">kd_tree.cpp:50</a></div></div>
-<div class="ttc" id="a00287_html_a9e54d6f38fc80e6cdd64b97abf63c9a3"><div class="ttname"><a href="a00287.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a></div><div class="ttdeci">#define ANN_FLOP(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00131">ANNperf.h:131</a></div></div>
-<div class="ttc" id="a00014_html_a4241fcc04521c2b43aaa0c9069ec01a6"><div class="ttname"><a href="a00014.html#a4241fcc04521c2b43aaa0c9069ec01a6">ANNkd_node::ann_pri_search</a></div><div class="ttdeci">virtual void ann_pri_search(ANNdist)=0</div></div>
-<div class="ttc" id="a00286_html_ab2a7296707a2205201daccfc1929c3ca"><div class="ttname"><a href="a00286.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a></div><div class="ttdeci">double ANNdist</div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00159">ANN.h:159</a></div></div>
-<div class="ttc" id="a00010_html_aa39fd79dab4163b3ff8a0af60fec9742"><div class="ttname"><a href="a00010.html#aa39fd79dab4163b3ff8a0af60fec9742">ANNbd_shrink::n_bnds</a></div><div class="ttdeci">int n_bnds</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00063">bd_tree.h:63</a></div></div>
-<div class="ttc" id="a00297_html"><div class="ttname"><a href="a00297.html">bd_tree.h</a></div></div>
-<div class="ttc" id="a00010_html_a6b50ec4569620af69946e62106eeb5a7"><div class="ttname"><a href="a00010.html#a6b50ec4569620af69946e62106eeb5a7">ANNbd_shrink::child</a></div><div class="ttdeci">ANNkd_ptr child[2]</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00065">bd_tree.h:65</a></div></div>
-<div class="ttc" id="a00010_html_af37a99b5d5b1c460e31ea5b9ca994e3f"><div class="ttname"><a href="a00010.html#af37a99b5d5b1c460e31ea5b9ca994e3f">ANNbd_shrink::bnds</a></div><div class="ttdeci">ANNorthHSArray bnds</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00064">bd_tree.h:64</a></div></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span>                                              <span class="comment">// C standard library</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;cstdio&gt;</span>                                               <span class="comment">// C I/O (for sscanf)</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span>                                              <span class="comment">// string manipulation</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span>                                              <span class="comment">// file I/O</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="a00289.html">ANN/ANN.h</a>&gt;</span>                                    <span class="comment">// ANN declarations</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using namespace </span>std;                                    <span class="comment">// make std:: accessible</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// ann_sample</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// This is a simple sample program for the ANN library.  After compiling,</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// it can be run as follows.</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// ann_sample [-d dim] [-max mpts] [-nn k] [-e eps] [-df data] [-qf query]</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// where</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//              dim                             is the dimension of the space (default = 2)</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//              mpts                    maximum number of data points (default = 1000)</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//              k                               number of nearest neighbors per query (default 1)</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//              eps                             is the error bound (default = 0.0)</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//              data                    file containing data points</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//              query                   file containing query points</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// Results are sent to the standard output.</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//      Parameters that are set in getArgs()</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00287.html#a121108f1337a0a9a98c92a1c2faeb8c5">getArgs</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);                    <span class="comment">// get command-line arguments</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00294.html#ab66ed8e0098c0a86b458672a55a9cca9">   53</a></span>&#160;<span class="keywordtype">int</span>                             <a class="code" href="a00294.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>                               = 1;                    <span class="comment">// number of nearest neighbors</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00294.html#a70b5e28b5bc3d1b63a7435c5fe50b837">   54</a></span>&#160;<span class="keywordtype">int</span>                             <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>                             = 2;                    <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00294.html#a974b448c3d0a13d483d36ef15de369b5">   55</a></span>&#160;<span class="keywordtype">double</span>                  <a class="code" href="a00294.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>                             = 0;                    <span class="comment">// error bound</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00294.html#a8c59db27913a8a427a7049780bacde29">   56</a></span>&#160;<span class="keywordtype">int</span>                             <a class="code" href="a00294.html#a8c59db27913a8a427a7049780bacde29">maxPts</a>                  = 1000;                 <span class="comment">// maximum number of data points</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="a00294.html#a69b05c430493eb60acb983be2d11cb0a">   58</a></span>&#160;istream*                <a class="code" href="a00294.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a>                  = NULL;                 <span class="comment">// input for data points</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="a00294.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">   59</a></span>&#160;istream*                <a class="code" href="a00294.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a>                 = NULL;                 <span class="comment">// input for query points</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="a00294.html#aae59a5d5b5611b349436830970ff23c5">   61</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="a00294.html#aae59a5d5b5611b349436830970ff23c5">readPt</a>(istream &amp;in, <a class="code" href="a00289.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p)                    <span class="comment">// read point (false on EOF)</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <span class="keywordflow">if</span>(!(in &gt;&gt; p[i])) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00294.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">   69</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00294.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">printPt</a>(ostream &amp;out, <a class="code" href="a00289.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p)                  <span class="comment">// print point</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; p[0];</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                out &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; p[i];</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00294.html#a3c04138a5bfe5d72780bb7e82a18e627">   78</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="a00287.html#a5ea466849f21e6c2be4ef9b2eb8868d3">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">int</span>                                     nPts;                                   <span class="comment">// actual number of data points</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="a00289.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>           dataPts;                                <span class="comment">// data points</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="a00289.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>                        queryPt;                                <span class="comment">// query point</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <a class="code" href="a00289.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>                     nnIdx;                                  <span class="comment">// near neighbor indices</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="a00289.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a>            dists;                                  <span class="comment">// near neighbor distances</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="a00016.html">ANNkd_tree</a>*                     kdTree;                                 <span class="comment">// search structure</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="code" href="a00287.html#a121108f1337a0a9a98c92a1c2faeb8c5">getArgs</a>(argc, argv);                                            <span class="comment">// read command-line arguments</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        queryPt = <a class="code" href="a00289.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a>(<a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>);                                      <span class="comment">// allocate query point</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        dataPts = <a class="code" href="a00289.html#a7d801c6084e348aefc8d675d5b8f2f9a">annAllocPts</a>(<a class="code" href="a00294.html#a8c59db27913a8a427a7049780bacde29">maxPts</a>, <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>);                     <span class="comment">// allocate data points</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        nnIdx = <span class="keyword">new</span> <a class="code" href="a00289.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a>[<a class="code" href="a00294.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>];                                          <span class="comment">// allocate near neigh indices</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        dists = <span class="keyword">new</span> <a class="code" href="a00289.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>[<a class="code" href="a00294.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>];                                         <span class="comment">// allocate near neighbor dists</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        nPts = 0;                                                                       <span class="comment">// read data points</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;Data Points:\n&quot;</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">while</span> (nPts &lt; <a class="code" href="a00294.html#a8c59db27913a8a427a7049780bacde29">maxPts</a> &amp;&amp; <a class="code" href="a00294.html#aae59a5d5b5611b349436830970ff23c5">readPt</a>(*<a class="code" href="a00294.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a>, dataPts[nPts])) {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <a class="code" href="a00294.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">printPt</a>(cout, dataPts[nPts]);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                nPts++;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        kdTree = <span class="keyword">new</span> <a class="code" href="a00016.html">ANNkd_tree</a>(                                        <span class="comment">// build search structure</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                                        dataPts,                                        <span class="comment">// the data points</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                                        nPts,                                           <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                        <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>);                                           <span class="comment">// dimension of space</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">while</span> (<a class="code" href="a00294.html#aae59a5d5b5611b349436830970ff23c5">readPt</a>(*<a class="code" href="a00294.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a>, queryPt)) {                     <span class="comment">// read query points</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                cout &lt;&lt; <span class="stringliteral">&quot;Query point: &quot;</span>;                                <span class="comment">// echo query point</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                <a class="code" href="a00294.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">printPt</a>(cout, queryPt);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                kdTree-&gt;<a class="code" href="a00016.html#a2a0fa2889c23a34773dc054c7769b3c6">annkSearch</a>(                                             <span class="comment">// search</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                                queryPt,                                                <span class="comment">// query point</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                                <a class="code" href="a00294.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>,                                                              <span class="comment">// number of near neighbors</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                                nnIdx,                                                  <span class="comment">// nearest neighbors (returned)</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                                dists,                                                  <span class="comment">// distance (returned)</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                                <a class="code" href="a00294.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>);                                                   <span class="comment">// error bound</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                cout &lt;&lt; <span class="stringliteral">&quot;\tNN:\tIndex\tDistance\n&quot;</span>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00294.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>; i++) {                   <span class="comment">// print summary</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                        dists[i] = sqrt(dists[i]);                      <span class="comment">// unsquare distance</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                        cout &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; nnIdx[i] &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; dists[i] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">delete</span> [] nnIdx;                                                    <span class="comment">// clean things up</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">delete</span> [] dists;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">delete</span> kdTree;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <a class="code" href="a00289.html#a7841414482997b8e49024b3cd5d3a017">annClose</a>();                                                                     <span class="comment">// done with ANN</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">//      getArgs - get command line arguments</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00287.html#a121108f1337a0a9a98c92a1c2faeb8c5">getArgs</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;{</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keyword">static</span> ifstream dataStream;                                     <span class="comment">// data file stream</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keyword">static</span> ifstream queryStream;                            <span class="comment">// query file stream</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">if</span> (argc &lt;= 1) {                                                        <span class="comment">// no arguments</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                cerr &lt;&lt; <span class="stringliteral">&quot;Usage:\n\n&quot;</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;  ann_sample [-d dim] [-max m] [-nn k] [-e eps] [-df data]&quot;</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                   <span class="stringliteral">&quot; [-qf query]\n\n&quot;</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;  where:\n&quot;</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    dim      dimension of the space (default = 2)\n&quot;</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    m        maximum number of data points (default = 1000)\n&quot;</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    k        number of nearest neighbors per query (default 1)\n&quot;</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    eps      the error bound (default = 0.0)\n&quot;</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    data     name of file containing data points\n&quot;</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    query    name of file containing query points\n\n&quot;</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                &lt;&lt; <span class="stringliteral">&quot; Results are sent to the standard output.\n&quot;</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                &lt;&lt; <span class="stringliteral">&quot; To run this demo use:\n&quot;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;    ann_sample -df data.pts -qf query.pts\n&quot;</span>;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                exit(0);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        }</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordtype">int</span> i = 1;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">while</span> (i &lt; argc) {                                                      <span class="comment">// read arguments</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-d&quot;</span>)) {                   <span class="comment">// -d option</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                        <a class="code" href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a> = atoi(argv[++i]);                          <span class="comment">// get dimension to dump</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                }</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-max&quot;</span>)) {    <span class="comment">// -max option</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                        <a class="code" href="a00294.html#a8c59db27913a8a427a7049780bacde29">maxPts</a> = atoi(argv[++i]);                       <span class="comment">// get max number of points</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-nn&quot;</span>)) {             <span class="comment">// -nn option</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                        <a class="code" href="a00294.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a> = atoi(argv[++i]);                            <span class="comment">// get number of near neighbors</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                }</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-e&quot;</span>)) {              <span class="comment">// -e option</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                        sscanf(argv[++i], <span class="stringliteral">&quot;%lf&quot;</span>, &amp;<a class="code" href="a00294.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>);         <span class="comment">// get error bound</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                }</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-df&quot;</span>)) {             <span class="comment">// -df option</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                        dataStream.open(argv[++i], ios::in);<span class="comment">// open data file</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                        <span class="keywordflow">if</span> (!dataStream) {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                                cerr &lt;&lt; <span class="stringliteral">&quot;Cannot open data file\n&quot;</span>;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                                exit(1);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                        }</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                        <a class="code" href="a00294.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a> = &amp;dataStream;                           <span class="comment">// make this the data stream</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-qf&quot;</span>)) {             <span class="comment">// -qf option</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                        queryStream.open(argv[++i], ios::in);<span class="comment">// open query file</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                        <span class="keywordflow">if</span> (!queryStream) {</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                                cerr &lt;&lt; <span class="stringliteral">&quot;Cannot open query file\n&quot;</span>;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                                exit(1);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                        }</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                        <a class="code" href="a00294.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a> = &amp;queryStream;                 <span class="comment">// make this query stream</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                }</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                <span class="keywordflow">else</span> {                                                                  <span class="comment">// illegal syntax</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                        cerr &lt;&lt; <span class="stringliteral">&quot;Unrecognized option.\n&quot;</span>;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                        exit(1);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                }</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                i++;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        }</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00294.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a> == NULL || <a class="code" href="a00294.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a> == NULL) {</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                cerr &lt;&lt; <span class="stringliteral">&quot;-df and -qf options must be specified\n&quot;</span>;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                exit(1);</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        }</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;}</div>
+<div class="ttc" id="a00289_html_a6cc54f9929727736423d719870cf1a5b"><div class="ttname"><a href="a00289.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a></div><div class="ttdeci">ANNidx * ANNidxArray</div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00378">ANN.h:378</a></div></div>
+<div class="ttc" id="a00294_html_a974b448c3d0a13d483d36ef15de369b5"><div class="ttname"><a href="a00294.html#a974b448c3d0a13d483d36ef15de369b5">eps</a></div><div class="ttdeci">double eps</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00055">ann_sample.cpp:55</a></div></div>
+<div class="ttc" id="a00287_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00287.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00294_html_a69b05c430493eb60acb983be2d11cb0a"><div class="ttname"><a href="a00294.html#a69b05c430493eb60acb983be2d11cb0a">dataIn</a></div><div class="ttdeci">istream * dataIn</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00058">ann_sample.cpp:58</a></div></div>
+<div class="ttc" id="a00289_html_ad85f4b5cb9cf5877a2094bf8582133f5"><div class="ttname"><a href="a00289.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a></div><div class="ttdeci">ANNcoord * ANNpoint</div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00375">ANN.h:375</a></div></div>
+<div class="ttc" id="a00289_html_ab2a7296707a2205201daccfc1929c3ca"><div class="ttname"><a href="a00289.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a></div><div class="ttdeci">double ANNdist</div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00159">ANN.h:159</a></div></div>
+<div class="ttc" id="a00294_html_ab66ed8e0098c0a86b458672a55a9cca9"><div class="ttname"><a href="a00294.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00053">ann_sample.cpp:53</a></div></div>
+<div class="ttc" id="a00287_html_a121108f1337a0a9a98c92a1c2faeb8c5"><div class="ttname"><a href="a00287.html#a121108f1337a0a9a98c92a1c2faeb8c5">getArgs</a></div><div class="ttdeci">void getArgs(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00146">ann2fig.cpp:146</a></div></div>
+<div class="ttc" id="a00289_html_ae3a038f02621d79c1efd5f8fb2ee968e"><div class="ttname"><a href="a00289.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a></div><div class="ttdeci">ANNdist * ANNdistArray</div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00377">ANN.h:377</a></div></div>
+<div class="ttc" id="a00016_html_a2a0fa2889c23a34773dc054c7769b3c6"><div class="ttname"><a href="a00016.html#a2a0fa2889c23a34773dc054c7769b3c6">ANNkd_tree::annkSearch</a></div><div class="ttdeci">void annkSearch(ANNpoint q, int k, ANNidxArray nn_idx, ANNdistArray dd, double eps=0.0)</div><div class="ttdef"><b>Definition:</b> <a href="a00307_source.html#l00089">kd_search.cpp:89</a></div></div>
+<div class="ttc" id="a00289_html_a7d801c6084e348aefc8d675d5b8f2f9a"><div class="ttname"><a href="a00289.html#a7d801c6084e348aefc8d675d5b8f2f9a">annAllocPts</a></div><div class="ttdeci">DLL_API ANNpointArray annAllocPts(int n, int dim)</div><div class="ttdef"><b>Definition:</b> <a href="a00295_source.html#l00117">ANN.cpp:117</a></div></div>
+<div class="ttc" id="a00294_html_aae59a5d5b5611b349436830970ff23c5"><div class="ttname"><a href="a00294.html#aae59a5d5b5611b349436830970ff23c5">readPt</a></div><div class="ttdeci">bool readPt(istream &amp;in, ANNpoint p)</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00061">ann_sample.cpp:61</a></div></div>
+<div class="ttc" id="a00289_html_a479fe2e8e10f09a57c69f70dcd239f9a"><div class="ttname"><a href="a00289.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a></div><div class="ttdeci">DLL_API ANNpoint annAllocPt(int dim, ANNcoord c=0)</div><div class="ttdef"><b>Definition:</b> <a href="a00295_source.html#l00110">ANN.cpp:110</a></div></div>
+<div class="ttc" id="a00289_html_a402299ac00a81ad80f09a0eb84ba4059"><div class="ttname"><a href="a00289.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a></div><div class="ttdeci">ANNpoint * ANNpointArray</div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00376">ANN.h:376</a></div></div>
+<div class="ttc" id="a00289_html_a7841414482997b8e49024b3cd5d3a017"><div class="ttname"><a href="a00289.html#a7841414482997b8e49024b3cd5d3a017">annClose</a></div><div class="ttdeci">DLL_API void annClose()</div><div class="ttdef"><b>Definition:</b> <a href="a00311_source.html#l00221">kd_tree.cpp:221</a></div></div>
+<div class="ttc" id="a00294_html_a1e762cf8fc8c7e92bfb0be1a8306f45c"><div class="ttname"><a href="a00294.html#a1e762cf8fc8c7e92bfb0be1a8306f45c">queryIn</a></div><div class="ttdeci">istream * queryIn</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00059">ann_sample.cpp:59</a></div></div>
+<div class="ttc" id="a00289_html"><div class="ttname"><a href="a00289.html">ANN.h</a></div></div>
+<div class="ttc" id="a00289_html_ac73fee32442f021ddcce434bd34f735f"><div class="ttname"><a href="a00289.html#ac73fee32442f021ddcce434bd34f735f">ANNidx</a></div><div class="ttdeci">int ANNidx</div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00175">ANN.h:175</a></div></div>
+<div class="ttc" id="a00016_html"><div class="ttname"><a href="a00016.html">ANNkd_tree</a></div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00705">ANN.h:705</a></div></div>
+<div class="ttc" id="a00294_html_a8c59db27913a8a427a7049780bacde29"><div class="ttname"><a href="a00294.html#a8c59db27913a8a427a7049780bacde29">maxPts</a></div><div class="ttdeci">int maxPts</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00056">ann_sample.cpp:56</a></div></div>
+<div class="ttc" id="a00294_html_a5bf3e6f77cc6d8a4d1895f30a4b67380"><div class="ttname"><a href="a00294.html#a5bf3e6f77cc6d8a4d1895f30a4b67380">printPt</a></div><div class="ttdeci">void printPt(ostream &amp;out, ANNpoint p)</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00069">ann_sample.cpp:69</a></div></div>
+<div class="ttc" id="a00287_html_a5ea466849f21e6c2be4ef9b2eb8868d3"><div class="ttname"><a href="a00287.html#a5ea466849f21e6c2be4ef9b2eb8868d3">main</a></div><div class="ttdeci">main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00583">ann2fig.cpp:583</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:40 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

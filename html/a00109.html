@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; Class Template Reference</title>
+<title>queso-0.55.0: QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -45,7 +45,7 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00109.html">GcmZTildeInfo</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00652.html">QUESO</a></li><li class="navelem"><a class="el" href="a00109.html">GcmTotalInfo</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -53,88 +53,201 @@
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="a01255.html">List of all members</a>  </div>
+<a href="a01260.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; Class Template Reference</div>  </div>
+<div class="title">QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00405_source.html">GcmTotalInfo.h</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;:</div>
+Collaboration diagram for QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01256.png" border="0" usemap="#_q_u_e_s_o_1_1_gcm_z_tilde_info_3_01_s___v_00_01_s___m_00_01_d___v_00_01_d___m_00_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_gcm_z_tilde_info_3_01_s___v_00_01_s___m_00_01_d___v_00_01_d___m_00_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_coll__map" id="_q_u_e_s_o_1_1_gcm_z_tilde_info_3_01_s___v_00_01_s___m_00_01_d___v_00_01_d___m_00_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_coll__map">
-<area shape="rect" id="node2" href="a00032.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="968,96,1168,125"/><area shape="rect" id="node14" href="a00175.html" title="The QUESO MPI Communicator Class. " alt="" coords="1325,83,1472,112"/><area shape="rect" id="node19" href="a00227.html" title="A templated class for handling sets. " alt="" coords="1497,185,1671,231"/><area shape="rect" id="node4" href="a00049.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="632,43,811,72"/><area shape="rect" id="node6" href="a00183.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="652,96,791,125"/><area shape="rect" id="node8" href="a00070.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="621,149,821,179"/><area shape="rect" id="node10" href="a00056.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="300,141,505,187"/><area shape="rect" id="node12" href="a00034.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,149,248,179"/><area shape="rect" id="node24" href="a00160.html" title="A class for partitioning vectors and matrices. " alt="" coords="1697,83,1804,112"/><area shape="rect" id="node17" href="a00228.html" title="QUESO::VectorSpace\l\&lt; D_V, D_M \&gt;" alt="" coords="2324,97,2489,143"/><area shape="rect" id="node22" href="a00066.html" title="QUESO::DistArray\&lt; std\l::string \&gt;" alt="" coords="1908,125,2087,171"/></map>
+<div class="center"><img src="a01261.png" border="0" usemap="#_q_u_e_s_o_1_1_gcm_total_info_3_01_s___v_00_01_s___m_00_01_d___v_00_01_d___m_00_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_gcm_total_info_3_01_s___v_00_01_s___m_00_01_d___v_00_01_d___m_00_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_coll__map" id="_q_u_e_s_o_1_1_gcm_total_info_3_01_s___v_00_01_s___m_00_01_d___v_00_01_d___m_00_01_p___v_00_01_p___m_00_01_q___v_00_01_q___m_01_4_coll__map">
+<area shape="rect" id="node2" href="a00122.html" title="QUESO::GenericVectorRV\l\&lt; P_V, P_M \&gt;" alt="" coords="2768,6,2941,47"/><area shape="rect" id="node3" href="a00047.html" title="A templated base class for handling vector RV. " alt="" coords="2352,69,2509,110"/><area shape="rect" id="node25" href="a00060.html" title="QUESO::ConcatenatedVector\lRV\&lt; P_V, P_M \&gt;" alt="" coords="2759,71,2950,113"/><area shape="rect" id="node4" href="a00032.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="867,363,1042,389"/><area shape="rect" id="node10" href="a00177.html" title="The QUESO MPI Communicator Class. " alt="" coords="1213,577,1347,604"/><area shape="rect" id="node11" href="a00046.html" title="QUESO::BaseVectorRealizer\l\&lt; P_V, P_M \&gt;" alt="" coords="1603,193,1789,234"/><area shape="rect" id="node12" href="a00230.html" title="QUESO::VectorSet\&lt; P\l_V, P_M \&gt;" alt="" coords="1205,246,1355,287"/><area shape="rect" id="node13" href="a00048.html" title="QUESO::BaseVectorSequence\l\&lt; P_V, P_M \&gt;" alt="" coords="2755,355,2954,397"/><area shape="rect" id="node14" href="a00079.html" title="QUESO::Fft\&lt; double \&gt;" alt="" coords="1414,364,1565,391"/><area shape="rect" id="node17" href="a00230.html" title="A templated class for handling sets. " alt="" coords="1400,415,1579,441"/><area shape="rect" id="node19" href="a00230.html" title="A templated class for handling sets. " alt="" coords="1814,474,1965,515"/><area shape="rect" id="node24" href="a00041.html" title="A templated (base) class for handling scalar functions. " alt="" coords="1185,659,1375,701"/><area shape="rect" id="node5" href="a00049.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="566,312,727,339"/><area shape="rect" id="node6" href="a00185.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="583,363,710,389"/><area shape="rect" id="node7" href="a00072.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="558,413,735,440"/><area shape="rect" id="node8" href="a00056.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="270,406,450,447"/><area shape="rect" id="node9" href="a00034.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,413,219,440"/><area shape="rect" id="node21" href="a00162.html" title="A class for partitioning vectors and matrices. " alt="" coords="1647,577,1745,604"/><area shape="rect" id="node15" href="a00057.html" title="QUESO::BoxSubset\&lt; P\l_V, P_M \&gt;" alt="" coords="2353,414,2509,455"/><area shape="rect" id="node16" href="a00232.html" title="A templated class for handling subsets. " alt="" coords="1991,426,2142,467"/><area shape="rect" id="node22" href="a00061.html" title="QUESO::ConcatenationSubset\l\&lt; P_V, P_M \&gt;" alt="" coords="2533,457,2731,498"/><area shape="rect" id="node18" href="a00231.html" title="QUESO::VectorSpace\l\&lt; P_V, P_M \&gt;" alt="" coords="2357,542,2505,583"/><area shape="rect" id="node20" href="a00068.html" title="QUESO::DistArray\&lt; std\l::string \&gt;" alt="" coords="1989,611,2144,653"/><area shape="rect" id="node23" href="a00035.html" title="QUESO::BaseJointPdf\l\&lt; P_V, P_M \&gt;" alt="" coords="2173,667,2323,709"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a624e7903c2d69d6d588e9dcf123176ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a624e7903c2d69d6d588e9dcf123176ca">GcmZTildeInfo</a> (const <a class="el" href="a00122.html">GpmsaComputerModelOptions</a> &amp;gcmOptionsObj, const <a class="el" href="a00102.html">GcmJointInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;jj, const <a class="el" href="a00108.html">GcmZInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;z)</td></tr>
-<tr class="separator:a624e7903c2d69d6d588e9dcf123176ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa346a6e8542a42804dadf277acf24f2c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#aa346a6e8542a42804dadf277acf24f2c">GcmZTildeInfo</a> (const <a class="el" href="a00122.html">GpmsaComputerModelOptions</a> &amp;gcmOptionsObj, const <a class="el" href="a00102.html">GcmJointInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;jj, const <a class="el" href="a00108.html">GcmZInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;z, const <a class="el" href="a00106.html">GcmSimulationTildeInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;st, const <a class="el" href="a00103.html">GcmJointTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;jt)</td></tr>
-<tr class="separator:aa346a6e8542a42804dadf277acf24f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a796f6cbeeb6673e145fec824428d4cf4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a796f6cbeeb6673e145fec824428d4cf4">~GcmZTildeInfo</a> ()</td></tr>
-<tr class="separator:a796f6cbeeb6673e145fec824428d4cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9fd485bb84c74e5723e13dd46876480"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#af9fd485bb84c74e5723e13dd46876480">GcmTotalInfo</a> (const <a class="el" href="a00107.html">GcmSimulationInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;s)</td></tr>
+<tr class="separator:af9fd485bb84c74e5723e13dd46876480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a227d8c1abb7a8ded258af94917f912dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a227d8c1abb7a8ded258af94917f912dc">GcmTotalInfo</a> (const <a class="el" href="a00107.html">GcmSimulationInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;s, const <a class="el" href="a00103.html">GcmExperimentInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt; &amp;e)</td></tr>
+<tr class="separator:a227d8c1abb7a8ded258af94917f912dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d826f13d1486e4b0ffce104fab78de3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a0d826f13d1486e4b0ffce104fab78de3">~GcmTotalInfo</a> ()</td></tr>
+<tr class="separator:a0d826f13d1486e4b0ffce104fab78de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef59d0eab67332c9afc1463d36c2b850"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#aef59d0eab67332c9afc1463d36c2b850">initializeTotalDim</a> (const <a class="el" href="a00107.html">GcmSimulationInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;s)</td></tr>
+<tr class="separator:aef59d0eab67332c9afc1463d36c2b850"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b9e017c70655f8d765ce3ec4d80e6b7"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a1b9e017c70655f8d765ce3ec4d80e6b7">initializeTotalDim</a> (const <a class="el" href="a00107.html">GcmSimulationInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;s, const <a class="el" href="a00103.html">GcmExperimentInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt; &amp;e)</td></tr>
+<tr class="separator:a1b9e017c70655f8d765ce3ec4d80e6b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae4398f7df32219bec1b8c476ce8ff2ae"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a></td></tr>
-<tr class="separator:ae4398f7df32219bec1b8c476ce8ff2ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a328d668cc10c7f10c1ab5664a68476b3"><td class="memItemLeft" align="right" valign="top">D_M&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a></td></tr>
-<tr class="separator:a328d668cc10c7f10c1ab5664a68476b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab11d5d8ad4446f3ce097283aa91bf414"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00228.html">VectorSpace</a>&lt; D_V, D_M &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a></td></tr>
-<tr class="separator:ab11d5d8ad4446f3ce097283aa91bf414"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3201b9ceb9937a848f309e484c9856cb"><td class="memItemLeft" align="right" valign="top">D_M&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a></td></tr>
-<tr class="separator:a3201b9ceb9937a848f309e484c9856cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75aee944c67438532c14c34a4552a791"><td class="memItemLeft" align="right" valign="top">D_M&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a75aee944c67438532c14c34a4552a791">m_Lmat_t</a></td></tr>
-<tr class="separator:a75aee944c67438532c14c34a4552a791"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26c6a1bb51c7fe79d0d4b27849c1d5af"><td class="memItemLeft" align="right" valign="top">D_V&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a26c6a1bb51c7fe79d0d4b27849c1d5af">m_Zvec_tilde_hat</a></td></tr>
-<tr class="separator:a26c6a1bb51c7fe79d0d4b27849c1d5af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada2cce908b970078fc533f9290000eb2"><td class="memItemLeft" align="right" valign="top">D_M&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#ada2cce908b970078fc533f9290000eb2">m_tmp_Smat_z_tilde</a></td></tr>
-<tr class="separator:ada2cce908b970078fc533f9290000eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d88b842eaef3a3681c35f23a2488588"><td class="memItemLeft" align="right" valign="top">D_M&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a5d88b842eaef3a3681c35f23a2488588">m_tmp_Smat_extra_tilde</a></td></tr>
-<tr class="separator:a5d88b842eaef3a3681c35f23a2488588"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02f8db07f44764786caff828e5270cf3"><td class="memItemLeft" align="right" valign="top">D_M&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a02f8db07f44764786caff828e5270cf3">m_tmp_Smat_z_tilde_hat</a></td></tr>
-<tr class="separator:a02f8db07f44764786caff828e5270cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47576e0de498837b3fa50a642b8bd795"><td class="memItemLeft" align="right" valign="top">D_M&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a47576e0de498837b3fa50a642b8bd795">m_tmp_Smat_z_tilde_hat_inv</a></td></tr>
-<tr class="separator:a47576e0de498837b3fa50a642b8bd795"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a950793b3c950ac321fe9677a89e8915b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a></td></tr>
+<tr class="separator:a950793b3c950ac321fe9677a89e8915b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19ce42acd407314470eb9e5e67761468"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a19ce42acd407314470eb9e5e67761468">m_numConstituents</a></td></tr>
+<tr class="separator:a19ce42acd407314470eb9e5e67761468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabcf6720d0134ff29db9f2ec650dd485"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <a class="el" href="a00230.html">VectorSet</a><br class="typebreak"/>
+&lt; P_V, P_M &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a></td></tr>
+<tr class="separator:aabcf6720d0134ff29db9f2ec650dd485"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21ce7ad2fbcc5c4eee29d90d945576a4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <br class="typebreak"/>
+<a class="el" href="a00047.html">BaseVectorRV</a>&lt; P_V, P_M &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a></td></tr>
+<tr class="separator:a21ce7ad2fbcc5c4eee29d90d945576a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb5df94341dd290e42305c74c520d6a2"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#acb5df94341dd290e42305c74c520d6a2">m_totalDim</a></td></tr>
+<tr class="separator:acb5df94341dd290e42305c74c520d6a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3647156e01fd4b9f092e6f8ae19c707"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00231.html">VectorSpace</a>&lt; P_V, P_M &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a></td></tr>
+<tr class="separator:ad3647156e01fd4b9f092e6f8ae19c707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8615ed10112eeb2b945756953fd91f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#aff8615ed10112eeb2b945756953fd91f">m_totalDomainVolume</a></td></tr>
+<tr class="separator:aff8615ed10112eeb2b945756953fd91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9a4ea908dc0f8e099806649c933c29f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00061.html">ConcatenationSubset</a>&lt; P_V, P_M &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#ad9a4ea908dc0f8e099806649c933c29f">m_totalDomain</a></td></tr>
+<tr class="separator:ad9a4ea908dc0f8e099806649c933c29f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4161cf00af38922d786892efc81988f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00060.html">ConcatenatedVectorRV</a>&lt; P_V, P_M &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a4161cf00af38922d786892efc81988f2">m_totalPriorRv</a></td></tr>
+<tr class="separator:a4161cf00af38922d786892efc81988f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab394621b163c739e4a25f91582a120f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00122.html">GenericVectorRV</a>&lt; P_V, P_M &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#ab394621b163c739e4a25f91582a120f3">m_totalPostRv</a></td></tr>
+<tr class="separator:ab394621b163c739e4a25f91582a120f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6809c34f80e81238dea8abe24fa01552"><td class="memItemLeft" align="right" valign="top">P_V&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a6809c34f80e81238dea8abe24fa01552">m_like_previousTotal</a></td></tr>
+<tr class="separator:a6809c34f80e81238dea8abe24fa01552"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eaf8b7f2c23c2d1181f35b4bb4fb0bd"><td class="memItemLeft" align="right" valign="top">P_V&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a2eaf8b7f2c23c2d1181f35b4bb4fb0bd">m_totalPostMean</a></td></tr>
+<tr class="separator:a2eaf8b7f2c23c2d1181f35b4bb4fb0bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59b19543687385ccb68809206963c23e"><td class="memItemLeft" align="right" valign="top">P_V&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a59b19543687385ccb68809206963c23e">m_totalPostMedian</a></td></tr>
+<tr class="separator:a59b19543687385ccb68809206963c23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf8ea058b4919f96567778335b71aa31"><td class="memItemLeft" align="right" valign="top">P_V&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#abf8ea058b4919f96567778335b71aa31">m_totalPostMode</a></td></tr>
+<tr class="separator:abf8ea058b4919f96567778335b71aa31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a926ac87abe17a0745ff44605addf7cd7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a926ac87abe17a0745ff44605addf7cd7">m_totalPostMaxLnValue</a></td></tr>
+<tr class="separator:a926ac87abe17a0745ff44605addf7cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa97a07ed6922cfbb47450c8979057555"><td class="memItemLeft" align="right" valign="top">P_V&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#aa97a07ed6922cfbb47450c8979057555">m_totalMLE</a></td></tr>
+<tr class="separator:aa97a07ed6922cfbb47450c8979057555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ac8adc3e22918c588554b24d241c0f7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a6ac8adc3e22918c588554b24d241c0f7">m_totalLikeMaxLnValue</a></td></tr>
+<tr class="separator:a6ac8adc3e22918c588554b24d241c0f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a246951b577ac46dcb14092f76f4dfecd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00230.html">VectorSet</a>&lt; P_V, P_M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a246951b577ac46dcb14092f76f4dfecd">m_solutionDomain</a></td></tr>
+<tr class="separator:a246951b577ac46dcb14092f76f4dfecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93dd19898cd1144bd8da6de1ce90634d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00035.html">BaseJointPdf</a>&lt; P_V, P_M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a93dd19898cd1144bd8da6de1ce90634d">m_solutionPdf</a></td></tr>
+<tr class="separator:a93dd19898cd1144bd8da6de1ce90634d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45ec2b1b59aad7d5a4ae0f856699a0ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00046.html">BaseVectorRealizer</a>&lt; P_V, P_M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a45ec2b1b59aad7d5a4ae0f856699a0ad">m_solutionRealizer</a></td></tr>
+<tr class="separator:a45ec2b1b59aad7d5a4ae0f856699a0ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c420665ea8a2643da0310a9aea402eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00166.html">MetropolisHastingsSG</a>&lt; P_V, P_M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a6c420665ea8a2643da0310a9aea402eb">m_mhSeqGenerator</a></td></tr>
+<tr class="separator:a6c420665ea8a2643da0310a9aea402eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8b7a519d155260051c145f0bae996f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00171.html">MLSampling</a>&lt; P_V, P_M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#af8b7a519d155260051c145f0bae996f8">m_mlSampler</a></td></tr>
+<tr class="separator:af8b7a519d155260051c145f0bae996f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45f4ce18666c80fb9af0373536b9293b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00048.html">BaseVectorSequence</a>&lt; P_V, P_M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a45f4ce18666c80fb9af0373536b9293b">m_chain</a></td></tr>
+<tr class="separator:a45f4ce18666c80fb9af0373536b9293b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a173c1e39bc87a2ccc3fb73a459693cc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">commonConstructor</a> (const <a class="el" href="a00108.html">GcmZInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;z)</td></tr>
-<tr class="separator:a173c1e39bc87a2ccc3fb73a459693cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a757e1a035bfc365d31d894f0fdcb83af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html#a757e1a035bfc365d31d894f0fdcb83af">commonConstructor</a> ()</td></tr>
+<tr class="separator:a757e1a035bfc365d31d894f0fdcb83af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt;<br/>
-class QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;</h3>
+class QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;</h3>
 
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00043">43</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00044">44</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a624e7903c2d69d6d588e9dcf123176ca"></a>
+<a class="anchor" id="af9fd485bb84c74e5723e13dd46876480"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_M , class Q_V , class Q_M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::<a class="el" href="a00109.html">GcmZTildeInfo</a> </td>
+          <td class="memname"><a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::<a class="el" href="a00109.html">GcmTotalInfo</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00122.html">GpmsaComputerModelOptions</a> &amp;&#160;</td>
-          <td class="paramname"><em>gcmOptionsObj</em>, </td>
+          <td class="paramtype">const <a class="el" href="a00107.html">GcmSimulationInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00423_source.html#l00032">32</a> of file <a class="el" href="a00423_source.html">GcmTotalInfo.C</a>.</p>
+
+<p>References <a class="el" href="a00423_source.html#l00175">QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::commonConstructor()</a>, <a class="el" href="a00368_source.html#l00400">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00405_source.html#l00057">QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_env</a>, and <a class="el" href="a00368_source.html#l00278">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>                 (s.m_env),</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="a00109.html#a19ce42acd407314470eb9e5e67761468">m_numConstituents</a>     (4),</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a> (<a class="code" href="a00109.html#a19ce42acd407314470eb9e5e67761468">m_numConstituents</a>,(<span class="keyword">const</span> VectorSet   &lt;P_V,P_M&gt;*) NULL),</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>(<a class="code" href="a00109.html#a19ce42acd407314470eb9e5e67761468">m_numConstituents</a>,(<span class="keyword">const</span> BaseVectorRV&lt;P_V,P_M&gt;*) NULL),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00109.html#acb5df94341dd290e42305c74c520d6a2">m_totalDim</a>            (<a class="code" href="a00109.html#aef59d0eab67332c9afc1463d36c2b850">initializeTotalDim</a>(s)),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>          (<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>,<span class="stringliteral">&quot;total_&quot;</span>,<a class="code" href="a00109.html#acb5df94341dd290e42305c74c520d6a2">m_totalDim</a>,NULL),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00109.html#aff8615ed10112eeb2b945756953fd91f">m_totalDomainVolume</a>   (1.),</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="a00109.html#ad9a4ea908dc0f8e099806649c933c29f">m_totalDomain</a>         (<span class="stringliteral">&quot;total_&quot;</span>,<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>,<a class="code" href="a00109.html#aff8615ed10112eeb2b945756953fd91f">m_totalDomainVolume</a>,<a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>),</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00109.html#a4161cf00af38922d786892efc81988f2">m_totalPriorRv</a>        (<span class="stringliteral">&quot;total_prior_&quot;</span>,<a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>,<a class="code" href="a00109.html#ad9a4ea908dc0f8e099806649c933c29f">m_totalDomain</a>),</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="a00109.html#ab394621b163c739e4a25f91582a120f3">m_totalPostRv</a>         (<span class="stringliteral">&quot;total_post_&quot;</span>,<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>),</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="a00109.html#a6809c34f80e81238dea8abe24fa01552">m_like_previousTotal</a>  (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="a00109.html#a2eaf8b7f2c23c2d1181f35b4bb4fb0bd">m_totalPostMean</a>       (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="a00109.html#a59b19543687385ccb68809206963c23e">m_totalPostMedian</a>     (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="a00109.html#abf8ea058b4919f96567778335b71aa31">m_totalPostMode</a>       (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="a00109.html#a926ac87abe17a0745ff44605addf7cd7">m_totalPostMaxLnValue</a> (-INFINITY),</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="a00109.html#aa97a07ed6922cfbb47450c8979057555">m_totalMLE</a>            (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="a00109.html#a6ac8adc3e22918c588554b24d241c0f7">m_totalLikeMaxLnValue</a> (-INFINITY),</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="a00109.html#a246951b577ac46dcb14092f76f4dfecd">m_solutionDomain</a>      (NULL),</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00109.html#a93dd19898cd1144bd8da6de1ce90634d">m_solutionPdf</a>         (NULL),</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="a00109.html#a45ec2b1b59aad7d5a4ae0f856699a0ad">m_solutionRealizer</a>    (NULL),</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00109.html#a6c420665ea8a2643da0310a9aea402eb">m_mhSeqGenerator</a>      (NULL),</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00109.html#af8b7a519d155260051c145f0bae996f8">m_mlSampler</a>           (NULL),</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="a00109.html#a45f4ce18666c80fb9af0373536b9293b">m_chain</a>               (NULL)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2)) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    *<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GcmTotalInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="a00109.html#a757e1a035bfc365d31d894f0fdcb83af">commonConstructor</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2)) {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    *<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving GcmTotalInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00400">Environment.C:400</a></div></div>
+<div class="ttc" id="a00109_html_a45f4ce18666c80fb9af0373536b9293b"><div class="ttname"><a href="a00109.html#a45f4ce18666c80fb9af0373536b9293b">QUESO::GcmTotalInfo::m_chain</a></div><div class="ttdeci">BaseVectorSequence&lt; P_V, P_M &gt; * m_chain</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00082">GcmTotalInfo.h:82</a></div></div>
+<div class="ttc" id="a00109_html_aef59d0eab67332c9afc1463d36c2b850"><div class="ttname"><a href="a00109.html#aef59d0eab67332c9afc1463d36c2b850">QUESO::GcmTotalInfo::initializeTotalDim</a></div><div class="ttdeci">unsigned int initializeTotalDim(const GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;s)</div><div class="ttdef"><b>Definition:</b> <a href="a00423_source.html#l00130">GcmTotalInfo.C:130</a></div></div>
+<div class="ttc" id="a00109_html_a19ce42acd407314470eb9e5e67761468"><div class="ttname"><a href="a00109.html#a19ce42acd407314470eb9e5e67761468">QUESO::GcmTotalInfo::m_numConstituents</a></div><div class="ttdeci">unsigned int m_numConstituents</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00058">GcmTotalInfo.h:58</a></div></div>
+<div class="ttc" id="a00109_html_a21ce7ad2fbcc5c4eee29d90d945576a4"><div class="ttname"><a href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">QUESO::GcmTotalInfo::m_constitutivePriorRvs</a></div><div class="ttdeci">std::vector&lt; const BaseVectorRV&lt; P_V, P_M &gt; * &gt; m_constitutivePriorRvs</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00060">GcmTotalInfo.h:60</a></div></div>
+<div class="ttc" id="a00109_html_a93dd19898cd1144bd8da6de1ce90634d"><div class="ttname"><a href="a00109.html#a93dd19898cd1144bd8da6de1ce90634d">QUESO::GcmTotalInfo::m_solutionPdf</a></div><div class="ttdeci">BaseJointPdf&lt; P_V, P_M &gt; * m_solutionPdf</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00077">GcmTotalInfo.h:77</a></div></div>
+<div class="ttc" id="a00109_html_a757e1a035bfc365d31d894f0fdcb83af"><div class="ttname"><a href="a00109.html#a757e1a035bfc365d31d894f0fdcb83af">QUESO::GcmTotalInfo::commonConstructor</a></div><div class="ttdeci">void commonConstructor()</div><div class="ttdef"><b>Definition:</b> <a href="a00423_source.html#l00175">GcmTotalInfo.C:175</a></div></div>
+<div class="ttc" id="a00109_html_a45ec2b1b59aad7d5a4ae0f856699a0ad"><div class="ttname"><a href="a00109.html#a45ec2b1b59aad7d5a4ae0f856699a0ad">QUESO::GcmTotalInfo::m_solutionRealizer</a></div><div class="ttdeci">BaseVectorRealizer&lt; P_V, P_M &gt; * m_solutionRealizer</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00078">GcmTotalInfo.h:78</a></div></div>
+<div class="ttc" id="a00109_html_a246951b577ac46dcb14092f76f4dfecd"><div class="ttname"><a href="a00109.html#a246951b577ac46dcb14092f76f4dfecd">QUESO::GcmTotalInfo::m_solutionDomain</a></div><div class="ttdeci">VectorSet&lt; P_V, P_M &gt; * m_solutionDomain</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00076">GcmTotalInfo.h:76</a></div></div>
+<div class="ttc" id="a00109_html_a6809c34f80e81238dea8abe24fa01552"><div class="ttname"><a href="a00109.html#a6809c34f80e81238dea8abe24fa01552">QUESO::GcmTotalInfo::m_like_previousTotal</a></div><div class="ttdeci">P_V m_like_previousTotal</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00068">GcmTotalInfo.h:68</a></div></div>
+<div class="ttc" id="a00109_html_aff8615ed10112eeb2b945756953fd91f"><div class="ttname"><a href="a00109.html#aff8615ed10112eeb2b945756953fd91f">QUESO::GcmTotalInfo::m_totalDomainVolume</a></div><div class="ttdeci">double m_totalDomainVolume</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00063">GcmTotalInfo.h:63</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00278">Environment.C:278</a></div></div>
+<div class="ttc" id="a00109_html_ab394621b163c739e4a25f91582a120f3"><div class="ttname"><a href="a00109.html#ab394621b163c739e4a25f91582a120f3">QUESO::GcmTotalInfo::m_totalPostRv</a></div><div class="ttdeci">GenericVectorRV&lt; P_V, P_M &gt; m_totalPostRv</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00066">GcmTotalInfo.h:66</a></div></div>
+<div class="ttc" id="a00109_html_af8b7a519d155260051c145f0bae996f8"><div class="ttname"><a href="a00109.html#af8b7a519d155260051c145f0bae996f8">QUESO::GcmTotalInfo::m_mlSampler</a></div><div class="ttdeci">MLSampling&lt; P_V, P_M &gt; * m_mlSampler</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00081">GcmTotalInfo.h:81</a></div></div>
+<div class="ttc" id="a00109_html_a4161cf00af38922d786892efc81988f2"><div class="ttname"><a href="a00109.html#a4161cf00af38922d786892efc81988f2">QUESO::GcmTotalInfo::m_totalPriorRv</a></div><div class="ttdeci">ConcatenatedVectorRV&lt; P_V, P_M &gt; m_totalPriorRv</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00065">GcmTotalInfo.h:65</a></div></div>
+<div class="ttc" id="a00109_html_ad3647156e01fd4b9f092e6f8ae19c707"><div class="ttname"><a href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">QUESO::GcmTotalInfo::m_totalSpace</a></div><div class="ttdeci">VectorSpace&lt; P_V, P_M &gt; m_totalSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00062">GcmTotalInfo.h:62</a></div></div>
+<div class="ttc" id="a00231_html_a92e963bb5cab3eecd290dfe4b8f03b04"><div class="ttname"><a href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">QUESO::VectorSpace::zeroVector</a></div><div class="ttdeci">const V &amp; zeroVector() const </div><div class="ttdoc">Returns a vector filled with zeros. </div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00189">VectorSpace.C:189</a></div></div>
+<div class="ttc" id="a00109_html_a6c420665ea8a2643da0310a9aea402eb"><div class="ttname"><a href="a00109.html#a6c420665ea8a2643da0310a9aea402eb">QUESO::GcmTotalInfo::m_mhSeqGenerator</a></div><div class="ttdeci">MetropolisHastingsSG&lt; P_V, P_M &gt; * m_mhSeqGenerator</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00080">GcmTotalInfo.h:80</a></div></div>
+<div class="ttc" id="a00109_html_a6ac8adc3e22918c588554b24d241c0f7"><div class="ttname"><a href="a00109.html#a6ac8adc3e22918c588554b24d241c0f7">QUESO::GcmTotalInfo::m_totalLikeMaxLnValue</a></div><div class="ttdeci">double m_totalLikeMaxLnValue</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00074">GcmTotalInfo.h:74</a></div></div>
+<div class="ttc" id="a00109_html_a59b19543687385ccb68809206963c23e"><div class="ttname"><a href="a00109.html#a59b19543687385ccb68809206963c23e">QUESO::GcmTotalInfo::m_totalPostMedian</a></div><div class="ttdeci">P_V m_totalPostMedian</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00070">GcmTotalInfo.h:70</a></div></div>
+<div class="ttc" id="a00109_html_ad9a4ea908dc0f8e099806649c933c29f"><div class="ttname"><a href="a00109.html#ad9a4ea908dc0f8e099806649c933c29f">QUESO::GcmTotalInfo::m_totalDomain</a></div><div class="ttdeci">ConcatenationSubset&lt; P_V, P_M &gt; m_totalDomain</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00064">GcmTotalInfo.h:64</a></div></div>
+<div class="ttc" id="a00109_html_aabcf6720d0134ff29db9f2ec650dd485"><div class="ttname"><a href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">QUESO::GcmTotalInfo::m_constitutiveDomains</a></div><div class="ttdeci">std::vector&lt; const VectorSet&lt; P_V, P_M &gt; * &gt; m_constitutiveDomains</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00059">GcmTotalInfo.h:59</a></div></div>
+<div class="ttc" id="a00109_html_acb5df94341dd290e42305c74c520d6a2"><div class="ttname"><a href="a00109.html#acb5df94341dd290e42305c74c520d6a2">QUESO::GcmTotalInfo::m_totalDim</a></div><div class="ttdeci">unsigned int m_totalDim</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00061">GcmTotalInfo.h:61</a></div></div>
+<div class="ttc" id="a00109_html_a926ac87abe17a0745ff44605addf7cd7"><div class="ttname"><a href="a00109.html#a926ac87abe17a0745ff44605addf7cd7">QUESO::GcmTotalInfo::m_totalPostMaxLnValue</a></div><div class="ttdeci">double m_totalPostMaxLnValue</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00072">GcmTotalInfo.h:72</a></div></div>
+<div class="ttc" id="a00109_html_a2eaf8b7f2c23c2d1181f35b4bb4fb0bd"><div class="ttname"><a href="a00109.html#a2eaf8b7f2c23c2d1181f35b4bb4fb0bd">QUESO::GcmTotalInfo::m_totalPostMean</a></div><div class="ttdeci">P_V m_totalPostMean</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00069">GcmTotalInfo.h:69</a></div></div>
+<div class="ttc" id="a00109_html_abf8ea058b4919f96567778335b71aa31"><div class="ttname"><a href="a00109.html#abf8ea058b4919f96567778335b71aa31">QUESO::GcmTotalInfo::m_totalPostMode</a></div><div class="ttdeci">P_V m_totalPostMode</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00071">GcmTotalInfo.h:71</a></div></div>
+<div class="ttc" id="a00109_html_a950793b3c950ac321fe9677a89e8915b"><div class="ttname"><a href="a00109.html#a950793b3c950ac321fe9677a89e8915b">QUESO::GcmTotalInfo::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00057">GcmTotalInfo.h:57</a></div></div>
+<div class="ttc" id="a00109_html_aa97a07ed6922cfbb47450c8979057555"><div class="ttname"><a href="a00109.html#aa97a07ed6922cfbb47450c8979057555">QUESO::GcmTotalInfo::m_totalMLE</a></div><div class="ttdeci">P_V m_totalMLE</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00073">GcmTotalInfo.h:73</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a227d8c1abb7a8ded258af94917f912dc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_M , class Q_V , class Q_M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::<a class="el" href="a00109.html">GcmTotalInfo</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00107.html">GcmSimulationInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00102.html">GcmJointInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>jj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00108.html">GcmZInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>z</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00103.html">GcmExperimentInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>e</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -144,233 +257,85 @@ template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00422_source.html#l00032">32</a> of file <a class="el" href="a00422_source.html">GcmZTildeInfo.C</a>.</p>
+<p>Definition at line <a class="el" href="a00423_source.html#l00073">73</a> of file <a class="el" href="a00423_source.html">GcmTotalInfo.C</a>.</p>
 
-<p>References <a class="el" href="a00365_source.html#l00410">QUESO::BaseEnvironment::checkingLevel()</a>, <a class="el" href="a00422_source.html#l00183">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::commonConstructor()</a>, <a class="el" href="a00403_source.html#l00064">QUESO::GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Cmat</a>, <a class="el" href="a00403_source.html#l00065">QUESO::GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Cmat_rank</a>, <a class="el" href="a00404_source.html#l00057">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Cmat_tilde</a>, <a class="el" href="a00407_source.html#l00079">QUESO::GcmOptionsValues::m_dataOutputAllowedSet</a>, <a class="el" href="a00404_source.html#l00056">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_env</a>, <a class="el" href="a00404_source.html#l00059">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Lmat</a>, <a class="el" href="a00398_source.html#l00104">QUESO::GcmJointInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_omega_space</a>, <a class="el" href="a00407_source.html#l00142">QUESO::GpmsaComputerModelOptions::m_ov</a>, <a class="el" href="a00403_source.html#l00061">QUESO::GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_z_space</a>, <a class="el" href="a00372_source.html#l01150">QUESO::scalarProduct()</a>, <a class="el" href="a00365_source.html#l00274">QUESO::BaseEnvironment::subDisplayFile()</a>, <a class="el" href="a00365_source.html#l00295">QUESO::BaseEnvironment::subId()</a>, and <a class="el" href="a00282_source.html#l00189">QUESO::VectorSpace&lt; V, M &gt;::zeroVector()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>                     (jj.m_env),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>              (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>,jj.m_omega_space.map(),z.m_Cmat_rank),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>           (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>, <span class="stringliteral">&quot;z_tilde_&quot;</span>, z.m_Cmat_rank, NULL),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>                    (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>,<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#ac2f40e646c62513ea9a6819b82e8ba24">map</a>(),z.m_Cmat-&gt;numCols()),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00109.html#a75aee944c67438532c14c34a4552a791">m_Lmat_t</a>                  (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>,z.m_z_space.map(),z.m_Cmat_rank),</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="a00109.html#a26c6a1bb51c7fe79d0d4b27849c1d5af">m_Zvec_tilde_hat</a>          (<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00109.html#ada2cce908b970078fc533f9290000eb2">m_tmp_Smat_z_tilde</a>        (<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="a00109.html#a5d88b842eaef3a3681c35f23a2488588">m_tmp_Smat_extra_tilde</a>    (<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="a00109.html#a02f8db07f44764786caff828e5270cf3">m_tmp_Smat_z_tilde_hat</a>    (<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="a00109.html#a47576e0de498837b3fa50a642b8bd795">m_tmp_Smat_z_tilde_hat_inv</a>(<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>())</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  std::set&lt;unsigned int&gt; tmpSet;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  tmpSet.insert(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>());</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// Naive formation of &#39;m_Cmat_tilde&#39;</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    D_M matU(z.m_Cmat-&gt;svdMatU());</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> uMatRank   = matU.rank(0.,1.e-8 ); <span class="comment">// todo: should be an option</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> uMatRank14 = matU.rank(0.,1.e-14);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: matU.numRowsLocal() = &quot;</span>  &lt;&lt; matU.numRowsLocal()</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, matU.numCols() = &quot;</span>       &lt;&lt; matU.numCols()</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, matU.rank(0.,1.e-8) = &quot;</span>  &lt;&lt; uMatRank</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, matU.rank(0.,1.e-14) = &quot;</span> &lt;&lt; uMatRank14</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a83c1c036f81651792a74975f2da23ae1">checkingLevel</a>() &gt;= 1) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      D_M matUcheck(z.m_z_space.zeroVector());</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      D_V vecI(jj.m_omega_space.zeroVector());</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      D_V vecJ(jj.m_omega_space.zeroVector());</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; matU.numCols(); ++i) {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        matU.getColumn(i,vecI);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = i; j &lt; matU.numCols(); ++j) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;          matU.getColumn(j,vecJ);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;          matUcheck(i,j) = <a class="code" href="a00649.html#a159769395a413f58b974587d5f43bbc7">scalarProduct</a>(vecI,vecJ);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      matUcheck.setPrintHorizontally(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;: m_Cmat_rank = &quot;</span>              &lt;&lt; z.m_Cmat_rank</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;, matUcheck.numRowsLocal() = &quot;</span> &lt;&lt; matUcheck.numRowsLocal()</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;, matUcheck.numCols() = &quot;</span>      &lt;&lt; matUcheck.numCols()</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;, matUcheck =\n&quot;</span>               &lt;&lt; matUcheck</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                                &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    D_V vecJ(jj.m_omega_space.zeroVector());</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; z.m_Cmat_rank; ++j) {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      matU.getColumn(j,vecJ);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.setColumn(j,vecJ);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">if</span> (gcmOptionsObj.m_ov.m_dataOutputAllowedSet.find(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>()) != gcmOptionsObj.m_ov.m_dataOutputAllowedSet.end()) {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.subWriteContents(<span class="stringliteral">&quot;Ctilde&quot;</span>,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                                    <span class="stringliteral">&quot;Ctilde2&quot;</span>,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                    <span class="stringliteral">&quot;m&quot;</span>,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                    tmpSet);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(1)&quot;</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Cmat_tilde formed (2)&quot;</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">// Naive formation of &#39;m_Lmat&#39;</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.svdSolve(*(z.m_Cmat),<a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <a class="code" href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">commonConstructor</a>(z);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
-<div class="ttc" id="a00109_html_a26c6a1bb51c7fe79d0d4b27849c1d5af"><div class="ttname"><a href="a00109.html#a26c6a1bb51c7fe79d0d4b27849c1d5af">QUESO::GcmZTildeInfo::m_Zvec_tilde_hat</a></div><div class="ttdeci">D_V m_Zvec_tilde_hat</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00061">GcmZTildeInfo.h:61</a></div></div>
-<div class="ttc" id="a00109_html_a5d88b842eaef3a3681c35f23a2488588"><div class="ttname"><a href="a00109.html#a5d88b842eaef3a3681c35f23a2488588">QUESO::GcmZTildeInfo::m_tmp_Smat_extra_tilde</a></div><div class="ttdeci">D_M m_tmp_Smat_extra_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00064">GcmZTildeInfo.h:64</a></div></div>
-<div class="ttc" id="a00109_html_ae4398f7df32219bec1b8c476ce8ff2ae"><div class="ttname"><a href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">QUESO::GcmZTildeInfo::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00056">GcmZTildeInfo.h:56</a></div></div>
-<div class="ttc" id="a00228_html_ac2f40e646c62513ea9a6819b82e8ba24"><div class="ttname"><a href="a00228.html#ac2f40e646c62513ea9a6819b82e8ba24">QUESO::VectorSpace::map</a></div><div class="ttdeci">const Map &amp; map() const </div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00157">VectorSpace.C:157</a></div></div>
-<div class="ttc" id="a00109_html_a75aee944c67438532c14c34a4552a791"><div class="ttname"><a href="a00109.html#a75aee944c67438532c14c34a4552a791">QUESO::GcmZTildeInfo::m_Lmat_t</a></div><div class="ttdeci">D_M m_Lmat_t</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00060">GcmZTildeInfo.h:60</a></div></div>
-<div class="ttc" id="a00109_html_a47576e0de498837b3fa50a642b8bd795"><div class="ttname"><a href="a00109.html#a47576e0de498837b3fa50a642b8bd795">QUESO::GcmZTildeInfo::m_tmp_Smat_z_tilde_hat_inv</a></div><div class="ttdeci">D_M m_tmp_Smat_z_tilde_hat_inv</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00066">GcmZTildeInfo.h:66</a></div></div>
-<div class="ttc" id="a00109_html_a328d668cc10c7f10c1ab5664a68476b3"><div class="ttname"><a href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">QUESO::GcmZTildeInfo::m_Cmat_tilde</a></div><div class="ttdeci">D_M m_Cmat_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00057">GcmZTildeInfo.h:57</a></div></div>
-<div class="ttc" id="a00109_html_a02f8db07f44764786caff828e5270cf3"><div class="ttname"><a href="a00109.html#a02f8db07f44764786caff828e5270cf3">QUESO::GcmZTildeInfo::m_tmp_Smat_z_tilde_hat</a></div><div class="ttdeci">D_M m_tmp_Smat_z_tilde_hat</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00065">GcmZTildeInfo.h:65</a></div></div>
-<div class="ttc" id="a00228_html_a92e963bb5cab3eecd290dfe4b8f03b04"><div class="ttname"><a href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">QUESO::VectorSpace::zeroVector</a></div><div class="ttdeci">const V &amp; zeroVector() const </div><div class="ttdoc">Returns a vector filled with zeros. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00189">VectorSpace.C:189</a></div></div>
-<div class="ttc" id="a00649_html_a159769395a413f58b974587d5f43bbc7"><div class="ttname"><a href="a00649.html#a159769395a413f58b974587d5f43bbc7">QUESO::scalarProduct</a></div><div class="ttdeci">double scalarProduct(const GslVector &amp;x, const GslVector &amp;y)</div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l01150">GslVector.C:1150</a></div></div>
-<div class="ttc" id="a00109_html_ada2cce908b970078fc533f9290000eb2"><div class="ttname"><a href="a00109.html#ada2cce908b970078fc533f9290000eb2">QUESO::GcmZTildeInfo::m_tmp_Smat_z_tilde</a></div><div class="ttdeci">D_M m_tmp_Smat_z_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00063">GcmZTildeInfo.h:63</a></div></div>
-<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
-<div class="ttc" id="a00032_html_a6ae3174897a9b3a4c85fa18da5d4c16f"><div class="ttname"><a href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">QUESO::BaseEnvironment::subId</a></div><div class="ttdeci">unsigned int subId() const </div><div class="ttdoc">Access function to the number of each sub-environment Id: m_subId. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00295">Environment.C:295</a></div></div>
-<div class="ttc" id="a00109_html_a3201b9ceb9937a848f309e484c9856cb"><div class="ttname"><a href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">QUESO::GcmZTildeInfo::m_Lmat</a></div><div class="ttdeci">D_M m_Lmat</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00059">GcmZTildeInfo.h:59</a></div></div>
-<div class="ttc" id="a00032_html_a83c1c036f81651792a74975f2da23ae1"><div class="ttname"><a href="a00032.html#a83c1c036f81651792a74975f2da23ae1">QUESO::BaseEnvironment::checkingLevel</a></div><div class="ttdeci">unsigned int checkingLevel() const </div><div class="ttdoc">Access function to private attribute m_checkingLevel. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00410">Environment.C:410</a></div></div>
-<div class="ttc" id="a00109_html_a173c1e39bc87a2ccc3fb73a459693cc3"><div class="ttname"><a href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">QUESO::GcmZTildeInfo::commonConstructor</a></div><div class="ttdeci">void commonConstructor(const GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;z)</div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00183">GcmZTildeInfo.C:183</a></div></div>
-<div class="ttc" id="a00109_html_ab11d5d8ad4446f3ce097283aa91bf414"><div class="ttname"><a href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">QUESO::GcmZTildeInfo::m_z_tilde_space</a></div><div class="ttdeci">VectorSpace&lt; D_V, D_M &gt; m_z_tilde_space</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00058">GcmZTildeInfo.h:58</a></div></div>
+<p>References <a class="el" href="a00423_source.html#l00175">QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::commonConstructor()</a>, <a class="el" href="a00368_source.html#l00400">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00405_source.html#l00057">QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_env</a>, and <a class="el" href="a00368_source.html#l00278">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  :</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>                 (s.m_env),</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="a00109.html#a19ce42acd407314470eb9e5e67761468">m_numConstituents</a>     (8),</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a> (<a class="code" href="a00109.html#a19ce42acd407314470eb9e5e67761468">m_numConstituents</a>,(<span class="keyword">const</span> VectorSet&lt;P_V,P_M&gt;*) NULL),</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>(<a class="code" href="a00109.html#a19ce42acd407314470eb9e5e67761468">m_numConstituents</a>,(<span class="keyword">const</span> BaseVectorRV&lt;P_V,P_M&gt;*) NULL),</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <a class="code" href="a00109.html#acb5df94341dd290e42305c74c520d6a2">m_totalDim</a>            (<a class="code" href="a00109.html#aef59d0eab67332c9afc1463d36c2b850">initializeTotalDim</a>(s,e)),</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>          (<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>, <span class="stringliteral">&quot;total_&quot;</span>, <a class="code" href="a00109.html#acb5df94341dd290e42305c74c520d6a2">m_totalDim</a>, NULL),</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="a00109.html#aff8615ed10112eeb2b945756953fd91f">m_totalDomainVolume</a>   (1.),</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <a class="code" href="a00109.html#ad9a4ea908dc0f8e099806649c933c29f">m_totalDomain</a>         (<span class="stringliteral">&quot;total_&quot;</span>,<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>,<a class="code" href="a00109.html#aff8615ed10112eeb2b945756953fd91f">m_totalDomainVolume</a>,<a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>),</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <a class="code" href="a00109.html#a4161cf00af38922d786892efc81988f2">m_totalPriorRv</a>        (<span class="stringliteral">&quot;total_prior_&quot;</span>,<a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>,<a class="code" href="a00109.html#ad9a4ea908dc0f8e099806649c933c29f">m_totalDomain</a>),</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="a00109.html#ab394621b163c739e4a25f91582a120f3">m_totalPostRv</a>         (<span class="stringliteral">&quot;total_post_&quot;</span>,<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>),</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <a class="code" href="a00109.html#a6809c34f80e81238dea8abe24fa01552">m_like_previousTotal</a>  (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <a class="code" href="a00109.html#a2eaf8b7f2c23c2d1181f35b4bb4fb0bd">m_totalPostMean</a>       (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <a class="code" href="a00109.html#a59b19543687385ccb68809206963c23e">m_totalPostMedian</a>     (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <a class="code" href="a00109.html#abf8ea058b4919f96567778335b71aa31">m_totalPostMode</a>       (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <a class="code" href="a00109.html#a926ac87abe17a0745ff44605addf7cd7">m_totalPostMaxLnValue</a> (-INFINITY),</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <a class="code" href="a00109.html#aa97a07ed6922cfbb47450c8979057555">m_totalMLE</a>            (<a class="code" href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">m_totalSpace</a>.<a class="code" href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <a class="code" href="a00109.html#a6ac8adc3e22918c588554b24d241c0f7">m_totalLikeMaxLnValue</a> (-INFINITY),</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <a class="code" href="a00109.html#a246951b577ac46dcb14092f76f4dfecd">m_solutionDomain</a>      (NULL),</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <a class="code" href="a00109.html#a93dd19898cd1144bd8da6de1ce90634d">m_solutionPdf</a>         (NULL),</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <a class="code" href="a00109.html#a45ec2b1b59aad7d5a4ae0f856699a0ad">m_solutionRealizer</a>    (NULL),</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <a class="code" href="a00109.html#a6c420665ea8a2643da0310a9aea402eb">m_mhSeqGenerator</a>      (NULL),</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <a class="code" href="a00109.html#af8b7a519d155260051c145f0bae996f8">m_mlSampler</a>           (NULL),</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <a class="code" href="a00109.html#a45f4ce18666c80fb9af0373536b9293b">m_chain</a>               (NULL)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2)) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    *<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GcmTotalInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(2)&quot;</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <a class="code" href="a00109.html#a757e1a035bfc365d31d894f0fdcb83af">commonConstructor</a>();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2)) {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    *<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving GcmTotalInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(2)&quot;</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00400">Environment.C:400</a></div></div>
+<div class="ttc" id="a00109_html_a45f4ce18666c80fb9af0373536b9293b"><div class="ttname"><a href="a00109.html#a45f4ce18666c80fb9af0373536b9293b">QUESO::GcmTotalInfo::m_chain</a></div><div class="ttdeci">BaseVectorSequence&lt; P_V, P_M &gt; * m_chain</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00082">GcmTotalInfo.h:82</a></div></div>
+<div class="ttc" id="a00109_html_aef59d0eab67332c9afc1463d36c2b850"><div class="ttname"><a href="a00109.html#aef59d0eab67332c9afc1463d36c2b850">QUESO::GcmTotalInfo::initializeTotalDim</a></div><div class="ttdeci">unsigned int initializeTotalDim(const GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;s)</div><div class="ttdef"><b>Definition:</b> <a href="a00423_source.html#l00130">GcmTotalInfo.C:130</a></div></div>
+<div class="ttc" id="a00109_html_a19ce42acd407314470eb9e5e67761468"><div class="ttname"><a href="a00109.html#a19ce42acd407314470eb9e5e67761468">QUESO::GcmTotalInfo::m_numConstituents</a></div><div class="ttdeci">unsigned int m_numConstituents</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00058">GcmTotalInfo.h:58</a></div></div>
+<div class="ttc" id="a00109_html_a21ce7ad2fbcc5c4eee29d90d945576a4"><div class="ttname"><a href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">QUESO::GcmTotalInfo::m_constitutivePriorRvs</a></div><div class="ttdeci">std::vector&lt; const BaseVectorRV&lt; P_V, P_M &gt; * &gt; m_constitutivePriorRvs</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00060">GcmTotalInfo.h:60</a></div></div>
+<div class="ttc" id="a00109_html_a93dd19898cd1144bd8da6de1ce90634d"><div class="ttname"><a href="a00109.html#a93dd19898cd1144bd8da6de1ce90634d">QUESO::GcmTotalInfo::m_solutionPdf</a></div><div class="ttdeci">BaseJointPdf&lt; P_V, P_M &gt; * m_solutionPdf</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00077">GcmTotalInfo.h:77</a></div></div>
+<div class="ttc" id="a00109_html_a757e1a035bfc365d31d894f0fdcb83af"><div class="ttname"><a href="a00109.html#a757e1a035bfc365d31d894f0fdcb83af">QUESO::GcmTotalInfo::commonConstructor</a></div><div class="ttdeci">void commonConstructor()</div><div class="ttdef"><b>Definition:</b> <a href="a00423_source.html#l00175">GcmTotalInfo.C:175</a></div></div>
+<div class="ttc" id="a00109_html_a45ec2b1b59aad7d5a4ae0f856699a0ad"><div class="ttname"><a href="a00109.html#a45ec2b1b59aad7d5a4ae0f856699a0ad">QUESO::GcmTotalInfo::m_solutionRealizer</a></div><div class="ttdeci">BaseVectorRealizer&lt; P_V, P_M &gt; * m_solutionRealizer</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00078">GcmTotalInfo.h:78</a></div></div>
+<div class="ttc" id="a00109_html_a246951b577ac46dcb14092f76f4dfecd"><div class="ttname"><a href="a00109.html#a246951b577ac46dcb14092f76f4dfecd">QUESO::GcmTotalInfo::m_solutionDomain</a></div><div class="ttdeci">VectorSet&lt; P_V, P_M &gt; * m_solutionDomain</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00076">GcmTotalInfo.h:76</a></div></div>
+<div class="ttc" id="a00109_html_a6809c34f80e81238dea8abe24fa01552"><div class="ttname"><a href="a00109.html#a6809c34f80e81238dea8abe24fa01552">QUESO::GcmTotalInfo::m_like_previousTotal</a></div><div class="ttdeci">P_V m_like_previousTotal</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00068">GcmTotalInfo.h:68</a></div></div>
+<div class="ttc" id="a00109_html_aff8615ed10112eeb2b945756953fd91f"><div class="ttname"><a href="a00109.html#aff8615ed10112eeb2b945756953fd91f">QUESO::GcmTotalInfo::m_totalDomainVolume</a></div><div class="ttdeci">double m_totalDomainVolume</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00063">GcmTotalInfo.h:63</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00278">Environment.C:278</a></div></div>
+<div class="ttc" id="a00109_html_ab394621b163c739e4a25f91582a120f3"><div class="ttname"><a href="a00109.html#ab394621b163c739e4a25f91582a120f3">QUESO::GcmTotalInfo::m_totalPostRv</a></div><div class="ttdeci">GenericVectorRV&lt; P_V, P_M &gt; m_totalPostRv</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00066">GcmTotalInfo.h:66</a></div></div>
+<div class="ttc" id="a00109_html_af8b7a519d155260051c145f0bae996f8"><div class="ttname"><a href="a00109.html#af8b7a519d155260051c145f0bae996f8">QUESO::GcmTotalInfo::m_mlSampler</a></div><div class="ttdeci">MLSampling&lt; P_V, P_M &gt; * m_mlSampler</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00081">GcmTotalInfo.h:81</a></div></div>
+<div class="ttc" id="a00109_html_a4161cf00af38922d786892efc81988f2"><div class="ttname"><a href="a00109.html#a4161cf00af38922d786892efc81988f2">QUESO::GcmTotalInfo::m_totalPriorRv</a></div><div class="ttdeci">ConcatenatedVectorRV&lt; P_V, P_M &gt; m_totalPriorRv</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00065">GcmTotalInfo.h:65</a></div></div>
+<div class="ttc" id="a00109_html_ad3647156e01fd4b9f092e6f8ae19c707"><div class="ttname"><a href="a00109.html#ad3647156e01fd4b9f092e6f8ae19c707">QUESO::GcmTotalInfo::m_totalSpace</a></div><div class="ttdeci">VectorSpace&lt; P_V, P_M &gt; m_totalSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00062">GcmTotalInfo.h:62</a></div></div>
+<div class="ttc" id="a00231_html_a92e963bb5cab3eecd290dfe4b8f03b04"><div class="ttname"><a href="a00231.html#a92e963bb5cab3eecd290dfe4b8f03b04">QUESO::VectorSpace::zeroVector</a></div><div class="ttdeci">const V &amp; zeroVector() const </div><div class="ttdoc">Returns a vector filled with zeros. </div><div class="ttdef"><b>Definition:</b> <a href="a00285_source.html#l00189">VectorSpace.C:189</a></div></div>
+<div class="ttc" id="a00109_html_a6c420665ea8a2643da0310a9aea402eb"><div class="ttname"><a href="a00109.html#a6c420665ea8a2643da0310a9aea402eb">QUESO::GcmTotalInfo::m_mhSeqGenerator</a></div><div class="ttdeci">MetropolisHastingsSG&lt; P_V, P_M &gt; * m_mhSeqGenerator</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00080">GcmTotalInfo.h:80</a></div></div>
+<div class="ttc" id="a00109_html_a6ac8adc3e22918c588554b24d241c0f7"><div class="ttname"><a href="a00109.html#a6ac8adc3e22918c588554b24d241c0f7">QUESO::GcmTotalInfo::m_totalLikeMaxLnValue</a></div><div class="ttdeci">double m_totalLikeMaxLnValue</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00074">GcmTotalInfo.h:74</a></div></div>
+<div class="ttc" id="a00109_html_a59b19543687385ccb68809206963c23e"><div class="ttname"><a href="a00109.html#a59b19543687385ccb68809206963c23e">QUESO::GcmTotalInfo::m_totalPostMedian</a></div><div class="ttdeci">P_V m_totalPostMedian</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00070">GcmTotalInfo.h:70</a></div></div>
+<div class="ttc" id="a00109_html_ad9a4ea908dc0f8e099806649c933c29f"><div class="ttname"><a href="a00109.html#ad9a4ea908dc0f8e099806649c933c29f">QUESO::GcmTotalInfo::m_totalDomain</a></div><div class="ttdeci">ConcatenationSubset&lt; P_V, P_M &gt; m_totalDomain</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00064">GcmTotalInfo.h:64</a></div></div>
+<div class="ttc" id="a00109_html_aabcf6720d0134ff29db9f2ec650dd485"><div class="ttname"><a href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">QUESO::GcmTotalInfo::m_constitutiveDomains</a></div><div class="ttdeci">std::vector&lt; const VectorSet&lt; P_V, P_M &gt; * &gt; m_constitutiveDomains</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00059">GcmTotalInfo.h:59</a></div></div>
+<div class="ttc" id="a00109_html_acb5df94341dd290e42305c74c520d6a2"><div class="ttname"><a href="a00109.html#acb5df94341dd290e42305c74c520d6a2">QUESO::GcmTotalInfo::m_totalDim</a></div><div class="ttdeci">unsigned int m_totalDim</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00061">GcmTotalInfo.h:61</a></div></div>
+<div class="ttc" id="a00109_html_a926ac87abe17a0745ff44605addf7cd7"><div class="ttname"><a href="a00109.html#a926ac87abe17a0745ff44605addf7cd7">QUESO::GcmTotalInfo::m_totalPostMaxLnValue</a></div><div class="ttdeci">double m_totalPostMaxLnValue</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00072">GcmTotalInfo.h:72</a></div></div>
+<div class="ttc" id="a00109_html_a2eaf8b7f2c23c2d1181f35b4bb4fb0bd"><div class="ttname"><a href="a00109.html#a2eaf8b7f2c23c2d1181f35b4bb4fb0bd">QUESO::GcmTotalInfo::m_totalPostMean</a></div><div class="ttdeci">P_V m_totalPostMean</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00069">GcmTotalInfo.h:69</a></div></div>
+<div class="ttc" id="a00109_html_abf8ea058b4919f96567778335b71aa31"><div class="ttname"><a href="a00109.html#abf8ea058b4919f96567778335b71aa31">QUESO::GcmTotalInfo::m_totalPostMode</a></div><div class="ttdeci">P_V m_totalPostMode</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00071">GcmTotalInfo.h:71</a></div></div>
+<div class="ttc" id="a00109_html_a950793b3c950ac321fe9677a89e8915b"><div class="ttname"><a href="a00109.html#a950793b3c950ac321fe9677a89e8915b">QUESO::GcmTotalInfo::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00057">GcmTotalInfo.h:57</a></div></div>
+<div class="ttc" id="a00109_html_aa97a07ed6922cfbb47450c8979057555"><div class="ttname"><a href="a00109.html#aa97a07ed6922cfbb47450c8979057555">QUESO::GcmTotalInfo::m_totalMLE</a></div><div class="ttdeci">P_V m_totalMLE</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00073">GcmTotalInfo.h:73</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aa346a6e8542a42804dadf277acf24f2c"></a>
+<a class="anchor" id="a0d826f13d1486e4b0ffce104fab78de3"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_M , class Q_V , class Q_M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::<a class="el" href="a00109.html">GcmZTildeInfo</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00122.html">GpmsaComputerModelOptions</a> &amp;&#160;</td>
-          <td class="paramname"><em>gcmOptionsObj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00102.html">GcmJointInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>jj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00108.html">GcmZInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>z</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00106.html">GcmSimulationTildeInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>st</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00103.html">GcmJointTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>jt</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00422_source.html#l00116">116</a> of file <a class="el" href="a00422_source.html">GcmZTildeInfo.C</a>.</p>
-
-<p>References <a class="el" href="a00422_source.html#l00183">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::commonConstructor()</a>, <a class="el" href="a00399_source.html#l00049">QUESO::GcmJointTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Bmat_tilde</a>, <a class="el" href="a00404_source.html#l00057">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Cmat_tilde</a>, <a class="el" href="a00407_source.html#l00079">QUESO::GcmOptionsValues::m_dataOutputAllowedSet</a>, <a class="el" href="a00404_source.html#l00056">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_env</a>, <a class="el" href="a00401_source.html#l00048">QUESO::GcmSimulationTildeInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_Kmat_tilde</a>, <a class="el" href="a00399_source.html#l00052">QUESO::GcmJointTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Lbmat</a>, <a class="el" href="a00401_source.html#l00050">QUESO::GcmSimulationTildeInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_Lkmat</a>, <a class="el" href="a00404_source.html#l00059">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Lmat</a>, <a class="el" href="a00407_source.html#l00142">QUESO::GpmsaComputerModelOptions::m_ov</a>, <a class="el" href="a00404_source.html#l00061">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Zvec_tilde_hat</a>, <a class="el" href="a00399_source.html#l00055">QUESO::GcmJointTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Zvec_tilde_hat_vu</a>, <a class="el" href="a00401_source.html#l00053">QUESO::GcmSimulationTildeInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_Zvec_tilde_hat_w</a>, <a class="el" href="a00365_source.html#l00274">QUESO::BaseEnvironment::subDisplayFile()</a>, and <a class="el" href="a00365_source.html#l00295">QUESO::BaseEnvironment::subId()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  :</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>                     (jj.m_env),</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>              (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>,jj.m_omega_space.map(),z.m_Cmat_rank),</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>           (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>, <span class="stringliteral">&quot;z_tilde_&quot;</span>, z.m_Cmat_rank, NULL),</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>                    (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>,<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#ac2f40e646c62513ea9a6819b82e8ba24">map</a>(),z.m_Cmat-&gt;numCols()),</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <a class="code" href="a00109.html#a75aee944c67438532c14c34a4552a791">m_Lmat_t</a>                  (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>,z.m_z_space.map(),z.m_Cmat_rank),</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <a class="code" href="a00109.html#a26c6a1bb51c7fe79d0d4b27849c1d5af">m_Zvec_tilde_hat</a>          (<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <a class="code" href="a00109.html#ada2cce908b970078fc533f9290000eb2">m_tmp_Smat_z_tilde</a>        (<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <a class="code" href="a00109.html#a5d88b842eaef3a3681c35f23a2488588">m_tmp_Smat_extra_tilde</a>    (<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <a class="code" href="a00109.html#a02f8db07f44764786caff828e5270cf3">m_tmp_Smat_z_tilde_hat</a>    (<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>()),</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <a class="code" href="a00109.html#a47576e0de498837b3fa50a642b8bd795">m_tmp_Smat_z_tilde_hat_inv</a>(<a class="code" href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">m_z_tilde_space</a>.<a class="code" href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">zeroVector</a>())</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;{</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(2)&quot;</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  }</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  std::set&lt;unsigned int&gt; tmpSet;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  tmpSet.insert(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>());</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.cwSet(0.);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.cwSet(                             0,                        0,jt.m_Bmat_tilde);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.cwSet(jt.m_Bmat_tilde.numRowsLocal(),jt.m_Bmat_tilde.numCols(),st.m_Kmat_tilde);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">if</span> (gcmOptionsObj.m_ov.m_dataOutputAllowedSet.find(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>()) != gcmOptionsObj.m_ov.m_dataOutputAllowedSet.end()) {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.subWriteContents(<span class="stringliteral">&quot;Ctilde&quot;</span>,</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                                    <span class="stringliteral">&quot;Ctilde1&quot;</span>,</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                                    <span class="stringliteral">&quot;m&quot;</span>,</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                                    tmpSet);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(2)&quot;</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Cmat_tilde formed (1)&quot;</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    }</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.cwSet(0.);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.cwSet(                        0,                   0,jt.m_Lbmat);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.cwSet(jt.m_Lbmat.numRowsLocal(),jt.m_Lbmat.numCols(),st.m_Lkmat);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordflow">if</span> (gcmOptionsObj.m_ov.m_dataOutputAllowedSet.find(<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a>()) != gcmOptionsObj.m_ov.m_dataOutputAllowedSet.end()) {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.subWriteContents(<span class="stringliteral">&quot;Lmat&quot;</span>,</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                              <span class="stringliteral">&quot;Lmat&quot;</span>,</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                              <span class="stringliteral">&quot;m&quot;</span>,</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                              tmpSet);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    }</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor(2)&quot;</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Lmat_tilde formed&quot;</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    }</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <a class="code" href="a00109.html#a26c6a1bb51c7fe79d0d4b27849c1d5af">m_Zvec_tilde_hat</a>.cwSetConcatenated(jt.m_Zvec_tilde_hat_vu,st.m_Zvec_tilde_hat_w); <span class="comment">// todo_rrr: not in constructor(1) ???</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <a class="code" href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">commonConstructor</a>(z);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}</div>
-<div class="ttc" id="a00109_html_a26c6a1bb51c7fe79d0d4b27849c1d5af"><div class="ttname"><a href="a00109.html#a26c6a1bb51c7fe79d0d4b27849c1d5af">QUESO::GcmZTildeInfo::m_Zvec_tilde_hat</a></div><div class="ttdeci">D_V m_Zvec_tilde_hat</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00061">GcmZTildeInfo.h:61</a></div></div>
-<div class="ttc" id="a00109_html_a5d88b842eaef3a3681c35f23a2488588"><div class="ttname"><a href="a00109.html#a5d88b842eaef3a3681c35f23a2488588">QUESO::GcmZTildeInfo::m_tmp_Smat_extra_tilde</a></div><div class="ttdeci">D_M m_tmp_Smat_extra_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00064">GcmZTildeInfo.h:64</a></div></div>
-<div class="ttc" id="a00109_html_ae4398f7df32219bec1b8c476ce8ff2ae"><div class="ttname"><a href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">QUESO::GcmZTildeInfo::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00056">GcmZTildeInfo.h:56</a></div></div>
-<div class="ttc" id="a00228_html_ac2f40e646c62513ea9a6819b82e8ba24"><div class="ttname"><a href="a00228.html#ac2f40e646c62513ea9a6819b82e8ba24">QUESO::VectorSpace::map</a></div><div class="ttdeci">const Map &amp; map() const </div><div class="ttdoc">Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00157">VectorSpace.C:157</a></div></div>
-<div class="ttc" id="a00109_html_a75aee944c67438532c14c34a4552a791"><div class="ttname"><a href="a00109.html#a75aee944c67438532c14c34a4552a791">QUESO::GcmZTildeInfo::m_Lmat_t</a></div><div class="ttdeci">D_M m_Lmat_t</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00060">GcmZTildeInfo.h:60</a></div></div>
-<div class="ttc" id="a00109_html_a47576e0de498837b3fa50a642b8bd795"><div class="ttname"><a href="a00109.html#a47576e0de498837b3fa50a642b8bd795">QUESO::GcmZTildeInfo::m_tmp_Smat_z_tilde_hat_inv</a></div><div class="ttdeci">D_M m_tmp_Smat_z_tilde_hat_inv</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00066">GcmZTildeInfo.h:66</a></div></div>
-<div class="ttc" id="a00109_html_a328d668cc10c7f10c1ab5664a68476b3"><div class="ttname"><a href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">QUESO::GcmZTildeInfo::m_Cmat_tilde</a></div><div class="ttdeci">D_M m_Cmat_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00057">GcmZTildeInfo.h:57</a></div></div>
-<div class="ttc" id="a00109_html_a02f8db07f44764786caff828e5270cf3"><div class="ttname"><a href="a00109.html#a02f8db07f44764786caff828e5270cf3">QUESO::GcmZTildeInfo::m_tmp_Smat_z_tilde_hat</a></div><div class="ttdeci">D_M m_tmp_Smat_z_tilde_hat</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00065">GcmZTildeInfo.h:65</a></div></div>
-<div class="ttc" id="a00228_html_a92e963bb5cab3eecd290dfe4b8f03b04"><div class="ttname"><a href="a00228.html#a92e963bb5cab3eecd290dfe4b8f03b04">QUESO::VectorSpace::zeroVector</a></div><div class="ttdeci">const V &amp; zeroVector() const </div><div class="ttdoc">Returns a vector filled with zeros. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00189">VectorSpace.C:189</a></div></div>
-<div class="ttc" id="a00109_html_ada2cce908b970078fc533f9290000eb2"><div class="ttname"><a href="a00109.html#ada2cce908b970078fc533f9290000eb2">QUESO::GcmZTildeInfo::m_tmp_Smat_z_tilde</a></div><div class="ttdeci">D_M m_tmp_Smat_z_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00063">GcmZTildeInfo.h:63</a></div></div>
-<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
-<div class="ttc" id="a00032_html_a6ae3174897a9b3a4c85fa18da5d4c16f"><div class="ttname"><a href="a00032.html#a6ae3174897a9b3a4c85fa18da5d4c16f">QUESO::BaseEnvironment::subId</a></div><div class="ttdeci">unsigned int subId() const </div><div class="ttdoc">Access function to the number of each sub-environment Id: m_subId. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00295">Environment.C:295</a></div></div>
-<div class="ttc" id="a00109_html_a3201b9ceb9937a848f309e484c9856cb"><div class="ttname"><a href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">QUESO::GcmZTildeInfo::m_Lmat</a></div><div class="ttdeci">D_M m_Lmat</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00059">GcmZTildeInfo.h:59</a></div></div>
-<div class="ttc" id="a00109_html_a173c1e39bc87a2ccc3fb73a459693cc3"><div class="ttname"><a href="a00109.html#a173c1e39bc87a2ccc3fb73a459693cc3">QUESO::GcmZTildeInfo::commonConstructor</a></div><div class="ttdeci">void commonConstructor(const GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;z)</div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00183">GcmZTildeInfo.C:183</a></div></div>
-<div class="ttc" id="a00109_html_ab11d5d8ad4446f3ce097283aa91bf414"><div class="ttname"><a href="a00109.html#ab11d5d8ad4446f3ce097283aa91bf414">QUESO::GcmZTildeInfo::m_z_tilde_space</a></div><div class="ttdeci">VectorSpace&lt; D_V, D_M &gt; m_z_tilde_space</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00058">GcmZTildeInfo.h:58</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a796f6cbeeb6673e145fec824428d4cf4"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_M , class Q_V , class Q_M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::~<a class="el" href="a00109.html">GcmZTildeInfo</a> </td>
+          <td class="memname"><a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::~<a class="el" href="a00109.html">GcmTotalInfo</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -378,14 +343,30 @@ template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00422_source.html#l00177">177</a> of file <a class="el" href="a00422_source.html">GcmZTildeInfo.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;{</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00423_source.html#l00115">115</a> of file <a class="el" href="a00423_source.html">GcmTotalInfo.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#a45f4ce18666c80fb9af0373536b9293b">m_chain</a>) {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="a00109.html#a45f4ce18666c80fb9af0373536b9293b">m_chain</a>-&gt;<a class="code" href="a00048.html#aae0804eacc51b37e84b1bd329ce1711c">clear</a>();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">delete</span> <a class="code" href="a00109.html#a45f4ce18666c80fb9af0373536b9293b">m_chain</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#af8b7a519d155260051c145f0bae996f8">m_mlSampler</a>       ) <span class="keyword">delete</span> <a class="code" href="a00109.html#af8b7a519d155260051c145f0bae996f8">m_mlSampler</a>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#a6c420665ea8a2643da0310a9aea402eb">m_mhSeqGenerator</a>  ) <span class="keyword">delete</span> <a class="code" href="a00109.html#a6c420665ea8a2643da0310a9aea402eb">m_mhSeqGenerator</a>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#a45ec2b1b59aad7d5a4ae0f856699a0ad">m_solutionRealizer</a>) <span class="keyword">delete</span> <a class="code" href="a00109.html#a45ec2b1b59aad7d5a4ae0f856699a0ad">m_solutionRealizer</a>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#a93dd19898cd1144bd8da6de1ce90634d">m_solutionPdf</a>     ) <span class="keyword">delete</span> <a class="code" href="a00109.html#a93dd19898cd1144bd8da6de1ce90634d">m_solutionPdf</a>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00109.html#a246951b577ac46dcb14092f76f4dfecd">m_solutionDomain</a>  ) <span class="keyword">delete</span> <a class="code" href="a00109.html#a246951b577ac46dcb14092f76f4dfecd">m_solutionDomain</a>;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
+<div class="ttc" id="a00109_html_a45f4ce18666c80fb9af0373536b9293b"><div class="ttname"><a href="a00109.html#a45f4ce18666c80fb9af0373536b9293b">QUESO::GcmTotalInfo::m_chain</a></div><div class="ttdeci">BaseVectorSequence&lt; P_V, P_M &gt; * m_chain</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00082">GcmTotalInfo.h:82</a></div></div>
+<div class="ttc" id="a00109_html_a93dd19898cd1144bd8da6de1ce90634d"><div class="ttname"><a href="a00109.html#a93dd19898cd1144bd8da6de1ce90634d">QUESO::GcmTotalInfo::m_solutionPdf</a></div><div class="ttdeci">BaseJointPdf&lt; P_V, P_M &gt; * m_solutionPdf</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00077">GcmTotalInfo.h:77</a></div></div>
+<div class="ttc" id="a00109_html_a45ec2b1b59aad7d5a4ae0f856699a0ad"><div class="ttname"><a href="a00109.html#a45ec2b1b59aad7d5a4ae0f856699a0ad">QUESO::GcmTotalInfo::m_solutionRealizer</a></div><div class="ttdeci">BaseVectorRealizer&lt; P_V, P_M &gt; * m_solutionRealizer</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00078">GcmTotalInfo.h:78</a></div></div>
+<div class="ttc" id="a00109_html_a246951b577ac46dcb14092f76f4dfecd"><div class="ttname"><a href="a00109.html#a246951b577ac46dcb14092f76f4dfecd">QUESO::GcmTotalInfo::m_solutionDomain</a></div><div class="ttdeci">VectorSet&lt; P_V, P_M &gt; * m_solutionDomain</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00076">GcmTotalInfo.h:76</a></div></div>
+<div class="ttc" id="a00048_html_aae0804eacc51b37e84b1bd329ce1711c"><div class="ttname"><a href="a00048.html#aae0804eacc51b37e84b1bd329ce1711c">QUESO::BaseVectorSequence::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Reset the values and the size of the sequence of vectors. </div><div class="ttdef"><b>Definition:</b> <a href="a00283_source.html#l00133">VectorSequence.C:133</a></div></div>
+<div class="ttc" id="a00109_html_af8b7a519d155260051c145f0bae996f8"><div class="ttname"><a href="a00109.html#af8b7a519d155260051c145f0bae996f8">QUESO::GcmTotalInfo::m_mlSampler</a></div><div class="ttdeci">MLSampling&lt; P_V, P_M &gt; * m_mlSampler</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00081">GcmTotalInfo.h:81</a></div></div>
+<div class="ttc" id="a00109_html_a6c420665ea8a2643da0310a9aea402eb"><div class="ttname"><a href="a00109.html#a6c420665ea8a2643da0310a9aea402eb">QUESO::GcmTotalInfo::m_mhSeqGenerator</a></div><div class="ttdeci">MetropolisHastingsSG&lt; P_V, P_M &gt; * m_mhSeqGenerator</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00080">GcmTotalInfo.h:80</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a173c1e39bc87a2ccc3fb73a459693cc3"></a>
+<a class="anchor" id="a757e1a035bfc365d31d894f0fdcb83af"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -395,10 +376,9 @@ template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::commonConstructor </td>
+          <td class="memname"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::commonConstructor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00108.html">GcmZInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>z</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -409,244 +389,510 @@ template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00422_source.html#l00183">183</a> of file <a class="el" href="a00422_source.html">GcmZTildeInfo.C</a>.</p>
+<p>Definition at line <a class="el" href="a00423_source.html#l00175">175</a> of file <a class="el" href="a00423_source.html">GcmTotalInfo.C</a>.</p>
 
-<p>References <a class="el" href="a00403_source.html#l00064">QUESO::GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Cmat</a>, <a class="el" href="a00403_source.html#l00065">QUESO::GcmZInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Cmat_rank</a>, <a class="el" href="a00319_source.html#l00085">queso_require_equal_to_msg</a>, and <a class="el" href="a00319_source.html#l00087">queso_require_less_msg</a>.</p>
+<p>Referenced by <a class="el" href="a00423_source.html#l00032">QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmTotalInfo()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;{</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <a class="code" href="a00109.html#a4161cf00af38922d786892efc81988f2">m_totalPriorRv</a>.<a class="code" href="a00047.html#a3206740e05e0c64a88273029e963b185">pdf</a>().setNormalizationStyle(0); <span class="comment">// CSRI - 2013-Aug-06 - with Laura</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00109.html#a19ce42acd407314470eb9e5e67761468">m_numConstituents</a>; ++i) {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <a class="code" href="a00109.html#aff8615ed10112eeb2b945756953fd91f">m_totalDomainVolume</a> *= <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[i]-&gt;volume();</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  <span class="comment">//********************************************************************************</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <span class="comment">// Display information</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="comment">//********************************************************************************</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2)) {</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    *<a class="code" href="a00109.html#a950793b3c950ac321fe9677a89e8915b">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmTotalInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::commonConstructor()&quot;</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_totalDim          = &quot;</span>  &lt;&lt; <a class="code" href="a00109.html#acb5df94341dd290e42305c74c520d6a2">m_totalDim</a></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_numConstituents   = &quot;</span>  &lt;&lt; m_numConstituents</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_totalDomainVolume = &quot;</span>  &lt;&lt; <a class="code" href="a00109.html#aff8615ed10112eeb2b945756953fd91f">m_totalDomainVolume</a></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  }</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;}</div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00400">Environment.C:400</a></div></div>
+<div class="ttc" id="a00109_html_a19ce42acd407314470eb9e5e67761468"><div class="ttname"><a href="a00109.html#a19ce42acd407314470eb9e5e67761468">QUESO::GcmTotalInfo::m_numConstituents</a></div><div class="ttdeci">unsigned int m_numConstituents</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00058">GcmTotalInfo.h:58</a></div></div>
+<div class="ttc" id="a00109_html_aff8615ed10112eeb2b945756953fd91f"><div class="ttname"><a href="a00109.html#aff8615ed10112eeb2b945756953fd91f">QUESO::GcmTotalInfo::m_totalDomainVolume</a></div><div class="ttdeci">double m_totalDomainVolume</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00063">GcmTotalInfo.h:63</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00278">Environment.C:278</a></div></div>
+<div class="ttc" id="a00047_html_a3206740e05e0c64a88273029e963b185"><div class="ttname"><a href="a00047.html#a3206740e05e0c64a88273029e963b185">QUESO::BaseVectorRV::pdf</a></div><div class="ttdeci">const BaseJointPdf&lt; V, M &gt; &amp; pdf() const </div><div class="ttdoc">Posterior Density Function of the vector RV; access to private attribute m_pdf. </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00089">VectorRV.C:89</a></div></div>
+<div class="ttc" id="a00109_html_a4161cf00af38922d786892efc81988f2"><div class="ttname"><a href="a00109.html#a4161cf00af38922d786892efc81988f2">QUESO::GcmTotalInfo::m_totalPriorRv</a></div><div class="ttdeci">ConcatenatedVectorRV&lt; P_V, P_M &gt; m_totalPriorRv</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00065">GcmTotalInfo.h:65</a></div></div>
+<div class="ttc" id="a00109_html_aabcf6720d0134ff29db9f2ec650dd485"><div class="ttname"><a href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">QUESO::GcmTotalInfo::m_constitutiveDomains</a></div><div class="ttdeci">std::vector&lt; const VectorSet&lt; P_V, P_M &gt; * &gt; m_constitutiveDomains</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00059">GcmTotalInfo.h:59</a></div></div>
+<div class="ttc" id="a00109_html_acb5df94341dd290e42305c74c520d6a2"><div class="ttname"><a href="a00109.html#acb5df94341dd290e42305c74c520d6a2">QUESO::GcmTotalInfo::m_totalDim</a></div><div class="ttdeci">unsigned int m_totalDim</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00061">GcmTotalInfo.h:61</a></div></div>
+<div class="ttc" id="a00109_html_a950793b3c950ac321fe9677a89e8915b"><div class="ttname"><a href="a00109.html#a950793b3c950ac321fe9677a89e8915b">QUESO::GcmTotalInfo::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00057">GcmTotalInfo.h:57</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aef59d0eab67332c9afc1463d36c2b850"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_M , class Q_V , class Q_M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::initializeTotalDim </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00107.html">GcmSimulationInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
-<p>Referenced by <a class="el" href="a00422_source.html#l00032">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmZTildeInfo()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;{</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cMatTildeRank   = <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.rank(0.,1.e-8 ); <span class="comment">// todo: should be an option</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cMatTildeRank14 = <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.rank(0.,1.e-14);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Cmat_tilde.numRowsLocal() = &quot;</span>  &lt;&lt; <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.numRowsLocal()</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Cmat_tilde.numCols() = &quot;</span>       &lt;&lt; <a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a>.numCols()</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Cmat_tilde.rank(0.,1.e-8) = &quot;</span>  &lt;&lt; cMatTildeRank</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Cmat_tilde.rank(0.,1.e-14) = &quot;</span> &lt;&lt; cMatTildeRank14</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    }</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(cMatTildeRank, z.m_Cmat_rank, <span class="stringliteral">&quot;&#39;m_Cmat_tilde&#39; should have full column rank&quot;</span>);</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <a class="code" href="a00319.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(<a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.numRowsGlobal(), <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.numCols(), <span class="stringliteral">&quot;&#39;m_Lmat&#39; should be a &#39;horizontal&#39; rectangular matrix&quot;</span>);</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="comment">//******************************************************************************</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">// Tilde situation: form &#39;m_Lmat_t&#39;</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="comment">//******************************************************************************</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="a00109.html#a75aee944c67438532c14c34a4552a791">m_Lmat_t</a>.fillWithTranspose(0,0,<a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>,<span class="keyword">true</span>,<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> lMatRank   = <a class="code" href="a00109.html#a75aee944c67438532c14c34a4552a791">m_Lmat_t</a>.rank(0.,1.e-8 ); <span class="comment">// todo: should be an option</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> lMatRank14 = <a class="code" href="a00109.html#a75aee944c67438532c14c34a4552a791">m_Lmat_t</a>.rank(0.,1.e-14);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;      *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::commonConstructor()&quot;</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_Lmat.numRowsLocal() = &quot;</span>  &lt;&lt; <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.numRowsLocal()</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Lmat.numCols() = &quot;</span>       &lt;&lt; <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>.numCols()</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Lmat.rank(0.,1.e-8) = &quot;</span>  &lt;&lt; lMatRank</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_Lmat.rank(0.,1.e-14) = &quot;</span> &lt;&lt; lMatRank14</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    }</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <a class="code" href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(lMatRank, z.m_Cmat_rank, <span class="stringliteral">&quot;&#39;m_Lmat&#39; should have full row rank&quot;</span>);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a83c1c036f81651792a74975f2da23ae1">checkingLevel</a>() &gt;= 1) {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      <span class="comment">// Check if C == C_tilde * L</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      D_M tmpCmat(<a class="code" href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">m_Cmat_tilde</a> * <a class="code" href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">m_Lmat</a>);</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;      tmpCmat -= *z.m_Cmat;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      <span class="keywordtype">double</span> cDiffNorm = tmpCmat.normFrob();</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        *<a class="code" href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In GcmZTildeInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;::commonConstructor()&quot;</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;: ||tmpC - C||_2 = &quot;</span> &lt;&lt; cDiffNorm</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                                &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;      }</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    }</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;}</div>
-<div class="ttc" id="a00109_html_ae4398f7df32219bec1b8c476ce8ff2ae"><div class="ttname"><a href="a00109.html#ae4398f7df32219bec1b8c476ce8ff2ae">QUESO::GcmZTildeInfo::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00056">GcmZTildeInfo.h:56</a></div></div>
-<div class="ttc" id="a00109_html_a75aee944c67438532c14c34a4552a791"><div class="ttname"><a href="a00109.html#a75aee944c67438532c14c34a4552a791">QUESO::GcmZTildeInfo::m_Lmat_t</a></div><div class="ttdeci">D_M m_Lmat_t</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00060">GcmZTildeInfo.h:60</a></div></div>
-<div class="ttc" id="a00109_html_a328d668cc10c7f10c1ab5664a68476b3"><div class="ttname"><a href="a00109.html#a328d668cc10c7f10c1ab5664a68476b3">QUESO::GcmZTildeInfo::m_Cmat_tilde</a></div><div class="ttdeci">D_M m_Cmat_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00057">GcmZTildeInfo.h:57</a></div></div>
-<div class="ttc" id="a00319_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00319.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00085">asserts.h:85</a></div></div>
-<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
-<div class="ttc" id="a00319_html_a9fbd2830796070462f06425899f3d6d5"><div class="ttname"><a href="a00319.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a></div><div class="ttdeci">#define queso_require_less_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00087">asserts.h:87</a></div></div>
-<div class="ttc" id="a00109_html_a3201b9ceb9937a848f309e484c9856cb"><div class="ttname"><a href="a00109.html#a3201b9ceb9937a848f309e484c9856cb">QUESO::GcmZTildeInfo::m_Lmat</a></div><div class="ttdeci">D_M m_Lmat</div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00059">GcmZTildeInfo.h:59</a></div></div>
-<div class="ttc" id="a00032_html_a83c1c036f81651792a74975f2da23ae1"><div class="ttname"><a href="a00032.html#a83c1c036f81651792a74975f2da23ae1">QUESO::BaseEnvironment::checkingLevel</a></div><div class="ttdeci">unsigned int checkingLevel() const </div><div class="ttdoc">Access function to private attribute m_checkingLevel. </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00410">Environment.C:410</a></div></div>
+<p>Definition at line <a class="el" href="a00423_source.html#l00130">130</a> of file <a class="el" href="a00423_source.html">GcmTotalInfo.C</a>.</p>
+
+<p>References <a class="el" href="a00403_source.html#l00063">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_1lambdaEtaDim</a>, <a class="el" href="a00403_source.html#l00067">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_1lambdaEtaDomain</a>, <a class="el" href="a00403_source.html#l00070">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_1lambdaEtaPriorRv</a>, <a class="el" href="a00403_source.html#l00074">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_2lambdaWDim</a>, <a class="el" href="a00403_source.html#l00078">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_2lambdaWDomain</a>, <a class="el" href="a00403_source.html#l00081">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_2lambdaWPriorRv</a>, <a class="el" href="a00403_source.html#l00085">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_3rhoWDim</a>, <a class="el" href="a00403_source.html#l00089">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_3rhoWDomain</a>, <a class="el" href="a00403_source.html#l00092">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_3rhoWPriorRv</a>, <a class="el" href="a00403_source.html#l00096">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_4lambdaSDim</a>, <a class="el" href="a00403_source.html#l00100">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_4lambdaSDomain</a>, and <a class="el" href="a00403_source.html#l00103">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_4lambdaSPriorRv</a>.</p>
+<div class="fragment"><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;{</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[0] = &amp;(s.m_1lambdaEtaDomain);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[1] = &amp;(s.m_2lambdaWDomain);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[2] = &amp;(s.m_3rhoWDomain);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[3] = &amp;(s.m_4lambdaSDomain);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[0] = &amp;(s.m_1lambdaEtaPriorRv);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[1] = &amp;(s.m_2lambdaWPriorRv);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[2] = &amp;(s.m_3rhoWPriorRv);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[3] = &amp;(s.m_4lambdaSPriorRv);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  <span class="keywordflow">return</span> (s.m_1lambdaEtaDim + s.m_2lambdaWDim + s.m_3rhoWDim + s.m_4lambdaSDim);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;}</div>
+<div class="ttc" id="a00109_html_a21ce7ad2fbcc5c4eee29d90d945576a4"><div class="ttname"><a href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">QUESO::GcmTotalInfo::m_constitutivePriorRvs</a></div><div class="ttdeci">std::vector&lt; const BaseVectorRV&lt; P_V, P_M &gt; * &gt; m_constitutivePriorRvs</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00060">GcmTotalInfo.h:60</a></div></div>
+<div class="ttc" id="a00109_html_aabcf6720d0134ff29db9f2ec650dd485"><div class="ttname"><a href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">QUESO::GcmTotalInfo::m_constitutiveDomains</a></div><div class="ttdeci">std::vector&lt; const VectorSet&lt; P_V, P_M &gt; * &gt; m_constitutiveDomains</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00059">GcmTotalInfo.h:59</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a1b9e017c70655f8d765ce3ec4d80e6b7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V , class S_M , class D_V , class D_M , class P_V , class P_M , class Q_V , class Q_M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::initializeTotalDim </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00107.html">GcmSimulationInfo</a>&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00103.html">GcmExperimentInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>e</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00423_source.html#l00148">148</a> of file <a class="el" href="a00423_source.html">GcmTotalInfo.C</a>.</p>
+
+<p>References <a class="el" href="a00628_source.html#l00082">QUESO::BaseVectorRV&lt; V, M &gt;::imageSet()</a>, <a class="el" href="a00403_source.html#l00063">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_1lambdaEtaDim</a>, <a class="el" href="a00403_source.html#l00067">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_1lambdaEtaDomain</a>, <a class="el" href="a00403_source.html#l00070">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_1lambdaEtaPriorRv</a>, <a class="el" href="a00403_source.html#l00074">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_2lambdaWDim</a>, <a class="el" href="a00403_source.html#l00078">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_2lambdaWDomain</a>, <a class="el" href="a00403_source.html#l00081">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_2lambdaWPriorRv</a>, <a class="el" href="a00403_source.html#l00085">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_3rhoWDim</a>, <a class="el" href="a00403_source.html#l00089">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_3rhoWDomain</a>, <a class="el" href="a00403_source.html#l00092">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_3rhoWPriorRv</a>, <a class="el" href="a00403_source.html#l00096">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_4lambdaSDim</a>, <a class="el" href="a00403_source.html#l00100">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_4lambdaSDomain</a>, <a class="el" href="a00403_source.html#l00103">QUESO::GcmSimulationInfo&lt; S_V, S_M, P_V, P_M, Q_V, Q_M &gt;::m_4lambdaSPriorRv</a>, <a class="el" href="a00400_source.html#l00065">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_5lambdaYDim</a>, <a class="el" href="a00400_source.html#l00069">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_5lambdaYDomain</a>, <a class="el" href="a00400_source.html#l00072">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_5lambdaYPriorRv</a>, <a class="el" href="a00400_source.html#l00076">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_6lambdaVDim</a>, <a class="el" href="a00400_source.html#l00080">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_6lambdaVDomain</a>, <a class="el" href="a00400_source.html#l00083">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_6lambdaVPriorRv</a>, <a class="el" href="a00400_source.html#l00087">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_7rhoVDim</a>, <a class="el" href="a00400_source.html#l00091">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_7rhoVDomain</a>, <a class="el" href="a00400_source.html#l00094">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_7rhoVPriorRv</a>, <a class="el" href="a00400_source.html#l00098">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_8thetaDim</a>, and <a class="el" href="a00400_source.html#l00100">QUESO::GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt;::m_8thetaPriorRv</a>.</p>
+<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;{</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[0] = &amp;(s.m_1lambdaEtaDomain);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[1] = &amp;(s.m_2lambdaWDomain);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[2] = &amp;(s.m_3rhoWDomain);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[3] = &amp;(s.m_4lambdaSDomain);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[4] = &amp;(e.m_5lambdaYDomain);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[5] = &amp;(e.m_6lambdaVDomain);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[6] = &amp;(e.m_7rhoVDomain);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <a class="code" href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">m_constitutiveDomains</a>[7] = &amp;(e.m_8thetaPriorRv.imageSet());</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[0] = &amp;(s.m_1lambdaEtaPriorRv);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[1] = &amp;(s.m_2lambdaWPriorRv);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[2] = &amp;(s.m_3rhoWPriorRv);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[3] = &amp;(s.m_4lambdaSPriorRv);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[4] = &amp;(e.m_5lambdaYPriorRv);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[5] = &amp;(e.m_6lambdaVPriorRv);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[6] = &amp;(e.m_7rhoVPriorRv);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  <a class="code" href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">m_constitutivePriorRvs</a>[7] = &amp;(e.m_8thetaPriorRv);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="keywordflow">return</span> (s.m_1lambdaEtaDim + s.m_2lambdaWDim + s.m_3rhoWDim + s.m_4lambdaSDim + e.m_5lambdaYDim + e.m_6lambdaVDim + e.m_7rhoVDim + e.m_8thetaDim);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;}</div>
+<div class="ttc" id="a00109_html_a21ce7ad2fbcc5c4eee29d90d945576a4"><div class="ttname"><a href="a00109.html#a21ce7ad2fbcc5c4eee29d90d945576a4">QUESO::GcmTotalInfo::m_constitutivePriorRvs</a></div><div class="ttdeci">std::vector&lt; const BaseVectorRV&lt; P_V, P_M &gt; * &gt; m_constitutivePriorRvs</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00060">GcmTotalInfo.h:60</a></div></div>
+<div class="ttc" id="a00109_html_aabcf6720d0134ff29db9f2ec650dd485"><div class="ttname"><a href="a00109.html#aabcf6720d0134ff29db9f2ec650dd485">QUESO::GcmTotalInfo::m_constitutiveDomains</a></div><div class="ttdeci">std::vector&lt; const VectorSet&lt; P_V, P_M &gt; * &gt; m_constitutiveDomains</div><div class="ttdef"><b>Definition:</b> <a href="a00405_source.html#l00059">GcmTotalInfo.h:59</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a328d668cc10c7f10c1ab5664a68476b3"></a>
+<a class="anchor" id="a45f4ce18666c80fb9af0373536b9293b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">D_M <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Cmat_tilde</td>
+          <td class="memname"><a class="el" href="a00048.html">BaseVectorSequence</a>&lt;P_V,P_M&gt;* <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_chain</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00057">57</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00422_source.html#l00032">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmZTildeInfo()</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00082">82</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae4398f7df32219bec1b8c476ce8ff2ae"></a>
+<a class="anchor" id="aabcf6720d0134ff29db9f2ec650dd485"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00032.html">BaseEnvironment</a>&amp; <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_env</td>
+          <td class="memname">std::vector&lt;const <a class="el" href="a00230.html">VectorSet</a> &lt;P_V,P_M&gt;* &gt; <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_constitutiveDomains</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00056">56</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00422_source.html#l00032">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmZTildeInfo()</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00059">59</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3201b9ceb9937a848f309e484c9856cb"></a>
+<a class="anchor" id="a21ce7ad2fbcc5c4eee29d90d945576a4"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">D_M <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Lmat</td>
+          <td class="memname">std::vector&lt;const <a class="el" href="a00047.html">BaseVectorRV</a>&lt;P_V,P_M&gt;* &gt; <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_constitutivePriorRvs</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00059">59</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00422_source.html#l00032">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmZTildeInfo()</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00060">60</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a75aee944c67438532c14c34a4552a791"></a>
+<a class="anchor" id="a950793b3c950ac321fe9677a89e8915b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">D_M <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Lmat_t</td>
+          <td class="memname">const <a class="el" href="a00032.html">BaseEnvironment</a>&amp; <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_env</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00060">60</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00057">57</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00423_source.html#l00032">QUESO::GcmTotalInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmTotalInfo()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5d88b842eaef3a3681c35f23a2488588"></a>
+<a class="anchor" id="a6809c34f80e81238dea8abe24fa01552"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">D_M <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_tmp_Smat_extra_tilde</td>
+          <td class="memname">P_V <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_like_previousTotal</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00064">64</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00068">68</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ada2cce908b970078fc533f9290000eb2"></a>
+<a class="anchor" id="a6c420665ea8a2643da0310a9aea402eb"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">D_M <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_tmp_Smat_z_tilde</td>
+          <td class="memname"><a class="el" href="a00166.html">MetropolisHastingsSG</a>&lt;P_V,P_M&gt;* <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_mhSeqGenerator</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00063">63</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00080">80</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a02f8db07f44764786caff828e5270cf3"></a>
+<a class="anchor" id="af8b7a519d155260051c145f0bae996f8"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">D_M <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_tmp_Smat_z_tilde_hat</td>
+          <td class="memname"><a class="el" href="a00171.html">MLSampling</a>&lt;P_V,P_M&gt;* <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_mlSampler</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00065">65</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00081">81</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a47576e0de498837b3fa50a642b8bd795"></a>
+<a class="anchor" id="a19ce42acd407314470eb9e5e67761468"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">D_M <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_tmp_Smat_z_tilde_hat_inv</td>
+          <td class="memname">unsigned int <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_numConstituents</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00066">66</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00058">58</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab11d5d8ad4446f3ce097283aa91bf414"></a>
+<a class="anchor" id="a246951b577ac46dcb14092f76f4dfecd"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00228.html">VectorSpace</a>&lt;D_V,D_M&gt; <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_z_tilde_space</td>
+          <td class="memname"><a class="el" href="a00230.html">VectorSet</a>&lt;P_V,P_M&gt;* <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_solutionDomain</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00058">58</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00076">76</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a26c6a1bb51c7fe79d0d4b27849c1d5af"></a>
+<a class="anchor" id="a93dd19898cd1144bd8da6de1ce90634d"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">D_V <a class="el" href="a00109.html">QUESO::GcmZTildeInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_Zvec_tilde_hat</td>
+          <td class="memname"><a class="el" href="a00035.html">BaseJointPdf</a>&lt;P_V,P_M&gt;* <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_solutionPdf</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00404_source.html#l00061">61</a> of file <a class="el" href="a00404_source.html">GcmZTildeInfo.h</a>.</p>
+<p>Definition at line <a class="el" href="a00405_source.html#l00077">77</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00422_source.html#l00116">QUESO::GcmZTildeInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::GcmZTildeInfo()</a>.</p>
+</div>
+</div>
+<a class="anchor" id="a45ec2b1b59aad7d5a4ae0f856699a0ad"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00046.html">BaseVectorRealizer</a>&lt;P_V,P_M&gt;* <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_solutionRealizer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00078">78</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acb5df94341dd290e42305c74c520d6a2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalDim</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00061">61</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad9a4ea908dc0f8e099806649c933c29f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00061.html">ConcatenationSubset</a>&lt;P_V,P_M&gt; <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalDomain</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00064">64</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aff8615ed10112eeb2b945756953fd91f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalDomainVolume</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00063">63</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6ac8adc3e22918c588554b24d241c0f7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalLikeMaxLnValue</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00074">74</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa97a07ed6922cfbb47450c8979057555"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">P_V <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalMLE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00073">73</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a926ac87abe17a0745ff44605addf7cd7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalPostMaxLnValue</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00072">72</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2eaf8b7f2c23c2d1181f35b4bb4fb0bd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">P_V <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalPostMean</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00069">69</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a59b19543687385ccb68809206963c23e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">P_V <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalPostMedian</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00070">70</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abf8ea058b4919f96567778335b71aa31"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">P_V <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalPostMode</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00071">71</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab394621b163c739e4a25f91582a120f3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00122.html">GenericVectorRV</a>&lt;P_V,P_M&gt; <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalPostRv</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00066">66</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4161cf00af38922d786892efc81988f2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00060.html">ConcatenatedVectorRV</a>&lt;P_V,P_M&gt; <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalPriorRv</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00065">65</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad3647156e01fd4b9f092e6f8ae19c707"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S_V = GslVector, class S_M = GslMatrix, class D_V = GslVector, class D_M = GslMatrix, class P_V = GslVector, class P_M = GslMatrix, class Q_V = GslVector, class Q_M = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00231.html">VectorSpace</a>&lt;P_V,P_M&gt; <a class="el" href="a00109.html">QUESO::GcmTotalInfo</a>&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;::m_totalSpace</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00405_source.html#l00062">62</a> of file <a class="el" href="a00405_source.html">GcmTotalInfo.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/gp/inc/<a class="el" href="a00404_source.html">GcmZTildeInfo.h</a></li>
-<li>src/gp/src/<a class="el" href="a00422_source.html">GcmZTildeInfo.C</a></li>
+<li>src/gp/inc/<a class="el" href="a00405_source.html">GcmTotalInfo.h</a></li>
+<li>src/gp/src/<a class="el" href="a00423_source.html">GcmTotalInfo.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:34 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:44 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

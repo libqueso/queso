@@ -1,3 +1,5 @@
-<map id="QUESO::UniformVectorRealizer&lt; V, M &gt;" name="QUESO::UniformVectorRealizer&lt; V, M &gt;">
-<area shape="rect" id="node2" href="$a00046.html" title="A templated (base) class for handling sampling from vector RVs. " alt="" coords="13,6,227,53"/>
+<map id="QUESO::BaseTKGroup&lt; V, M &gt;" name="QUESO::BaseTKGroup&lt; V, M &gt;">
+<area shape="rect" id="node2" href="$a00132.html" title="This class allows the representation of a transition kernel with Hessians. " alt="" coords="225,5,415,46"/>
+<area shape="rect" id="node3" href="$a00198.html" title="This class allows the representation of a transition kernel with a scaled covariance matrix..." alt="" coords="209,70,431,111"/>
+<area shape="rect" id="node4" href="$a00217.html" title="This class represents a transition kernel with a scaled covariance matrix on hybrid bounded/unbounded..." alt="" coords="227,135,413,177"/>
 </map>

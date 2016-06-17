@@ -1,8 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00031.html" title="Base class for one&#45;dimensional quadrature rules (numerical integration of functions). " alt="" coords="5,112,216,141"/>
-<area shape="rect" id="node3" href="$a00089.html" title="Class for Hermite&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="264,5,555,35"/>
-<area shape="rect" id="node5" href="$a00111.html" title="Class for one&#45;dimensional generic quadrature rules (numerical integration of functions). " alt="" coords="296,59,523,88"/>
-<area shape="rect" id="node7" href="$a00219.html" title="Class for Legendre&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="264,112,555,141"/>
-<area shape="rect" id="node9" href="$a00230.html" title="Class for second type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="293,165,525,211"/>
-<area shape="rect" id="node11" href="$a00231.html" title="Class for first type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="269,234,549,281"/>
+<area shape="rect" id="node1" href="$a00031.html" title="Base class for one&#45;dimensional quadrature rules (numerical integration of functions). " alt="" coords="6,107,189,133"/>
+<area shape="rect" id="node2" href="$a00091.html" title="Class for Hermite&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="238,5,490,32"/>
+<area shape="rect" id="node3" href="$a00113.html" title="Class for one&#45;dimensional generic quadrature rules (numerical integration of functions). " alt="" coords="265,56,463,83"/>
+<area shape="rect" id="node4" href="$a00222.html" title="Class for Legendre&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="238,107,490,133"/>
+<area shape="rect" id="node5" href="$a00233.html" title="Class for second type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="262,158,466,199"/>
+<area shape="rect" id="node6" href="$a00234.html" title="Class for first type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="243,223,485,265"/>
 </map>

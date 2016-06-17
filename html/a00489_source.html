@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/inc/GenericVectorRealizer.h Source File</title>
+<title>queso-0.55.0: src/stats/inc/GenericScalarCovarianceFunction.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_84a4f20dccd7baf1e042e36cd61e1aee.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_0f21e708b746168b296493cf5f1407d8.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GenericVectorRealizer.h</div>  </div>
+<div class="title">GenericScalarCovarianceFunction.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00489.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,13 +75,13 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GENERIC_REALIZER_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GENERIC_REALIZER_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GENERIC_SCALAR_COVARIANCE_FUNCTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GENERIC_SCALAR_COVARIANCE_FUNCTION_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRealizer.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSequence.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarCovarianceFunction.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
@@ -89,50 +89,46 @@
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Generic class [R-01]</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Generic class</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00119.html">   51</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00119.html">GenericVectorRealizer</a> : <span class="keyword">public</span> <a class="code" href="a00046.html">BaseVectorRealizer</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00119.html#add5488cecf1f1f0779d056012ada18d8">GenericVectorRealizer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                               <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00046.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                               <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                 <a class="code" href="a00046.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a>,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                               <span class="keywordtype">double</span> (*routinePtr)(<span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr, V&amp; nextParamValues),</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                               <span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="a00119.html#a0daa8ba5bde1dc77da5c9f784bd76cd1">~GenericVectorRealizer</a>();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00116.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00116.html">GenericScalarCovarianceFunction</a> : <span class="keyword">public</span> <a class="code" href="a00040.html">BaseScalarCovarianceFunction</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="a00116.html#a33edf41b7bcff2d5b519d9a0a6fee314">GenericScalarCovarianceFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;           <span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;V,M&gt;</a>&amp; domainSet,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;           <span class="keywordtype">double</span> (*covRoutinePtr)(<span class="keyword">const</span> V&amp; positionVector1, <span class="keyword">const</span> V&amp; positionVector2, <span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr),</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;           <span class="keyword">const</span> <span class="keywordtype">void</span>*                  routinesDataPtr);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00116.html#a8138a46b55498cf9b2f14aa51776d437">~GenericScalarCovarianceFunction</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00116.html#ab02d90f973034672b84888c941230a8c">value</a>(<span class="keyword">const</span> V&amp; positionVector1, <span class="keyword">const</span> V&amp; positionVector2) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00119.html#aeb79c966ab4e20b22f75acc6b7068925">realization</a>(V&amp; nextValues) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00119.html#a913da22606696da4831afc3ef47a3a76">   76</a></span>&#160;  double (*<a class="code" href="a00119.html#a913da22606696da4831afc3ef47a3a76">m_routinePtr</a>)(<span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr, V&amp; nextParamValues);</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00119.html#ad2c00300197c0a97bc43b55ea25c16cd">   77</a></span>&#160;  <span class="keyword">const</span> <span class="keywordtype">void</span>* <a class="code" href="a00119.html#ad2c00300197c0a97bc43b55ea25c16cd">m_routineDataPtr</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00040.html">BaseScalarCovarianceFunction&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00040.html">BaseScalarCovarianceFunction&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00040.html">BaseScalarCovarianceFunction&lt;V,M&gt;::m_basicDomainSet</a>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="a00116.html#a5ab019180d841614bc6c6c957be91f93">   73</a></span>&#160;  double (*<a class="code" href="a00116.html#a5ab019180d841614bc6c6c957be91f93">m_covRoutinePtr</a>)(<span class="keyword">const</span> V&amp; positionVector1, <span class="keyword">const</span> V&amp; positionVector2, <span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr);</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00116.html#ac09d3c5de0ca3e00e2ee16f7654c8da6">   74</a></span>&#160;  <span class="keyword">const</span> <span class="keywordtype">void</span>* <a class="code" href="a00116.html#ac09d3c5de0ca3e00e2ee16f7654c8da6">m_routineDataPtr</a>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;};</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00046.html">BaseVectorRealizer&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00046.html">BaseVectorRealizer&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00046.html">BaseVectorRealizer&lt;V,M&gt;::m_unifiedImageSet</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00046.html">BaseVectorRealizer&lt;V,M&gt;::m_subPeriod</a>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif // UQ_GENERIC_REALIZER_H</span></div>
-<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00046_html_ad9fda59efacf5bd84c472c96dfa00613"><div class="ttname"><a href="a00046.html#ad9fda59efacf5bd84c472c96dfa00613">QUESO::BaseVectorRealizer::subPeriod</a></div><div class="ttdeci">unsigned int subPeriod() const </div><div class="ttdoc">Sub-period of the realization. Access to protected attribute m_subPeriod. </div><div class="ttdef"><b>Definition:</b> <a href="a00624_source.html#l00063">VectorRealizer.C:63</a></div></div>
-<div class="ttc" id="a00046_html"><div class="ttname"><a href="a00046.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00539_source.html#l00049">VectorRealizer.h:49</a></div></div>
-<div class="ttc" id="a00119_html_aeb79c966ab4e20b22f75acc6b7068925"><div class="ttname"><a href="a00119.html#aeb79c966ab4e20b22f75acc6b7068925">QUESO::GenericVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdef"><b>Definition:</b> <a href="a00574_source.html#l00064">GenericVectorRealizer.C:64</a></div></div>
-<div class="ttc" id="a00119_html_a0daa8ba5bde1dc77da5c9f784bd76cd1"><div class="ttname"><a href="a00119.html#a0daa8ba5bde1dc77da5c9f784bd76cd1">QUESO::GenericVectorRealizer::~GenericVectorRealizer</a></div><div class="ttdeci">~GenericVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00574_source.html#l00058">GenericVectorRealizer.C:58</a></div></div>
-<div class="ttc" id="a00046_html_ad958991bab8d6369e8a0d66b22a237d4"><div class="ttname"><a href="a00046.html#ad958991bab8d6369e8a0d66b22a237d4">QUESO::BaseVectorRealizer::unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; unifiedImageSet() const </div><div class="ttdoc">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00624_source.html#l00070">VectorRealizer.C:70</a></div></div>
-<div class="ttc" id="a00119_html_a913da22606696da4831afc3ef47a3a76"><div class="ttname"><a href="a00119.html#a913da22606696da4831afc3ef47a3a76">QUESO::GenericVectorRealizer::m_routinePtr</a></div><div class="ttdeci">double(* m_routinePtr)(const void *routineDataPtr, V &amp;nextParamValues)</div><div class="ttdef"><b>Definition:</b> <a href="a00489_source.html#l00076">GenericVectorRealizer.h:76</a></div></div>
-<div class="ttc" id="a00119_html_ad2c00300197c0a97bc43b55ea25c16cd"><div class="ttname"><a href="a00119.html#ad2c00300197c0a97bc43b55ea25c16cd">QUESO::GenericVectorRealizer::m_routineDataPtr</a></div><div class="ttdeci">const void * m_routineDataPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00489_source.html#l00077">GenericVectorRealizer.h:77</a></div></div>
-<div class="ttc" id="a00119_html_add5488cecf1f1f0779d056012ada18d8"><div class="ttname"><a href="a00119.html#add5488cecf1f1f0779d056012ada18d8">QUESO::GenericVectorRealizer::GenericVectorRealizer</a></div><div class="ttdeci">GenericVectorRealizer(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet, unsigned int subPeriod, double(*routinePtr)(const void *routineDataPtr, V &amp;nextParamValues), const void *routineDataPtr)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00574_source.html#l00033">GenericVectorRealizer.C:33</a></div></div>
-<div class="ttc" id="a00119_html"><div class="ttname"><a href="a00119.html">QUESO::GenericVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from generic probability density distributions. </div><div class="ttdef"><b>Definition:</b> <a href="a00489_source.html#l00051">GenericVectorRealizer.h:51</a></div></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif // UQ_GENERIC_SCALAR_COVARIANCE_FUNCTION_H</span></div>
+<div class="ttc" id="a00116_html_ab02d90f973034672b84888c941230a8c"><div class="ttname"><a href="a00116.html#ab02d90f973034672b84888c941230a8c">QUESO::GenericScalarCovarianceFunction::value</a></div><div class="ttdeci">double value(const V &amp;positionVector1, const V &amp;positionVector2) const </div><div class="ttdoc">Calculates the value of the generic covariance function. </div><div class="ttdef"><b>Definition:</b> <a href="a00574_source.html#l00072">GenericScalarCovarianceFunction.C:72</a></div></div>
+<div class="ttc" id="a00230_html"><div class="ttname"><a href="a00230.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00261_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00116_html_a5ab019180d841614bc6c6c957be91f93"><div class="ttname"><a href="a00116.html#a5ab019180d841614bc6c6c957be91f93">QUESO::GenericScalarCovarianceFunction::m_covRoutinePtr</a></div><div class="ttdeci">double(* m_covRoutinePtr)(const V &amp;positionVector1, const V &amp;positionVector2, const void *routineDataPtr)</div><div class="ttdef"><b>Definition:</b> <a href="a00489_source.html#l00073">GenericScalarCovarianceFunction.h:73</a></div></div>
+<div class="ttc" id="a00116_html_a8138a46b55498cf9b2f14aa51776d437"><div class="ttname"><a href="a00116.html#a8138a46b55498cf9b2f14aa51776d437">QUESO::GenericScalarCovarianceFunction::~GenericScalarCovarianceFunction</a></div><div class="ttdeci">virtual ~GenericScalarCovarianceFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00574_source.html#l00055">GenericScalarCovarianceFunction.C:55</a></div></div>
+<div class="ttc" id="a00116_html_ac09d3c5de0ca3e00e2ee16f7654c8da6"><div class="ttname"><a href="a00116.html#ac09d3c5de0ca3e00e2ee16f7654c8da6">QUESO::GenericScalarCovarianceFunction::m_routineDataPtr</a></div><div class="ttdeci">const void * m_routineDataPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00489_source.html#l00074">GenericScalarCovarianceFunction.h:74</a></div></div>
+<div class="ttc" id="a00040_html"><div class="ttname"><a href="a00040.html">QUESO::BaseScalarCovarianceFunction</a></div><div class="ttdoc">A templated (base) class to accommodate scalar covariance functions (of random variables). </div><div class="ttdef"><b>Definition:</b> <a href="a00524_source.html#l00053">ScalarCovarianceFunction.h:53</a></div></div>
+<div class="ttc" id="a00116_html_a33edf41b7bcff2d5b519d9a0a6fee314"><div class="ttname"><a href="a00116.html#a33edf41b7bcff2d5b519d9a0a6fee314">QUESO::GenericScalarCovarianceFunction::GenericScalarCovarianceFunction</a></div><div class="ttdeci">GenericScalarCovarianceFunction(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, double(*covRoutinePtr)(const V &amp;positionVector1, const V &amp;positionVector2, const void *routineDataPtr), const void *routinesDataPtr)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00574_source.html#l00031">GenericScalarCovarianceFunction.C:31</a></div></div>
+<div class="ttc" id="a00116_html"><div class="ttname"><a href="a00116.html">QUESO::GenericScalarCovarianceFunction</a></div><div class="ttdoc">A class for generic covariances. </div><div class="ttdef"><b>Definition:</b> <a href="a00489_source.html#l00048">GenericScalarCovarianceFunction.h:48</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

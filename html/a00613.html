@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/src/StatisticalInverseProblemOptions.C File Reference</title>
+<title>queso-0.55.0: src/stats/src/StatisticalForwardProblem.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,26 +43,25 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_4c88fa08bbee16224b3c1c0812e0e863.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_12ad124ea09f49810819695bb6998b06.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">StatisticalInverseProblemOptions.C File Reference</div>  </div>
+<div class="title">StatisticalForwardProblem.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;boost/program_options.hpp&gt;</code><br/>
-<code>#include &lt;queso/Defines.h&gt;</code><br/>
-<code>#include &lt;queso/StatisticalInverseProblemOptions.h&gt;</code><br/>
-<code>#include &lt;queso/Miscellaneous.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;queso/StatisticalForwardProblem.h&gt;</code><br/>
+<code>#include &lt;queso/SequentialVectorRealizer.h&gt;</code><br/>
+<code>#include &lt;queso/GslVector.h&gt;</code><br/>
+<code>#include &lt;queso/GslMatrix.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for StatisticalInverseProblemOptions.C:</div>
+Include dependency graph for StatisticalForwardProblem.C:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01031.png" border="0" usemap="#src_2stats_2src_2_statistical_inverse_problem_options_8_c" alt=""/></div>
-<map name="src_2stats_2src_2_statistical_inverse_problem_options_8_c" id="src_2stats_2src_2_statistical_inverse_problem_options_8_c">
+<div class="center"><img src="a01032.png" border="0" usemap="#src_2stats_2src_2_statistical_forward_problem_8_c" alt=""/></div>
+<map name="src_2stats_2src_2_statistical_forward_problem_8_c" id="src_2stats_2src_2_statistical_forward_problem_8_c">
 </map>
 </div>
 </div>
@@ -70,20 +69,12 @@ Include dependency graph for StatisticalInverseProblemOptions.C:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00649"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html">QUESO</a></td></tr>
+<tr class="memitem:a00652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ae7c284129de1e1c899462f0125b25b85"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#ae7c284129de1e1c899462f0125b25b85">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const SipOptionsValues &amp;obj)</td></tr>
-<tr class="separator:ae7c284129de1e1c899462f0125b25b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a408c51750e38ef3c04031a801f572e8b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00649.html#a408c51750e38ef3c04031a801f572e8b">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const StatisticalInverseProblemOptions &amp;obj)</td></tr>
-<tr class="memdesc:a408c51750e38ef3c04031a801f572e8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the object <code>obj</code>, overloading an operator.  <a href="#a408c51750e38ef3c04031a801f572e8b">More...</a><br/></td></tr>
-<tr class="separator:a408c51750e38ef3c04031a801f572e8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

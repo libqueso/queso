@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/src/WignerVectorRealizer.C Source File</title>
+<title>queso-0.55.0: src/stats/src/VectorRealizer.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_4c88fa08bbee16224b3c1c0812e0e863.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_12ad124ea09f49810819695bb6998b06.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">WignerVectorRealizer.C</div>  </div>
+<div class="title">VectorRealizer.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00627.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,76 +75,72 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/WignerVectorRealizer.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00233.html#a44b2d353c8c82a0968d07c18ea40b69f">   34</a></span>&#160;<a class="code" href="a00233.html#a44b2d353c8c82a0968d07c18ea40b69f">WignerVectorRealizer&lt;V,M&gt;::WignerVectorRealizer</a>(</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00227.html">VectorSet&lt;V,M&gt;</a>&amp; unifiedImageSet,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">const</span> V&amp;                     centerPos,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordtype">double</span>                       radius)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  :</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00046.html">BaseVectorRealizer</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;gen&quot;</span>).c_str(),unifiedImageSet,std::numeric_limits&lt;unsigned int&gt;::max()),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_centerPos(new V(centerPos)),</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  m_radius   (radius)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    *<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering WignerVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00046.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="a00319.html#a7c34683a7aa3ea44e6d3d22a38d8a841">queso_require_greater_msg</a>(<a class="code" href="a00233.html#af325e618f0f529af2a2f26649be101a4">m_radius</a>, 0., <span class="stringliteral">&quot;invalid radius&quot;</span>);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    *<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving WignerVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00046.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="a00233.html#a52de4d73111dd2831e7099c782220ed6">   60</a></span>&#160;<a class="code" href="a00233.html#a52de4d73111dd2831e7099c782220ed6">WignerVectorRealizer&lt;V,M&gt;::~WignerVectorRealizer</a>()</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">delete</span> m_centerPos;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// -------------------------------------------------</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">// TODO: implement me, please!!!!</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="a00233.html#a0d72232eb5843e78fc3d02a510ceb966">   68</a></span>&#160;<a class="code" href="a00233.html#a0d72232eb5843e78fc3d02a510ceb966">WignerVectorRealizer&lt;V,M&gt;::realization</a>(V&amp; nextValues)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="a00319.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  nextValues.cwSet(0.);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00233.html">QUESO::WignerVectorRealizer&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00396">Environment.C:396</a></div></div>
-<div class="ttc" id="a00233_html_a44b2d353c8c82a0968d07c18ea40b69f"><div class="ttname"><a href="a00233.html#a44b2d353c8c82a0968d07c18ea40b69f">QUESO::WignerVectorRealizer::WignerVectorRealizer</a></div><div class="ttdeci">WignerVectorRealizer(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet, const V &amp;centerPos, double radius)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00034">WignerVectorRealizer.C:34</a></div></div>
-<div class="ttc" id="a00227_html"><div class="ttname"><a href="a00227.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00258_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00046_html_acde246c52f82d8ed687d91cfac14c29c"><div class="ttname"><a href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">QUESO::BaseVectorRealizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00539_source.html#l00077">VectorRealizer.h:77</a></div></div>
-<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00274">Environment.C:274</a></div></div>
-<div class="ttc" id="a00046_html"><div class="ttname"><a href="a00046.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00539_source.html#l00049">VectorRealizer.h:49</a></div></div>
-<div class="ttc" id="a00319_html_a7cd5266c96c8870c5d1c1e13073afb87"><div class="ttname"><a href="a00319.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a></div><div class="ttdeci">#define queso_not_implemented()</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00056">asserts.h:56</a></div></div>
-<div class="ttc" id="a00233_html_af325e618f0f529af2a2f26649be101a4"><div class="ttname"><a href="a00233.html#af325e618f0f529af2a2f26649be101a4">QUESO::WignerVectorRealizer::m_radius</a></div><div class="ttdeci">double m_radius</div><div class="ttdef"><b>Definition:</b> <a href="a00542_source.html#l00078">WignerVectorRealizer.h:78</a></div></div>
-<div class="ttc" id="a00233_html_a0d72232eb5843e78fc3d02a510ceb966"><div class="ttname"><a href="a00233.html#a0d72232eb5843e78fc3d02a510ceb966">QUESO::WignerVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdoc">TODO: Draws a realization. </div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00068">WignerVectorRealizer.C:68</a></div></div>
-<div class="ttc" id="a00233_html"><div class="ttname"><a href="a00233.html">QUESO::WignerVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from a Wigner probability density distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00542_source.html#l00049">WignerVectorRealizer.h:49</a></div></div>
-<div class="ttc" id="a00319_html_a7c34683a7aa3ea44e6d3d22a38d8a841"><div class="ttname"><a href="a00319.html#a7c34683a7aa3ea44e6d3d22a38d8a841">queso_require_greater_msg</a></div><div class="ttdeci">#define queso_require_greater_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00319_source.html#l00088">asserts.h:88</a></div></div>
-<div class="ttc" id="a00233_html_a52de4d73111dd2831e7099c782220ed6"><div class="ttname"><a href="a00233.html#a52de4d73111dd2831e7099c782220ed6">QUESO::WignerVectorRealizer::~WignerVectorRealizer</a></div><div class="ttdeci">~WignerVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00060">WignerVectorRealizer.C:60</a></div></div>
-<div class="ttc" id="a00046_html_ac5559b6921816ccaed7afc2d342c2a32"><div class="ttname"><a href="a00046.html#ac5559b6921816ccaed7afc2d342c2a32">QUESO::BaseVectorRealizer::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00539_source.html#l00078">VectorRealizer.h:78</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRealizer.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Default constructor -----------------------------</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00046.html#ad77258f8737d87b5d0cd58b398939c70">   33</a></span>&#160;<a class="code" href="a00046.html#ad77258f8737d87b5d0cd58b398939c70">BaseVectorRealizer&lt;V,M&gt;::BaseVectorRealizer</a>(</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;V,M&gt;</a>&amp; unifiedImageSet,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                 subPeriod)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_env            (unifiedImageSet.env()),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_prefix         ((std::string)(prefix)+<span class="stringliteral">&quot;re_&quot;</span>),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_unifiedImageSet(unifiedImageSet),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_subPeriod      (subPeriod)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering BaseVectorRealizer&lt;V,M&gt;::constructor() [4]&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00046.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    *<a class="code" href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving BaseVectorRealizer&lt;V,M&gt;::constructor() [4]&quot;</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00046.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00046.html#abc2eda9b3cea09c559c19e349c537b91">   57</a></span>&#160;<a class="code" href="a00046.html#abc2eda9b3cea09c559c19e349c537b91">BaseVectorRealizer&lt;V,M&gt;::~BaseVectorRealizer</a>()</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// Realization-related methods----------------------</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="a00046.html#ad9fda59efacf5bd84c472c96dfa00613">   63</a></span>&#160;<a class="code" href="a00046.html#ad9fda59efacf5bd84c472c96dfa00613">BaseVectorRealizer&lt;V,M&gt;::subPeriod</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">return</span> m_subPeriod;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;V,M&gt;</a>&amp;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="a00046.html#ad958991bab8d6369e8a0d66b22a237d4">   70</a></span>&#160;<a class="code" href="a00046.html#ad958991bab8d6369e8a0d66b22a237d4">BaseVectorRealizer&lt;V,M&gt;::unifiedImageSet</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">return</span> m_unifiedImageSet;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00046.html">QUESO::BaseVectorRealizer&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00400">Environment.C:400</a></div></div>
+<div class="ttc" id="a00230_html"><div class="ttname"><a href="a00230.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00261_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00046_html_acde246c52f82d8ed687d91cfac14c29c"><div class="ttname"><a href="a00046.html#acde246c52f82d8ed687d91cfac14c29c">QUESO::BaseVectorRealizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00542_source.html#l00077">VectorRealizer.h:77</a></div></div>
+<div class="ttc" id="a00046_html_ad9fda59efacf5bd84c472c96dfa00613"><div class="ttname"><a href="a00046.html#ad9fda59efacf5bd84c472c96dfa00613">QUESO::BaseVectorRealizer::subPeriod</a></div><div class="ttdeci">unsigned int subPeriod() const </div><div class="ttdoc">Sub-period of the realization. Access to protected attribute m_subPeriod. </div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00063">VectorRealizer.C:63</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00278">Environment.C:278</a></div></div>
+<div class="ttc" id="a00046_html"><div class="ttname"><a href="a00046.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00542_source.html#l00049">VectorRealizer.h:49</a></div></div>
+<div class="ttc" id="a00046_html_abc2eda9b3cea09c559c19e349c537b91"><div class="ttname"><a href="a00046.html#abc2eda9b3cea09c559c19e349c537b91">QUESO::BaseVectorRealizer::~BaseVectorRealizer</a></div><div class="ttdeci">virtual ~BaseVectorRealizer()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00057">VectorRealizer.C:57</a></div></div>
+<div class="ttc" id="a00046_html_ad958991bab8d6369e8a0d66b22a237d4"><div class="ttname"><a href="a00046.html#ad958991bab8d6369e8a0d66b22a237d4">QUESO::BaseVectorRealizer::unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; unifiedImageSet() const </div><div class="ttdoc">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00070">VectorRealizer.C:70</a></div></div>
+<div class="ttc" id="a00046_html_ad77258f8737d87b5d0cd58b398939c70"><div class="ttname"><a href="a00046.html#ad77258f8737d87b5d0cd58b398939c70">QUESO::BaseVectorRealizer::BaseVectorRealizer</a></div><div class="ttdeci">BaseVectorRealizer(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet, unsigned int subPeriod)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00033">VectorRealizer.C:33</a></div></div>
+<div class="ttc" id="a00046_html_ac5559b6921816ccaed7afc2d342c2a32"><div class="ttname"><a href="a00046.html#ac5559b6921816ccaed7afc2d342c2a32">QUESO::BaseVectorRealizer::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00542_source.html#l00078">VectorRealizer.h:78</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:33 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:42 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

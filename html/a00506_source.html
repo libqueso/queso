@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/stats/inc/MarkovChainPositionData.h Source File</title>
+<title>queso-0.55.0: src/stats/inc/LogNormalJointPdf.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_e53f352f9f4a4b0a2dde87bd91482e26.html">stats</a></li><li class="navelem"><a class="el" href="dir_84a4f20dccd7baf1e042e36cd61e1aee.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_0f21e708b746168b296493cf5f1407d8.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">MarkovChainPositionData.h</div>  </div>
+<div class="title">LogNormalJointPdf.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00506.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,92 +75,83 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_CHAIN_POSITION_DATA_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_CHAIN_POSITION_DATA_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_LOGNORM_JOINT_PROB_DENSITY_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_LOGNORM_JOINT_PROB_DENSITY_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;boost/math/special_functions.hpp&gt;</span> <span class="comment">// for Boost isnan. Note parentheses are important in function call.</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector&gt;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00161.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00161.html">MarkovChainPositionData</a></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/JointPdf.h&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarFunction.h&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;queso/BoxSubset.h&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// LogNormal probability density class [PDF-10]</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00159.html">   52</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00159.html">LogNormalJointPdf</a> : <span class="keyword">public</span> <a class="code" href="a00035.html">BaseJointPdf</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="a00161.html#acbfcf6d39cc6a76a67e3d3ed0f8e2d6d">MarkovChainPositionData</a>(<span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; env);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="a00161.html#acbfcf6d39cc6a76a67e3d3ed0f8e2d6d">MarkovChainPositionData</a>(<span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; env,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                                 <span class="keyword">const</span> V&amp; <a class="code" href="a00161.html#a1ad19966c9bcb480d4f055ab6f3dc244">vecValues</a>,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                                 <span class="keywordtype">bool</span>     <a class="code" href="a00161.html#a466849f2d261962720d7c8968e95b5f1">outOfTargetSupport</a>,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                                 <span class="keywordtype">double</span>   <a class="code" href="a00161.html#a4d0fc22cd5a10065474ceaba13d18857">logLikelihood</a>,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                                 <span class="keywordtype">double</span>   <a class="code" href="a00161.html#aa553894577fdc44739538bf51d30555b">logTarget</a>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="a00159.html#ac8a9ad5414281317dfe22731c672a9ca">LogNormalJointPdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                           <span class="keyword">const</span> <a class="code" href="a00230.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                           <span class="keyword">const</span> V&amp;                     <a class="code" href="a00159.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                           <span class="keyword">const</span> V&amp;                     <a class="code" href="a00159.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; <a class="code" href="a00159.html#abba5c75de7f88fcf51e56aec03f35ffc">~LogNormalJointPdf</a>();</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="a00161.html#acbfcf6d39cc6a76a67e3d3ed0f8e2d6d">MarkovChainPositionData</a>(<span class="keyword">const</span> <a class="code" href="a00161.html">MarkovChainPositionData&lt;V&gt;</a>&amp; rhs);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="a00161.html#a17b359c50ca7914e9698f0ebcf29a19d">~MarkovChainPositionData</a>();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00159.html#a87729cb9d59b73baefcbecb03e753cb9">actualValue</a> (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="a00161.html">MarkovChainPositionData&lt;V&gt;</a>&amp; <a class="code" href="a00161.html#aa3608d527f0215fe772aa9f9e1686dd8">operator= </a>(<span class="keyword">const</span> <a class="code" href="a00161.html">MarkovChainPositionData&lt;V&gt;</a>&amp; rhs);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00159.html#a9c31e89ee4abe8f1747e50c8d472a94d">lnValue</a>     (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">const</span> V&amp; <a class="code" href="a00161.html#a1ad19966c9bcb480d4f055ab6f3dc244">vecValues</a>         () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">bool</span>     <a class="code" href="a00161.html#a466849f2d261962720d7c8968e95b5f1">outOfTargetSupport</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00161.html#a4d0fc22cd5a10065474ceaba13d18857">logLikelihood</a>     () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00161.html#aa553894577fdc44739538bf51d30555b">logTarget</a>         () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">void</span>     <a class="code" href="a00161.html#aa6a5a75dd4661a811956b42a68291e7b">set</a>               (<span class="keyword">const</span> V&amp; vecValues,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                              <span class="keywordtype">bool</span>     outOfTargetSupport,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                              <span class="keywordtype">double</span>   logLikelihood,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                              <span class="keywordtype">double</span>   logTarget);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00159.html#a373e37c21ce8acf05fe72f4ec9deef9c">computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">const</span> V&amp; <a class="code" href="a00159.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">const</span> V&amp; <a class="code" href="a00159.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;V,M&gt;::m_domainSet</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00035.html">BaseJointPdf&lt;V,M&gt;::m_normalizationStyle</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00035.html">BaseJointPdf&lt;V,M&gt;::m_logOfNormalizationFactor</a>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="a00159.html#a1373e1737c3198b852fab05c77abea35">   97</a></span>&#160;  V*   <a class="code" href="a00159.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="a00159.html#abb84bcddf99dc15b4432baac0fc29122">   98</a></span>&#160;  V*   <a class="code" href="a00159.html#abb84bcddf99dc15b4432baac0fc29122">m_lawVarVector</a>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="a00159.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">   99</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="a00159.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">m_diagonalCovMatrix</a>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordtype">void</span>     <a class="code" href="a00161.html#a25bc5762fc4883882ca635dd83772a78">print</a>             (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00161.html#a6ef33eb48213225a4ad86c5baf209257">  106</a></span>&#160;  <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="a00161.html#a6ef33eb48213225a4ad86c5baf209257">operator&lt;&lt;</a>(std::ostream&amp; os,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00161.html">MarkovChainPositionData&lt;V&gt;</a>&amp; obj)</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    obj.<a class="code" href="a00161.html#a25bc5762fc4883882ca635dd83772a78">print</a>(os);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="a00161.html#a61841c4f47bd11a7261668bb44e06bd6">  116</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp; <a class="code" href="a00161.html#a61841c4f47bd11a7261668bb44e06bd6">m_env</a>;</div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="a00161.html#ad98640fe86c2c70671467686988c6b91">  117</a></span>&#160;  V*     <a class="code" href="a00161.html#ad98640fe86c2c70671467686988c6b91">m_vecValues</a>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="a00161.html#ac2dba3d144c038ccc297e95033331437">  118</a></span>&#160;  <span class="keywordtype">bool</span>   <a class="code" href="a00161.html#ac2dba3d144c038ccc297e95033331437">m_outOfTargetSupport</a>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="a00161.html#a2def4815940aee10948cd6575f986010">  119</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00161.html#a2def4815940aee10948cd6575f986010">m_logLikelihood</a>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="a00161.html#a0d806977350824012500dca13e890a93">  120</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00161.html#a0d806977350824012500dca13e890a93">m_logTarget</a>;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;};</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif // UQ_CHAIN_POSITION_DATA_H</span></div>
-<div class="ttc" id="a00161_html_a25bc5762fc4883882ca635dd83772a78"><div class="ttname"><a href="a00161.html#a25bc5762fc4883882ca635dd83772a78">QUESO::MarkovChainPositionData::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the Markov chain. </div></div>
-<div class="ttc" id="a00161_html_aa553894577fdc44739538bf51d30555b"><div class="ttname"><a href="a00161.html#aa553894577fdc44739538bf51d30555b">QUESO::MarkovChainPositionData::logTarget</a></div><div class="ttdeci">double logTarget() const </div><div class="ttdoc">Logarithm of the value of the target; access to private attribute m_logTarget. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00116">MarkovChainPositionData.C:116</a></div></div>
-<div class="ttc" id="a00161_html_a17b359c50ca7914e9698f0ebcf29a19d"><div class="ttname"><a href="a00161.html#a17b359c50ca7914e9698f0ebcf29a19d">QUESO::MarkovChainPositionData::~MarkovChainPositionData</a></div><div class="ttdeci">~MarkovChainPositionData()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00070">MarkovChainPositionData.C:70</a></div></div>
-<div class="ttc" id="a00161_html_a1ad19966c9bcb480d4f055ab6f3dc244"><div class="ttname"><a href="a00161.html#a1ad19966c9bcb480d4f055ab6f3dc244">QUESO::MarkovChainPositionData::vecValues</a></div><div class="ttdeci">const V &amp; vecValues() const </div><div class="ttdoc">Values of the chain (vector); access to private attribute m_vecValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00091">MarkovChainPositionData.C:91</a></div></div>
-<div class="ttc" id="a00161_html"><div class="ttname"><a href="a00161.html">QUESO::MarkovChainPositionData</a></div><div class="ttdoc">A templated class that represents a Markov Chain. </div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00049">MarkovChainPositionData.h:49</a></div></div>
-<div class="ttc" id="a00161_html_a6ef33eb48213225a4ad86c5baf209257"><div class="ttname"><a href="a00161.html#a6ef33eb48213225a4ad86c5baf209257">QUESO::MarkovChainPositionData::operator&lt;&lt;</a></div><div class="ttdeci">friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const MarkovChainPositionData&lt; V &gt; &amp;obj)</div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00106">MarkovChainPositionData.h:106</a></div></div>
-<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00327_source.html#l00193">Environment.h:193</a></div></div>
-<div class="ttc" id="a00161_html_aa6a5a75dd4661a811956b42a68291e7b"><div class="ttname"><a href="a00161.html#aa6a5a75dd4661a811956b42a68291e7b">QUESO::MarkovChainPositionData::set</a></div><div class="ttdeci">void set(const V &amp;vecValues, bool outOfTargetSupport, double logLikelihood, double logTarget)</div><div class="ttdoc">Sets the values of the chain. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00123">MarkovChainPositionData.C:123</a></div></div>
-<div class="ttc" id="a00161_html_aa3608d527f0215fe772aa9f9e1686dd8"><div class="ttname"><a href="a00161.html#aa3608d527f0215fe772aa9f9e1686dd8">QUESO::MarkovChainPositionData::operator=</a></div><div class="ttdeci">MarkovChainPositionData&lt; V &gt; &amp; operator=(const MarkovChainPositionData&lt; V &gt; &amp;rhs)</div><div class="ttdoc">Assignment operator. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00077">MarkovChainPositionData.C:77</a></div></div>
-<div class="ttc" id="a00161_html_a61841c4f47bd11a7261668bb44e06bd6"><div class="ttname"><a href="a00161.html#a61841c4f47bd11a7261668bb44e06bd6">QUESO::MarkovChainPositionData::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00116">MarkovChainPositionData.h:116</a></div></div>
-<div class="ttc" id="a00161_html_a0d806977350824012500dca13e890a93"><div class="ttname"><a href="a00161.html#a0d806977350824012500dca13e890a93">QUESO::MarkovChainPositionData::m_logTarget</a></div><div class="ttdeci">double m_logTarget</div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00120">MarkovChainPositionData.h:120</a></div></div>
-<div class="ttc" id="a00161_html_a2def4815940aee10948cd6575f986010"><div class="ttname"><a href="a00161.html#a2def4815940aee10948cd6575f986010">QUESO::MarkovChainPositionData::m_logLikelihood</a></div><div class="ttdeci">double m_logLikelihood</div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00119">MarkovChainPositionData.h:119</a></div></div>
-<div class="ttc" id="a00161_html_a466849f2d261962720d7c8968e95b5f1"><div class="ttname"><a href="a00161.html#a466849f2d261962720d7c8968e95b5f1">QUESO::MarkovChainPositionData::outOfTargetSupport</a></div><div class="ttdeci">bool outOfTargetSupport() const </div><div class="ttdoc">Whether or not a position is out of target support; access to private attribute m_outOfTargetSupport...</div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00100">MarkovChainPositionData.C:100</a></div></div>
-<div class="ttc" id="a00161_html_ad98640fe86c2c70671467686988c6b91"><div class="ttname"><a href="a00161.html#ad98640fe86c2c70671467686988c6b91">QUESO::MarkovChainPositionData::m_vecValues</a></div><div class="ttdeci">V * m_vecValues</div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00117">MarkovChainPositionData.h:117</a></div></div>
-<div class="ttc" id="a00161_html_a4d0fc22cd5a10065474ceaba13d18857"><div class="ttname"><a href="a00161.html#a4d0fc22cd5a10065474ceaba13d18857">QUESO::MarkovChainPositionData::logLikelihood</a></div><div class="ttdeci">double logLikelihood() const </div><div class="ttdoc">Logarithm of the value of the likelihood; access to private attribute m_logLikelihood. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00108">MarkovChainPositionData.C:108</a></div></div>
-<div class="ttc" id="a00161_html_ac2dba3d144c038ccc297e95033331437"><div class="ttname"><a href="a00161.html#ac2dba3d144c038ccc297e95033331437">QUESO::MarkovChainPositionData::m_outOfTargetSupport</a></div><div class="ttdeci">bool m_outOfTargetSupport</div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00118">MarkovChainPositionData.h:118</a></div></div>
-<div class="ttc" id="a00161_html_acbfcf6d39cc6a76a67e3d3ed0f8e2d6d"><div class="ttname"><a href="a00161.html#acbfcf6d39cc6a76a67e3d3ed0f8e2d6d">QUESO::MarkovChainPositionData::MarkovChainPositionData</a></div><div class="ttdeci">MarkovChainPositionData(const BaseEnvironment &amp;env)</div><div class="ttdoc">Constructor 1. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00032">MarkovChainPositionData.C:32</a></div></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif // UQ_LOGNORM_JOINT_PROB_DENSITY_H</span></div>
+<div class="ttc" id="a00159_html_a373e37c21ce8acf05fe72f4ec9deef9c"><div class="ttname"><a href="a00159.html#a373e37c21ce8acf05fe72f4ec9deef9c">QUESO::LogNormalJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00214">LogNormalJointPdf.C:214</a></div></div>
+<div class="ttc" id="a00230_html"><div class="ttname"><a href="a00230.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00261_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00159_html_a87729cb9d59b73baefcbecb03e753cb9"><div class="ttname"><a href="a00159.html#a87729cb9d59b73baefcbecb03e753cb9">QUESO::LogNormalJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the Log-Normal PDF (scalar function). </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00088">LogNormalJointPdf.C:88</a></div></div>
+<div class="ttc" id="a00159_html"><div class="ttname"><a href="a00159.html">QUESO::LogNormalJointPdf</a></div><div class="ttdoc">A class for handling Log-Normal joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00052">LogNormalJointPdf.h:52</a></div></div>
+<div class="ttc" id="a00159_html_a1373e1737c3198b852fab05c77abea35"><div class="ttname"><a href="a00159.html#a1373e1737c3198b852fab05c77abea35">QUESO::LogNormalJointPdf::m_lawExpVector</a></div><div class="ttdeci">V * m_lawExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00097">LogNormalJointPdf.h:97</a></div></div>
+<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00505_source.html#l00056">JointPdf.h:56</a></div></div>
+<div class="ttc" id="a00159_html_a9c31e89ee4abe8f1747e50c8d472a94d"><div class="ttname"><a href="a00159.html#a9c31e89ee4abe8f1747e50c8d472a94d">QUESO::LogNormalJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the Log-Normal PDF (scalar function). </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00142">LogNormalJointPdf.C:142</a></div></div>
+<div class="ttc" id="a00159_html_ac8a9ad5414281317dfe22731c672a9ca"><div class="ttname"><a href="a00159.html#ac8a9ad5414281317dfe22731c672a9ca">QUESO::LogNormalJointPdf::LogNormalJointPdf</a></div><div class="ttdeci">LogNormalJointPdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;lawExpVector, const V &amp;lawVarVector)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00033">LogNormalJointPdf.C:33</a></div></div>
+<div class="ttc" id="a00159_html_a8c85380b9a7c7ab746b2c8cc9c9cf5ee"><div class="ttname"><a href="a00159.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">QUESO::LogNormalJointPdf::m_diagonalCovMatrix</a></div><div class="ttdeci">bool m_diagonalCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00099">LogNormalJointPdf.h:99</a></div></div>
+<div class="ttc" id="a00041_html"><div class="ttname"><a href="a00041.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00253_source.html#l00051">ScalarFunction.h:51</a></div></div>
+<div class="ttc" id="a00159_html_afa9f7634ae6e54973cfe14463740171e"><div class="ttname"><a href="a00159.html#afa9f7634ae6e54973cfe14463740171e">QUESO::LogNormalJointPdf::lawVarVector</a></div><div class="ttdeci">const V &amp; lawVarVector() const </div><div class="ttdoc">Access to the vector of variance values and private attribute: m_lawVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00081">LogNormalJointPdf.C:81</a></div></div>
+<div class="ttc" id="a00159_html_abb84bcddf99dc15b4432baac0fc29122"><div class="ttname"><a href="a00159.html#abb84bcddf99dc15b4432baac0fc29122">QUESO::LogNormalJointPdf::m_lawVarVector</a></div><div class="ttdeci">V * m_lawVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00506_source.html#l00098">LogNormalJointPdf.h:98</a></div></div>
+<div class="ttc" id="a00041_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00041.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00275_source.html#l00050">ScalarFunction.C:50</a></div></div>
+<div class="ttc" id="a00159_html_a2ca856981ab03d0c84d19715da581c83"><div class="ttname"><a href="a00159.html#a2ca856981ab03d0c84d19715da581c83">QUESO::LogNormalJointPdf::lawExpVector</a></div><div class="ttdeci">const V &amp; lawExpVector() const </div><div class="ttdoc">Access to the vector of mean values and private attribute: m_lawExpVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00074">LogNormalJointPdf.C:74</a></div></div>
+<div class="ttc" id="a00159_html_abba5c75de7f88fcf51e56aec03f35ffc"><div class="ttname"><a href="a00159.html#abba5c75de7f88fcf51e56aec03f35ffc">QUESO::LogNormalJointPdf::~LogNormalJointPdf</a></div><div class="ttdeci">~LogNormalJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00591_source.html#l00066">LogNormalJointPdf.C:66</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

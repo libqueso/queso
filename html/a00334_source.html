@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/core/inc/GslOptimizer.h Source File</title>
+<title>queso-0.55.0: src/core/inc/FunctionOperatorBuilder.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_1fc3aa42c015026b742aa94287095f84.html">core</a></li><li class="navelem"><a class="el" href="dir_88fac51d2e17cec13478f22fd619c260.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_8c6469bb17906efee6ca4d3fe37c75c7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GslOptimizer.h</div>  </div>
+<div class="title">FunctionOperatorBuilder.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00334.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,126 +75,39 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GSL_OPTIMIZER_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GSL_OPTIMIZER_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_FUNCTIONOPERATORBUILDER_BASE_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_FUNCTIONOPERATORBUILDER_BASE_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Optimizer.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">class </span>Vector;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">class </span>OptimizerMonitor;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">class </span>BaseScalarFunction;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00087.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00087.html">FunctionOperatorBuilder</a> {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00087.html#a3db017ee660ec6640e599b43271821c6">FunctionOperatorBuilder</a>();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="a00087.html#a4b9df10fdd2ea3ee094075866641b008">~FunctionOperatorBuilder</a>();</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="a00128.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00128.html">GslOptimizer</a> : <span class="keyword">public</span> <a class="code" href="a00038.html">BaseOptimizer</a> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00128.html#ad10295a3103150b1549466ac97c820e6">GslOptimizer</a>(</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;GslVector, GslMatrix&gt;</a> &amp; <a class="code" href="a00128.html#af5e20b7ecaf01bc59b1a3f2ddec7d990">objectiveFunction</a>);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00128.html#a00e5600214b09df0b8ff0477a787b162">~GslOptimizer</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00087.html#a577f6065af0aefd7aa74595c6b00ef38">   51</a></span>&#160;  std::string <a class="code" href="a00087.html#a577f6065af0aefd7aa74595c6b00ef38">family</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00087.html#a433752867d11bca3f3bd7015e1a23e93">   54</a></span>&#160;  std::string <a class="code" href="a00087.html#a433752867d11bca3f3bd7015e1a23e93">order</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00087.html#a41ced477ecceabab7828ead4bd3e75aa">   57</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00087.html#a41ced477ecceabab7828ead4bd3e75aa">num_req_eigenpairs</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00128.html#a47c46f655dc8513385f2678b780a5e5e">minimize</a>(<a class="code" href="a00178.html">OptimizerMonitor</a>* monitor = NULL);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;GslVector, GslMatrix&gt;</a> &amp; <a class="code" href="a00128.html#af5e20b7ecaf01bc59b1a3f2ddec7d990">objectiveFunction</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="a00128.html#a46b48df880796034a4b9ac51c7e6524d">   71</a></span>&#160;  <span class="keyword">enum</span> <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> { <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">FLETCHER_REEVES_CG</a>,</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">   72</a></span>&#160;                    <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">POLAK_RIBIERE_CG</a>,</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">   73</a></span>&#160;                    <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">BFGS</a>,</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">   74</a></span>&#160;                    <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">BFGS2</a>,</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00128.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">   75</a></span>&#160;                    <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">STEEPEST_DESCENT</a>,</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">   76</a></span>&#160;                    <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">NELDER_MEAD</a>,</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">   77</a></span>&#160;                    <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">NELDER_MEAD2</a>,</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00128.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">   78</a></span>&#160;                    <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">NELDER_MEAD2_RAND</a> };</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#a4dd79ad241e96f5e937b534b50f64b32">setInitialPoint</a>(<span class="keyword">const</span> <a class="code" href="a00129.html">GslVector</a> &amp; intialPoint);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00129.html">GslVector</a> &amp; <a class="code" href="a00128.html#ab0d1ebc450eaa46f36a2d37a04ee8c20">minimizer</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#af44200fe3ca000860324501222d90aed">set_solver_type</a>( <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> solver );</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#af44200fe3ca000860324501222d90aed">set_solver_type</a>( std::string&amp; solver );</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> <a class="code" href="a00128.html#aa5ee10f794e134732d97f0f2f734ff84">string_to_enum</a>( std::string&amp; solver );</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#a3a264289748b987fed2f99db5177ae7e">set_step_size</a>( <span class="keyword">const</span> <a class="code" href="a00129.html">GslVector</a>&amp; step_size );</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#a3a264289748b987fed2f99db5177ae7e">set_step_size</a>( <span class="keywordtype">double</span> step_size );</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#aaa8c1ccb10189638d4993b32a808b4ea">set_line_tol</a>( <span class="keywordtype">double</span> tol );</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="a00128.html#afe0e221ebed93a455711f9f26806b1d2">  120</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00041.html">BaseScalarFunction&lt;GslVector, GslMatrix&gt;</a> &amp; <a class="code" href="a00128.html#afe0e221ebed93a455711f9f26806b1d2">m_objectiveFunction</a>;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="a00128.html#a62623a622a6975c372b51ffb25d2dec5">  122</a></span>&#160;  <a class="code" href="a00129.html">GslVector</a> * <a class="code" href="a00128.html#a62623a622a6975c372b51ffb25d2dec5">m_initialPoint</a>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="a00128.html#a76cd70956b96167ba85df9daf6b5b7aa">  123</a></span>&#160;  <a class="code" href="a00129.html">GslVector</a> * <a class="code" href="a00128.html#a76cd70956b96167ba85df9daf6b5b7aa">m_minimizer</a>;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="a00128.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">  125</a></span>&#160;  <a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> <a class="code" href="a00128.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">m_solver_type</a>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="a00128.html#aadd94f873c5ec1a38ca44ccceb23e239">  128</a></span>&#160;  <a class="code" href="a00129.html">GslVector</a> <a class="code" href="a00128.html#aadd94f873c5ec1a38ca44ccceb23e239">m_fstep_size</a>;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="a00128.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">  131</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00128.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">m_fdfstep_size</a>;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="a00128.html#ae45ebe43d2bf29dd31f8b60c2517280d">  134</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00128.html#ae45ebe43d2bf29dd31f8b60c2517280d">m_line_tol</a>;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="a00128.html#aac15d1985e8232bb8de8dca37e15d671">solver_needs_gradient</a>(<a class="code" href="a00128.html#a46b48df880796034a4b9ac51c7e6524d">SolverType</a> solver);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#a96afabe144a7e159102c85a5dafcd53f">minimize_with_gradient</a>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="code" href="a00178.html">OptimizerMonitor</a>* monitor );</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00128.html#ad8160dd4579b0b3944c5c16afbe8573a">minimize_no_gradient</a>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="code" href="a00178.html">OptimizerMonitor</a>* monitor );</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;};</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#endif // UQ_GSL_OPTIMIZER_H</span></div>
-<div class="ttc" id="a00128_html_a76cd70956b96167ba85df9daf6b5b7aa"><div class="ttname"><a href="a00128.html#a76cd70956b96167ba85df9daf6b5b7aa">QUESO::GslOptimizer::m_minimizer</a></div><div class="ttdeci">GslVector * m_minimizer</div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00123">GslOptimizer.h:123</a></div></div>
-<div class="ttc" id="a00128_html_af44200fe3ca000860324501222d90aed"><div class="ttname"><a href="a00128.html#af44200fe3ca000860324501222d90aed">QUESO::GslOptimizer::set_solver_type</a></div><div class="ttdeci">void set_solver_type(SolverType solver)</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00230">GslOptimizer.C:230</a></div></div>
-<div class="ttc" id="a00128_html_a4dd79ad241e96f5e937b534b50f64b32"><div class="ttname"><a href="a00128.html#a4dd79ad241e96f5e937b534b50f64b32">QUESO::GslOptimizer::setInitialPoint</a></div><div class="ttdeci">void setInitialPoint(const GslVector &amp;intialPoint)</div><div class="ttdoc">Set the point at which the optimization starts. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00217">GslOptimizer.C:217</a></div></div>
-<div class="ttc" id="a00128_html_a00e5600214b09df0b8ff0477a787b162"><div class="ttname"><a href="a00128.html#a00e5600214b09df0b8ff0477a787b162">QUESO::GslOptimizer::~GslOptimizer</a></div><div class="ttdeci">virtual ~GslOptimizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00177">GslOptimizer.C:177</a></div></div>
-<div class="ttc" id="a00128_html_ad10295a3103150b1549466ac97c820e6"><div class="ttname"><a href="a00128.html#ad10295a3103150b1549466ac97c820e6">QUESO::GslOptimizer::GslOptimizer</a></div><div class="ttdeci">GslOptimizer(const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp;objectiveFunction)</div><div class="ttdoc">Constructs an object that will maximize a scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00157">GslOptimizer.C:157</a></div></div>
-<div class="ttc" id="a00128_html_a3a264289748b987fed2f99db5177ae7e"><div class="ttname"><a href="a00128.html#a3a264289748b987fed2f99db5177ae7e">QUESO::GslOptimizer::set_step_size</a></div><div class="ttdeci">void set_step_size(const GslVector &amp;step_size)</div><div class="ttdoc">Sets step size used in gradient-free solvers. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00465">GslOptimizer.C:465</a></div></div>
-<div class="ttc" id="a00128_html_aaa8c1ccb10189638d4993b32a808b4ea"><div class="ttname"><a href="a00128.html#aaa8c1ccb10189638d4993b32a808b4ea">QUESO::GslOptimizer::set_line_tol</a></div><div class="ttdeci">void set_line_tol(double tol)</div><div class="ttdoc">Set GSL line minimization tolerance. </div></div>
-<div class="ttc" id="a00128_html_ae45ebe43d2bf29dd31f8b60c2517280d"><div class="ttname"><a href="a00128.html#ae45ebe43d2bf29dd31f8b60c2517280d">QUESO::GslOptimizer::m_line_tol</a></div><div class="ttdeci">double m_line_tol</div><div class="ttdoc">Line minimization tolerance in gradient-based algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00134">GslOptimizer.h:134</a></div></div>
-<div class="ttc" id="a00128_html_aadd94f873c5ec1a38ca44ccceb23e239"><div class="ttname"><a href="a00128.html#aadd94f873c5ec1a38ca44ccceb23e239">QUESO::GslOptimizer::m_fstep_size</a></div><div class="ttdeci">GslVector m_fstep_size</div><div class="ttdoc">For use in gradient-free algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00128">GslOptimizer.h:128</a></div></div>
-<div class="ttc" id="a00041_html"><div class="ttname"><a href="a00041.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00250_source.html#l00051">ScalarFunction.h:51</a></div></div>
-<div class="ttc" id="a00128_html_aa5ee10f794e134732d97f0f2f734ff84"><div class="ttname"><a href="a00128.html#aa5ee10f794e134732d97f0f2f734ff84">QUESO::GslOptimizer::string_to_enum</a></div><div class="ttdeci">SolverType string_to_enum(std::string &amp;solver)</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00475">GslOptimizer.C:475</a></div></div>
-<div class="ttc" id="a00128_html_a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8"><div class="ttname"><a href="a00128.html#a46b48df880796034a4b9ac51c7e6524dab2cb93a7092e8670c59ce7d4381936b8">QUESO::GslOptimizer::NELDER_MEAD2_RAND</a></div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00078">GslOptimizer.h:78</a></div></div>
-<div class="ttc" id="a00038_html"><div class="ttname"><a href="a00038.html">QUESO::BaseOptimizer</a></div><div class="ttdoc">A base class for handling optimisation of scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00044">Optimizer.h:44</a></div></div>
-<div class="ttc" id="a00128_html_a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95"><div class="ttname"><a href="a00128.html#a46b48df880796034a4b9ac51c7e6524da3ac74c968e31fe93d22cc8967cc88f95">QUESO::GslOptimizer::NELDER_MEAD</a></div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00076">GslOptimizer.h:76</a></div></div>
-<div class="ttc" id="a00128_html_a62623a622a6975c372b51ffb25d2dec5"><div class="ttname"><a href="a00128.html#a62623a622a6975c372b51ffb25d2dec5">QUESO::GslOptimizer::m_initialPoint</a></div><div class="ttdeci">GslVector * m_initialPoint</div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00122">GslOptimizer.h:122</a></div></div>
-<div class="ttc" id="a00128_html_a47c46f655dc8513385f2678b780a5e5e"><div class="ttname"><a href="a00128.html#a47c46f655dc8513385f2678b780a5e5e">QUESO::GslOptimizer::minimize</a></div><div class="ttdeci">virtual void minimize(OptimizerMonitor *monitor=NULL)</div><div class="ttdoc">Minimize the objective function, starting at m_initialPoint. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00182">GslOptimizer.C:182</a></div></div>
-<div class="ttc" id="a00128_html_a46b48df880796034a4b9ac51c7e6524d"><div class="ttname"><a href="a00128.html#a46b48df880796034a4b9ac51c7e6524d">QUESO::GslOptimizer::SolverType</a></div><div class="ttdeci">SolverType</div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00071">GslOptimizer.h:71</a></div></div>
-<div class="ttc" id="a00128_html_a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06"><div class="ttname"><a href="a00128.html#a46b48df880796034a4b9ac51c7e6524da8a5cdd5a28aed5e30cafae6b012e1b06">QUESO::GslOptimizer::BFGS</a></div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00073">GslOptimizer.h:73</a></div></div>
-<div class="ttc" id="a00129_html"><div class="ttname"><a href="a00129.html">QUESO::GslVector</a></div><div class="ttdoc">Class for vector operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00335_source.html#l00048">GslVector.h:48</a></div></div>
-<div class="ttc" id="a00128_html_a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b"><div class="ttname"><a href="a00128.html#a46b48df880796034a4b9ac51c7e6524da3950334c1352fb43bb8a958eddecc02b">QUESO::GslOptimizer::FLETCHER_REEVES_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00071">GslOptimizer.h:71</a></div></div>
-<div class="ttc" id="a00128_html_aac15d1985e8232bb8de8dca37e15d671"><div class="ttname"><a href="a00128.html#aac15d1985e8232bb8de8dca37e15d671">QUESO::GslOptimizer::solver_needs_gradient</a></div><div class="ttdeci">bool solver_needs_gradient(SolverType solver)</div><div class="ttdoc">Helper function. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00235">GslOptimizer.C:235</a></div></div>
-<div class="ttc" id="a00178_html"><div class="ttname"><a href="a00178.html">QUESO::OptimizerMonitor</a></div><div class="ttdoc">Object to monitor convergence of optimizers. </div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00036">OptimizerMonitor.h:36</a></div></div>
-<div class="ttc" id="a00128_html_afe0e221ebed93a455711f9f26806b1d2"><div class="ttname"><a href="a00128.html#afe0e221ebed93a455711f9f26806b1d2">QUESO::GslOptimizer::m_objectiveFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp; m_objectiveFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00120">GslOptimizer.h:120</a></div></div>
-<div class="ttc" id="a00128_html_a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9"><div class="ttname"><a href="a00128.html#a46b48df880796034a4b9ac51c7e6524da4ab3b504011efd319080c2ccd4031bb9">QUESO::GslOptimizer::BFGS2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00074">GslOptimizer.h:74</a></div></div>
-<div class="ttc" id="a00128_html_af5e20b7ecaf01bc59b1a3f2ddec7d990"><div class="ttname"><a href="a00128.html#af5e20b7ecaf01bc59b1a3f2ddec7d990">QUESO::GslOptimizer::objectiveFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; GslVector, GslMatrix &gt; &amp; objectiveFunction() const </div><div class="ttdoc">Returns the objective function. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00211">GslOptimizer.C:211</a></div></div>
-<div class="ttc" id="a00128_html_ad8160dd4579b0b3944c5c16afbe8573a"><div class="ttname"><a href="a00128.html#ad8160dd4579b0b3944c5c16afbe8573a">QUESO::GslOptimizer::minimize_no_gradient</a></div><div class="ttdeci">void minimize_no_gradient(unsigned int dim, OptimizerMonitor *monitor)</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00363">GslOptimizer.C:363</a></div></div>
-<div class="ttc" id="a00128_html_ac6eb4b0086b3a6ead2764bad2b2a6a47"><div class="ttname"><a href="a00128.html#ac6eb4b0086b3a6ead2764bad2b2a6a47">QUESO::GslOptimizer::m_solver_type</a></div><div class="ttdeci">SolverType m_solver_type</div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00125">GslOptimizer.h:125</a></div></div>
-<div class="ttc" id="a00128_html_aa71aad9b4bc0d60b4ad7ecca275db1a4"><div class="ttname"><a href="a00128.html#aa71aad9b4bc0d60b4ad7ecca275db1a4">QUESO::GslOptimizer::m_fdfstep_size</a></div><div class="ttdeci">double m_fdfstep_size</div><div class="ttdoc">For use in gradient-based algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00131">GslOptimizer.h:131</a></div></div>
-<div class="ttc" id="a00128_html_a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02"><div class="ttname"><a href="a00128.html#a46b48df880796034a4b9ac51c7e6524da362ff010c21a34b5bb42df8a7d901d02">QUESO::GslOptimizer::NELDER_MEAD2</a></div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00077">GslOptimizer.h:77</a></div></div>
-<div class="ttc" id="a00128_html_a96afabe144a7e159102c85a5dafcd53f"><div class="ttname"><a href="a00128.html#a96afabe144a7e159102c85a5dafcd53f">QUESO::GslOptimizer::minimize_with_gradient</a></div><div class="ttdeci">void minimize_with_gradient(unsigned int dim, OptimizerMonitor *monitor)</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00266">GslOptimizer.C:266</a></div></div>
-<div class="ttc" id="a00284_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00284.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00081">ann2fig.cpp:81</a></div></div>
-<div class="ttc" id="a00128_html_a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e"><div class="ttname"><a href="a00128.html#a46b48df880796034a4b9ac51c7e6524dabcdff97e10f5f051909f21fb9ea9f90e">QUESO::GslOptimizer::STEEPEST_DESCENT</a></div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00075">GslOptimizer.h:75</a></div></div>
-<div class="ttc" id="a00128_html"><div class="ttname"><a href="a00128.html">QUESO::GslOptimizer</a></div><div class="ttdoc">A base class for handling optimisation of scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00050">GslOptimizer.h:50</a></div></div>
-<div class="ttc" id="a00128_html_ab0d1ebc450eaa46f36a2d37a04ee8c20"><div class="ttname"><a href="a00128.html#ab0d1ebc450eaa46f36a2d37a04ee8c20">QUESO::GslOptimizer::minimizer</a></div><div class="ttdeci">const GslVector &amp; minimizer() const </div><div class="ttdoc">Return the point that minimizes the objective function. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00225">GslOptimizer.C:225</a></div></div>
-<div class="ttc" id="a00128_html_a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df"><div class="ttname"><a href="a00128.html#a46b48df880796034a4b9ac51c7e6524da7d90b15361e281d745487c36f01dc6df">QUESO::GslOptimizer::POLAK_RIBIERE_CG</a></div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00072">GslOptimizer.h:72</a></div></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif // QUESO_FUNCTIONOPERATORBUILDER_BASE_H</span></div>
+<div class="ttc" id="a00087_html_a4b9df10fdd2ea3ee094075866641b008"><div class="ttname"><a href="a00087.html#a4b9df10fdd2ea3ee094075866641b008">QUESO::FunctionOperatorBuilder::~FunctionOperatorBuilder</a></div><div class="ttdeci">~FunctionOperatorBuilder()</div><div class="ttdoc">Destructor. Does nothing. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00037">FunctionOperatorBuilder.C:37</a></div></div>
+<div class="ttc" id="a00087_html_a433752867d11bca3f3bd7015e1a23e93"><div class="ttname"><a href="a00087.html#a433752867d11bca3f3bd7015e1a23e93">QUESO::FunctionOperatorBuilder::order</a></div><div class="ttdeci">std::string order</div><div class="ttdoc">String to store the polynomial order to use. Default is &amp;quot;FIRST&amp;quot;. </div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00054">FunctionOperatorBuilder.h:54</a></div></div>
+<div class="ttc" id="a00087_html"><div class="ttname"><a href="a00087.html">QUESO::FunctionOperatorBuilder</a></div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00039">FunctionOperatorBuilder.h:39</a></div></div>
+<div class="ttc" id="a00087_html_a3db017ee660ec6640e599b43271821c6"><div class="ttname"><a href="a00087.html#a3db017ee660ec6640e599b43271821c6">QUESO::FunctionOperatorBuilder::FunctionOperatorBuilder</a></div><div class="ttdeci">FunctionOperatorBuilder()</div><div class="ttdoc">Default constructor. Does nothing. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00030">FunctionOperatorBuilder.C:30</a></div></div>
+<div class="ttc" id="a00087_html_a577f6065af0aefd7aa74595c6b00ef38"><div class="ttname"><a href="a00087.html#a577f6065af0aefd7aa74595c6b00ef38">QUESO::FunctionOperatorBuilder::family</a></div><div class="ttdeci">std::string family</div><div class="ttdoc">String to store the polynomial family to use. Default is &amp;quot;LAGRANGE&amp;quot;. </div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00051">FunctionOperatorBuilder.h:51</a></div></div>
+<div class="ttc" id="a00087_html_a41ced477ecceabab7828ead4bd3e75aa"><div class="ttname"><a href="a00087.html#a41ced477ecceabab7828ead4bd3e75aa">QUESO::FunctionOperatorBuilder::num_req_eigenpairs</a></div><div class="ttdeci">unsigned int num_req_eigenpairs</div><div class="ttdoc">Number of eigenpairs to request when building an operator. Default is 0. </div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00057">FunctionOperatorBuilder.h:57</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:31 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:40 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: QUESO::SurrogateBuilderBase&lt; V &gt; Class Template Reference</title>
+<title>queso-0.55.0: QUESO::StdScalarCdf&lt; T &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -45,125 +45,133 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00649.html">QUESO</a></li><li class="navelem"><a class="el" href="a00213.html">SurrogateBuilderBase</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00652.html">QUESO</a></li><li class="navelem"><a class="el" href="a00213.html">StdScalarCdf</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="a01617.html">List of all members</a>  </div>
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="a01564.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::SurrogateBuilderBase&lt; V &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">QUESO::StdScalarCdf&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Base class for builders of surrogates.  
+<p>A class for handling standard CDFs.  
  <a href="a00213.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00638_source.html">SurrogateBuilderBase.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00532_source.html">StdScalarCdf.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::SurrogateBuilderBase&lt; V &gt;:</div>
+Inheritance diagram for QUESO::StdScalarCdf&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01618.png" border="0" usemap="#_q_u_e_s_o_1_1_surrogate_builder_base_3_01_v_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_surrogate_builder_base_3_01_v_01_4_inherit__map" id="_q_u_e_s_o_1_1_surrogate_builder_base_3_01_v_01_4_inherit__map">
-<area shape="rect" id="node3" href="a00136.html" title="Build interpolation&#45;based surrogate. " alt="" coords="21,83,253,130"/></map>
+<div class="center"><img src="a01565.png" border="0" usemap="#_q_u_e_s_o_1_1_std_scalar_cdf_3_01_t_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_std_scalar_cdf_3_01_t_01_4_inherit__map" id="_q_u_e_s_o_1_1_std_scalar_cdf_3_01_t_01_4_inherit__map">
+<area shape="rect" id="node2" href="a00039.html" title="A templated (base) class for handling CDFs. " alt="" coords="5,5,195,32"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for QUESO::StdScalarCdf&lt; T &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="a01566.png" border="0" usemap="#_q_u_e_s_o_1_1_std_scalar_cdf_3_01_t_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_std_scalar_cdf_3_01_t_01_4_coll__map" id="_q_u_e_s_o_1_1_std_scalar_cdf_3_01_t_01_4_coll__map">
+<area shape="rect" id="node2" href="a00039.html" title="A templated (base) class for handling CDFs. " alt="" coords="43,413,233,440"/><area shape="rect" id="node3" href="a00032.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="166,280,340,307"/><area shape="rect" id="node9" href="a00177.html" title="The QUESO MPI Communicator Class. " alt="" coords="259,413,392,440"/><area shape="rect" id="node4" href="a00049.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="5,189,165,216"/><area shape="rect" id="node5" href="a00185.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="190,189,316,216"/><area shape="rect" id="node6" href="a00072.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="341,189,517,216"/><area shape="rect" id="node7" href="a00056.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="339,83,519,125"/><area shape="rect" id="node8" href="a00034.html" title="QUESO::BaseInputOptionsParser" alt="" coords="323,5,536,32"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a75b56ddd3038edb261372712f6c2e4d9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a75b56ddd3038edb261372712f6c2e4d9">SurrogateBuilderBase</a> ()</td></tr>
-<tr class="separator:a75b56ddd3038edb261372712f6c2e4d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a5968559d053f22d0de6055a1db4b09"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a9a5968559d053f22d0de6055a1db4b09">~SurrogateBuilderBase</a> ()</td></tr>
-<tr class="separator:a9a5968559d053f22d0de6055a1db4b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d3c931b857e9a107ef525cfdf80488a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a6d3c931b857e9a107ef525cfdf80488a">evaluate_model</a> (const V &amp;domainVector, std::vector&lt; double &gt; &amp;values)=0</td></tr>
-<tr class="separator:a6d3c931b857e9a107ef525cfdf80488a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
+<tr class="memitem:a23bae93733ff0dc82fc51754044e7c17"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a23bae93733ff0dc82fc51754044e7c17">StdScalarCdf</a> (const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;<a class="el" href="a00039.html#a70c89dd2ad294be170338a283fc58ff3">env</a>, const char *<a class="el" href="a00039.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>, const std::vector&lt; T &gt; &amp;cdfGrid, const std::vector&lt; double &gt; &amp;cdfValues)</td></tr>
+<tr class="memdesc:a23bae93733ff0dc82fc51754044e7c17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a23bae93733ff0dc82fc51754044e7c17">More...</a><br/></td></tr>
+<tr class="separator:a23bae93733ff0dc82fc51754044e7c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24cf6c93886182c8e46e108aa65e7f4f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a24cf6c93886182c8e46e108aa65e7f4f">~StdScalarCdf</a> ()</td></tr>
+<tr class="memdesc:a24cf6c93886182c8e46e108aa65e7f4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a24cf6c93886182c8e46e108aa65e7f4f">More...</a><br/></td></tr>
+<tr class="separator:a24cf6c93886182c8e46e108aa65e7f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Mathematical methods</div></td></tr>
+<tr class="memitem:a03b075f858fa2a5d35515cf602283985"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a03b075f858fa2a5d35515cf602283985">value</a> (T paramValue) const </td></tr>
+<tr class="memdesc:a03b075f858fa2a5d35515cf602283985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the CDF at <code>paramValue</code>.  <a href="#a03b075f858fa2a5d35515cf602283985">More...</a><br/></td></tr>
+<tr class="separator:a03b075f858fa2a5d35515cf602283985"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b989e6ac45b22f22951389ae4c41861"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a0b989e6ac45b22f22951389ae4c41861">inverse</a> (double cdfValue) const </td></tr>
+<tr class="memdesc:a0b989e6ac45b22f22951389ae4c41861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position of a given value of CDF.  <a href="#a0b989e6ac45b22f22951389ae4c41861">More...</a><br/></td></tr>
+<tr class="separator:a0b989e6ac45b22f22951389ae4c41861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad754f420fbfaa309d6574a0c2674f06e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#ad754f420fbfaa309d6574a0c2674f06e">getSupport</a> (T &amp;minHorizontal, T &amp;maxHorizontal) const </td></tr>
+<tr class="memdesc:ad754f420fbfaa309d6574a0c2674f06e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the support (image) of the CDF between two horizontal values (domain).  <a href="#ad754f420fbfaa309d6574a0c2674f06e">More...</a><br/></td></tr>
+<tr class="separator:ad754f420fbfaa309d6574a0c2674f06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">I/O methods</div></td></tr>
+<tr class="memitem:af31f2d7dfa14a23987d1d71b36d2d221"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#af31f2d7dfa14a23987d1d71b36d2d221">print</a> (std::ostream &amp;os) const </td></tr>
+<tr class="memdesc:af31f2d7dfa14a23987d1d71b36d2d221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the CDF (values of the grid points and of the CDF at such grid points).  <a href="#af31f2d7dfa14a23987d1d71b36d2d221">More...</a><br/></td></tr>
+<tr class="separator:af31f2d7dfa14a23987d1d71b36d2d221"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c4edf99c3d0bbd5a011b5e03c5a1bcc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a9c4edf99c3d0bbd5a011b5e03c5a1bcc">subWriteContents</a> (const std::string &amp;varNamePrefix, const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds) const </td></tr>
+<tr class="memdesc:a9c4edf99c3d0bbd5a011b5e03c5a1bcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the CDF of an allowed sub-environment to a file.  <a href="#a9c4edf99c3d0bbd5a011b5e03c5a1bcc">More...</a><br/></td></tr>
+<tr class="separator:a9c4edf99c3d0bbd5a011b5e03c5a1bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00039"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00039')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00039.html">QUESO::BaseScalarCdf&lt; T &gt;</a></td></tr>
+<tr class="memitem:a4604dee9fe730564c52d8d925bc69b94 inherit pub_methods_a00039"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#a4604dee9fe730564c52d8d925bc69b94">BaseScalarCdf</a> (const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;<a class="el" href="a00039.html#a70c89dd2ad294be170338a283fc58ff3">env</a>, const char *<a class="el" href="a00039.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>)</td></tr>
+<tr class="memdesc:a4604dee9fe730564c52d8d925bc69b94 inherit pub_methods_a00039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a4604dee9fe730564c52d8d925bc69b94">More...</a><br/></td></tr>
+<tr class="separator:a4604dee9fe730564c52d8d925bc69b94 inherit pub_methods_a00039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7bd0ba0d3719853cc24a2e12f126600 inherit pub_methods_a00039"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#aa7bd0ba0d3719853cc24a2e12f126600">~BaseScalarCdf</a> ()</td></tr>
+<tr class="memdesc:aa7bd0ba0d3719853cc24a2e12f126600 inherit pub_methods_a00039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#aa7bd0ba0d3719853cc24a2e12f126600">More...</a><br/></td></tr>
+<tr class="separator:aa7bd0ba0d3719853cc24a2e12f126600 inherit pub_methods_a00039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70c89dd2ad294be170338a283fc58ff3 inherit pub_methods_a00039"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#a70c89dd2ad294be170338a283fc58ff3">env</a> () const </td></tr>
+<tr class="memdesc:a70c89dd2ad294be170338a283fc58ff3 inherit pub_methods_a00039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Environment. Access to private attribute m_env.  <a href="#a70c89dd2ad294be170338a283fc58ff3">More...</a><br/></td></tr>
+<tr class="separator:a70c89dd2ad294be170338a283fc58ff3 inherit pub_methods_a00039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafb3eaf3bf1d7269073e9c77bd8c766d inherit pub_methods_a00039"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a> () const </td></tr>
+<tr class="memdesc:aafb3eaf3bf1d7269073e9c77bd8c766d inherit pub_methods_a00039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to private attribute m_prefix.  <a href="#aafb3eaf3bf1d7269073e9c77bd8c766d">More...</a><br/></td></tr>
+<tr class="separator:aafb3eaf3bf1d7269073e9c77bd8c766d inherit pub_methods_a00039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a6d92d555e9042f0c203b59f3b272f878"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00212.html">StdOneDGrid</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a6d92d555e9042f0c203b59f3b272f878">m_cdfGrid</a></td></tr>
+<tr class="separator:a6d92d555e9042f0c203b59f3b272f878"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac04a45e22e2500a5ef8911e2c034364f"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#ac04a45e22e2500a5ef8911e2c034364f">m_cdfValues</a></td></tr>
+<tr class="separator:ac04a45e22e2500a5ef8911e2c034364f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2da9aa62766843734025cc059f817258"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00191.html">SampledScalarCdf</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html#a2da9aa62766843734025cc059f817258">m_sampledCdfGrid</a></td></tr>
+<tr class="separator:a2da9aa62766843734025cc059f817258"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_a00039"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00039')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00039.html">QUESO::BaseScalarCdf&lt; T &gt;</a></td></tr>
+<tr class="memitem:a3caa986ae1ccef96a28b0365fb88c86c inherit pro_attribs_a00039"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a></td></tr>
+<tr class="separator:a3caa986ae1ccef96a28b0365fb88c86c inherit pro_attribs_a00039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66c2a1bcf0ac517013e7857c3533a187 inherit pro_attribs_a00039"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a></td></tr>
+<tr class="separator:a66c2a1bcf0ac517013e7857c3533a187 inherit pro_attribs_a00039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab54be9623cddb0671db458d05d63f0a7 inherit pro_attribs_a00039"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#ab54be9623cddb0671db458d05d63f0a7">m_minHorizontal</a></td></tr>
+<tr class="separator:ab54be9623cddb0671db458d05d63f0a7 inherit pro_attribs_a00039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33beb9b7e610a4fe1458080593982d2e inherit pro_attribs_a00039"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a></td></tr>
+<tr class="separator:a33beb9b7e610a4fe1458080593982d2e inherit pro_attribs_a00039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class V = GslVector&gt;<br/>
-class QUESO::SurrogateBuilderBase&lt; V &gt;</h3>
+<div class="textblock"><h3>template&lt;class T&gt;<br/>
+class QUESO::StdScalarCdf&lt; T &gt;</h3>
 
-<p>Base class for builders of surrogates. </p>
-<p>This class provides the interface to the user's model for which we are constructing a surrogate. </p>
+<p>A class for handling standard CDFs. </p>
+<p>This class implements a standard cumulative distribution function (CDF). Its protected attribute m_sampledCdfGrid is an object of the class SampledScalarCdf&lt;T&gt;, so all members of this class are implemented using the members of SampledScalarCdf&lt;T&gt;. </p>
 
-<p>Definition at line <a class="el" href="a00638_source.html#l00039">39</a> of file <a class="el" href="a00638_source.html">SurrogateBuilderBase.h</a>.</p>
+<p>Definition at line <a class="el" href="a00532_source.html#l00048">48</a> of file <a class="el" href="a00532_source.html">StdScalarCdf.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a75b56ddd3038edb261372712f6c2e4d9"></a>
+<a class="anchor" id="a23bae93733ff0dc82fc51754044e7c17"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V  = GslVector&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;class T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00213.html">QUESO::SurrogateBuilderBase</a>&lt; V &gt;::<a class="el" href="a00213.html">SurrogateBuilderBase</a> </td>
+          <td class="memname"><a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::<a class="el" href="a00213.html">StdScalarCdf</a> </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00638_source.html#l00043">43</a> of file <a class="el" href="a00638_source.html">SurrogateBuilderBase.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{};</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a9a5968559d053f22d0de6055a1db4b09"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V  = GslVector&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="a00213.html">QUESO::SurrogateBuilderBase</a>&lt; V &gt;::~<a class="el" href="a00213.html">SurrogateBuilderBase</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00638_source.html#l00045">45</a> of file <a class="el" href="a00638_source.html">SurrogateBuilderBase.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{};</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a6d3c931b857e9a107ef525cfdf80488a"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V  = GslVector&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="a00289.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00213.html">QUESO::SurrogateBuilderBase</a>&lt; V &gt;::evaluate_model </td>
-          <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>domainVector</em>, </td>
+          <td class="paramtype">const <a class="el" href="a00032.html">BaseEnvironment</a> &amp;&#160;</td>
+          <td class="paramname"><em>env</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>values</em>&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>prefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cdfGrid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cdfValues</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -171,21 +179,373 @@ template&lt;class V  = GslVector&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+<p>Default constructor. </p>
+<p>Instantiates an object of the class given a prefix, the environment, the grid points where it will be evaluated and its resulting values. </p>
+
+<p>Definition at line <a class="el" href="a00617_source.html#l00031">31</a> of file <a class="el" href="a00617_source.html">StdScalarCdf.C</a>.</p>
+
+<p>References <a class="el" href="a00368_source.html#l00400">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00608_source.html#l00060">QUESO::BaseScalarCdf&lt; T &gt;::env()</a>, <a class="el" href="a00532_source.html#l00093">QUESO::StdScalarCdf&lt; T &gt;::m_cdfGrid</a>, <a class="el" href="a00532_source.html#l00094">QUESO::StdScalarCdf&lt; T &gt;::m_cdfValues</a>, <a class="el" href="a00523_source.html#l00099">QUESO::BaseScalarCdf&lt; T &gt;::m_env</a>, <a class="el" href="a00523_source.html#l00100">QUESO::BaseScalarCdf&lt; T &gt;::m_prefix</a>, <a class="el" href="a00532_source.html#l00095">QUESO::StdScalarCdf&lt; T &gt;::m_sampledCdfGrid</a>, <a class="el" href="a00608_source.html#l00067">QUESO::BaseScalarCdf&lt; T &gt;::prefix()</a>, and <a class="el" href="a00368_source.html#l00278">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  BaseScalarCdf&lt;T&gt;(<a class="code" href="a00039.html#a70c89dd2ad294be170338a283fc58ff3">env</a>,((std::string)(<a class="code" href="a00039.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>)+<span class="stringliteral">&quot;&quot;</span>).c_str()),</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00213.html#a6d92d555e9042f0c203b59f3b272f878">m_cdfGrid</a>              (<a class="code" href="a00039.html#a70c89dd2ad294be170338a283fc58ff3">env</a>,<a class="code" href="a00039.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>,cdfGrid),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00213.html#ac04a45e22e2500a5ef8911e2c034364f">m_cdfValues</a>            (cdfValues),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00213.html#a2da9aa62766843734025cc059f817258">m_sampledCdfGrid</a>       (NULL)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00039.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00039.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    *<a class="code" href="a00039.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering StdScalarCdf&lt;T&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00039.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="a00213.html#a2da9aa62766843734025cc059f817258">m_sampledCdfGrid</a> = <span class="keyword">new</span> SampledScalarCdf&lt;T&gt;(<a class="code" href="a00039.html#a70c89dd2ad294be170338a283fc58ff3">env</a>,<a class="code" href="a00039.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>,<a class="code" href="a00213.html#a6d92d555e9042f0c203b59f3b272f878">m_cdfGrid</a>,<a class="code" href="a00213.html#ac04a45e22e2500a5ef8911e2c034364f">m_cdfValues</a>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00039.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00039.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    *<a class="code" href="a00039.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving StdScalarCdf&lt;T&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00039.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00400">Environment.C:400</a></div></div>
+<div class="ttc" id="a00039_html_a3caa986ae1ccef96a28b0365fb88c86c"><div class="ttname"><a href="a00039.html#a3caa986ae1ccef96a28b0365fb88c86c">QUESO::BaseScalarCdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00523_source.html#l00099">ScalarCdf.h:99</a></div></div>
+<div class="ttc" id="a00213_html_a6d92d555e9042f0c203b59f3b272f878"><div class="ttname"><a href="a00213.html#a6d92d555e9042f0c203b59f3b272f878">QUESO::StdScalarCdf::m_cdfGrid</a></div><div class="ttdeci">const StdOneDGrid&lt; T &gt; m_cdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00093">StdScalarCdf.h:93</a></div></div>
+<div class="ttc" id="a00213_html_ac04a45e22e2500a5ef8911e2c034364f"><div class="ttname"><a href="a00213.html#ac04a45e22e2500a5ef8911e2c034364f">QUESO::StdScalarCdf::m_cdfValues</a></div><div class="ttdeci">const std::vector&lt; double &gt; m_cdfValues</div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00094">StdScalarCdf.h:94</a></div></div>
+<div class="ttc" id="a00039_html_a66c2a1bcf0ac517013e7857c3533a187"><div class="ttname"><a href="a00039.html#a66c2a1bcf0ac517013e7857c3533a187">QUESO::BaseScalarCdf::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00523_source.html#l00100">ScalarCdf.h:100</a></div></div>
+<div class="ttc" id="a00039_html_aafb3eaf3bf1d7269073e9c77bd8c766d"><div class="ttname"><a href="a00039.html#aafb3eaf3bf1d7269073e9c77bd8c766d">QUESO::BaseScalarCdf::prefix</a></div><div class="ttdeci">const std::string &amp; prefix() const </div><div class="ttdoc">Access to private attribute m_prefix. </div><div class="ttdef"><b>Definition:</b> <a href="a00608_source.html#l00067">ScalarCdf.C:67</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00278">Environment.C:278</a></div></div>
+<div class="ttc" id="a00213_html_a2da9aa62766843734025cc059f817258"><div class="ttname"><a href="a00213.html#a2da9aa62766843734025cc059f817258">QUESO::StdScalarCdf::m_sampledCdfGrid</a></div><div class="ttdeci">SampledScalarCdf&lt; T &gt; * m_sampledCdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00095">StdScalarCdf.h:95</a></div></div>
+<div class="ttc" id="a00039_html_a70c89dd2ad294be170338a283fc58ff3"><div class="ttname"><a href="a00039.html#a70c89dd2ad294be170338a283fc58ff3">QUESO::BaseScalarCdf::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Environment. Access to private attribute m_env. </div><div class="ttdef"><b>Definition:</b> <a href="a00608_source.html#l00060">ScalarCdf.C:60</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a24cf6c93886182c8e46e108aa65e7f4f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::~<a class="el" href="a00213.html">StdScalarCdf</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+<p>Definition at line <a class="el" href="a00617_source.html#l00058">58</a> of file <a class="el" href="a00617_source.html">StdScalarCdf.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00213.html#a2da9aa62766843734025cc059f817258">m_sampledCdfGrid</a>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
+<div class="ttc" id="a00213_html_a2da9aa62766843734025cc059f817258"><div class="ttname"><a href="a00213.html#a2da9aa62766843734025cc059f817258">QUESO::StdScalarCdf::m_sampledCdfGrid</a></div><div class="ttdeci">SampledScalarCdf&lt; T &gt; * m_sampledCdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00095">StdScalarCdf.h:95</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ad754f420fbfaa309d6574a0c2674f06e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::getSupport </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>minHorizontal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>maxHorizontal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the support (image) of the CDF between two horizontal values (domain). </p>
+
+<p>Implements <a class="el" href="a00039.html#a9684b285f88be8c2bafe4d2abd8a7447">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00617_source.html#l00079">79</a> of file <a class="el" href="a00617_source.html">StdScalarCdf.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;{</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00213.html#a2da9aa62766843734025cc059f817258">m_sampledCdfGrid</a>-&gt;getSupport(minHorizontal,maxHorizontal);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
+<div class="ttc" id="a00213_html_a2da9aa62766843734025cc059f817258"><div class="ttname"><a href="a00213.html#a2da9aa62766843734025cc059f817258">QUESO::StdScalarCdf::m_sampledCdfGrid</a></div><div class="ttdeci">SampledScalarCdf&lt; T &gt; * m_sampledCdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00095">StdScalarCdf.h:95</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/surrogates/inc/<a class="el" href="a00638_source.html">SurrogateBuilderBase.h</a></li>
+<a class="anchor" id="a0b989e6ac45b22f22951389ae4c41861"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::inverse </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>cdfValue</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the position of a given value of CDF. </p>
+
+<p>Implements <a class="el" href="a00039.html#a3e1778c76a557716e74b5fc11604dd75">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00617_source.html#l00072">72</a> of file <a class="el" href="a00617_source.html">StdScalarCdf.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00213.html#a2da9aa62766843734025cc059f817258">m_sampledCdfGrid</a>-&gt;inverse(cdfValue);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="ttc" id="a00213_html_a2da9aa62766843734025cc059f817258"><div class="ttname"><a href="a00213.html#a2da9aa62766843734025cc059f817258">QUESO::StdScalarCdf::m_sampledCdfGrid</a></div><div class="ttdeci">SampledScalarCdf&lt; T &gt; * m_sampledCdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00095">StdScalarCdf.h:95</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af31f2d7dfa14a23987d1d71b36d2d221"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::print </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prints the CDF (values of the grid points and of the CDF at such grid points). </p>
+
+<p>Implements <a class="el" href="a00039.html#a131a7c148188f3f70c2db44cc1a93bc8">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00617_source.html#l00086">86</a> of file <a class="el" href="a00617_source.html">StdScalarCdf.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;{</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <a class="code" href="a00213.html#a2da9aa62766843734025cc059f817258">m_sampledCdfGrid</a>-&gt;print(os);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<div class="ttc" id="a00213_html_a2da9aa62766843734025cc059f817258"><div class="ttname"><a href="a00213.html#a2da9aa62766843734025cc059f817258">QUESO::StdScalarCdf::m_sampledCdfGrid</a></div><div class="ttdeci">SampledScalarCdf&lt; T &gt; * m_sampledCdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00095">StdScalarCdf.h:95</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9c4edf99c3d0bbd5a011b5e03c5a1bcc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00292.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::subWriteContents </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>varNamePrefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>fileType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::set&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>allowedSubEnvIds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Writes the CDF of an allowed sub-environment to a file. </p>
+<p>It will write the data in Octave/Matlab compatible format. </p>
+
+<p>Reimplemented from <a class="el" href="a00039.html#abdd6c6f5f8f028a6ffd30168885b6338">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00617_source.html#l00094">94</a> of file <a class="el" href="a00617_source.html">StdScalarCdf.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <a class="code" href="a00213.html#a2da9aa62766843734025cc059f817258">m_sampledCdfGrid</a>-&gt;subWriteContents(varNamePrefix,fileName,fileType,allowedSubEnvIds);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
+<div class="ttc" id="a00213_html_a2da9aa62766843734025cc059f817258"><div class="ttname"><a href="a00213.html#a2da9aa62766843734025cc059f817258">QUESO::StdScalarCdf::m_sampledCdfGrid</a></div><div class="ttdeci">SampledScalarCdf&lt; T &gt; * m_sampledCdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00095">StdScalarCdf.h:95</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a03b075f858fa2a5d35515cf602283985"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::value </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>paramValue</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the value of the CDF at <code>paramValue</code>. </p>
+
+<p>Implements <a class="el" href="a00039.html#a887af6d62eb04f2bf3b58c12e586f20b">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00617_source.html#l00065">65</a> of file <a class="el" href="a00617_source.html">StdScalarCdf.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00213.html#a2da9aa62766843734025cc059f817258">m_sampledCdfGrid</a>-&gt;value(paramValue);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
+<div class="ttc" id="a00213_html_a2da9aa62766843734025cc059f817258"><div class="ttname"><a href="a00213.html#a2da9aa62766843734025cc059f817258">QUESO::StdScalarCdf::m_sampledCdfGrid</a></div><div class="ttdeci">SampledScalarCdf&lt; T &gt; * m_sampledCdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00095">StdScalarCdf.h:95</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a6d92d555e9042f0c203b59f3b272f878"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00212.html">StdOneDGrid</a>&lt;T&gt; <a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::m_cdfGrid</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00532_source.html#l00093">93</a> of file <a class="el" href="a00532_source.html">StdScalarCdf.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00617_source.html#l00031">QUESO::StdScalarCdf&lt; T &gt;::StdScalarCdf()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac04a45e22e2500a5ef8911e2c034364f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;double&gt; <a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::m_cdfValues</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00532_source.html#l00094">94</a> of file <a class="el" href="a00532_source.html">StdScalarCdf.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00617_source.html#l00031">QUESO::StdScalarCdf&lt; T &gt;::StdScalarCdf()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2da9aa62766843734025cc059f817258"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00191.html">SampledScalarCdf</a>&lt;T&gt;* <a class="el" href="a00213.html">QUESO::StdScalarCdf</a>&lt; T &gt;::m_sampledCdfGrid</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00532_source.html#l00095">95</a> of file <a class="el" href="a00532_source.html">StdScalarCdf.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00617_source.html#l00031">QUESO::StdScalarCdf&lt; T &gt;::StdScalarCdf()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/stats/inc/<a class="el" href="a00532_source.html">StdScalarCdf.h</a></li>
+<li>src/stats/src/<a class="el" href="a00617_source.html">StdScalarCdf.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:36 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:46 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

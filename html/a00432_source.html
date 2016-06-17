@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.53.0: src/misc/inc/2dArrayOfStuff.h Source File</title>
+<title>queso-0.55.0: src/gp/src/SimulationStorage.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.53.0
+   <div id="projectname">queso-0.55.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_c4671517e35f5511f17960ba3471a454.html">src</a></li><li class="navelem"><a class="el" href="dir_cef55f19861ce62c0ca627401191ab0f.html">misc</a></li><li class="navelem"><a class="el" href="dir_13f3ced7e7515c530250c895de57efa8.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_b4cf28f9c7017ae598e01d89fd5623b0.html">gp</a></li><li class="navelem"><a class="el" href="dir_e7877959a931b5afcc5b6fe77bf66ee1.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">2dArrayOfStuff.h</div>  </div>
+<div class="title">SimulationStorage.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00432.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,57 +75,247 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_2D_ARRAY_OF_STUFF_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_2D_ARRAY_OF_STUFF_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00215.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00215.html">TwoDArray</a></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="a00215.html#a61198628e4a47604bf5ad7142b151372">TwoDArray</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00215.html#a0c81a74def0364a5ddd3e1371ca48b39">numRows</a>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00215.html#aac40245b6f6a944d62a34d44324af5b2">numCols</a>);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; <a class="code" href="a00215.html#a057af83ed31f9ca5c3b4cc52b5383f70">~TwoDArray</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00215.html#a0c81a74def0364a5ddd3e1371ca48b39">numRows</a>    ()                                 <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00215.html#aac40245b6f6a944d62a34d44324af5b2">numCols</a>    ()                                 <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span>         <a class="code" href="a00215.html#aa204b1795ea5ba9d5583b6eec598b16e">setLocation</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j, T* info);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  T&amp;           <a class="code" href="a00215.html#a8cf6ad7a5890835d44740aa056fc9933">operator   ()</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/SimulationStorage.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00204.html#a5e85541cde4d783ff33b34c99d6b2066">   32</a></span>&#160;<a class="code" href="a00204.html#a5e85541cde4d783ff33b34c99d6b2066">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::SimulationStorage</a>(</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00231.html">VectorSpace&lt;S_V,S_M&gt;</a>&amp; scenarioSpace,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00231.html">VectorSpace&lt;P_V,P_M&gt;</a>&amp; parameterSpace,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00231.html">VectorSpace&lt;Q_V,Q_M&gt;</a>&amp; outputSpace,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                       numSimulations)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_env                   (scenarioSpace.env()),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_scenarioSpace         (scenarioSpace),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_parameterSpace        (parameterSpace),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_outputSpace           (outputSpace),</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  m_paper_m               (numSimulations),</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  m_paper_n_eta           (outputSpace.dimLocal()),</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  m_addId                 (0),</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  m_scenarioVecs_original (m_paper_m, (S_V*) NULL),</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  m_parameterVecs_original(m_paper_m, (P_V*) NULL),</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  m_outputVecs_original   (m_paper_m, (Q_V*) NULL),</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  m_eta_space             (NULL),</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  m_etaVec_original       (NULL)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00204.html#acaccddd59eefcca5b80d2c90e26081cd">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00204.html#acaccddd59eefcca5b80d2c90e26081cd">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2)) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    *<a class="code" href="a00204.html#acaccddd59eefcca5b80d2c90e26081cd">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_paper_m = &quot;</span>     &lt;&lt; <a class="code" href="a00204.html#a59dba0d921e60d0f187055fd33787485">m_paper_m</a></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;\n  m_paper_n_eta = &quot;</span> &lt;&lt; <a class="code" href="a00204.html#ae23ff5e4c8355ee44a1c564c0838cc60">m_paper_n_eta</a></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00204.html#acaccddd59eefcca5b80d2c90e26081cd">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00204.html#acaccddd59eefcca5b80d2c90e26081cd">m_env</a>.<a class="code" href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2)) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    *<a class="code" href="a00204.html#acaccddd59eefcca5b80d2c90e26081cd">m_env</a>.<a class="code" href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00204.html#a331e6e571232f83bc531d64325659a23">   65</a></span>&#160;<a class="code" href="a00204.html#a331e6e571232f83bc531d64325659a23">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::~SimulationStorage</a>()</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::destructor()...&quot;</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">const</span> T&amp;     <a class="code" href="a00215.html#a8cf6ad7a5890835d44740aa056fc9933">operator   ()</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00215.html#a26fc2685fae9aa7aa0fecfaa52e6c617">   78</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00215.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="a00215.html#adab8e60a3daa621f75681326478eb085">   79</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00215.html#adab8e60a3daa621f75681326478eb085">m_numCols</a>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">delete</span> m_etaVec_original;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">delete</span> m_eta_space;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::destructor()&quot;</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00215.html#a89e1d31bfba6f86f5fa9c407aba7f00e">   81</a></span>&#160;  std::vector&lt;std::vector&lt;T*&gt;* &gt; <a class="code" href="a00215.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif // UQ_2D_ARRAY_OF_STUFF_H</span></div>
-<div class="ttc" id="a00215_html"><div class="ttname"><a href="a00215.html">QUESO::TwoDArray</a></div><div class="ttdoc">Class for handling arrays of generic data. </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00039">2dArrayOfStuff.h:39</a></div></div>
-<div class="ttc" id="a00215_html_a057af83ed31f9ca5c3b4cc52b5383f70"><div class="ttname"><a href="a00215.html#a057af83ed31f9ca5c3b4cc52b5383f70">QUESO::TwoDArray::~TwoDArray</a></div><div class="ttdeci">~TwoDArray()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00044">2dArrayOfStuff.C:44</a></div></div>
-<div class="ttc" id="a00215_html_a61198628e4a47604bf5ad7142b151372"><div class="ttname"><a href="a00215.html#a61198628e4a47604bf5ad7142b151372">QUESO::TwoDArray::TwoDArray</a></div><div class="ttdeci">TwoDArray(unsigned int numRows, unsigned int numCols)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00032">2dArrayOfStuff.C:32</a></div></div>
-<div class="ttc" id="a00215_html_a26fc2685fae9aa7aa0fecfaa52e6c617"><div class="ttname"><a href="a00215.html#a26fc2685fae9aa7aa0fecfaa52e6c617">QUESO::TwoDArray::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00078">2dArrayOfStuff.h:78</a></div></div>
-<div class="ttc" id="a00215_html_aac40245b6f6a944d62a34d44324af5b2"><div class="ttname"><a href="a00215.html#aac40245b6f6a944d62a34d44324af5b2">QUESO::TwoDArray::numCols</a></div><div class="ttdeci">unsigned int numCols() const </div><div class="ttdoc">Number of columns in the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00062">2dArrayOfStuff.C:62</a></div></div>
-<div class="ttc" id="a00215_html_a89e1d31bfba6f86f5fa9c407aba7f00e"><div class="ttname"><a href="a00215.html#a89e1d31bfba6f86f5fa9c407aba7f00e">QUESO::TwoDArray::m_data</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; T * &gt; * &gt; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00081">2dArrayOfStuff.h:81</a></div></div>
-<div class="ttc" id="a00215_html_adab8e60a3daa621f75681326478eb085"><div class="ttname"><a href="a00215.html#adab8e60a3daa621f75681326478eb085">QUESO::TwoDArray::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00079">2dArrayOfStuff.h:79</a></div></div>
-<div class="ttc" id="a00215_html_a8cf6ad7a5890835d44740aa056fc9933"><div class="ttname"><a href="a00215.html#a8cf6ad7a5890835d44740aa056fc9933">QUESO::TwoDArray::operator()</a></div><div class="ttdeci">T &amp; operator()(unsigned int i, unsigned int j)</div><div class="ttdoc">Returns data stored in a specific location (non-const). </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00077">2dArrayOfStuff.C:77</a></div></div>
-<div class="ttc" id="a00215_html_aa204b1795ea5ba9d5583b6eec598b16e"><div class="ttname"><a href="a00215.html#aa204b1795ea5ba9d5583b6eec598b16e">QUESO::TwoDArray::setLocation</a></div><div class="ttdeci">void setLocation(unsigned int i, unsigned int j, T *info)</div><div class="ttdoc">Sets the data in a specific location. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00068">2dArrayOfStuff.C:68</a></div></div>
-<div class="ttc" id="a00215_html_a0c81a74def0364a5ddd3e1371ca48b39"><div class="ttname"><a href="a00215.html#a0c81a74def0364a5ddd3e1371ca48b39">QUESO::TwoDArray::numRows</a></div><div class="ttdeci">unsigned int numRows() const </div><div class="ttdoc">Number of rows in the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00056">2dArrayOfStuff.C:56</a></div></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00204.html#ae1942a7e8e78250df2e9e039e600723b">   83</a></span>&#160;<a class="code" href="a00204.html#ae1942a7e8e78250df2e9e039e600723b">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::addSimulation</a>(<span class="keyword">const</span> S_V&amp; scenarioVec, <span class="keyword">const</span> P_V&amp; parameterVec, <span class="keyword">const</span> Q_V&amp; outputVec)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::addSimulation()&quot;</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: m_addId = &quot;</span> &lt;&lt; m_addId</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <a class="code" href="a00322.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(m_addId, m_paper_m, <span class="stringliteral">&quot;too many adds...&quot;</span>);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  m_scenarioVecs_original [m_addId] = &amp;scenarioVec;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  m_parameterVecs_original[m_addId] = &amp;parameterVec;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  m_outputVecs_original   [m_addId] = &amp;outputVec;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  m_addId++;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordflow">if</span> (m_addId == m_paper_m) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">//***********************************************************************</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="comment">// Form &#39;etaVec_original&#39;</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="comment">//***********************************************************************</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    m_eta_space = <span class="keyword">new</span> <a class="code" href="a00231.html">VectorSpace&lt;Q_V,Q_M&gt;</a>(m_env, <span class="stringliteral">&quot;m_eta_simul_storage&quot;</span>, m_paper_m * m_paper_n_eta, NULL),</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    m_etaVec_original = <span class="keyword">new</span> Q_V(m_eta_space-&gt;zeroVector());</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    m_etaVec_original-&gt;cwSetConcatenated(m_outputVecs_original);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;KEY In SimulationStorage&lt;S_V,S_M,D_V,D_M&gt;::addSimulation()&quot;</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: m_addId = &quot;</span> &lt;&lt; m_addId</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, populated etaVec_original of size &quot;</span> &lt;&lt; m_etaVec_original-&gt;sizeLocal()</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">//&lt;&lt; &quot;, m_etaVec_original = &quot;  &lt;&lt; m_etaVec_original</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">//&lt;&lt; &quot;, *m_etaVec_original = &quot; &lt;&lt; *m_etaVec_original</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::addSimulation()&quot;</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: m_addId = &quot;</span> &lt;&lt; m_addId</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="a00204.html#a72d4f9b4d09e74382fe8cfebbf6e331f">  127</a></span>&#160;<a class="code" href="a00204.html#a72d4f9b4d09e74382fe8cfebbf6e331f">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::numSimulations</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">return</span> m_paper_m;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">const</span> std::vector&lt;const S_V* &gt;&amp;</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="a00204.html#a6b6fa990ec825567f209f06c494e4f3c">  134</a></span>&#160;<a class="code" href="a00204.html#a6b6fa990ec825567f209f06c494e4f3c">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::xs_asterisks_original</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="keywordflow">return</span> m_scenarioVecs_original;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="keyword">const</span> std::vector&lt;const P_V* &gt;&amp;</div>
+<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="a00204.html#a103e6dc9416fbeded4986e44913fba47">  141</a></span>&#160;<a class="code" href="a00204.html#a103e6dc9416fbeded4986e44913fba47">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::ts_asterisks_original</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordflow">return</span> m_parameterVecs_original;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;}</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keyword">const</span> <a class="code" href="a00231.html">VectorSpace&lt;S_V,S_M&gt;</a>&amp;</div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="a00204.html#ab26cfcdd4d8d413cdfb18a0df942166c">  148</a></span>&#160;<a class="code" href="a00204.html#ab26cfcdd4d8d413cdfb18a0df942166c">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::scenarioSpace</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keywordflow">return</span> m_scenarioSpace;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;}</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="keyword">const</span> <a class="code" href="a00231.html">VectorSpace&lt;P_V,P_M&gt;</a>&amp;</div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="a00204.html#abc324383712cc61f5722a7480aa1e468">  155</a></span>&#160;<a class="code" href="a00204.html#abc324383712cc61f5722a7480aa1e468">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::parameterSpace</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="keywordflow">return</span> m_parameterSpace;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;}</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keyword">const</span> <a class="code" href="a00231.html">VectorSpace&lt;Q_V,Q_M&gt;</a>&amp;</div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="a00204.html#ae19ae762abf319879ef3eb817540b87d">  162</a></span>&#160;<a class="code" href="a00204.html#ae19ae762abf319879ef3eb817540b87d">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::outputSpace</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="keywordflow">return</span> m_outputSpace;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="keyword">const</span> S_V&amp;</div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="a00204.html#a38169f071cb91a54177aa28526dada05">  169</a></span>&#160;<a class="code" href="a00204.html#a38169f071cb91a54177aa28526dada05">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::scenarioVec_original</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> simulationId)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <a class="code" href="a00322.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(simulationId, m_scenarioVecs_original.size(), <span class="stringliteral">&quot;simulationId is too large&quot;</span>);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <a class="code" href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(m_scenarioVecs_original[simulationId], <span class="stringliteral">&quot;vector is NULL&quot;</span>);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="keywordflow">return</span> *(m_scenarioVecs_original[simulationId]);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;}</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="keyword">const</span> P_V&amp;</div>
+<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="a00204.html#af2f1ab497f9939f986bb22b7e16a0b29">  180</a></span>&#160;<a class="code" href="a00204.html#af2f1ab497f9939f986bb22b7e16a0b29">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::parameterVec_original</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> simulationId)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  <a class="code" href="a00322.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(simulationId, m_parameterVecs_original.size(), <span class="stringliteral">&quot;simulationId is too large&quot;</span>);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <a class="code" href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(m_parameterVecs_original[simulationId], <span class="stringliteral">&quot;vector is NULL&quot;</span>);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keywordflow">return</span> *(m_parameterVecs_original[simulationId]);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;}</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="keyword">const</span> Q_V&amp;</div>
+<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="a00204.html#a85fe066468f6f54c7f31befd7b8d6935">  191</a></span>&#160;<a class="code" href="a00204.html#a85fe066468f6f54c7f31befd7b8d6935">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::outputVec_original</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> simulationId)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <a class="code" href="a00322.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(simulationId, m_outputVecs_original.size(), <span class="stringliteral">&quot;simulationId is too large&quot;</span>);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <a class="code" href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(m_outputVecs_original[simulationId], <span class="stringliteral">&quot;vector is NULL&quot;</span>);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keywordflow">return</span> *(m_outputVecs_original[simulationId]);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;}</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="keyword">const</span> Q_V&amp;</div>
+<div class="line"><a name="l00202"></a><span class="lineno"><a class="line" href="a00204.html#abd0676452286ea7bbd492330182bd288">  202</a></span>&#160;<a class="code" href="a00204.html#abd0676452286ea7bbd492330182bd288">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::etaVec_original</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 99)) {</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::etaVec_original()&quot;</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: m_etaVec_original = &quot;</span> &lt;&lt; m_etaVec_original</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  }</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <a class="code" href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(m_etaVec_original, <span class="stringliteral">&quot;&#39;m_etaVec_original&#39; is NULL&quot;</span>);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 99)) {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;In SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::etaVec_original()&quot;</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: *m_etaVec_original = &quot;</span> &lt;&lt; *m_etaVec_original</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  }</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <span class="keywordflow">return</span> *m_etaVec_original;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;}</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="keyword">const</span> <a class="code" href="a00032.html">BaseEnvironment</a>&amp;</div>
+<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="a00204.html#a32f92df6ac9e4b4a6bc03a98aadd849b">  223</a></span>&#160;  <a class="code" href="a00204.html#a32f92df6ac9e4b4a6bc03a98aadd849b">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::env</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keywordflow">return</span> m_env;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;}</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> S_V,<span class="keyword">class</span> S_M,<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="a00204.html#a9b96e9f42b212d819c14944b3e39cf39">  230</a></span>&#160;<a class="code" href="a00204.html#a9b96e9f42b212d819c14944b3e39cf39">SimulationStorage&lt;S_V,S_M,P_V,P_M,Q_V,Q_M&gt;::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;}</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00204.html">QUESO::SimulationStorage&lt;QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00204_html_a72d4f9b4d09e74382fe8cfebbf6e331f"><div class="ttname"><a href="a00204.html#a72d4f9b4d09e74382fe8cfebbf6e331f">QUESO::SimulationStorage::numSimulations</a></div><div class="ttdeci">unsigned int numSimulations() const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00127">SimulationStorage.C:127</a></div></div>
+<div class="ttc" id="a00032_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00032.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00400">Environment.C:400</a></div></div>
+<div class="ttc" id="a00204_html_acaccddd59eefcca5b80d2c90e26081cd"><div class="ttname"><a href="a00204.html#acaccddd59eefcca5b80d2c90e26081cd">QUESO::SimulationStorage::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00414_source.html#l00070">SimulationStorage.h:70</a></div></div>
+<div class="ttc" id="a00204_html_abd0676452286ea7bbd492330182bd288"><div class="ttname"><a href="a00204.html#abd0676452286ea7bbd492330182bd288">QUESO::SimulationStorage::etaVec_original</a></div><div class="ttdeci">const Q_V &amp; etaVec_original() const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00202">SimulationStorage.C:202</a></div></div>
+<div class="ttc" id="a00204_html_a32f92df6ac9e4b4a6bc03a98aadd849b"><div class="ttname"><a href="a00204.html#a32f92df6ac9e4b4a6bc03a98aadd849b">QUESO::SimulationStorage::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00223">SimulationStorage.C:223</a></div></div>
+<div class="ttc" id="a00322_html_a9fbd2830796070462f06425899f3d6d5"><div class="ttname"><a href="a00322.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a></div><div class="ttdeci">#define queso_require_less_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00087">asserts.h:87</a></div></div>
+<div class="ttc" id="a00204_html_ab26cfcdd4d8d413cdfb18a0df942166c"><div class="ttname"><a href="a00204.html#ab26cfcdd4d8d413cdfb18a0df942166c">QUESO::SimulationStorage::scenarioSpace</a></div><div class="ttdeci">const VectorSpace&lt; S_V, S_M &gt; &amp; scenarioSpace() const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00148">SimulationStorage.C:148</a></div></div>
+<div class="ttc" id="a00204_html_abc324383712cc61f5722a7480aa1e468"><div class="ttname"><a href="a00204.html#abc324383712cc61f5722a7480aa1e468">QUESO::SimulationStorage::parameterSpace</a></div><div class="ttdeci">const VectorSpace&lt; P_V, P_M &gt; &amp; parameterSpace() const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00155">SimulationStorage.C:155</a></div></div>
+<div class="ttc" id="a00204_html_a331e6e571232f83bc531d64325659a23"><div class="ttname"><a href="a00204.html#a331e6e571232f83bc531d64325659a23">QUESO::SimulationStorage::~SimulationStorage</a></div><div class="ttdeci">~SimulationStorage()</div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00065">SimulationStorage.C:65</a></div></div>
+<div class="ttc" id="a00322_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00322.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00322_source.html#l00069">asserts.h:69</a></div></div>
+<div class="ttc" id="a00204_html_a5e85541cde4d783ff33b34c99d6b2066"><div class="ttname"><a href="a00204.html#a5e85541cde4d783ff33b34c99d6b2066">QUESO::SimulationStorage::SimulationStorage</a></div><div class="ttdeci">SimulationStorage(const VectorSpace&lt; S_V, S_M &gt; &amp;scenarioSpace, const VectorSpace&lt; P_V, P_M &gt; &amp;parameterSpace, const VectorSpace&lt; Q_V, Q_M &gt; &amp;outputSpace, unsigned int numSimulations)</div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00032">SimulationStorage.C:32</a></div></div>
+<div class="ttc" id="a00204_html_ae1942a7e8e78250df2e9e039e600723b"><div class="ttname"><a href="a00204.html#ae1942a7e8e78250df2e9e039e600723b">QUESO::SimulationStorage::addSimulation</a></div><div class="ttdeci">void addSimulation(const S_V &amp;scenarioVec, const P_V &amp;parameterVec, const Q_V &amp;outputVec)</div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00083">SimulationStorage.C:83</a></div></div>
+<div class="ttc" id="a00204_html_ae23ff5e4c8355ee44a1c564c0838cc60"><div class="ttname"><a href="a00204.html#ae23ff5e4c8355ee44a1c564c0838cc60">QUESO::SimulationStorage::m_paper_n_eta</a></div><div class="ttdeci">unsigned int m_paper_n_eta</div><div class="ttdef"><b>Definition:</b> <a href="a00414_source.html#l00076">SimulationStorage.h:76</a></div></div>
+<div class="ttc" id="a00204_html_af2f1ab497f9939f986bb22b7e16a0b29"><div class="ttname"><a href="a00204.html#af2f1ab497f9939f986bb22b7e16a0b29">QUESO::SimulationStorage::parameterVec_original</a></div><div class="ttdeci">const P_V &amp; parameterVec_original(unsigned int simulationId) const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00180">SimulationStorage.C:180</a></div></div>
+<div class="ttc" id="a00204_html_a103e6dc9416fbeded4986e44913fba47"><div class="ttname"><a href="a00204.html#a103e6dc9416fbeded4986e44913fba47">QUESO::SimulationStorage::ts_asterisks_original</a></div><div class="ttdeci">const std::vector&lt; const P_V * &gt; &amp; ts_asterisks_original() const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00141">SimulationStorage.C:141</a></div></div>
+<div class="ttc" id="a00032_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00032.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00368_source.html#l00278">Environment.C:278</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00330_source.html#l00193">Environment.h:193</a></div></div>
+<div class="ttc" id="a00204_html_a6b6fa990ec825567f209f06c494e4f3c"><div class="ttname"><a href="a00204.html#a6b6fa990ec825567f209f06c494e4f3c">QUESO::SimulationStorage::xs_asterisks_original</a></div><div class="ttdeci">const std::vector&lt; const S_V * &gt; &amp; xs_asterisks_original() const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00134">SimulationStorage.C:134</a></div></div>
+<div class="ttc" id="a00204_html_a38169f071cb91a54177aa28526dada05"><div class="ttname"><a href="a00204.html#a38169f071cb91a54177aa28526dada05">QUESO::SimulationStorage::scenarioVec_original</a></div><div class="ttdeci">const S_V &amp; scenarioVec_original(unsigned int simulationId) const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00169">SimulationStorage.C:169</a></div></div>
+<div class="ttc" id="a00204_html_ae19ae762abf319879ef3eb817540b87d"><div class="ttname"><a href="a00204.html#ae19ae762abf319879ef3eb817540b87d">QUESO::SimulationStorage::outputSpace</a></div><div class="ttdeci">const VectorSpace&lt; Q_V, Q_M &gt; &amp; outputSpace() const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00162">SimulationStorage.C:162</a></div></div>
+<div class="ttc" id="a00231_html"><div class="ttname"><a href="a00231.html">QUESO::VectorSpace&lt; S_V, S_M &gt;</a></div></div>
+<div class="ttc" id="a00204_html"><div class="ttname"><a href="a00204.html">QUESO::SimulationStorage</a></div><div class="ttdef"><b>Definition:</b> <a href="a00414_source.html#l00037">SimulationStorage.h:37</a></div></div>
+<div class="ttc" id="a00204_html_a9b96e9f42b212d819c14944b3e39cf39"><div class="ttname"><a href="a00204.html#a9b96e9f42b212d819c14944b3e39cf39">QUESO::SimulationStorage::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00230">SimulationStorage.C:230</a></div></div>
+<div class="ttc" id="a00204_html_a59dba0d921e60d0f187055fd33787485"><div class="ttname"><a href="a00204.html#a59dba0d921e60d0f187055fd33787485">QUESO::SimulationStorage::m_paper_m</a></div><div class="ttdeci">unsigned int m_paper_m</div><div class="ttdef"><b>Definition:</b> <a href="a00414_source.html#l00075">SimulationStorage.h:75</a></div></div>
+<div class="ttc" id="a00204_html_a85fe066468f6f54c7f31befd7b8d6935"><div class="ttname"><a href="a00204.html#a85fe066468f6f54c7f31befd7b8d6935">QUESO::SimulationStorage::outputVec_original</a></div><div class="ttdeci">const Q_V &amp; outputVec_original(unsigned int simulationId) const </div><div class="ttdef"><b>Definition:</b> <a href="a00432_source.html#l00191">SimulationStorage.C:191</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Jun 11 2015 13:52:32 for queso-0.53.0
+Generated on Fri Jun 17 2016 14:17:41 for queso-0.55.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>
