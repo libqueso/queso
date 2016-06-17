@@ -1,0 +1,8 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$a00048.html" title="Base class for handling vector and array samples (sequence of vectors or arrays). ..." alt="" coords="6,135,205,177"/>
+<area shape="rect" id="node2" href="$a00026.html" title="Class for handling array samples (arrays of scalar sequences). " alt="" coords="257,5,439,46"/>
+<area shape="rect" id="node3" href="$a00199.html" title="Class for handling vector samples (sequence of vectors). " alt="" coords="253,70,443,111"/>
+<area shape="rect" id="node4" href="$a00199.html" title="QUESO::SequenceOfVectors\l\&lt; P_V, P_M \&gt;" alt="" coords="253,135,443,177"/>
+<area shape="rect" id="node5" href="$a00199.html" title="QUESO::SequenceOfVectors\l\&lt; Q_V, Q_M \&gt;" alt="" coords="253,201,443,242"/>
+<area shape="rect" id="node6" href="$a00199.html" title="QUESO::SequenceOfVectors\l\&lt; S_V, S_M \&gt;" alt="" coords="253,266,443,307"/>
+</map>

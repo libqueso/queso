@@ -1,0 +1,7 @@
+<map id="QUESO::Base1DQuadrature" name="QUESO::Base1DQuadrature">
+<area shape="rect" id="node2" href="$a00091.html" title="Class for Hermite&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="238,5,490,32"/>
+<area shape="rect" id="node3" href="$a00113.html" title="Class for one&#45;dimensional generic quadrature rules (numerical integration of functions). " alt="" coords="265,56,463,83"/>
+<area shape="rect" id="node4" href="$a00222.html" title="Class for Legendre&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="238,107,490,133"/>
+<area shape="rect" id="node5" href="$a00233.html" title="Class for second type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="262,158,466,199"/>
+<area shape="rect" id="node6" href="$a00234.html" title="Class for first type Chebyshev&#45;Gauss quadrature rule for one&#45;dimensional functions. " alt="" coords="243,223,485,265"/>
+</map>
