@@ -113,9 +113,7 @@ if test "$HAVE_TRILINOS" = "1"; then
    echo '   'Trilinos DIR............... : $TRILINOS_HOME
 fi
 
-if test "$HAVE_LIBMESH" == "0"; then
-   echo '   'libmesh DIR................ : $LIBMESH_PREFIX
-else
+if test "$HAVE_LIBMESH" == "1"; then
    echo '   'libmesh DIR................ : $LIBMESH_PREFIX
 fi
 
