@@ -276,9 +276,9 @@ TESTS += test_gaussian_pdf_gradient
 TESTS += test_log_normal_pdf_gradient
 TESTS += test_beta_pdf_gradient
 TESTS += test_intercomm0/test_intercomm0_gravity_run.sh
-TESTS += test_seq_of_vec_hdf5_write
 TESTS += test_optimizer_input_parameters
 TESTS += test_sip_gslopt_options
+TESTS += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 
 XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
@@ -321,13 +321,13 @@ EXTRA_DIST += test_intercomm0/gravity_1proc.txt
 EXTRA_DIST += test_intercomm0/gravity_2proc.txt
 EXTRA_DIST += test_intercomm0/test_intercomm0_gravity_run.sh
 EXTRA_DIST += test_optimizer/input_test_optimizer_input_parameters
+EXTRA_DIST += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
 CLEANFILES += gslvector_out_sub0.m
 CLEANFILES += test_write_InterpolationSurrogateBuilder_1.dat
 CLEANFILES += test_write_InterpolationSurrogateBuilder_2.dat
-CLEANFILES += output_test_hdf5_sub0.h5
 
 clean-local:
 	rm -rf $(top_builddir)/test/chain0
