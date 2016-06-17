@@ -3,7 +3,13 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.54.0
+Version 0.55.0 (in progress)
+  * Fix bug in JeffreysJointPdf
+  * Adding gradient support for Beta, Log Normal, and Gaussian PDFs
+  * Fix MLE/MAP bug when subEnvironments have more than one MPI process
+  * Add support for HDF5 output
+
+Version 0.54.0 (Oct 8, 2015)
   * Fix memory leak in test_GslVector
   * Make MPI optional
   * Optimise GSLMatrix::operator() and GslVector::operator[]
@@ -13,7 +19,7 @@ Version 0.54.0
   * Fix some compiler warnings
   * Fix HDF5 #include issues
 
-Version 0.53.0
+Version 0.53.0 (Jun 11, 2015)
   * Add linear interpolation surrogates
   * Refactor input options processing
   * Refactor existing queso errors and asserts
@@ -21,42 +27,37 @@ Version 0.53.0
   * Add basic scoped pointer wrappers
   * Better error message reporting for bad sample covariance matrices
 
-Version 0.52.0
+Version 0.52.0 (Apr 9, 2015)
   * Add canned Gaussian likelihoods
   * Fix bug in logit transform logic
 
-Version 0.51.0
+Version 0.51.0 (Nov 29, 2014)
   * Add canned likelihood for scalar GPMSA use-case a la Higdon et al
   * Add a logit-transformed transition kernel for more efficient proposals
   * Adding jeffreys distribution as an available prior distribution
   * Adding likelihood value caching to ML sampler
   * Adding Eric Wright to contributors list
 
-Version 0.50.0
+Version 0.50.0 (Nov 16, 2013)
   * Implemented MCMC sampling on function spaces
   * Added function space MCMC unit tests
   * Added serial and parallel function space MCMC examples
   * Replace exit() calls with a macro exception handler
 
-Version 0.47.1
+Version 0.47.1 (Sep 23, 2013)
   * created two simple statistical examples, simpleStatisticalForwardProblem and simpleStatisticalInverseProblem
   * included description of the new examples on QUESO user's manual, including how to run and to process the generated data
   * updated QUESO user's manual to include description of validationCycle example
   * updated links for how to obtain QUESO and contact information (github/git)
+  * fixed broken Makefile
 
-Version 0.47.0
+Version 0.47.0 (Sep 4, 2013)
   * removed example statisticalInverseProblem as it has a bug - it fails to recreate the problem described in the Normal test from Laine's MCMC tool: http://helios.fmi.fi/~lainema/mcmc/ex/normalex.html.
 
-Version 0.47.1 (23 Sep 2013)
-
-  * Update manual and fix broken Makefile
-
 Version 0.47.0 (4 Sep 2013)
-
   * Migrated library to github
 
 Version 0.46 (13 May 2013)
-
   * changed libGRVY linkage to be optional
   * added additional regression tests to 'make check'
   * added rng (random number generator) class to accommodate either GSL or BOOST rng's

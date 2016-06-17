@@ -2593,14 +2593,61 @@ ScalarSequence<T>::subWriteContents(
                            false, // A 'true' causes problems when the user chooses (via options
                                   // in the input file) to use just one file for all outputs.
                            filePtrSet)) {
-    this->subWriteContents(initialPos,
-                           numPos,
-                           *filePtrSet.ofsVar,
-                           fileType);
+
+    if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT ||
+        fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT) {
+      this->subWriteContents(initialPos,
+                             numPos,
+                             *filePtrSet.ofsVar,
+                             fileType);
+    }
+#ifdef QUESO_HAS_HDF5
+    else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+
+      // Create dataspace
+      hsize_t dims[1] = { this->subSequenceSize() };
+      hid_t dataspace_id = H5Screate_simple(1, dims, dims);
+      queso_require_greater_equal_msg(
+          dataspace_id,
+          0,
+          "error create dataspace with id: " << dataspace_id);
+
+      // Create dataset
+      hid_t dataset_id = H5Dcreate(filePtrSet.h5Var,
+                                   "data",
+                                   H5T_IEEE_F64LE,
+                                   dataspace_id,
+                                   H5P_DEFAULT,
+                                   H5P_DEFAULT,
+                                   H5P_DEFAULT);
+
+      queso_require_greater_equal_msg(
+          dataset_id,
+          0,
+          "error creating dataset with id: " << dataset_id);
+
+      // Write the dataset
+      herr_t status = H5Dwrite(
+          dataset_id,
+          H5T_NATIVE_DOUBLE,  // The type in memory
+          H5S_ALL,  // The dataspace in memory
+          dataspace_id,  // The file dataspace
+          H5P_DEFAULT,  // Xfer property list
+          &m_seq[0]);
+
+      queso_require_greater_equal_msg(
+          status,
+          0,
+          "error writing dataset to file with id: " << filePtrSet.h5Var);
+
+      // Clean up
+      H5Dclose(dataset_id);
+      H5Sclose(dataspace_id);
+    }
+#endif
+
     m_env.closeFile(filePtrSet,fileType);
   }
-
-  return;
 }
 // --------------------------------------------------
 template <class T>
@@ -2723,13 +2770,12 @@ ScalarSequence<T>::unifiedWriteContents(
             if (r == 0) {
               hid_t datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data type created" << std::endl;
-              hsize_t dimsf[2];
-              dimsf[0] = numParams;
-              dimsf[1] = chainSize;
-              hid_t dataspace = H5Screate_simple(2, dimsf, NULL); // HDF5_rank = 2
+              hsize_t dimsf[1];
+              dimsf[0] = chainSize;
+              hid_t dataspace = H5Screate_simple(1, dimsf, NULL); // HDF5_rank = 2
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data space created" << std::endl;
               hid_t dataset = H5Dcreate2(unifiedFilePtrSet.h5Var,
-                                         "seq_of_vectors",
+                                         "data",
                                          datatype,
                                          dataspace,
                                          H5P_DEFAULT,  // Link creation property list
@@ -2742,21 +2788,6 @@ ScalarSequence<T>::unifiedWriteContents(
               iRC = gettimeofday(&timevalBegin,NULL);
               if (iRC) {}; // just to remove compiler warning
 
-              //double* dataOut[numParams]; // avoid compiler warning
-        std::vector<double*> dataOut((size_t) numParams,NULL);
-              dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
-              for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
-                dataOut[i] = dataOut[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
-              }
-              //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, memory allocated" << std::endl;
-              for (unsigned int j = 0; j < chainSize; ++j) {
-                T tmpScalar = m_seq[j];
-                for (unsigned int i = 0; i < numParams; ++i) {
-                  dataOut[i][j] = tmpScalar;
-                }
-              }
-              //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, memory filled" << std::endl;
-
               herr_t status;
               //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 002 \n" << std::endl;
               status = H5Dwrite(dataset,
@@ -2764,7 +2795,7 @@ ScalarSequence<T>::unifiedWriteContents(
                                 H5S_ALL,
                                 H5S_ALL,
                                 H5P_DEFAULT,
-                                (void*) dataOut[0]);
+                                &m_seq[0]);
               if (status) {}; // just to remove compiler warning
 
               //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 003 \n" << std::endl;
@@ -2791,10 +2822,6 @@ ScalarSequence<T>::unifiedWriteContents(
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data space closed" << std::endl;
               H5Tclose(datatype);
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data type closed" << std::endl;
-              //free(dataOut[0]); // related to the changes above for compiler warning
-              for (unsigned int tmpIndex = 0; tmpIndex < dataOut.size(); tmpIndex++) {
-                free (dataOut[tmpIndex]);
-              }
             }
             else {
               queso_error_msg("hdf file type not supported for multiple sub-environments yet");
@@ -3043,7 +3070,7 @@ ScalarSequence<T>::unifiedReadContents(
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
             if (r == 0) {
               hid_t dataset = H5Dopen2(unifiedFilePtrSet.h5Var,
-                                       "seq_of_vectors",
+                                       "data",
                                        H5P_DEFAULT); // Dataset access property list
               hid_t datatype  = H5Dget_type(dataset);
               H5T_class_t t_class = H5Tget_class(datatype);

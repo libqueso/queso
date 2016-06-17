@@ -1,31 +1,32 @@
 ## Process this file with automake to produce Makefile.in
 
-QUESO_CPPFLAGS  = -I$(top_builddir)/src/core/inc
-QUESO_CPPFLAGS += -I$(top_builddir)/inc
-QUESO_CPPFLAGS += $(BOOST_CPPFLAGS)
-QUESO_CPPFLAGS += $(GSL_CFLAGS)
-QUESO_CPPFLAGS += $(GRVY_CFLAGS)
-QUESO_CPPFLAGS += $(ANN_CFLAGS)
+AM_CPPFLAGS  = $(QUESO_CPPFLAGS)
+AM_CPPFLAGS += -I$(top_builddir)/src/core/inc
+AM_CPPFLAGS += -I$(top_builddir)/inc
+AM_CPPFLAGS += $(BOOST_CPPFLAGS)
+AM_CPPFLAGS += $(GSL_CFLAGS)
+AM_CPPFLAGS += $(GRVY_CFLAGS)
+AM_CPPFLAGS += $(ANN_CFLAGS)
 
 LIBS += $(GSL_LIBS)
 
 if TRILINOS_ENABLED
-  QUESO_CPPFLAGS += -I$(TRILINOS_INCLUDE)
+  AM_CPPFLAGS += -I$(TRILINOS_INCLUDE)
   LIBS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
 
 if GLPK_ENABLED
-  QUESO_CPPFLAGS += $(GLPK_CFLAGS)
+  AM_CPPFLAGS += $(GLPK_CFLAGS)
   LIBS += $(GLPK_LIBS)
 endif
 
 if HDF5_ENABLED
-  QUESO_CPPFLAGS += $(HDF5_CFLAGS)
+  AM_CPPFLAGS += $(HDF5_CFLAGS)
   LIBS += $(HDF5_LIBS)
 endif
 
 if LIBMESH_ENABLED
-  QUESO_CPPFLAGS += $(LIBMESH_CPPFLAGS)
+  AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
   LIBS += $(LIBMESH_LIBS)
 endif
 
@@ -38,7 +39,7 @@ operator_DATA = $(top_srcdir)/examples/infinite_dim/operator/mesh.e
 operator_PROGRAMS = operator
 operator_SOURCES = infinite_dim/operator/operator.C
 operator_LDADD = $(top_builddir)/src/libqueso.la
-operator_CPPFLAGS = $(QUESO_CPPFLAGS)
+operator_CPPFLAGS = $(AM_CPPFLAGS)
 dist_operator_DATA = $(operator_SOURCES) $(operator_DATA)
 
 gaussian_random_fielddir = $(prefix)/examples/infinite_dim/gaussian_fields
@@ -46,7 +47,7 @@ gaussian_random_field_DATA = $(top_srcdir)/examples/infinite_dim/gaussian_fields
 gaussian_random_field_PROGRAMS = gaussian_random_field
 gaussian_random_field_SOURCES = infinite_dim/gaussian_fields/gaussian_random_field.C
 gaussian_random_field_LDADD = $(top_builddir)/src/libqueso.la
-gaussian_random_field_CPPFLAGS = $(QUESO_CPPFLAGS)
+gaussian_random_field_CPPFLAGS = $(AM_CPPFLAGS)
 dist_gaussian_random_field_DATA = $(gaussian_random_field_SOURCES) $(gaussian_random_field_DATA)
 
 gaussian_random_field_genmeshdir = $(prefix)/examples/infinite_dim/gaussian_fields
@@ -54,7 +55,7 @@ gaussian_random_field_genmesh_DATA = $(top_srcdir)/examples/infinite_dim/gaussia
 gaussian_random_field_genmesh_PROGRAMS = gaussian_random_field_genmesh
 gaussian_random_field_genmesh_SOURCES = infinite_dim/gaussian_fields/gaussian_random_field_genmesh.C
 gaussian_random_field_genmesh_LDADD = $(top_builddir)/src/libqueso.la
-gaussian_random_field_genmesh_CPPFLAGS = $(QUESO_CPPFLAGS)
+gaussian_random_field_genmesh_CPPFLAGS = $(AM_CPPFLAGS)
 dist_gaussian_random_field_genmesh_DATA = $(gaussian_random_field_genmesh_SOURCES) $(gaussian_random_field_genmesh_DATA)
 
 invprobdir = $(prefix)/examples/infinite_dim
@@ -62,7 +63,7 @@ invprob_DATA = $(top_srcdir)/examples/infinite_dim/inverse_options.in
 invprob_PROGRAMS = inverse_problem
 inverse_problem_SOURCES = infinite_dim/inverse_problem.C
 inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
-inverse_problem_CPPFLAGS = $(QUESO_CPPFLAGS)
+inverse_problem_CPPFLAGS = $(AM_CPPFLAGS)
 dist_invprob_DATA = $(inverse_problem_SOURCES) $(invprob_DATA)
 
 # Parallel inverse problem example
@@ -71,7 +72,7 @@ parinvprob_DATA = $(top_srcdir)/examples/infinite_dim/parallel_inverse_options.i
 parinvprob_PROGRAMS = parallel_inverse_problem
 parallel_inverse_problem_SOURCES = infinite_dim/parallel_inverse_problem.C
 parallel_inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
-parallel_inverse_problem_CPPFLAGS = $(QUESO_CPPFLAGS)
+parallel_inverse_problem_CPPFLAGS = $(AM_CPPFLAGS)
 dist_parinvprob_DATA = $(parallel_inverse_problem_SOURCES) $(parinvprob_DATA)
 endif
 
@@ -95,7 +96,7 @@ exSimpleStatisticalInverseProblem_gsl_HEADERS += simpleStatisticalInverseProblem
 
 exSimpleStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
-exSimpleStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalInverseProblem/src $(QUESO_CPPFLAGS)
+exSimpleStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalInverseProblem/src $(AM_CPPFLAGS)
 
 # Make sure everything relevant gets added when doing 'make dist'
 dist_exSimpleStatisticalInverseProblem_gsl_DATA =
@@ -122,7 +123,7 @@ exSimpleStatisticalForwardProblem_gsl_HEADERS += simpleStatisticalForwardProblem
 
 exSimpleStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
-exSimpleStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalForwardProblem/src $(QUESO_CPPFLAGS)
+exSimpleStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalForwardProblem/src $(AM_CPPFLAGS)
 
 dist_exSimpleStatisticalForwardProblem_gsl_DATA = ${exSimpleStatisticalForwardProblem_gsl_DATA}
 dist_exSimpleStatisticalForwardProblem_gsl_DATA += ${exSimpleStatisticalForwardProblem_gsl_HEADERS}
@@ -146,7 +147,7 @@ dist_exSimpleStatisticalForwardProblem_gsl_DATA += ${exSimpleStatisticalForwardP
 #
 # exStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 #
-# exStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalForwardProblem/src $(QUESO_CPPFLAGS)
+# exStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalForwardProblem/src $(AM_CPPFLAGS)
 #
 #dist_exStatisticalForwardProblem_gsl_DATA = ${exStatisticalForwardProblem_gsl_DATA}
 #
@@ -171,7 +172,7 @@ dist_exSimpleStatisticalForwardProblem_gsl_DATA += ${exSimpleStatisticalForwardP
 #
 # exStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 #
-# exStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalInverseProblem/src $(QUESO_CPPFLAGS)
+# exStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalInverseProblem/src $(AM_CPPFLAGS)
 #
 #dist_exStatisticalInverseProblem_gsl_DATA = ${exStatisticalInverseProblem_gsl_DATA} \
 #																						#${exStatisticalInverseProblem_gsl_HEADERS} \
@@ -200,7 +201,7 @@ exTgaValidationCycle_gsl_HEADERS += validationCycle/src/exTgaValidationCycle_qoi
 
 exTgaValidationCycle_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
-exTgaValidationCycle_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle/src $(QUESO_CPPFLAGS)
+exTgaValidationCycle_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle/src $(AM_CPPFLAGS)
 
 dist_exTgaValidationCycle_gsl_DATA =
 dist_exTgaValidationCycle_gsl_DATA += $(exTgaValidationCycle_gsl_DATA)
@@ -236,7 +237,7 @@ tga2_gsl_HEADERS += validationCycle2/src/tga2_func.h
 
 tga2_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
-tga2_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle2/src $(QUESO_CPPFLAGS)
+tga2_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle2/src $(AM_CPPFLAGS)
 
 dist_tga2_gsl_DATA =
 dist_tga2_gsl_DATA += $(tga2_gsl_DATA)
@@ -259,7 +260,7 @@ exInfoTheory_gsl_HEADERS = infoTheoryProblem/src/exInfoTheory_appl.h
 
 exInfoTheory_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
-exInfoTheory_gsl_CPPFLAGS = -I$(top_srcdir)/examples/infoTheoryProblem/src $(QUESO_CPPFLAGS)
+exInfoTheory_gsl_CPPFLAGS = -I$(top_srcdir)/examples/infoTheoryProblem/src $(AM_CPPFLAGS)
 
 dist_exInfoTheory_gsl_DATA =
 dist_exInfoTheory_gsl_DATA += ${exInfoTheory_gsl_DATA}
@@ -290,7 +291,7 @@ gravity_gsl_HEADERS += gravity/src/gravity_qoi.h
 
 gravity_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
-gravity_gsl_CPPFLAGS = -I$(top_srcdir)/examples/gravity/src $(QUESO_CPPFLAGS)
+gravity_gsl_CPPFLAGS = -I$(top_srcdir)/examples/gravity/src $(AM_CPPFLAGS)
 
 dist_gravity_gsl_DATA =
 dist_gravity_gsl_DATA += $(gravity_gsl_DATA)
@@ -319,7 +320,7 @@ bimodal_gsl_HEADERS += bimodal/src/bimodal_likelihood.h
 
 bimodal_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
-bimodal_gsl_CPPFLAGS = -I$(top_srcdir)/examples/bimodal/src $(QUESO_CPPFLAGS)
+bimodal_gsl_CPPFLAGS = -I$(top_srcdir)/examples/bimodal/src $(AM_CPPFLAGS)
 
 dist_bimodal_gsl_DATA =
 dist_bimodal_gsl_DATA += $(bimodal_gsl_DATA)
@@ -353,7 +354,7 @@ hysteretic_gsl_HEADERS += hysteretic/src/example_hyst.h
 
 hysteretic_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
-hysteretic_gsl_CPPFLAGS = -I$(top_srcdir)/examples/hysteretic/src $(QUESO_CPPFLAGS)
+hysteretic_gsl_CPPFLAGS = -I$(top_srcdir)/examples/hysteretic/src $(AM_CPPFLAGS)
 
 dist_hysteretic_gsl_DATA =
 dist_hysteretic_gsl_DATA += $(hysteretic_gsl_DATA)
@@ -368,7 +369,7 @@ gpmsa_scalardir = $(prefix)/examples/gp/scalar
 gpmsa_scalar_PROGRAMS = gpmsa_scalar
 gpmsa_scalar_SOURCES = gp/scalar/gpmsa_scalar.C
 gpmsa_scalar_LDADD = $(top_builddir)/src/libqueso.la
-gpmsa_scalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar $(QUESO_CPPFLAGS)
+gpmsa_scalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar $(AM_CPPFLAGS)
 
 dist_gpmsa_scalar_DATA =
 dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}
@@ -383,37 +384,37 @@ scalarCovariancedir = $(prefix)/examples/gaussian_likelihoods
 scalarCovariance_PROGRAMS = scalarCovariance
 scalarCovariance_SOURCES = gaussian_likelihoods/scalarCovariance.C
 scalarCovariance_LDADD = $(top_builddir)/src/libqueso.la
-scalarCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/scalarCovariance $(QUESO_CPPFLAGS)
+scalarCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/scalarCovariance $(AM_CPPFLAGS)
 
 diagonalCovariancedir = $(prefix)/examples/gaussian_likelihoods
 diagonalCovariance_PROGRAMS = diagonalCovariance
 diagonalCovariance_SOURCES = gaussian_likelihoods/diagonalCovariance.C
 diagonalCovariance_LDADD = $(top_builddir)/src/libqueso.la
-diagonalCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/diagonalCovariance $(QUESO_CPPFLAGS)
+diagonalCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/diagonalCovariance $(AM_CPPFLAGS)
 
 fullCovariancedir = $(prefix)/examples/gaussian_likelihoods
 fullCovariance_PROGRAMS = fullCovariance
 fullCovariance_SOURCES = gaussian_likelihoods/fullCovariance.C
 fullCovariance_LDADD = $(top_builddir)/src/libqueso.la
-fullCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/fullCovariance $(QUESO_CPPFLAGS)
+fullCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/fullCovariance $(AM_CPPFLAGS)
 
 blockDiagonalCovariancedir = $(prefix)/examples/gaussian_likelihoods
 blockDiagonalCovariance_PROGRAMS = blockDiagonalCovariance
 blockDiagonalCovariance_SOURCES = gaussian_likelihoods/blockDiagonalCovariance.C
 blockDiagonalCovariance_LDADD = $(top_builddir)/src/libqueso.la
-blockDiagonalCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovariance $(QUESO_CPPFLAGS)
+blockDiagonalCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovariance $(AM_CPPFLAGS)
 
 fullCovarianceRandomCoefficientdir = $(prefix)/examples/gaussian_likelihoods
 fullCovarianceRandomCoefficient_PROGRAMS = fullCovarianceRandomCoefficient
 fullCovarianceRandomCoefficient_SOURCES = gaussian_likelihoods/fullCovarianceRandomCoefficient.C
 fullCovarianceRandomCoefficient_LDADD = $(top_builddir)/src/libqueso.la
-fullCovarianceRandomCoefficient_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/fullCovarianceRandomCoefficient $(QUESO_CPPFLAGS)
+fullCovarianceRandomCoefficient_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/fullCovarianceRandomCoefficient $(AM_CPPFLAGS)
 
 blockDiagonalCovarianceRandomCoefficientsdir = $(prefix)/examples/gaussian_likelihoods
 blockDiagonalCovarianceRandomCoefficients_PROGRAMS = blockDiagonalCovarianceRandomCoefficients
 blockDiagonalCovarianceRandomCoefficients_SOURCES = gaussian_likelihoods/blockDiagonalCovarianceRandomCoefficients.C
 blockDiagonalCovarianceRandomCoefficients_LDADD = $(top_builddir)/src/libqueso.la
-blockDiagonalCovarianceRandomCoefficients_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovarianceRandomCoefficients $(QUESO_CPPFLAGS)
+blockDiagonalCovarianceRandomCoefficients_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovarianceRandomCoefficients $(AM_CPPFLAGS)
 
 ####################################
 # Interpolation Surrogate examples #
@@ -424,11 +425,11 @@ interpsurrg_PROGRAMS = 4d_interp 4d_interp_read
 
 4d_interp_SOURCES = interpolation_surrogate/4d_interp.C
 4d_interp_LDADD = $(top_builddir)/src/libqueso.la
-4d_interp_CPPFLAGS = $(QUESO_CPPFLAGS)
+4d_interp_CPPFLAGS = $(AM_CPPFLAGS)
 
 4d_interp_read_SOURCES = interpolation_surrogate/4d_interp_read.C
 4d_interp_read_LDADD = $(top_builddir)/src/libqueso.la
-4d_interp_read_CPPFLAGS = $(QUESO_CPPFLAGS)
+4d_interp_read_CPPFLAGS = $(AM_CPPFLAGS)
 
 dist_interpsurrg_DATA =
 dist_interpsurrg_DATA += ${4d_interp_SOURCES}
@@ -445,7 +446,7 @@ pointers_PROGRAMS = example_SharedPtr
 
 example_SharedPtr_SOURCES = pointers/example_SharedPtr.C
 example_SharedPtr_LDADD = $(top_builddir)/src/libqueso.la
-example_SharedPtr_CPPFLAGS = $(QUESO_CPPFLAGS)
+example_SharedPtr_CPPFLAGS = $(AM_CPPFLAGS)
 
 dist_pointers_DATA =
 dist_pointers_DATA += ${example_SharedPtr_SOURCES}

@@ -17,6 +17,10 @@ AUX_DIST = build-aux/install-sh    \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = queso.pc queso-deps.pc
 
+# Support for queso-config in $(exec_prefix)/bin
+queso_configdir      = $(exec_prefix)/bin
+queso_config_SCRIPTS = src/apps/queso-config
+
 if CODE_COVERAGE_ENABLED
 
 lcov_dir=$(top_builddir)/docs/html/lcov

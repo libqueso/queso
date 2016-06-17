@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.54.0], [queso-users@googlegroups.com])
+AC_INIT([queso], [0.55.0], [queso-users@googlegroups.com])
 PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
 AC_SUBST([PACKAGE_DESCRIPTION])
 PACKAGE_URL="https://github.com/libqueso/queso"
@@ -68,8 +68,8 @@ AC_ARG_ENABLE(debug, [  --enable-debug=[no/yes] turn on debugging
                      [default=$debug_default]],, enable_debug=$debug_default)
 
 if test "x$enable_debug" = "xyes"; then
-   CFLAGS="$CFLAGS -DDEBUG"
-   CXXFLAGS="$CXXFLAGS -DDEBUG"
+   QUESO_CPPFLAGS="$CPPFLAGS -DDEBUG"
+   AC_SUBST(QUESO_CPPFLAGS)
    AC_MSG_RESULT(yes)
 else
    AC_MSG_RESULT(no)
@@ -241,6 +241,8 @@ AC_CONFIG_FILES([
   test/test_InputOptionsParser/test_options_default.txt
   test/test_optimizer/input_test_optimizer_options
   test/test_Environment/input_test_serialEnv
+  test/test_intercomm0/gravity_1proc.txt
+  test/test_intercomm0/gravity_2proc.txt
 ])
 
 AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh
@@ -269,6 +271,22 @@ AC_CONFIG_FILES([
 [
   chmod +x test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 ])
+
+AC_CONFIG_FILES([
+  test/test_intercomm0/test_intercomm0_gravity_run.sh
+],
+[
+  chmod +x test/test_intercomm0/test_intercomm0_gravity_run.sh
+])
+
+AC_CONFIG_FILES([
+  test/test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
+],
+[
+  chmod +x test/test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
+])
+
+AC_CONFIG_FILES(src/apps/queso-config, [chmod +x src/apps/queso-config])
 
 dnl ----------------------------------------------
 dnl Collect files for licence header stamping here

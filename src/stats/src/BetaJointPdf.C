@@ -68,11 +68,21 @@ BetaJointPdf<V,M>::actualValue(
         V* hessianEffect) const
 {
   queso_require_equal_to_msg(domainVector.sizeLocal(), this->m_domainSet.vectorSpace().dimLocal(), "invalid input");
+  queso_require_msg(!(domainDirection || hessianMatrix || hessianEffect), "incomplete code for hessianMatrix and hessianEffect calculations");
 
-  queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  // No need to multiply by exp(m_logOfNormalizationFactor) because 'lnValue()' is called
+  double value = std::exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 
-  // No need to multiply by exp(m_logOfNormalizationFactor) because 'lnValue()' is called [PDF-05]
-  return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+  if (gradVector) {
+    // DM: This transformation may have issues near the boundary.  I haven't
+    // fully explored this yet.
+    //
+    // This evaluation is also normalised (if m_normalizationStyle is zero) and
+    // so the gradient in physical space contains the normalisation constant.
+    (*gradVector) *= value;
+  }
+
+  return value;
 }
 //--------------------------------------------------
 template<class V, class M>
@@ -84,18 +94,28 @@ BetaJointPdf<V,M>::lnValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+  queso_require_msg(!(domainDirection || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double aux = 0.;
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
     if (m_normalizationStyle == 0) {
-      //aux = log(gsl_ran_beta_pdf(domainVector[i],m_alpha[i],m_beta[i]));
       aux = log(m_env.basicPdfs()->betaPdfActualValue(domainVector[i],m_alpha[i],m_beta[i]));
     }
     else {
       aux = (m_alpha[i]-1.)*log(domainVector[i]) + (m_beta[i]-1.)*log(1.-domainVector[i]);
     }
+
+    // The log of the beta pdf is
+    // f(x) = (alpha - 1) * log(x) + (beta - 1) * log(1 - x)
+    // Therefore
+    // df/dx (x) = ((alpha - 1) / x) + ((1 - beta) / (1 - x))
+    if (gradVector) {
+      // We're computing grad of log of p which is p' / p
+      (*gradVector)[i] = (m_alpha[i] - 1.0) / domainVector[i] +
+        (1.0 - m_beta[i]) / (1.0 - domainVector[i]);
+    }
+
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In BetaJointPdf<V,M>::lnValue()"
                               << ", m_normalizationStyle = "      << m_normalizationStyle
@@ -107,7 +127,7 @@ BetaJointPdf<V,M>::lnValue(
     }
     result += aux;
   }
-  result += m_logOfNormalizationFactor; // [PDF-05]
+  result += m_logOfNormalizationFactor;
 
   return result;
 }

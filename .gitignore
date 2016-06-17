@@ -214,3 +214,15 @@ test/test_SharedPtr
 test/output_test_serialEnv
 test/test_Environment/input_test_serialEnv
 test/test_serialEnv
+test/test_jeffreys_pdf
+test/test_gaussian_pdf_gradient
+test/test_log_normal_pdf_gradient
+test/test_beta_pdf_gradient
+test/output_test_intercomm0_gravity_1
+test/output_test_intercomm0_gravity_2
+test/test_intercomm0_gravity
+test/test_intercomm0/gravity_1proc.txt
+test/test_intercomm0/gravity_2proc.txt
+test/test_intercomm0/test_intercomm0_gravity_run.sh
+test/test_seq_of_vec_hdf5_write
+test/test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh

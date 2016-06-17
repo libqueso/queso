@@ -1313,20 +1313,96 @@ SequenceOfVectors<V,M>::subWriteContents(
   unsigned int        initialPos,
   unsigned int        numPos,
   FilePtrSetStruct& filePtrSet,
-  const std::string&  fileType) const // "m or hdf"
+  const std::string&  fileType) const
 {
-  queso_require_msg(filePtrSet.ofsVar, "filePtrSet.ofsVar should not be NULL");
-
   if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT ||
       fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT) {
+    queso_require_msg(filePtrSet.ofsVar, "filePtrSet.ofsVar should not be NULL");
     this->subWriteContents(initialPos,
                            numPos,
                            *filePtrSet.ofsVar,
                            fileType);
   }
+#ifdef QUESO_HAS_HDF5
   else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-    queso_error_msg("hdf file type not supported yet");
+
+    // Check the file is still legit
+    queso_require_greater_equal_msg(
+        filePtrSet.h5Var,
+        0,
+        "filePtrSet.h5Var should not be non-negative");
+
+    // Sanity check extent
+    queso_require_less_equal_msg(
+        (initialPos+numPos),
+        this->subSequenceSize(),
+        "invalid routine input parameters");
+
+    unsigned int numParams = m_vectorSpace.dimLocal();
+    unsigned int chainSize = this->subSequenceSize();
+    hsize_t dims[2] = { chainSize, numParams };
+
+    // Create dataspace
+    hid_t dataspace_id = H5Screate_simple(2, dims, dims);
+
+    // Sanity check dataspace
+    queso_require_greater_equal_msg(
+        dataspace_id,
+        0,
+        "error creating dataspace with id: " << dataspace_id);
+
+    // Create dataset
+    hid_t dataset_id = H5Dcreate(filePtrSet.h5Var,
+                                 "data",
+                                 H5T_IEEE_F64LE,
+                                 dataspace_id,
+                                 H5P_DEFAULT,
+                                 H5P_DEFAULT,
+                                 H5P_DEFAULT);
+
+    // Sanity check dataset
+    queso_require_greater_equal_msg(
+        dataset_id,
+        0,
+        "error creating dataset with id: " << dataset_id);
+
+    // This is so egregiously awfully badly terribly horrific I want to die.
+    //
+    // And, of course, if any of the subsequent H5* sanity check fail we
+    // throw an exception and leak a metric fuckton of memory.
+    double * data = (double *)malloc(numParams * chainSize * sizeof(double));
+
+    for (unsigned int i = 0; i < chainSize; i++) {
+      V tmpVec(*(m_seq[i]));
+      for (unsigned int j = 0; j < numParams; j++) {
+        data[numParams*i+j] = tmpVec[j];
+      }
+    }
+
+    // Write the dataset
+    herr_t status = H5Dwrite(
+        dataset_id,
+        H5T_NATIVE_DOUBLE,  // The type in memory
+        H5S_ALL,  // The dataspace in memory
+        dataspace_id,  // The file dataspace
+        H5P_DEFAULT,  // Xfer property list
+        data);
+
+    // Sanity check the write
+    queso_require_greater_equal_msg(
+        status,
+        0,
+        "error writing dataset to file with id: " << filePtrSet.h5Var);
+
+    // Clean up
+    free(data);
+    H5Dclose(dataset_id);
+    H5Sclose(dataspace_id);
+
+    // Should we close the file too?  It's unclear.
+
   }
+#endif
   else {
     queso_error_msg("invalid file type");
   }
@@ -1545,12 +1621,12 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
               hid_t datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data type created" << std::endl;
               hsize_t dimsf[2];
-              dimsf[0] = numParams;
-              dimsf[1] = chainSize;
+              dimsf[0] = chainSize;
+              dimsf[1] = numParams;
               hid_t dataspace = H5Screate_simple(2, dimsf, NULL); // HDF5_rank = 2
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data space created" << std::endl;
               hid_t dataset = H5Dcreate2(unifiedFilePtrSet.h5Var,
-                                         "seq_of_vectors",
+                                         "data",
                                          datatype,
                                          dataspace,
                                          H5P_DEFAULT,  // Link creation property list
@@ -1563,20 +1639,15 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
               iRC = gettimeofday(&timevalBegin,NULL);
               if (iRC) {}; // just to remover compiler warning
 
-              //double* dataOut[numParams]; // avoid compiler warning
-        std::vector<double*> dataOut((size_t) numParams,NULL);
-              dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
-              for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
-                dataOut[i] = dataOut[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
-              }
-              //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, memory allocated" << std::endl;
-              for (unsigned int j = 0; j < chainSize; ++j) {
-                V tmpVec(*(m_seq[j]));
-                for (unsigned int i = 0; i < numParams; ++i) {
-                  dataOut[i][j] = tmpVec[i];
+              double * data;
+              data = (double *)malloc(numParams * chainSize * sizeof(double));
+
+              for (unsigned int i = 0; i < chainSize; ++i) {
+                V tmpVec(*(m_seq[i]));
+                for (unsigned int j = 0; j < numParams; ++j) {
+                  data[numParams*i+j] = tmpVec[j];
                 }
               }
-              //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, memory filled" << std::endl;
 
               herr_t status;
               status = H5Dwrite(dataset,
@@ -1584,7 +1655,7 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
                                 H5S_ALL,
                                 H5S_ALL,
                                 H5P_DEFAULT,
-                                (void*) dataOut[0]);
+                                data);
               if (status) {}; // just to remover compiler warning
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data written" << std::endl;
 
@@ -1609,10 +1680,7 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data space closed" << std::endl;
               H5Tclose(datatype);
               //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): h5 case, data type closed" << std::endl;
-              //free(dataOut[0]); // related to the changes above for compiler warning
-              for (unsigned int tmpIndex = 0; tmpIndex < dataOut.size(); tmpIndex++) {
-                free (dataOut[tmpIndex]);
-              }
+              free(data);
             }
             else {
               queso_error_msg("hdf file type not supported for multiple sub-environments yet");
@@ -1856,7 +1924,7 @@ SequenceOfVectors<V,M>::unifiedReadContents(
           else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
             if (r == 0) {
               hid_t dataset = H5Dopen2(unifiedFilePtrSet.h5Var,
-                                       "seq_of_vectors",
+                                       "data",
                                        H5P_DEFAULT); // Dataset access property list
               hid_t datatype  = H5Dget_type(dataset);
               H5T_class_t t_class = H5Tget_class(datatype);

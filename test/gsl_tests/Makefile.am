@@ -9,7 +9,7 @@ check_PROGRAMS += multiple_rhs_matrix_solve
 check_PROGRAMS += power_method
 check_PROGRAMS += inverse_power_method
 
-AM_CPPFLAGS =
+AM_CPPFLAGS = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I.
 AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)

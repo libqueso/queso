@@ -54,10 +54,16 @@ check_PROGRAMS += test_NoInputFile
 check_PROGRAMS += test_optimizer_options
 check_PROGRAMS += test_SharedPtr
 check_PROGRAMS += test_serialEnv
+check_PROGRAMS += test_jeffreys_pdf
+check_PROGRAMS += test_gaussian_pdf_gradient
+check_PROGRAMS += test_log_normal_pdf_gradient
+check_PROGRAMS += test_beta_pdf_gradient
+check_PROGRAMS += test_intercomm0_gravity
+check_PROGRAMS += test_seq_of_vec_hdf5_write
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
-AM_CPPFLAGS =
+AM_CPPFLAGS = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I.
 AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
@@ -133,6 +139,20 @@ test_NoInputFile_SOURCES = test_StatisticalInverseProblem/test_NoInputFile.C
 test_optimizer_options_SOURCES = test_optimizer/test_optimizer_options.C
 test_SharedPtr_SOURCES = pointers/test_SharedPtr.C
 test_serialEnv_SOURCES = test_Environment/test_serialEnv.C
+test_jeffreys_pdf_SOURCES = test_pdfs/test_jeffreys_pdf.C
+test_gaussian_pdf_gradient_SOURCES = test_pdfs/test_gaussian_pdf_gradient.C
+test_log_normal_pdf_gradient_SOURCES = test_pdfs/test_log_normal_pdf_gradient.C
+test_beta_pdf_gradient_SOURCES = test_pdfs/test_beta_pdf_gradient.C
+
+test_intercomm0_gravity_SOURCES =
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_likelihood.C
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_likelihood.h
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_main.C
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.C
+test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.h
+test_intercomm0_gravity_CPPFLAGS = -I$(srcdir)/test_intercomm0 $(AM_CPPFLAGS)
+
+test_seq_of_vec_hdf5_write_SOURCES = test_SequenceOfVectors/test_HDF5Write.C
 
 # Files to freedom stamp
 srcstamp =
@@ -184,6 +204,12 @@ srcstamp += $(test_NoInputFile_SOURCES)
 srcstamp += $(test_optimizer_options_SOURCES)
 srcstamp += $(test_SharedPtr_SOURCES)
 srcstamp += $(test_serialEnv_SOURCES)
+srcstamp += $(test_jeffreys_pdf_SOURCES)
+srcstamp += $(test_gaussian_pdf_gradient_SOURCES)
+srcstamp += $(test_log_normal_pdf_gradient_SOURCES)
+srcstamp += $(test_beta_pdf_gradient_SOURCES)
+srcstamp += $(test_intercomm0_gravity_SOURCES)
+srcstamp += $(test_seq_of_vec_hdf5_write_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
@@ -235,6 +261,12 @@ TESTS += $(top_builddir)/test/test_NoInputFile
 TESTS += $(top_builddir)/test/test_optimizer_options
 TESTS += $(top_builddir)/test/test_SharedPtr
 TESTS += $(top_builddir)/test/test_serialEnv
+TESTS += $(top_builddir)/test/test_jeffreys_pdf
+TESTS += $(top_builddir)/test/test_gaussian_pdf_gradient
+TESTS += $(top_builddir)/test/test_log_normal_pdf_gradient
+TESTS += $(top_builddir)/test/test_beta_pdf_gradient
+TESTS += $(top_builddir)/test/test_intercomm0/test_intercomm0_gravity_run.sh
+TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 if ! MPI_ENABLED
@@ -261,6 +293,7 @@ EXTRA_DIST += test_Regression/jeffreys_input.txt.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples.m.in
 EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
+EXTRA_DIST += test_gaussian_likelihoods/gaussian_consistency_input.txt.in
 EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt.in
 EXTRA_DIST += test_InterpolationSurrogate/queso_input.txt.in
 EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
@@ -269,6 +302,10 @@ EXTRA_DIST += test_InputOptionsParser/test_options_bad.txt.in
 EXTRA_DIST += test_InputOptionsParser/test_options_default.txt.in
 EXTRA_DIST += test_optimizer/input_test_optimizer_options.in
 EXTRA_DIST += test_Environment/input_test_serialEnv.in
+EXTRA_DIST += test_intercomm0/gravity_1proc.txt.in
+EXTRA_DIST += test_intercomm0/gravity_2proc.txt.in
+EXTRA_DIST += test_intercomm0/test_intercomm0_gravity_run.sh.in
+EXTRA_DIST += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh.in
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
@@ -286,6 +323,8 @@ clean-local:
 	rm -rf $(top_builddir)/test/test_output_interp_surrogates
 	rm -rf $(top_builddir)/test/output_test_optimizer_options
 	rm -rf $(top_builddir)/test/output_test_serialEnv
+	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_1
+	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_2
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno

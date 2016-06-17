@@ -1215,8 +1215,8 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
                                                    m_optionsObj->m_rawChainDataOutputFileType);
     }
 
-    // Compute raw unified MLE
-    if (workingLogLikelihoodValues) {
+    // Compute raw unified MLE only in inter0Comm
+    if (workingLogLikelihoodValues && (m_env.subRank() == 0)) {
       SequenceOfVectors<P_V,P_M> rawUnifiedMLEpositions(m_vectorSpace,0,m_optionsObj->m_prefix+"rawUnifiedMLEseq");
 
       double rawUnifiedMLEvalue = workingChain.unifiedPositionsOfMaximum(*workingLogLikelihoodValues,
@@ -1240,8 +1240,8 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
       }
     }
 
-    // Compute raw unified MAP
-    if (workingLogTargetValues) {
+    // Compute raw unified MAP only in inter0Comm
+    if (workingLogTargetValues && (m_env.subRank() == 0)) {
       SequenceOfVectors<P_V,P_M> rawUnifiedMAPpositions(m_vectorSpace,0,m_optionsObj->m_prefix+"rawUnifiedMAPseq");
       double rawUnifiedMAPvalue = workingChain.unifiedPositionsOfMaximum(*workingLogTargetValues,
                                                                          rawUnifiedMAPpositions);

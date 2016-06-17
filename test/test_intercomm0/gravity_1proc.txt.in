@@ -1,0 +1,73 @@
+###############################################
+# UQ Environment
+###############################################
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = output_test_intercomm0_gravity_1/display_env
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0 1 2 3 4 5 6 7
+env_displayVerbosity     = 2
+env_seed                 = -1
+
+###############################################
+# Statistical inverse problem (ip)
+###############################################
+ip_computeSolution      = 1
+ip_dataOutputFileName   = output_test_intercomm0_gravity_1/sip_gravity
+ip_dataOutputAllowedSet = 0 1
+
+###############################################
+# Information for Metropolis-Hastings algorithm
+###############################################
+ip_mh_dataOutputFileName   = output_test_intercomm0_gravity_1/sip_gravity
+ip_mh_dataOutputAllowedSet = 0 1
+
+ip_mh_rawChain_dataInputFileName    = .
+ip_mh_rawChain_size                 = 20000
+ip_mh_rawChain_generateExtra        = 0
+ip_mh_rawChain_displayPeriod        = 2000
+ip_mh_rawChain_measureRunTimes      = 1
+ip_mh_rawChain_dataOutputFileName   = output_test_intercomm0_gravity_1/sip_gravity_raw_chain
+ip_mh_rawChain_dataOutputAllowedSet = 0 1 2 3 4 5 6 7
+
+ip_mh_displayCandidates             = 0
+ip_mh_putOutOfBoundsInChain         = 0
+ip_mh_dr_maxNumExtraStages          = 3
+ip_mh_dr_listOfScalesForExtraStages = 5. 10. 20.
+ip_mh_am_initialNonAdaptInterval    = 0
+ip_mh_am_adaptInterval              = 100
+ip_mh_am_eta                        = 1.98  	#(2.4^2)/d, d is the dimension of the problem
+ip_mh_am_epsilon                    = 1.e-5
+
+ip_mh_filteredChain_generate             = 1
+ip_mh_filteredChain_discardedPortion     = 0.
+ip_mh_filteredChain_lag                  = 20
+ip_mh_filteredChain_dataOutputFileName   = output_test_intercomm0_gravity_1/sip_gravity_filtered_chain
+ip_mh_filteredChain_dataOutputAllowedSet = 0 1
+
+###############################################
+# Statistical forward problem (fp)
+###############################################
+fp_help                 = anything
+fp_computeSolution      = 1
+fp_computeCovariances   = 1
+fp_computeCorrelations  = 1
+fp_dataOutputFileName   = output_test_intercomm0_gravity_1/sfp_gravity
+fp_dataOutputAllowedSet = 0 1
+
+###############################################
+# 'fp_': information for Monte Carlo algorithm
+###############################################
+fp_mc_help                 = anything
+fp_mc_dataOutputFileName   = output_test_intercomm0_gravity_1/sfp_gravity
+fp_mc_dataOutputAllowedSet = 0 1
+
+fp_mc_pseq_dataOutputFileName   = output_test_intercomm0_gravity_1/sfp_gravity_p_seq
+fp_mc_pseq_dataOutputAllowedSet = 0 1
+
+fp_mc_qseq_dataInputFileName    = .
+fp_mc_qseq_size                 = 16384
+fp_mc_qseq_displayPeriod        = 20000
+fp_mc_qseq_measureRunTimes      = 1
+fp_mc_qseq_dataOutputFileName   = output_test_intercomm0_gravity_1/sfp_gravity_qoi_seq
+fp_mc_qseq_dataOutputAllowedSet = 0 1
+
