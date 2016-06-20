@@ -100,15 +100,6 @@ public:
   const std::vector<M> & m_observationErrorMatrices;
 
   //
-  // Intermediate calculations cached by factory
-  //
-  const V & residual;
-
-  const M & BT_Wy_B_inv;
-
-  const M & KT_K_inv;
-
-  //
   // Intermediate calculations we can cache
   //
   unsigned int num_svd_terms;
@@ -117,6 +108,15 @@ public:
   const M & m_experimentErrors;
 
   const ConcatenatedVectorRV<V, M> & m_totalPrior;
+
+  //
+  // Intermediate calculations cached by factory
+  //
+  const V & residual;
+
+  const M & BT_Wy_B_inv;
+
+  const M & KT_K_inv;
 };
 
 template <class V = GslVector, class M = GslMatrix>

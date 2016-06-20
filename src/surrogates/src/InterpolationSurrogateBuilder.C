@@ -76,7 +76,7 @@ namespace QUESO
       }
 
     // Sanity check
-    queso_assert_equal_to( n_values, std::accumulate( m_njobs.begin(), m_njobs.end(), 0 ) );
+    queso_assert_equal_to( (int)n_values, std::accumulate( m_njobs.begin(), m_njobs.end(), 0 ) );
   }
 
   template<class V, class M>

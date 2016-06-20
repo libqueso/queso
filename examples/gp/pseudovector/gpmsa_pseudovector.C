@@ -31,9 +31,6 @@ readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
   double meansim = 0;
   double m2sim = 0;
 
-  double meanexpsim = 0;
-  double m2expsim = 0;
-
   // First line is a header, so we ignore it
   fgets(line, size, fp_in);
 

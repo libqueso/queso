@@ -66,8 +66,8 @@ int main(int argc, char ** argv)
 
   // Here we test the gradient of the log pdf and the gradient of the pdf are
   // zero, as we expect.
-  double lnPdfValue1 = pdf.lnValue(point, NULL, &lnGradVector, NULL, NULL);
-  double pdfValue1 = pdf.actualValue(point, NULL, &gradVector, NULL, NULL);
+  pdf.lnValue(point, NULL, &lnGradVector, NULL, NULL);
+  pdf.actualValue(point, NULL, &gradVector, NULL, NULL);
 
   queso_require_less_equal_msg(std::abs(lnGradVector[0]), TOL, "grad log beta pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(gradVector[0]), TOL, "grad beta pdf values are incorrect");
