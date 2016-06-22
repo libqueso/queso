@@ -146,6 +146,7 @@ BaseEnvironment::BaseEnvironment(
   m_optionsInputFileAccessState(true),
   m_allOptionsDesc             (NULL),
   m_allOptionsMap              (NULL),
+  m_input                      (),
   m_subComm                    (NULL),
   m_subRank                    (-1),
   m_subCommSize                (1),
@@ -175,6 +176,7 @@ BaseEnvironment::BaseEnvironment(
   m_optionsInputFileAccessState(true),
   m_allOptionsDesc             (NULL),
   m_allOptionsMap              (NULL),
+  m_input                      (),
   m_subComm                    (NULL),
   m_subRank                    (-1),
   m_subCommSize                (1),
@@ -1215,6 +1217,8 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
       m_allOptionsDesc = new boost::program_options::options_description("Allowed options");
 
       readOptionsInputFile();
+
+      m_input.parse_input_file(m_optionsInputFileName);
     }
 
     // We did this dance because scanOptionsValues is not a const method, but
@@ -1488,6 +1492,8 @@ FullEnvironment::construct (const char *prefix)
       m_allOptionsDesc = new boost::program_options::options_description("Allowed options");
 
       readOptionsInputFile();
+
+      m_input.parse_input_file(m_optionsInputFileName);
     }
 
     // We did this dance because scanOptionsValues is not a const method, but

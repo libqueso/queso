@@ -35,6 +35,7 @@
 #include <iostream>
 #include <fstream>
 
+#include <queso/getpot.h>
 #include <queso/RngBase.h>
 #include <queso/BasicPdfsBase.h>
 
@@ -362,6 +363,7 @@ protected:
   mutable bool       	     m_optionsInputFileAccessState; // Yes, 'mutable'
   boost::program_options::options_description*   m_allOptionsDesc;
   boost::program_options::variables_map* 	     m_allOptionsMap;
+  GetPot m_input;
 
   unsigned int               m_subId;
   std::string 		     m_subIdString;

@@ -491,6 +491,7 @@ libqueso_include_HEADERS += gp/inc/GPMSAOptions.h
 
 # Install the magic header
 libqueso_include_HEADERS += contrib/inc/all.h
+libqueso_include_HEADERS += contrib/getpot/getpot.h
 
 # Headers to install, but not part of dist
 
