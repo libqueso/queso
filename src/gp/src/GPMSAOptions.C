@@ -22,7 +22,9 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/GPMSAOptions.h>
 
@@ -62,7 +64,9 @@ GPMSAOptions::GPMSAOptions(
   m_emulatorDataPrecisionShape(UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV),
   m_emulatorDataPrecisionScale(UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV),
   m_env(env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help(m_prefix + "help"),
   m_option_emulatorPrecisionShape(m_prefix + "emulator_precision_shape"),
   m_option_emulatorPrecisionScale(m_prefix + "emulator_precision_scale"),
@@ -81,6 +85,7 @@ GPMSAOptions::GPMSAOptions(
     queso_error_msg("Missing input file is required");
   }
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string>(m_option_help, UQ_GPMSA_HELP, "produce help message Gaussian process emulator");
   m_parser->registerOption<double>(m_option_emulatorPrecisionShape, UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV, "shape hyperprior (Gamma) parameter for emulator precision");
   m_parser->registerOption<double>(m_option_emulatorPrecisionScale, UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV, "scale hyperprior (Gamma) parameter for emulator precision");
@@ -110,6 +115,21 @@ GPMSAOptions::GPMSAOptions(
   m_parser->getOption<double>(m_option_discrepancyCorrelationStrengthBeta,  m_discrepancyCorrelationStrengthBeta);
   m_parser->getOption<double>(m_option_emulatorDataPrecisionShape,          m_emulatorDataPrecisionShape);
   m_parser->getOption<double>(m_option_emulatorDataPrecisionScale,          m_emulatorDataPrecisionScale);
+#else
+  m_help = env.input()(m_option_help, UQ_GPMSA_HELP);
+  m_emulatorPrecisionShape = env.input()(m_option_emulatorPrecisionShape, UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV);
+  m_emulatorPrecisionScale = env.input()(m_option_emulatorPrecisionScale, UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV);
+  m_observationalPrecisionShape = env.input()(m_option_observationalPrecisionShape, UQ_GPMSA_OBSERVATIONAL_PRECISION_SHAPE_ODV);
+  m_observationalPrecisionScale = env.input()(m_option_observationalPrecisionScale, UQ_GPMSA_OBSERVATIONAL_PRECISION_SCALE_ODV);
+  m_emulatorCorrelationStrengthAlpha = env.input()(m_option_emulatorCorrelationStrengthAlpha, UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV);
+  m_emulatorCorrelationStrengthBeta = env.input()(m_option_emulatorCorrelationStrengthBeta, UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV);
+  m_discrepancyPrecisionShape = env.input()(m_option_discrepancyPrecisionShape, UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV);
+  m_discrepancyPrecisionScale = env.input()(m_option_discrepancyPrecisionScale, UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV);
+  m_discrepancyCorrelationStrengthAlpha = env.input()(m_option_discrepancyCorrelationStrengthAlpha, UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV);
+  m_discrepancyCorrelationStrengthBeta = env.input()(m_option_discrepancyCorrelationStrengthBeta, UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV);
+  m_emulatorDataPrecisionShape = env.input()(m_option_emulatorDataPrecisionShape, UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV);
+  m_emulatorDataPrecisionScale = env.input()(m_option_emulatorDataPrecisionScale, UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
 }
@@ -149,7 +169,9 @@ GPMSAOptions::print(std::ostream& os) const
 std::ostream &
 operator<<(std::ostream& os, const GPMSAOptions & obj)
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   obj.print(os);
   return os;
 }

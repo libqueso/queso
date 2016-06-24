@@ -39,6 +39,7 @@
 #include <queso/RngBase.h>
 #include <queso/BasicPdfsBase.h>
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 // Forward declarations
 namespace boost {
   namespace program_options {
@@ -46,6 +47,7 @@ namespace boost {
     class variables_map;
     }
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 namespace QUESO {
 
@@ -264,19 +266,25 @@ public:
   void    setOptionsInputFileAccessState(bool newState) const; // Yes, 'const'
 
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
   const boost::program_options::options_description& allOptionsDesc () const;
 #endif
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   //! Access function to private attribute m_allOptionsMap. It is an instance of boost::program_options::variables_map(), which
   //! allows concrete variables to map which store variables in real map.
   boost::program_options::variables_map&      allOptionsMap () const;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   //! This method scans the input file provided by the user to QUESO.
   /*! It checks if no input file is passed and updates the private attribute m_allOptionsDesc, which
    * keeps all the options.*/
   void    scanInputFileForMyOptions(const boost::program_options::options_description& optionsDesc) const;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   //! Access function to private attribute m_displayVerbosity. It manages how much information will be
   //! release during the use of the QUESO library.
@@ -346,6 +354,9 @@ public:
     //! Decides whether there is an exceptional circumstance.
   bool    exceptionalCircumstance       () const;
 
+  //! The GetPot input file parser
+  const GetPot & input() const;
+
 
   virtual void    print (std::ostream& os) const = 0;
 
@@ -361,8 +372,10 @@ protected:
 
   std::string		     m_optionsInputFileName;
   mutable bool       	     m_optionsInputFileAccessState; // Yes, 'mutable'
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   boost::program_options::options_description*   m_allOptionsDesc;
   boost::program_options::variables_map* 	     m_allOptionsMap;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   GetPot m_input;
 
   unsigned int               m_subId;

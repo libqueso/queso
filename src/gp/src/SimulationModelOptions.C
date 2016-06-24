@@ -22,7 +22,9 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/SimulationModelOptions.h>
 #include <queso/Miscellaneous.h>
@@ -46,7 +48,9 @@ SmOptionsValues::SmOptionsValues()
     m_b_eta(UQ_SIMULATION_MODEL_B_ETA_ODV),
     m_a_s(UQ_SIMULATION_MODEL_A_S_ODV),
     m_b_s(UQ_SIMULATION_MODEL_B_S_ODV),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_dataOutputFileName(m_prefix + "dataOutputFileName"),
     m_option_dataOutputAllowAll(m_prefix + "dataOutputAllowAll"),
@@ -83,7 +87,9 @@ SmOptionsValues::SmOptionsValues(const BaseEnvironment * env, const char *
     m_b_eta(UQ_SIMULATION_MODEL_B_ETA_ODV),
     m_a_s(UQ_SIMULATION_MODEL_A_S_ODV),
     m_b_s(UQ_SIMULATION_MODEL_B_S_ODV),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_dataOutputFileName(m_prefix + "dataOutputFileName"),
     m_option_dataOutputAllowAll(m_prefix + "dataOutputAllowAll"),
@@ -100,6 +106,7 @@ SmOptionsValues::SmOptionsValues(const BaseEnvironment * env, const char *
     m_option_a_s(m_prefix + "a_s"),
     m_option_b_s(m_prefix + "b_s")
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption(m_option_help,                                                                                                                      "produce help message for simulation model options");
   m_parser->registerOption<std::string >(m_option_dataOutputFileName,        UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV       , "name of data output file"                         );
   m_parser->registerOption<bool        >(m_option_dataOutputAllowAll,        UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV       , "allow all or not"                                 );
@@ -132,6 +139,31 @@ SmOptionsValues::SmOptionsValues(const BaseEnvironment * env, const char *
   m_parser->getOption<double      >(m_option_b_eta,                     m_b_eta);
   m_parser->getOption<double      >(m_option_a_s,                       m_a_s);
   m_parser->getOption<double      >(m_option_b_s,                       m_b_s);
+#else
+  m_dataOutputFileName = env->input()(m_option_dataOutputFileName, UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV);
+  m_dataOutputAllowAll = env->input()(m_option_dataOutputAllowAll, UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV);
+
+  // UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  unsigned int size = env->input().vector_variable_size(m_option_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int allowed = env->input()(m_option_dataOutputAllowedSet, i, i);
+    m_dataOutputAllowedSet.insert(allowed);
+  }
+
+  m_p_eta = env->input()(m_option_p_eta, UQ_SIMULATION_MODEL_P_ETA_ODV);
+  m_zeroRelativeSingularValue = env->input()(m_option_zeroRelativeSingularValue, UQ_SIMULATION_MODEL_ZERO_RELATIVE_SINGULAR_VALUE_ODV);
+  m_cdfThresholdForPEta = env->input()(m_option_cdfThresholdForPEta, UQ_SIMULATION_MODEL_CDF_THRESHOLD_FOR_P_ETA_ODV);
+  m_a_w = env->input()(m_option_a_w, UQ_SIMULATION_MODEL_A_W_ODV);
+  m_b_w = env->input()(m_option_b_w, UQ_SIMULATION_MODEL_B_W_ODV);
+  m_a_rho_w = env->input()(m_option_a_rho_w, UQ_SIMULATION_MODEL_A_RHO_W_ODV);
+  m_b_rho_w = env->input()(m_option_b_rho_w, UQ_SIMULATION_MODEL_B_RHO_W_ODV);
+  m_a_eta = env->input()(m_option_a_eta, UQ_SIMULATION_MODEL_A_ETA_ODV);
+  m_b_eta = env->input()(m_option_b_eta, UQ_SIMULATION_MODEL_B_ETA_ODV);
+  m_a_s = env->input()(m_option_a_s, UQ_SIMULATION_MODEL_A_S_ODV);
+  m_b_s = env->input()(m_option_b_s, UQ_SIMULATION_MODEL_B_S_ODV);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 SmOptionsValues::~SmOptionsValues()
@@ -279,7 +311,9 @@ SimulationModelOptions::SimulationModelOptions(
   m_ov                              (),
   m_prefix                          ((std::string)(prefix) + "sm_"),
   m_env                             (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                     (new boost::program_options::options_description("Simulation model options")),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                     (m_prefix + "help"                     ),
   m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"       ),
   m_option_dataOutputAllowAll       (m_prefix + "dataOutputAllowAll"       ),
@@ -307,7 +341,9 @@ SimulationModelOptions::SimulationModelOptions(
   m_ov                              (alternativeOptionsValues),
   m_prefix                          ((std::string)(prefix) + "sm_"),
   m_env                             (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                     (NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                     (m_prefix + "help"                     ),
   m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"       ),
   m_option_dataOutputAllowAll       (m_prefix + "dataOutputAllowAll"       ),
@@ -341,7 +377,9 @@ SimulationModelOptions::~SimulationModelOptions()
 {
   queso_deprecated();
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   if (m_optionsDesc) delete m_optionsDesc;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 void
@@ -349,6 +387,7 @@ SimulationModelOptions::scanOptionsValues()
 {
   queso_deprecated();
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -358,6 +397,7 @@ SimulationModelOptions::scanOptionsValues()
   getMyOptionValues              (*m_optionsDesc);
   //std::cout << "scan 001\n"
   //          << std::endl;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In SimulationModelOptions::scanOptionsValues()"
@@ -370,6 +410,7 @@ SimulationModelOptions::scanOptionsValues()
   return;
 }
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 void
 SimulationModelOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
@@ -395,7 +436,9 @@ SimulationModelOptions::defineMyOptions(boost::program_options::options_descript
 
   return;
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 void
 SimulationModelOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
 {
@@ -476,6 +519,7 @@ SimulationModelOptions::getMyOptionValues(boost::program_options::options_descri
 
   return;
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 void
 SimulationModelOptions::print(std::ostream& os) const

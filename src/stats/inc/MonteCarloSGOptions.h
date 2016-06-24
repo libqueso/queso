@@ -27,7 +27,10 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #define UQ_MOC_SG_FILENAME_FOR_NO_FILE "."
 
@@ -135,7 +138,9 @@ public:
 #endif
 
 private:
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   BoostInputOptionsParser * m_parser;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;
   std::string                   m_option_dataOutputFileName;

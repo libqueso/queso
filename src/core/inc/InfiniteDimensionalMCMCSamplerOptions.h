@@ -25,7 +25,12 @@
 #define UQ_INFMCMC_OPTIONS_H
 
 #include <queso/Environment.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+
+#include <queso/getpot.h>
 
 namespace QUESO {
 
@@ -78,7 +83,9 @@ public:
   const BaseEnvironment& env() const;
 
 private:
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   BoostInputOptionsParser * m_parser;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   const BaseEnvironment& m_env;
 

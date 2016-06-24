@@ -41,7 +41,10 @@ OptimizerOptions::OptimizerOptions()
     m_fstepSize(UQ_OPT_FSTEP_SIZE),
     m_fdfstepSize(UQ_OPT_FDFSTEP_SIZE),
     m_lineTolerance(UQ_OPT_LINE_TOLERANCE),
+    m_env(NULL),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_maxIterations(m_prefix + "maxIterations"),
     m_option_tolerance(m_prefix + "tolerance"),
@@ -64,7 +67,10 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
     m_fstepSize(UQ_OPT_FSTEP_SIZE),
     m_fdfstepSize(UQ_OPT_FDFSTEP_SIZE),
     m_lineTolerance(UQ_OPT_LINE_TOLERANCE),
+    m_env(env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_maxIterations(m_prefix + "maxIterations"),
     m_option_tolerance(m_prefix + "tolerance"),
@@ -74,6 +80,7 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
     m_option_fdfstepSize(m_prefix + "fdfStepSize"),
     m_option_lineTolerance(m_prefix + "lineTolerance")
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string>(m_option_help, UQ_OPT_HELP,
       "produce help message for statistical inverse problem");
 
@@ -105,6 +112,16 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
   m_parser->getOption<double>(m_option_fstepSize, m_fstepSize);
   m_parser->getOption<double>(m_option_fdfstepSize, m_fdfstepSize);
   m_parser->getOption<double>(m_option_lineTolerance, m_lineTolerance);
+#else
+  m_help = m_env->input()(m_option_help, UQ_OPT_HELP);
+  m_maxIterations = m_env->input()(m_option_maxIterations, UQ_OPT_MAX_ITERATIONS);
+  m_tolerance = m_env->input()(m_option_tolerance, UQ_OPT_TOLERANCE);
+  m_finiteDifferenceStepSize = m_env->input()(m_option_finiteDifferenceStepSize, UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE);
+  m_solverType = m_env->input()(m_option_solverType, UQ_OPT_SOLVER_TYPE);
+  m_fstepSize = m_env->input()(m_option_fstepSize, UQ_OPT_FSTEP_SIZE);
+  m_fdfstepSize = m_env->input()(m_option_fdfstepSize, UQ_OPT_FDFSTEP_SIZE);
+  m_lineTolerance = m_env->input()(m_option_lineTolerance, UQ_OPT_LINE_TOLERANCE);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
 }

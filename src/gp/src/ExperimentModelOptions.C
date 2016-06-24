@@ -22,7 +22,9 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/ExperimentModelOptions.h>
 #include <queso/Miscellaneous.h>
@@ -39,7 +41,9 @@ EmOptionsValues::EmOptionsValues()
     m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
     m_a_y(UQ_EXPERIMENT_MODEL_A_Y_ODV),
     m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_Gvalues(m_prefix + "Gvalues"),
     m_option_a_v(m_prefix + "a_v"),
@@ -62,7 +66,9 @@ EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
     m_b_rho_v(UQ_EXPERIMENT_MODEL_B_RHO_V_ODV),
     m_a_y(UQ_EXPERIMENT_MODEL_A_Y_ODV),
     m_b_y(UQ_EXPERIMENT_MODEL_B_Y_ODV),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_Gvalues(m_prefix + "Gvalues"),
     m_option_a_v(m_prefix + "a_v"),
@@ -72,6 +78,7 @@ EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
     m_option_a_y(m_prefix + "a_y"),
     m_option_b_y(m_prefix + "b_y")
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption(m_option_help,                                                                                "produce help message for experiment model options");
   m_parser->registerOption<std::string >(m_option_Gvalues, UQ_EXPERIMENT_MODEL_G_VALUES_ODV, "G values"                                         );
   m_parser->registerOption<double      >(m_option_a_v,     UQ_EXPERIMENT_MODEL_A_V_ODV     , "a_v"                                              );
@@ -90,6 +97,24 @@ EmOptionsValues::EmOptionsValues(const BaseEnvironment * env, const char *
   m_parser->getOption<double      >(m_option_b_rho_v, m_b_rho_v);
   m_parser->getOption<double      >(m_option_a_y,     m_a_y);
   m_parser->getOption<double      >(m_option_b_y,     m_b_y);
+#else
+
+  // UQ_EXPERIMENT_MODEL_G_VALUES_ODV is the empty set (string) by default
+  unsigned int size = env->input().vector_variable_size(m_option_Gvalues);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int value = env->input()(m_option_Gvalues, i, i);
+    m_Gvalues.push_back(value);
+  }
+
+  m_a_v = env->input()(m_option_a_v, UQ_EXPERIMENT_MODEL_A_V_ODV);
+  m_b_v = env->input()(m_option_b_v, UQ_EXPERIMENT_MODEL_B_V_ODV);
+  m_a_rho_v = env->input()(m_option_a_rho_v, UQ_EXPERIMENT_MODEL_A_RHO_V_ODV);
+  m_b_rho_v = env->input()(m_option_b_rho_v, UQ_EXPERIMENT_MODEL_B_RHO_V_ODV);
+  m_a_y = env->input()(m_option_a_y, UQ_EXPERIMENT_MODEL_A_Y_ODV);
+  m_b_y = env->input()(m_option_b_y, UQ_EXPERIMENT_MODEL_B_Y_ODV);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 EmOptionsValues::~EmOptionsValues()
@@ -198,7 +223,9 @@ ExperimentModelOptions::ExperimentModelOptions(
   m_ov            (),
   m_prefix        ((std::string)(prefix) + "em_"),
   m_env           (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc   (new boost::program_options::options_description("Experiment model options")),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help   (m_prefix + "help"   ),
   m_option_Gvalues(m_prefix + "Gvalues"),
   m_option_a_v    (m_prefix + "a_v"    ),
@@ -221,7 +248,9 @@ ExperimentModelOptions::ExperimentModelOptions(
   m_ov            (alternativeOptionsValues),
   m_prefix        ((std::string)(prefix) + "em_"),
   m_env           (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc   (NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help   (m_prefix + "help"   ),
   m_option_Gvalues(m_prefix + "Gvalues"),
   m_option_a_v    (m_prefix + "a_v"    ),
@@ -248,7 +277,9 @@ ExperimentModelOptions::~ExperimentModelOptions()
 {
   queso_deprecated();
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   if (m_optionsDesc) delete m_optionsDesc;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 void
@@ -256,11 +287,13 @@ ExperimentModelOptions::scanOptionsValues()
 {
   queso_deprecated();
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In ExperimentModelOptions::scanOptionsValues()"
@@ -273,6 +306,7 @@ ExperimentModelOptions::scanOptionsValues()
   return;
 }
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 void
 ExperimentModelOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
@@ -291,7 +325,9 @@ ExperimentModelOptions::defineMyOptions(boost::program_options::options_descript
 
   return;
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 void
 ExperimentModelOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
 {
@@ -349,6 +385,7 @@ ExperimentModelOptions::getMyOptionValues(boost::program_options::options_descri
 
   return;
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 void
 ExperimentModelOptions::print(std::ostream& os) const
