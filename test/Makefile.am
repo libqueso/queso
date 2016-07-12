@@ -111,7 +111,6 @@ test_inf_gaussian_SOURCES = test_infinite/test_inf_gaussian.C
 test_inf_options_SOURCES = test_infinite/test_inf_options.C
 test_SequenceOfVectorsErase_SOURCES = test_SequenceOfVectors/test_SequenceOfVectorsErase.C
 test_GaussianMean1DRegression_SOURCES = test_Regression/test_GaussianMean1DRegression.C
-test_GaussianMean1DRegression_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 test_gpmsa_cobra_SOURCES = test_Regression/test_gpmsa_cobra.C
 test_gpmsa_vector_SOURCES = test_gpmsa/test_gpmsa_vector.C
 test_LlhdTargetOutput_SOURCES = test_StatisticalInverseProblem/test_LlhdTargetOutput.C
