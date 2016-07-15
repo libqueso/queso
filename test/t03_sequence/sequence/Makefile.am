@@ -1,4 +1,4 @@
-if SVN_CHECKOUT
+if GIT_CLONE
 BUILT_SOURCES = .license.stamp
 endif
 
@@ -15,7 +15,7 @@ EXTRA_DIST                  = example_compute.h
 noinst_PROGRAMS             = SequenceExample_gsl
 SequenceExample_gsl_SOURCES = example_main.C example_compute.C
 
-if SVN_CHECKOUT
+if GIT_CLONE
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
 	echo 'updated source license headers' >$@
