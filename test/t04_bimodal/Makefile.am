@@ -48,5 +48,4 @@ if GIT_CLONE
 endif
 
 dist-hook:
-	rm -rf `find $(distdir)/ -name .svn`
 	rm -rf `find $(distdir)/ -name .deps`
