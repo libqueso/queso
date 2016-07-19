@@ -1228,8 +1228,6 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
   //////////////////////////////////////////////////
   // If NULL, we create one
   if (m_optionsObj == NULL) {
-    EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
-
     // If there's an input file, we grab the options from there.  Otherwise the
     // defaults are used
     if (m_optionsInputFileName != "") {
@@ -1242,6 +1240,8 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
 
       m_input.parse_input_file(m_optionsInputFileName);
     }
+
+    EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
 
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
@@ -1505,8 +1505,6 @@ FullEnvironment::construct (const char *prefix)
   //////////////////////////////////////////////////
   // If NULL, we create one
   if (m_optionsObj == NULL) {
-    EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
-
     // If there's an input file, we grab the options from there.  Otherwise the
     // defaults are used
     if (m_optionsInputFileName != "") {
@@ -1519,6 +1517,8 @@ FullEnvironment::construct (const char *prefix)
 
       m_input.parse_input_file(m_optionsInputFileName);
     }
+
+    EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
 
     // We did this dance because scanOptionsValues is not a const method, but
     // m_optionsObj is a pointer to const
