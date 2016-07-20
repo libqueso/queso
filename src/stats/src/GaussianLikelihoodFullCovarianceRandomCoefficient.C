@@ -90,7 +90,7 @@ GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::lnValue(
   // The last element of domainVector is the multiplicative coefficient of the
   // covariance matrix
   double cov_coeff = domainVector[domainVector.sizeLocal()-1];
-  cov_coeff = std::pow(std::sqrt(cov_coeff), domainVector.sizeGlobal());
+  cov_coeff = std::pow(std::sqrt(cov_coeff), this->m_observations.sizeLocal());
 
   return -0.5 * norm2_squared / cov_coeff - std::log(cov_coeff * deter_cov);
 }
