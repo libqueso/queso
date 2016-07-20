@@ -36,7 +36,12 @@ class GslMatrix;
  * \file GaussianLikelihoodFullCovarianceRandomCoefficient.h
  *
  * \class GaussianLikelihoodFullCovarianceRandomCoefficient
- * \brief A class that represents a Gaussian likelihood with full covariance and random coefficient
+ * \brief A class that represents a Gaussian likelihood with full covariance
+ * and random coefficient.
+ *
+ * The random coefficient is a scalar that pre-multiplies the covariance
+ * matrix.  This is treated as a hyperparameter to be inferred during
+ * the sampling procedure.
  */
 
 template <class V = GslVector, class M = GslMatrix>
@@ -71,7 +76,6 @@ public:
       V * gradVector, M * hessianMatrix, V * hessianEffect) const;
 
 private:
-  double m_covarianceCoefficient;
   const M & m_covariance;
 };
 

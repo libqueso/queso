@@ -81,9 +81,18 @@ GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::lnValue(
   // This is square of 2-norm
   double norm2_squared = modelOutput.sumOfComponents();
 
+  // Get the determinant of the covariance matrix |\Sigma|
+  double deter_cov = this->m_covariance.determinant();
+
+  deter_cov = std::sqrt(deter_cov);
+
+  // Set the right hyperparameter coefficient
   // The last element of domainVector is the multiplicative coefficient of the
   // covariance matrix
-  return -0.5 * norm2_squared / (domainVector[domainVector.sizeLocal()-1]);
+  double cov_coeff = domainVector[domainVector.sizeLocal()-1];
+  cov_coeff = std::pow(std::sqrt(cov_coeff), domainVector.sizeGlobal());
+
+  return -0.5 * norm2_squared / cov_coeff - std::log(cov_coeff * deter_cov);
 }
 
 }  // End namespace QUESO
