@@ -127,10 +127,10 @@ int main(int argc, char ** argv) {
   point[1] = 4.0;
   point[2] = 2.0;
   lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
-  truth_value = std::exp(-1.75);
+  truth_value = std::exp(-1.75) / 8.0;
 
   if (std::abs(lhood_value - truth_value) > TOL) {
-    std::cerr << "Random coefficient Gaussian test case failure." << std::endl;
+    std::cerr << "Random coefficient Gaussian test case 1 failure." << std::endl;
     std::cerr << "Computed likelihood value is: " << lhood_value << std::endl;
     std::cerr << "Likelihood value should be: " << truth_value << std::endl;
     queso_error();
@@ -140,10 +140,10 @@ int main(int argc, char ** argv) {
   point[1] = 1.0;
   point[2] = 1.0;
   lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
-  truth_value = 1.0;
+  truth_value = 1.0 / 2.0;
 
   if (std::abs(lhood_value - truth_value) > TOL) {
-    std::cerr << "Random coefficient Gaussian test case failure." << std::endl;
+    std::cerr << "Random coefficient Gaussian test case 2 failure." << std::endl;
     std::cerr << "Computed likelihood value is: " << lhood_value << std::endl;
     std::cerr << "Likelihood value should be: " << truth_value << std::endl;
     queso_error();

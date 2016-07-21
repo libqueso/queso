@@ -85,6 +85,7 @@ GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::lnValue(
   unsigned int offset = 0;
 
   // For each block...
+  double cov_norm_factor = 0.0;
   for (unsigned int i = 0; i < this->m_covariance.numBlocks(); i++) {
 
     // ...find the right hyperparameter
@@ -97,6 +98,15 @@ GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::lnValue(
       // 'coefficient' is a variance, so we divide by it
       modelOutput[offset+j] /= coefficient;
     }
+
+    // Keep track of the part of the covariance matrix that appears in the
+    // normalising constant because of the hyperparameter
+    double cov_determinant = this->m_covariance.getBlock(i).determinant();
+    cov_determinant = std::sqrt(cov_determinant);
+
+    coefficient = std::sqrt(coefficient);
+    cov_norm_factor += std::log(std::pow(coefficient, blockDim) * cov_determinant);
+
     offset += blockDim;
   }
 
@@ -105,7 +115,7 @@ GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::lnValue(
 
   double norm2_squared = modelOutput.sumOfComponents();  // This is square of 2-norm
 
-  return -0.5 * norm2_squared;
+  return -0.5 * norm2_squared - cov_norm_factor;
 }
 
 }  // End namespace QUESO
