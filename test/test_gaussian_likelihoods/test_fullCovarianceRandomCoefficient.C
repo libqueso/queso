@@ -117,7 +117,7 @@ int main(int argc, char ** argv) {
   point[0] = 0.0;
   point[1] = 2.0;  // Multiplicative coefficient of obs matrix
   lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
-  truth_value = std::exp(-5.0/4.0);
+  truth_value = std::exp(-5.0/4.0) / 4.0;
 
   if (std::abs(lhood_value - truth_value) > TOL) {
     std::cerr << "Random coefficient Gaussian test case failure." << std::endl;
@@ -129,7 +129,7 @@ int main(int argc, char ** argv) {
   point[0] = -2.0;
   point[1] = 1.0;
   lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
-  truth_value = 1.0;
+  truth_value = 1.0 / 2.0;
 
   if (std::abs(lhood_value - truth_value) > TOL) {
     std::cerr << "Random coefficient Gaussian test case failure." << std::endl;
