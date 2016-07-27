@@ -402,7 +402,8 @@ BaseEnvironment::scanInputFileForMyOptions(const boost::program_options::options
   //                    << std::endl;
   //}
 
-  queso_require_not_equal_to_msg(m_optionsInputFileName, "", "m_optionsInputFileName is 'nothing'");
+  queso_require_not_equal_to_msg(m_optionsInputFileName, std::string(""),
+                                 std::string("m_optionsInputFileName is 'nothing'"));
   //std::ifstream ifs(m_optionsInputFileName.c_str());
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
 #ifdef QUESO_MEMORY_DEBUGGING

@@ -107,6 +107,36 @@ fi
 AC_SUBST(HAVE_MPI)
 AM_CONDITIONAL(MPI_ENABLED, test x$HAVE_MPI = x1)
 
+
+# --------------------------------------------------------------
+# Allow the user to explicitly turn off C++11 support by saying
+# --disable-cxx11.  Otherwise, C++11 support is enabled by default
+# although libmesh does not (currently) use any C++11 features.
+# --------------------------------------------------------------
+AC_ARG_ENABLE(cxx11,
+              AC_HELP_STRING([--disable-cxx11],
+                             [build without C++11 support]),
+                             [case "${enableval}" in
+                   yes) enablecxx11=yes ;;
+                   no)  enablecxx11=no ;;
+                   *)   AC_MSG_ERROR(bad value ${enableval} for --disable-cxx11) ;;
+                   esac],
+                   [enablecxx11=yes])
+
+if (test "x$enablecxx11" = "xyes"); then
+  # --------------------------------------------------------------
+  # Standard autoconf macro for determining the proper -std=c++11
+  # flag for the current compiler.  Adds the result to CXXFLAGS if
+  # one is found.  See ax_cxx_compile_stdcxx_11.m4 for details.
+  # --------------------------------------------------------------
+  AX_CXX_COMPILE_STDCXX_11([noext],[optional])
+fi
+
+QUESO_TEST_CXX11_ISNAN
+QUESO_TEST_CXX11_ISFINITE
+QUESO_TEST_CXX11_UNIQUE_PTR
+QUESO_TEST_CXX11_SHARED_PTR
+
 #-------------------------
 # External Library Checks
 #-------------------------
@@ -145,6 +175,7 @@ BOOST_REQUIRE([1.35])
 BOOST_PROGRAM_OPTIONS
 BOOST_FIND_HEADER([boost/scoped_ptr.hpp])
 BOOST_FIND_HEADER([boost/shared_ptr.hpp])
+BOOST_FIND_HEADER([boost/math/special_functions.hpp])
 AC_CACHE_SAVE
 
 # Check for GLPK (optional)

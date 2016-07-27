@@ -52,7 +52,7 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     m_option_save_freq(m_prefix + "save_freq"),
     m_option_rwmh_step(m_prefix + "rwmh_step")
 {
-  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the abscense of an options input file"));
 
   m_parser->registerOption(m_option_help, "produce help message for infinite dimensional sampler");
   m_parser->registerOption<std::string>(m_option_dataOutputDirName, UQ_INF_DATA_OUTPUT_DIR_NAME_ODV, "name of data output dir");

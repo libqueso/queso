@@ -1872,7 +1872,7 @@ GslMatrix::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
-    queso_require_equal_to_msg(tmpString, "=", "string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, std::string("="), std::string("string should be the '=' sign"));
 
     // Read 'zeros(n_rows,n_cols)' string
     *filePtrSet.ifsVar >> tmpString;
@@ -1941,7 +1941,7 @@ GslMatrix::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-    queso_require_equal_to_msg(tmpString, "=", "in core 0, string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, std::string("="), std::string("in core 0, string should be the '=' sign"));
 
     // Take into account the ' [' portion
     std::streampos tmpPos = filePtrSet.ifsVar->tellg();

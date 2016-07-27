@@ -33,8 +33,6 @@ namespace QUESO
 {
   template<class V, class M>
   InterpolationSurrogateIOBase<V,M>::InterpolationSurrogateIOBase()
-    : m_domain(NULL),
-      m_data(NULL)
   {}
 
 } // end namespace QUESO

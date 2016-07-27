@@ -25,6 +25,10 @@
 #ifndef UQ_OPT_OPTIONS_H
 #define UQ_OPT_OPTIONS_H
 
+// C++
+#include <string>
+
+// QUESO
 #include <queso/SharedPtr.h>
 
 #define UQ_OPT_HELP ""

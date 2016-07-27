@@ -27,11 +27,10 @@
 
 #include <cmath>
 
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
-
 #include <queso/Environment.h>
 #include <queso/ScalarFunction.h>
 #include <queso/BoxSubset.h>
+#include <queso/math_macros.h>
 
 namespace QUESO {
 

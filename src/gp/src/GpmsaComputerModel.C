@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <unistd.h> // sleep
+
 #include <queso/GpmsaComputerModel.h>
 #include <queso/GenericScalarFunction.h>
 #include <queso/SequentialVectorRealizer.h>

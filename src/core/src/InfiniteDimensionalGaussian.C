@@ -25,8 +25,6 @@
 #include <memory>
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
-
 #include <queso/InfiniteDimensionalMeasureBase.h>
 #include <queso/InfiniteDimensionalGaussian.h>
 #include <queso/Environment.h>
@@ -55,7 +53,7 @@ InfiniteDimensionalGaussian::~InfiniteDimensionalGaussian()
 {
 }
 
-boost::shared_ptr<FunctionBase> InfiniteDimensionalGaussian::draw()
+typename SharedPtr<FunctionBase>::Type InfiniteDimensionalGaussian::draw()
 {
   unsigned int i;
 
@@ -65,7 +63,7 @@ boost::shared_ptr<FunctionBase> InfiniteDimensionalGaussian::draw()
 
 #warning We never use the mean?
 
-  boost::shared_ptr<FunctionBase> f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
+typename SharedPtr<FunctionBase>::Type f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
   return f;
 }
 

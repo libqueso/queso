@@ -22,35 +22,43 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef UQ_SHARED_PTR_H
-#define UQ_SHARED_PTR_H
+#ifndef UQ_MATH_MACROS_H
+#define UQ_MATH_MACROS_H
 
 #include <queso/config_queso.h>
 
-#ifdef QUESO_HAVE_CXX11_SHARED_PTR
-#include <memory>
-#elif QUESO_HAVE_BOOST_SHARED_PTR_HPP
-#include <boost/shared_ptr.hpp>
+#ifdef QUESO_HAVE_CXX11_IS_NAN
+#include <cmath>
+#elif QUESO_HAVE_BOOST_MATH_SPECIAL_FUNCTIONS_HPP
+#include <boost/math/special_functions.hpp>
 #endif
 
 namespace QUESO
 {
-#ifdef QUESO_HAVE_CXX11_SHARED_PTR
   template<typename T>
-  struct SharedPtr
+  bool queso_isnan( T arg )
   {
-    typedef std::shared_ptr<T> Type;
-  };
-#elif QUESO_HAVE_BOOST_SHARED_PTR_HPP
-  template<typename T>
-  struct SharedPtr
-  {
-    typedef boost::shared_ptr<T> Type;
-  };
+#ifdef QUESO_HAVE_CXX11_ISNAN
+    return std::isnan(arg);
+#elif QUESO_HAVE_BOOST_MATH_SPECIAL_FUNCTIONS_HPP
+    return (boost::math::isnan)(arg);
 #else
-#     error "No valid definition for SharedPtr found!"
+#     error "No valid definition for is_nan found!"
 #endif
+  }
+
+  template<typename T>
+  bool queso_isfinite( T arg )
+  {
+#ifdef QUESO_HAVE_CXX11_ISFINITE
+    return std::isfinite(arg);
+#elif QUESO_HAVE_BOOST_MATH_SPECIAL_FUNCTIONS_HPP
+    return (boost::math::isfinite)(arg);
+#else
+#     error "No valid definition for isfinite found!"
+#endif
+  }
 
 } // end namespace QUESO
 
-#endif // UQ_SHARED_PTR_H
+#endif // UQ_MATH_MACROS_H

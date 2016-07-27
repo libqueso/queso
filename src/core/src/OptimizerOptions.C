@@ -139,12 +139,12 @@ OptimizerOptions::~OptimizerOptions()
 void
 OptimizerOptions::checkOptions()
 {
-  queso_require_greater_msg(m_tolerance, 0, "optimizer tolerance must be > 0");
-  queso_require_greater_msg(m_finiteDifferenceStepSize, 0, "finite difference step must be > 0");
+  queso_require_greater_msg(m_tolerance, 0.0, "optimizer tolerance must be > 0");
+  queso_require_greater_msg(m_finiteDifferenceStepSize, 0.0, "finite difference step must be > 0");
   queso_require_greater_msg(m_maxIterations, 0, "max iterations must be > 0");
-  queso_require_greater_msg(m_fstepSize, 0, "fstepSize must be > 0");
-  queso_require_greater_msg(m_fdfstepSize, 0, "fdfstepSize must be > 0");
-  queso_require_greater_msg(m_lineTolerance, 0, "line tolerance must be > 0");
+  queso_require_greater_msg(m_fstepSize, 0.0, "fstepSize must be > 0");
+  queso_require_greater_msg(m_fdfstepSize, 0.0, "fdfstepSize must be > 0");
+  queso_require_greater_msg(m_lineTolerance, 0.0, "line tolerance must be > 0");
 }
 
 std::ostream &

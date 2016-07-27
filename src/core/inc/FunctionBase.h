@@ -26,7 +26,8 @@
 #define QUESO_FUNCTION_BASE_H
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+
+#include <queso/SharedPtr.h>
 
 namespace QUESO {
 
@@ -76,7 +77,7 @@ public:
    * identically zero (by copying \c this) everywhere and return a boost shared
    * pointer to it
    */
-  virtual boost::shared_ptr<FunctionBase> zero_clone() const = 0;
+  virtual typename SharedPtr<FunctionBase>::Type zero_clone() const = 0;
 
   //! Save the current function to an Exodus file called \c filename.  \c time is the time to attach to the function and is usually the iteration number
   virtual void save_function(const std::string & filename, double time) const = 0;

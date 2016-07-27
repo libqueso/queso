@@ -73,7 +73,7 @@ UniformJointPdf<V,M>::actualValue(
   if (domainDirection) {}; // just to remove compiler warning
 
   double volume = m_domainSet.volume();
-  if (((boost::math::isnan)(volume)) ||
+  if ((queso_isnan(volume)) ||
       (volume == -INFINITY         ) ||
       (volume ==  INFINITY         ) ||
       (volume <= 0.                ) ||
@@ -101,7 +101,7 @@ UniformJointPdf<V,M>::lnValue(
   if (domainDirection) {}; // just to remove compiler warning
 
   double volume = m_domainSet.volume();
-  if (((boost::math::isnan)(volume)) ||
+  if ((queso_isnan(volume)) ||
       (volume == -INFINITY         ) ||
       (volume ==  INFINITY         ) ||
       (volume <= 0.                ) ||

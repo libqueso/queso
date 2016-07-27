@@ -25,8 +25,7 @@
 #ifndef QUESO_INFINITEDIMENSIONALGAUSSIAN_H
 #define QUESO_INFINITEDIMENSIONALGAUSSIAN_H
 
-#include <boost/shared_ptr.hpp>
-
+#include <queso/SharedPtr.h>
 #include <queso/Environment.h>
 #include <queso/OperatorBase.h>
 #include <queso/GslVector.h>
@@ -70,7 +69,7 @@ public:
   //@}
 
   //! Draw from the measure, and then return a shared pointer to the draw
-  virtual boost::shared_ptr<FunctionBase> draw();
+  virtual typename SharedPtr<FunctionBase>::Type draw();
 
   //! Return coefficient \c i of the KL expansion of the current draw.  Must be called after draw()
   virtual double get_kl_coefficient(unsigned int i) const;

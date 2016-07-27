@@ -35,7 +35,6 @@
 #include <queso/ArrayOfSequences.h>
 #include <sys/time.h>
 #include <fstream>
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
 
 namespace QUESO {
 

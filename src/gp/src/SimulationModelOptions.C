@@ -296,7 +296,7 @@ SimulationModelOptions::SimulationModelOptions(
   m_option_a_s                      (m_prefix + "a_s"                      ),
   m_option_b_s                      (m_prefix + "b_s"                      )
 {
-  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the abscense of an options input file"));
 }
 
 SimulationModelOptions::SimulationModelOptions(
@@ -326,7 +326,7 @@ SimulationModelOptions::SimulationModelOptions(
 {
   queso_deprecated();
 
-  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the existence of an options input file"));
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In SimulationModelOptions::constructor(2)"

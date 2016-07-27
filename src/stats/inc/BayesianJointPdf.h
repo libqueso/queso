@@ -26,9 +26,7 @@
 #define UQ_BAYESIAN_JOINT_PROB_DENSITY_H
 
 #include <cmath>
-
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
-
+#include <queso/math_macros.h>
 #include <queso/JointPdf.h>
 #include <queso/Environment.h>
 #include <queso/ScalarFunction.h>

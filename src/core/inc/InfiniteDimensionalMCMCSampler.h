@@ -29,11 +29,8 @@
 #ifndef QUESO_INFINITE_SAMPLER_H
 #define QUESO_INFINITE_SAMPLER_H
 
-// Boost includes
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
-
 // Queso includes
+#include <queso/SharedPtr.h>
 #include <queso/Environment.h>
 #include <queso/InfiniteDimensionalMeasureBase.h>
 #include <queso/InfiniteDimensionalLikelihoodBase.h>
@@ -83,7 +80,7 @@ public:
   unsigned int iteration() const;
 
   //! Returns a pointer to new sampler, with all the moments reset.
-  boost::shared_ptr<InfiniteDimensionalMCMCSampler> clone_and_reset() const;
+  typename SharedPtr<InfiniteDimensionalMCMCSampler>::Type clone_and_reset() const;
 
 private:
   // Current iteration
@@ -112,22 +109,22 @@ private:
   const BaseEnvironment& m_env;
 
   // Pointer to the current physical state
-  boost::shared_ptr<FunctionBase> current_physical_state;
+  typename SharedPtr<FunctionBase>::Type current_physical_state;
 
   // Pointer to the current proposed state
-  boost::shared_ptr<FunctionBase> proposed_physical_state;
+  typename SharedPtr<FunctionBase>::Type proposed_physical_state;
 
   // Pointer to the current physical mean
-  boost::shared_ptr<FunctionBase> current_physical_mean;
+  typename SharedPtr<FunctionBase>::Type current_physical_mean;
 
   // Pointer to the current physical variance
-  boost::shared_ptr<FunctionBase> current_physical_var;
+  typename SharedPtr<FunctionBase>::Type current_physical_var;
 
   // Stores the differences from the mean
-  boost::shared_ptr<FunctionBase> _delta;
+  typename SharedPtr<FunctionBase>::Type _delta;
 
   // Stores a running sum-of-squares (kinda)
-  boost::shared_ptr<FunctionBase> _M2;
+  typename SharedPtr<FunctionBase>::Type _M2;
 
   // A pointer to the random number generator to use.
   // Should probably use the one in the queso environment.

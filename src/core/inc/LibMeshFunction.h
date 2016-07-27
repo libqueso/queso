@@ -30,8 +30,8 @@
 #define QUESO_LIBMESHFUNCTION_H
 
 #include <string>
-#include <boost/shared_ptr.hpp>
 #include <queso/FunctionBase.h>
+#include <queso/SharedPtr.h>
 
 namespace libMesh {
   class MeshBase;
@@ -98,15 +98,15 @@ public:
    * identically zero (by copying \c this) everywhere and return a boost shared
    * pointer to it
    */
-  virtual boost::shared_ptr<FunctionBase> zero_clone() const;
+  virtual typename SharedPtr<FunctionBase>::Type zero_clone() const;
 
   //! Return the internal libmesh equation systems object
-  virtual boost::shared_ptr<libMesh::EquationSystems> get_equation_systems() const;
+  virtual typename SharedPtr<libMesh::EquationSystems>::Type get_equation_systems() const;
 
 private:
   const FunctionOperatorBuilder & builder;
 
-  boost::shared_ptr<libMesh::EquationSystems> equation_systems;
+  typename SharedPtr<libMesh::EquationSystems>::Type equation_systems;
 };
 
 }  // End namespace QUESO

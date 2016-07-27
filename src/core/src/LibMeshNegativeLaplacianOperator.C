@@ -29,8 +29,7 @@
 #include <set>
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
-
+#include <queso/SharedPtr.h>
 #include <queso/FunctionOperatorBuilder.h>
 #include <queso/LibMeshNegativeLaplacianOperator.h>
 #include <libmesh/libmesh_common.h>
@@ -58,7 +57,7 @@ LibMeshNegativeLaplacianOperator::LibMeshNegativeLaplacianOperator(
     const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
   : LibMeshOperatorBase(builder, m)
 {
-  boost::shared_ptr<libMesh::EquationSystems> es(this->equation_systems);
+  typename SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
 
   // Give the system a pointer to the matrix assembly
   // function defined below.
@@ -143,7 +142,7 @@ void LibMeshNegativeLaplacianOperator::assemble()
 {
 #ifdef LIBMESH_HAVE_SLEPC
 
-  boost::shared_ptr<libMesh::EquationSystems> es(this->equation_systems);
+  typename SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
 
   // Get a constant reference to the mesh object.
   const libMesh::MeshBase& mesh = es->get_mesh();
