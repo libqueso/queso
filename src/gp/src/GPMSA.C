@@ -26,8 +26,6 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
-#include <boost/math/special_functions.hpp> // for Boost isnan.
-
 namespace QUESO {
 
 template <class V, class M>
@@ -190,7 +188,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
   V domainVectorParameter(*(this->m_simulationParameters[0]));
   for (unsigned int k = 0; k < dimParameter; k++) {
-    queso_assert (!(boost::math::isnan)(domainVector[k]));
+    queso_assert (!queso_isnan(domainVector[k]));
     domainVectorParameter[k] = domainVector[k];
   }
 
@@ -244,14 +242,14 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                                        ((*scenario1)[k] - (*scenario2)[k]));
       }
 
-      queso_assert (!(boost::math::isnan)(prodScenario));
+      queso_assert (!queso_isnan(prodScenario));
 
       // = second term in (1)
       prodParameter = 1.0;
       for (unsigned int k = 0; k < dimParameter; k++) {
-        queso_assert (!(boost::math::isnan)(domainVector[emulatorCorrStrStart+dimScenario+k]));
-        queso_assert (!(boost::math::isnan)((*parameter1)[k]));
-        queso_assert (!(boost::math::isnan)((*parameter2)[k]));
+        queso_assert (!queso_isnan(domainVector[emulatorCorrStrStart+dimScenario+k]));
+        queso_assert (!queso_isnan((*parameter1)[k]));
+        queso_assert (!queso_isnan((*parameter2)[k]));
         const double & emulator_corr_strength =
           domainVector[emulatorCorrStrStart+dimScenario+k];
         prodParameter *= std::pow(
@@ -260,7 +258,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                   ((*parameter1)[k] - (*parameter2)[k]));
       }
 
-      queso_assert (!(boost::math::isnan)(prodParameter));
+      queso_assert (!queso_isnan(prodParameter));
 
       // Sigma_eta in scalar case,
       // [Sigma_u, Sigma_uw; Sigma_uw^T, Sigma_w] in vector case
@@ -310,7 +308,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         const double discrepancy_precision =
           domainVector[discrepancyCorrStrStart-1];
         queso_assert_greater(discrepancy_precision, 0);
-        queso_assert (!(boost::math::isnan)(prodDiscrepancy));
+        queso_assert (!queso_isnan(prodDiscrepancy));
 
         // Sigma_delta term from below (3) in univariate case
         // Sigma_v term from p. 576 in multivariate case
@@ -382,11 +380,11 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     minus_2_log_lhd += sol[i] * residual[i];
   }
 
-if ((boost::math::isnan)(minus_2_log_lhd))
+if (queso_isnan(minus_2_log_lhd))
   for (unsigned int i = 0; i < residualSize; i++) {
-    if ((boost::math::isnan)(sol[i]))
+    if (queso_isnan(sol[i]))
       std::cout << "NaN sol[" << i << ']' << std::endl;
-    if ((boost::math::isnan)(residual[i]))
+    if (queso_isnan(residual[i]))
       std::cout << "NaN residual[" << i << ']' << std::endl;
 
     std::cout << "Covariance Matrix:" << std::endl;
