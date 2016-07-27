@@ -26,8 +26,7 @@
 #define UQ_RNG_BOOST_H
 
 #include <queso/RngBase.h>
-#include <boost/random.hpp>
-#include <boost/math/distributions.hpp>
+#include <boost/random/mersenne_twister.hpp>
 
 
 /*! \file RngBoost.h
