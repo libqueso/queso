@@ -22,8 +22,6 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <boost/program_options.hpp>
-
 #include <queso/MLSamplingLevelOptions.h>
 #include <queso/Miscellaneous.h>
 

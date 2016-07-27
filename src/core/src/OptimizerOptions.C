@@ -22,8 +22,6 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <boost/program_options.hpp>
-
 #include <queso/Defines.h>
 #include <queso/Environment.h>
 #include <queso/BoostInputOptionsParser.h>

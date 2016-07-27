@@ -21,8 +21,6 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <boost/program_options.hpp>
-
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 
 // ODV = option default value

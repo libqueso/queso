@@ -22,7 +22,9 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#endif
 
 #include <queso/Defines.h>
 #include <queso/StatisticalForwardProblemOptions.h>
