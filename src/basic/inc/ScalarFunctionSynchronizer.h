@@ -26,12 +26,14 @@
 #define UQ_SCALAR_FUNCTION_SYNCHRONIZER_H
 
 #include <queso/Environment.h>
-#include <queso/BayesianJointPdf.h>
 
 namespace QUESO {
 
 class GslVector;
 class GslMatrix;
+
+template <class V, class M>
+class BayesianJointPdf;
 
 /*! \file ScalarFunctionSynchronizer.h
  * \brief Class for synchronizing the calls of scalar functions

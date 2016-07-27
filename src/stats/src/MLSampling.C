@@ -30,6 +30,7 @@
 #include <queso/InstantiateIntersection.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/BayesianJointPdf.h>
 
 namespace QUESO {
 

@@ -25,6 +25,7 @@
 #include <queso/Environment.h>
 #include <queso/ScalarFunction.h>
 #include <queso/ScalarFunctionSynchronizer.h>
+#include <queso/BayesianJointPdf.h>
 #include <queso/JointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
