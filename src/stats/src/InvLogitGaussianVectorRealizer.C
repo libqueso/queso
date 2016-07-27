@@ -126,19 +126,19 @@ InvLogitGaussianVectorRealizer<V, M>::realization(V & nextValues) const
     double min_val = min_domain_bounds[i];
     double max_val = max_domain_bounds[i];
 
-    if (QUESO_ISFINITE(min_val) &&
-        QUESO_ISFINITE(max_val)) {
+    if (queso_isfinite(min_val) &&
+        queso_isfinite(max_val)) {
         // Left- and right-hand sides are finite.  Do full transform.
         nextValues[i] = (max_val * temp + min_val) / (1.0 + temp);
       }
-    else if (QUESO_ISFINITE(min_val) &&
-             !QUESO_ISFINITE(max_val)) {
+    else if (queso_isfinite(min_val) &&
+             !queso_isfinite(max_val)) {
       // Left-hand side finite, but right-hand side is not.
       // Do only left-hand transform.
       nextValues[i] = temp + min_val;
     }
-    else if (!QUESO_ISFINITE(min_val) &&
-             QUESO_ISFINITE(max_val)) {
+    else if (!queso_isfinite(min_val) &&
+             queso_isfinite(max_val)) {
       // Right-hand side is finite, but left-hand side is not.
       // Do only right-hand transform.
       nextValues[i] = (max_val * temp - 1.0) / temp;

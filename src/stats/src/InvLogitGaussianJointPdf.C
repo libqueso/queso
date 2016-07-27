@@ -123,8 +123,8 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
     double min_val = min_domain_bounds[i];
     double max_val = max_domain_bounds[i];
 
-    if (QUESO_ISFINITE(min_val) &&
-        QUESO_ISFINITE(max_val)) {
+    if (queso_isfinite(min_val) &&
+        queso_isfinite(max_val)) {
 
       if (domainVector[i] == min_val || domainVector[i] == max_val) {
         // Exit early if we can
@@ -139,8 +139,8 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
           std::log(domainVector[i] - min_val) -
           std::log(max_val - domainVector[i]);
     }
-    else if (QUESO_ISFINITE(min_val) &&
-             !QUESO_ISFINITE(max_val)) {
+    else if (queso_isfinite(min_val) &&
+             !queso_isfinite(max_val)) {
 
       if (domainVector[i] == min_val) {
         // Exit early if we can
@@ -153,8 +153,8 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
 
       lnjacobian += -std::log(domainVector[i] - min_val);
     }
-    else if (!QUESO_ISFINITE(min_val) &&
-             QUESO_ISFINITE(max_val)) {
+    else if (!queso_isfinite(min_val) &&
+             queso_isfinite(max_val)) {
 
       if (domainVector[i] == max_val) {
         // Exit early if we can

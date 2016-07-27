@@ -580,7 +580,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
       (y.outOfTargetSupport() == false)) {
     if ((x.logTarget() == -INFINITY) ||
         (x.logTarget() ==  INFINITY) ||
-        ( QUESO_ISNAN(x.logTarget())      )) {
+        ( queso_isnan(x.logTarget())      )) {
       std::cerr << "WARNING In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                 << ", worldRank "       << m_env.worldRank()
                 << ", fullRank "        << m_env.fullRank()
@@ -596,7 +596,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
     }
     else if ((y.logTarget() == -INFINITY           ) ||
              (y.logTarget() ==  INFINITY           ) ||
-             ( QUESO_ISNAN(y.logTarget()) )) {
+             ( queso_isnan(y.logTarget()) )) {
       std::cerr << "WARNING In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                 << ", worldRank "       << m_env.worldRank()
                 << ", fullRank "        << m_env.fullRank()
@@ -712,7 +712,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
 
   if ((inputPositionsData[0]->logTarget() == -INFINITY           ) ||
       (inputPositionsData[0]->logTarget() ==  INFINITY           ) ||
-      ( QUESO_ISNAN(inputPositionsData[0]->logTarget()) )) {
+      ( queso_isnan(inputPositionsData[0]->logTarget()) )) {
     std::cerr << "WARNING In MetropolisHastingsSG<P_V,P_M>::alpha(vec)"
               << ", worldRank "      << m_env.worldRank()
               << ", fullRank "       << m_env.fullRank()
@@ -730,7 +730,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   }
   else if ((inputPositionsData[inputSize - 1]->logTarget() == -INFINITY           ) ||
            (inputPositionsData[inputSize - 1]->logTarget() ==  INFINITY           ) ||
-           ( QUESO_ISNAN(inputPositionsData[inputSize - 1]->logTarget()) )) {
+           ( queso_isnan(inputPositionsData[inputSize - 1]->logTarget()) )) {
     std::cerr << "WARNING In MetropolisHastingsSG<P_V,P_M>::alpha(vec)"
               << ", worldRank "      << m_env.worldRank()
               << ", fullRank "       << m_env.fullRank()
@@ -2615,7 +2615,7 @@ MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
     double min_val = min_domain_bounds[i];
     double max_val = max_domain_bounds[i];
 
-    if (QUESO_ISFINITE(min_val) && QUESO_ISFINITE(max_val)) {
+    if (queso_isfinite(min_val) && queso_isfinite(max_val)) {
       if (m_initialProposalCovMatrix(i, i) >= max_val - min_val) {
         // User is trying to specify a uniform proposal distribution, which
         // is unsupported.  Throw an error for now.

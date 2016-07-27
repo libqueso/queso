@@ -35,21 +35,30 @@
 
 namespace QUESO
 {
+  template<typename T>
+  bool queso_isnan( T arg )
+  {
 #ifdef QUESO_HAVE_CXX11_ISNAN
-#define QUESO_ISNAN(arg) std::isnan(arg)
+    return std::isnan(arg);
 #elif QUESO_HAVE_BOOST_MATH_SPECIAL_FUNCTIONS_HPP
-#define QUESO_ISNAN(arg) (boost::math::isnan)(arg)
+    return (boost::math::isnan)(arg);
 #else
 #     error "No valid definition for is_nan found!"
 #endif
+  }
 
+  template<typename T>
+  bool queso_isfinite( T arg )
+  {
 #ifdef QUESO_HAVE_CXX11_ISFINITE
-#define QUESO_ISFINITE(arg) std::isfinite(arg)
+    return std::isfinite(arg);
 #elif QUESO_HAVE_BOOST_MATH_SPECIAL_FUNCTIONS_HPP
-#define QUESO_ISFINITE(arg) (boost::math::isfinite)(arg)
+    return (boost::math::isfinite)(arg);
 #else
 #     error "No valid definition for isfinite found!"
 #endif
+  }
+
 } // end namespace QUESO
 
 #endif // UQ_MATH_MACROS_H

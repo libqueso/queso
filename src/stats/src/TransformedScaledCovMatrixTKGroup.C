@@ -257,20 +257,20 @@ TransformedScaledCovMatrixTKGroup<V, M>::transformToGaussianSpace(
     double min_val = min_domain_bounds[i];
     double max_val = max_domain_bounds[i];
 
-    if (QUESO_ISFINITE(min_val) &&
-        QUESO_ISFINITE(max_val)) {
+    if (queso_isfinite(min_val) &&
+        queso_isfinite(max_val)) {
         // Left- and right-hand sides are finite.  Do full transform.
         transformedPoint[i] = std::log(physicalPoint[i] - min_val) -
             std::log(max_val - physicalPoint[i]);
     }
-    else if (QUESO_ISFINITE(min_val) &&
-             !QUESO_ISFINITE(max_val)) {
+    else if (queso_isfinite(min_val) &&
+             !queso_isfinite(max_val)) {
       // Left-hand side finite, but right-hand side is not.
       // Do only left-hand transform.
       transformedPoint[i] = std::log(physicalPoint[i] - min_val);
     }
-    else if (!QUESO_ISFINITE(min_val) &&
-             QUESO_ISFINITE(max_val)) {
+    else if (!queso_isfinite(min_val) &&
+             queso_isfinite(max_val)) {
       // Right-hand side is finite, but left-hand side is not.
       // Do only right-hand transform.
       transformedPoint[i] = -std::log(max_val - physicalPoint[i]);
