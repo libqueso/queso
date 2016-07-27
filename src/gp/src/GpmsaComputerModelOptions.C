@@ -390,7 +390,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
   queso_deprecated();
-  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the abscense of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the abscense of an options input file"));
 }
 
 GpmsaComputerModelOptions::GpmsaComputerModelOptions(
@@ -425,7 +425,7 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
   queso_deprecated();
-  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the existence of an options input file"));
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In GpmsaComputerModelOptions::constructor(2)"

@@ -181,7 +181,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_option_useOptimizerMonitor(m_prefix + "useOptimizerMonitor")
 {
   queso_deprecated();
-  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the absence of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the absence of an options input file"));
 }
 
 // Constructor 2------------------------------------
@@ -206,7 +206,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
 {
   queso_deprecated();
 
-  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the existence of an options input file"));
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In StatisticalInverseProblemOptions::constructor(2)"

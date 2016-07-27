@@ -271,7 +271,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           // Sigma_uw etc. it's lambda_wi and we skip lambda_eta
           const double relevant_precision =
             domainVector[dimParameter+basis+1+(numOutputs>1)];
-          queso_assert_greater(relevant_precision, 0);
+          queso_assert_greater(relevant_precision, 0.0);
 
           const unsigned int stridei =
             (i < this->m_numExperiments) ? m_numExperiments : m_numSimulations;
@@ -299,7 +299,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                                                dimScenario + 2 +
                                                (numOutputs > 1);
         for (unsigned int k = 0; k < dimScenario; k++) {
-          const double & discrepancy_corr_strength = 
+          const double & discrepancy_corr_strength =
             domainVector[discrepancyCorrStrStart+k];
           prodDiscrepancy *=
             std::pow(discrepancy_corr_strength, 4.0 *
@@ -718,7 +718,7 @@ GPMSAFactory<V, M>::setUpEmulator()
 
   for (unsigned int i=0; i != m_numSimulations; ++i)
     for (unsigned int j=0; j != numOutputs; ++j)
-      simulation_matrix(i,j) = 
+      simulation_matrix(i,j) =
         (*m_simulationOutputs[i])[j];
 
   // GSL only finds left singular vectors if n_rows>=n_columns, so we need to
@@ -996,7 +996,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       Map y_map(m_numExperiments * numOutputs, 0, comm);
       Map eta_map(m_numSimulations * numOutputs, 0, comm);
 
-      const unsigned int yhat_size = 
+      const unsigned int yhat_size =
         m_numExperiments * (num_discrepancy_bases + num_svd_terms);
 
       const unsigned int etahat_size =
@@ -1211,7 +1211,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   // Discrepancy precision
   this->discrepancyPrecisionMin.reset
     (new V(this->oneDSpace->zeroVector()));
-  this->discrepancyPrecisionMax.reset 
+  this->discrepancyPrecisionMax.reset
     (new V(this->oneDSpace->zeroVector()));
   this->m_discrepancyPrecisionShapeVec.reset
     (new V(this->oneDSpace->zeroVector()));

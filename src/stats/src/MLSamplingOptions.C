@@ -114,7 +114,7 @@ MLSamplingOptions::checkOptions(const BaseEnvironment * env)
   }
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-  if ((m_restartOutput_levelPeriod > 0)) queso_require_not_equal_to_msg(m_restartOutput_baseNameForFiles, ".", "Option 'restartOutput_levelPeriod' is > 0, but 'restartOutput_baseNameForFiles' is not specified...");
+  if ((m_restartOutput_levelPeriod > 0)) queso_require_not_equal_to_msg(m_restartOutput_baseNameForFiles, std::string("."), std::string("Option 'restartOutput_levelPeriod' is > 0, but 'restartOutput_baseNameForFiles' is not specified..."));
 #endif
 }
 

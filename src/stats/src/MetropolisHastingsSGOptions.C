@@ -713,7 +713,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 {
   queso_deprecated();
 
-  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the absence of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the absence of an options input file"));
 }
 // Constructor 2------------------------------------
 MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
@@ -790,7 +790,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 {
   queso_deprecated();
 
-  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the existence of an options input file"));
 
   if ((m_env.subDisplayFile() != NULL ) &&
       (m_ov.m_totallyMute     == false)) {
