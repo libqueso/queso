@@ -425,7 +425,9 @@ MonteCarloSGOptions::MonteCarloSGOptions(
 #endif
   m_prefix                          ((std::string)(prefix) + "mc_"),
   m_env                             (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                     (NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                     (m_prefix + "help"                     ),
   m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"       ),
   m_option_dataOutputAllowedSet     (m_prefix + "dataOutputAllowedSet"     ),
@@ -514,10 +516,10 @@ MonteCarloSGOptions::scanOptionsValues()
   return;
 }
 // Private methods ---------------------------------
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 void
 MonteCarloSGOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   queso_deprecated();
 
   optionsDesc.add_options()
@@ -545,7 +547,6 @@ MonteCarloSGOptions::defineMyOptions(boost::program_options::options_description
 #endif
    ;
 
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   return;
 }
 
@@ -554,7 +555,6 @@ MonteCarloSGOptions::getMyOptionValues(boost::program_options::options_descripti
 {
   queso_deprecated();
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << optionsDesc
@@ -659,9 +659,9 @@ MonteCarloSGOptions::getMyOptionValues(boost::program_options::options_descripti
     m_ov.m_qseqComputeStats = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_qseq_computeStats]).as<bool>();
   }
 #endif
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   return;
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 void
 MonteCarloSGOptions::print(std::ostream& os) const
