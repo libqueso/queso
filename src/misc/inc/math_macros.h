@@ -27,7 +27,7 @@
 
 #include <queso/config_queso.h>
 
-#ifdef QUESO_HAVE_CXX11_IS_NAN
+#ifdef QUESO_HAVE_CXX11_ISNAN
 #include <cmath>
 #elif QUESO_HAVE_BOOST_MATH_SPECIAL_FUNCTIONS_HPP
 #include <boost/math/special_functions.hpp>
