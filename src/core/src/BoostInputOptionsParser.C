@@ -27,6 +27,7 @@
 
 #include <queso/BoostInputOptionsParser.h>
 #include <queso/Miscellaneous.h>
+#include <queso/Defines.h>
 
 namespace QUESO {
 
@@ -37,6 +38,7 @@ BoostInputOptionsParser::BoostInputOptionsParser(const std::string & filename)
     m_optionsMap(new boost::program_options::variables_map()),
     m_scannedInputFile(false)
 {
+  queso_deprecated();
 }
 
 BoostInputOptionsParser::BoostInputOptionsParser()
@@ -46,16 +48,19 @@ BoostInputOptionsParser::BoostInputOptionsParser()
     m_optionsMap(new boost::program_options::variables_map()),
     m_scannedInputFile(false)
 {
+  queso_deprecated();
 }
 
 BoostInputOptionsParser::~BoostInputOptionsParser()
 {
+  queso_deprecated();
   // Do nothing
 }
 
 void
 BoostInputOptionsParser::scanInputFile()
 {
+  queso_deprecated();
   queso_require_msg(m_optionsDescription, "m_optionsDescription variable is NULL");
 
   // If it's the empty string then the defaults are used
@@ -80,6 +85,7 @@ void
 BoostInputOptionsParser::registerOption(std::string name, T defaultValue,
     std::string description)
 {
+  queso_deprecated();
   m_optionsDescription->add_options()
     (name.c_str(),
      boost::program_options::value<T>()->default_value(defaultValue),
@@ -89,6 +95,7 @@ BoostInputOptionsParser::registerOption(std::string name, T defaultValue,
 void
 BoostInputOptionsParser::registerOption(std::string name, std::string description)
 {
+  queso_deprecated();
   m_optionsDescription->add_options()
     (name.c_str(),
      description.c_str());
@@ -98,6 +105,7 @@ template <typename T>
 void
 BoostInputOptionsParser::getOption(std::string & name, T & value)
 {
+  queso_deprecated();
   if (m_scannedInputFile) {
     value = (*m_optionsMap)[name].as<T>();
   }
@@ -107,6 +115,7 @@ template <>
 void
 BoostInputOptionsParser::getOption(std::string & name, std::set<unsigned int, std::less<unsigned int>, std::allocator<unsigned int> > & value)
 {
+  queso_deprecated();
   if (m_scannedInputFile) {
     // Clear before putting things in it
     value.clear();
@@ -129,6 +138,7 @@ template <>
 void
 BoostInputOptionsParser::getOption<std::vector<double, std::allocator<double> > >(std::string & name, std::vector<double, std::allocator<double> > & value)
 {
+  queso_deprecated();
   if (m_scannedInputFile) {
     // Need to reset value?
 
@@ -143,6 +153,7 @@ BoostInputOptionsParser::getOption<std::vector<double, std::allocator<double> > 
 std::ostream &
 operator<<(std::ostream & os, const BoostInputOptionsParser & parser)
 {
+  queso_deprecated();
   os << *(parser.m_optionsDescription);
   return os;
 }
