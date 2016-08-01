@@ -27,7 +27,10 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #define UQ_MOC_SG_FILENAME_FOR_NO_FILE "."
 
@@ -53,11 +56,13 @@
 #define UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV           0
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 namespace boost {
   namespace program_options {
     class options_description;
   }
 }
+#endif
 
 namespace QUESO {
 
@@ -135,7 +140,9 @@ public:
 #endif
 
 private:
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   BoostInputOptionsParser * m_parser;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;
   std::string                   m_option_dataOutputFileName;
@@ -224,14 +231,18 @@ public:
   std::string                        m_prefix;
 
 private:
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   //! Defines the options for the Monte Carlo sequence generator as the default options.
   void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the sequence options.
   void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
+#endif
 
   const BaseEnvironment& m_env;
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   boost::program_options::options_description*      m_optionsDesc;
+#endif
 
   std::string                   m_option_help;
   std::string                   m_option_dataOutputFileName;

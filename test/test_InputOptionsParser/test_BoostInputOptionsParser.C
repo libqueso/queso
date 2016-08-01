@@ -1,3 +1,4 @@
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/asserts.h>
 #include <queso/BoostInputOptionsParser.h>
 
@@ -146,12 +147,17 @@ void test_empty()
   queso_require_equal_to(optionsValues.m_set_unsigned_int.empty(), true);
   queso_require_equal_to(optionsValues.m_vector_double.empty(), true);
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 int main(int argc, char ** argv)
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   test_default();
   test_good();
   test_empty();
 
   return 0;
+#else
+  return 77;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }

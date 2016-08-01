@@ -22,7 +22,9 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/GpmsaComputerModelOptions.h>
 #include <queso/Miscellaneous.h>
@@ -52,7 +54,9 @@ GcmOptionsValues::GcmOptionsValues()
     m_predWsBySamplingRVs            (UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ),
     m_predWsBySummingRVs             (UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ),
     m_predWsAtKeyPoints              (UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                           (m_prefix + "help"                           ),
     m_option_checkAgainstPreviousSample     (m_prefix + "checkAgainstPreviousSample"     ),
     m_option_dataOutputFileName             (m_prefix + "dataOutputFileName"             ),
@@ -101,7 +105,9 @@ GcmOptionsValues::GcmOptionsValues(const BaseEnvironment * env, const char *
     m_predWsBySamplingRVs            (UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV              ),
     m_predWsBySummingRVs             (UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV               ),
     m_predWsAtKeyPoints              (UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                ),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                           (m_prefix + "help"                           ),
     m_option_checkAgainstPreviousSample     (m_prefix + "checkAgainstPreviousSample"     ),
     m_option_dataOutputFileName             (m_prefix + "dataOutputFileName"             ),
@@ -124,6 +130,7 @@ GcmOptionsValues::GcmOptionsValues(const BaseEnvironment * env, const char *
     m_option_predWsBySummingRVs             (m_prefix + "predWsBySummingRVs"             ),
     m_option_predWsAtKeyPoints              (m_prefix + "predWsAtKeyPoints"              )
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption(m_option_help.c_str(),                                                                                                                        "produce help message for mixed inverse problem");
   m_parser->registerOption<bool        >(m_option_checkAgainstPreviousSample,      UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        , "check against previous sample"                 );
   m_parser->registerOption<std::string >(m_option_dataOutputFileName,              UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                , "name of data output file"                      );
@@ -168,6 +175,46 @@ GcmOptionsValues::GcmOptionsValues(const BaseEnvironment * env, const char *
   m_parser->getOption<bool        >(m_option_predWsBySamplingRVs,             m_predWsBySamplingRVs);
   m_parser->getOption<bool        >(m_option_predWsBySummingRVs,              m_predWsBySummingRVs);
   m_parser->getOption<bool        >(m_option_predWsAtKeyPoints,               m_predWsAtKeyPoints);
+#else
+  m_checkAgainstPreviousSample = env->input()(m_option_checkAgainstPreviousSample, UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV);
+  m_dataOutputFileName = env->input()(m_option_dataOutputFileName, UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV);
+  m_dataOutputAllowAll = env->input()(m_option_dataOutputAllowAll, UQ_GCM_DATA_OUTPUT_ALLOW_ALL_ODV);
+
+  // UQ_GCM_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  unsigned int size = env->input().vector_variable_size(m_option_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int allowed = env->input()(m_option_dataOutputAllowedSet, i, i);
+    m_dataOutputAllowedSet.insert(allowed);
+  }
+
+  m_priorSeqNumSamples = env->input()(m_option_priorSeqNumSamples, UQ_GCM_PRIOR_SEQ_NUM_SAMPLES_ODV);
+  m_priorSeqDataOutputFileName = env->input()(m_option_priorSeqDataOutputFileName, UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_NAME_ODV);
+  m_priorSeqDataOutputFileType = env->input()(m_option_priorSeqDataOutputFileType, UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_FILE_TYPE_ODV);
+  m_priorSeqDataOutputAllowAll = env->input()(m_option_priorSeqDataOutputAllowAll, UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOW_ALL_ODV);
+
+  // UQ_GCM_PRIOR_SEQ_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  size = env->input().vector_variable_size(m_option_priorSeqDataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int allowed = env->input()(m_option_priorSeqDataOutputAllowedSet, i, i);
+    m_priorSeqDataOutputAllowedSet.insert(allowed);
+  }
+
+  m_nuggetValueForBtWyB = env->input()(m_option_nuggetValueForBtWyB, UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_ODV);
+  m_nuggetValueForBtWyBInv = env->input()(m_option_nuggetValueForBtWyBInv, UQ_GCM_NUGGET_VALUE_FOR_BT_WY_B_INV_ODV);
+  m_formCMatrix = env->input()(m_option_formCMatrix, UQ_GCM_FORM_C_MATRIX_ODV);
+  m_useTildeLogicForRankDefficientC = env->input()(m_option_useTildeLogicForRankDefficientC, UQ_GCM_USE_TILDE_LOGIC_FOR_RANK_DEFFICIENT_C_ODV);
+  m_predLag = env->input()(m_option_predLag, UQ_GCM_PRED_LAG_ODV);
+  m_predVUsBySamplingRVs = env->input()(m_option_predVUsBySamplingRVs, UQ_GCM_PRED_VUS_BY_SAMPLING_RVS_ODV);
+  m_predVUsBySummingRVs = env->input()(m_option_predVUsBySummingRVs, UQ_GCM_PRED_VUS_BY_SUMMING_RVS_ODV);
+  m_predVUsAtKeyPoints = env->input()(m_option_predVUsAtKeyPoints, UQ_GCM_PRED_VUS_AT_KEY_POINTS_ODV);
+  m_predWsBySamplingRVs = env->input()(m_option_predWsBySamplingRVs, UQ_GCM_PRED_WS_BY_SAMPLING_RVS_ODV);
+  m_predWsBySummingRVs = env->input()(m_option_predWsBySummingRVs, UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV);
+  m_predWsAtKeyPoints = env->input()(m_option_predWsAtKeyPoints, UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 GcmOptionsValues::~GcmOptionsValues()
@@ -366,7 +413,9 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_ov                                    (),
   m_prefix                                ((std::string)(prefix) + "gcm_"),
   m_env                                   (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                           (new boost::program_options::options_description("Mixed Inverse Problem options")),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                           (m_prefix + "help"                           ),
   m_option_checkAgainstPreviousSample     (m_prefix + "checkAgainstPreviousSample"     ),
   m_option_dataOutputFileName             (m_prefix + "dataOutputFileName"             ),
@@ -401,7 +450,9 @@ GpmsaComputerModelOptions::GpmsaComputerModelOptions(
   m_ov                                    (alternativeOptionsValues),
   m_prefix                                ((std::string)(prefix) + "gcm_"),
   m_env                                   (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                           (NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                           (m_prefix + "help"                           ),
   m_option_checkAgainstPreviousSample     (m_prefix + "checkAgainstPreviousSample"     ),
   m_option_dataOutputFileName             (m_prefix + "dataOutputFileName"             ),
@@ -440,13 +491,17 @@ GpmsaComputerModelOptions::~GpmsaComputerModelOptions()
 {
   queso_deprecated();
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   if (m_optionsDesc) delete m_optionsDesc;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 void
 GpmsaComputerModelOptions::scanOptionsValues()
 {
   queso_deprecated();
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -456,6 +511,7 @@ GpmsaComputerModelOptions::scanOptionsValues()
   getMyOptionValues              (*m_optionsDesc);
   //std::cout << "scan 001\n"
   //          << std::endl;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In GpmsaComputerModelOptions::scanOptionsValues()"
@@ -468,6 +524,7 @@ GpmsaComputerModelOptions::scanOptionsValues()
   return;
 }
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 void
 GpmsaComputerModelOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
@@ -499,7 +556,9 @@ GpmsaComputerModelOptions::defineMyOptions(boost::program_options::options_descr
 
   return;
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 void
 GpmsaComputerModelOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
 {
@@ -621,6 +680,7 @@ GpmsaComputerModelOptions::getMyOptionValues(boost::program_options::options_des
 
   return;
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 void
 GpmsaComputerModelOptions::print(std::ostream& os) const

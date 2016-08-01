@@ -84,6 +84,16 @@ AC_ARG_ENABLE(mpi,
               [enable_mpi=no],
               [enable_mpi=yes])
 
+##############################################
+# Check if the user disabled program options #
+##############################################
+AC_ARG_ENABLE([boost-program-options],
+              AS_HELP_STRING([--disable-boost-program-options], [Disables use
+                              of boost program options for parsing the QUESO
+                              input file.  GetPot will be used instead.]),
+              [enable_program_options="no"],
+              [enable_program_options="yes"])
+
 #-------------------
 # Compilers and MPI
 #-------------------
@@ -172,7 +182,17 @@ AC_CACHE_SAVE
 
 AC_LANG([C++])
 BOOST_REQUIRE([1.35])
-BOOST_PROGRAM_OPTIONS
+AS_IF([test "x$enable_program_options" != "xno"],
+      [
+       BOOST_PROGRAM_OPTIONS
+      ])
+
+AS_IF([test "x$enable_program_options" = "xno"],
+      [
+       QUESO_CPPFLAGS="$QUESO_CPPFLAGS -DDISABLE_BOOST_PROGRAM_OPTIONS"
+       AC_SUBST(QUESO_CPPFLAGS)
+      ])
+
 BOOST_FIND_HEADER([boost/scoped_ptr.hpp])
 BOOST_FIND_HEADER([boost/shared_ptr.hpp])
 BOOST_FIND_HEADER([boost/math/special_functions.hpp])

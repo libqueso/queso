@@ -133,6 +133,8 @@ public:
   double m_lineTolerance;
 
 private:
+  const BaseEnvironment * m_env;
+
   BoostInputOptionsParser * m_parser;
 
   // The input options as strings so we can parse the input file later

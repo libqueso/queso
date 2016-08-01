@@ -22,8 +22,6 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <boost/program_options.hpp>
-
 #include <queso/MLSamplingLevelOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -113,7 +111,9 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
     m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
     m_env                                      (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                                      (m_prefix + "help"                                      ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -183,15 +183,19 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
     m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   this->defineAllOptions();
   m_parser->scanInputFile();
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   this->getAllOptions();
+
   checkOptions(&env);
 }
 
 void
 MLSamplingLevelOptions::defineAllOptions()
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string >(m_option_help,                                       UQ_ML_SAMPLING_L_HELP                      , "produce help message for Bayesian Markov chain distr. calculator");
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -260,11 +264,13 @@ MLSamplingLevelOptions::defineAllOptions()
   m_parser->registerOption<double      >(m_option_am_eta,                                     m_amEta                                    , "'am' eta"                                                        );
   m_parser->registerOption<double      >(m_option_am_epsilon,                                 m_amEpsilon                                , "'am' epsilon"                                                    );
   m_parser->registerOption<bool        >(m_option_doLogitTransform,                           UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        , "flag for doing logit transform for bounded domains"              );
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 void
 MLSamplingLevelOptions::getAllOptions()
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->getOption<std::string >(m_option_help,                                       m_help);
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -333,6 +339,137 @@ MLSamplingLevelOptions::getAllOptions()
   m_parser->getOption<double      >(m_option_am_eta,                                     m_amEta                                    );
   m_parser->getOption<double      >(m_option_am_epsilon,                                 m_amEpsilon                                );
   m_parser->getOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform);
+#else
+  m_help = m_env.input()(m_option_help,                                       UQ_ML_SAMPLING_L_HELP                      );
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
+  m_checkpointOutputFileName                  = m_env.input()(m_option_checkpointOutputFileName,                   m_checkpointOutputFileName                 );
+#endif
+  m_stopAtEnd                                 = m_env.input()(m_option_stopAtEnd,                                  m_stopAtEnd                                );
+  m_dataOutputFileName                        = m_env.input()(m_option_dataOutputFileName,                         m_dataOutputFileName                       );
+  m_dataOutputAllowAll                        = m_env.input()(m_option_dataOutputAllowAll,                         m_dataOutputAllowAll                       );
+
+  // Is the empty set (string) by default
+  unsigned int size = m_env.input().vector_variable_size(m_option_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int allowed = m_env.input()(m_option_dataOutputAllowedSet, i, i);
+    m_dataOutputAllowedSet.insert(allowed);
+  }
+
+  m_loadBalanceAlgorithmId                    = m_env.input()(m_option_loadBalanceAlgorithmId,                     m_loadBalanceAlgorithmId                   );
+  m_loadBalanceTreshold                       = m_env.input()(m_option_loadBalanceTreshold,                        m_loadBalanceTreshold                      );
+  m_minEffectiveSizeRatio                     = m_env.input()(m_option_minEffectiveSizeRatio,                      m_minEffectiveSizeRatio                    );
+  m_maxEffectiveSizeRatio                     = m_env.input()(m_option_maxEffectiveSizeRatio,                      m_maxEffectiveSizeRatio                    );
+  m_scaleCovMatrix                            = m_env.input()(m_option_scaleCovMatrix,                             m_scaleCovMatrix                           );
+  m_minRejectionRate                          = m_env.input()(m_option_minRejectionRate,                           m_minRejectionRate                         );
+  m_maxRejectionRate                          = m_env.input()(m_option_maxRejectionRate,                           m_maxRejectionRate                         );
+  m_covRejectionRate                          = m_env.input()(m_option_covRejectionRate,                           m_covRejectionRate                         );
+  m_minAcceptableEta                          = m_env.input()(m_option_minAcceptableEta,                           m_minAcceptableEta                         );
+  m_totallyMute                               = m_env.input()(m_option_totallyMute,                                m_totallyMute                              );
+  m_initialPositionDataInputFileName          = m_env.input()(m_option_initialPosition_dataInputFileName,          m_initialPositionDataInputFileName         );
+  m_initialPositionDataInputFileType          = m_env.input()(m_option_initialPosition_dataInputFileType,          m_initialPositionDataInputFileType         );
+  m_initialProposalCovMatrixDataInputFileName = m_env.input()(m_option_initialProposalCovMatrix_dataInputFileName, m_initialProposalCovMatrixDataInputFileName);
+  m_initialProposalCovMatrixDataInputFileType = m_env.input()(m_option_initialProposalCovMatrix_dataInputFileType, m_initialProposalCovMatrixDataInputFileType);
+  m_initialPositionUsePreviousLevelLikelihood = m_env.input()(m_option_initialPositionUsePreviousLevelLikelihood,  m_initialPositionUsePreviousLevelLikelihood);
+
+  // Is the empty set (string) by default
+  size = m_env.input().vector_variable_size(m_option_listOfDisabledParameters);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int allowed = m_env.input()(m_option_listOfDisabledParameters, i, i);
+    m_parameterDisabledSet.insert(allowed);
+  }
+
+  // Is the empty set (string) by default
+  size = m_env.input().vector_variable_size(m_option_initialValuesOfDisabledParameters);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int value = m_env.input()(m_option_initialValuesOfDisabledParameters, i, i);
+    m_initialValuesOfDisabledParameters.push_back(value);
+  }
+
+  m_rawChainDataInputFileName                 = m_env.input()(m_option_rawChain_dataInputFileName,                 m_rawChainDataInputFileName                );
+  m_rawChainDataInputFileType                 = m_env.input()(m_option_rawChain_dataInputFileType,                 m_rawChainDataInputFileType                );
+  m_rawChainSize                              = m_env.input()(m_option_rawChain_size,                              m_rawChainSize                             );
+  m_rawChainGenerateExtra                     = m_env.input()(m_option_rawChain_generateExtra,                     m_rawChainGenerateExtra                    );
+  m_rawChainDisplayPeriod                     = m_env.input()(m_option_rawChain_displayPeriod,                     m_rawChainDisplayPeriod                    );
+  m_rawChainMeasureRunTimes                   = m_env.input()(m_option_rawChain_measureRunTimes,                   m_rawChainMeasureRunTimes                  );
+  m_rawChainDataOutputPeriod                  = m_env.input()(m_option_rawChain_dataOutputPeriod,                  m_rawChainDataOutputPeriod                 );
+  m_rawChainDataOutputFileName                = m_env.input()(m_option_rawChain_dataOutputFileName,                m_rawChainDataOutputFileName               );
+  m_rawChainDataOutputFileType                = m_env.input()(m_option_rawChain_dataOutputFileType,                m_rawChainDataOutputFileType               );
+  m_rawChainDataOutputAllowAll                = m_env.input()(m_option_rawChain_dataOutputAllowAll,                m_rawChainDataOutputAllowAll               );
+
+  // Is the empty set (string) by default
+  size = m_env.input().vector_variable_size(m_option_rawChain_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int allowed = m_env.input()(m_option_rawChain_dataOutputAllowedSet, i, i);
+    m_rawChainDataOutputAllowedSet.insert(allowed);
+  }
+
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_rawChainComputeStats                      = m_env.input()(m_option_rawChain_computeStats,                      m_rawChainComputeStats                     );
+#endif
+  m_filteredChainGenerate                     = m_env.input()(m_option_filteredChain_generate,                     m_filteredChainGenerate                    );
+  m_filteredChainDiscardedPortion             = m_env.input()(m_option_filteredChain_discardedPortion,             m_filteredChainDiscardedPortion            );
+  m_filteredChainLag                          = m_env.input()(m_option_filteredChain_lag,                          m_filteredChainLag                         );
+  m_filteredChainDataOutputFileName           = m_env.input()(m_option_filteredChain_dataOutputFileName,           m_filteredChainDataOutputFileName          );
+  m_filteredChainDataOutputFileType           = m_env.input()(m_option_filteredChain_dataOutputFileType,           m_filteredChainDataOutputFileType          );
+  m_filteredChainDataOutputAllowAll           = m_env.input()(m_option_filteredChain_dataOutputAllowAll,           m_filteredChainDataOutputAllowAll          );
+
+  // Is the empty set (string) by default
+  size = m_env.input().vector_variable_size(m_option_filteredChain_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int allowed = m_env.input()(m_option_filteredChain_dataOutputAllowedSet, i, i);
+    m_filteredChainDataOutputAllowedSet.insert(allowed);
+  }
+
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_filteredChainComputeStats                 = m_env.input()(m_option_filteredChain_computeStats,                 m_filteredChainComputeStats                );
+#endif
+  m_displayCandidates                         = m_env.input()(m_option_displayCandidates,                          m_displayCandidates                        );
+  m_putOutOfBoundsInChain                     = m_env.input()(m_option_putOutOfBoundsInChain,                      m_putOutOfBoundsInChain                    );
+  m_tkUseLocalHessian                         = m_env.input()(m_option_tk_useLocalHessian,                         m_tkUseLocalHessian                        );
+  m_tkUseNewtonComponent                      = m_env.input()(m_option_tk_useNewtonComponent,                      m_tkUseNewtonComponent                     );
+  m_drMaxNumExtraStages                       = m_env.input()(m_option_dr_maxNumExtraStages,                       m_drMaxNumExtraStages                      );
+
+  // Is the empty set (string) by default
+  size = m_env.input().vector_variable_size(m_option_dr_listOfScalesForExtraStages);
+
+  m_drScalesForExtraStages.clear();
+  for (unsigned int i = 0; i < size; i++) {
+    unsigned int value = m_env.input()(m_option_dr_listOfScalesForExtraStages, i, i);
+    m_drScalesForExtraStages.push_back(value);
+  }
+
+  m_drDuringAmNonAdaptiveInt                  = m_env.input()(m_option_dr_duringAmNonAdaptiveInt,                  m_drDuringAmNonAdaptiveInt                 );
+  m_amKeepInitialMatrix                       = m_env.input()(m_option_am_keepInitialMatrix,                       m_amKeepInitialMatrix                      );
+  m_amInitialNonAdaptInterval                 = m_env.input()(m_option_am_initialNonAdaptInterval,                 m_amInitialNonAdaptInterval                );
+  m_amAdaptInterval                           = m_env.input()(m_option_am_adaptInterval,                           m_amAdaptInterval                          );
+  m_amAdaptedMatricesDataOutputPeriod         = m_env.input()(m_option_am_adaptedMatrices_dataOutputPeriod,        m_amAdaptedMatricesDataOutputPeriod        );
+  m_amAdaptedMatricesDataOutputFileName       = m_env.input()(m_option_am_adaptedMatrices_dataOutputFileName,      m_amAdaptedMatricesDataOutputFileName      );
+  m_amAdaptedMatricesDataOutputFileType       = m_env.input()(m_option_am_adaptedMatrices_dataOutputFileType,      m_amAdaptedMatricesDataOutputFileType      );
+  m_amAdaptedMatricesDataOutputAllowAll       = m_env.input()(m_option_am_adaptedMatrices_dataOutputAllowAll,      m_amAdaptedMatricesDataOutputAllowAll      );
+
+  size = m_env.input().vector_variable_size(m_option_am_adaptedMatrices_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int allowed = m_env.input()(m_option_am_adaptedMatrices_dataOutputAllowedSet, i, i);
+    m_amAdaptedMatricesDataOutputAllowedSet.insert(allowed);
+  }
+
+  m_amEta                                     = m_env.input()(m_option_am_eta,                                     m_amEta                                    );
+  m_amEpsilon                                 = m_env.input()(m_option_am_epsilon,                                 m_amEpsilon                                );
+  m_doLogitTransform                          = m_env.input()(m_option_doLogitTransform,                           UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        );
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 void
@@ -442,14 +579,17 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
   // FIXME
   if (defaultOptions) this->copyOptionsValues(*defaultOptions);
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   // Replace the parser since default values changed
   if (m_parser) {
     delete m_parser;
     m_parser = new BoostInputOptionsParser(m_env.optionsInputFileName());
   }
 
+  // FIXME: Does this work with GetPot?
   this->defineAllOptions();
   m_parser->scanInputFile();
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   this->getAllOptions();
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -682,7 +822,9 @@ MLSamplingLevelOptions::env() const
 
 std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptions& obj)
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   obj.print(os);
   return os;
 }

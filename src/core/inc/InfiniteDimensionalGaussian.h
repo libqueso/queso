@@ -26,17 +26,13 @@
 #define QUESO_INFINITEDIMENSIONALGAUSSIAN_H
 
 #include <queso/SharedPtr.h>
-#include <queso/Environment.h>
-#include <queso/OperatorBase.h>
-#include <queso/GslVector.h>
-#include <queso/GslMatrix.h>
-#include <queso/VectorSpace.h>
-#include <queso/VectorSubset.h>
-#include <queso/VectorRV.h>
 #include <queso/InfiniteDimensionalMeasureBase.h>
 #include <queso/FunctionBase.h>
 
 namespace QUESO {
+
+class FullEnvironment;
+class OperatorBase;
 
 /*!
  * \file InfiniteDimensionalGaussian.h

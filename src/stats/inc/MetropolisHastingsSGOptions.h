@@ -28,7 +28,10 @@
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
 #include <queso/SequenceStatisticalOptions.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #undef  UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
@@ -94,11 +97,13 @@
 #define UQ_MH_SG_OUTPUT_LOG_TARGET                                    1
 #define UQ_MH_SG_DO_LOGIT_TRANSFORM                                   1
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 namespace boost {
   namespace program_options {
     class options_description;
   }
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 namespace QUESO {
 
@@ -600,7 +605,12 @@ public:
   bool m_doLogitTransform;
 
 private:
+  // Cache a pointer to the environment.
+  const BaseEnvironment * m_env;
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   BoostInputOptionsParser * m_parser;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   //! Option name for MhOptionsValues::m_help.  Option name is m_prefix + "mh_help"
   std::string                   m_option_help;
@@ -787,14 +797,18 @@ public:
   std::string                        m_prefix;
 
 private:
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   //! Defines the options for the Metropolis-Hastings generator of samples as the default options.
   void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the sequence options defined to the  Metropolis-Hastings algorithm.
   void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   const BaseEnvironment& m_env;
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   boost::program_options::options_description*      m_optionsDesc;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;
 

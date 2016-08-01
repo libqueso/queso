@@ -24,6 +24,9 @@
 
 #include <queso/RngBoost.h>
 
+#include <boost/random.hpp>
+#include <boost/math/distributions.hpp>
+
 namespace QUESO {
 
 //! Constructor with seed ---------------------------

@@ -28,6 +28,7 @@
 #include <queso/GPMSA.h>
 #include <queso/GslOptimizer.h>
 #include <queso/OptimizerMonitor.h>
+#include <queso/BayesianJointPdf.h>
 
 namespace QUESO {
 
