@@ -5,6 +5,8 @@ BUILT_SOURCES = .license.stamp
 endif
 
 check_PROGRAMS = # Append below
+check_PROGRAMS += test_boxsubset_centroid
+check_PROGRAMS += test_concatenation_centroid
 check_PROGRAMS += test_uqEnvironmentNonFatal
 check_PROGRAMS += test_uqGslVector
 check_PROGRAMS += test_uqGaussianVectorRVClass
@@ -92,6 +94,8 @@ if LIBMESH_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
 endif
 
+test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
+test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
 test_uqEnvironmentNonFatal_SOURCES = test_Environment/test_uqEnvironmentNonFatal.C
 test_uqGslVector_SOURCES = test_GslVector/test_uqGslVector.C
 test_uqGaussianVectorRVClass_SOURCES = test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
@@ -161,6 +165,8 @@ test_sip_gslopt_options_SOURCES = test_optimizer/test_sip_gslopt_options.C
 
 # Files to freedom stamp
 srcstamp =
+srcstamp += $(test_boxsubset_centroid_SOURCES)
+srcstamp += $(test_concatenation_centroid_SOURCES)
 srcstamp += $(test_uqEnvironmentNonFatal_SOURCES)
 srcstamp += $(test_uqEnvironmentOptionsPrint_SOURCES)
 srcstamp += $(test_uqGslVectorConstructorFatal_SOURCES)
@@ -220,6 +226,8 @@ srcstamp += $(test_optimizer_input_parameters_SOURCES)
 srcstamp += $(test_sip_gslopt_options_SOURCES)
 
 TESTS =
+TESTS += test_boxsubset_centroid
+TESTS += test_concatenation_centroid
 TESTS += test_uqEnvironmentNonFatal
 TESTS += test_uqGslVector
 TESTS += test_uqGaussianVectorRVClass
