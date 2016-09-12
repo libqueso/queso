@@ -87,6 +87,8 @@ public:
 
   //! Clears the pre-computing positions \c m_preComputingPositions[stageId]
   virtual       void                          clearPreComputingPositions();
+
+  virtual void set_dr_stage(unsigned int stageId);
   //@}
 
   //! @name I/O methods
@@ -96,13 +98,16 @@ public:
   virtual       void                          print                     (std::ostream& os) const;
   //@}
 protected:
-  const   EmptyEnvironment*                    m_emptyEnv;
-  const   BaseEnvironment&                     m_env;
-          std::string                                 m_prefix;
-  const   VectorSpace<V,M>*                    m_vectorSpace;
-          std::vector<double>                         m_scales;
-          std::vector<const V*>                       m_preComputingPositions;
-          std::vector<BaseVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
+  const EmptyEnvironment*                m_emptyEnv;
+  const BaseEnvironment&                 m_env;
+        std::string                      m_prefix;
+  const VectorSpace<V,M>*                m_vectorSpace;
+        std::vector<double>              m_scales;
+        std::vector<const V*>            m_preComputingPositions;
+        std::vector<BaseVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
+
+private:
+  unsigned int m_stageId;
 };
 
 }  // End namespace QUESO
