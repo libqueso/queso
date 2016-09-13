@@ -52,7 +52,7 @@ int main(int argc, char ** argv)
   QUESO::GslVector mean(paramSpace.zeroVector());
   pdf.distributionMean(mean);
 
-  const char *msg = "ConcatenatedJointPdf mean is incorrect";
+  const char *msg = "GammaJointPdf mean is incorrect";
   double real_mean0 = k[0] * theta[0];
   double real_mean1 = k[1] * theta[1];
   queso_require_less_equal_msg(std::abs(mean[0]-real_mean0), TOL, msg);
