@@ -556,6 +556,13 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   unsigned int                               yStageId,
   double*                                    alphaQuotientPtr)
 {
+  unsigned int old_stageId;
+
+  // Get the current (old) stageId.  We'll set the tk back to this stage id
+  // at the end to preserve the state of the tk
+  old_stageId = m_tk->set_dr_stage(0);
+  m_tk->set_dr_stage(old_stageId);
+
   double alphaQuotient = 0.;
   if ((x.outOfTargetSupport() == false) &&
       (y.outOfTargetSupport() == false)) {
@@ -611,6 +618,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
         }
       }
       else {
+        m_tk->set_dr_stage(yStageId);
         double qyx = m_tk->rv(yStageId).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
@@ -622,6 +630,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                                  << ", rvYX.lawCovMatrix = " << pdfYX->lawCovMatrix()
                                  << std::endl;
         }
+        m_tk->set_dr_stage(xStageId);
         double qxy = m_tk->rv(xStageId).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
