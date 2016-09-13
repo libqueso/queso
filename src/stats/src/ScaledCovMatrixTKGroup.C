@@ -199,6 +199,15 @@ ScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
   BaseTKGroup<V,M>::clearPreComputingPositions();
 }
 
+template <class V, class M>
+unsigned int
+ScaledCovMatrixTKGroup<V, M>::set_dr_stage(unsigned int stageId)
+{
+  unsigned int old_stageId = this->m_stageId;
+  this->m_stageId = stageId;
+  return old_stageId;
+}
+
 // Private methods------------------------------------
 template<class V, class M>
 void

@@ -88,7 +88,8 @@ public:
   //! Clears the pre-computing positions \c m_preComputingPositions[stageId]
   virtual       void                          clearPreComputingPositions();
 
-  virtual void set_dr_stage(unsigned int stageId);
+  //! Does nothing.  Subclasses may re-implement.  Returns the current stage id.
+  virtual unsigned int set_dr_stage(unsigned int stageId);
   //@}
 
   //! @name I/O methods
@@ -105,8 +106,6 @@ protected:
         std::vector<double>              m_scales;
         std::vector<const V*>            m_preComputingPositions;
         std::vector<BaseVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
-
-private:
   unsigned int m_stageId;
 };
 

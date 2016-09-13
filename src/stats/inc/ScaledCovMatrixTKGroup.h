@@ -78,6 +78,9 @@ public:
 
   //! Clears the pre-computing positions \c m_preComputingPositions[stageId]
   void                          clearPreComputingPositions();
+
+  //! Sets the internal \c m_stageId varialbe to \c stageId
+  virtual unsigned int set_dr_stage(unsigned int stageId);
   //@}
 
   //! @name I/O methods

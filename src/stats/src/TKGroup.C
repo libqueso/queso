@@ -121,10 +121,10 @@ BaseTKGroup<V,M>::clearPreComputingPositions()
 }
 
 template <class V, class M>
-void
+unsigned int
 BaseTKGroup<V, M>::set_dr_stage(unsigned int stageId)
 {
-  m_stageId = stageId;
+  return this->m_stageId;
 }
 
 // I/O methods---------------------------------------
