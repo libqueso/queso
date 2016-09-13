@@ -66,6 +66,8 @@ public:
   //! Gaussian increment property to construct a transition kernel.
   const GaussianVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds);
 
+  virtual const GaussianVectorRV<V, M> & rv() const;
+
   //! Scales the covariance matrix.
   /*! The covariance matrix is scaled by a factor of \f$ 1/scales^2 \f$.*/
   void                          updateLawCovMatrix        (const M& covMatrix);

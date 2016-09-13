@@ -66,6 +66,8 @@ public:
 
   //! Gaussian increment property to construct a transition kernel.
   const GaussianVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds);
+
+  virtual const GaussianVectorRV<V, M> & rv() const;
    //@}
 
   //! @name Misc methods

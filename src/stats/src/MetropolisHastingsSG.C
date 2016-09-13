@@ -619,11 +619,11 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
       }
       else {
         m_tk->set_dr_stage(yStageId);
-        double qyx = m_tk->rv(yStageId).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+        double qyx = m_tk->rv().pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_totallyMute == false)) {
-          const InvLogitGaussianJointPdf<P_V,P_M>* pdfYX = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
+          const InvLogitGaussianJointPdf<P_V,P_M>* pdfYX = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv().pdf()));
           *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                                  << ", rvYX.lawExpVector = " << pdfYX->lawExpVector()
                                  << ", rvYX.lawVarVector = " << pdfYX->lawVarVector()
@@ -631,11 +631,11 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                                  << std::endl;
         }
         m_tk->set_dr_stage(xStageId);
-        double qxy = m_tk->rv(xStageId).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+        double qxy = m_tk->rv().pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_totallyMute == false)) {
-          const InvLogitGaussianJointPdf<P_V,P_M>* pdfXY = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
+          const InvLogitGaussianJointPdf<P_V,P_M>* pdfXY = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv().pdf()));
           *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                                  << ", rvXY.lawExpVector = " << pdfXY->lawExpVector()
                                  << ", rvXY.lawVarVector = " << pdfXY->lawVarVector()
@@ -675,6 +675,9 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                              << std::endl;
     }
   }
+
+  m_tk->set_dr_stage(old_stageId);
+
   if (alphaQuotientPtr != NULL) *alphaQuotientPtr = alphaQuotient;
 
   return std::min(1.,alphaQuotient);

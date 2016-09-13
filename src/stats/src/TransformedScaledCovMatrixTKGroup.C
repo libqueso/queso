@@ -140,6 +140,28 @@ TransformedScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stag
 
   return (*invlogit_gaussian);
 }
+
+template <class V, class M>
+const InvLogitGaussianVectorRV<V, M> &
+TransformedScaledCovMatrixTKGroup<V, M>::rv() const
+{
+  queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
+  queso_require_msg(m_rvs[0], "m_rvs[0] == NULL");
+  queso_require_greater_msg(m_preComputingPositions.size(), this->m_stageId, "m_preComputingPositions.size() <= stageId");
+  queso_require_msg(m_preComputingPositions[this->m_stageId], "m_preComputingPositions[stageId] == NULL");
+
+  InvLogitGaussianVectorRV<V, M> * invlogit_gaussian =
+    dynamic_cast<InvLogitGaussianVectorRV<V, M> * >(m_rvs[0]);
+
+  V transformedPreComputingPositions(*m_preComputingPositions[this->m_stageId]);
+  transformToGaussianSpace(*m_preComputingPositions[this->m_stageId],
+      transformedPreComputingPositions);
+
+  invlogit_gaussian->updateLawExpVector(transformedPreComputingPositions);
+
+  return (*invlogit_gaussian);
+}
+
 //---------------------------------------------------
 template<class V, class M>
 void

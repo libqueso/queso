@@ -140,6 +140,26 @@ HessianCovMatricesTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
 
   return *gaussian_rv;
 }
+
+template <class V, class M>
+const GaussianVectorRV<V, M> &
+HessianCovMatricesTKGroup<V, M>::rv() const
+{
+  queso_require_greater_msg(m_rvs.size(), this->m_stageId, "m_rvs.size() <= stageId");
+  queso_require_msg(m_rvs[this->m_stageId], "m_rvs[stageId] == NULL");
+  queso_require_greater_msg(m_preComputingPositions.size(), this->m_stageId, "m_preComputingPositions.size() <= stageId");
+  queso_require_msg(m_preComputingPositions[this->m_stageId], "m_preComputingPositions[stageId] == NULL");
+
+  GaussianVectorRV<V, M> * gaussian_rv =
+    dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[this->m_stageId]);
+
+  gaussian_rv->updateLawExpVector(*m_preComputingPositions[this->m_stageId] + *m_originalNewtonSteps[this->m_stageId]);
+
+  gaussian_rv->updateLawCovMatrix(*m_originalCovMatrices[this->m_stageId]);
+
+  return *gaussian_rv;
+}
+
 // Misc methods--------------------------------------
 template<class V, class M>
 bool
