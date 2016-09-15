@@ -684,8 +684,14 @@ template<class P_V,class P_M>
 double
 MetropolisHastingsSG<P_V,P_M>::alpha(
   const std::vector<MarkovChainPositionData<P_V>*>& inputPositionsData,
-  const std::vector<unsigned int                        >& inputTKStageIds)
+  const std::vector<unsigned int                 >& inputTKStageIds)
 {
+  // inputPositionsData is all the DR position data, except for the first
+  // two elements.  The first element is the current state, and the second
+  // element is the would-be candidate before DR.
+  //
+  // inputTKStageIds is a vector containing 0, 1, 2, ..., n
+
   unsigned int inputSize = inputPositionsData.size();
   if ((m_env.subDisplayFile()                   ) &&
       (m_env.displayVerbosity() >= 10           ) &&
@@ -695,6 +701,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                            << std::endl;
   }
   queso_require_greater_equal_msg(inputSize, 2, "inputPositionsData has size < 2");
+  queso_require_equal_to_msg(inputSize, inputPositionsData.size(), "inputPositionsData and inputTKStageIds have different lengths");
 
   // If necessary, return 0. right away
   if (inputPositionsData[0          ]->outOfTargetSupport()) return 0.;
@@ -2502,6 +2509,8 @@ MetropolisHastingsSG<P_V, P_M>::delayedRejection(unsigned int positionId,
         logLikelihood,
         logTarget);
 
+    // Ok, so we almost don't need setPreComputingPosition.  All the DR
+    // position information we needed was generated in this while loop.
     drPositionsData.push_back(new MarkovChainPositionData<P_V>(currentCandidateData));
     tkStageIds.push_back     (stageId+1);
 
@@ -2650,6 +2659,6 @@ MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
   }
 }
 
-}  // End namespace QUESO
+template class MetropolisHastingsSG<GslVector, GslMatrix>;
 
-template class QUESO::MetropolisHastingsSG<QUESO::GslVector, QUESO::GslMatrix>;
+}  // End namespace QUESO
