@@ -267,14 +267,11 @@ int main(int argc, char ** argv) {
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
 
   // Initial condition of the chain
-  // Have to set each of these by hand, *and* the sampler is sensitive to these
-  // values
-  paramInitials[0] = 0.5; // param 1
-  paramInitials[1] = 0.5; // param 2
-  paramInitials[2] = 0.5; // param 3
-  paramInitials[3] = 0.5; // param 4
-  paramInitials[4] = 0.5; // param 5
-  paramInitials[5]  = 0.4;  // not used.  emulator mean
+
+  // Start with the mean of the prior
+  gpmsaFactory.prior().pdf().distributionMean(paramInitials);
+
+  // But override whatever we want
   paramInitials[6]  = 0.4; // emulator precision
   paramInitials[7]  = 0.4; // weights0 precision
   paramInitials[8]  = 0.4; // weights1 precision
