@@ -556,12 +556,9 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   unsigned int                               yStageId,
   double*                                    alphaQuotientPtr)
 {
-  unsigned int old_stageId;
-
   // Get the current (old) stageId.  We'll set the tk back to this stage id
   // at the end to preserve the state of the tk
-  old_stageId = m_tk->set_dr_stage(0);
-  m_tk->set_dr_stage(old_stageId);
+  unsigned int old_stageId = m_tk->set_dr_stage(0);  // No DR for this alpha
 
   double alphaQuotient = 0.;
   if ((x.outOfTargetSupport() == false) &&
@@ -618,24 +615,24 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
         }
       }
       else {
-        m_tk->set_dr_stage(yStageId);
-        double qyx = m_tk->rv().pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+        const P_V & pos1 = m_tk->preComputingPosition(yStageId);
+        double qyx = m_tk->rv(pos1).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_totallyMute == false)) {
-          const InvLogitGaussianJointPdf<P_V,P_M>* pdfYX = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv().pdf()));
+          const InvLogitGaussianJointPdf<P_V,P_M>* pdfYX = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(pos1).pdf()));
           *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                                  << ", rvYX.lawExpVector = " << pdfYX->lawExpVector()
                                  << ", rvYX.lawVarVector = " << pdfYX->lawVarVector()
                                  << ", rvYX.lawCovMatrix = " << pdfYX->lawCovMatrix()
                                  << std::endl;
         }
-        m_tk->set_dr_stage(xStageId);
-        double qxy = m_tk->rv().pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+        const P_V & pos2 = m_tk->preComputingPosition(xStageId);
+        double qxy = m_tk->rv(pos2).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_totallyMute == false)) {
-          const InvLogitGaussianJointPdf<P_V,P_M>* pdfXY = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv().pdf()));
+          const InvLogitGaussianJointPdf<P_V,P_M>* pdfXY = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(pos2).pdf()));
           *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                                  << ", rvXY.lawExpVector = " << pdfXY->lawExpVector()
                                  << ", rvXY.lawVarVector = " << pdfXY->lawVarVector()
@@ -780,7 +777,11 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   const P_V& _lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-1]);
   const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
 
+  // unsigned int old_stageId = m_tk->set_dr_stage();
   double numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(_lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+  // m_tk->set_dr_stage(old_stageId);
+
+  // old_stageId = m_tk->set_dr_stage(tkStageIdsLess1);
   double denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(_lastTKPosition,NULL,NULL,NULL,NULL);
   if ((m_env.subDisplayFile()                   ) &&
       (m_env.displayVerbosity() >= 10           ) &&
@@ -792,6 +793,8 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                            << ", denContrib = " << denContrib
                            << std::endl;
   }
+  // m_tk->set_dr_stage(old_stageId);
+
   logNumerator   += numContrib;
   logDenominator += denContrib;
 
@@ -808,7 +811,11 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
             tkStageIdsLess1.pop_back();
     backwardTKStageIdsLess1.pop_back();
 
+    // old_stageId = m_tk->set_dr_stage(backwardTKStageIdsLess1);
     numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+    // m_tk->set_dr_stage(old_stageId);
+
+    // m_tk->set_dr_stage(tkStageIdsLess1);
     denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(lastTKPosition,NULL,NULL,NULL,NULL);
     if ((m_env.subDisplayFile()                   ) &&
         (m_env.displayVerbosity() >= 10           ) &&
@@ -820,6 +827,8 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                              << ", denContrib = " << denContrib
                              << std::endl;
     }
+    // m_tk->set_dr_stage(old_stageId);
+
     logNumerator   += numContrib;
     logDenominator += denContrib;
 

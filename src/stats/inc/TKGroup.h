@@ -74,7 +74,7 @@ public:
   virtual const BaseVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds) = 0;
 
   //! Constructs transition kernel pdf based on internal \c m_stageId variable
-  virtual const BaseVectorRV<V, M> & rv() const = 0;
+  virtual const BaseVectorRV<V, M> & rv(const V & position) const = 0;
   //@}
 
   //! @name Misc methods

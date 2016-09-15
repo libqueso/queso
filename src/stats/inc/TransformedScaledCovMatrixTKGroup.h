@@ -70,7 +70,7 @@ public:
   const InvLogitGaussianVectorRV<V, M> & rv(
       const std::vector<unsigned int> & stageIds);
 
-  virtual const InvLogitGaussianVectorRV<V, M> & rv() const;
+  virtual const InvLogitGaussianVectorRV<V, M> & rv(const V & position) const;
 
   //! Scales the covariance matrix of the underlying Gaussian distribution.
   /*! The covariance matrix is scaled by a factor of \f$ 1/scales^2 \f$.*/

@@ -133,16 +133,16 @@ ScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
 
 template <class V, class M>
 const GaussianVectorRV<V, M> &
-ScaledCovMatrixTKGroup<V, M>::rv() const
+ScaledCovMatrixTKGroup<V, M>::rv(const V & position) const
 {
   queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
   queso_require_msg(m_rvs[0], "m_rvs[0] == NULL");
-  queso_require_greater_msg(m_preComputingPositions.size(), this->m_stageId, "m_preComputingPositions.size() <= stageId");
-  queso_require_msg(m_preComputingPositions[this->m_stageId], "m_preComputingPositions[stageId] == NULL");
+  //queso_require_greater_msg(m_preComputingPositions.size(), this->m_stageId, "m_preComputingPositions.size() <= stageId");
+  //queso_require_msg(m_preComputingPositions[this->m_stageId], "m_preComputingPositions[stageId] == NULL");
 
-  GaussianVectorRV<V, M> * gaussian_rv = dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[0]);
+  GaussianVectorRV<V, M> * gaussian_rv = dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[this->m_stageId]);
 
-  gaussian_rv->updateLawExpVector(*m_preComputingPositions[this->m_stageId]);
+  gaussian_rv->updateLawExpVector(position);
 
   return (*gaussian_rv);
 }
