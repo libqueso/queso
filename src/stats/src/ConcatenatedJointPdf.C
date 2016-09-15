@@ -103,24 +103,22 @@ ConcatenatedJointPdf<V,M>::actualValue(
 
   queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  std::vector<V*> vecs(m_densities.size(),(V*) NULL);
   std::vector<double> values(m_densities.size(),0.);
   double returnValue = 1.;
   unsigned int cummulativeSize = 0;
-  for (unsigned int i = 0; i < vecs.size(); ++i) {
-    vecs[i] = new V(m_densities[i]->domainSet().vectorSpace().zeroVector());
-    domainVector.cwExtract(cummulativeSize,*(vecs[i]));
-    values[i] = m_densities[i]->actualValue(*(vecs[i]),NULL,NULL,NULL,NULL);
+  for (unsigned int i = 0; i < m_densities.size(); ++i) {
+    V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
+    domainVector.cwExtract(cummulativeSize,vec_i);
+    values[i] = m_densities[i]->actualValue(vec_i,NULL,NULL,NULL,NULL);
     returnValue *= values[i];
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In ConcatenatedJointPdf<V,M>::actualValue()"
-                              << ", *(vecs[" << i << "]) = "       << *(vecs[i])
+                              << ", vec_" << i << ") = "       << vec_i
                               << ": values[" << i << "] = "        << values[i]
                               << ", temporary cumulative value = " << returnValue
                               << std::endl;
     }
-    cummulativeSize += vecs[i]->sizeLocal();
-    delete vecs[i];
+    cummulativeSize += vec_i.sizeLocal();
   }
   //returnValue *= exp(m_logOfNormalizationFactor); // No need, because each PDF should be already normalized [PDF-11]
 
@@ -151,24 +149,22 @@ ConcatenatedJointPdf<V,M>::lnValue(
 
   queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  std::vector<V*> vecs(m_densities.size(),(V*) NULL);
   std::vector<double> values(m_densities.size(),0.);
   double returnValue = 0.;
   unsigned int cummulativeSize = 0;
-  for (unsigned int i = 0; i < vecs.size(); ++i) {
-    vecs[i] = new V(m_densities[i]->domainSet().vectorSpace().zeroVector());
-    domainVector.cwExtract(cummulativeSize,*(vecs[i]));
-    values[i] = m_densities[i]->lnValue(*(vecs[i]),NULL,NULL,NULL,NULL);
+  for (unsigned int i = 0; i < m_densities.size(); ++i) {
+    V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
+    domainVector.cwExtract(cummulativeSize,vec_i);
+    values[i] = m_densities[i]->lnValue(vec_i,NULL,NULL,NULL,NULL);
     returnValue += values[i];
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {  // gpmsa
       *m_env.subDisplayFile() << "In ConcatenatedJointPdf<V,M>::lnValue()"
-                              << ", *(vecs[" << i << "]) = "       << *(vecs[i])
+                              << ", vec_" << i << " = "       << vec_i
                               << ": values[" << i << "] = "        << values[i]
                               << ", temporary cumulative value = " << returnValue
                               << std::endl;
     }
-    cummulativeSize += vecs[i]->sizeLocal();
-    delete vecs[i];
+    cummulativeSize += vec_i.sizeLocal();
   }
   //returnValue += m_logOfNormalizationFactor; // No need, because each PDF should be already normalized [PDF-11]
 
@@ -186,16 +182,14 @@ template<class V, class M>
 void
 ConcatenatedJointPdf<V,M>::distributionMean(V& meanVector) const
 {
-  std::vector<V*> vecs(m_densities.size(),(V*) NULL);
   std::vector<double> values(m_densities.size(),0.);
   double returnValue = 0.;
   unsigned int cumulativeSize = 0;
-  for (unsigned int i = 0; i < vecs.size(); ++i) {
-    vecs[i] = new V(m_densities[i]->domainSet().vectorSpace().zeroVector());
-    m_densities[i]->distributionMean(*(vecs[i]));
-    meanVector.cwSet(cumulativeSize,*(vecs[i]));
-    cumulativeSize += vecs[i]->sizeLocal();
-    delete vecs[i];
+  for (unsigned int i = 0; i < m_densities.size(); ++i) {
+    V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
+    m_densities[i]->distributionMean(vec_i);
+    meanVector.cwSet(cumulativeSize,vec_i);
+    cumulativeSize += vec_i.sizeLocal();
   }
 }
 
