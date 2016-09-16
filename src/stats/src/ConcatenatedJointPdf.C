@@ -105,10 +105,10 @@ ConcatenatedJointPdf<V,M>::actualValue(
 
   std::vector<double> values(m_densities.size(),0.);
   double returnValue = 1.;
-  unsigned int cummulativeSize = 0;
+  unsigned int cumulativeSize = 0;
   for (unsigned int i = 0; i < m_densities.size(); ++i) {
     V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
-    domainVector.cwExtract(cummulativeSize,vec_i);
+    domainVector.cwExtract(cumulativeSize,vec_i);
     values[i] = m_densities[i]->actualValue(vec_i,NULL,NULL,NULL,NULL);
     returnValue *= values[i];
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
@@ -118,7 +118,7 @@ ConcatenatedJointPdf<V,M>::actualValue(
                               << ", temporary cumulative value = " << returnValue
                               << std::endl;
     }
-    cummulativeSize += vec_i.sizeLocal();
+    cumulativeSize += vec_i.sizeLocal();
   }
   //returnValue *= exp(m_logOfNormalizationFactor); // No need, because each PDF should be already normalized [PDF-11]
 
@@ -151,10 +151,10 @@ ConcatenatedJointPdf<V,M>::lnValue(
 
   std::vector<double> values(m_densities.size(),0.);
   double returnValue = 0.;
-  unsigned int cummulativeSize = 0;
+  unsigned int cumulativeSize = 0;
   for (unsigned int i = 0; i < m_densities.size(); ++i) {
     V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
-    domainVector.cwExtract(cummulativeSize,vec_i);
+    domainVector.cwExtract(cumulativeSize,vec_i);
     values[i] = m_densities[i]->lnValue(vec_i,NULL,NULL,NULL,NULL);
     returnValue += values[i];
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {  // gpmsa
@@ -164,7 +164,7 @@ ConcatenatedJointPdf<V,M>::lnValue(
                               << ", temporary cumulative value = " << returnValue
                               << std::endl;
     }
-    cummulativeSize += vec_i.sizeLocal();
+    cumulativeSize += vec_i.sizeLocal();
   }
   //returnValue += m_logOfNormalizationFactor; // No need, because each PDF should be already normalized [PDF-11]
 
