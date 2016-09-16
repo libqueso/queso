@@ -103,18 +103,17 @@ ConcatenatedJointPdf<V,M>::actualValue(
 
   queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  std::vector<double> values(m_densities.size(),0.);
   double returnValue = 1.;
   unsigned int cumulativeSize = 0;
   for (unsigned int i = 0; i < m_densities.size(); ++i) {
     V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
     domainVector.cwExtract(cumulativeSize,vec_i);
-    values[i] = m_densities[i]->actualValue(vec_i,NULL,NULL,NULL,NULL);
-    returnValue *= values[i];
+    double value_i = m_densities[i]->actualValue(vec_i,NULL,NULL,NULL,NULL);
+    returnValue *= value_i;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In ConcatenatedJointPdf<V,M>::actualValue()"
                               << ", vec_" << i << ") = "       << vec_i
-                              << ": values[" << i << "] = "        << values[i]
+                              << ": value_" << i << " = "        << value_i
                               << ", temporary cumulative value = " << returnValue
                               << std::endl;
     }
@@ -149,18 +148,17 @@ ConcatenatedJointPdf<V,M>::lnValue(
 
   queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  std::vector<double> values(m_densities.size(),0.);
   double returnValue = 0.;
   unsigned int cumulativeSize = 0;
   for (unsigned int i = 0; i < m_densities.size(); ++i) {
     V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
     domainVector.cwExtract(cumulativeSize,vec_i);
-    values[i] = m_densities[i]->lnValue(vec_i,NULL,NULL,NULL,NULL);
-    returnValue += values[i];
+    double value_i = m_densities[i]->lnValue(vec_i,NULL,NULL,NULL,NULL);
+    returnValue += value_i;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {  // gpmsa
       *m_env.subDisplayFile() << "In ConcatenatedJointPdf<V,M>::lnValue()"
                               << ", vec_" << i << " = "       << vec_i
-                              << ": values[" << i << "] = "        << values[i]
+                              << ": value_" << i << " = "        << value_i
                               << ", temporary cumulative value = " << returnValue
                               << std::endl;
     }
@@ -182,8 +180,6 @@ template<class V, class M>
 void
 ConcatenatedJointPdf<V,M>::distributionMean(V& meanVector) const
 {
-  std::vector<double> values(m_densities.size(),0.);
-  double returnValue = 0.;
   unsigned int cumulativeSize = 0;
   for (unsigned int i = 0; i < m_densities.size(); ++i) {
     V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
