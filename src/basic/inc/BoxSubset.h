@@ -66,7 +66,7 @@ public:
    * m_minValues, and 2) all all components in \c vec are smaller than m_maxValues. */
   bool contains (const V& vec)     const;
 
-  //! Returns the centroid of this box subset.
+  //! Returns the centroid of this box subset in the vector \c vec.
   void centroid (V& vec)     const;
 
   //! Vector of the minimum values of the box subset.
