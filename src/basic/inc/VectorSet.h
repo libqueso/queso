@@ -81,6 +81,9 @@ public:
 
   //! Checks whether a set contains vector \c vec. See template specialization.
   virtual       bool                     contains   (const V& vec)     const = 0;
+
+  //! Returns the set centroid in the vector \c vec. See template specialization.
+  virtual       void                     centroid   (V& vec)     const = 0;
   //@}
 
   //! @name I/O methods.

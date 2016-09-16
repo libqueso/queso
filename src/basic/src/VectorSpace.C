@@ -255,10 +255,19 @@ const VectorSpace<V,M>& VectorSpace<V,M>::vectorSpace() const
 }
 
 template <class V, class M>
-bool VectorSpace<V,M>::contains(const V& vec) const
+bool VectorSpace<V,M>::contains(const V& /* vec */) const
 {
-  if (vec[0]) {}; // just to remove compiler warning
   return true;
+}
+
+template <class V, class M>
+void VectorSpace<V,M>::centroid(V& vec) const
+{
+  queso_assert_equal_to (m_dimLocal, vec.sizeLocal());
+
+  for (unsigned int i = 0; i < m_dimLocal; ++i) {
+    vec[i] = INFINITY;
+  }
 }
 
 template <class V, class M>

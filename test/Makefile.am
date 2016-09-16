@@ -5,6 +5,17 @@ BUILT_SOURCES = .license.stamp
 endif
 
 check_PROGRAMS = # Append below
+check_PROGRAMS += test_boxsubset_centroid
+check_PROGRAMS += test_concatenation_centroid
+check_PROGRAMS += test_beta_mean
+check_PROGRAMS += test_concatenated_mean
+check_PROGRAMS += test_gamma_mean
+check_PROGRAMS += test_gaussian_mean
+check_PROGRAMS += test_inversegamma_mean
+check_PROGRAMS += test_jeffreys_mean
+check_PROGRAMS += test_lognormal_mean
+check_PROGRAMS += test_uniform_mean
+check_PROGRAMS += test_wigner_mean
 check_PROGRAMS += test_uqEnvironmentNonFatal
 check_PROGRAMS += test_uqGslVector
 check_PROGRAMS += test_uqGaussianVectorRVClass
@@ -92,6 +103,17 @@ if LIBMESH_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
 endif
 
+test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
+test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
+test_beta_mean_SOURCES = test_pdfmeans/test_beta_mean.C
+test_concatenated_mean_SOURCES = test_pdfmeans/test_concatenated_mean.C
+test_gamma_mean_SOURCES = test_pdfmeans/test_gamma_mean.C
+test_gaussian_mean_SOURCES = test_pdfmeans/test_gaussian_mean.C
+test_inversegamma_mean_SOURCES = test_pdfmeans/test_inversegamma_mean.C
+test_jeffreys_mean_SOURCES = test_pdfmeans/test_jeffreys_mean.C
+test_lognormal_mean_SOURCES = test_pdfmeans/test_lognormal_mean.C
+test_uniform_mean_SOURCES = test_pdfmeans/test_uniform_mean.C
+test_wigner_mean_SOURCES = test_pdfmeans/test_wigner_mean.C
 test_uqEnvironmentNonFatal_SOURCES = test_Environment/test_uqEnvironmentNonFatal.C
 test_uqGslVector_SOURCES = test_GslVector/test_uqGslVector.C
 test_uqGaussianVectorRVClass_SOURCES = test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
@@ -161,6 +183,17 @@ test_sip_gslopt_options_SOURCES = test_optimizer/test_sip_gslopt_options.C
 
 # Files to freedom stamp
 srcstamp =
+srcstamp += $(test_boxsubset_centroid_SOURCES)
+srcstamp += $(test_concatenation_centroid_SOURCES)
+srcstamp += $(test_beta_mean_SOURCES)
+srcstamp += $(test_concatenated_mean_SOURCES)
+srcstamp += $(test_gamma_mean_SOURCES)
+srcstamp += $(test_gaussian_mean_SOURCES)
+srcstamp += $(test_inversegamma_mean_SOURCES)
+srcstamp += $(test_jeffreys_mean_SOURCES)
+srcstamp += $(test_lognormal_mean_SOURCES)
+srcstamp += $(test_uniform_mean_SOURCES)
+srcstamp += $(test_wigner_mean_SOURCES)
 srcstamp += $(test_uqEnvironmentNonFatal_SOURCES)
 srcstamp += $(test_uqEnvironmentOptionsPrint_SOURCES)
 srcstamp += $(test_uqGslVectorConstructorFatal_SOURCES)
@@ -220,6 +253,17 @@ srcstamp += $(test_optimizer_input_parameters_SOURCES)
 srcstamp += $(test_sip_gslopt_options_SOURCES)
 
 TESTS =
+TESTS += test_boxsubset_centroid
+TESTS += test_concatenation_centroid
+TESTS += test_beta_mean
+TESTS += test_concatenated_mean
+TESTS += test_gamma_mean
+TESTS += test_gaussian_mean
+TESTS += test_inversegamma_mean
+TESTS += test_jeffreys_mean
+TESTS += test_lognormal_mean
+TESTS += test_uniform_mean
+TESTS += test_wigner_mean
 TESTS += test_uqEnvironmentNonFatal
 TESTS += test_uqGslVector
 TESTS += test_uqGaussianVectorRVClass

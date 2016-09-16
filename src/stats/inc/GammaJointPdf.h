@@ -93,6 +93,9 @@ public:
    * are the parameters of the Gamma PDF. */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
 
+  //! Mean value of the underlying random variable.
+  virtual void   distributionMean (V & meanVector) const;
+
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;

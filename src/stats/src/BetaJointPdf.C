@@ -133,6 +133,18 @@ BetaJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+BetaJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  unsigned int n_params = meanVector.sizeLocal();
+  queso_assert_equal_to (n_params, m_alpha.sizeLocal());
+
+  for (unsigned int i = 0; i < n_params; ++i) {
+    meanVector[i] = m_alpha[i] / (m_alpha[i] + m_beta[i]);
+  }
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 BetaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

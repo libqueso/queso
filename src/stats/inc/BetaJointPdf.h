@@ -72,6 +72,9 @@ public:
    * \sum[ (alpha_i-1)*log(domainVector_i) + (beta_i-1)*log(1-domainVector_i)] + m_logOfNormalizationFactor \f$. */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
 
+  //! Mean value of the underlying random variable.
+  virtual void   distributionMean (V & meanVector) const;
+
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;

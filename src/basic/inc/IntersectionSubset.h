@@ -63,6 +63,9 @@ public:
   //@{
  //! Determines whether both sets m_set1 and m_set2 (class' private attributes) contain vector \c vec.
   bool contains(const V& vec)     const;
+
+  //! Returns the set centroid in the vector \c vec.  Not implemented.
+  void centroid (V& vec)     const;
   //@}
 
   //! @name I/O methods.

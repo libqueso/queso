@@ -86,7 +86,7 @@ public:
   //! Finds the Cumulative Distribution Function of this vector RV, considering the unified sequence of data; access to private attribute m_unifiedCdf.
   const   BaseVectorCdf     <V,M>& unifiedCdf() const;
 
-  //! Finds the Mass Density Function of this vector RV; access to private attribute m_mdf.
+  //! Finds the Marginal Density Function of this vector RV; access to private attribute m_mdf.
   const   BaseVectorMdf     <V,M>& mdf       () const;
   //@}
 

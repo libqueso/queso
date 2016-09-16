@@ -56,6 +56,13 @@ bool IntersectionSubset<V,M>::contains(const V& vec) const
   return (m_set1.contains(vec) && m_set2.contains(vec));
 }
 
+template<class V, class M>
+void IntersectionSubset<V,M>::centroid(V& vec) const
+{
+  // No general way to do this?
+  queso_not_implemented();
+}
+
 // I/O methods
 template <class V, class M>
 void IntersectionSubset<V,M>::print(std::ostream& os) const

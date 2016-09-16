@@ -92,6 +92,21 @@ bool ConcatenationSubset<V,M>::contains(const V& vec) const
   return (result);
 }
 
+template<class V, class M>
+void ConcatenationSubset<V,M>::centroid(V& vec) const
+{
+  unsigned int cumulativeSize = 0;
+  for (unsigned int i = 0; i < m_sets.size(); ++i) {
+    V subvec(m_sets[i]->vectorSpace().zeroVector());
+    m_sets[i]->centroid(subvec);
+    vec.cwSet(cumulativeSize,subvec);
+
+    cumulativeSize += subvec.sizeLocal();
+  }
+
+  queso_require_equal_to_msg(vec.sizeLocal(), cumulativeSize, "incompatible vector sizes");
+}
+
 // I/O methods
 template <class V, class M>
 void ConcatenationSubset<V,M>::print(std::ostream& os) const

@@ -210,6 +210,26 @@ LogNormalJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+LogNormalJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  // FIXME - this is the mean of a non-truncated lognormal
+  // distribution, and doesn't take into account a limited domainSet.
+
+  if (m_diagonalCovMatrix) {
+    unsigned int n_params = meanVector.sizeLocal();
+    queso_assert_equal_to (n_params, this->lawExpVector().sizeLocal());
+
+    for (unsigned int i = 0; i < n_params; ++i) {
+      meanVector[i] = std::exp(this->lawExpVector()[i] + 0.5*this->lawVarVector()[i]);
+    }
+  }
+  else {
+    queso_error_msg("situation with a non-diagonal covariance matrix makes no sense");
+  }
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 LogNormalJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

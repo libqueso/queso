@@ -100,6 +100,18 @@ InverseGammaJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+InverseGammaJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  queso_assert_equal_to(m_alpha.sizeLocal(), m_beta.sizeLocal());
+  queso_assert_equal_to(m_alpha.sizeLocal(), meanVector.sizeLocal());
+
+  for (unsigned int i = 0; i < m_alpha.sizeLocal(); ++i) {
+    meanVector[i] = m_beta[i] / (m_alpha[i] - 1);
+  }
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 InverseGammaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

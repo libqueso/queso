@@ -72,6 +72,12 @@ public:
   //! Logarithm of the value of the function.
   virtual double lnValue                        (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
 
+  /*! Mean value of the underlying random variable.
+   * Not implemented in base class, but not pure virtual for backwards
+   * compatibility reasons.
+   */
+  virtual void   distributionMean               (V & meanVector) const;
+
   //! Sets a value to be used in the normalization style (stored in the protected attribute m_normalizationStyle.)
   virtual void   setNormalizationStyle          (unsigned int value) const;
 

@@ -113,6 +113,13 @@ UniformJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+UniformJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  m_domainSet.centroid(meanVector);
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 UniformJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

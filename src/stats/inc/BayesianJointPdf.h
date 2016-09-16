@@ -76,10 +76,12 @@ public:
    * likelihood function.*/
   double lnValue                  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
 
+  //! Mean value of the underlying random variable.
+  virtual void   distributionMean (V & meanVector) const { queso_not_implemented(); }
+
   //! TODO: Computes the logarithm of the normalization factor.
   /*! \todo: implement me!*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
-
 
   //! Sets a value to be used in the normalization style of the prior density PDF (ie, protected attribute m_priorDensity).
   void   setNormalizationStyle    (unsigned int value) const;
