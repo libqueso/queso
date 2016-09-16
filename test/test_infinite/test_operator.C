@@ -81,13 +81,13 @@ int main(int argc, char **argv)
   const unsigned int dim = mesh.mesh_dimension();
   const libMesh::DofMap & dof_map = eig_sys.get_dof_map();
   libMesh::FEType fe_type = dof_map.variable_type(0);
-  libMesh::AutoPtr<libMesh::FEBase> fe(libMesh::FEBase::build(dim, fe_type));
+  libMesh::UniquePtr<libMesh::FEBase> fe(libMesh::FEBase::build(dim, fe_type));
   libMesh::QGauss qrule(dim, libMeshEnums::FIFTH);
   fe->attach_quadrature_rule(&qrule);
   const std::vector<libMesh::Real> & JxW = fe->get_JxW();
   const std::vector<std::vector<libMesh::Real> >& phi = fe->get_phi();
 
-  libMesh::AutoPtr<libMesh::NumericVector<libMesh::Real> > u, v;
+  libMesh::UniquePtr<libMesh::NumericVector<libMesh::Real> > u, v;
   double ui = 0.0;
   double vj = 0.0;
   double ip = 0.0;
