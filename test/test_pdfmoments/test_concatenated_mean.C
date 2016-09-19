@@ -26,6 +26,7 @@
 #include <queso/BetaJointPdf.h>
 #include <queso/ConcatenatedJointPdf.h>
 #include <queso/GammaJointPdf.h>
+#include <queso/GslMatrix.h>
 #include <queso/GslVector.h>
 
 #define TOL 1e-14
@@ -84,6 +85,22 @@ int main(int argc, char ** argv)
   queso_require_less_equal_msg(std::abs(mean[0]-real_mean0), TOL, msg);
   queso_require_less_equal_msg(std::abs(mean[1]-real_mean1), TOL, msg);
   queso_require_less_equal_msg(std::abs(mean[2]-real_mean2), TOL, msg);
+
+  const char *msgv = "ConcatenatedJointPdf variance is incorrect";
+  QUESO::GslMatrix var(paramSpace.zeroVector());
+  pdf.distributionVariance(var);
+  double real_var0 = alpha[0] * beta[0] / (alpha[0] + beta[0]) /
+          (alpha[0] + beta[0]) / (alpha[0] + beta[0] + 1);
+  double real_var1 = k[0] * theta[0] * theta[0];
+  double real_var2 = k[1] * theta[1] * theta[1];
+  queso_require_less_equal_msg(std::abs(var(0,0)-real_var0), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var(1,1)-real_var1), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var(2,2)-real_var2), TOL, msgv);
+
+  for (unsigned int i=0; i != 3; ++i)
+    for (unsigned int j=0; j != 3; ++j)
+      if (i != j)
+        queso_require_less_equal_msg(std::abs(var(i,j)), TOL, msgv);
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();

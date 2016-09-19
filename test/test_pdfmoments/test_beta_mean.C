@@ -24,6 +24,7 @@
 
 #include <queso/Environment.h>
 #include <queso/BetaJointPdf.h>
+#include <queso/GslMatrix.h>
 #include <queso/GslVector.h>
 
 #define TOL 1e-14
@@ -63,6 +64,15 @@ int main(int argc, char ** argv)
   const char *msg = "BetaJointPdf mean is incorrect";
   double real_mean = alpha[0] / (alpha[0] + beta[0]);
   queso_require_less_equal_msg(std::abs(mean[0]-real_mean), TOL, msg);
+
+  QUESO::GslMatrix var(paramSpace.zeroVector());
+  pdf.distributionVariance(var);
+
+  const char *msgv = "BetaJointPdf variance is incorrect";
+  double real_var = alpha[0] * beta[0] / (alpha[0] + beta[0]) /
+          (alpha[0] + beta[0]) / (alpha[0] + beta[0] + 1);
+
+  queso_require_less_equal_msg(std::abs(var(0,0)-real_var), TOL, msgv);
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();

@@ -62,6 +62,18 @@ int main(int argc, char ** argv)
   queso_require_less_equal_msg(std::abs(mean[0]-realmean0), TOL, msg);
   queso_require_less_equal_msg(std::abs(mean[1]-realmean1), TOL, msg);
 
+  QUESO::GslMatrix var(paramSpace.zeroVector());
+  pdf.distributionVariance(var);
+
+  double realvar0 = (std::exp(lawvar[0])-1) * std::exp(2*lawexp[0] + lawvar[0]);
+  double realvar1 = (std::exp(lawvar[1])-1) * std::exp(2*lawexp[1] + lawvar[1]);
+
+  const char *msgv = "LogNormalJointPdf variance is incorrect";
+  queso_require_less_equal_msg(std::abs(var(0,0)-realvar0), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var(0,1)), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var(1,0)), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var(1,1)-realvar1), TOL, msgv);
+
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();
 #endif
