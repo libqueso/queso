@@ -79,6 +79,9 @@ public:
   //! Mean value of the underlying random variable.
   virtual void   distributionMean (V & meanVector) const { queso_not_implemented(); }
 
+  //! Covariance matrix of the underlying random variable.
+  virtual void   distributionVariance (M & covMatrix) const { queso_not_implemented(); };
+
   //! TODO: Computes the logarithm of the normalization factor.
   /*! \todo: implement me!*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;

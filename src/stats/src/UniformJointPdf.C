@@ -120,6 +120,13 @@ UniformJointPdf<V,M>::distributionMean(V& meanVector) const
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+UniformJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  m_domainSet.moments(covMatrix);
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 UniformJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

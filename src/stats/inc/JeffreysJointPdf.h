@@ -78,6 +78,9 @@ public:
   //! sense for the Jeffrey's prior.
   virtual void   distributionMean (V & meanVector) const;
 
+  //! Covariance matrix of the underlying random variable.
+  virtual void   distributionVariance (M & covMatrix) const;
+
   //TODO: do we want this part?
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/

@@ -86,6 +86,9 @@ public:
   //! Mean value of the underlying random variable.
   virtual void   distributionMean (V & meanVector) const;
 
+  //! Covariance matrix of the underlying random variable.
+  virtual void   distributionVariance (M & covMatrix) const;
+
   //! Sets the normalization style of all densities to \c value.
   void   setNormalizationStyle(unsigned int value) const;
 
