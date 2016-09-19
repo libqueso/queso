@@ -267,27 +267,12 @@ int main(int argc, char ** argv) {
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
 
   // Initial condition of the chain
-  // Have to set each of these by hand, *and* the sampler is sensitive to these
-  // values
-  paramInitials[0] = 0.5; // param 1
-  paramInitials[1] = 0.5; // param 2
-  paramInitials[2] = 0.5; // param 3
-  paramInitials[3] = 0.5; // param 4
-  paramInitials[4] = 0.5; // param 5
-  paramInitials[5]  = 0.4;  // not used.  emulator mean
-  paramInitials[6]  = 0.4; // emulator precision
-  paramInitials[7]  = 0.4; // weights0 precision
-  paramInitials[8]  = 0.4; // weights1 precision
-  paramInitials[9]  = 0.97; // emulator corr str
-  paramInitials[10] = 0.97; // emulator corr str
-  paramInitials[11] = 0.97; // emulator corr str
-  paramInitials[12]  = 0.97; // emulator corr str
-  paramInitials[13]  = 0.20; // emulator corr str
-  paramInitials[14]  = 0.80; // emulator corr str
-  paramInitials[15]  = 10.0; // discrepancy precision
-  paramInitials[16]  = 0.97; // discrepancy corr str
-  paramInitials[17]  = 8000.0; // emulator data precision
-  paramInitials[18]  = 1.0;  // observation error precision
+
+  // Start with the mean of the prior
+  gpmsaFactory.prior().pdf().distributionMean(paramInitials);
+
+  // But override whatever we want
+  paramInitials[5]  = 0.4; // Not currently used.  Emulator mean
 
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
