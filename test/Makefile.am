@@ -105,15 +105,15 @@ endif
 
 test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
 test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
-test_beta_mean_SOURCES = test_pdfmeans/test_beta_mean.C
-test_concatenated_mean_SOURCES = test_pdfmeans/test_concatenated_mean.C
-test_gamma_mean_SOURCES = test_pdfmeans/test_gamma_mean.C
-test_gaussian_mean_SOURCES = test_pdfmeans/test_gaussian_mean.C
-test_inversegamma_mean_SOURCES = test_pdfmeans/test_inversegamma_mean.C
-test_jeffreys_mean_SOURCES = test_pdfmeans/test_jeffreys_mean.C
-test_lognormal_mean_SOURCES = test_pdfmeans/test_lognormal_mean.C
-test_uniform_mean_SOURCES = test_pdfmeans/test_uniform_mean.C
-test_wigner_mean_SOURCES = test_pdfmeans/test_wigner_mean.C
+test_beta_mean_SOURCES = test_pdfmoments/test_beta_mean.C
+test_concatenated_mean_SOURCES = test_pdfmoments/test_concatenated_mean.C
+test_gamma_mean_SOURCES = test_pdfmoments/test_gamma_mean.C
+test_gaussian_mean_SOURCES = test_pdfmoments/test_gaussian_mean.C
+test_inversegamma_mean_SOURCES = test_pdfmoments/test_inversegamma_mean.C
+test_jeffreys_mean_SOURCES = test_pdfmoments/test_jeffreys_mean.C
+test_lognormal_mean_SOURCES = test_pdfmoments/test_lognormal_mean.C
+test_uniform_mean_SOURCES = test_pdfmoments/test_uniform_mean.C
+test_wigner_mean_SOURCES = test_pdfmoments/test_wigner_mean.C
 test_uqEnvironmentNonFatal_SOURCES = test_Environment/test_uqEnvironmentNonFatal.C
 test_uqGslVector_SOURCES = test_GslVector/test_uqGslVector.C
 test_uqGaussianVectorRVClass_SOURCES = test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
