@@ -70,6 +70,9 @@ public:
 
   //! Returns the set centroid in the vector \c vec.
   virtual       void                     centroid   (V& vec)     const;
+
+  //! Returns the set moments of inertia in the matrix \c mat.
+  virtual       void                     moments (M & mat)     const;
   //@}
 
   //! @name I/O methods.
