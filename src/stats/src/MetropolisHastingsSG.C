@@ -756,10 +756,11 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   if (inputSize == 2) {
     const P_V & tk_pos_x = m_tk->preComputingPosition(inputTKStageIds[inputSize-1]);
     const P_V & tk_pos_y = m_tk->preComputingPosition(inputTKStageIds[0]);
-    return (*(this->m_algorithm))(*(inputPositionsData[0]),
-                                  *(inputPositionsData[inputSize - 1]),
-                                  tk_pos_x,
-                                  tk_pos_y);
+    return this->m_algorithm->acceptance_ratio(
+        *(inputPositionsData[0]),
+        *(inputPositionsData[inputSize - 1]),
+        tk_pos_x,
+        tk_pos_y);
   }
 
   // Prepare two vectors of positions
@@ -1839,13 +1840,15 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
       }
       if (m_optionsObj->m_rawChainGenerateExtra) {
-        alphaFirstCandidate = (*m_algorithm)(currentPositionData,
+        alphaFirstCandidate = m_algorithm->acceptance_ratio(
+            currentPositionData,
             currentCandidateData,
             currentCandidateData.vecValues(),
             currentPositionData.vecValues());
       }
       else {
-        alphaFirstCandidate = (*m_algorithm)(currentPositionData,
+        alphaFirstCandidate = m_algorithm->acceptance_ratio(
+            currentPositionData,
             currentCandidateData,
             currentCandidateData.vecValues(),
             currentPositionData.vecValues());

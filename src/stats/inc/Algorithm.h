@@ -40,10 +40,10 @@ public:
 
   //! tk_pos_x is the position of the tk when evaluating for x
   //! tk_pos_y is the position of the tk when evaluating for y
-  double operator()(MarkovChainPositionData<V> x,
-                    MarkovChainPositionData<V> y,
-                    const V & tk_pos_x,
-                    const V & tk_pos_y);
+  double acceptance_ratio(MarkovChainPositionData<V> x,
+                          MarkovChainPositionData<V> y,
+                          const V & tk_pos_x,
+                          const V & tk_pos_y);
 private:
   const BaseEnvironment & m_env;
   const BaseTKGroup<V, M> & m_tk;

@@ -47,7 +47,7 @@ Algorithm<V, M>::~Algorithm()
 
 template <class V, class M>
 double
-Algorithm<V, M>::operator()(
+Algorithm<V, M>::acceptance_ratio(
     MarkovChainPositionData<V> x,
     MarkovChainPositionData<V> y,
     const V & tk_pos_x,
