@@ -90,6 +90,23 @@ AlgorithmFactory::create()
   return new_alg;
 }
 
+/**
+ * AlgorithmFactoryImp implementation of AlgorithmFactory
+ */
+template <class DerivedAlgorithm>
+class AlgorithmFactoryImp : public AlgorithmFactory
+{
+public:
+  AlgorithmFactoryImp(const std::string & name)
+    : AlgorithmFactory(name)
+  {}
+
+  virtual ~AlgorithmFactoryImp() {}
+
+private:
+  virtual SharedPtr<Algorithm<GslVector, GslMatrix> >::Type build_algorithm();
+};
+
 } // namespace QUESO
 
 #endif // QUESO_ALGORITHM_FACTORY_H

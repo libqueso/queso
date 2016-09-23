@@ -38,15 +38,21 @@ Factory<Algorithm<GslVector, GslMatrix> >::factory_map()
   return _factory_map;
 }
 
-// SharedPtr<Algorithm<GslVector, GslMatrix> >::Type
-// AlgorithmFactory::build_algorithm()
-// {
-//   SharedPtr<Algorithm<GslVector, GslMatrix> >::Type new_alg;
-//   new_alg.reset(new DerivedAlgorithm(*(this->m_env), *(this->m_tk)));
-//   return new_alg;
-// }
+// AlgorithmFactoryImp implementation
+template <class DerivedAlgorithm>
+SharedPtr<Algorithm<GslVector, GslMatrix> >::Type
+AlgorithmFactoryImp<DerivedAlgorithm>::build_algorithm()
+{
+  SharedPtr<Algorithm<GslVector, GslMatrix> >::Type new_alg;
+  new_alg.reset(new DerivedAlgorithm(*(this->m_env), *(this->m_tk)));
+  return new_alg;
+}
 
 const BaseEnvironment * AlgorithmFactory::m_env = NULL;
 const BaseTKGroup<GslVector, GslMatrix> * AlgorithmFactory::m_tk = NULL;
+
+// Register with the factory
+AlgorithmFactoryImp<Algorithm<GslVector, GslMatrix> > random_walk_alg("random_walk");
+AlgorithmFactoryImp<Algorithm<GslVector, GslMatrix> > logit_random_walk_alg("logit_random_walk");
 
 } // namespace QUESO

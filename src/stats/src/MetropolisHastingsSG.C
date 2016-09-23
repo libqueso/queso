@@ -551,8 +551,9 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
 
   m_tk = TransitionKernelFactory::build(m_optionsObj->m_algorithm);
 
-  m_algorithm.reset(new Algorithm<>(m_env, *m_tk));
-  // m_algorithm = AlgorithmFactory::build(m_optionsObj->m_algorithm);
+  AlgorithmFactory::set_environment(m_env);
+  AlgorithmFactory::set_tk(*m_tk);
+  m_algorithm = AlgorithmFactory::build(m_optionsObj->m_algorithm);
 }
 //--------------------------------------------------
 template<class P_V,class P_M>
