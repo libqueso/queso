@@ -97,6 +97,7 @@
 #define UQ_MH_SG_OUTPUT_LOG_TARGET                                    1
 #define UQ_MH_SG_DO_LOGIT_TRANSFORM                                   1
 #define UQ_MH_SG_ALGORITHM                                            "logit_random_walk"
+#define UQ_MH_SG_TK                                                   "logit_random_walk"
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 namespace boost {
@@ -608,6 +609,9 @@ public:
   //! Which algorithm to use for the MCMC.  Default is "random_walk"
   std::string m_algorithm;
 
+  //! Which transition kernel to use for MCMC.  Default is "random_walk"
+  std::string m_tk;
+
 private:
   // Cache a pointer to the environment.
   const BaseEnvironment * m_env;
@@ -731,6 +735,8 @@ private:
   std::string                   m_option_doLogitTransform;
   //! Option name for MhOptionsValues::m_algorithm.  Option name is m_prefix + "mh_algorithm"
   std::string                   m_option_algorithm;
+  //! Option name for MhOptionsValues::m_tk.  Option name is m_prefix + "mh_tk"
+  std::string                   m_option_tk;
 
   //! Copies the option values from \c src to \c this.
   void copy(const MhOptionsValues& src);
@@ -880,6 +886,7 @@ private:
   std::string                   m_option_outputLogTarget;
   std::string                   m_option_doLogitTransform;
   std::string                   m_option_algorithm;
+  std::string                   m_option_tk;
 };
 
 std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptions& obj);

@@ -548,8 +548,7 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   TransitionKernelFactory::set_initial_cov_matrix(m_initialProposalCovMatrix);
   TransitionKernelFactory::set_dr_scales(drScalesAll);
   TransitionKernelFactory::set_target_pdf(m_targetPdf);
-
-  m_tk = TransitionKernelFactory::build(m_optionsObj->m_algorithm);
+  m_tk = TransitionKernelFactory::build(m_optionsObj->m_tk);
 
   AlgorithmFactory::set_environment(m_env);
   AlgorithmFactory::set_tk(*m_tk);
