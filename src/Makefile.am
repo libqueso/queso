@@ -85,6 +85,7 @@ libqueso_la_SOURCES += core/src/TransitionKernelFactory.C
 libqueso_la_SOURCES += core/src/TKFactoryStochasticNewton.C
 libqueso_la_SOURCES += core/src/TKFactoryRandomWalk.C
 libqueso_la_SOURCES += core/src/TKFactoryLogitRandomWalk.C
+libqueso_la_SOURCES += core/src/AlgorithmFactory.C
 
 
 # Sources that need libmesh
@@ -252,7 +253,7 @@ libqueso_la_SOURCES += stats/src/GaussianLikelihoodFullCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodFullCovarianceRandomCoefficient.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.C
-libqueso_la_SOURCES += stats/src/AcceptanceRatio.C
+libqueso_la_SOURCES += stats/src/Algorithm.C
 
 # Sources from surrogates/src
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateData.C
@@ -320,6 +321,7 @@ libqueso_include_HEADERS += core/inc/TransitionKernelFactory.h
 libqueso_include_HEADERS += core/inc/TKFactoryStochasticNewton.h
 libqueso_include_HEADERS += core/inc/TKFactoryRandomWalk.h
 libqueso_include_HEADERS += core/inc/TKFactoryLogitRandomWalk.h
+libqueso_include_HEADERS += core/inc/AlgorithmFactory.h
 
 # Headers that need libmesh
 libqueso_include_HEADERS += core/inc/FunctionBase.h
@@ -465,7 +467,7 @@ libqueso_include_HEADERS += stats/inc/GaussianLikelihoodFullCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodFullCovarianceRandomCoefficient.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
-libqueso_include_HEADERS += stats/inc/AcceptanceRatio.h
+libqueso_include_HEADERS += stats/inc/Algorithm.h
 
 # Headers to install from surrogates/inc
 libqueso_include_HEADERS += surrogates/inc/SurrogateBase.h

@@ -26,13 +26,13 @@
 #include <queso/math_macros.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
-#include <queso/AcceptanceRatio.h>
+#include <queso/Algorithm.h>
 #include <queso/TKGroup.h>
 
 namespace QUESO {
 
 template <class V, class M>
-AcceptanceRatio<V, M>::AcceptanceRatio(const BaseEnvironment & env,
+Algorithm<V, M>::Algorithm(const BaseEnvironment & env,
     const BaseTKGroup<V, M> & tk)
   :
     m_env(env),
@@ -41,13 +41,13 @@ AcceptanceRatio<V, M>::AcceptanceRatio(const BaseEnvironment & env,
 }
 
 template <class V, class M>
-AcceptanceRatio<V, M>::~AcceptanceRatio()
+Algorithm<V, M>::~Algorithm()
 {
 }
 
 template <class V, class M>
 double
-AcceptanceRatio<V, M>::operator()(
+Algorithm<V, M>::operator()(
     MarkovChainPositionData<V> x,
     MarkovChainPositionData<V> y,
     const V & tk_pos_x,
@@ -163,6 +163,6 @@ AcceptanceRatio<V, M>::operator()(
   return std::min(1.,alphaQuotient);
 }
 
-template class AcceptanceRatio<GslVector, GslMatrix>;
+template class Algorithm<GslVector, GslMatrix>;
 
 }  // End namespace QUESO

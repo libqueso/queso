@@ -36,7 +36,7 @@
 #include <queso/GaussianJointPdf.h>
 
 #include <queso/TransitionKernelFactory.h>
-#include <queso/AcceptanceRatio.h>
+#include <queso/AlgorithmFactory.h>
 
 namespace QUESO {
 
@@ -153,7 +153,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_tk                        (),
-  m_acceptanceRatio           (),
+  m_algorithm                 (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -235,7 +235,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_tk                        (),
-  m_acceptanceRatio           (),
+  m_algorithm                 (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -315,7 +315,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_tk                        (),
-  m_acceptanceRatio           (),
+  m_algorithm                 (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -382,7 +382,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_tk                        (),
-  m_acceptanceRatio           (),
+  m_algorithm                 (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -551,7 +551,8 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
 
   m_tk = TransitionKernelFactory::build(m_optionsObj->m_algorithm);
 
-  m_acceptanceRatio.reset(new AcceptanceRatio<>(m_env, *m_tk));
+  m_algorithm.reset(new Algorithm<>(m_env, *m_tk));
+  // m_algorithm = AlgorithmFactory::build(m_optionsObj->m_algorithm);
 }
 //--------------------------------------------------
 template<class P_V,class P_M>
@@ -755,10 +756,10 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   if (inputSize == 2) {
     const P_V & tk_pos_x = m_tk->preComputingPosition(inputTKStageIds[inputSize-1]);
     const P_V & tk_pos_y = m_tk->preComputingPosition(inputTKStageIds[0]);
-    return (*(this->m_acceptanceRatio))(*(inputPositionsData[0]),
-                                        *(inputPositionsData[inputSize - 1]),
-                                        tk_pos_x,
-                                        tk_pos_y);
+    return (*(this->m_algorithm))(*(inputPositionsData[0]),
+                                  *(inputPositionsData[inputSize - 1]),
+                                  tk_pos_x,
+                                  tk_pos_y);
   }
 
   // Prepare two vectors of positions
@@ -1838,13 +1839,13 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
       }
       if (m_optionsObj->m_rawChainGenerateExtra) {
-        alphaFirstCandidate = (*m_acceptanceRatio)(currentPositionData,
+        alphaFirstCandidate = (*m_algorithm)(currentPositionData,
             currentCandidateData,
             currentCandidateData.vecValues(),
             currentPositionData.vecValues());
       }
       else {
-        alphaFirstCandidate = (*m_acceptanceRatio)(currentPositionData,
+        alphaFirstCandidate = (*m_algorithm)(currentPositionData,
             currentCandidateData,
             currentCandidateData.vecValues(),
             currentPositionData.vecValues());

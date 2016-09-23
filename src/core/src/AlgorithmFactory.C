@@ -22,31 +22,31 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/MarkovChainPositionData.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/AlgorithmFactory.h>
 
-namespace QUESO {
-
-class GslVector;
-class GslMatrix;
-class BaseEnvironment;
-template <class V, class M> class BaseTKGroup;
-
-template <class V = GslVector, class M = GslMatrix>
-class AcceptanceRatio
+namespace QUESO
 {
-public:
-  AcceptanceRatio(const BaseEnvironment & env, const BaseTKGroup<V, M> & tk);
-  ~AcceptanceRatio();
 
-  //! tk_pos_x is the position of the tk when evaluating for x
-  //! tk_pos_y is the position of the tk when evaluating for y
-  double operator()(MarkovChainPositionData<V> x,
-                    MarkovChainPositionData<V> y,
-                    const V & tk_pos_x,
-                    const V & tk_pos_y);
-private:
-  const BaseEnvironment & m_env;
-  const BaseTKGroup<V, M> & m_tk;
-};
+template <>
+std::map<std::string, Factory<Algorithm<GslVector, GslMatrix> > *> &
+Factory<Algorithm<GslVector, GslMatrix> >::factory_map()
+{
+  static std::map<std::string, Factory<Algorithm<GslVector, GslMatrix> > *> _factory_map;
 
-}  // End namespace QUESO
+  return _factory_map;
+}
+
+// SharedPtr<Algorithm<GslVector, GslMatrix> >::Type
+// AlgorithmFactory::build_algorithm()
+// {
+//   SharedPtr<Algorithm<GslVector, GslMatrix> >::Type new_alg;
+//   new_alg.reset(new DerivedAlgorithm(*(this->m_env), *(this->m_tk)));
+//   return new_alg;
+// }
+
+const BaseEnvironment * AlgorithmFactory::m_env = NULL;
+const BaseTKGroup<GslVector, GslMatrix> * AlgorithmFactory::m_tk = NULL;
+
+} // namespace QUESO

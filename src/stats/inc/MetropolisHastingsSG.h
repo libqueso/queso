@@ -43,7 +43,7 @@ class GslVector;
 class GslMatrix;
 
 template <class P_V, class P_M>
-class AcceptanceRatio;
+class Algorithm;
 
 //--------------------------------------------------
 // MHRawChainInfoStruct --------------------------
@@ -314,7 +314,7 @@ private:
   const ScalarFunctionSynchronizer<P_V,P_M> * m_targetPdfSynchronizer;
 
   typename SharedPtr<BaseTKGroup<P_V,P_M> >::Type m_tk;
-  typename SharedPtr<AcceptanceRatio<P_V, P_M>>::Type m_acceptanceRatio;
+  typename SharedPtr<Algorithm<P_V, P_M>>::Type m_algorithm;
   unsigned int m_positionIdForDebugging;
   unsigned int m_stageIdForDebugging;
   std::vector<unsigned int> m_idsOfUniquePositions;

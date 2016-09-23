@@ -28,6 +28,7 @@ BUILT_SOURCES += VectorSet.h
 BUILT_SOURCES += VectorSpace.h
 BUILT_SOURCES += VectorSubset.h
 BUILT_SOURCES += getpot.h
+BUILT_SOURCES += AlgorithmFactory.h
 BUILT_SOURCES += BaseInputOptionsParser.h
 BUILT_SOURCES += BasicPdfsBase.h
 BUILT_SOURCES += BasicPdfsBoost.h
@@ -105,7 +106,7 @@ BUILT_SOURCES += StdOneDGrid.h
 BUILT_SOURCES += StreamUtilities.h
 BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += math_macros.h
-BUILT_SOURCES += AcceptanceRatio.h
+BUILT_SOURCES += Algorithm.h
 BUILT_SOURCES += BayesianJointPdf.h
 BUILT_SOURCES += BetaJointPdf.h
 BUILT_SOURCES += BetaVectorRV.h
@@ -251,6 +252,8 @@ VectorSpace.h: $(top_srcdir)/src/basic/inc/VectorSpace.h
 VectorSubset.h: $(top_srcdir)/src/basic/inc/VectorSubset.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 getpot.h: $(top_srcdir)/src/contrib/getpot/getpot.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+AlgorithmFactory.h: $(top_srcdir)/src/core/inc/AlgorithmFactory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BaseInputOptionsParser.h: $(top_srcdir)/src/core/inc/BaseInputOptionsParser.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -406,7 +409,7 @@ UniformOneDGrid.h: $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 math_macros.h: $(top_srcdir)/src/misc/inc/math_macros.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-AcceptanceRatio.h: $(top_srcdir)/src/stats/inc/AcceptanceRatio.h
+Algorithm.h: $(top_srcdir)/src/stats/inc/Algorithm.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BayesianJointPdf.h: $(top_srcdir)/src/stats/inc/BayesianJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
