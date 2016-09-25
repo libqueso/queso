@@ -23,7 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/Environment.h>
-#include <queso/GammaJointPdf.h>
+#include <queso/BetaJointPdf.h>
+#include <queso/GslMatrix.h>
 #include <queso/GslVector.h>
 
 #define TOL 1e-14
@@ -38,25 +39,40 @@ int main(int argc, char ** argv)
   QUESO::FullEnvironment env("", "", NULL);
 #endif
 
-  QUESO::VectorSpace<> paramSpace(env, "param_", 2, NULL);
+  QUESO::VectorSpace<> paramSpace(env, "param_", 1, NULL);
 
-  QUESO::GslVector k(paramSpace.zeroVector());
-  k[0] = 1.4;
-  k[1] = 0.1;
+  QUESO::GslVector paramMins(paramSpace.zeroVector());
+  paramMins.cwSet(0.0);
 
-  QUESO::GslVector theta(paramSpace.zeroVector());
-  theta[0] = 2.0;
-  theta[1] = 0.8;
-  QUESO::GammaJointPdf<> pdf("", paramSpace, k, theta);
+  QUESO::GslVector paramMaxs(paramSpace.zeroVector());
+  paramMaxs.cwSet(1.0);
+
+  QUESO::BoxSubset<> paramDomain("param_", paramSpace, paramMins, paramMaxs);
+
+  // We should test the other cases of alpha and beta
+  QUESO::GslVector alpha(paramSpace.zeroVector());
+  alpha[0] = 2.0;
+
+  QUESO::GslVector beta(paramSpace.zeroVector());
+  beta[0] = 3.0;
+
+  QUESO::BetaJointPdf<> pdf("", paramDomain, alpha, beta);
 
   QUESO::GslVector mean(paramSpace.zeroVector());
   pdf.distributionMean(mean);
 
-  const char *msg = "GammaJointPdf mean is incorrect";
-  double real_mean0 = k[0] * theta[0];
-  double real_mean1 = k[1] * theta[1];
-  queso_require_less_equal_msg(std::abs(mean[0]-real_mean0), TOL, msg);
-  queso_require_less_equal_msg(std::abs(mean[1]-real_mean1), TOL, msg);
+  const char *msg = "BetaJointPdf mean is incorrect";
+  double real_mean = alpha[0] / (alpha[0] + beta[0]);
+  queso_require_less_equal_msg(std::abs(mean[0]-real_mean), TOL, msg);
+
+  QUESO::GslMatrix var(paramSpace.zeroVector());
+  pdf.distributionVariance(var);
+
+  const char *msgv = "BetaJointPdf variance is incorrect";
+  double real_var = alpha[0] * beta[0] / (alpha[0] + beta[0]) /
+          (alpha[0] + beta[0]) / (alpha[0] + beta[0] + 1);
+
+  queso_require_less_equal_msg(std::abs(var(0,0)-real_var), TOL, msgv);
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();

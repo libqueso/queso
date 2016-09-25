@@ -68,6 +68,22 @@ int main(int argc, char ** argv)
   queso_require_less_equal_msg(std::abs(mean2[0]-lawexp[0]), TOL, msg);
   queso_require_less_equal_msg(std::abs(mean2[1]-lawexp[1]), TOL, msg);
 
+  QUESO::GslMatrix var1(paramSpace.zeroVector());
+  pdf1.distributionVariance(var1);
+
+  QUESO::GslMatrix var2(paramSpace.zeroVector());
+  pdf2.distributionVariance(var2);
+
+  const char *msgv = "GaussianJointPdf variance is incorrect";
+  queso_require_less_equal_msg(std::abs(var1(0,0)-lawvar[0]), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var1(0,1)), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var1(1,0)), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var1(1,1)-lawvar[1]), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var2(0,0)-lawcovar(0,0)), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var2(0,1)-lawcovar(0,1)), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var2(1,0)-lawcovar(1,0)), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var2(1,1)-lawcovar(1,1)), TOL, msgv);
+
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();
 #endif

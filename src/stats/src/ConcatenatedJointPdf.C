@@ -178,6 +178,27 @@ ConcatenatedJointPdf<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 void
+ConcatenatedJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  covMatrix.zeroLower();
+  covMatrix.zeroUpper();
+
+  unsigned int cumulativeSize = 0;
+  for (unsigned int i = 0; i < m_densities.size(); ++i) {
+    const Map & map = m_densities[i]->domainSet().vectorSpace().map();
+    const unsigned int n_columns = map.NumGlobalElements();
+    M mat_i(m_densities[i]->domainSet().env(),
+            map, n_columns);
+    m_densities[i]->distributionVariance(mat_i);
+    covMatrix.cwSet(cumulativeSize,cumulativeSize,mat_i);
+
+    cumulativeSize += n_columns;
+  }
+}
+
+//--------------------------------------------------
+template<class V, class M>
+void
 ConcatenatedJointPdf<V,M>::distributionMean(V& meanVector) const
 {
   unsigned int cumulativeSize = 0;

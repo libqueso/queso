@@ -68,6 +68,10 @@ public:
   void centroid (V& vec)     const;
   //@}
 
+  //! Returns the set moments of inertia in the matrix \c mat.  Not implemented.
+  void moments (M& mat)     const;
+  //@}
+
   //! @name I/O methods.
   //@{
   //! Prints both subsets (via protected attributes m_set1 and m_set2).

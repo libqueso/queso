@@ -277,6 +277,27 @@ GaussianJointPdf<V,M>::distributionMean(V& meanVector) const
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+GaussianJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  queso_assert_equal_to (covMatrix.numCols(), covMatrix.numRowsGlobal());
+
+  if (m_diagonalCovMatrix) {
+    covMatrix.zeroLower();
+    covMatrix.zeroUpper();
+
+    unsigned int n_comp = this->lawVarVector().sizeLocal();
+    queso_assert_equal_to (n_comp, covMatrix.numCols());
+
+    for (unsigned int i = 0; i < n_comp; ++i) {
+      covMatrix(i,i) = this->lawVarVector()[i];
+    }
+  } else {
+    covMatrix = *this->m_lawCovMatrix;
+  }
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 GaussianJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

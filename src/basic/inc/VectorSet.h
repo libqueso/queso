@@ -84,6 +84,9 @@ public:
 
   //! Returns the set centroid in the vector \c vec. See template specialization.
   virtual       void                     centroid   (V& vec)     const = 0;
+
+  //! Returns the set moments of inertia in the matrix \c mat. See template specialization.
+  virtual       void                     moments    (M& mat)     const = 0;
   //@}
 
   //! @name I/O methods.

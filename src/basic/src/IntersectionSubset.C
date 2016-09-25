@@ -63,6 +63,13 @@ void IntersectionSubset<V,M>::centroid(V& vec) const
   queso_not_implemented();
 }
 
+template<class V, class M>
+void IntersectionSubset<V,M>::moments(M& vec) const
+{
+  // No general way to do this?
+  queso_not_implemented();
+}
+
 // I/O methods
 template <class V, class M>
 void IntersectionSubset<V,M>::print(std::ostream& os) const

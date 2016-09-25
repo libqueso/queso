@@ -271,6 +271,18 @@ void VectorSpace<V,M>::centroid(V& vec) const
 }
 
 template <class V, class M>
+void VectorSpace<V,M>::moments(M& mat) const
+{
+  queso_assert_equal_to (m_dimLocal, mat.numCols());
+
+  mat.zeroLower();
+  mat.zeroUpper();
+  for (unsigned int i = 0; i < m_dimLocal; ++i) {
+    mat(i,i) = INFINITY;
+  }
+}
+
+template <class V, class M>
 const DistArray<std::string>* VectorSpace<V,M>::componentsNamesArray() const
 {
   return m_componentsNamesArray;

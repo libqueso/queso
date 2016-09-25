@@ -69,6 +69,9 @@ public:
   //! Returns the centroid of this box subset in the vector \c vec.
   void centroid (V& vec)     const;
 
+  //! Returns the moments of inertia of this box subset in the matrix \c mat.
+  void moments (M & mat)     const;
+
   //! Vector of the minimum values of the box subset.
   const V&   minValues()                 const;
 

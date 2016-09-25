@@ -23,7 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/Environment.h>
-#include <queso/InverseGammaJointPdf.h>
+#include <queso/GammaJointPdf.h>
+#include <queso/GslMatrix.h>
 #include <queso/GslVector.h>
 
 #define TOL 1e-14
@@ -40,23 +41,37 @@ int main(int argc, char ** argv)
 
   QUESO::VectorSpace<> paramSpace(env, "param_", 2, NULL);
 
-  QUESO::GslVector alpha(paramSpace.zeroVector());
-  alpha[0] = 2.4;
-  alpha[1] = 1.2;
+  QUESO::GslVector k(paramSpace.zeroVector());
+  k[0] = 1.4;
+  k[1] = 0.1;
 
-  QUESO::GslVector beta(paramSpace.zeroVector());
-  beta[0] = 2.0;
-  beta[1] = 0.8;
-  QUESO::InverseGammaJointPdf<> pdf("", paramSpace, alpha, beta);
+  QUESO::GslVector theta(paramSpace.zeroVector());
+  theta[0] = 2.0;
+  theta[1] = 0.8;
+  QUESO::GammaJointPdf<> pdf("", paramSpace, k, theta);
 
   QUESO::GslVector mean(paramSpace.zeroVector());
   pdf.distributionMean(mean);
 
-  const char *msg = "InverseGammaJointPdf mean is incorrect";
-  double real_mean0 = beta[0] / (alpha[0] - 1);
-  double real_mean1 = beta[1] / (alpha[1] - 1);
+  const char *msg = "GammaJointPdf mean is incorrect";
+  double real_mean0 = k[0] * theta[0];
+  double real_mean1 = k[1] * theta[1];
   queso_require_less_equal_msg(std::abs(mean[0]-real_mean0), TOL, msg);
   queso_require_less_equal_msg(std::abs(mean[1]-real_mean1), TOL, msg);
+
+  QUESO::GslMatrix var(paramSpace.zeroVector());
+  pdf.distributionVariance(var);
+
+  const char *msgv = "GammaJointPdf variance is incorrect";
+  double real_var0 = k[0] * theta[0] * theta[0];
+  double real_var1 = k[1] * theta[1] * theta[1];
+  queso_require_less_equal_msg(std::abs(var(0,0)-real_var0), TOL, msgv);
+  queso_require_less_equal_msg(std::abs(var(1,1)-real_var1), TOL, msgv);
+
+  for (unsigned int i=0; i != 2; ++i)
+    for (unsigned int j=0; j != 2; ++j)
+      if (i != j)
+        queso_require_less_equal_msg(std::abs(var(i,j)), TOL, msgv);
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();

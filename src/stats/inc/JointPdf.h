@@ -78,6 +78,12 @@ public:
    */
   virtual void   distributionMean               (V & meanVector) const;
 
+  /*! Covariance matrix of the underlying random variable.
+   * Not implemented in base class, but not pure virtual for backwards
+   * compatibility reasons.
+   */
+  virtual void   distributionVariance           (M & covMatrix) const;
+
   //! Sets a value to be used in the normalization style (stored in the protected attribute m_normalizationStyle.)
   virtual void   setNormalizationStyle          (unsigned int value) const;
 

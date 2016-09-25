@@ -145,6 +145,26 @@ BetaJointPdf<V,M>::distributionMean(V& meanVector) const
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+BetaJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  unsigned int n_params = m_alpha.sizeLocal();
+  queso_assert_equal_to (n_params, m_beta.sizeLocal());
+  queso_assert_equal_to (n_params, covMatrix.numCols());
+  queso_assert_equal_to (covMatrix.numCols(), covMatrix.numRowsGlobal());
+
+  covMatrix.zeroLower();
+  covMatrix.zeroUpper();
+
+  for (unsigned int i = 0; i < n_params; ++i) {
+    covMatrix(i,i) = (m_alpha[i] * m_beta[i]) /
+      ((m_alpha[i] + m_beta[i]) *
+       (m_alpha[i] + m_beta[i]) *
+       (m_alpha[i] + m_beta[i] + 1));
+  }
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 BetaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
