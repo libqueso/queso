@@ -66,6 +66,7 @@ BUILT_SOURCES += RngGsl.h
 BUILT_SOURCES += ScopedPtr.h
 BUILT_SOURCES += SharedPtr.h
 BUILT_SOURCES += TKFactoryLogitRandomWalk.h
+BUILT_SOURCES += TKFactoryMALA.h
 BUILT_SOURCES += TKFactoryRandomWalk.h
 BUILT_SOURCES += TKFactoryStochasticNewton.h
 BUILT_SOURCES += TeuchosMatrix.h
@@ -329,6 +330,8 @@ ScopedPtr.h: $(top_srcdir)/src/core/inc/ScopedPtr.h
 SharedPtr.h: $(top_srcdir)/src/core/inc/SharedPtr.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TKFactoryLogitRandomWalk.h: $(top_srcdir)/src/core/inc/TKFactoryLogitRandomWalk.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TKFactoryMALA.h: $(top_srcdir)/src/core/inc/TKFactoryMALA.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TKFactoryRandomWalk.h: $(top_srcdir)/src/core/inc/TKFactoryRandomWalk.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

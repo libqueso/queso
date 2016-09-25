@@ -128,6 +128,13 @@ MetropolisAdjustedLangevinTK<V, M>::rv(const std::vector<unsigned int> & stageId
 }
 
 template <class V, class M>
+const GaussianVectorRV<V, M> &
+MetropolisAdjustedLangevinTK<V, M>::rv(const V & position) const
+{
+  std::cout << "asdf" << std::endl;
+}
+
+template <class V, class M>
 void
 MetropolisAdjustedLangevinTK<V, M>::updateLawCovMatrix(const M & covMatrix)
 {

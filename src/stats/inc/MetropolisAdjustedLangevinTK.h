@@ -71,6 +71,9 @@ public:
    */
   const GaussianVectorRV<V, M> & rv(const std::vector<unsigned int> & stageIds);
 
+  //! Constructs transition kernel pdf based on internal \c m_stageId variable
+  virtual const GaussianVectorRV<V, M> & rv(const V & position) const;
+
   //! Scales the covariance matrix.
   /*! The covariance matrix is scaled by a factor of \f$ 1/scales^2 \f$.*/
   void updateLawCovMatrix(const M & covMatrix);
