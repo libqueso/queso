@@ -72,6 +72,11 @@ public:
   const GaussianVectorRV<V, M> & rv(const std::vector<unsigned int> & stageIds);
 
   //! Constructs transition kernel pdf based on internal \c m_stageId variable
+  /*
+   * This uses the formula for the transition kernel in Roberts & Tweedie 2001.
+   *
+   * http://projecteuclid.org/download/pdf_1/euclid.bj/1178291835
+   */
   virtual const GaussianVectorRV<V, M> & rv(const V & position) const;
 
   //! Scales the covariance matrix.

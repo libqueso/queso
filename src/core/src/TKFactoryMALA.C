@@ -35,6 +35,7 @@ TKFactoryMALA<DerivedTK>::build_tk()
 {
   SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk;
 
+  // Assume the problem is Bayesian
   const BayesianJointPdf<GslVector, GslMatrix> * target_bayesian_pdf =
     dynamic_cast<const BayesianJointPdf<GslVector, GslMatrix> *>(
         this->m_target_pdf);

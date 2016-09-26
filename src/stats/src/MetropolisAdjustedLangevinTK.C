@@ -131,7 +131,31 @@ template <class V, class M>
 const GaussianVectorRV<V, M> &
 MetropolisAdjustedLangevinTK<V, M>::rv(const V & position) const
 {
-  std::cout << "asdf" << std::endl;
+  queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
+  queso_require_msg(m_rvs[0], "m_rvs[0] == NULL");
+
+  GaussianVectorRV<V, M> * gaussian_rv = dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[this->m_stageId]);
+
+  // 'position' is a position in the chain?  Hopefully?  Anyway, assume it's a
+  // position in the chain and then that means we need to modify it slightly so
+  // to get the transition distribution for the next state in the chain.
+
+  V mean(this->m_targetPdf.domainSet().vectorSpace().zeroVector());
+
+  // Get the gradient.  This is so inefficient it's painful.  We should be
+  // caching the gradient evaluations.
+  this->m_targetPdf.lnValue(position, NULL, &mean, NULL, NULL);
+
+  // Euler time-step
+  mean *= 0.5 * this->m_time_step;
+
+  // Add on current position
+  mean += position;
+
+  // Update the mean of the transition kernel
+  gaussian_rv->updateLawExpVector(mean);
+
+  return (*gaussian_rv);
 }
 
 template <class V, class M>
