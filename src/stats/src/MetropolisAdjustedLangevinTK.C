@@ -40,7 +40,7 @@ MetropolisAdjustedLangevinTK<V, M>::MetropolisAdjustedLangevinTK(
   BaseTKGroup<V, M>(prefix, targetPdf.domainSet().vectorSpace(), scales),
   m_originalCovMatrix(covMatrix),
   m_targetPdf(targetPdf),
-  m_time_step(0.1)
+  m_time_step(1.0)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering MetropolisAdjustedLangevinTK<V, M>::constructor()"
@@ -140,20 +140,21 @@ MetropolisAdjustedLangevinTK<V, M>::rv(const V & position) const
   // position in the chain and then that means we need to modify it slightly so
   // to get the transition distribution for the next state in the chain.
 
-  V mean(this->m_targetPdf.domainSet().vectorSpace().zeroVector());
+  V grad(this->m_targetPdf.domainSet().vectorSpace().zeroVector());
 
-  // Get the gradient.  This is so inefficient it's painful.  We should be
-  // caching the gradient evaluations.
-  this->m_targetPdf.lnValue(position, NULL, &mean, NULL, NULL);
+  // Get the gradient of the log-posterior.  This is so inefficient it's
+  // painful.  We should be caching the gradient evaluations.
+  this->m_targetPdf.lnValue(position, NULL, &grad, NULL, NULL);
 
   // Euler time-step
-  mean *= 0.5 * this->m_time_step;
+  grad *= 0.5 * this->m_time_step;
 
   // Add on current position
-  mean += position;
+  grad += position;
 
-  // Update the mean of the transition kernel
-  gaussian_rv->updateLawExpVector(mean);
+  // Update the mean of the transition kernel.  The vector gets copied, so
+  // we're ok.
+  gaussian_rv->updateLawExpVector(grad);
 
   return (*gaussian_rv);
 }
