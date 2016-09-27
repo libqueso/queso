@@ -309,6 +309,12 @@ int main(int argc, char ** argv) {
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
 
+  // Start with the covariance matrix for the prior.  We won't
+  // actually use these values, since we want to match a gold standard
+  // that was generated from hand-twiddled values, but this will at
+  // least get a touch more test coverage on distributionVariance()
+  gpmsaFactory.prior().pdf().distributionVariance(proposalCovMatrix);
+
   // Setting the proposal covariance matrix by hand.  This requires great
   // forethough, and can generally be referred to as a massive hack.  These
   // values were taken from the gpmsa matlab code and fiddled with.

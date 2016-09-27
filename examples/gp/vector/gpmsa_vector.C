@@ -274,35 +274,29 @@ int main(int argc, char ** argv) {
   // But override whatever we want
   paramInitials[5]  = 0.4; // Not currently used.  Emulator mean
 
+  // Initial proposal convariance matrix of the chain
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
 
-  // Setting the proposal covariance matrix by hand.  This requires great
-  // forethough, and can generally be referred to as a massive hack.  These
+  // Start with the covariance matrix for the prior,
+  gpmsaFactory.prior().pdf().distributionVariance(proposalCovMatrix);
+
+  // scaled down so we aren't taking insane samples.
+  proposalCovMatrix *= 0.01;
+
+  // Tweaking the proposal covariance matrix by hand.  This requires great
+  // forethought, and can generally be referred to as a massive hack.  These
   // values were taken from the gpmsa matlab code and fiddled with.
   double scale = 3000.0;
-  proposalCovMatrix(0, 0)   = 3.1646 / 10.0;  // param 1
-  proposalCovMatrix(1, 1)   = 3.1341 / 10.0;  // param 2
-  proposalCovMatrix(2, 2)   = 3.1508 / 10.0;  // param 3
-  proposalCovMatrix(3, 3)   = 0.3757 / 10.0;  // param 4
-  proposalCovMatrix(4, 4)   = 0.6719 / 10.0;  // param 5
+
   proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used.  emulator mean
-  proposalCovMatrix(6, 6)   = 0.4953 / scale;  // emulator precision
-  proposalCovMatrix(7, 7)   = 0.4953 / scale;  // weights0 precision
-  proposalCovMatrix(8, 8)   = 0.4953 / scale;  // weights1 precision
-  proposalCovMatrix(9, 9)   = 0.6058 / scale;  // emulator corr str
+
   proposalCovMatrix(10, 10) = 7.6032e-04 / scale;  // emulator corr str
   proposalCovMatrix(11, 11) = 8.3815e-04 / scale;  // emulator corr str
   proposalCovMatrix(12, 12) = 7.5412e-04 / scale;  // emulator corr str
-  proposalCovMatrix(13, 13) = 0.2682 / scale;  // emulator corr str
-  proposalCovMatrix(14, 14) = 0.0572 / scale;  // emulator corr str
-  proposalCovMatrix(15, 15) = 1.3417 / scale;  // discrepancy precision
-  proposalCovMatrix(16, 16) = 0.3461 / scale;  // discrepancy corr str
-  proposalCovMatrix(17, 17) = 495.3 / scale;  // emulator data precision
-  proposalCovMatrix(18, 18) = 0.4953 / scale;  // observation error precision
 
-  // Square to get variances
-  for (unsigned int i = 0; i < 16; i++) {
+  // Square hand-tweaked standard deviations to get variances
+  for (unsigned int i = 10; i != 13; i++) {
     proposalCovMatrix(i, i) = proposalCovMatrix(i, i) * proposalCovMatrix(i, i);
   }
 
