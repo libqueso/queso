@@ -15,6 +15,8 @@ Version 0.56.0 (in progress)
   * Prefer C++11 smart pointers/isnan/isfinite over boost equivalent if
     compiler is new enough
   * Make boost program options optional (and use getpot when disabled)
+  * Implement a transition kernel factory pattern so users may implement custom
+    samplers
 
 Version 0.55.0 (Jun 17, 2016)
   * Fix bug in JeffreysJointPdf
