@@ -44,16 +44,21 @@ private:
 };
 
 int main(int argc, char ** argv) {
+  std::string inputFileName = "test_algorithms/input_test_mala.txt";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir) {
+    inputFileName = test_srcdir + ('/' + inputFileName);
+  }
+
   MPI_Init(&argc, &argv);
 
   // Step 0 of 5: Set up environment
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 
   unsigned int dim = 1;
 
   // Step 1 of 5: Instantiate the parameter space
-  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
-      "param_", dim, NULL);
+  QUESO::VectorSpace<> paramSpace(env, "param_", dim, NULL);
 
   double min_val = -10000.0;
   double max_val =  10000.0;
@@ -64,22 +69,18 @@ int main(int argc, char ** argv) {
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
   paramMaxs.cwSet(max_val);
 
-  QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix> paramDomain("param_",
-      paramSpace, paramMins, paramMaxs);
+  QUESO::BoxSubset<> paramDomain("param_", paramSpace, paramMins, paramMaxs);
 
   // Uniform prior here.  Could be a different prior.
-  QUESO::UniformVectorRV<QUESO::GslVector, QUESO::GslMatrix> priorRv("prior_",
-      paramDomain);
+  QUESO::UniformVectorRV<> priorRv("prior_", paramDomain);
 
   // Step 3 of 5: Set up the likelihood using the class above
   Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain);
 
   // Step 4 of 5: Instantiate the inverse problem
-  QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix>
-    postRv("post_", paramSpace);
+  QUESO::GenericVectorRV<> postRv("post_", paramSpace);
 
-  QUESO::StatisticalInverseProblem<QUESO::GslVector, QUESO::GslMatrix>
-    ip("", NULL, priorRv, lhood, postRv);
+  QUESO::StatisticalInverseProblem<> ip("", NULL, priorRv, lhood, postRv);
 
   // Step 5 of 5: Solve the inverse problem
   QUESO::GslVector paramInitials(paramSpace.zeroVector());
@@ -93,12 +94,58 @@ int main(int argc, char ** argv) {
 
   for (unsigned int i = 0; i < dim; i++) {
     // Might need to tweak this
-    proposalCovMatrix(i, i) = atof(argv[2]);
+    proposalCovMatrix(i, i) = 1.0;
   }
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 
+  QUESO::GslVector draw(paramSpace.zeroVector());
+  QUESO::GslVector mean(paramSpace.zeroVector());
+  QUESO::GslVector sumsq(paramSpace.zeroVector());
+  QUESO::GslVector delta(paramSpace.zeroVector());
+  QUESO::GslVector var(paramSpace.zeroVector());
+
+  unsigned int num_samples = 10000;
+  for (unsigned int i = 1; i < num_samples + 1; i++) {
+    postRv.realizer().realization(draw);
+    for (unsigned int j = 0; j < dim; j++) {
+      delta[j] = draw[j] - mean[j];
+      mean[j] += (double) delta[j] / i;
+      sumsq[j] += delta[j] * (draw[j] - mean[j]);
+    }
+  }
+
+  for (unsigned int j = 0; j < dim; j++) {
+    // This is the sample variance
+    var[j] = sumsq[j] / (num_samples - 1);
+  }
+
+  double sigmasq = 1.0;
+  double mean_min = -3.0 * sqrt(sigmasq) / sqrt(num_samples);
+  double mean_max =  3.0 * sqrt(sigmasq) / sqrt(num_samples);
+
+  int return_val = 0;
+  for (unsigned int j = 0; j < dim; j++) {
+    if (mean[j] < mean_min || mean[j] > mean_max) {
+      return_val = 1;
+      break;
+    }
+  }
+
+  double var_min = sigmasq - 3.0 * sqrt(2.0 * sigmasq * sigmasq / (num_samples - 1));
+  double var_max = sigmasq + 3.0 * sqrt(2.0 * sigmasq * sigmasq / (num_samples - 1));
+
+  // var[j] should be approximately ~ N(sigma^2, 2 sigma^4 / (num_samples - 1))
+  for (unsigned int j = 0; j < dim; j++) {
+    if (var[j] < var_min || var[j] > var_max) {
+      std::cout << "var" << std::endl;
+      std::cout << var[j] << std::endl;
+      return_val = 1;
+      break;
+    }
+  }
+
   MPI_Finalize();
 
-  return 0;
+  return return_val;
 }
