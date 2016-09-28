@@ -17,7 +17,7 @@ c = 5
 mu, sigma = m*x + c, 1.0
 sig[:] = sigma
 np.savetxt('sigmas.txt',sig, fmt='%5.2f')
-print mu.shape;
+#print mu.shape;
 l = np.prod(x.shape)
 y = np.zeros(l)
 np.random.seed(1234)

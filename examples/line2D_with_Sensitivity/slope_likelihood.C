@@ -33,7 +33,7 @@ Likelihood<V, M>::Likelihood(const char * prefix,
 	xs_file >> xs[i];
 	ys_file >> ys[i];
 	sig_file >> sigmas[i];
-	std::cout << xs[i] << " " << ys[i] << " " << sigmas[i] << std::endl;
+	//std::cout << xs[i] << " " << ys[i] << " " << sigmas[i] << std::endl;
   }
   
   std::size_t const n = sizeof(xs) / sizeof(*xs);

@@ -323,7 +323,7 @@ for line in data3:
 m1 = (np.var(qoi_mv))/(np.var(qoi_mcv))
 c1 = float(np.var(qoi_cv))/float(np.var(qoi_mcv))
 
-print m1, c1, m1+c1
+#print m1, c1, m1+c1
 
 ### Bar-graph for sensitivity
 
