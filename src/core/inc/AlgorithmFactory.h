@@ -35,7 +35,9 @@ namespace QUESO
 {
 
 /**
- * AlgorithmFactory class defintion.
+ * AlgorithmFactory class defintion.  Clients subclassing this for their own
+ * algorithm (aka Metropolis-Hastings acceptance ratio) should implement
+ * build_algorithm.
  */
 class AlgorithmFactory : public Factory<Algorithm<GslVector, GslMatrix> >
 {
@@ -91,7 +93,9 @@ AlgorithmFactory::create()
 }
 
 /**
- * AlgorithmFactoryImp implementation of AlgorithmFactory
+ * AlgorithmFactoryImp implementation of AlgorithmFactory.  Implements an
+ * algorithm factory for the standard Metropolis-Hastings algorithm (aka
+ * acceptance ratio).
  */
 template <class DerivedAlgorithm>
 class AlgorithmFactoryImp : public AlgorithmFactory
