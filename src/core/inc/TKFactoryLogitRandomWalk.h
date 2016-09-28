@@ -32,7 +32,10 @@ namespace QUESO
 {
 
 /**
- * TKFactoryLogitRandomWalk class defintion.
+ * TKFactoryLogitRandomWalk class defintion.  Implements a factory for
+ * random-walk type transition kernels along with a variable transformation to
+ * allow more efficient sampling for problems with parameters bounds in
+ * high-dimensional state spaces.
  */
 template <class DerivedTK>
 class TKFactoryLogitRandomWalk : public TransitionKernelFactory

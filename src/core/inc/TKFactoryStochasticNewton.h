@@ -32,7 +32,8 @@ namespace QUESO
 {
 
 /**
- * TKFactoryStochasticNewton class defintion.
+ * TKFactoryStochasticNewton class defintion.  Implements a factory for the
+ * transition kernel used in Stochastic Newton (?)
  */
 template <class DerivedTK>
 class TKFactoryStochasticNewton : public TransitionKernelFactory

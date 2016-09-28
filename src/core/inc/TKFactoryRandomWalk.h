@@ -32,7 +32,8 @@ namespace QUESO
 {
 
 /**
- * TKFactoryRandomWalk class defintion.
+ * TKFactoryRandomWalk class defintion.  Implements a factory for random-walk
+ * type transition kernels.  Supports delayed rejection.
  */
 template <class DerivedTK>
 class TKFactoryRandomWalk : public TransitionKernelFactory

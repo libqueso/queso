@@ -53,31 +53,51 @@ public:
    */
   virtual ~TransitionKernelFactory() {}
 
+  /**
+   * Static method to set the vector space the transition kernel is defined on
+   */
   static void set_vectorspace(const VectorSpace<GslVector, GslMatrix> & v)
   {
     m_vectorSpace = &v;
   }
 
+  /**
+   * Static method to set the vector of scale factor to scale a proposal
+   * covariance matrix by for the purpose of delayed rejection
+   */
   static void set_dr_scales(const std::vector<double> & scales)
   {
     m_dr_scales = &scales;
   }
 
+  /**
+   * Static method to set the pdf synchronizer.  Used by Stochastic Newton?
+   */
   static void set_pdf_synchronizer(const ScalarFunctionSynchronizer<GslVector, GslMatrix> & synchronizer)
   {
     m_pdf_synchronizer = &synchronizer;
   }
 
+  /**
+   * Static method to set the initial proposal covariance matrix
+   */
   static void set_initial_cov_matrix(GslMatrix & cov_matrix)
   {
     m_initial_cov_matrix = &cov_matrix;
   }
 
+  /**
+   * Static method to set the options object.  Useful for passing input file
+   * options to transition kernels.
+   */
   static void set_options(const MhOptionsValues & options)
   {
     m_options = &options;
   }
 
+  /**
+   * Static method to set the pdf we wish to draw samples from
+   */
   static void set_target_pdf(const BaseJointPdf<GslVector, GslMatrix> & target_pdf)
   {
     m_target_pdf = &target_pdf;
