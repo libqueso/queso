@@ -36,8 +36,8 @@ template <class V, class M> class BayseianJointPdf;
 /*!
  * \class MetropolisAdjustedLangevinTK
  *
- * \brief This class allows the representation of a transition kernel with a
- * scaled covariance matrix.
+ * \brief This class allows the representation of the MALA transition kernel
+ * with a scaled covariance matrix for the purposes of delayed rejection.
  */
 template <class V = GslVector, class M = GslMatrix>
 class MetropolisAdjustedLangevinTK : public BaseTKGroup<V, M> {
@@ -60,15 +60,9 @@ public:
   bool symmetric() const;
 
   //! Gaussian increment property to construct a transition kernel.
-  /*
-   * Not implemented for MALA
-   */
   const GaussianVectorRV<V, M> & rv(unsigned int stageId) const;
 
   //! Gaussian increment property to construct a transition kernel.
-  /*
-   * Not implemented for MALA
-   */
   const GaussianVectorRV<V, M> & rv(const std::vector<unsigned int> & stageIds);
 
   //! Constructs transition kernel pdf based on internal \c m_stageId variable

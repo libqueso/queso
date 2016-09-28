@@ -32,7 +32,8 @@ namespace QUESO
 {
 
 /**
- * TKFactoryMALA class defintion.
+ * TKFactoryMALA class defintion.  Implements the factory for the MALA
+ * transition kernel.
  */
 template <class DerivedTK>
 class TKFactoryMALA : public TransitionKernelFactory
