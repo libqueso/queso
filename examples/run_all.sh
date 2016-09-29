@@ -6,6 +6,7 @@ set -e
 (cd gp/pseudovector && ./gpmsa_pseudovector gpmsa_input.txt)
 (cd bimodal && ./bimodal_gsl bimodal_1chain.inp)
 (cd gravity && ./gravity_gsl gravity_inv_fwd.inp)
+(cd line2D_with_Sensitivity && python gen_truth.py && ./line2D_gsl slope_inv_fwd.inp && python gen_plots.py)
 (cd hysteretic && ./hysteretic_gsl example.inp)
 (cd infinite_dim && ./inverse_problem inverse_options.in)
 (cd infinite_dim &&

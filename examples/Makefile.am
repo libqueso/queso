@@ -299,6 +299,42 @@ dist_gravity_gsl_DATA += ${gravity_gsl_HEADERS}
 dist_gravity_gsl_DATA += ${gravity_gsl_SOURCES}
 
 ####################
+# line2D #
+####################
+line2D_gsldir = $(prefix)/examples/line2D_with_Sensitivity
+
+line2D_gsl_DATA = $(top_srcdir)/examples/line2D_with_Sensitivity/slope_inv_fwd.inp
+line2D_gsl_DATA += $(top_srcdir)/examples/line2D_with_Sensitivity/README
+line2D_gsl_DATA += $(top_srcdir)/examples/line2D_with_Sensitivity/gen_plots.py
+line2D_gsl_DATA += $(top_srcdir)/examples/line2D_with_Sensitivity/gen_truth.py
+
+line2D_gsl_PROGRAMS = line2D_gsl
+
+line2D_gsl_SOURCES = line2D_with_Sensitivity/sensitivity_c.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/sensitivity_m.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/sensitivity_mc.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/slope_compute.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/slope_likelihood.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/slope_main.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/slope_qoi.C
+
+line2D_gsl_HEADERS = line2D_with_Sensitivity/sensitivity_c.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/sensitivity_mc.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/sensitivity_m.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/slope_compute.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/slope_likelihood.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/slope_qoi.h
+
+line2D_gsl_LDADD = $(top_builddir)/src/libqueso.la
+
+line2D_gsl_CPPFLAGS = -I$(top_srcdir)/examples/line2D_with_Sensitivity $(AM_CPPFLAGS)
+
+dist_line2D_gsl_DATA =
+dist_line2D_gsl_DATA += $(line2D_gsl_DATA)
+dist_line2D_gsl_DATA += ${line2D_gsl_HEADERS}
+dist_line2D_gsl_DATA += ${line2D_gsl_SOURCES}
+
+####################
 # bimodal          #
 ####################
 bimodal_gsldir = $(prefix)/examples/bimodal
