@@ -797,11 +797,8 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   const P_V& _lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-1]);
   const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
 
-  // unsigned int old_stageId = m_tk->set_dr_stage();
   double numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(_lastBackwardTKPosition,NULL,NULL,NULL,NULL);
-  // m_tk->set_dr_stage(old_stageId);
 
-  // old_stageId = m_tk->set_dr_stage(tkStageIdsLess1);
   double denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(_lastTKPosition,NULL,NULL,NULL,NULL);
   if ((m_env.subDisplayFile()                   ) &&
       (m_env.displayVerbosity() >= 10           ) &&
@@ -813,7 +810,6 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                            << ", denContrib = " << denContrib
                            << std::endl;
   }
-  // m_tk->set_dr_stage(old_stageId);
 
   logNumerator   += numContrib;
   logDenominator += denContrib;
@@ -831,11 +827,8 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
             tkStageIdsLess1.pop_back();
     backwardTKStageIdsLess1.pop_back();
 
-    // old_stageId = m_tk->set_dr_stage(backwardTKStageIdsLess1);
     numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(lastBackwardTKPosition,NULL,NULL,NULL,NULL);
-    // m_tk->set_dr_stage(old_stageId);
 
-    // m_tk->set_dr_stage(tkStageIdsLess1);
     denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(lastTKPosition,NULL,NULL,NULL,NULL);
     if ((m_env.subDisplayFile()                   ) &&
         (m_env.displayVerbosity() >= 10           ) &&
@@ -847,7 +840,6 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                              << ", denContrib = " << denContrib
                              << std::endl;
     }
-    // m_tk->set_dr_stage(old_stageId);
 
     logNumerator   += numContrib;
     logDenominator += denContrib;
