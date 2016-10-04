@@ -33,18 +33,15 @@ AC_PATH_PROG(gitbin,git)
 
 if test "x${gitbin}" != "x" && test "`${gitbin} rev-parse --is-inside-work-tree`" = "true"; then
   GIT_REVISION=`${gitbin} rev-parse --short HEAD`
-  GIT_CLONE=true
   BUILD_DEVSTATUS="Development Build"
 else
   GIT_REVISION="N/A"
-  GIT_CLONE=false
   BUILD_DEVSTATUS="External Release"
 fi
 
 
 AC_SUBST(GIT_REVISION)
 AC_SUBST(BUILD_DEVSTATUS)
-AM_CONDITIONAL(GIT_CLONE,test x${GIT_CLONE} = xtrue )
 
 # Query current version.
 
