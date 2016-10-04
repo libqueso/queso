@@ -628,24 +628,14 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_totallyMute == false)) {
-          const InvLogitGaussianJointPdf<P_V,P_M>* pdfYX = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(pos1).pdf()));
-          *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
-                                 << ", rvYX.lawExpVector = " << pdfYX->lawExpVector()
-                                 << ", rvYX.lawVarVector = " << pdfYX->lawVarVector()
-                                 << ", rvYX.lawCovMatrix = " << pdfYX->lawCovMatrix()
-                                 << std::endl;
+          *m_env.subDisplayFile() << m_tk->rv(yStageId).pdf() << std::endl;
         }
         const P_V & pos2 = m_tk->preComputingPosition(xStageId);
         double qxy = m_tk->rv(pos2).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_totallyMute == false)) {
-          const InvLogitGaussianJointPdf<P_V,P_M>* pdfXY = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(pos2).pdf()));
-          *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
-                                 << ", rvXY.lawExpVector = " << pdfXY->lawExpVector()
-                                 << ", rvXY.lawVarVector = " << pdfXY->lawVarVector()
-                                 << ", rvXY.lawCovMatrix = " << pdfXY->lawCovMatrix()
-                                 << std::endl;
+          *m_env.subDisplayFile() << m_tk->rv(xStageId).pdf() << std::endl;
         }
         alphaQuotient = std::exp(yLogTargetToUse +
                                  qyx -
