@@ -1,6 +1,4 @@
-if GIT_CLONE
-BUILT_SOURCES = .license.stamp
-endif
+BUILT_SOURCES =
 
 AM_CPPFLAGS = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I.
@@ -15,7 +13,8 @@ EXTRA_DIST                  = example_compute.h
 noinst_PROGRAMS             = SequenceExample_gsl
 SequenceExample_gsl_SOURCES = example_main.C example_compute.C
 
-if GIT_CLONE
+if QUESO_LICENSESTAMPEXISTS
+BUILT_SOURCES += .license.stamp
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
 	echo 'updated source license headers' >$@

@@ -283,6 +283,11 @@ _AC_SRCDIRS(.)
 QUESO_STAMPED_FILES=$(find $ac_abs_top_srcdir/{src,examples,test} -name "*.h" -or -name "*.C" | tr "\n" " ")
 AC_SUBST(QUESO_STAMPED_FILES)
 
+# Since we don't distribute the lic_utils, check and make sure it's there.
+# This way, we won't run the license stamping perl script on distributed
+# tarballs, only on the repository clone
+AM_CONDITIONAL(QUESO_LICENSESTAMPEXISTS, [test -f $ac_abs_top_srcdir/src/common/lic_utils/update_license.pl])
+
 AC_OUTPUT()
 
 #---------------
