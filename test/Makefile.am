@@ -1,8 +1,6 @@
 SUBDIRS    = t01_valid_cycle t02_sip_sfp t03_sequence t04_bimodal
 
-if GIT_CLONE
-BUILT_SOURCES = .license.stamp
-endif
+BUILT_SOURCES =
 
 check_PROGRAMS = # Append below
 check_PROGRAMS += test_boxsubset_centroid
@@ -396,7 +394,8 @@ if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
 endif
 
-if GIT_CLONE
+if QUESO_LICENSESTAMPEXISTS
+BUILT_SOURCES += .license.stamp
 .license.stamp: $(top_srcdir)/LICENSE
 	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
 	echo 'updated source license headers' >$@

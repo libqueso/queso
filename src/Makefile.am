@@ -21,9 +21,7 @@ if LIBMESH_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)# $(LIBMESH_INCLUDE)
 endif
 
-if GIT_CLONE
-BUILT_SOURCES = .license.stamp
-endif
+BUILT_SOURCES =
 
 # Dynamic library build: we include external library linkage here to
 # make it easier for the user.
@@ -536,8 +534,8 @@ endif
 # Embedded license header support
 #---------------------------------
 
-if GIT_CLONE
-EXTRA_DIST = $(top_srcdir)/src/common/lic_utils/update_license.pl
+if QUESO_LICENSESTAMPEXISTS
+BUILT_SOURCES += .license.stamp
 .license.stamp: $(top_srcdir)/LICENSE
 	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
 	echo 'updated source license headers' >$@

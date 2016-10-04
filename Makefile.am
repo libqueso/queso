@@ -171,7 +171,7 @@ DISTCLEANFILES += aminclude.am
 DISTCLEANFILES += config_queso.h
 
 CLEANFILES =
-if GIT_CLONE
+if QUESO_LICENSESTAMPEXISTS
 CLEANFILES += src/.license.stamp
 CLEANFILES += test/.license.stamp
 CLEANFILES += test/gsl_tests/.license.stamp
