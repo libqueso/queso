@@ -86,6 +86,32 @@ InvLogitGaussianJointPdf<V,M>::lawVarVector() const
   return *m_lawVarVector;
 }
 
+template <class V, class M>
+void
+InvLogitGaussianJointPdf<V, M>::print(std::ostream & os) const
+{
+  // Print m_env?
+
+  os << "Start printing InvLogitGaussianJointPdf<V, M>" << std::endl;
+  os << "m_prefix:" << std::endl;
+  os << this->m_prefix << std::endl;
+  os << "m_domainSet:" << std::endl;
+  os << this->m_domainBoxSubset << std::endl;
+  os << "m_normalizationStyle:" << std::endl;
+  os << this->m_normalizationStyle << std::endl;
+  os << "m_logOfNormalizationFactor:" << std::endl;
+  os << this->m_logOfNormalizationFactor << std::endl;
+  os << "Mean:" << std::endl;
+  os << this->lawExpVector() << std::endl;
+  os << "Variance vector:" << std::endl;
+  os << this->lawVarVector() << std::endl;
+  os << "Covariance matrix:" << std::endl;
+  os << this->lawCovMatrix() << std::endl;
+  os << "Diagonal covariance?" << std::endl;
+  os << this->m_diagonalCovMatrix << std::endl;
+  os << "End printing InvLogitGaussianJointPdf<V, M>" << std::endl;
+}
+
 template<class V, class M>
 double
 InvLogitGaussianJointPdf<V,M>::actualValue(
