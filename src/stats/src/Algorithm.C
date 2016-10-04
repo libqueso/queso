@@ -107,22 +107,12 @@ Algorithm<V, M>::acceptance_ratio(
         double qyx = m_tk.rv(tk_pos_x).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           )) {
-          const InvLogitGaussianJointPdf<V,M>* pdfYX = dynamic_cast< const InvLogitGaussianJointPdf<V,M>* >(&(m_tk.rv(tk_pos_x).pdf()));
-          *m_env.subDisplayFile() << "In Algorithm<V,M>::alpha(x,y)"
-                                 << ", rvYX.lawExpVector = " << pdfYX->lawExpVector()
-                                 << ", rvYX.lawVarVector = " << pdfYX->lawVarVector()
-                                 << ", rvYX.lawCovMatrix = " << pdfYX->lawCovMatrix()
-                                 << std::endl;
+          *m_env.subDisplayFile() << m_tk.rv(tk_pos_x).pdf() << std::endl;
         }
         double qxy = m_tk.rv(tk_pos_y).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           )) {
-          const InvLogitGaussianJointPdf<V,M>* pdfXY = dynamic_cast< const InvLogitGaussianJointPdf<V,M>* >(&(m_tk.rv(tk_pos_y).pdf()));
-          *m_env.subDisplayFile() << "In Algorithm<V,M>::alpha(x,y)"
-                                 << ", rvXY.lawExpVector = " << pdfXY->lawExpVector()
-                                 << ", rvXY.lawVarVector = " << pdfXY->lawVarVector()
-                                 << ", rvXY.lawCovMatrix = " << pdfXY->lawCovMatrix()
-                                 << std::endl;
+          *m_env.subDisplayFile() << m_tk.rv(tk_pos_y).pdf() << std::endl;
         }
         alphaQuotient = std::exp(yLogTargetToUse +
                                  qyx -
