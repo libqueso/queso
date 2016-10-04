@@ -80,10 +80,10 @@ template <class V, class M>
 const GaussianVectorRV<V, M> &
 MetropolisAdjustedLangevinTK<V, M>::rv(unsigned int stageId) const
 {
-  queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
-  queso_require_msg(m_rvs[0], "m_rvs[0] == NULL");
-  queso_require_greater_msg(m_preComputingPositions.size(), stageId, "m_preComputingPositions.size() <= stageId");
-  queso_require_msg(m_preComputingPositions[stageId], "m_preComputingPositions[stageId] == NULL");
+  queso_require_not_equal_to(m_rvs.size(), 0);
+  queso_require(m_rvs[0]);
+  queso_require_greater(m_preComputingPositions.size(), stageId);
+  queso_require(m_preComputingPositions[stageId]);
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
@@ -105,10 +105,10 @@ template <class V, class M>
 const GaussianVectorRV<V, M> &
 MetropolisAdjustedLangevinTK<V, M>::rv(const std::vector<unsigned int> & stageIds)
 {
-  queso_require_greater_equal_msg(m_rvs.size(), stageIds.size(), "m_rvs.size() < stageIds.size()");
-  queso_require_msg(m_rvs[stageIds.size()-1], "m_rvs[stageIds.size()-1] == NULL");
-  queso_require_greater_msg(m_preComputingPositions.size(), stageIds[0], "m_preComputingPositions.size() <= stageIds[0]");
-  queso_require_msg(m_preComputingPositions[stageIds[0]], "m_preComputingPositions[stageIds[0]] == NULL");
+  queso_require_greater_equal(m_rvs.size(), stageIds.size());
+  queso_require(m_rvs[stageIds.size()-1]);
+  queso_require_greater(m_preComputingPositions.size(), stageIds[0]);
+  queso_require(m_preComputingPositions[stageIds[0]]);
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
@@ -131,8 +131,8 @@ template <class V, class M>
 const GaussianVectorRV<V, M> &
 MetropolisAdjustedLangevinTK<V, M>::rv(const V & position) const
 {
-  queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
-  queso_require_msg(m_rvs[0], "m_rvs[0] == NULL");
+  queso_require_not_equal_to(m_rvs.size(), 0);
+  queso_require(m_rvs[0]);
 
   GaussianVectorRV<V, M> * gaussian_rv = dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[this->m_stageId]);
 
@@ -229,13 +229,12 @@ template <class V, class M>
 void
 MetropolisAdjustedLangevinTK<V, M>::setRVsWithZeroMean()
 {
-  queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
-
-  queso_require_equal_to_msg(m_rvs.size(), m_scales.size(), "m_rvs.size() != m_scales.size()");
+  queso_require_not_equal_to(m_rvs.size(), 0);
+  queso_require_equal_to(m_rvs.size(), m_scales.size());
 
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
-    queso_require_msg(!(m_rvs[i]), "m_rvs[i] != NULL");
+    queso_require(!(m_rvs[i]));
     m_rvs[i] = new GaussianVectorRV<V, M>(m_prefix.c_str(),
                                          *m_vectorSpace,
                                          m_vectorSpace->zeroVector(),
