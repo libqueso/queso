@@ -38,8 +38,13 @@ public:
   Algorithm(const BaseEnvironment & env, const BaseTKGroup<V, M> & tk);
   ~Algorithm();
 
-  //! tk_pos_x is the position of the tk when evaluating for x
-  //! tk_pos_y is the position of the tk when evaluating for y
+  //! Calculates the finite dimensional Metropolis-Hastings acceptance ratio.
+  /*!
+   * tk_pos_x is the position of the tk when evaluating for x
+   * tk_pos_y is the position of the tk when evaluating for y
+   *
+   * This method is called by the delayed rejection procedure.
+   */
   double acceptance_ratio(MarkovChainPositionData<V> x,
                           MarkovChainPositionData<V> y,
                           const V & tk_pos_x,
