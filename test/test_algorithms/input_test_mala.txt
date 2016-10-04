@@ -1,0 +1,53 @@
+###############################################
+# UQ Environment
+###############################################
+#env_help                = anything
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = output_test_mala/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0
+env_displayVerbosity     = 0
+env_syncVerbosity        = 0
+env_seed                 = 0
+
+###############################################
+# Statistical inverse problem (ip)
+###############################################
+#ip_help                 = anything
+ip_computeSolution      = 1
+ip_dataOutputFileName   = output_test_mala/sipOutput
+ip_dataOutputAllowedSet = 0
+
+###############################################
+# 'ip_': information for Metropolis-Hastings algorithm
+###############################################
+#ip_mh_help                 = anything
+ip_mh_dataOutputFileName   = output_test_mala/sipOutput
+ip_mh_dataOutputAllowedSet = 0
+
+ip_mh_rawChain_dataInputFileName    = .
+ip_mh_rawChain_size                 = 10000
+ip_mh_rawChain_generateExtra        = 0
+ip_mh_rawChain_displayPeriod        = 50000
+ip_mh_rawChain_measureRunTimes      = 1
+ip_mh_rawChain_dataOutputFileName   = output_test_mala/ip_raw_chain
+ip_mh_rawChain_dataOutputFileType   = txt
+ip_mh_rawChain_dataOutputAllowedSet = 0
+ip_mh_rawChain_computeStats         = 0
+
+ip_mh_algorithm                     = random_walk
+ip_mh_tk                            = mala
+
+ip_mh_displayCandidates             = 0
+ip_mh_putOutOfBoundsInChain         = 0
+ip_mh_tk_useLocalHessian            = 0
+ip_mh_tk_useNewtonComponent         = 1
+ip_mh_dr_maxNumExtraStages          = 3
+ip_mh_dr_listOfScalesForExtraStages = 5. 10. 20.
+ip_mh_am_initialNonAdaptInterval    = 0
+ip_mh_am_adaptInterval              = 0
+ip_mh_am_eta                        = 1.92
+ip_mh_am_epsilon                    = 1.e-5
+ip_mh_doLogitTransform              = 0
+
+ip_mh_filteredChain_generate             = 0

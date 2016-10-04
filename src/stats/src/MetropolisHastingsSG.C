@@ -1733,7 +1733,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
       }
 
-      m_tk->rv(0).realizer().realization(tmpVecValues);
+      m_tk->rv(currentPositionData.vecValues()).realizer().realization(tmpVecValues);
 
       if (m_numDisabledParameters > 0) { // gpmsa2
         for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
