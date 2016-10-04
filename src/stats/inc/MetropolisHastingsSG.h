@@ -279,16 +279,7 @@ private:
                                    P_V&                                       lastMean,
                                    P_M&                                       lastAdaptedCovMatrix);
 
-  //! Calculates acceptance ration.
-  /*! It is called by alpha(const std::vector<MarkovChainPositionData<P_V>*>& inputPositions,
-      const std::vector<unsigned int>& inputTKStageIds); */
-  double alpha                    (const MarkovChainPositionData<P_V>& x,
-                                   const MarkovChainPositionData<P_V>& y,
-                                   unsigned int                               xStageId,
-                                   unsigned int                               yStageId,
-                                   double*                                    alphaQuotientPtr = NULL);
-
-  //! Calculates acceptance ration.
+  //! Calculates acceptance ratio.
   /*! The acceptance ratio is used to decide whether to accept or reject a candidate. */
   double alpha                    (const std::vector<MarkovChainPositionData<P_V>*>& inputPositions,
                                    const std::vector<unsigned int                        >& inputTKStageIds);
