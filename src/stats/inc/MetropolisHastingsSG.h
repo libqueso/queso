@@ -35,11 +35,15 @@
 #include <queso/ArrayOfSequences.h>
 #include <sys/time.h>
 #include <fstream>
+#include <queso/SharedPtr.h>
 
 namespace QUESO {
 
 class GslVector;
 class GslMatrix;
+
+template <class P_V, class P_M>
+class Algorithm;
 
 //--------------------------------------------------
 // MHRawChainInfoStruct --------------------------
@@ -309,7 +313,8 @@ private:
   std::vector<bool> m_parameterEnabledStatus; // gpmsa2
   const ScalarFunctionSynchronizer<P_V,P_M> * m_targetPdfSynchronizer;
 
-  BaseTKGroup<P_V,P_M> * m_tk;
+  typename SharedPtr<BaseTKGroup<P_V,P_M> >::Type m_tk;
+  typename SharedPtr<Algorithm<P_V, P_M>>::Type m_algorithm;
   unsigned int m_positionIdForDebugging;
   unsigned int m_stageIdForDebugging;
   std::vector<unsigned int> m_idsOfUniquePositions;

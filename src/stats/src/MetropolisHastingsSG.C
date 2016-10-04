@@ -35,6 +35,9 @@
 
 #include <queso/GaussianJointPdf.h>
 
+#include <queso/TransitionKernelFactory.h>
+#include <queso/AlgorithmFactory.h>
+
 namespace QUESO {
 
 // Default constructor -----------------------------
@@ -149,7 +152,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_numDisabledParameters     (0), // gpmsa2
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                        (NULL),
+  m_tk                        (),
+  m_algorithm                 (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -230,7 +234,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_numDisabledParameters     (0), // gpmsa2
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                        (NULL),
+  m_tk                        (),
+  m_algorithm                 (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -309,7 +314,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_numDisabledParameters     (0), // gpmsa2
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                        (NULL),
+  m_tk                        (),
+  m_algorithm                 (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -375,7 +381,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_numDisabledParameters     (0), // gpmsa2
   m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
-  m_tk                        (NULL),
+  m_tk                        (),
+  m_algorithm                 (),
   m_positionIdForDebugging    (0),
   m_stageIdForDebugging       (0),
   m_idsOfUniquePositions      (0),//0.),
@@ -443,7 +450,6 @@ MetropolisHastingsSG<P_V,P_M>::~MetropolisHastingsSG()
   m_stageIdForDebugging    = 0;
   m_idsOfUniquePositions.clear();
 
-  if (m_tk                   ) delete m_tk;
   if (m_targetPdfSynchronizer) delete m_targetPdfSynchronizer;
 
   // Only delete if the user didn't provide the options
@@ -501,69 +507,52 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   for (unsigned int i = 1; i < (m_optionsObj->m_drScalesForExtraStages.size()+1); ++i) {
     drScalesAll[i] = m_optionsObj->m_drScalesForExtraStages[i-1];
   }
-  if (m_optionsObj->m_tkUseLocalHessian) { // sep2011
-    m_tk = new HessianCovMatricesTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                         m_vectorSpace,
-                                                         drScalesAll,
-                                                         *m_targetPdfSynchronizer);
+
+  // Deprecate m_doLogitTransform
+  if (m_optionsObj->m_doLogitTransform != UQ_MH_SG_DO_LOGIT_TRANSFORM) {
+    std::string msg;
+    msg = "The doLogitTransform option is deprecated.  ";
+    msg += "Use ip_mh_algorithm instead.";
+    queso_warning(msg.c_str());
+  }
+
+  if (m_optionsObj->m_initialProposalCovMatrixDataInputFileName != ".") { // palms
+    std::set<unsigned int> tmpSet;
+    tmpSet.insert(m_env.subId());
+    m_initialProposalCovMatrix.subReadContents((m_optionsObj->m_initialProposalCovMatrixDataInputFileName+"_sub"+m_env.subIdString()),
+                                               m_optionsObj->m_initialProposalCovMatrixDataInputFileType,
+                                               tmpSet);
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
-                              << ": just instantiated a 'HessianCovMatrices' TK class"
+                              << ": just read initial proposal cov matrix contents = " << m_initialProposalCovMatrix
                               << std::endl;
     }
   }
   else {
-    if (m_optionsObj->m_initialProposalCovMatrixDataInputFileName != ".") { // palms
-      std::set<unsigned int> tmpSet;
-      tmpSet.insert(m_env.subId());
-      m_initialProposalCovMatrix.subReadContents((m_optionsObj->m_initialProposalCovMatrixDataInputFileName+"_sub"+m_env.subIdString()),
-                                                 m_optionsObj->m_initialProposalCovMatrixDataInputFileType,
-                                                 tmpSet);
-      if ((m_env.subDisplayFile()                   ) &&
-          (m_optionsObj->m_totallyMute == false)) {
-        *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
-                                << ": just read initial proposal cov matrix contents = " << m_initialProposalCovMatrix
-                                << std::endl;
-      }
-    }
-    else {
-      queso_require_msg(!(m_nullInputProposalCovMatrix), "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
-    }
-
-    // Decide whether or not to do logit transform
-    if (m_optionsObj->m_doLogitTransform) {
-      // Variable transform initial proposal cov matrix
-      transformInitialCovMatrixToGaussianSpace(
-          dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
-
-      // We need this dynamic_cast to BoxSubset so that m_tk can inspect the
-      // domain bounds and do the necessary transform
-      m_tk = new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
-          m_optionsObj->m_prefix.c_str(),
-          dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()),
-          drScalesAll, m_initialProposalCovMatrix);
-    }
-    else {
-      m_tk = new ScaledCovMatrixTKGroup<P_V, P_M>(
-          m_optionsObj->m_prefix.c_str(), m_vectorSpace, drScalesAll,
-          m_initialProposalCovMatrix);
-    }
-
-    if ((m_env.subDisplayFile()                   ) &&
-        (m_optionsObj->m_totallyMute == false)) {
-      *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
-                              << ": just instantiated a 'ScaledCovMatrix' TK class"
-                              << std::endl;
-    }
+    queso_require_msg(!(m_nullInputProposalCovMatrix), "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
   }
 
-  if ((m_env.subDisplayFile()                   ) &&
-      (m_optionsObj->m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
-                            << std::endl;
+  // Only transform prop cov matrix if we're doing a logit random walk.
+  // Also note we're transforming *after* we potentially read it from the input
+  // file.
+  if ((m_optionsObj->m_algorithm == "logit_random_walk") && m_optionsObj->m_doLogitTransform) {
+    // Variable transform initial proposal cov matrix
+    transformInitialCovMatrixToGaussianSpace(
+        dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
   }
-  return;
+
+  TransitionKernelFactory::set_vectorspace(m_vectorSpace);
+  TransitionKernelFactory::set_options(*m_optionsObj);
+  TransitionKernelFactory::set_pdf_synchronizer(*m_targetPdfSynchronizer);
+  TransitionKernelFactory::set_initial_cov_matrix(m_initialProposalCovMatrix);
+  TransitionKernelFactory::set_dr_scales(drScalesAll);
+  TransitionKernelFactory::set_target_pdf(m_targetPdf);
+  m_tk = TransitionKernelFactory::build(m_optionsObj->m_tk);
+
+  AlgorithmFactory::set_environment(m_env);
+  AlgorithmFactory::set_tk(*m_tk);
+  m_algorithm = AlgorithmFactory::build(m_optionsObj->m_algorithm);
 }
 //--------------------------------------------------
 template<class P_V,class P_M>
@@ -575,6 +564,10 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   unsigned int                               yStageId,
   double*                                    alphaQuotientPtr)
 {
+  // Get the current (old) stageId.  We'll set the tk back to this stage id
+  // at the end to preserve the state of the tk
+  unsigned int old_stageId = m_tk->set_dr_stage(0);  // No DR for this alpha
+
   double alphaQuotient = 0.;
   if ((x.outOfTargetSupport() == false) &&
       (y.outOfTargetSupport() == false)) {
@@ -630,22 +623,24 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
         }
       }
       else {
-        double qyx = m_tk->rv(yStageId).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+        const P_V & pos1 = m_tk->preComputingPosition(yStageId);
+        double qyx = m_tk->rv(pos1).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_totallyMute == false)) {
-          const InvLogitGaussianJointPdf<P_V,P_M>* pdfYX = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
+          const InvLogitGaussianJointPdf<P_V,P_M>* pdfYX = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(pos1).pdf()));
           *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                                  << ", rvYX.lawExpVector = " << pdfYX->lawExpVector()
                                  << ", rvYX.lawVarVector = " << pdfYX->lawVarVector()
                                  << ", rvYX.lawCovMatrix = " << pdfYX->lawCovMatrix()
                                  << std::endl;
         }
-        double qxy = m_tk->rv(xStageId).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+        const P_V & pos2 = m_tk->preComputingPosition(xStageId);
+        double qxy = m_tk->rv(pos2).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_totallyMute == false)) {
-          const InvLogitGaussianJointPdf<P_V,P_M>* pdfXY = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
+          const InvLogitGaussianJointPdf<P_V,P_M>* pdfXY = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(pos2).pdf()));
           *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                                  << ", rvXY.lawExpVector = " << pdfXY->lawExpVector()
                                  << ", rvXY.lawVarVector = " << pdfXY->lawVarVector()
@@ -685,6 +680,9 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                              << std::endl;
     }
   }
+
+  m_tk->set_dr_stage(old_stageId);
+
   if (alphaQuotientPtr != NULL) *alphaQuotientPtr = alphaQuotient;
 
   return std::min(1.,alphaQuotient);
@@ -694,8 +692,14 @@ template<class P_V,class P_M>
 double
 MetropolisHastingsSG<P_V,P_M>::alpha(
   const std::vector<MarkovChainPositionData<P_V>*>& inputPositionsData,
-  const std::vector<unsigned int                        >& inputTKStageIds)
+  const std::vector<unsigned int                 >& inputTKStageIds)
 {
+  // inputPositionsData is all the DR position data, except for the first
+  // two elements.  The first element is the current state, and the second
+  // element is the would-be candidate before DR.
+  //
+  // inputTKStageIds is a vector containing 0, 1, 2, ..., n
+
   unsigned int inputSize = inputPositionsData.size();
   if ((m_env.subDisplayFile()                   ) &&
       (m_env.displayVerbosity() >= 10           ) &&
@@ -705,6 +709,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                            << std::endl;
   }
   queso_require_greater_equal_msg(inputSize, 2, "inputPositionsData has size < 2");
+  queso_require_equal_to_msg(inputSize, inputPositionsData.size(), "inputPositionsData and inputTKStageIds have different lengths");
 
   // If necessary, return 0. right away
   if (inputPositionsData[0          ]->outOfTargetSupport()) return 0.;
@@ -748,10 +753,15 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   }
 
   // If inputSize is 2, recursion is not needed
-  if (inputSize == 2) return this->alpha(*(inputPositionsData[0            ]),
-                                         *(inputPositionsData[inputSize - 1]),
-                                         inputTKStageIds[0],
-                                         inputTKStageIds[inputSize-1]);
+  if (inputSize == 2) {
+    const P_V & tk_pos_x = m_tk->preComputingPosition(inputTKStageIds[inputSize-1]);
+    const P_V & tk_pos_y = m_tk->preComputingPosition(inputTKStageIds[0]);
+    return this->m_algorithm->acceptance_ratio(
+        *(inputPositionsData[0]),
+        *(inputPositionsData[inputSize - 1]),
+        tk_pos_x,
+        tk_pos_y);
+  }
 
   // Prepare two vectors of positions
   std::vector<MarkovChainPositionData<P_V>*>         positionsData  (inputSize,NULL);
@@ -788,6 +798,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
 
   double numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(_lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+
   double denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(_lastTKPosition,NULL,NULL,NULL,NULL);
   if ((m_env.subDisplayFile()                   ) &&
       (m_env.displayVerbosity() >= 10           ) &&
@@ -799,6 +810,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                            << ", denContrib = " << denContrib
                            << std::endl;
   }
+
   logNumerator   += numContrib;
   logDenominator += denContrib;
 
@@ -816,6 +828,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
     backwardTKStageIdsLess1.pop_back();
 
     numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+
     denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(lastTKPosition,NULL,NULL,NULL,NULL);
     if ((m_env.subDisplayFile()                   ) &&
         (m_env.displayVerbosity() >= 10           ) &&
@@ -827,6 +840,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
                              << ", denContrib = " << denContrib
                              << std::endl;
     }
+
     logNumerator   += numContrib;
     logDenominator += denContrib;
 
@@ -1818,10 +1832,18 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
       }
       if (m_optionsObj->m_rawChainGenerateExtra) {
-        alphaFirstCandidate = this->alpha(currentPositionData,currentCandidateData,0,1,&m_alphaQuotients[positionId]);
+        alphaFirstCandidate = m_algorithm->acceptance_ratio(
+            currentPositionData,
+            currentCandidateData,
+            currentCandidateData.vecValues(),
+            currentPositionData.vecValues());
       }
       else {
-        alphaFirstCandidate = this->alpha(currentPositionData,currentCandidateData,0,1,NULL);
+        alphaFirstCandidate = m_algorithm->acceptance_ratio(
+            currentPositionData,
+            currentCandidateData,
+            currentCandidateData.vecValues(),
+            currentPositionData.vecValues());
       }
       if (m_optionsObj->m_rawChainMeasureRunTimes) m_rawChainInfo.mhAlphaRunTime += MiscGetEllapsedSeconds(&timevalMhAlpha);
       if ((m_env.subDisplayFile()                   ) &&
@@ -2142,13 +2164,13 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 
     // Transform to the space without boundaries.  This is the space
     // where the proposal distribution is Gaussian
-    if (this->m_optionsObj->m_doLogitTransform == true) {
+    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
       // Only do this when we don't use the Hessian (this may change in
       // future, but transformToGaussianSpace() is only implemented in
       // TransformedScaledCovMatrixTKGroup
       P_V transformedTransporterVec(m_vectorSpace.zeroVector());
       dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V, P_M>* >(
-          m_tk)->transformToGaussianSpace(transporterVec,
+          m_tk.get())->transformToGaussianSpace(transporterVec,
             transformedTransporterVec);
       partialChain.setPositionValues(i, transformedTransporterVec);
     }
@@ -2327,12 +2349,12 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 
     // Transform the proposal covariance matrix if we have Logit transforms
     // turned on
-    if (this->m_optionsObj->m_doLogitTransform) {
-      (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
+      (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
-    else{
-      (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+    else if (this->m_optionsObj->m_algorithm == "random_walk") {
+      (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
 
@@ -2500,6 +2522,8 @@ MetropolisHastingsSG<P_V, P_M>::delayedRejection(unsigned int positionId,
         logLikelihood,
         logTarget);
 
+    // Ok, so we almost don't need setPreComputingPosition.  All the DR
+    // position information we needed was generated in this while loop.
     drPositionsData.push_back(new MarkovChainPositionData<P_V>(currentCandidateData));
     tkStageIds.push_back     (stageId+1);
 
@@ -2648,6 +2672,6 @@ MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
   }
 }
 
-}  // End namespace QUESO
+template class MetropolisHastingsSG<GslVector, GslMatrix>;
 
-template class QUESO::MetropolisHastingsSG<QUESO::GslVector, QUESO::GslMatrix>;
+}  // End namespace QUESO
