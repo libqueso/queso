@@ -111,6 +111,10 @@ public:
   //! Access to the vector of variance values and private attribute:  m_lawVarVector.
   const V& lawVarVector() const;
   //@}
+
+  //! Print method for informational and logging purposes
+  virtual void print(std::ostream & os) const;
+
 protected:
   using BaseScalarFunction<V,M>::m_env;
   using BaseScalarFunction<V,M>::m_prefix;

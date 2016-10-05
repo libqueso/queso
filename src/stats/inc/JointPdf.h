@@ -93,6 +93,9 @@ public:
   //! Computes the logarithm of the normalization factor. See template specialization.
   virtual double computeLogOfNormalizationFactor(unsigned int numSamples, bool m_logOfNormalizationFactor) const = 0;
 
+  //! Print method.  Non-pure for backwards compatibility.
+  virtual void print(std::ostream & os) const;
+
   //const BaseScalarPdf<double>& component(unsigned int componentId) const;
   //@}
 protected:
@@ -113,6 +116,13 @@ protected:
 //std::vector<BaseScalarPdf<double>*> m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
 //BaseScalarPdf<double>               m_dummyComponent;
 };
+
+template <class V, class M>
+std::ostream & operator<<(std::ostream & os, const BaseJointPdf<V, M> & obj)
+{
+  obj.print(os);
+  return os;
+}
 
 }  // End namespace QUESO
 

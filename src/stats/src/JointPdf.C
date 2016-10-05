@@ -88,6 +88,27 @@ BaseJointPdf<V,M>::setLogOfNormalizationFactor(double value) const
   m_logOfNormalizationFactor = value;
   return;
 }
+
+template <class V, class M>
+void
+BaseJointPdf<V, M>::print(std::ostream & os) const
+{
+  // Print m_env?
+  // Print mean?
+  // Print var?
+
+  os << "Start printing BaseJointPdf<V, M>" << std::endl;
+  os << "m_prefix:" << std::endl;
+  os << this->m_prefix << std::endl;
+  os << "m_domainSet:" << std::endl;
+  os << this->m_domainSet << std::endl;
+  os << "m_normalizationStyle:" << std::endl;
+  os << this->m_normalizationStyle << std::endl;
+  os << "m_logOfNormalizationFactor:" << std::endl;
+  os << this->m_logOfNormalizationFactor << std::endl;
+  os << "End printing BaseJointPdf<V, M>" << std::endl;
+}
+
 //---------------------------------------------------
 template<class V,class M>
 double
