@@ -31,8 +31,6 @@
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
-#else
-#include <queso/getpot.h>
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
