@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <vector>
+#include <cmath>
 
 #include <queso/InfiniteDimensionalMeasureBase.h>
 #include <queso/InfiniteDimensionalGaussian.h>
@@ -71,7 +72,7 @@ double InfiniteDimensionalGaussian::get_kl_coefficient(unsigned int i) const
 {
   // This is code repetition, but I'm not quite sure this belongs
   // in the operator class, because it's useful in the measure
-  return (this->coeffs)[i] / pow(this->precision.get_eigenvalue(i), this->alpha / 2.0);
+  return (this->coeffs)[i] / std::pow(this->precision.get_eigenvalue(i), this->alpha / 2.0);
 }
 
 }  // End namespace QUESO

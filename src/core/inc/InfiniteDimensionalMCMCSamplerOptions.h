@@ -30,8 +30,6 @@
 #include <queso/BoostInputOptionsParser.h>
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
-#include <queso/getpot.h>
-
 namespace QUESO {
 
 /*!

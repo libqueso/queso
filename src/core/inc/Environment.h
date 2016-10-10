@@ -35,7 +35,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <queso/getpot.h>
+#include <queso/ScopedPtr.h>
 #include <queso/RngBase.h>
 #include <queso/BasicPdfsBase.h>
 
@@ -52,6 +52,7 @@ namespace boost {
 namespace QUESO {
 
 // Forward declarations
+class GetPot;
 class EnvironmentOptions;
 class EnvOptionsValues;
 
@@ -376,7 +377,7 @@ protected:
   boost::program_options::options_description*   m_allOptionsDesc;
   boost::program_options::variables_map* 	     m_allOptionsMap;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
-  GetPot m_input;
+  ScopedPtr<GetPot>::Type m_input;
 
   unsigned int               m_subId;
   std::string 		     m_subIdString;
