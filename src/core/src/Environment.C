@@ -26,6 +26,9 @@
 #include <boost/program_options.hpp>
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
+#define GETPOT_NAMESPACE QUESO
+#include <queso/getpot.h>
+
 #include <queso/queso.h>
 #include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
@@ -150,7 +153,7 @@ BaseEnvironment::BaseEnvironment(
   m_allOptionsDesc             (NULL),
   m_allOptionsMap              (NULL),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
-  m_input                      (),
+  m_input                      (new GetPot),
   m_subComm                    (NULL),
   m_subRank                    (-1),
   m_subCommSize                (1),
@@ -182,7 +185,7 @@ BaseEnvironment::BaseEnvironment(
   m_allOptionsDesc             (NULL),
   m_allOptionsMap              (NULL),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
-  m_input                      (),
+  m_input                      (new GetPot),
   m_subComm                    (NULL),
   m_subRank                    (-1),
   m_subCommSize                (1),
@@ -1144,7 +1147,7 @@ BaseEnvironment::exceptionalCircumstance() const
 const GetPot &
 BaseEnvironment::input() const
 {
-  return m_input;
+  return *m_input;
 }
 
 
@@ -1238,7 +1241,7 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
 
       readOptionsInputFile();
 
-      m_input.parse_input_file(m_optionsInputFileName);
+      m_input->parse_input_file(m_optionsInputFileName);
     }
 
     EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
@@ -1515,7 +1518,7 @@ FullEnvironment::construct (const char *prefix)
 
       readOptionsInputFile();
 
-      m_input.parse_input_file(m_optionsInputFileName);
+      m_input->parse_input_file(m_optionsInputFileName);
     }
 
     EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
