@@ -134,8 +134,13 @@ typedef  std::vector<std::string>  STRING_VECTOR;
   std::vector<TYPE>::const_iterator ITERATOR = (VARIABLE).begin();      \
   for (; (ITERATOR) != (VARIABLE).end(); ++(ITERATOR))
 
-// Just put GetPot in the QUESO namespace.
-namespace QUESO {
+// We allow GETPOT_NAMESPACE to be defined before this file is
+// included; if libraries using two different versions of GetPot might
+// be linked together, the result may be unsafe unless they're put in
+// different namespaces.
+#ifdef GETPOT_NAMESPACE
+namespace GETPOT_NAMESPACE {
+#endif
 
 /**
  * GetPot - A class for parsing comand line arguments and
@@ -3944,7 +3949,9 @@ GetPot::variable::operator=(const GetPot::variable& Other)
   return *this;
 }
 
+#ifdef GETPOT_NAMESPACE
 }
+#endif
 
 #undef victorate
 
