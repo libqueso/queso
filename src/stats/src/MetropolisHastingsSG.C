@@ -1562,6 +1562,9 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 
     m_tk->clearPreComputingPositions();
 
+    // Possibly user-overridded to implement strange things, but we allow it.
+    m_tk->updateTK();
+
     if ((m_env.subDisplayFile()                   ) &&
         (m_env.displayVerbosity() >= 5            ) &&
         (m_optionsObj->m_totallyMute == false)) {

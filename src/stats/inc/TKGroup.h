@@ -93,6 +93,13 @@ public:
 
   //! Does nothing.  Subclasses may re-implement.  Returns the current stage id.
   virtual unsigned int set_dr_stage(unsigned int stageId);
+
+  //! The user can override this method to implement state-dependent
+  //! transition kernel behaviour.
+  /*!
+   * Default behaviour is a no-op.
+   */
+  virtual void updateTK() { };
   //@}
 
   //! @name I/O methods
@@ -110,6 +117,7 @@ protected:
         std::vector<const V*>            m_preComputingPositions;
         std::vector<BaseVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
   unsigned int m_stageId;
+
 };
 
 }  // End namespace QUESO
