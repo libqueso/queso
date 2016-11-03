@@ -24,7 +24,7 @@
 
 #include <queso/Defines.h>
 
-#ifdef QUESO_HAVE_LIBMESH
+#ifdef QUESO_HAVE_LIBMESH_SLEPC
 
 #ifndef QUESO_LIBMESHFUNCTION_H
 #define QUESO_LIBMESHFUNCTION_H
@@ -113,4 +113,4 @@ private:
 
 #endif // QUESO_LIBMESHFUNCTION_H
 
-#endif  // QUESO_HAVE_LIBMESH
+#endif  // QUESO_HAVE_LIBMESH_SLEPC
