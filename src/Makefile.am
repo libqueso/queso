@@ -17,7 +17,7 @@ if HDF5_ENABLED
   AM_CPPFLAGS += $(HDF5_CFLAGS)
 endif
 
-if LIBMESH_ENABLED
+if LIBMESH_SLEPC_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)# $(LIBMESH_INCLUDE)
 endif
 
@@ -50,7 +50,7 @@ if TRILINOS_ENABLED
   libqueso_la_LDFLAGS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
 
-if LIBMESH_ENABLED
+if LIBMESH_SLEPC_ENABLED
   libqueso_la_LDFLAGS += $(LIBMESH_LIBS)
 endif
 
