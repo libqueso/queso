@@ -25,12 +25,10 @@ if HDF5_ENABLED
   LIBS += $(HDF5_LIBS)
 endif
 
-if LIBMESH_ENABLED
+if LIBMESH_SLEPC_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
   LIBS += $(LIBMESH_LIBS)
-endif
 
-if LIBMESH_ENABLED
 ##################################
 # inifinite dimensional examples #
 ##################################

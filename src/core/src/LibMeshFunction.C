@@ -24,7 +24,7 @@
 
 #include <queso/Defines.h>
 
-#ifdef QUESO_HAVE_LIBMESH
+#ifdef QUESO_HAVE_LIBMESH_SLEPC
 
 #include <iostream>
 #include <queso/LibMeshFunction.h>
@@ -153,4 +153,4 @@ LibMeshFunction::get_equation_systems() const {
 
 }  // End namespace QUESO
 
-#endif  // QUESO_HAVE_LIBMESH
+#endif  // QUESO_HAVE_LIBMESH_SLEPC

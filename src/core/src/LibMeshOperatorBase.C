@@ -24,7 +24,7 @@
 
 #include <queso/Defines.h>
 
-#ifdef QUESO_HAVE_LIBMESH
+#ifdef QUESO_HAVE_LIBMESH_SLEPC
 
 #include <iostream>
 #include <fstream>
@@ -171,4 +171,4 @@ LibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
 
 }  // End namespace QUESO
 
-#endif  // QUESO_HAVE_LIBMESH
+#endif  // QUESO_HAVE_LIBMESH_SLEPC

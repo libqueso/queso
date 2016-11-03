@@ -24,7 +24,7 @@
 
 #include <queso/Defines.h>
 
-#ifdef QUESO_HAVE_LIBMESH
+#ifdef QUESO_HAVE_LIBMESH_SLEPC
 
 #ifndef QUESO_LIBMESHOPERATOR_BASE_H
 #define QUESO_LIBMESHOPERATOR_BASE_H
@@ -131,4 +131,4 @@ protected:
 
 #endif // QUESO_LIBMESHOPERATOR_BASE_H
 
-#endif  // QUESO_HAVE_LIBMESH
+#endif  // QUESO_HAVE_LIBMESH_SLEPC

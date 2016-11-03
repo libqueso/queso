@@ -74,7 +74,7 @@ else
   echo '   'Link with Trilinos......... : yes
 fi
 
-if test "$HAVE_LIBMESH" == "0"; then
+if test "$HAVE_LIBMESH_SLEPC" == "0"; then
   echo '   'Link with libmesh.......... : no
 else
   echo '   'Link with libmesh.......... : yes
