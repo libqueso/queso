@@ -72,9 +72,8 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 {
   queso_assert_greater(m_numSimulations, 0);
 
-  const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
-
-  queso_assert_equal_to(comm.NumProc(), 1);
+  queso_assert_equal_to
+    (m_simulationOutputs[0]->map().Comm().NumProc(), 1);
 
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
