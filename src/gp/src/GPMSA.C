@@ -1015,13 +1015,15 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       for (unsigned int i = 0; i < this->m_numExperiments; i++) {
         for (unsigned int k = 0; k != numOutputs; ++k)
           y[i*numOutputs+k] =
-            (*((this->m_experimentOutputs)[i]))[k];
+            (*((this->m_experimentOutputs)[i]))[k] -
+            (*simulationOutputMeans)[k];
       }
 
       for (unsigned int i = 0; i < this->m_numSimulations; i++) {
         for (unsigned int k = 0; k != numOutputs; ++k)
           eta[i*numOutputs+k] =
-            (*((this->m_simulationOutputs)[i]))[k];
+            (*((this->m_simulationOutputs)[i]))[k] -
+            (*simulationOutputMeans)[k];
       }
 
       M& B = *m_BMatrix;
@@ -1065,13 +1067,16 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       residual.reset(new V (this->m_env, z_map));
 
       // Form residual = D - mean // = D - mu*1 in (3)
-      // We don't subtract off mean here because we expect normalized data
+      // We currently use the mean of the simulation data, not a free
+      // hyperparameter mean
       for (unsigned int i = 0; i < this->m_numExperiments; i++) {
-        (*residual)[i] = (*((this->m_experimentOutputs)[i]))[0];
+        (*residual)[i] = (*((this->m_experimentOutputs)[i]))[0] -
+                         (*simulationOutputMeans)[0];
       }
       for (unsigned int i = 0; i < this->m_numSimulations; i++) {
         (*residual)[i+this->m_numExperiments] =
-          (*((this->m_simulationOutputs)[i]))[0];
+          (*((this->m_simulationOutputs)[i]))[0] -
+          (*simulationOutputMeans)[0];
       }
     }
 
