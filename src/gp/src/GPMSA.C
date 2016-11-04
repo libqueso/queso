@@ -756,11 +756,11 @@ GPMSAFactory<V, M>::setUpEmulator()
   KT_K_inv.reset
     (new M((K->transpose() * *K).inverse()));
 
-  Map outputs_map(numOutputs, 0, comm);
+  Map serial_output_map(numOutputs, 0, comm);
 
   for (unsigned int i = 0; i != m_numExperiments; ++i)
     {
-      M D_i(m_simulationOutputs[0]->env(), outputs_map,
+      M D_i(env, serial_output_map,
             (unsigned int)(m_discrepancyBases.size()));
 
       for (unsigned int j=0; j != numOutputs; ++j)
