@@ -705,7 +705,9 @@ GPMSAFactory<V, M>::setUpEmulator()
   const unsigned int num_svd_terms =
     std::min(MAX_SVD_TERMS, numOutputs);
 
-  const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
+  const Map & output_map = m_simulationOutputs[0]->map();
+
+  const MpiComm & comm = output_map.Comm();
 
   Map serial_map(m_numSimulations, 0, comm);
 
@@ -732,20 +734,16 @@ GPMSAFactory<V, M>::setUpEmulator()
 
   // Copy only those vectors we want into K_eta
   m_TruncatedSVD_simulationOutputs.reset
-    (new M(m_simulationOutputs[0]->env(),
-           m_simulationOutputs[0]->map(),
-           num_svd_terms));
+    (new M(env, output_map, num_svd_terms));
 
   for (unsigned int i=0; i != numOutputs; ++i)
     for (unsigned int k = 0; k != num_svd_terms; ++k)
       (*m_TruncatedSVD_simulationOutputs)(i,k) = SM_singularVectors(i,k);
 
-  Map copied_map(numOutputs * m_numSimulations, 0,
-                 m_simulationOutputs[0]->map().Comm());
+  Map copied_map(numOutputs * m_numSimulations, 0, comm);
 
   K.reset
-    (new M(m_simulationOutputs[0]->env(), copied_map,
-           m_numSimulations * num_svd_terms));
+    (new M(env, copied_map, m_numSimulations * num_svd_terms));
   for (unsigned int k=0; k != num_svd_terms; ++k)
     for (unsigned int i1=0; i1 != m_numSimulations; ++i1)
       for (unsigned int i2=0; i2 != numOutputs; ++i2)
@@ -793,14 +791,14 @@ GPMSAFactory<V, M>::setUpEmulator()
   const Map B_row_map(Brows, 0, comm);
 
   m_BMatrix.reset
-    (new M(m_simulationOutputs[0]->env(), B_row_map, Bcols));
+    (new M(env, B_row_map, Bcols));
 
   const unsigned int Wyrows = m_numExperiments * numOutputs;
 
   const Map Wy_row_map(Wyrows, 0, comm);
 
   m_observationErrorMatrix.reset
-    (new M(m_simulationOutputs[0]->env(), Wy_row_map, Wyrows));
+    (new M(env, Wy_row_map, Wyrows));
 
   M& B = *m_BMatrix;
   M& Wy = *m_observationErrorMatrix;
