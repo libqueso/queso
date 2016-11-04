@@ -713,12 +713,22 @@ GPMSAFactory<V, M>::setUpEmulator()
 
   const BaseEnvironment &env = m_simulationOutputs[0]->env();
 
+  simulationOutputMeans.reset
+    (new V (env, output_map));
+
+  for (unsigned int i=0; i != m_numSimulations; ++i)
+    for (unsigned int j=0; j != numOutputs; ++j)
+      (*simulationOutputMeans)[j] += (*m_simulationOutputs[i])[j];
+
+  for (unsigned int j=0; j != numOutputs; ++j)
+    (*simulationOutputMeans)[j] /= m_numSimulations;
+
   M simulation_matrix(env, serial_map, numOutputs);
 
   for (unsigned int i=0; i != m_numSimulations; ++i)
     for (unsigned int j=0; j != numOutputs; ++j)
       simulation_matrix(i,j) =
-        (*m_simulationOutputs[i])[j];
+        (*m_simulationOutputs[i])[j] - (*simulationOutputMeans)[j];
 
   // GSL only finds left singular vectors if n_rows>=n_columns, so we need to
   // calculate them indirectly from the eigenvalues of M^T*M
