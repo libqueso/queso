@@ -717,6 +717,7 @@ ml\_restartInput\_fileType           & "m"  \\ %  (UQ_ML_SAMPLING_RESTART_Input\
 
 %\clearpage
 \subsection{Statistical Forward Problem (and Options)}
+\label{sub:SFP}
 
 A SFP in QUESO also has two input entities, the input (parameter) RV and a QoI function, and one output entity, the QoI RV. 
 The SIP is represented through the templated class \verb+StatisticalForwardProblem<P_V,P_M,Q_V,Q_M >+, which diagram is presented in Figure \ref{fig-sfp-class}. Again, the types \verb+P_V+ and \verb+Q_V+ of vectors and types \verb+P_M+ and \verb+Q_M+ of matrices, where \verb+P_+ stands for 'parameter' and \verb+Q_+ stands for 'quantities of interest'.
