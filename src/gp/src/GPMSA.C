@@ -1201,8 +1201,10 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     (new V(this->observationalPrecisionSpace->zeroVector()));
   this->observationalPrecisionMin->cwSet(0.3);
   this->observationalPrecisionMax->cwSet(INFINITY);
-  this->m_observationalPrecisionShapeVec->cwSet(observationalPrecisionShape);
-  this->m_observationalPrecisionScaleVec->cwSet(observationalPrecisionScale);
+  this->m_observationalPrecisionShapeVec->cwSet
+    (this->m_opts->m_observationalPrecisionShape);
+  this->m_observationalPrecisionScaleVec->cwSet
+    (this->m_opts->m_observationalPrecisionScale);
 
   this->observationalPrecisionDomain.reset
     (new BoxSubset<V, M>
