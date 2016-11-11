@@ -322,6 +322,9 @@ public:
   std::vector<V *> m_experimentScenarios;
   std::vector<V *> m_experimentOutputs;
 
+  // We will be recentering data around the simulation output mean
+  typename ScopedPtr<V>::Type simulationOutputMeans;
+
   std::vector<V> m_discrepancyBases;
 
   std::vector<M> m_observationErrorMatrices;

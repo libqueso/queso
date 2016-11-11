@@ -72,9 +72,8 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 {
   queso_assert_greater(m_numSimulations, 0);
 
-  const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
-
-  queso_assert_equal_to(comm.NumProc(), 1);
+  queso_assert_equal_to
+    (m_simulationOutputs[0]->map().Comm().NumProc(), 1);
 
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
@@ -706,18 +705,30 @@ GPMSAFactory<V, M>::setUpEmulator()
   const unsigned int num_svd_terms =
     std::min(MAX_SVD_TERMS, numOutputs);
 
-  const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
+  const Map & output_map = m_simulationOutputs[0]->map();
+
+  const MpiComm & comm = output_map.Comm();
 
   Map serial_map(m_numSimulations, 0, comm);
 
   const BaseEnvironment &env = m_simulationOutputs[0]->env();
+
+  simulationOutputMeans.reset
+    (new V (env, output_map));
+
+  for (unsigned int i=0; i != m_numSimulations; ++i)
+    for (unsigned int j=0; j != numOutputs; ++j)
+      (*simulationOutputMeans)[j] += (*m_simulationOutputs[i])[j];
+
+  for (unsigned int j=0; j != numOutputs; ++j)
+    (*simulationOutputMeans)[j] /= m_numSimulations;
 
   M simulation_matrix(env, serial_map, numOutputs);
 
   for (unsigned int i=0; i != m_numSimulations; ++i)
     for (unsigned int j=0; j != numOutputs; ++j)
       simulation_matrix(i,j) =
-        (*m_simulationOutputs[i])[j];
+        (*m_simulationOutputs[i])[j] - (*simulationOutputMeans)[j];
 
   // GSL only finds left singular vectors if n_rows>=n_columns, so we need to
   // calculate them indirectly from the eigenvalues of M^T*M
@@ -733,20 +744,16 @@ GPMSAFactory<V, M>::setUpEmulator()
 
   // Copy only those vectors we want into K_eta
   m_TruncatedSVD_simulationOutputs.reset
-    (new M(m_simulationOutputs[0]->env(),
-           m_simulationOutputs[0]->map(),
-           num_svd_terms));
+    (new M(env, output_map, num_svd_terms));
 
   for (unsigned int i=0; i != numOutputs; ++i)
     for (unsigned int k = 0; k != num_svd_terms; ++k)
       (*m_TruncatedSVD_simulationOutputs)(i,k) = SM_singularVectors(i,k);
 
-  Map copied_map(numOutputs * m_numSimulations, 0,
-                 m_simulationOutputs[0]->map().Comm());
+  Map copied_map(numOutputs * m_numSimulations, 0, comm);
 
   K.reset
-    (new M(m_simulationOutputs[0]->env(), copied_map,
-           m_numSimulations * num_svd_terms));
+    (new M(env, copied_map, m_numSimulations * num_svd_terms));
   for (unsigned int k=0; k != num_svd_terms; ++k)
     for (unsigned int i1=0; i1 != m_numSimulations; ++i1)
       for (unsigned int i2=0; i2 != numOutputs; ++i2)
@@ -759,11 +766,11 @@ GPMSAFactory<V, M>::setUpEmulator()
   KT_K_inv.reset
     (new M((K->transpose() * *K).inverse()));
 
-  Map outputs_map(numOutputs, 0, comm);
+  Map serial_output_map(numOutputs, 0, comm);
 
   for (unsigned int i = 0; i != m_numExperiments; ++i)
     {
-      M D_i(m_simulationOutputs[0]->env(), outputs_map,
+      M D_i(env, serial_output_map,
             (unsigned int)(m_discrepancyBases.size()));
 
       for (unsigned int j=0; j != numOutputs; ++j)
@@ -794,14 +801,14 @@ GPMSAFactory<V, M>::setUpEmulator()
   const Map B_row_map(Brows, 0, comm);
 
   m_BMatrix.reset
-    (new M(m_simulationOutputs[0]->env(), B_row_map, Bcols));
+    (new M(env, B_row_map, Bcols));
 
   const unsigned int Wyrows = m_numExperiments * numOutputs;
 
   const Map Wy_row_map(Wyrows, 0, comm);
 
   m_observationErrorMatrix.reset
-    (new M(m_simulationOutputs[0]->env(), Wy_row_map, Wyrows));
+    (new M(env, Wy_row_map, Wyrows));
 
   M& B = *m_BMatrix;
   M& Wy = *m_observationErrorMatrix;
@@ -1008,13 +1015,15 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       for (unsigned int i = 0; i < this->m_numExperiments; i++) {
         for (unsigned int k = 0; k != numOutputs; ++k)
           y[i*numOutputs+k] =
-            (*((this->m_experimentOutputs)[i]))[k];
+            (*((this->m_experimentOutputs)[i]))[k] -
+            (*simulationOutputMeans)[k];
       }
 
       for (unsigned int i = 0; i < this->m_numSimulations; i++) {
         for (unsigned int k = 0; k != numOutputs; ++k)
           eta[i*numOutputs+k] =
-            (*((this->m_simulationOutputs)[i]))[k];
+            (*((this->m_simulationOutputs)[i]))[k] -
+            (*simulationOutputMeans)[k];
       }
 
       M& B = *m_BMatrix;
@@ -1058,13 +1067,16 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       residual.reset(new V (this->m_env, z_map));
 
       // Form residual = D - mean // = D - mu*1 in (3)
-      // We don't subtract off mean here because we expect normalized data
+      // We currently use the mean of the simulation data, not a free
+      // hyperparameter mean
       for (unsigned int i = 0; i < this->m_numExperiments; i++) {
-        (*residual)[i] = (*((this->m_experimentOutputs)[i]))[0];
+        (*residual)[i] = (*((this->m_experimentOutputs)[i]))[0] -
+                         (*simulationOutputMeans)[0];
       }
       for (unsigned int i = 0; i < this->m_numSimulations; i++) {
         (*residual)[i+this->m_numExperiments] =
-          (*((this->m_simulationOutputs)[i]))[0];
+          (*((this->m_simulationOutputs)[i]))[0] -
+          (*simulationOutputMeans)[0];
       }
     }
 
@@ -1189,8 +1201,10 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     (new V(this->observationalPrecisionSpace->zeroVector()));
   this->observationalPrecisionMin->cwSet(0.3);
   this->observationalPrecisionMax->cwSet(INFINITY);
-  this->m_observationalPrecisionShapeVec->cwSet(observationalPrecisionShape);
-  this->m_observationalPrecisionScaleVec->cwSet(observationalPrecisionScale);
+  this->m_observationalPrecisionShapeVec->cwSet
+    (this->m_opts->m_observationalPrecisionShape);
+  this->m_observationalPrecisionScaleVec->cwSet
+    (this->m_opts->m_observationalPrecisionScale);
 
   this->observationalPrecisionDomain.reset
     (new BoxSubset<V, M>

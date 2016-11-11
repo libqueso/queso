@@ -72,13 +72,20 @@ readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
   double stdsim = m2sim / (double)(i - 1);
   double stdexpsim = m2expsim / (double)(i - 1);
 
-  // The user is required to standardise the experimental and simulation data
+  // The user was required to standardise the experimental and
+  // simulation data in the original GPMSA code.
+  //
+  // This is no longer required, but we'll do a rescaling *without*
+  // recentering now to make sure that we can replicate our older
+  // results.
   for (unsigned int j = 0; j < i; j++) {
     (*(simulationOutputs[j]))[0] -= meansim;
     (*(simulationOutputs[j]))[0] /= stdsim;
+    (*(simulationOutputs[j]))[0] += meansim;
 
     (*(simulationOutputs[j]))[1] -= meanexpsim;
     (*(simulationOutputs[j]))[1] /= stdexpsim;
+    (*(simulationOutputs[j]))[1] += meanexpsim;
   }
 
   fclose(fp_in);  // Done with simulation data
@@ -99,13 +106,15 @@ readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
     i++;
   }
 
-  // Also required to standardise experimental data too
+  // We used to be required to standardise experimental data too
   for (unsigned int j = 0; j < i; j++) {
     (*(experimentOutputs[j]))[0] -= meansim;
     (*(experimentOutputs[j]))[0] /= stdsim;
+    (*(experimentOutputs[j]))[0] += meansim;
 
     (*(experimentOutputs[j]))[1] -= meanexpsim;
     (*(experimentOutputs[j]))[1] /= stdexpsim;
+    (*(experimentOutputs[j]))[1] += meanexpsim;
   }
 
   fclose(fp_in);
