@@ -48,6 +48,7 @@ ip_mh_am_epsilon                    = 1.e-5
 ip_mh_filteredChain_generate             = 0
 
 # Necessary to avoid sample at NaN domain values?
+ip_mh_algorithm = random_walk
 ip_mh_doLogitTransform = 0
 
 gpmsa_emulator_precision_shape = 5.0
