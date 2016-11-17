@@ -4,6 +4,7 @@
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/VectorSet.h>
 #include <queso/GPMSA.h>
+#include <queso/GPMSAOptions.h>
 
 #include <cstdio>
 
@@ -183,9 +184,17 @@ int main(int argc, char ** argv) {
   // GPMSA stores all the information about our simulation
   // data and experimental data.  It also stores default information about the
   // hyperparameter distributions.
+
+  // We can override input file hyperparameter options from code.
+  QUESO::GPMSAOptions opts(env, "");
+
+  // lambda_y has a Gaussian prior, with k-theta parameters
+  opts.m_observationalPrecisionShape = 4.0;  // Default 5.0
+  opts.m_observationalPrecisionScale = 0.25; // Default 0.2
+
   QUESO::GPMSAFactory<QUESO::GslVector, QUESO::GslMatrix>
     gpmsaFactory(env,
-                 NULL,
+                 &opts,
                  priorRv,
                  configSpace,
                  paramSpace,
