@@ -1422,12 +1422,12 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         (m_env.displayVerbosity() >= 3            ) &&
         (m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
-			      << ": just returned from likelihood() for initial chain position"
-			      << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
-			      << ", logPrior = "      << logPrior
-			      << ", logLikelihood = " << logLikelihood
-			      << ", logTarget = "     << logTarget
-			      << std::endl;
+                              << ": just returned from likelihood() for initial chain position"
+                              << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
+                              << ", logPrior = "      << logPrior
+                              << ", logLikelihood = " << logLikelihood
+                              << ", logTarget = "     << logTarget
+                              << std::endl;
     }
   }
   else {
@@ -1438,12 +1438,12 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         (m_env.displayVerbosity() >= 3            ) &&
         (m_optionsObj->m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
-			      << ": used input prior and likelihood for initial chain position"
-			      << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
-			      << ", logPrior = "      << logPrior
-			      << ", logLikelihood = " << logLikelihood
-			      << ", logTarget = "     << logTarget
-			      << std::endl;
+                              << ": used input prior and likelihood for initial chain position"
+                              << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
+                              << ", logPrior = "      << logPrior
+                              << ", logLikelihood = " << logLikelihood
+                              << ", logTarget = "     << logTarget
+                              << std::endl;
     }
   }
 
