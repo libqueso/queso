@@ -512,7 +512,7 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   if (m_optionsObj->m_doLogitTransform != UQ_MH_SG_DO_LOGIT_TRANSFORM) {
     std::string msg;
     msg = "The doLogitTransform option is deprecated.  ";
-    msg += "Use ip_mh_algorithm instead.";
+    msg += "Use both ip_mh_algorithm and ip_mh_tk instead.";
     queso_warning(msg.c_str());
   }
 
@@ -536,7 +536,9 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   // Only transform prop cov matrix if we're doing a logit random walk.
   // Also note we're transforming *after* we potentially read it from the input
   // file.
-  if ((m_optionsObj->m_algorithm == "logit_random_walk") && m_optionsObj->m_doLogitTransform) {
+  if ((m_optionsObj->m_algorithm == "logit_random_walk") &&
+      (m_optionsObj->m_tk        == "logit_random_walk") &&
+      m_optionsObj->m_doLogitTransform) {
     // Variable transform initial proposal cov matrix
     transformInitialCovMatrixToGaussianSpace(
         dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
