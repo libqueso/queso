@@ -811,10 +811,13 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
     P_M here_Smat_z_hat_u_asterisk  (m_env, m_z->m_z_space.map(),        m_s->m_paper_p_eta  );
     P_M here_Smat_z_hat_u_asterisk_t(m_env, m_j->m_unique_u_space.map(), m_z->m_z_size       );
 
-    std::vector<const P_M*> twoMats_uw(2,NULL);
-    std::vector<const P_M*> twoMats_12(2,NULL);
-    std::vector<const P_M*> twoMats_21(2,NULL);
-    std::vector<const P_M*> twoMats_22(2,NULL);
+    // We cast to (P_M *) here to get around a compilation error with gcc 4.8.4
+    // but this code is on the way out and being replaced by the GPMSA factory
+    // code instead, so it's not too awful a solution
+    std::vector<const P_M*> twoMats_uw(2,(P_M *)NULL);
+    std::vector<const P_M*> twoMats_12(2,(P_M *)NULL);
+    std::vector<const P_M*> twoMats_21(2,(P_M *)NULL);
+    std::vector<const P_M*> twoMats_22(2,(P_M *)NULL);
     for (unsigned int sampleId = 0; sampleId < numSamples; ++sampleId) {
       m_j->m_predVU_counter++;
 
