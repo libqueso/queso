@@ -614,7 +614,15 @@ MhOptionsValues::checkOptions(const BaseEnvironment * env)
     m_amAdaptedMatricesDataOutputAllowedSet.insert(env->subId());
   }
 
-  if (m_algorithm == "random_walk") {
+  if ((m_tk == "random_walk") && (m_algorithm == "logit_random_walk")) {
+      queso_error_msg("random_walk transition kernel and logit_random_walk algorithm are incompatible options");
+  }
+
+  if ((m_tk == "logit_random_walk") && (m_algorithm == "random_walk")) {
+    queso_error_msg("logit_random_walk transition kernel and random_walk algorithm are incompatible options");
+  }
+
+  if (m_tk == "random_walk") {
     queso_require_equal_to_msg(
         m_doLogitTransform,
         0,
@@ -625,7 +633,7 @@ MhOptionsValues::checkOptions(const BaseEnvironment * env)
         "local Hessian must be off to use random_walk");
   }
 
-  if (m_algorithm == "logit_random_walk") {
+  if (m_tk == "logit_random_walk") {
     queso_require_equal_to_msg(
         m_doLogitTransform,
         1,
@@ -636,7 +644,7 @@ MhOptionsValues::checkOptions(const BaseEnvironment * env)
         "local Hessian must be off to use logit_random_walk");
   }
 
-  if (m_algorithm == "stochastic_newton") {
+  if (m_tk == "stochastic_newton") {
     queso_require_equal_to_msg(
         m_doLogitTransform,
         0,
