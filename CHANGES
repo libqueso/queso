@@ -3,8 +3,10 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.56.0 (in progress)
+Version 0.56.0 (Nov 18, 2016)
   * Multivariate GPMSA implementation (experimental)
+  * Multivariate GPMSA examples
+  * Improved Libmesh+Slepc detection
   * Fix some compiler warnings
   * Refactor delayed rejection logic into a method
   * Clarify documentation for Gamma distribution
@@ -18,6 +20,10 @@ Version 0.56.0 (in progress)
   * Implement a transition kernel factory pattern so users may implement custom
     samplers
   * Implement MALA, a derivative-informed MCMC sampler
+  * Adding algorithm (acceptance probability) and transition kernel factories
+  * Added global sensitivity analysis example
+  * Adding pdf mean/variance methods
+  * Documentation improvements
 
 Version 0.55.0 (Jun 17, 2016)
   * Fix bug in JeffreysJointPdf
