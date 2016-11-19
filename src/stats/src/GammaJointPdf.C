@@ -113,6 +113,34 @@ GammaJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+GammaJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  queso_assert_equal_to(m_a.sizeLocal(), m_b.sizeLocal());
+  queso_assert_equal_to(m_a.sizeLocal(), meanVector.sizeLocal());
+
+  for (unsigned int i = 0; i < m_a.sizeLocal(); ++i) {
+    meanVector[i] = m_a[i] * m_b[i];
+  }
+}
+//--------------------------------------------------
+template<class V, class M>
+void
+GammaJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  queso_assert_equal_to(m_a.sizeLocal(), m_b.sizeLocal());
+  queso_assert_equal_to(m_a.sizeLocal(), covMatrix.numRowsGlobal());
+  queso_assert_equal_to(covMatrix.numCols(), covMatrix.numRowsGlobal());
+
+  covMatrix.zeroLower();
+  covMatrix.zeroUpper();
+
+  for (unsigned int i = 0; i < m_a.sizeLocal(); ++i) {
+    covMatrix(i,i) = m_a[i] * m_b[i] * m_b[i];
+  }
+}
+//--------------------------------------------------
+template<class V, class M>
 double
 GammaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

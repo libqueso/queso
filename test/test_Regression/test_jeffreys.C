@@ -12,6 +12,8 @@
 #include <queso/GslMatrix.h>
 #include <queso/DistArray.h>
 
+#include <cstdlib>
+
 struct qoiRoutine_DataType
 {
   double coef1;
@@ -106,15 +108,20 @@ void compute(const QUESO::FullEnvironment& env) {
 }
 
 int main(int argc, char ** argv) {
+  std::string inputFileName = "test_Regression/jeffreys_input.txt";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
   //init env
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
   // Step 1: Set up QUESO environment
   QUESO::FullEnvironment* env =
-    new QUESO::FullEnvironment(MPI_COMM_WORLD,"test_Regression/jeffreys_input.txt","",NULL);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD,inputFileName,"",NULL);
 #else
   QUESO::FullEnvironment* env =
-    new QUESO::FullEnvironment("test_Regression/jeffreys_input.txt","",NULL);
+    new QUESO::FullEnvironment(inputFileName,"",NULL);
 #endif
 
   //compute

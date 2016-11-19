@@ -103,24 +103,21 @@ ConcatenatedJointPdf<V,M>::actualValue(
 
   queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  std::vector<V*> vecs(m_densities.size(),(V*) NULL);
-  std::vector<double> values(m_densities.size(),0.);
   double returnValue = 1.;
-  unsigned int cummulativeSize = 0;
-  for (unsigned int i = 0; i < vecs.size(); ++i) {
-    vecs[i] = new V(m_densities[i]->domainSet().vectorSpace().zeroVector());
-    domainVector.cwExtract(cummulativeSize,*(vecs[i]));
-    values[i] = m_densities[i]->actualValue(*(vecs[i]),NULL,NULL,NULL,NULL);
-    returnValue *= values[i];
+  unsigned int cumulativeSize = 0;
+  for (unsigned int i = 0; i < m_densities.size(); ++i) {
+    V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
+    domainVector.cwExtract(cumulativeSize,vec_i);
+    double value_i = m_densities[i]->actualValue(vec_i,NULL,NULL,NULL,NULL);
+    returnValue *= value_i;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In ConcatenatedJointPdf<V,M>::actualValue()"
-                              << ", *(vecs[" << i << "]) = "       << *(vecs[i])
-                              << ": values[" << i << "] = "        << values[i]
+                              << ", vec_" << i << ") = "       << vec_i
+                              << ": value_" << i << " = "        << value_i
                               << ", temporary cumulative value = " << returnValue
                               << std::endl;
     }
-    cummulativeSize += vecs[i]->sizeLocal();
-    delete vecs[i];
+    cumulativeSize += vec_i.sizeLocal();
   }
   //returnValue *= exp(m_logOfNormalizationFactor); // No need, because each PDF should be already normalized [PDF-11]
 
@@ -151,24 +148,21 @@ ConcatenatedJointPdf<V,M>::lnValue(
 
   queso_require_msg(!(domainDirection || gradVector || hessianMatrix || hessianEffect), "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  std::vector<V*> vecs(m_densities.size(),(V*) NULL);
-  std::vector<double> values(m_densities.size(),0.);
   double returnValue = 0.;
-  unsigned int cummulativeSize = 0;
-  for (unsigned int i = 0; i < vecs.size(); ++i) {
-    vecs[i] = new V(m_densities[i]->domainSet().vectorSpace().zeroVector());
-    domainVector.cwExtract(cummulativeSize,*(vecs[i]));
-    values[i] = m_densities[i]->lnValue(*(vecs[i]),NULL,NULL,NULL,NULL);
-    returnValue += values[i];
+  unsigned int cumulativeSize = 0;
+  for (unsigned int i = 0; i < m_densities.size(); ++i) {
+    V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
+    domainVector.cwExtract(cumulativeSize,vec_i);
+    double value_i = m_densities[i]->lnValue(vec_i,NULL,NULL,NULL,NULL);
+    returnValue += value_i;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {  // gpmsa
       *m_env.subDisplayFile() << "In ConcatenatedJointPdf<V,M>::lnValue()"
-                              << ", *(vecs[" << i << "]) = "       << *(vecs[i])
-                              << ": values[" << i << "] = "        << values[i]
+                              << ", vec_" << i << " = "       << vec_i
+                              << ": value_" << i << " = "        << value_i
                               << ", temporary cumulative value = " << returnValue
                               << std::endl;
     }
-    cummulativeSize += vecs[i]->sizeLocal();
-    delete vecs[i];
+    cumulativeSize += vec_i.sizeLocal();
   }
   //returnValue += m_logOfNormalizationFactor; // No need, because each PDF should be already normalized [PDF-11]
 
@@ -183,6 +177,41 @@ ConcatenatedJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+ConcatenatedJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  covMatrix.zeroLower();
+  covMatrix.zeroUpper();
+
+  unsigned int cumulativeSize = 0;
+  for (unsigned int i = 0; i < m_densities.size(); ++i) {
+    const Map & map = m_densities[i]->domainSet().vectorSpace().map();
+    const unsigned int n_columns = map.NumGlobalElements();
+    M mat_i(m_densities[i]->domainSet().env(),
+            map, n_columns);
+    m_densities[i]->distributionVariance(mat_i);
+    covMatrix.cwSet(cumulativeSize,cumulativeSize,mat_i);
+
+    cumulativeSize += n_columns;
+  }
+}
+
+//--------------------------------------------------
+template<class V, class M>
+void
+ConcatenatedJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  unsigned int cumulativeSize = 0;
+  for (unsigned int i = 0; i < m_densities.size(); ++i) {
+    V vec_i(m_densities[i]->domainSet().vectorSpace().zeroVector());
+    m_densities[i]->distributionMean(vec_i);
+    meanVector.cwSet(cumulativeSize,vec_i);
+    cumulativeSize += vec_i.sizeLocal();
+  }
+}
+
+//--------------------------------------------------
+template<class V, class M>
 double
 ConcatenatedJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
@@ -193,7 +222,7 @@ ConcatenatedJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
                             << std::endl;
   }
   double volume = m_domainSet.volume();
-  if (((boost::math::isnan)(volume)) ||
+  if ((queso_isnan(volume)) ||
       (volume == -INFINITY         ) ||
       (volume ==  INFINITY         ) ||
       (volume <= 0.                )) {

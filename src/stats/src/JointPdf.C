@@ -55,6 +55,23 @@ template<class V, class M>
 BaseJointPdf<V,M>::~BaseJointPdf()
 {
 }
+
+//---------------------------------------------------
+template<class V,class M>
+void
+BaseJointPdf<V,M>::distributionMean(V & meanVector) const
+{
+  queso_not_implemented();
+}
+
+//---------------------------------------------------
+template<class V,class M>
+void
+BaseJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  queso_not_implemented();
+}
+
 // Math methods -------------------------------------
 template<class V,class M>
 void
@@ -71,6 +88,27 @@ BaseJointPdf<V,M>::setLogOfNormalizationFactor(double value) const
   m_logOfNormalizationFactor = value;
   return;
 }
+
+template <class V, class M>
+void
+BaseJointPdf<V, M>::print(std::ostream & os) const
+{
+  // Print m_env?
+  // Print mean?
+  // Print var?
+
+  os << "Start printing BaseJointPdf<V, M>" << std::endl;
+  os << "m_prefix:" << std::endl;
+  os << this->m_prefix << std::endl;
+  os << "m_domainSet:" << std::endl;
+  os << this->m_domainSet << std::endl;
+  os << "m_normalizationStyle:" << std::endl;
+  os << this->m_normalizationStyle << std::endl;
+  os << "m_logOfNormalizationFactor:" << std::endl;
+  os << this->m_logOfNormalizationFactor << std::endl;
+  os << "End printing BaseJointPdf<V, M>" << std::endl;
+}
+
 //---------------------------------------------------
 template<class V,class M>
 double
@@ -79,7 +117,7 @@ BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(unsigned int numSamples
   double value = 0.;
 
   double volume = m_domainSet.volume();
-  if (((boost::math::isnan)(volume)) ||
+  if ((queso_isnan(volume)) ||
       (volume == -INFINITY         ) ||
       (volume ==  INFINITY         ) ||
       (volume <= 0.                )) {

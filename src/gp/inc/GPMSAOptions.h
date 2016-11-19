@@ -22,7 +22,10 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/Environment.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #ifndef UQ_GPMSA_OPTIONS_H
 #define UQ_GPMSA_OPTIONS_H
@@ -61,6 +64,13 @@ public:
   //! The scale parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionScale;
 
+  //! The shape parameter for the Gamma hyperprior for the observational precision
+  double m_observationalPrecisionShape;
+
+  //! The scale parameter for the Gamma hyperprior for the observational precision
+  double m_observationalPrecisionScale;
+
+
   //! The alpha paramter for the Beta hyperprior for the emulator correlation strength
   double m_emulatorCorrelationStrengthAlpha;
 
@@ -93,11 +103,15 @@ public:
 private:
   const BaseEnvironment& m_env;
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   BoostInputOptionsParser * m_parser;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string m_option_help;
   std::string m_option_emulatorPrecisionShape;
   std::string m_option_emulatorPrecisionScale;
+  std::string m_option_observationalPrecisionShape;
+  std::string m_option_observationalPrecisionScale;
   std::string m_option_emulatorCorrelationStrengthAlpha;
   std::string m_option_emulatorCorrelationStrengthBeta;
   std::string m_option_discrepancyPrecisionShape;

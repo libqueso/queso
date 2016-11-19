@@ -6,7 +6,7 @@
 #
 # DESCRIPTION
 #
-#   Queries compile environment and SVN revision for use in configure summary 
+#   Queries compile environment and git revision for use in configure summary 
 #   and pre-processing macros.
 #
 # COPYLEFT
@@ -27,36 +27,32 @@ BUILD_ARCH=${host}
 BUILD_HOST=${ac_hostname}
 BUILD_DATE=`date +'%F %H:%M'`
 
-# Determine method for querying Source code revisioning (assumes SVN)
+# Determine method for querying Source code revisioning (assumes git)
 
-AC_PATH_PROG(svnquery,svnversion)
+AC_PATH_PROG(gitbin,git)
 
-# svnversion 1.7.x changed the return value for unversioned directories
-if test "x${svnquery}" = "x" || test "`${svnquery} -n $srcdir`" = "exported" || test "`${svnquery} -n $srcdir`" = "Unversioned directory"; then
-   SVN_REVISION="cat $srcdir/dist_version"
-   SVN_CHECKOUT=false
-   BUILD_DEVSTATUS="External Release"
+if test "x${gitbin}" != "x" && test "`${gitbin} rev-parse --is-inside-work-tree`" = "true"; then
+  GIT_REVISION=`${gitbin} rev-parse --short HEAD`
+  BUILD_DEVSTATUS="Development Build"
 else
-   SVN_REVISION="${svnquery} -n $srcdir"
-   SVN_CHECKOUT=true
-   BUILD_DEVSTATUS="Development Build"
+  GIT_REVISION="N/A"
+  BUILD_DEVSTATUS="External Release"
 fi
 
 
-AC_SUBST(SVN_REVISION)
+AC_SUBST(GIT_REVISION)
 AC_SUBST(BUILD_DEVSTATUS)
-AM_CONDITIONAL(SVN_CHECKOUT,test x${SVN_CHECKOUT} = xtrue )
 
 # Query current version.
 
-BUILD_VERSION=`${SVN_REVISION}`
+BUILD_VERSION=${GIT_REVISION}
 
-# Versioning info - check local developer version (if checked out)
+# Versioning info - check local developer version (if cloned)
 
 AC_DEFINE_UNQUOTED([BUILD_USER],     "${BUILD_USER}",     [The fine user who built the package])
 AC_DEFINE_UNQUOTED([BUILD_ARCH],     "${BUILD_ARCH}",     [Architecture of the build host])
 AC_DEFINE_UNQUOTED([BUILD_HOST],     "${BUILD_HOST}",     [Build host name])
-AC_DEFINE_UNQUOTED([BUILD_VERSION],  "${BUILD_VERSION}",  [SVN revision])
+AC_DEFINE_UNQUOTED([BUILD_VERSION],  "${BUILD_VERSION}",  [git revision])
 AC_DEFINE_UNQUOTED([BUILD_DEVSTATUS],"${BUILD_DEVSTATUS}",[Dev/Release build])
 AC_DEFINE(         [BUILD_DATE],     __DATE__ " " __TIME__, [Build date])
 

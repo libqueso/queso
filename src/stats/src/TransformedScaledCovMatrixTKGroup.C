@@ -140,6 +140,26 @@ TransformedScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stag
 
   return (*invlogit_gaussian);
 }
+
+template <class V, class M>
+const InvLogitGaussianVectorRV<V, M> &
+TransformedScaledCovMatrixTKGroup<V, M>::rv(const V & position) const
+{
+  queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
+  queso_require_msg(m_rvs[0], "m_rvs[0] == NULL");
+  // queso_require_greater_msg(m_preComputingPositions.size(), this->m_stageId, "m_preComputingPositions.size() <= stageId");
+  // queso_require_msg(m_preComputingPositions[this->m_stageId], "m_preComputingPositions[stageId] == NULL");
+
+  InvLogitGaussianVectorRV<V, M> * invlogit_gaussian =
+    dynamic_cast<InvLogitGaussianVectorRV<V, M> * >(m_rvs[this->m_stageId]);
+
+  V transformedPreComputingPositions(position);
+  transformToGaussianSpace(position, transformedPreComputingPositions);
+  invlogit_gaussian->updateLawExpVector(transformedPreComputingPositions);
+
+  return (*invlogit_gaussian);
+}
+
 //---------------------------------------------------
 template<class V, class M>
 void
@@ -216,6 +236,14 @@ TransformedScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
   return;
 }
 
+template <class V, class M>
+unsigned int
+TransformedScaledCovMatrixTKGroup<V, M>::set_dr_stage(unsigned int stageId)
+{
+  unsigned int old_stageId = this->m_stageId;
+  this->m_stageId = stageId;
+  return old_stageId;
+}
 
 // Private methods------------------------------------
 template<class V, class M>
@@ -257,20 +285,20 @@ TransformedScaledCovMatrixTKGroup<V, M>::transformToGaussianSpace(
     double min_val = min_domain_bounds[i];
     double max_val = max_domain_bounds[i];
 
-    if (boost::math::isfinite(min_val) &&
-        boost::math::isfinite(max_val)) {
+    if (queso_isfinite(min_val) &&
+        queso_isfinite(max_val)) {
         // Left- and right-hand sides are finite.  Do full transform.
         transformedPoint[i] = std::log(physicalPoint[i] - min_val) -
             std::log(max_val - physicalPoint[i]);
     }
-    else if (boost::math::isfinite(min_val) &&
-             !boost::math::isfinite(max_val)) {
+    else if (queso_isfinite(min_val) &&
+             !queso_isfinite(max_val)) {
       // Left-hand side finite, but right-hand side is not.
       // Do only left-hand transform.
       transformedPoint[i] = std::log(physicalPoint[i] - min_val);
     }
-    else if (!boost::math::isfinite(min_val) &&
-             boost::math::isfinite(max_val)) {
+    else if (!queso_isfinite(min_val) &&
+             queso_isfinite(max_val)) {
       // Right-hand side is finite, but left-hand side is not.
       // Do only right-hand transform.
       transformedPoint[i] = -std::log(max_val - physicalPoint[i]);

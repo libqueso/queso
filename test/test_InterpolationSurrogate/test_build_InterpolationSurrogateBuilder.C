@@ -22,7 +22,6 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <limits>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/BoxSubset.h>
@@ -30,6 +29,9 @@
 #include <queso/InterpolationSurrogateBuilder.h>
 #include <queso/InterpolationSurrogateDataSet.h>
 #include <queso/InterpolationSurrogateIOASCII.h>
+
+#include <cstdlib>
+#include <limits>
 
 double four_d_fn_1( double x, double y, double z, double a );
 double four_d_fn_2( double x, double y, double z, double a );
@@ -56,11 +58,16 @@ public:
 
 int main(int argc, char ** argv)
 {
+  std::string inputFileName = "test_InterpolationSurrogate/queso_input.txt";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, "test_InterpolationSurrogate/queso_input.txt", "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 #else
-  QUESO::FullEnvironment env("test_InterpolationSurrogate/queso_input.txt", "", NULL);
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 #endif
 
   int return_flag = 0;

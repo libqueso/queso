@@ -22,7 +22,9 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/Environment.h>
 #include <queso/MetropolisHastingsSGOptions.h>
@@ -99,11 +101,16 @@ MhOptionsValues::MhOptionsValues(
     m_outputLogLikelihood                      (UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD),
     m_outputLogTarget                          (UQ_MH_SG_OUTPUT_LOG_TARGET),
     m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM),
+    m_algorithm                                (UQ_MH_SG_ALGORITHM),
+    m_tk                                       (UQ_MH_SG_TK),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     m_alternativeRawSsOptionsValues            (),
     m_alternativeFilteredSsOptionsValues       (),
 #endif
+    m_env(NULL),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                                      (m_prefix + "help"                                      ),
     m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
     m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -159,7 +166,9 @@ MhOptionsValues::MhOptionsValues(
     m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
     m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
     m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+    m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
+    m_option_tk                                        (m_prefix + "tk"                                        )
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativeRawSsOptionsValues     ) m_alternativeRawSsOptionsValues      = *alternativeRawSsOptionsValues;
@@ -233,11 +242,16 @@ MhOptionsValues::MhOptionsValues(
     m_outputLogLikelihood                      (UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD),
     m_outputLogTarget                          (UQ_MH_SG_OUTPUT_LOG_TARGET),
     m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM),
+    m_algorithm                                (UQ_MH_SG_ALGORITHM),
+    m_tk                                       (UQ_MH_SG_TK),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     m_alternativeRawSsOptionsValues            (),
     m_alternativeFilteredSsOptionsValues       (),
 #endif
+    m_env(env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                                      (m_prefix + "help"                                      ),
     m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
     m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -293,13 +307,16 @@ MhOptionsValues::MhOptionsValues(
     m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
     m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
     m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+    m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
+    m_option_tk                                        (m_prefix + "tk"                                        )
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativeRawSsOptionsValues     ) m_alternativeRawSsOptionsValues      = *alternativeRawSsOptionsValues;
   if (alternativeFilteredSsOptionsValues) m_alternativeFilteredSsOptionsValues = *alternativeFilteredSsOptionsValues;
 #endif
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string >(m_option_help,                                       UQ_MH_SG_HELP,                                                 "produce help msg for Bayesian Metropolis-Hastings"          );
   m_parser->registerOption<std::string >(m_option_dataOutputFileName,                         UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                           , "name of generic output file"                                );
   m_parser->registerOption<bool        >(m_option_dataOutputAllowAll,                         UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                           , "allow all subEnvs write to a generic output file"           );
@@ -356,6 +373,8 @@ MhOptionsValues::MhOptionsValues(
   m_parser->registerOption<bool        >(m_option_outputLogLikelihood,                        UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               , "flag to toggle output of log likelihood values"             );
   m_parser->registerOption<bool        >(m_option_outputLogTarget,                            UQ_MH_SG_OUTPUT_LOG_TARGET                                   , "flag to toggle output of log target values"                 );
   m_parser->registerOption<bool        >(m_option_doLogitTransform,                           UQ_MH_SG_DO_LOGIT_TRANSFORM                                  , "flag to toggle logit transform for bounded domains"         );
+  m_parser->registerOption<std::string >(m_option_algorithm,                                  UQ_MH_SG_ALGORITHM                                           , "which MCMC algorithm to use"                                );
+  m_parser->registerOption<std::string >(m_option_tk,                                         UQ_MH_SG_TK                                                  , "which MCMC transition kernel to use"                        );
 
   m_parser->scanInputFile();
 
@@ -415,6 +434,123 @@ MhOptionsValues::MhOptionsValues(
   m_parser->getOption<bool        >(m_option_outputLogLikelihood,                        m_outputLogLikelihood);
   m_parser->getOption<bool        >(m_option_outputLogTarget,                            m_outputLogTarget);
   m_parser->getOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform);
+  m_parser->getOption<std::string >(m_option_algorithm,                                  m_algorithm);
+  m_parser->getOption<std::string >(m_option_tk,                                         m_tk);
+#else
+  m_help = m_env->input()(m_option_help, UQ_MH_SG_HELP);
+  m_dataOutputFileName = m_env->input()(m_option_dataOutputFileName, UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV);
+  m_dataOutputAllowAll = m_env->input()(m_option_dataOutputAllowAll, UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV);
+
+  // UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  unsigned int size = m_env->input().vector_variable_size(m_option_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_dataOutputAllowedSet, i, i);
+    m_dataOutputAllowedSet.insert(allowed);
+  }
+
+  m_totallyMute = m_env->input()(m_option_totallyMute, UQ_MH_SG_TOTALLY_MUTE_ODV);
+  m_initialPositionDataInputFileName = m_env->input()(m_option_initialPosition_dataInputFileName, UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV);
+  m_initialPositionDataInputFileType = m_env->input()(m_option_initialPosition_dataInputFileType, UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV);
+  m_initialProposalCovMatrixDataInputFileName = m_env->input()(m_option_initialProposalCovMatrix_dataInputFileName, UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV);
+  m_initialProposalCovMatrixDataInputFileType = m_env->input()(m_option_initialProposalCovMatrix_dataInputFileType, UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV);
+
+  // UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV is the empty set (string) by
+  // default
+  size = m_env->input().vector_variable_size(m_option_listOfDisabledParameters);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int disabled = m_env->input()(m_option_listOfDisabledParameters, i, i);
+    m_parameterDisabledSet.insert(disabled);
+  }
+
+  m_rawChainDataInputFileName = m_env->input()(m_option_rawChain_dataInputFileName, UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV);
+  m_rawChainDataInputFileType = m_env->input()(m_option_rawChain_dataInputFileType, UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV);
+  m_rawChainSize = m_env->input()(m_option_rawChain_size, UQ_MH_SG_RAW_CHAIN_SIZE_ODV);
+  m_rawChainGenerateExtra = m_env->input()(m_option_rawChain_generateExtra, UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV);
+  m_rawChainDisplayPeriod = m_env->input()(m_option_rawChain_displayPeriod, UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV);
+  m_rawChainMeasureRunTimes = m_env->input()(m_option_rawChain_measureRunTimes, UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV);
+  m_rawChainDataOutputPeriod = m_env->input()(m_option_rawChain_dataOutputPeriod, UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV);
+  m_rawChainDataOutputFileName = m_env->input()(m_option_rawChain_dataOutputFileName, UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV);
+  m_rawChainDataOutputFileType = m_env->input()(m_option_rawChain_dataOutputFileType, UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV);
+  m_rawChainDataOutputAllowAll = m_env->input()(m_option_rawChain_dataOutputAllowAll, UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV);
+
+  // UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  size = m_env->input().vector_variable_size(m_option_rawChain_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_rawChain_dataOutputAllowedSet, i, i);
+    m_rawChainDataOutputAllowedSet.insert(allowed);
+  }
+
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_rawChain_computeStats = m_env->input()(m_option_rawChain_computeStats, UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV);
+#endif
+  m_filteredChainGenerate = m_env->input()(m_option_filteredChain_generate, UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV);
+  m_filteredChainDiscardedPortion = m_env->input()(m_option_filteredChain_discardedPortion, UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV);
+  m_filteredChainLag = m_env->input()(m_option_filteredChain_lag, UQ_MH_SG_FILTERED_CHAIN_LAG_ODV);
+  m_filteredChainDataOutputFileName = m_env->input()(m_option_filteredChain_dataOutputFileName, UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV);
+  m_filteredChainDataOutputFileType = m_env->input()(m_option_filteredChain_dataOutputFileType, UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV);
+  m_filteredChainDataOutputAllowAll = m_env->input()(m_option_filteredChain_dataOutputAllowAll, UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV);
+
+  // UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  size = m_env->input().vector_variable_size(m_option_filteredChain_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_filteredChain_dataOutputAllowedSet, i, i);
+    m_filteredChainDataOutputAllowedSet.insert(allowed);
+  }
+
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_filteredChain_computeStats = m_env->input()(m_option_filteredChain_computeStats, UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV);
+#endif
+  m_displayCandidates = m_env->input()(m_option_displayCandidates, UQ_MH_SG_DISPLAY_CANDIDATES_ODV);
+  m_putOutOfBoundsInChain = m_env->input()(m_option_putOutOfBoundsInChain, UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV);
+  m_tkUseLocalHessian = m_env->input()(m_option_tk_useLocalHessian, UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV);
+  m_tkUseNewtonComponent = m_env->input()(m_option_tk_useNewtonComponent, UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV);
+  m_drMaxNumExtraStages = m_env->input()(m_option_dr_maxNumExtraStages, UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV);
+
+  // UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV is the empty set (string) by default
+  size = m_env->input().vector_variable_size(m_option_dr_listOfScalesForExtraStages);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_dr_listOfScalesForExtraStages, i, i);
+    m_drScalesForExtraStages.push_back(allowed);
+  }
+
+  m_drDuringAmNonAdaptiveInt = m_env->input()(m_option_dr_duringAmNonAdaptiveInt, UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV);
+  m_amKeepInitialMatrix = m_env->input()(m_option_am_keepInitialMatrix, UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV);
+  m_amInitialNonAdaptInterval = m_env->input()(m_option_am_initialNonAdaptInterval, UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV);
+  m_amAdaptInterval = m_env->input()(m_option_am_adaptInterval, UQ_MH_SG_AM_ADAPT_INTERVAL_ODV);
+  m_amAdaptedMatricesDataOutputPeriod = m_env->input()(m_option_am_adaptedMatrices_dataOutputPeriod, UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV);
+  m_amAdaptedMatricesDataOutputFileName = m_env->input()(m_option_am_adaptedMatrices_dataOutputFileName, UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV);
+  m_amAdaptedMatricesDataOutputFileType = m_env->input()(m_option_am_adaptedMatrices_dataOutputFileType, UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV);
+  m_amAdaptedMatricesDataOutputAllowAll = m_env->input()(m_option_am_adaptedMatrices_dataOutputAllowAll, UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV);
+
+  // UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  size = m_env->input().vector_variable_size(m_option_am_adaptedMatrices_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_am_adaptedMatrices_dataOutputAllowedSet, i, i);
+    m_amAdaptedMatricesDataOutputAllowedSet.insert(allowed);
+  }
+
+  m_amEta = m_env->input()(m_option_am_eta, UQ_MH_SG_AM_ETA_ODV);
+  m_amEpsilon = m_env->input()(m_option_am_epsilon, UQ_MH_SG_AM_EPSILON_ODV);
+  m_enableBrooksGelmanConvMonitor = m_env->input()(m_option_enableBrooksGelmanConvMonitor, UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR);
+  m_BrooksGelmanLag = m_env->input()(m_option_BrooksGelmanLag, UQ_MH_SG_BROOKS_GELMAN_LAG);
+  m_outputLogLikelihood = m_env->input()(m_option_outputLogLikelihood, UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD);
+  m_outputLogTarget = m_env->input()(m_option_outputLogTarget, UQ_MH_SG_OUTPUT_LOG_TARGET);
+  m_doLogitTransform = m_env->input()(m_option_doLogitTransform, UQ_MH_SG_DO_LOGIT_TRANSFORM);
+  m_algorithm = m_env->input()(m_option_algorithm, UQ_MH_SG_ALGORITHM);
+  m_tk = m_env->input()(m_option_tk, UQ_MH_SG_TK);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions(env);
 }
@@ -477,6 +613,48 @@ MhOptionsValues::checkOptions(const BaseEnvironment * env)
     m_amAdaptedMatricesDataOutputAllowedSet.clear();
     m_amAdaptedMatricesDataOutputAllowedSet.insert(env->subId());
   }
+
+  if ((m_tk == "random_walk") && (m_algorithm == "logit_random_walk")) {
+      queso_error_msg("random_walk transition kernel and logit_random_walk algorithm are incompatible options");
+  }
+
+  if ((m_tk == "logit_random_walk") && (m_algorithm == "random_walk")) {
+    queso_error_msg("logit_random_walk transition kernel and random_walk algorithm are incompatible options");
+  }
+
+  if (m_tk == "random_walk") {
+    queso_require_equal_to_msg(
+        m_doLogitTransform,
+        0,
+        "logit transform must be off to use random_walk");
+    queso_require_equal_to_msg(
+        m_tkUseLocalHessian,
+        0,
+        "local Hessian must be off to use random_walk");
+  }
+
+  if (m_tk == "logit_random_walk") {
+    queso_require_equal_to_msg(
+        m_doLogitTransform,
+        1,
+        "logit transform must be on to use logit_random_walk");
+    queso_require_equal_to_msg(
+        m_tkUseLocalHessian,
+        0,
+        "local Hessian must be off to use logit_random_walk");
+  }
+
+  if (m_tk == "stochastic_newton") {
+    queso_require_equal_to_msg(
+        m_doLogitTransform,
+        0,
+        "logit transform must be off to use stochastic_newton");
+    queso_require_equal_to_msg(
+        m_tkUseLocalHessian,
+        1,
+        "local Hessian must be on to use stochastic_newton");
+  }
+
 }
 
 void
@@ -541,6 +719,8 @@ MhOptionsValues::copy(const MhOptionsValues& src)
   m_outputLogLikelihood                       = src.m_outputLogLikelihood;
   m_outputLogTarget                           = src.m_outputLogTarget;
   m_doLogitTransform                          = src.m_doLogitTransform;
+  m_algorithm                                 = src.m_algorithm;
+  m_tk                                        = src.m_tk;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeRawSsOptionsValues             = src.m_alternativeRawSsOptionsValues;
@@ -551,7 +731,9 @@ MhOptionsValues::copy(const MhOptionsValues& src)
 
 std::ostream & operator<<(std::ostream & os, const MhOptionsValues & obj)
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   os <<         obj.m_option_dataOutputFileName                         << " = " << obj.m_dataOutputFileName
      << "\n" << obj.m_option_dataOutputAllowAll                         << " = " << obj.m_dataOutputAllowAll
@@ -628,6 +810,8 @@ std::ostream & operator<<(std::ostream & os, const MhOptionsValues & obj)
      << "\n" << obj.m_option_outputLogLikelihood                        << " = " << obj.m_outputLogLikelihood
      << "\n" << obj.m_option_outputLogTarget                            << " = " << obj.m_outputLogTarget
      << "\n" << obj.m_option_doLogitTransform                           << " = " << obj.m_doLogitTransform
+     << "\n" << obj.m_option_algorithm                                  << " = " << obj.m_algorithm
+     << "\n" << obj.m_option_tk                                         << " = " << obj.m_tk
      << std::endl;
 
   return os;
@@ -653,7 +837,9 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 #endif
   m_prefix                                           ((std::string)(prefix) + "mh_"),
   m_env                                              (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                                      (new boost::program_options::options_description("Bayesian Metropolis-Hastings options")),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                                      (m_prefix + "help"                                      ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
   m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -709,11 +895,13 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
   m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+  m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
+  m_option_tk                                        (m_prefix + "tk"                                        )
 {
   queso_deprecated();
 
-  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the absence of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the absence of an options input file"));
 }
 // Constructor 2------------------------------------
 MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
@@ -730,7 +918,9 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 #endif
   m_prefix                                           ((std::string)(prefix) + "mh_"),
   m_env                                              (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                                      (NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                                      (m_prefix + "help"                                      ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
   m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -786,11 +976,13 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
   m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+  m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
+  m_option_tk                                        (m_prefix + "tk"                                        )
 {
   queso_deprecated();
 
-  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the existence of an options input file"));
 
   if ((m_env.subDisplayFile() != NULL ) &&
       (m_ov.m_totallyMute     == false)) {
@@ -827,7 +1019,9 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 #endif
   m_prefix                                           (mlOptions.m_prefix),
   m_env                                              (mlOptions.env()),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                                      (NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                                      (m_prefix + "help"                                      ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
   m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -883,7 +1077,9 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
   m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
+  m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
+  m_option_tk                                        (m_prefix + "tk"                                        )
 {
   queso_deprecated();
 
@@ -942,6 +1138,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_ov.m_outputLogLikelihood                       = UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD;
   m_ov.m_outputLogTarget                           = UQ_MH_SG_OUTPUT_LOG_TARGET;
   m_ov.m_doLogitTransform                          = mlOptions.m_doLogitTransform;
+  m_ov.m_algorithm                                 = mlOptions.m_algorithm;
+  m_ov.m_tk                                        = mlOptions.m_tk;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 //m_ov.m_alternativeRawSsOptionsValues             = mlOptions.; // dakota
@@ -972,7 +1170,9 @@ MetropolisHastingsSGOptions::~MetropolisHastingsSGOptions()
   if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptionsObj;
   if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptionsObj;
 #endif
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   if (m_optionsDesc                      ) delete m_optionsDesc;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // I/O methods -------------------------------------
@@ -981,11 +1181,13 @@ MetropolisHastingsSGOptions::scanOptionsValues()
 {
   queso_deprecated();
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   if ((m_env.subDisplayFile() != NULL) &&
       (m_ov.m_totallyMute == false   )) {
@@ -1090,11 +1292,14 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
      << "\n" << m_option_outputLogLikelihood                        << " = " << m_ov.m_outputLogLikelihood
      << "\n" << m_option_outputLogTarget                            << " = " << m_ov.m_outputLogTarget
      << "\n" << m_option_doLogitTransform                           << " = " << m_ov.m_doLogitTransform
+     << "\n" << m_option_algorithm                                  << " = " << m_ov.m_algorithm
+     << "\n" << m_option_tk                                         << " = " << m_ov.m_tk
      << std::endl;
 
   return;
 }
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 // Private methods----------------------------------
 void
 MetropolisHastingsSGOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
@@ -1158,10 +1363,15 @@ MetropolisHastingsSGOptions::defineMyOptions(boost::program_options::options_des
     (m_option_outputLogLikelihood.c_str(),                        boost::program_options::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               ), "flag to toggle output of log likelihood values"             )
     (m_option_outputLogTarget.c_str(),                            boost::program_options::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_TARGET                                   ), "flag to toggle output of log target values"                 )
     (m_option_doLogitTransform.c_str(),                           boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DO_LOGIT_TRANSFORM                                  ), "flag to toggle logit transform for bounded domains"         )
+    (m_option_algorithm.c_str(),                                  boost::program_options::value<std::string >()->default_value(UQ_MH_SG_ALGORITHM                                           ), "which mcmc algorithm to use"                                )
+    (m_option_tk.c_str(),                                         boost::program_options::value<std::string >()->default_value(UQ_MH_SG_TK                                                  ), "which mcmc tk to use"                                       )
   ;
 
   return;
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 // -------------------------------------------------
 void
 MetropolisHastingsSGOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
@@ -1473,7 +1683,16 @@ MetropolisHastingsSGOptions::getMyOptionValues(boost::program_options::options_d
   if (m_env.allOptionsMap().count(m_option_doLogitTransform)) {
     m_ov.m_doLogitTransform = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_doLogitTransform]).as<bool>();
   }
+
+  if (m_env.allOptionsMap().count(m_option_algorithm)) {
+    m_ov.m_algorithm = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_algorithm]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_tk)) {
+    m_ov.m_tk = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_tk]).as<std::string>();
+  }
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 // --------------------------------------------------
 // Operator declared outside class definition ------

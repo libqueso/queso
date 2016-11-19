@@ -27,7 +27,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <queso/SharedPtr.h>
 #include <queso/FunctionBase.h>
 
 namespace QUESO {
@@ -74,7 +74,7 @@ public:
    *  where the lambda are eigenvalues of the precision operator, \c this, and
    *  the \phi(x) are eigenfunctions of the precision operator, \c this
    */
-  virtual boost::shared_ptr<FunctionBase>
+  virtual typename SharedPtr<FunctionBase>::Type
   inverse_kl_transform(std::vector<double>& xi, double alpha) const = 0;
 };
 

@@ -17,13 +17,11 @@ if HDF5_ENABLED
   AM_CPPFLAGS += $(HDF5_CFLAGS)
 endif
 
-if LIBMESH_ENABLED
+if LIBMESH_SLEPC_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)# $(LIBMESH_INCLUDE)
 endif
 
-if GIT_CLONE
-BUILT_SOURCES = .license.stamp
-endif
+BUILT_SOURCES =
 
 # Dynamic library build: we include external library linkage here to
 # make it easier for the user.
@@ -52,7 +50,7 @@ if TRILINOS_ENABLED
   libqueso_la_LDFLAGS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
 
-if LIBMESH_ENABLED
+if LIBMESH_SLEPC_ENABLED
   libqueso_la_LDFLAGS += $(LIBMESH_LIBS)
 endif
 
@@ -78,8 +76,15 @@ libqueso_la_SOURCES += core/src/DistArray.C
 libqueso_la_SOURCES += core/src/Optimizer.C
 libqueso_la_SOURCES += core/src/GslOptimizer.C
 libqueso_la_SOURCES += core/src/OptimizerMonitor.C
+libqueso_la_SOURCES += core/src/OptimizerOptions.C
 libqueso_la_SOURCES += core/src/BaseInputOptionsParser.C
 libqueso_la_SOURCES += core/src/BoostInputOptionsParser.C
+libqueso_la_SOURCES += core/src/TransitionKernelFactory.C
+libqueso_la_SOURCES += core/src/TKFactoryStochasticNewton.C
+libqueso_la_SOURCES += core/src/TKFactoryRandomWalk.C
+libqueso_la_SOURCES += core/src/TKFactoryLogitRandomWalk.C
+libqueso_la_SOURCES += core/src/AlgorithmFactory.C
+libqueso_la_SOURCES += core/src/TKFactoryMALA.C
 
 
 # Sources that need libmesh
@@ -247,6 +252,8 @@ libqueso_la_SOURCES += stats/src/GaussianLikelihoodFullCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodFullCovarianceRandomCoefficient.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.C
+libqueso_la_SOURCES += stats/src/Algorithm.C
+libqueso_la_SOURCES += stats/src/MetropolisAdjustedLangevinTK.C
 
 # Sources from surrogates/src
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateData.C
@@ -306,8 +313,16 @@ libqueso_include_HEADERS += core/inc/Vector.h
 libqueso_include_HEADERS += core/inc/Optimizer.h
 libqueso_include_HEADERS += core/inc/GslOptimizer.h
 libqueso_include_HEADERS += core/inc/OptimizerMonitor.h
+libqueso_include_HEADERS += core/inc/OptimizerOptions.h
 libqueso_include_HEADERS += core/inc/BaseInputOptionsParser.h
 libqueso_include_HEADERS += core/inc/BoostInputOptionsParser.h
+libqueso_include_HEADERS += core/inc/Factory.h
+libqueso_include_HEADERS += core/inc/TransitionKernelFactory.h
+libqueso_include_HEADERS += core/inc/TKFactoryStochasticNewton.h
+libqueso_include_HEADERS += core/inc/TKFactoryRandomWalk.h
+libqueso_include_HEADERS += core/inc/TKFactoryLogitRandomWalk.h
+libqueso_include_HEADERS += core/inc/AlgorithmFactory.h
+libqueso_include_HEADERS += core/inc/TKFactoryMALA.h
 
 # Headers that need libmesh
 libqueso_include_HEADERS += core/inc/FunctionBase.h
@@ -340,6 +355,7 @@ libqueso_include_HEADERS += misc/inc/OneDGrid.h
 libqueso_include_HEADERS += misc/inc/UniformOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StdOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StreamUtilities.h
+libqueso_include_HEADERS += misc/inc/math_macros.h
 
 # Headers to install from basic/inc
 
@@ -452,6 +468,8 @@ libqueso_include_HEADERS += stats/inc/GaussianLikelihoodFullCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodFullCovarianceRandomCoefficient.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
+libqueso_include_HEADERS += stats/inc/Algorithm.h
+libqueso_include_HEADERS += stats/inc/MetropolisAdjustedLangevinTK.h
 
 # Headers to install from surrogates/inc
 libqueso_include_HEADERS += surrogates/inc/SurrogateBase.h
@@ -488,6 +506,7 @@ libqueso_include_HEADERS += gp/inc/GPMSAOptions.h
 
 # Install the magic header
 libqueso_include_HEADERS += contrib/inc/all.h
+libqueso_include_HEADERS += contrib/getpot/getpot.h
 
 # Headers to install, but not part of dist
 
@@ -515,8 +534,8 @@ endif
 # Embedded license header support
 #---------------------------------
 
-if GIT_CLONE
-EXTRA_DIST = $(top_srcdir)/src/common/lic_utils/update_license.pl
+if QUESO_LICENSESTAMPEXISTS
+BUILT_SOURCES += .license.stamp
 .license.stamp: $(top_srcdir)/LICENSE
 	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
 	echo 'updated source license headers' >$@

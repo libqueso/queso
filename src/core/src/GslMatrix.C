@@ -692,15 +692,17 @@ GslMatrix::filterLargeValues(double thresholdValue)
 GslMatrix
 GslMatrix::transpose() const
 {
-  unsigned int nRows = this->numRowsLocal();
+  unsigned int nRows = this->numRowsGlobal();
   unsigned int nCols = this->numCols();
 
-  queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
+  const MpiComm & comm = this->map().Comm();
+  Map serial_map(nCols, 0, comm);
 
-  GslMatrix mat(m_env,m_map,nCols);
+  GslMatrix mat(m_env,serial_map,nRows);
+
   for (unsigned int row = 0; row < nRows; ++row) {
     for (unsigned int col = 0; col < nCols; ++col) {
-      mat(row,col) = (*this)(col,row);
+      mat(col,row) = (*this)(row,col);
     }
   }
 
@@ -1182,6 +1184,39 @@ GslMatrix::multiply(
 
   return;
 }
+
+GslMatrix
+GslMatrix::multiply(
+  const GslMatrix & X) const
+{
+  GslMatrix Y(m_env,m_map,X.numCols());
+  this->multiply(X,Y);
+
+  return Y;
+}
+
+
+
+void
+GslMatrix::multiply(
+  const GslMatrix & X,
+        GslMatrix & Y) const
+{
+  queso_require_equal_to_msg(this->numCols(), X.numRowsGlobal(), "matrix and X have incompatible sizes");
+  queso_require_equal_to_msg(this->numRowsGlobal(), Y.numRowsGlobal(), "matrix and Y have incompatible sizes");
+  queso_require_equal_to_msg(X.numCols(), Y.numCols(), "X and Y have incompatible sizes");
+
+  const unsigned int m_s = this->numRowsGlobal();
+  const unsigned int p_s = this->numCols();
+  const unsigned int n_s = X.numCols();
+
+  for (unsigned int k=0; k<p_s; k++)
+    for (unsigned int j=0; j<n_s; j++)
+      if (X(k,j) != 0.)
+        for (unsigned int i=0; i<m_s; i++)
+          Y(i,j) += (*this)(i,k) * X(k,j);
+}
+
 
 GslVector
 GslMatrix::invertMultiply(
@@ -1837,7 +1872,7 @@ GslMatrix::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
-    queso_require_equal_to_msg(tmpString, "=", "string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, std::string("="), std::string("string should be the '=' sign"));
 
     // Read 'zeros(n_rows,n_cols)' string
     *filePtrSet.ifsVar >> tmpString;
@@ -1906,7 +1941,7 @@ GslMatrix::subReadContents(
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-    queso_require_equal_to_msg(tmpString, "=", "in core 0, string should be the '=' sign");
+    queso_require_equal_to_msg(tmpString, std::string("="), std::string("in core 0, string should be the '=' sign"));
 
     // Take into account the ' [' portion
     std::streampos tmpPos = filePtrSet.ifsVar->tellg();

@@ -41,7 +41,6 @@
 #include <queso/VectorRV.h>
 #include <queso/InstantiateIntersection.h>
 #include <queso/Miscellaneous.h>
-#include <sys/time.h>
 
 namespace QUESO {
 

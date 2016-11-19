@@ -23,15 +23,18 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/BaseInputOptionsParser.h>
+#include <queso/Defines.h>
 
 namespace QUESO {
 
 BaseInputOptionsParser::BaseInputOptionsParser()
 {
+  queso_deprecated();
 }
 
 BaseInputOptionsParser::~BaseInputOptionsParser()
 {
+  queso_deprecated();
 }
 
 }  // End namespace QUESO

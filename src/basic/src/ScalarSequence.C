@@ -1366,21 +1366,10 @@ ScalarSequence<T>::autoCorrViaFft(
   unsigned int    maxLag,
   std::vector<T>& autoCorrs) const
 {
-  unsigned int fftSize = 0;
-  {
-#warning WTF are 4 lines of unused code doing here? - RHS
-    double tmp = log((double) maxLag)/log(2.);
-    double fractionalPart = tmp - ((double) ((unsigned int) tmp));
-    if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-    unsigned int fftSize1 = (unsigned int) std::pow(2.,tmp+1.); // Yes, tmp+1
-
-    tmp = log((double) numPos)/log(2.);
-    fractionalPart = tmp - ((double) ((unsigned int) tmp));
-    if (fractionalPart > 0.) tmp += (1. - fractionalPart);
-    unsigned int fftSize2 = (unsigned int) std::pow(2.,tmp+1);
-
-    fftSize = fftSize2;
-  }
+  double tmp = log((double) numPos)/log(2.);
+  double fractionalPart = tmp - ((double) ((unsigned int) tmp));
+  if (fractionalPart > 0.) tmp += (1. - fractionalPart);
+  unsigned int fftSize = (unsigned int) std::pow(2.,tmp+1);
 
   std::vector<double> rawDataVec(numPos,0.);
   std::vector<std::complex<double> > resultData(0,std::complex<double>(0.,0.));
@@ -2910,7 +2899,7 @@ ScalarSequence<T>::unifiedReadContents(
   const std::string& inputFileType,
   const unsigned int subReadSize)
 {
-  queso_require_not_equal_to_msg(inputFileType, UQ_FILE_EXTENSION_FOR_TXT_FORMAT, "reading txt files is not yet supported");
+  queso_require_not_equal_to_msg(inputFileType, std::string(UQ_FILE_EXTENSION_FOR_TXT_FORMAT), std::string("reading txt files is not yet supported"));
   std::string fileType(inputFileType);
 #ifdef QUESO_HAS_HDF5
   // Do nothing
@@ -2982,7 +2971,7 @@ ScalarSequence<T>::unifiedReadContents(
               // Read '=' sign
               *unifiedFilePtrSet.ifsVar >> tmpString;
           //std::cout << "Just read '" << tmpString << "'" << std::endl;
-              queso_require_equal_to_msg(tmpString, "=", "string should be the '=' sign");
+              queso_require_equal_to_msg(tmpString, std::string("="), std::string("string should be the '=' sign"));
 
               // Read 'zeros(n_positions,n_params)' string
               *unifiedFilePtrSet.ifsVar >> tmpString;
@@ -3050,7 +3039,7 @@ ScalarSequence<T>::unifiedReadContents(
               // Read '=' sign
               *unifiedFilePtrSet.ifsVar >> tmpString;
         //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
-              queso_require_equal_to_msg(tmpString, "=", "in core 0, string should be the '=' sign");
+              queso_require_equal_to_msg(tmpString, std::string("="), std::string("in core 0, string should be the '=' sign"));
 
               // Take into account the ' [' portion
         std::streampos tmpPos = unifiedFilePtrSet.ifsVar->tellg();

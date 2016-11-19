@@ -43,7 +43,8 @@
  * - 'gravity_qoi.h'
  */
 
-#include <cmath>
+#include <gravity_likelihood.h>
+#include <gravity_qoi.h>
 
 #include <queso/GslMatrix.h>
 #include <queso/GenericScalarFunction.h>
@@ -54,8 +55,8 @@
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/StatisticalForwardProblem.h>
 
-#include <gravity_likelihood.h>
-#include <gravity_qoi.h>
+#include <cmath>
+#include <cstdlib>
 
 int main(int argc, char* argv[])
 {
@@ -66,8 +67,13 @@ int main(int argc, char* argv[])
 
   MPI_Init(&argc, &argv);
 
+  std::string inputFileName = argv[1];
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
   // Initialize QUESO environment
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 
   //================================================================
   // Statistical inverse problem (SIP): find posterior PDF for 'g'

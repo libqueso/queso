@@ -27,8 +27,6 @@
 
 #include <cmath>
 
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
-
 #include <queso/JointPdf.h>
 #include <queso/Environment.h>
 #include <queso/ScalarFunction.h>
@@ -86,6 +84,12 @@ public:
   * matrices or via \c this->m_lawCovMatrix, otherwise.*/
   double   lnValue           (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
 
+  //! Mean value of the underlying random variable.
+  virtual void   distributionMean (V & meanVector) const;
+
+  //! Covariance matrix of the underlying random variable.
+  virtual void   distributionVariance (M & covMatrix) const;
+
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double   computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
@@ -107,6 +111,10 @@ public:
   //! Access to the vector of variance values and private attribute:  m_lawVarVector.
   const V& lawVarVector() const;
   //@}
+
+  //! Print method for informational and logging purposes
+  virtual void print(std::ostream & os) const;
+
 protected:
   using BaseScalarFunction<V,M>::m_env;
   using BaseScalarFunction<V,M>::m_prefix;

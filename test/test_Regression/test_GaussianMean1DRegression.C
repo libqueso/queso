@@ -1,19 +1,18 @@
-#include <iostream>
-#include <sstream>
-#include <iterator>
-#include <exception>
-#include <vector>
-#include <string>
-#include <cmath>
-
-#include <boost/program_options.hpp>
-
 #include <queso/Environment.h>
 #include <queso/GslMatrix.h>
 #include <queso/GenericScalarFunction.h>
 #include <queso/GaussianVectorRV.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/ScalarSequence.h>
+
+#include <cmath>
+#include <cstdlib>
+#include <exception>
+#include <iostream>
+#include <iterator>
+#include <sstream>
+#include <string>
+#include <vector>
 
 // Regression Test in One Dimension (Mean of a Gaussian Model)
 //
@@ -25,32 +24,10 @@
 // Output: The estimated mean of the posterior distribution and the standard
 // deviation about this mean. Also the number of likelihood function calls.
 
-// User Input
-//
-// Everything in this test is controlled through a queso style input file
-// processed by boost::program_options. The name of this file is passed to the
-// program through the command line. If no name is passed in, the program tries
-// the default file name specified by inputFileODV.  Options
-// GaussianMean1DRegression_priorMean, GaussianMean1DRegression_priorVar,
-// GaussianMean1DRegression_samplingVar, GaussianMean1DRegression_dataSet are
-// added to the boost::program_options options descriptor and parsed from the
-// input file. These options can also be specified on the command line, in
-// which case the command line value will overwrite the input file value.  This
-// allows the user to supply the mean and variance of a gaussian prior, the
-// known model variance, and a string of samples from the "true" model - i.e.
-// the data.  Running the program with the option '--help', or '-h', will show
-// the proper usage of the program and list all the available options.
-
 #define PI 3.14159265358979323846
 
 // default input file name
-const std::string inputFileODV = "test_Regression/GaussianMean1DRegression_options";
-
-// default option values
-const double priorMeanODV = 0.0;
-const double priorVarODV  = 1.0;
-const double samplingVarODV = 1.0;
-const std::string dataSetODV = "0.0";
+std::string inputFileODV = "test_Regression/GaussianMean1DRegression_options";
 
 // information needed/provided by the likelihood function
 struct likelihoodData {
@@ -215,87 +192,24 @@ int main(int argc, char* argv[]) {
   int rank = 0;
 #endif
 
-  // variables to be filled by command line and/or input file values
-  std::string inputFile;
-  double priorMean;
-  double priorVar;
-  std::string dataString;
+  // Find correct file for out-of-source builds
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileODV = test_srcdir + ('/' + inputFileODV);
+
+  // default parameters
+  double priorMean = 5.0;
+  double priorVar = 1.0;
+  std::string dataString("-0.1437   -0.0982   -1.3616   -0.0171   -1.0290    0.7133   -0.5496   -0.2415   -0.0933   -0.0669   -0.2311   -1.5371   -0.7418   -0.2220    0.0209    1.6905   -0.8379    0.4233   1.7065    1.5676    0.1265    1.0728    1.8126    2.7186   -0.6680    0.5251   -0.4768    0.6027   -1.9304   -2.1159   1.8698    0.3908   -1.2513    1.2597    0.1426   -0.6527   -0.5948   -0.6698    0.3874    0.3455   -0.1988   -0.4574   0.6930    1.3184   -0.2715   -0.9510    0.3593   -0.4184   0.5243    0.2846   -0.3556   -1.4877   -0.8829    1.0829   -0.7700   -0.1138    0.6430   -0.7929   -1.6493    0.1000");
   likelihoodData dat;
+  dat.samplingVar = 1.0;
 
-  boost::program_options::options_description generic("Generic options");
-  generic.add_options()
-    ("help,h", "Produce help message");
-
-  boost::program_options::options_description config("GaussianMean1DRegression specific options");
-  config.add_options()
-    ("GaussianMean1DRegression_priorMean", boost::program_options::value<double>(&priorMean)->default_value(priorMeanODV), "Prior Mean")
-    ("GaussianMean1DRegression_priorVar", boost::program_options::value<double>(&priorVar)->default_value(priorVarODV), "Prior Standard Deviation")
-    ("GaussianMean1DRegression_samplingVar", boost::program_options::value<double>(&dat.samplingVar)->default_value(samplingVarODV), "Data Sampling Standard Deviation")
-    ("GaussianMean1DRegression_dataSet", boost::program_options::value<std::string>(&dataString)->default_value(dataSetODV), "Calibration Data");
-
-  boost::program_options::options_description hidden("hidden options");
-  hidden.add_options()
-    ("input_file", boost::program_options::value<std::string>(&inputFile)->default_value(inputFileODV), "QUESO configuration file");
-  boost::program_options::positional_options_description p;
-  p.add("input_file", -1);
-
-  boost::program_options::options_description cmdline_options;
-  cmdline_options.add(generic).add(config).add(hidden);
-  boost::program_options::options_description visible("Allowed options");
-  visible.add(generic).add(config);
-
-  // parse command line for help, inputFile, and any config options present
-  boost::program_options::variables_map vm;
-  try {
-    boost::program_options::store(boost::program_options::command_line_parser(argc, argv).
-	      options(cmdline_options).positional(p).run(), vm);
-  } catch (std::exception& e) {
-    if(rank == 0)
-      std::cout<<"Caught exception: "<<e.what()<<std::endl;
-#ifdef QUESO_HAS_MPI
-    MPI_Abort(MPI_COMM_WORLD, -1);
-#else
-    exit(1);
-#endif
-  }
-  boost::program_options::notify(vm);
-
-  // if help is requested, print out usgae and visible options, then exit cleanly
-  if (vm.count("help")) {
-    if (rank == 0) {
-      std::cout << "Usage: " << argv[0] << " <input_file (=" << inputFileODV
-        << ")>" << std::endl;
-      std::cout << visible << std::endl;
-    }
-#ifdef QUESO_HAS_MPI
-    MPI_Finalize();
-#endif
-    return 1;
-  }
-
-  // parse the input file to get GaussianMean1DRegression option values
-  std::ifstream config_stream(inputFile.c_str());
-  try {
-    boost::program_options::store(boost::program_options::parse_config_file(config_stream, config, true), vm);
-  } catch (std::exception& e) {
-    if(rank == 0)
-      std::cout << "Caught exception: " << e.what() << std::endl;
-#ifdef QUESO_HAS_MPI
-    MPI_Abort(MPI_COMM_WORLD, -1);
-#else
-    exit(1);
-#endif
-  }
-  boost::program_options::notify(vm);
-  config_stream.close();
-
-   // parse the data string into a vector of doubles and store them in dat.dataSet
+  // parse the data string into a vector of doubles and store them in dat.dataSet
   std::istringstream iss(dataString);
   std::copy(std::istream_iterator<double>(iss), std::istream_iterator<double>(), std::back_inserter(dat.dataSet));
 
-  // output the option values that will be used by QUESO
+  // output the default values that will be used by QUESO
   if (rank == 0) {
-    std::cout << "QUESO options file: " << inputFile << std::endl;
     std::cout << "Read option GaussianMean1DRegression_priorMean: "
       << priorMean << std::endl;
     std::cout << "Read option GaussianMean1DRegression_priorVar: "
@@ -311,12 +225,12 @@ int main(int argc, char* argv[]) {
    // initilize environment
 #ifdef QUESO_HAS_MPI
   QUESO::FullEnvironment env(MPI_COMM_WORLD,  // MPI communicator
-			     inputFile.c_str(),  // input file name
+			     inputFileODV.c_str(),  // input file name
 			     "",                 // name prefix
 			     NULL );             // alt options
 #else
   QUESO::FullEnvironment env(  // No MPI communicator
-           inputFile.c_str(),  // input file name
+           inputFileODV.c_str(),  // input file name
            "",                 // name prefix
            NULL );             // alt options
 #endif

@@ -10,7 +10,6 @@
 *.dirstamp
 *.aux
 queso-*tar.gz
-
 Makefile.in
 Makefile
 !manual/Makefile
@@ -31,7 +30,6 @@ m4/ltoptions.m4
 m4/ltsugar.m4
 m4/ltversion.m4
 m4/lt~obsolete.m4
-
 _configs.sed
 config.log
 config.status
@@ -40,13 +38,11 @@ config_queso.h.tmp
 config_queso.h.tmp.in
 config_queso.h.tmp.in~
 configure
-
 m4/libtool.m4
 m4/ltoptions.m4
 m4/ltsugar.m4
 m4/ltversion.m4
 m4/lt~obsolete.m4
-
 doxygen/txt_common/about_vpath.page
 doxygen/queso.dox
 docs
@@ -57,7 +53,6 @@ manual/users/users.blg
 manual/users/users.out
 manual/users/users.toc
 manual/users/QUESO_users_manual.pdf
-
 examples/exInfoTheory_gsl
 examples/exSimpleStatisticalInverseProblem_gsl
 examples/exStatisticalForwardProblem_gsl
@@ -92,13 +87,10 @@ examples/blockDiagonalCovarianceRandomCoefficients
 examples/4d_interp
 examples/4d_interp_read
 examples/example_SharedPtr
-
 src/core/inc/queso.h
 src/libqueso.la
 src/queso_version
-
 inc/queso/*.h
-
 test/gsl_tests/get_min_max_vec
 test/gsl_tests/get_set_row_column
 test/gsl_tests/input
@@ -151,9 +143,6 @@ test/test_outputBoth/
 test/test_outputLlhd/
 test/test_outputNeither/
 test/test_outputTarget/
-test/test_Regression/jeffreys_input.txt
-test/test_Regression/test_jeffreys_samples.m
-test/test_Regression/test_jeffreys_samples.diff.sh
 test/test_jeffreys
 test/test_gsloptimizer
 test/test_seedwithmap
@@ -161,13 +150,6 @@ test/test_seedwithmap_fd
 test/test_GammaVectorRVDomain
 test/test_GaussianMean1DRegression
 test/test_Regression/GaussianMean1DRegression_options
-test/test_Regression/ctf_dat.txt
-test/test_Regression/dakota_pstudy.dat
-test/test_Regression/gpmsa_cobra_input.txt
-test/test_Regression/test_cobra_samples_diff.sh
-test/test_Regression/test_gpmsa_cobra_samples.m
-test/test_Regression/adaptedcov_input.txt
-test/test_Regression/test_jeffreys_samples_diff.sh
 test/test_adaptedcov_output/
 test/test_gpmsa_cobra_output/
 test/test_logitadaptedcov
@@ -225,4 +207,5 @@ test/test_intercomm0/gravity_1proc.txt
 test/test_intercomm0/gravity_2proc.txt
 test/test_intercomm0/test_intercomm0_gravity_run.sh
 test/test_seq_of_vec_hdf5_write
-test/test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
+test/test_optimizer_input_parameters
+test/test_sip_gslopt_options

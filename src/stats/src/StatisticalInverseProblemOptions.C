@@ -22,7 +22,9 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/Defines.h>
 #include <queso/StatisticalInverseProblemOptions.h>
@@ -44,7 +46,9 @@ SipOptionsValues::SipOptionsValues()
   m_seedWithMAPEstimator(UQ_SIP_SEEDWITHMAPESTIMATOR),
   m_useOptimizerMonitor(UQ_SIP_USEOPTIMIZERMONITOR),
 //m_dataOutputAllowedSet(),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser(NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
@@ -68,7 +72,9 @@ SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
   m_seedWithMAPEstimator(UQ_SIP_SEEDWITHMAPESTIMATOR),
   m_useOptimizerMonitor(UQ_SIP_USEOPTIMIZERMONITOR),
 //m_dataOutputAllowedSet(),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
@@ -80,6 +86,7 @@ SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
   m_option_seedWithMAPEstimator(m_prefix + "seedWithMAPEstimator"),
   m_option_useOptimizerMonitor(m_prefix + "useOptimizerMonitor")
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string>(m_option_help, UQ_SIP_HELP, "produce help message for statistical inverse problem");
   m_parser->registerOption<bool       >(m_option_computeSolution,      UQ_SIP_COMPUTE_SOLUTION_ODV       , "compute solution process"                            );
   m_parser->registerOption<std::string>(m_option_dataOutputFileName,   UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV  , "name of data output file"                            );
@@ -101,6 +108,26 @@ SipOptionsValues::SipOptionsValues(const BaseEnvironment * env, const char *
 #endif
   m_parser->getOption<bool       >(m_option_seedWithMAPEstimator, m_seedWithMAPEstimator);
   m_parser->getOption<bool       >(m_option_useOptimizerMonitor,  m_useOptimizerMonitor);
+#else
+  m_help = env->input()(m_option_help, UQ_SIP_HELP);
+  m_computeSolution = env->input()(m_option_computeSolution, UQ_SIP_COMPUTE_SOLUTION_ODV);
+  m_dataOutputFileName = env->input()(m_option_dataOutputFileName, UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV);
+
+  // UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  unsigned int size = env->input().vector_variable_size(m_option_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never
+    // used here
+    unsigned int allowed = env->input()(m_option_dataOutputAllowedSet, i, i);
+    m_dataOutputAllowedSet.insert(allowed);
+  }
+
+#ifdef UQ_SIP_READS_SOLVER_OPTION
+  m_solver = env->input()(m_option_solver, UQ_SIP_SOLVER_ODV);
+#endif
+  m_seedWithMAPEstimator = env->input()(m_option_seedWithMAPEstimator, UQ_SIP_SEEDWITHMAPESTIMATOR);
+  m_useOptimizerMonitor = env->input()(m_option_useOptimizerMonitor,  UQ_SIP_USEOPTIMIZERMONITOR);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
 }
@@ -169,7 +196,9 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_ov                         (),
   m_prefix                     ((std::string)(prefix) + "ip_"),
   m_env                        (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                (new boost::program_options::options_description("Statistical Inverse Problem options")),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
@@ -181,7 +210,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_option_useOptimizerMonitor(m_prefix + "useOptimizerMonitor")
 {
   queso_deprecated();
-  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the absence of an options input file");
+  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the absence of an options input file"));
 }
 
 // Constructor 2------------------------------------
@@ -193,7 +222,9 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_ov                         (alternativeOptionsValues),
   m_prefix                     ((std::string)(prefix) + "ip_"),
   m_env                        (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                (NULL),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_dataOutputFileName  (m_prefix + "dataOutputFileName"  ),
@@ -206,7 +237,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
 {
   queso_deprecated();
 
-  queso_require_equal_to_msg(m_env.optionsInputFileName(), "", "this constructor is incompatible with the existence of an options input file");
+  queso_require_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the existence of an options input file"));
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In StatisticalInverseProblemOptions::constructor(2)"
@@ -220,18 +251,22 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
 StatisticalInverseProblemOptions::~StatisticalInverseProblemOptions()
 {
   queso_deprecated();
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   if (m_optionsDesc) delete m_optionsDesc;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // I/O methods --------------------------------------
 void
 StatisticalInverseProblemOptions::scanOptionsValues()
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In StatisticalInverseProblemOptions::scanOptionsValues()"
@@ -266,6 +301,7 @@ StatisticalInverseProblemOptions::print(std::ostream& os) const
   return;
 }
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 void
 StatisticalInverseProblemOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
@@ -283,6 +319,9 @@ StatisticalInverseProblemOptions::defineMyOptions(boost::program_options::option
     (m_option_useOptimizerMonitor.c_str(), boost::program_options::value<bool>()->default_value(UQ_SIP_USEOPTIMIZERMONITOR), "toggle printing of optimisation progress when seed with MAP estimator")
   ;
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 //--------------------------------------------------
 void
 StatisticalInverseProblemOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
@@ -331,6 +370,7 @@ StatisticalInverseProblemOptions::getMyOptionValues(boost::program_options::opti
     m_ov.m_useOptimizerMonitor = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_useOptimizerMonitor]).as<bool>();
   }
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 // --------------------------------------------------
 // Operator declared outside class definition ------

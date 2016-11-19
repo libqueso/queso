@@ -24,8 +24,7 @@
 
 #include <memory>
 #include <vector>
-
-#include <boost/shared_ptr.hpp>
+#include <cmath>
 
 #include <queso/InfiniteDimensionalMeasureBase.h>
 #include <queso/InfiniteDimensionalGaussian.h>
@@ -55,7 +54,7 @@ InfiniteDimensionalGaussian::~InfiniteDimensionalGaussian()
 {
 }
 
-boost::shared_ptr<FunctionBase> InfiniteDimensionalGaussian::draw()
+typename SharedPtr<FunctionBase>::Type InfiniteDimensionalGaussian::draw()
 {
   unsigned int i;
 
@@ -65,7 +64,7 @@ boost::shared_ptr<FunctionBase> InfiniteDimensionalGaussian::draw()
 
 #warning We never use the mean?
 
-  boost::shared_ptr<FunctionBase> f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
+typename SharedPtr<FunctionBase>::Type f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
   return f;
 }
 
@@ -73,7 +72,7 @@ double InfiniteDimensionalGaussian::get_kl_coefficient(unsigned int i) const
 {
   // This is code repetition, but I'm not quite sure this belongs
   // in the operator class, because it's useful in the measure
-  return (this->coeffs)[i] / pow(this->precision.get_eigenvalue(i), this->alpha / 2.0);
+  return (this->coeffs)[i] / std::pow(this->precision.get_eigenvalue(i), this->alpha / 2.0);
 }
 
 }  // End namespace QUESO

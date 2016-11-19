@@ -120,6 +120,8 @@ int main(int argc, char ** argv) {
   mhOptions.m_amEta = (double) 2.4 * 2.4 / dim;  // From Gelman 95
   mhOptions.m_amEpsilon = 1.e-8;
   mhOptions.m_doLogitTransform = false;
+  mhOptions.m_algorithm = "random_walk";
+  mhOptions.m_tk = "random_walk";
 
   ip.solveWithBayesMetropolisHastings(&mhOptions, paramInitials,
       &proposalCovMatrix);

@@ -27,7 +27,7 @@
 
 #include <cmath>
 #include <algorithm>
-#include <boost/math/constants/constants.hpp>
+#include <sstream>
 
 // QUESO includes
 #include <queso/Miscellaneous.h>
@@ -151,7 +151,7 @@ void InfiniteDimensionalMCMCSampler::_propose()
   const double rwmh_step_sq = (this->m_ov->m_rwmh_step * this->m_ov->m_rwmh_step);
   const double coeff = std::sqrt(1.0 - rwmh_step_sq);
 
-  boost::shared_ptr<FunctionBase> p(prior.draw());
+  typename SharedPtr<FunctionBase>::Type p(prior.draw());
 
   this->proposed_physical_state->zero();
   this->proposed_physical_state->add(coeff, *(this->current_physical_state));
@@ -201,7 +201,7 @@ void InfiniteDimensionalMCMCSampler::_update_moments()
   this->current_physical_mean->add(1.0 / this->iteration(), *(this->_delta));
 
   // Update running sum-of-squares
-  boost::shared_ptr<FunctionBase> temp_ptr(this->_delta->zero_clone());
+  typename SharedPtr<FunctionBase>::Type temp_ptr(this->_delta->zero_clone());
   // LibMeshFunction & temp = static_cast<LibMeshFunction &>(*temp_ptr);
 
   temp_ptr->pointwise_mult(*(this->_delta), *(this->current_physical_state));
@@ -336,10 +336,10 @@ void InfiniteDimensionalMCMCSampler::_write_state()
   this->current_physical_var->save_function(var_name, this->iteration());
 }
 
-boost::shared_ptr<InfiniteDimensionalMCMCSampler> InfiniteDimensionalMCMCSampler::clone_and_reset() const
+typename SharedPtr<InfiniteDimensionalMCMCSampler>::Type InfiniteDimensionalMCMCSampler::clone_and_reset() const
 {
   // Set up a clone
-  boost::shared_ptr<InfiniteDimensionalMCMCSampler> clone(new InfiniteDimensionalMCMCSampler(this->m_env, this->prior, this->llhd, this->m_ov));
+  typename SharedPtr<InfiniteDimensionalMCMCSampler>::Type clone(new InfiniteDimensionalMCMCSampler(this->m_env, this->prior, this->llhd, this->m_ov));
 
   // Copy the state.
   clone->current_physical_state = this->current_physical_state;

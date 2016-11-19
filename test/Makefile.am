@@ -1,10 +1,19 @@
 SUBDIRS    = t01_valid_cycle t02_sip_sfp t03_sequence t04_bimodal
 
-if GIT_CLONE
-BUILT_SOURCES = .license.stamp
-endif
+BUILT_SOURCES =
 
 check_PROGRAMS = # Append below
+check_PROGRAMS += test_boxsubset_centroid
+check_PROGRAMS += test_concatenation_centroid
+check_PROGRAMS += test_beta_moments
+check_PROGRAMS += test_concatenated_moments
+check_PROGRAMS += test_gamma_moments
+check_PROGRAMS += test_gaussian_moments
+check_PROGRAMS += test_inversegamma_moments
+check_PROGRAMS += test_jeffreys_mean
+check_PROGRAMS += test_lognormal_moments
+check_PROGRAMS += test_uniform_moments
+check_PROGRAMS += test_wigner_mean
 check_PROGRAMS += test_uqEnvironmentNonFatal
 check_PROGRAMS += test_uqGslVector
 check_PROGRAMS += test_uqGaussianVectorRVClass
@@ -25,6 +34,7 @@ check_PROGRAMS += test_inf_options
 check_PROGRAMS += test_SequenceOfVectorsErase
 check_PROGRAMS += test_GaussianMean1DRegression
 check_PROGRAMS += test_gpmsa_cobra
+check_PROGRAMS += test_gpmsa_vector
 check_PROGRAMS += test_LlhdTargetOutput
 check_PROGRAMS += test_jeffreys
 check_PROGRAMS += test_gsloptimizer
@@ -60,6 +70,9 @@ check_PROGRAMS += test_log_normal_pdf_gradient
 check_PROGRAMS += test_beta_pdf_gradient
 check_PROGRAMS += test_intercomm0_gravity
 check_PROGRAMS += test_seq_of_vec_hdf5_write
+check_PROGRAMS += test_optimizer_input_parameters
+check_PROGRAMS += test_sip_gslopt_options
+check_PROGRAMS += test_mala
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -85,10 +98,21 @@ if HDF5_ENABLED
   AM_CPPFLAGS += $(HDF5_CFLAGS)
 endif
 
-if LIBMESH_ENABLED
+if LIBMESH_SLEPC_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
 endif
 
+test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
+test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
+test_beta_moments_SOURCES = test_pdfmoments/test_beta_moments.C
+test_concatenated_moments_SOURCES = test_pdfmoments/test_concatenated_moments.C
+test_gamma_moments_SOURCES = test_pdfmoments/test_gamma_moments.C
+test_gaussian_moments_SOURCES = test_pdfmoments/test_gaussian_moments.C
+test_inversegamma_moments_SOURCES = test_pdfmoments/test_inversegamma_moments.C
+test_jeffreys_mean_SOURCES = test_pdfmoments/test_jeffreys_mean.C
+test_lognormal_moments_SOURCES = test_pdfmoments/test_lognormal_moments.C
+test_uniform_moments_SOURCES = test_pdfmoments/test_uniform_moments.C
+test_wigner_mean_SOURCES = test_pdfmoments/test_wigner_mean.C
 test_uqEnvironmentNonFatal_SOURCES = test_Environment/test_uqEnvironmentNonFatal.C
 test_uqGslVector_SOURCES = test_GslVector/test_uqGslVector.C
 test_uqGaussianVectorRVClass_SOURCES = test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
@@ -108,8 +132,8 @@ test_inf_gaussian_SOURCES = test_infinite/test_inf_gaussian.C
 test_inf_options_SOURCES = test_infinite/test_inf_options.C
 test_SequenceOfVectorsErase_SOURCES = test_SequenceOfVectors/test_SequenceOfVectorsErase.C
 test_GaussianMean1DRegression_SOURCES = test_Regression/test_GaussianMean1DRegression.C
-test_GaussianMean1DRegression_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 test_gpmsa_cobra_SOURCES = test_Regression/test_gpmsa_cobra.C
+test_gpmsa_vector_SOURCES = test_gpmsa/test_gpmsa_vector.C
 test_LlhdTargetOutput_SOURCES = test_StatisticalInverseProblem/test_LlhdTargetOutput.C
 test_jeffreys_SOURCES = test_Regression/test_jeffreys.C
 test_gsloptimizer_SOURCES = test_optimizer/test_gsloptimizer.C
@@ -153,9 +177,23 @@ test_intercomm0_gravity_SOURCES += test_intercomm0/gravity_qoi.h
 test_intercomm0_gravity_CPPFLAGS = -I$(srcdir)/test_intercomm0 $(AM_CPPFLAGS)
 
 test_seq_of_vec_hdf5_write_SOURCES = test_SequenceOfVectors/test_HDF5Write.C
+test_optimizer_input_parameters_SOURCES = test_optimizer/test_optimizer_input_parameters.C
+test_sip_gslopt_options_SOURCES = test_optimizer/test_sip_gslopt_options.C
+test_mala_SOURCES = test_algorithms/test_mala.C
 
 # Files to freedom stamp
 srcstamp =
+srcstamp += $(test_boxsubset_centroid_SOURCES)
+srcstamp += $(test_concatenation_centroid_SOURCES)
+srcstamp += $(test_beta_moments_SOURCES)
+srcstamp += $(test_concatenated_moments_SOURCES)
+srcstamp += $(test_gamma_moments_SOURCES)
+srcstamp += $(test_gaussian_moments_SOURCES)
+srcstamp += $(test_inversegamma_moments_SOURCES)
+srcstamp += $(test_jeffreys_mean_SOURCES)
+srcstamp += $(test_lognormal_moments_SOURCES)
+srcstamp += $(test_uniform_moments_SOURCES)
+srcstamp += $(test_wigner_mean_SOURCES)
 srcstamp += $(test_uqEnvironmentNonFatal_SOURCES)
 srcstamp += $(test_uqEnvironmentOptionsPrint_SOURCES)
 srcstamp += $(test_uqGslVectorConstructorFatal_SOURCES)
@@ -179,6 +217,7 @@ srcstamp += $(test_inf_gaussian_SOURCES)
 srcstamp += $(test_inf_options_SOURCES)
 srcstamp += $(test_GaussianMean1DRegression_SOURCES)
 srcstamp += $(test_gpmsa_cobra_SOURCES)
+srcstamp += $(test_gpmsa_vector_SOURCES)
 srcstamp += $(test_LlhdTargetOutput_SOURCES)
 srcstamp += $(test_jeffreys_SOURCES)
 srcstamp += $(test_gsloptimizer_SOURCES)
@@ -210,67 +249,85 @@ srcstamp += $(test_log_normal_pdf_gradient_SOURCES)
 srcstamp += $(test_beta_pdf_gradient_SOURCES)
 srcstamp += $(test_intercomm0_gravity_SOURCES)
 srcstamp += $(test_seq_of_vec_hdf5_write_SOURCES)
+srcstamp += $(test_optimizer_input_parameters_SOURCES)
+srcstamp += $(test_sip_gslopt_options_SOURCES)
+srcstamp += $(test_mala_SOURCES)
 
 TESTS =
-TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
-TESTS += $(top_builddir)/test/test_uqGslVector
-TESTS += $(top_builddir)/test/test_uqGaussianVectorRVClass
-TESTS += $(top_builddir)/test/test_VectorPdf_gsl
-TESTS += $(top_builddir)/test/test_VectorRV_gsl
-TESTS += $(top_builddir)/test/test_VectorRealizer_gsl
-TESTS += $(top_builddir)/test/test_uqGslMatrix
-TESTS += $(top_builddir)/test/test_uqTeuchosVector
-TESTS += $(top_builddir)/test/test_uqexception
-TESTS += $(top_builddir)/test/test_DistArrayCopy
-TESTS += $(top_builddir)/test/test_DistArrayEquals
-TESTS += $(top_builddir)/test/test_DistArrayMisc
-TESTS += $(top_builddir)/test/test_GslVectorSpaceMisc
-TESTS += $(top_builddir)/test/test_IntersectionSubsetContains
-TESTS += $(top_builddir)/test/test_operator
-TESTS += $(top_builddir)/test/test_inf_gaussian
-TESTS += $(top_builddir)/test/test_inf_options
-TESTS += $(top_builddir)/test/test_SequenceOfVectorsErase
-TESTS += $(top_builddir)/test/test_GaussianMean1DRegression
-TESTS += $(top_builddir)/test/test_Regression/test_cobra_samples_diff.sh
-TESTS += $(top_builddir)/test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
-TESTS += $(top_builddir)/test/test_Regression/test_jeffreys_samples_diff.sh
-TESTS += $(top_builddir)/test/test_gsloptimizer
-TESTS += $(top_builddir)/test/test_seedwithmap
-TESTS += $(top_builddir)/test/test_seedwithmap_fd
-TESTS += $(top_builddir)/test/test_logitadaptedcov
-TESTS += $(top_builddir)/test/test_scalarCovariance
-TESTS += $(top_builddir)/test/test_diagonalCovariance
-TESTS += $(top_builddir)/test/test_fullCovariance
-TESTS += $(top_builddir)/test/test_blockDiagonalCovariance
-TESTS += $(top_builddir)/test/test_GslBlockMatrixInvertMultiply
-TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
-TESTS += $(top_builddir)/test/test_fullCovarianceRandomCoefficient
-TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceRandomCoefficients
-TESTS += $(top_builddir)/test/test_fullCovarianceChain
-TESTS += $(top_builddir)/test/test_diagonalCovarianceChain
-TESTS += $(top_builddir)/test/test_scalarCovarianceChain
-TESTS += $(top_builddir)/test/test_blockDiagonalCovarianceChain
-TESTS += $(top_builddir)/test/test_1D_LinearLagrangeInterpolationSurrogate
-TESTS += $(top_builddir)/test/test_2D_LinearLagrangeInterpolationSurrogate
-TESTS += $(top_builddir)/test/test_3D_LinearLagrangeInterpolationSurrogate
-TESTS += $(top_builddir)/test/test_4D_LinearLagrangeInterpolationSurrogate
-TESTS += $(top_builddir)/test/test_InterpolationSurrogateHelper
-TESTS += $(top_builddir)/test/test_build_InterpolationSurrogateBuilder
-TESTS += $(top_builddir)/test/test_BoostInputOptionsParser
-TESTS += $(top_builddir)/test/test_NoInputFile
-TESTS += $(top_builddir)/test/test_optimizer_options
-TESTS += $(top_builddir)/test/test_SharedPtr
-TESTS += $(top_builddir)/test/test_serialEnv
-TESTS += $(top_builddir)/test/test_jeffreys_pdf
-TESTS += $(top_builddir)/test/test_gaussian_pdf_gradient
-TESTS += $(top_builddir)/test/test_log_normal_pdf_gradient
-TESTS += $(top_builddir)/test/test_beta_pdf_gradient
-TESTS += $(top_builddir)/test/test_intercomm0/test_intercomm0_gravity_run.sh
-TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
+TESTS += test_boxsubset_centroid
+TESTS += test_concatenation_centroid
+TESTS += test_beta_moments
+TESTS += test_concatenated_moments
+TESTS += test_gamma_moments
+TESTS += test_gaussian_moments
+TESTS += test_inversegamma_moments
+TESTS += test_jeffreys_mean
+TESTS += test_lognormal_moments
+TESTS += test_uniform_moments
+TESTS += test_wigner_mean
+TESTS += test_uqEnvironmentNonFatal
+TESTS += test_uqGslVector
+TESTS += test_uqGaussianVectorRVClass
+TESTS += test_VectorPdf_gsl
+TESTS += test_VectorRV_gsl
+TESTS += test_VectorRealizer_gsl
+TESTS += test_uqGslMatrix
+TESTS += test_uqTeuchosVector
+TESTS += test_uqexception
+TESTS += test_DistArrayCopy
+TESTS += test_DistArrayEquals
+TESTS += test_DistArrayMisc
+TESTS += test_GslVectorSpaceMisc
+TESTS += test_IntersectionSubsetContains
+TESTS += test_operator
+TESTS += test_inf_gaussian
+TESTS += test_inf_options
+TESTS += test_SequenceOfVectorsErase
+TESTS += test_GaussianMean1DRegression
+TESTS += test_Regression/test_cobra_samples_diff.sh
+TESTS += test_gpmsa/test_gpmsa_samples_diff.sh
+TESTS += test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+TESTS += test_Regression/test_jeffreys_samples_diff.sh
+TESTS += test_gsloptimizer
+TESTS += test_seedwithmap
+TESTS += test_seedwithmap_fd
+TESTS += test_logitadaptedcov
+TESTS += test_scalarCovariance
+TESTS += test_diagonalCovariance
+TESTS += test_fullCovariance
+TESTS += test_blockDiagonalCovariance
+TESTS += test_GslBlockMatrixInvertMultiply
+TESTS += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+TESTS += test_fullCovarianceRandomCoefficient
+TESTS += test_blockDiagonalCovarianceRandomCoefficients
+TESTS += test_fullCovarianceChain
+TESTS += test_diagonalCovarianceChain
+TESTS += test_scalarCovarianceChain
+TESTS += test_blockDiagonalCovarianceChain
+TESTS += test_1D_LinearLagrangeInterpolationSurrogate
+TESTS += test_2D_LinearLagrangeInterpolationSurrogate
+TESTS += test_3D_LinearLagrangeInterpolationSurrogate
+TESTS += test_4D_LinearLagrangeInterpolationSurrogate
+TESTS += test_InterpolationSurrogateHelper
+TESTS += test_build_InterpolationSurrogateBuilder
+TESTS += test_BoostInputOptionsParser
+TESTS += test_NoInputFile
+TESTS += test_optimizer_options
+TESTS += test_SharedPtr
+TESTS += test_serialEnv
+TESTS += test_jeffreys_pdf
+TESTS += test_gaussian_pdf_gradient
+TESTS += test_log_normal_pdf_gradient
+TESTS += test_beta_pdf_gradient
+TESTS += test_intercomm0/test_intercomm0_gravity_run.sh
+TESTS += test_optimizer_input_parameters
+TESTS += test_sip_gslopt_options
+TESTS += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
+TESTS += test_mala
 
-XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
+XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
-XFAIL_TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+XFAIL_TESTS += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 endif
 
 
@@ -278,34 +335,39 @@ EXTRA_DIST =
 EXTRA_DIST += common/compare.pl
 EXTRA_DIST += common/verify.sh
 EXTRA_DIST += test_infinite/inf_options
-EXTRA_DIST += test_Regression/GaussianMean1DRegression_options.in
-EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt.in
-EXTRA_DIST += test_Regression/test_cobra_samples_diff.sh.in
-EXTRA_DIST += test_Regression/test_gpmsa_cobra_samples.m.in
-EXTRA_DIST += test_Regression/ctf_dat.txt.in
-EXTRA_DIST += test_Regression/dakota_pstudy.dat.in
-EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt.in
-EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt.in
-EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt.in
-EXTRA_DIST += test_StatisticalInverseProblem/neither_input.txt.in
-EXTRA_DIST += test_StatisticalInverseProblem/test_LlhdTargetOutput.sh.in
-EXTRA_DIST += test_Regression/jeffreys_input.txt.in
-EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh.in
-EXTRA_DIST += test_Regression/test_jeffreys_samples.m.in
-EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
-EXTRA_DIST += test_gaussian_likelihoods/gaussian_consistency_input.txt.in
-EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt.in
-EXTRA_DIST += test_InterpolationSurrogate/queso_input.txt.in
-EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
-EXTRA_DIST += test_InputOptionsParser/test_options_good.txt.in
-EXTRA_DIST += test_InputOptionsParser/test_options_bad.txt.in
-EXTRA_DIST += test_InputOptionsParser/test_options_default.txt.in
-EXTRA_DIST += test_optimizer/input_test_optimizer_options.in
-EXTRA_DIST += test_Environment/input_test_serialEnv.in
-EXTRA_DIST += test_intercomm0/gravity_1proc.txt.in
-EXTRA_DIST += test_intercomm0/gravity_2proc.txt.in
-EXTRA_DIST += test_intercomm0/test_intercomm0_gravity_run.sh.in
-EXTRA_DIST += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh.in
+EXTRA_DIST += test_Regression/GaussianMean1DRegression_options
+EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt
+EXTRA_DIST += test_Regression/test_cobra_samples_diff.sh
+EXTRA_DIST += test_Regression/test_gpmsa_cobra_samples.m
+EXTRA_DIST += test_Regression/ctf_dat.txt
+EXTRA_DIST += test_Regression/dakota_pstudy.dat
+EXTRA_DIST += test_gpmsa/gpmsa_vector_input.txt
+EXTRA_DIST += test_gpmsa/test_gpmsa_samples_diff.sh
+EXTRA_DIST += test_gpmsa/test_gpmsa_vector_samples.m
+EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt
+EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt
+EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt
+EXTRA_DIST += test_StatisticalInverseProblem/neither_input.txt
+EXTRA_DIST += test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+EXTRA_DIST += test_Regression/jeffreys_input.txt
+EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh
+EXTRA_DIST += test_Regression/test_jeffreys_samples.m
+EXTRA_DIST += test_Regression/adaptedcov_input.txt
+EXTRA_DIST += test_gaussian_likelihoods/gaussian_consistency_input.txt
+EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt
+EXTRA_DIST += test_InterpolationSurrogate/queso_input.txt
+EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+EXTRA_DIST += test_InputOptionsParser/test_options_good.txt
+EXTRA_DIST += test_InputOptionsParser/test_options_bad.txt
+EXTRA_DIST += test_InputOptionsParser/test_options_default.txt
+EXTRA_DIST += test_optimizer/input_test_optimizer_options
+EXTRA_DIST += test_Environment/input_test_serialEnv
+EXTRA_DIST += test_intercomm0/gravity_1proc.txt
+EXTRA_DIST += test_intercomm0/gravity_2proc.txt
+EXTRA_DIST += test_intercomm0/test_intercomm0_gravity_run.sh
+EXTRA_DIST += test_optimizer/input_test_optimizer_input_parameters
+EXTRA_DIST += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
+EXTRA_DIST += test_algorithms/input_test_mala.txt
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
@@ -318,6 +380,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/outputData
 	rm -rf $(top_builddir)/test/test_output_gaussian_likelihoods
 	rm -rf $(top_builddir)/test/test_gpmsa_cobra_output
+	rm -rf $(top_builddir)/test/test_gpmsa_vector_output
 	rm -rf $(top_builddir)/test/test_adaptedcov_output
 	rm -rf $(top_builddir)/test/test_outputNoInputFile
 	rm -rf $(top_builddir)/test/test_output_interp_surrogates
@@ -325,12 +388,14 @@ clean-local:
 	rm -rf $(top_builddir)/test/output_test_serialEnv
 	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_1
 	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_2
+	rm -rf $(top_builddir)/test/output_test_mala
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
 endif
 
-if GIT_CLONE
+if QUESO_LICENSESTAMPEXISTS
+BUILT_SOURCES += .license.stamp
 .license.stamp: $(top_srcdir)/LICENSE
 	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
 	echo 'updated source license headers' >$@

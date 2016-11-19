@@ -25,12 +25,10 @@ if HDF5_ENABLED
   LIBS += $(HDF5_LIBS)
 endif
 
-if LIBMESH_ENABLED
+if LIBMESH_SLEPC_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
   LIBS += $(LIBMESH_LIBS)
-endif
 
-if LIBMESH_ENABLED
 ##################################
 # inifinite dimensional examples #
 ##################################
@@ -59,7 +57,7 @@ gaussian_random_field_genmesh_CPPFLAGS = $(AM_CPPFLAGS)
 dist_gaussian_random_field_genmesh_DATA = $(gaussian_random_field_genmesh_SOURCES) $(gaussian_random_field_genmesh_DATA)
 
 invprobdir = $(prefix)/examples/infinite_dim
-invprob_DATA = $(top_srcdir)/examples/infinite_dim/inverse_options.in
+invprob_DATA = infinite_dim/inverse_options
 invprob_PROGRAMS = inverse_problem
 inverse_problem_SOURCES = infinite_dim/inverse_problem.C
 inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
@@ -68,7 +66,7 @@ dist_invprob_DATA = $(inverse_problem_SOURCES) $(invprob_DATA)
 
 # Parallel inverse problem example
 parinvprobdir = $(prefix)/examples/infinite_dim
-parinvprob_DATA = $(top_srcdir)/examples/infinite_dim/parallel_inverse_options.in
+parinvprob_DATA = infinite_dim/parallel_inverse_options
 parinvprob_PROGRAMS = parallel_inverse_problem
 parallel_inverse_problem_SOURCES = infinite_dim/parallel_inverse_problem.C
 parallel_inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
@@ -299,6 +297,42 @@ dist_gravity_gsl_DATA += ${gravity_gsl_HEADERS}
 dist_gravity_gsl_DATA += ${gravity_gsl_SOURCES}
 
 ####################
+# line2D #
+####################
+line2D_gsldir = $(prefix)/examples/line2D_with_Sensitivity
+
+line2D_gsl_DATA = $(top_srcdir)/examples/line2D_with_Sensitivity/slope_inv_fwd.inp
+line2D_gsl_DATA += $(top_srcdir)/examples/line2D_with_Sensitivity/README
+line2D_gsl_DATA += $(top_srcdir)/examples/line2D_with_Sensitivity/gen_plots.py
+line2D_gsl_DATA += $(top_srcdir)/examples/line2D_with_Sensitivity/gen_truth.py
+
+line2D_gsl_PROGRAMS = line2D_gsl
+
+line2D_gsl_SOURCES = line2D_with_Sensitivity/sensitivity_c.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/sensitivity_m.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/sensitivity_mc.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/slope_compute.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/slope_likelihood.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/slope_main.C
+line2D_gsl_SOURCES += line2D_with_Sensitivity/slope_qoi.C
+
+line2D_gsl_HEADERS = line2D_with_Sensitivity/sensitivity_c.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/sensitivity_mc.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/sensitivity_m.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/slope_compute.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/slope_likelihood.h
+line2D_gsl_HEADERS += line2D_with_Sensitivity/slope_qoi.h
+
+line2D_gsl_LDADD = $(top_builddir)/src/libqueso.la
+
+line2D_gsl_CPPFLAGS = -I$(top_srcdir)/examples/line2D_with_Sensitivity $(AM_CPPFLAGS)
+
+dist_line2D_gsl_DATA =
+dist_line2D_gsl_DATA += $(line2D_gsl_DATA)
+dist_line2D_gsl_DATA += ${line2D_gsl_HEADERS}
+dist_line2D_gsl_DATA += ${line2D_gsl_SOURCES}
+
+####################
 # bimodal          #
 ####################
 bimodal_gsldir = $(prefix)/examples/bimodal
@@ -376,6 +410,33 @@ dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}
 dist_gpmsa_scalar_DATA += gp/scalar/dakota_pstudy.dat
 dist_gpmsa_scalar_DATA += gp/scalar/gpmsa_input.txt
 dist_gpmsa_scalar_DATA += gp/scalar/ctf_dat.txt
+
+gpmsa_pseudovectordir = $(prefix)/examples/gp/pseudovector
+
+gpmsa_pseudovector_PROGRAMS = gpmsa_pseudovector
+gpmsa_pseudovector_SOURCES = gp/pseudovector/gpmsa_pseudovector.C
+gpmsa_pseudovector_LDADD = $(top_builddir)/src/libqueso.la
+gpmsa_pseudovector_CPPFLAGS = -I$(top_srcdir)/examples/gp/pseudovector $(AM_CPPFLAGS)
+
+dist_gpmsa_pseudovector_DATA =
+dist_gpmsa_pseudovector_DATA += ${gpmsa_pseudovector_SOURCES}
+dist_gpmsa_pseudovector_DATA += gp/scalar/dakota_pstudy.dat
+dist_gpmsa_pseudovector_DATA += gp/pseudovector/gpmsa_input.txt
+dist_gpmsa_pseudovector_DATA += gp/scalar/ctf_dat.txt
+
+gpmsa_vectordir = $(prefix)/examples/gp/vector
+
+gpmsa_vector_PROGRAMS = gpmsa_vector
+gpmsa_vector_SOURCES = gp/vector/gpmsa_vector.C
+gpmsa_vector_LDADD = $(top_builddir)/src/libqueso.la
+gpmsa_vector_CPPFLAGS = -I$(top_srcdir)/examples/gp/vector $(AM_CPPFLAGS)
+
+dist_gpmsa_vector_DATA =
+dist_gpmsa_vector_DATA += ${gpmsa_vector_SOURCES}
+dist_gpmsa_vector_DATA += gp/scalar/dakota_pstudy.dat
+dist_gpmsa_vector_DATA += gp/vector/gpmsa_input.txt
+dist_gpmsa_vector_DATA += gp/scalar/ctf_dat.txt
+
 
 #######################################
 # Canned Gaussian likelihood examples #

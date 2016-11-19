@@ -27,11 +27,10 @@
 
 #include <cmath>
 
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
-
 #include <queso/Environment.h>
 #include <queso/ScalarFunction.h>
 #include <queso/BoxSubset.h>
+#include <queso/math_macros.h>
 
 namespace QUESO {
 
@@ -73,6 +72,18 @@ public:
   //! Logarithm of the value of the function.
   virtual double lnValue                        (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
 
+  /*! Mean value of the underlying random variable.
+   * Not implemented in base class, but not pure virtual for backwards
+   * compatibility reasons.
+   */
+  virtual void   distributionMean               (V & meanVector) const;
+
+  /*! Covariance matrix of the underlying random variable.
+   * Not implemented in base class, but not pure virtual for backwards
+   * compatibility reasons.
+   */
+  virtual void   distributionVariance           (M & covMatrix) const;
+
   //! Sets a value to be used in the normalization style (stored in the protected attribute m_normalizationStyle.)
   virtual void   setNormalizationStyle          (unsigned int value) const;
 
@@ -81,6 +92,9 @@ public:
 
   //! Computes the logarithm of the normalization factor. See template specialization.
   virtual double computeLogOfNormalizationFactor(unsigned int numSamples, bool m_logOfNormalizationFactor) const = 0;
+
+  //! Print method.  Non-pure for backwards compatibility.
+  virtual void print(std::ostream & os) const;
 
   //const BaseScalarPdf<double>& component(unsigned int componentId) const;
   //@}
@@ -102,6 +116,13 @@ protected:
 //std::vector<BaseScalarPdf<double>*> m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
 //BaseScalarPdf<double>               m_dummyComponent;
 };
+
+template <class V, class M>
+std::ostream & operator<<(std::ostream & os, const BaseJointPdf<V, M> & obj)
+{
+  obj.print(os);
+  return os;
+}
 
 }  // End namespace QUESO
 

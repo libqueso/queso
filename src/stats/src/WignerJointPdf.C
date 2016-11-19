@@ -105,6 +105,23 @@ WignerJointPdf<V,M>::lnValue(
 }
 //--------------------------------------------------
 template<class V, class M>
+void
+WignerJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  meanVector = *m_centerPos;
+}
+
+//---------------------------------------------------
+template<class V,class M>
+void
+WignerJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  queso_not_implemented();
+}
+
+
+//--------------------------------------------------
+template<class V, class M>
 double
 WignerJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

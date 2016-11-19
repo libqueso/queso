@@ -117,6 +117,12 @@ public:
   //! Whether \this vector contains vector \c vec.
   bool                           contains                (const V& vec) const;
 
+  //! The (INFINITY/nonexistent) centroid of the space
+  void                           centroid                (V& vec) const;
+
+  //! The (INFINITY/nonexistent) matrix of second moments of the space
+  void                           moments                 (M& vec) const;
+
   //! Access to private attribute m_componentsNamesArray, which is an instance of DistArray.
   const DistArray<std::string>* componentsNamesArray    () const;
 

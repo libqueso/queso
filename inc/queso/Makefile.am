@@ -27,6 +27,8 @@ BUILT_SOURCES += VectorSequence.h
 BUILT_SOURCES += VectorSet.h
 BUILT_SOURCES += VectorSpace.h
 BUILT_SOURCES += VectorSubset.h
+BUILT_SOURCES += getpot.h
+BUILT_SOURCES += AlgorithmFactory.h
 BUILT_SOURCES += BaseInputOptionsParser.h
 BUILT_SOURCES += BasicPdfsBase.h
 BUILT_SOURCES += BasicPdfsBoost.h
@@ -36,6 +38,7 @@ BUILT_SOURCES += Defines.h
 BUILT_SOURCES += DistArray.h
 BUILT_SOURCES += Environment.h
 BUILT_SOURCES += EnvironmentOptions.h
+BUILT_SOURCES += Factory.h
 BUILT_SOURCES += FunctionBase.h
 BUILT_SOURCES += FunctionOperatorBuilder.h
 BUILT_SOURCES += GslBlockMatrix.h
@@ -56,13 +59,19 @@ BUILT_SOURCES += MpiComm.h
 BUILT_SOURCES += OperatorBase.h
 BUILT_SOURCES += Optimizer.h
 BUILT_SOURCES += OptimizerMonitor.h
+BUILT_SOURCES += OptimizerOptions.h
 BUILT_SOURCES += RngBase.h
 BUILT_SOURCES += RngBoost.h
 BUILT_SOURCES += RngGsl.h
 BUILT_SOURCES += ScopedPtr.h
 BUILT_SOURCES += SharedPtr.h
+BUILT_SOURCES += TKFactoryLogitRandomWalk.h
+BUILT_SOURCES += TKFactoryMALA.h
+BUILT_SOURCES += TKFactoryRandomWalk.h
+BUILT_SOURCES += TKFactoryStochasticNewton.h
 BUILT_SOURCES += TeuchosMatrix.h
 BUILT_SOURCES += TeuchosVector.h
+BUILT_SOURCES += TransitionKernelFactory.h
 BUILT_SOURCES += Vector.h
 BUILT_SOURCES += asserts.h
 BUILT_SOURCES += exceptions.h
@@ -97,6 +106,8 @@ BUILT_SOURCES += OneDGrid.h
 BUILT_SOURCES += StdOneDGrid.h
 BUILT_SOURCES += StreamUtilities.h
 BUILT_SOURCES += UniformOneDGrid.h
+BUILT_SOURCES += math_macros.h
+BUILT_SOURCES += Algorithm.h
 BUILT_SOURCES += BayesianJointPdf.h
 BUILT_SOURCES += BetaJointPdf.h
 BUILT_SOURCES += BetaVectorRV.h
@@ -149,6 +160,7 @@ BUILT_SOURCES += MLSamplingLevelOptions.h
 BUILT_SOURCES += MLSamplingOptions.h
 BUILT_SOURCES += MarkovChainPositionData.h
 BUILT_SOURCES += MatrixCovarianceFunction.h
+BUILT_SOURCES += MetropolisAdjustedLangevinTK.h
 BUILT_SOURCES += MetropolisHastingsSG.h
 BUILT_SOURCES += MetropolisHastingsSGOptions.h
 BUILT_SOURCES += ModelValidation.h
@@ -241,6 +253,10 @@ VectorSpace.h: $(top_srcdir)/src/basic/inc/VectorSpace.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 VectorSubset.h: $(top_srcdir)/src/basic/inc/VectorSubset.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+getpot.h: $(top_srcdir)/src/contrib/getpot/getpot.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+AlgorithmFactory.h: $(top_srcdir)/src/core/inc/AlgorithmFactory.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BaseInputOptionsParser.h: $(top_srcdir)/src/core/inc/BaseInputOptionsParser.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsBase.h: $(top_srcdir)/src/core/inc/BasicPdfsBase.h
@@ -258,6 +274,8 @@ DistArray.h: $(top_srcdir)/src/core/inc/DistArray.h
 Environment.h: $(top_srcdir)/src/core/inc/Environment.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 EnvironmentOptions.h: $(top_srcdir)/src/core/inc/EnvironmentOptions.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+Factory.h: $(top_srcdir)/src/core/inc/Factory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FunctionBase.h: $(top_srcdir)/src/core/inc/FunctionBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -299,6 +317,8 @@ Optimizer.h: $(top_srcdir)/src/core/inc/Optimizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 OptimizerMonitor.h: $(top_srcdir)/src/core/inc/OptimizerMonitor.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+OptimizerOptions.h: $(top_srcdir)/src/core/inc/OptimizerOptions.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBoost.h: $(top_srcdir)/src/core/inc/RngBoost.h
@@ -309,9 +329,19 @@ ScopedPtr.h: $(top_srcdir)/src/core/inc/ScopedPtr.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SharedPtr.h: $(top_srcdir)/src/core/inc/SharedPtr.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TKFactoryLogitRandomWalk.h: $(top_srcdir)/src/core/inc/TKFactoryLogitRandomWalk.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TKFactoryMALA.h: $(top_srcdir)/src/core/inc/TKFactoryMALA.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TKFactoryRandomWalk.h: $(top_srcdir)/src/core/inc/TKFactoryRandomWalk.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TKFactoryStochasticNewton.h: $(top_srcdir)/src/core/inc/TKFactoryStochasticNewton.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TeuchosMatrix.h: $(top_srcdir)/src/core/inc/TeuchosMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TeuchosVector.h: $(top_srcdir)/src/core/inc/TeuchosVector.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TransitionKernelFactory.h: $(top_srcdir)/src/core/inc/TransitionKernelFactory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Vector.h: $(top_srcdir)/src/core/inc/Vector.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -380,6 +410,10 @@ StdOneDGrid.h: $(top_srcdir)/src/misc/inc/StdOneDGrid.h
 StreamUtilities.h: $(top_srcdir)/src/misc/inc/StreamUtilities.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformOneDGrid.h: $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+math_macros.h: $(top_srcdir)/src/misc/inc/math_macros.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+Algorithm.h: $(top_srcdir)/src/stats/inc/Algorithm.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BayesianJointPdf.h: $(top_srcdir)/src/stats/inc/BayesianJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -484,6 +518,8 @@ MLSamplingOptions.h: $(top_srcdir)/src/stats/inc/MLSamplingOptions.h
 MarkovChainPositionData.h: $(top_srcdir)/src/stats/inc/MarkovChainPositionData.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 MatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/MatrixCovarianceFunction.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+MetropolisAdjustedLangevinTK.h: $(top_srcdir)/src/stats/inc/MetropolisAdjustedLangevinTK.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 MetropolisHastingsSG.h: $(top_srcdir)/src/stats/inc/MetropolisHastingsSG.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

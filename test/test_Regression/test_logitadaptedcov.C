@@ -1,4 +1,3 @@
-#include <iomanip>
 #include <queso/Environment.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -9,6 +8,9 @@
 #include <queso/GaussianJointPdf.h>
 #include <queso/InvLogitGaussianJointPdf.h>
 #include <queso/StatisticalInverseProblem.h>
+
+#include <cstdlib>
+#include <iomanip>
 
 #define TOL 1e-13
 
@@ -45,13 +47,16 @@ public:
 };
 
 int main(int argc, char ** argv) {
+  std::string inputFileName = "test_Regression/adaptedcov_input.txt";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-  QUESO::FullEnvironment env(MPI_COMM_WORLD,
-      "test_Regression/adaptedcov_input.txt", "", NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, inputFileName, "", NULL);
 #else
-  QUESO::FullEnvironment env(
-      "test_Regression/adaptedcov_input.txt", "", NULL);
+  QUESO::FullEnvironment env(inputFileName, "", NULL);
 #endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,

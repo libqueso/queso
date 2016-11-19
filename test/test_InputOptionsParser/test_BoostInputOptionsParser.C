@@ -1,10 +1,12 @@
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#include <queso/asserts.h>
+#include <queso/BoostInputOptionsParser.h>
+
+#include <cstdlib>
+#include <iostream>
 #include <string>
 #include <set>
 #include <vector>
-#include <iostream>
-
-#include <queso/asserts.h>
-#include <queso/BoostInputOptionsParser.h>
 
 #define TEST_INT -1
 #define TEST_UINT 1
@@ -78,8 +80,15 @@ TestOptionsValues::TestOptionsValues(const std::string & filename)
 
 void test_default()
 {
-  TestOptionsValues optionsValues(
-      "test_InputOptionsParser/test_options_default.txt");
+  std::string inputFileName =
+    "test_InputOptionsParser/test_options_default.txt";
+
+  // Find correct file for out-of-source builds
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
+  TestOptionsValues optionsValues(inputFileName);
 
   queso_require_equal_to(optionsValues.m_int, -1);
   queso_require_equal_to(optionsValues.m_unsigned_int, 1);
@@ -98,8 +107,15 @@ void test_default()
 
 void test_good()
 {
-  TestOptionsValues optionsValues(
-      "test_InputOptionsParser/test_options_good.txt");
+  std::string inputFileName =
+    "test_InputOptionsParser/test_options_good.txt";
+
+  // Find correct file for out-of-source builds
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
+  TestOptionsValues optionsValues(inputFileName);
 
   queso_require_equal_to(optionsValues.m_int, -2);
   queso_require_equal_to(optionsValues.m_unsigned_int, 2);
@@ -118,18 +134,30 @@ void test_good()
 
 void test_empty()
 {
-  TestOptionsValues optionsValues(
-      "test_InputOptionsParser/test_options_bad.txt");
+  std::string inputFileName =
+    "test_InputOptionsParser/test_options_bad.txt";
+
+  // Find correct file for out-of-source builds
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir)
+    inputFileName = test_srcdir + ('/' + inputFileName);
+
+  TestOptionsValues optionsValues(inputFileName);
 
   queso_require_equal_to(optionsValues.m_set_unsigned_int.empty(), true);
   queso_require_equal_to(optionsValues.m_vector_double.empty(), true);
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 int main(int argc, char ** argv)
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   test_default();
   test_good();
   test_empty();
 
   return 0;
+#else
+  return 77;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }

@@ -73,7 +73,7 @@ UniformJointPdf<V,M>::actualValue(
   if (domainDirection) {}; // just to remove compiler warning
 
   double volume = m_domainSet.volume();
-  if (((boost::math::isnan)(volume)) ||
+  if ((queso_isnan(volume)) ||
       (volume == -INFINITY         ) ||
       (volume ==  INFINITY         ) ||
       (volume <= 0.                ) ||
@@ -101,7 +101,7 @@ UniformJointPdf<V,M>::lnValue(
   if (domainDirection) {}; // just to remove compiler warning
 
   double volume = m_domainSet.volume();
-  if (((boost::math::isnan)(volume)) ||
+  if ((queso_isnan(volume)) ||
       (volume == -INFINITY         ) ||
       (volume ==  INFINITY         ) ||
       (volume <= 0.                ) ||
@@ -110,6 +110,20 @@ UniformJointPdf<V,M>::lnValue(
   }
 
   return -log(volume);
+}
+//--------------------------------------------------
+template<class V, class M>
+void
+UniformJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  m_domainSet.centroid(meanVector);
+}
+//--------------------------------------------------
+template<class V, class M>
+void
+UniformJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  m_domainSet.moments(covMatrix);
 }
 //--------------------------------------------------
 template<class V, class M>

@@ -130,6 +130,23 @@ ScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
 
   return (*gaussian_rv);
 }
+
+template <class V, class M>
+const GaussianVectorRV<V, M> &
+ScaledCovMatrixTKGroup<V, M>::rv(const V & position) const
+{
+  queso_require_not_equal_to_msg(m_rvs.size(), 0, "m_rvs.size() = 0");
+  queso_require_msg(m_rvs[0], "m_rvs[0] == NULL");
+  //queso_require_greater_msg(m_preComputingPositions.size(), this->m_stageId, "m_preComputingPositions.size() <= stageId");
+  //queso_require_msg(m_preComputingPositions[this->m_stageId], "m_preComputingPositions[stageId] == NULL");
+
+  GaussianVectorRV<V, M> * gaussian_rv = dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[this->m_stageId]);
+
+  gaussian_rv->updateLawExpVector(position);
+
+  return (*gaussian_rv);
+}
+
 //---------------------------------------------------
 template<class V, class M>
 void
@@ -150,8 +167,6 @@ ScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMatrix)
     }
     dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[i])->updateLawCovMatrix(factor*covMatrix);
   }
-
-  return;
 }
 
 // Misc methods -------------------------------------
@@ -199,9 +214,16 @@ void
 ScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
 {
   BaseTKGroup<V,M>::clearPreComputingPositions();
-  return;
 }
 
+template <class V, class M>
+unsigned int
+ScaledCovMatrixTKGroup<V, M>::set_dr_stage(unsigned int stageId)
+{
+  unsigned int old_stageId = this->m_stageId;
+  this->m_stageId = stageId;
+  return old_stageId;
+}
 
 // Private methods------------------------------------
 template<class V, class M>
@@ -216,12 +238,10 @@ ScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()
     double factor = 1./m_scales[i]/m_scales[i];
     queso_require_msg(!(m_rvs[i]), "m_rvs[i] != NULL");
     m_rvs[i] = new GaussianVectorRV<V,M>(m_prefix.c_str(),
-                                                *m_vectorSpace,
-                                                m_vectorSpace->zeroVector(),
-                                                factor*m_originalCovMatrix);
+                                         *m_vectorSpace,
+                                         m_vectorSpace->zeroVector(),
+                                         factor*m_originalCovMatrix);
   }
-
-  return;
 }
 // I/O methods---------------------------------------
 template<class V, class M>
@@ -229,7 +249,6 @@ void
 ScaledCovMatrixTKGroup<V,M>::print(std::ostream& os) const
 {
   BaseTKGroup<V,M>::print(os);
-  return;
 }
 
 }  // End namespace QUESO

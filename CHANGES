@@ -3,7 +3,29 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.55.0 (in progress)
+Version 0.56.0 (Nov 18, 2016)
+  * Multivariate GPMSA implementation (experimental)
+  * Multivariate GPMSA examples
+  * Improved Libmesh+Slepc detection
+  * Fix some compiler warnings
+  * Refactor delayed rejection logic into a method
+  * Clarify documentation for Gamma distribution
+  * Allow the user to tweak optimiser options from input file
+  * Use newest libmesh API
+  * Bug fixes for treatment of hyperparameter/normalising constant in Gaussian
+    canned likelihoods
+  * Prefer C++11 smart pointers/isnan/isfinite over boost equivalent if
+    compiler is new enough
+  * Make boost program options optional (and use getpot when disabled)
+  * Implement a transition kernel factory pattern so users may implement custom
+    samplers
+  * Implement MALA, a derivative-informed MCMC sampler
+  * Adding algorithm (acceptance probability) and transition kernel factories
+  * Added global sensitivity analysis example
+  * Adding pdf mean/variance methods
+  * Documentation improvements
+
+Version 0.55.0 (Jun 17, 2016)
   * Fix bug in JeffreysJointPdf
   * Adding gradient support for Beta, Log Normal, and Gaussian PDFs
   * Fix MLE/MAP bug when subEnvironments have more than one MPI process

@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.55.0], [queso-users@googlegroups.com])
+AC_INIT([queso], [0.56.0], [queso-users@googlegroups.com])
 PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
 AC_SUBST([PACKAGE_DESCRIPTION])
 PACKAGE_URL="https://github.com/libqueso/queso"
@@ -84,6 +84,16 @@ AC_ARG_ENABLE(mpi,
               [enable_mpi=no],
               [enable_mpi=yes])
 
+##############################################
+# Check if the user disabled program options #
+##############################################
+AC_ARG_ENABLE([boost-program-options],
+              AS_HELP_STRING([--disable-boost-program-options], [Disables use
+                              of boost program options for parsing the QUESO
+                              input file.  GetPot will be used instead.]),
+              [enable_program_options="no"],
+              [enable_program_options="yes"])
+
 #-------------------
 # Compilers and MPI
 #-------------------
@@ -107,6 +117,36 @@ fi
 AC_SUBST(HAVE_MPI)
 AM_CONDITIONAL(MPI_ENABLED, test x$HAVE_MPI = x1)
 
+
+# --------------------------------------------------------------
+# Allow the user to explicitly turn off C++11 support by saying
+# --disable-cxx11.  Otherwise, C++11 support is enabled by default
+# although libmesh does not (currently) use any C++11 features.
+# --------------------------------------------------------------
+AC_ARG_ENABLE(cxx11,
+              AC_HELP_STRING([--disable-cxx11],
+                             [build without C++11 support]),
+                             [case "${enableval}" in
+                   yes) enablecxx11=yes ;;
+                   no)  enablecxx11=no ;;
+                   *)   AC_MSG_ERROR(bad value ${enableval} for --disable-cxx11) ;;
+                   esac],
+                   [enablecxx11=yes])
+
+if (test "x$enablecxx11" = "xyes"); then
+  # --------------------------------------------------------------
+  # Standard autoconf macro for determining the proper -std=c++11
+  # flag for the current compiler.  Adds the result to CXXFLAGS if
+  # one is found.  See ax_cxx_compile_stdcxx_11.m4 for details.
+  # --------------------------------------------------------------
+  AX_CXX_COMPILE_STDCXX_11([noext],[optional])
+fi
+
+QUESO_TEST_CXX11_ISNAN
+QUESO_TEST_CXX11_ISFINITE
+QUESO_TEST_CXX11_UNIQUE_PTR
+QUESO_TEST_CXX11_SHARED_PTR
+
 #-------------------------
 # External Library Checks
 #-------------------------
@@ -128,8 +168,8 @@ AM_CONDITIONAL(TRILINOS_ENABLED,test x$HAVE_TRILINOS = x1)
 
 AC_CACHE_SAVE
 
-# Check for libmesh (optional)
-AX_PATH_LIBMESH_NEW(0.9.1,no)
+# Check for libmesh with SLEPc support (optional)
+AX_LIBMESH_SLEPC(0.9.1,no)
 AC_CACHE_SAVE
 
 # Check for GSL (required)
@@ -142,9 +182,20 @@ AC_CACHE_SAVE
 
 AC_LANG([C++])
 BOOST_REQUIRE([1.35])
-BOOST_PROGRAM_OPTIONS
+AS_IF([test "x$enable_program_options" != "xno"],
+      [
+       BOOST_PROGRAM_OPTIONS
+      ])
+
+AS_IF([test "x$enable_program_options" = "xno"],
+      [
+       QUESO_CPPFLAGS="$QUESO_CPPFLAGS -DDISABLE_BOOST_PROGRAM_OPTIONS"
+       AC_SUBST(QUESO_CPPFLAGS)
+      ])
+
 BOOST_FIND_HEADER([boost/scoped_ptr.hpp])
 BOOST_FIND_HEADER([boost/shared_ptr.hpp])
+BOOST_FIND_HEADER([boost/math/special_functions.hpp])
 AC_CACHE_SAVE
 
 # Check for GLPK (optional)
@@ -208,8 +259,6 @@ AC_CONFIG_FILES([
   src/contrib/ANN/test/Makefile
   src/core/inc/queso.h
   examples/Makefile
-  examples/infinite_dim/inverse_options
-  examples/infinite_dim/parallel_inverse_options
   test/Makefile
   test/t01_valid_cycle/Makefile
   test/t02_sip_sfp/Makefile
@@ -217,73 +266,9 @@ AC_CONFIG_FILES([
   test/t04_bimodal/Makefile
   test/gsl_tests/Makefile
   test/gsl_tests/input
-  test/test_infinite/inf_options
-  test/test_Regression/GaussianMean1DRegression_options
-  test/test_Regression/gpmsa_cobra_input.txt
-  test/test_Regression/test_gpmsa_cobra_samples.m
-  test/test_Regression/ctf_dat.txt
-  test/test_Regression/dakota_pstudy.dat
-  test/test_StatisticalInverseProblem/both_input.txt
-  test/test_StatisticalInverseProblem/llhdout_input.txt
-  test/test_StatisticalInverseProblem/neither_input.txt
-  test/test_StatisticalInverseProblem/targetout_input.txt
-  test/test_Regression/jeffreys_input.txt
-  test/test_Regression/test_jeffreys_samples.m
-  test/test_Regression/adaptedcov_input.txt
-  test/test_gaussian_likelihoods/queso_input.txt
-  test/test_InterpolationSurrogate/queso_input.txt
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
-  test/test_gaussian_likelihoods/gaussian_consistency_input.txt
-  test/test_InputOptionsParser/test_options_good.txt
-  test/test_InputOptionsParser/test_options_bad.txt
-  test/test_InputOptionsParser/test_options_default.txt
-  test/test_optimizer/input_test_optimizer_options
-  test/test_Environment/input_test_serialEnv
-  test/test_intercomm0/gravity_1proc.txt
-  test/test_intercomm0/gravity_2proc.txt
-])
-
-AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh
-],
-[
-  chmod +x test/test_Regression/test_cobra_samples_diff.sh
-])
-
-AC_CONFIG_FILES([
-  test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
-],
-[
-  chmod +x test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
-])
-
-AC_CONFIG_FILES([
-  test/test_Regression/test_jeffreys_samples_diff.sh
-],
-[
-  chmod +x test/test_Regression/test_jeffreys_samples_diff.sh
-])
-
-AC_CONFIG_FILES([
-  test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
-],
-[
-  chmod +x test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
-])
-
-AC_CONFIG_FILES([
-  test/test_intercomm0/test_intercomm0_gravity_run.sh
-],
-[
-  chmod +x test/test_intercomm0/test_intercomm0_gravity_run.sh
-])
-
-AC_CONFIG_FILES([
-  test/test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
-],
-[
-  chmod +x test/test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 ])
 
 AC_CONFIG_FILES(src/apps/queso-config, [chmod +x src/apps/queso-config])
@@ -297,6 +282,11 @@ _AC_SRCDIRS(.)
 # start picking up files in the directories that it uses
 QUESO_STAMPED_FILES=$(find $ac_abs_top_srcdir/{src,examples,test} -name "*.h" -or -name "*.C" | tr "\n" " ")
 AC_SUBST(QUESO_STAMPED_FILES)
+
+# Since we don't distribute the lic_utils, check and make sure it's there.
+# This way, we won't run the license stamping perl script on distributed
+# tarballs, only on the repository clone
+AM_CONDITIONAL(QUESO_LICENSESTAMPEXISTS, [test -f $ac_abs_top_srcdir/src/common/lic_utils/update_license.pl])
 
 AC_OUTPUT()
 

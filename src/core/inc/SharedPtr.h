@@ -27,7 +27,7 @@
 
 #include <queso/config_queso.h>
 
-#ifdef QUESO_HAVE_CXX11_UNIQUE_PTR
+#ifdef QUESO_HAVE_CXX11_SHARED_PTR
 #include <memory>
 #elif QUESO_HAVE_BOOST_SHARED_PTR_HPP
 #include <boost/shared_ptr.hpp>

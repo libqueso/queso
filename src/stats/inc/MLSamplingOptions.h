@@ -27,7 +27,10 @@
 
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE "."
 
@@ -126,7 +129,9 @@ public:
 private:
   const BaseEnvironment& m_env;
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   BoostInputOptionsParser * m_parser;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY

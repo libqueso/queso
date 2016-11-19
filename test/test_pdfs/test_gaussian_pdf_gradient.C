@@ -71,13 +71,13 @@ int main(int argc, char ** argv)
   QUESO::GslVector point(mean);
 
   // We are testing that the gradient of log of the pdf is all zeros
-  double lnPdfValue1 = pdf.lnValue(point, NULL, &lnGradVector, NULL, NULL);
+  pdf.lnValue(point, NULL, &lnGradVector, NULL, NULL);
   queso_require_less_equal_msg(std::abs(lnGradVector[0]), TOL, "grad log gaussian pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(lnGradVector[1]), TOL, "grad log gaussian pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(lnGradVector[2]), TOL, "grad log gaussian pdf values are incorrect");
 
   // We are testing that the of the pdf is all zeros
-  double pdfValue1 = pdf.actualValue(point, NULL, &gradVector, NULL, NULL);
+  pdf.actualValue(point, NULL, &gradVector, NULL, NULL);
   queso_require_less_equal_msg(std::abs(gradVector[0]), TOL, "grad guassian pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(gradVector[1]), TOL, "grad guassian pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(gradVector[2]), TOL, "grad guassian pdf values are incorrect");
@@ -106,7 +106,7 @@ int main(int argc, char ** argv)
 
   QUESO::GaussianJointPdf<> pdf2("", paramDomain, mean, var);
 
-  lnPdfValue1 = pdf2.lnValue(point, NULL, &lnGradVector, NULL, NULL);
+  pdf2.lnValue(point, NULL, &lnGradVector, NULL, NULL);
 
   queso_require_less_equal_msg(std::abs(lnGradVector[0] - 1.0), TOL, "grad log gaussian pdf2 values are incorrect");
   queso_require_less_equal_msg(std::abs(lnGradVector[1] - 1.0), TOL, "grad log gaussian pdf2 values are incorrect");

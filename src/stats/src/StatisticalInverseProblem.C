@@ -28,6 +28,7 @@
 #include <queso/GPMSA.h>
 #include <queso/GslOptimizer.h>
 #include <queso/OptimizerMonitor.h>
+#include <queso/BayesianJointPdf.h>
 
 namespace QUESO {
 
@@ -263,8 +264,11 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
     // Unfortunately, I didn't have the foresight to make this an input file
     // option from the beginning, hence needing to check two flags
 
+    // Read in optimizer options from input file
+    OptimizerOptions optimizer_options(&m_env, "ip_");
+
     // Do optimisation before sampling
-    GslOptimizer optimizer(*m_solutionPdf);
+    GslOptimizer optimizer(optimizer_options, *m_solutionPdf);
     optimizer.setInitialPoint(dynamic_cast<const GslVector &>(initialValues));
 
     OptimizerMonitor monitor(m_env);

@@ -53,7 +53,13 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
-  /*! Constructs a uniform vector RV, given a prefix and the image set of the vector RV.*/
+  /*!
+   * Constructs a uniform vector RV, given a prefix and the image set of the
+   * vector RV.
+   *
+   * Note: If \c imageSet is unbounded, the distribution is improper and
+   * realizations (obtained from UniformVectorRV::realizer) do not make sense.
+   */
   UniformVectorRV(const char*                  prefix,
                          const VectorSet<V,M>& imageSet);
   //! Virtual destructor

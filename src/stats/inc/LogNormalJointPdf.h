@@ -27,8 +27,6 @@
 
 #include <cmath>
 
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
-
 #include <queso/JointPdf.h>
 #include <queso/Environment.h>
 #include <queso/ScalarFunction.h>
@@ -77,6 +75,12 @@ public:
   * \f[ lnValue =- \sum_i \frac{1}{domainVector_i * \sqrt{2 \pi * lawVarVector_i}} exp(-\frac{(\ln( domainVector_i) - lawExpVector_i)^2}{2 lawVarVector_i}) \f] as long as
   * \f$ domainVector_i > 0 \f$ for all \f$ i \f$.*/
   double   lnValue     (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+  //! Mean value of the underlying random variable.
+  virtual void   distributionMean (V & meanVector) const;
+
+  //! Covariance matrix of the underlying random variable.
+  virtual void   distributionVariance (M & covMatrix) const;
 
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/

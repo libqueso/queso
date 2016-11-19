@@ -159,7 +159,7 @@ private:
 
 #ifdef QUESO_HAS_MPI
 
-#define STANDARD_TYPE(cxxtype,mpitype)                                  \
+#define QUESO_STANDARD_TYPE(cxxtype,mpitype)                                  \
   template<>                                                            \
   class StandardType<cxxtype> : public DataType                         \
   {                                                                     \
@@ -170,7 +170,7 @@ private:
 
 #else
 
-#define STANDARD_TYPE(cxxtype,mpitype)                          \
+#define QUESO_STANDARD_TYPE(cxxtype,mpitype)                          \
   template<>                                                    \
   class StandardType<cxxtype> : public DataType                 \
   {                                                             \
@@ -181,10 +181,10 @@ private:
 
 #endif
 
-STANDARD_TYPE(char,MPI_CHAR);
-STANDARD_TYPE(int,MPI_INT);
-STANDARD_TYPE(unsigned int,MPI_UNSIGNED);
-STANDARD_TYPE(double,MPI_DOUBLE);
+QUESO_STANDARD_TYPE(char,MPI_CHAR);
+QUESO_STANDARD_TYPE(int,MPI_INT);
+QUESO_STANDARD_TYPE(unsigned int,MPI_UNSIGNED);
+QUESO_STANDARD_TYPE(double,MPI_DOUBLE);
 
 class BaseEnvironment;
 

@@ -3,9 +3,6 @@
 #include <string>
 #include <sstream>
 
-// Boost includes
-#include <boost/math/constants/constants.hpp>
-
 #include <mpi.h>
 
 // LibMesh includes

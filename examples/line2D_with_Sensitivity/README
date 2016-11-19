@@ -1,0 +1,12 @@
+Steps for 2D line application:
+
+1. Generate the truth data: python gen_truth.py
+   - Will creat three text files (obs.txt - observations, sigmas.txt - these are actually variances, xs.txt - corresponding 'x' locations)
+   - Also generates the plot showing the original line and corresponding data as obtained by adding a Gaussian noise at the 'x' locations
+
+2. Compile the application: make
+
+3. Run the application: ./line2D_gsl slope_inv_fwd.inp
+
+4. Generate the plots from QUESO output (.txt files): python gen_plots.py
+   The plots are contained in the 'Plots' dir. 

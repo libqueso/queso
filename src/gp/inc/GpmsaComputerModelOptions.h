@@ -26,7 +26,11 @@
 #define UQ_GCM_OPTIONS_H
 
 #include <queso/Environment.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+
 #include <queso/SequenceStatisticalOptions.h>
 
 #define UQ_GCM_FILENAME_FOR_NO_FILE "."
@@ -54,11 +58,13 @@
 #define UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV                1
 #define UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                 0
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 namespace boost {
   namespace program_options {
     class options_description;
   }
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 namespace QUESO {
 
@@ -97,7 +103,9 @@ public:
   //MhOptionsValues m_mhOptionsValues;
 
 private:
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   BoostInputOptionsParser * m_parser;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;
   std::string                   m_option_checkAgainstPreviousSample;
@@ -147,12 +155,16 @@ public:
   std::string                        m_prefix;
 
 private:
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
   void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   const BaseEnvironment& m_env;
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   boost::program_options::options_description*      m_optionsDesc;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   std::string                   m_option_help;
   std::string                   m_option_checkAgainstPreviousSample;
   std::string                   m_option_dataOutputFileName;

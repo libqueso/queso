@@ -28,7 +28,10 @@
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
 #include <queso/SequenceStatisticalOptions.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #undef  UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1
@@ -93,12 +96,16 @@
 #define UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                                1
 #define UQ_MH_SG_OUTPUT_LOG_TARGET                                    1
 #define UQ_MH_SG_DO_LOGIT_TRANSFORM                                   1
+#define UQ_MH_SG_ALGORITHM                                            "logit_random_walk"
+#define UQ_MH_SG_TK                                                   "logit_random_walk"
 
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 namespace boost {
   namespace program_options {
     class options_description;
   }
 }
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 namespace QUESO {
 
@@ -599,8 +606,19 @@ public:
   //! Flag for deciding whether or not to do logit transform of bounded domains Default is true.
   bool m_doLogitTransform;
 
+  //! Which algorithm to use for the MCMC.  Default is "random_walk"
+  std::string m_algorithm;
+
+  //! Which transition kernel to use for MCMC.  Default is "random_walk"
+  std::string m_tk;
+
 private:
+  // Cache a pointer to the environment.
+  const BaseEnvironment * m_env;
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   BoostInputOptionsParser * m_parser;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   //! Option name for MhOptionsValues::m_help.  Option name is m_prefix + "mh_help"
   std::string                   m_option_help;
@@ -715,6 +733,10 @@ private:
   std::string                   m_option_outputLogTarget;
   //! Option name for MhOptionsValues::m_doLogitTransform.  Option name is m_prefix + "mh_doLogitTransform"
   std::string                   m_option_doLogitTransform;
+  //! Option name for MhOptionsValues::m_algorithm.  Option name is m_prefix + "mh_algorithm"
+  std::string                   m_option_algorithm;
+  //! Option name for MhOptionsValues::m_tk.  Option name is m_prefix + "mh_tk"
+  std::string                   m_option_tk;
 
   //! Copies the option values from \c src to \c this.
   void copy(const MhOptionsValues& src);
@@ -787,14 +809,18 @@ public:
   std::string                        m_prefix;
 
 private:
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   //! Defines the options for the Metropolis-Hastings generator of samples as the default options.
   void   defineMyOptions  (boost::program_options::options_description& optionsDesc) const;
 
   //! Gets the sequence options defined to the  Metropolis-Hastings algorithm.
   void   getMyOptionValues(boost::program_options::options_description& optionsDesc);
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   const BaseEnvironment& m_env;
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   boost::program_options::options_description*      m_optionsDesc;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;
 
@@ -859,6 +885,8 @@ private:
   std::string                   m_option_outputLogLikelihood;
   std::string                   m_option_outputLogTarget;
   std::string                   m_option_doLogitTransform;
+  std::string                   m_option_algorithm;
+  std::string                   m_option_tk;
 };
 
 std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptions& obj);

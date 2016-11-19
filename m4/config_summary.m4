@@ -33,12 +33,12 @@ echo GSL_LIBS...................... : $GSL_LIBS
 echo BOOST_DIR..................... : ${BOOST_DIR}
 ###echo Boost program options... ..... : $BOOST_PROGRAM_OPTIONS_LDFLAGS $BOOST_PROGRAM_OPTIONS_LIBS
 echo ' '
-echo Install dir................... : $prefix 
+echo Install dir................... : $prefix
 echo Build user.................... : $USER
 echo Build host.................... : $BUILD_HOST
 echo Configure date................ : $BUILD_DATE
 echo Build architecture............ : $BUILD_ARCH
-echo Source control revision....... : $BUILD_VERSION
+echo git revision.................. : $BUILD_VERSION
 echo
 echo Optional Features:
 
@@ -74,7 +74,7 @@ else
   echo '   'Link with Trilinos......... : yes
 fi
 
-if test "$HAVE_LIBMESH" == "0"; then
+if test "$HAVE_LIBMESH_SLEPC" == "0"; then
   echo '   'Link with libmesh.......... : no
 else
   echo '   'Link with libmesh.......... : yes
@@ -94,7 +94,7 @@ fi
 
 # Paths for optional packages which are enabled
 
-echo 
+echo
 echo Optional Feature Paths:
 
 if test "$HAVE_GRVY" = "1"; then
@@ -113,13 +113,11 @@ if test "$HAVE_TRILINOS" = "1"; then
    echo '   'Trilinos DIR............... : $TRILINOS_HOME
 fi
 
-if test "$HAVE_LIBMESH" == "0"; then
-   echo '   'libmesh DIR................ : $LIBMESH_PREFIX
-else
+if test "$HAVE_LIBMESH" == "1"; then
    echo '   'libmesh DIR................ : $LIBMESH_PREFIX
 fi
 
-echo 		   
+echo
 
 echo '-------------------------------------------------------------------------------'
 

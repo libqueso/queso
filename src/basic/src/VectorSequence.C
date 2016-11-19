@@ -2848,8 +2848,8 @@ ComputeCovCorrMatricesBetweenVectorSequences(
   double minSampleVarianceQ;
   minSampleVarianceP = unifiedSampleVarianceP.getMinValue();
   minSampleVarianceQ = unifiedSampleVarianceQ.getMinValue();
-  queso_require_greater_msg(minSampleVarianceP, 0, "sample variance is not positive");
-  queso_require_greater_msg(minSampleVarianceQ, 0, "sample variance is not positive");
+  queso_require_greater_msg(minSampleVarianceP, 0.0, "sample variance is not positive");
+  queso_require_greater_msg(minSampleVarianceQ, 0.0, "sample variance is not positive");
 
   // Compute unified covariance matrix
   if (useOnlyInter0Comm) {

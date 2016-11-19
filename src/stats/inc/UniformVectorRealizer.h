@@ -45,10 +45,16 @@ template <class V = GslVector, class M = GslMatrix>
 class UniformVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 
-    //! @name Constructor/Destructor methods
+  //! @name Constructor/Destructor methods
   //@{
   //! Constructor
-  /*! Constructs a new object, given a prefix and the image set of the vector realizer.  */
+  /*!
+   * Constructs a new object, given a prefix and the image set of the vector
+   * realizer.
+   *
+   * Note: If \c unifiedImageSet is unbounded, it does not make sense to ask
+   * for realizations.
+   */
   UniformVectorRealizer(const char*                  prefix,
                                const VectorSet<V,M>& unifiedImageSet);
   //! Destructor
@@ -58,8 +64,13 @@ public:
   //! @name Realization-related methods
   //@{
   //! Draws a realization.
-  /*! This function draws a realization of a uniform distribution and saves it in \c nextValues. It
-   * internally finds the minimum and the maximum values of the distribution.
+  /*!
+   * This function draws a realization of a uniform distribution and saves it
+   * in \c nextValues.  It internally finds the minimum and the maximum values
+   * of the distribution.
+   *
+   * Note: If the state space is unbounded, the distribution is improper and
+   * realizations do not make sense.
    */
   void realization(V& nextValues) const;
   //@}

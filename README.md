@@ -52,22 +52,22 @@ Dependencies
 At a minimum, `QUESO` compilation requires MPI and linkage against two
 external libraries:
 
-- [Boost](http://www.boost.org/)
-- [GSL](https://www.gnu.org/software/gsl/)
+- [Boost](http://www.boost.org/) v1.35+
+- [GSL](https://www.gnu.org/software/gsl/) v1.10+
 
 `QUESO` also has several optional dependencies that enable additional functionality:
 
-- [Teuchos](http://trilinos.sandia.gov/packages/docs/r7.0/packages/teuchos/doc/html/index.html)
-- [GRVY](https://red.ices.utexas.edu/projects/hpct/files)
-- [HDF5](http://www.hdfgroup.org/HDF5/)
-- [GLPK](https://www.gnu.org/software/glpk/)
+- [Teuchos](http://trilinos.sandia.gov/packages/docs/r7.0/packages/teuchos/doc/html/index.html) v11.0.2+
+- [GRVY](https://red.ices.utexas.edu/projects/hpct/files) v0.29+
+- [HDF5](http://www.hdfgroup.org/HDF5/) v1.8.0+
+- [GLPK](https://www.gnu.org/software/glpk/) v4.35+
 - [PETSc](http://www.mcs.anl.gov/petsc/)
 
 Should you be interested in using the optional infinite dimensional
 capabilities of `QUESO`, then you also need the following dependencies:
 
-- [libMesh](http://libmesh.sourceforge.net) compiled with [SLEPc](http://www.grycap.upv.es/slepc/)
-- [HDF5](http://www.hdfgroup.org/HDF5/)
+- [libMesh](http://libmesh.sourceforge.net) v0.9.1+ compiled with [SLEPc](http://www.grycap.upv.es/slepc/)
+- [HDF5](http://www.hdfgroup.org/HDF5/) v1.8.0+
 
 License
 -------

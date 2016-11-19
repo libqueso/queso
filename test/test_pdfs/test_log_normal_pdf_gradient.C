@@ -71,12 +71,12 @@ int main(int argc, char ** argv)
 
   // Here we test the gradient of the log of the pdf and the gradient of the
   // pdf are zero at the mode, as we expect.
-  double lnPdfValue1 = pdf.lnValue(point, NULL, &lnGradVector, NULL, NULL);
+  pdf.lnValue(point, NULL, &lnGradVector, NULL, NULL);
   queso_require_less_equal_msg(std::abs(lnGradVector[0]), TOL, "grad log log_normal pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(lnGradVector[1]), TOL, "grad log log_normal pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(lnGradVector[2]), TOL, "grad log log_normal pdf values are incorrect");
 
-  double pdfValue1 = pdf.actualValue(point, NULL, &gradVector, NULL, NULL);
+  pdf.actualValue(point, NULL, &gradVector, NULL, NULL);
   queso_require_less_equal_msg(std::abs(gradVector[0]), TOL, "grad log_normal pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(gradVector[1]), TOL, "grad log_normal pdf values are incorrect");
   queso_require_less_equal_msg(std::abs(gradVector[2]), TOL, "grad log_normal pdf values are incorrect");

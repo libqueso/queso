@@ -35,12 +35,15 @@
 #include <queso/ArrayOfSequences.h>
 #include <sys/time.h>
 #include <fstream>
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
+#include <queso/SharedPtr.h>
 
 namespace QUESO {
 
 class GslVector;
 class GslMatrix;
+
+template <class P_V, class P_M>
+class Algorithm;
 
 //--------------------------------------------------
 // MHRawChainInfoStruct --------------------------
@@ -239,6 +242,28 @@ private:
   void adapt(unsigned int positionId,
       BaseVectorSequence<P_V, P_M> & workingChain);
 
+  //! Does delayed rejection
+  /*!
+   * When faced with an imminent rejection, this method computes a series of
+   * new candidates in the same proposal direction but with smaller proposal
+   * step sizes.  For each of these new candidates, we check if it will be
+   * accepted, if not we repeat the process until all the candidates have been
+   * tested.
+   *
+   * If there is a candidate that will be accepted, this method will return \c
+   * true, otherwise it returns \c false.
+   *
+   * \c currentCandidateData is updated whenever a new proposal is generated
+   * throughout the delayed rejection procedure.
+   *
+   * \c delayedRejection promises not to change \c currentPositionData, because
+   * changing the current position of the Markov chain would be grossly
+   * inappropriate.
+   */
+  bool delayedRejection(unsigned int positionId,
+      const MarkovChainPositionData<P_V> & currentPositionData,
+      MarkovChainPositionData<P_V> & currentCandidateData);
+
   //! This method reads the chain contents.
   void   readFullChain            (const std::string&                  inputFileName,
                                    const std::string&                  inputFileType,
@@ -254,16 +279,7 @@ private:
                                    P_V&                                       lastMean,
                                    P_M&                                       lastAdaptedCovMatrix);
 
-  //! Calculates acceptance ration.
-  /*! It is called by alpha(const std::vector<MarkovChainPositionData<P_V>*>& inputPositions,
-      const std::vector<unsigned int>& inputTKStageIds); */
-  double alpha                    (const MarkovChainPositionData<P_V>& x,
-                                   const MarkovChainPositionData<P_V>& y,
-                                   unsigned int                               xStageId,
-                                   unsigned int                               yStageId,
-                                   double*                                    alphaQuotientPtr = NULL);
-
-  //! Calculates acceptance ration.
+  //! Calculates acceptance ratio.
   /*! The acceptance ratio is used to decide whether to accept or reject a candidate. */
   double alpha                    (const std::vector<MarkovChainPositionData<P_V>*>& inputPositions,
                                    const std::vector<unsigned int                        >& inputTKStageIds);
@@ -288,7 +304,8 @@ private:
   std::vector<bool> m_parameterEnabledStatus; // gpmsa2
   const ScalarFunctionSynchronizer<P_V,P_M> * m_targetPdfSynchronizer;
 
-  BaseTKGroup<P_V,P_M> * m_tk;
+  typename SharedPtr<BaseTKGroup<P_V,P_M> >::Type m_tk;
+  typename SharedPtr<Algorithm<P_V, P_M>>::Type m_algorithm;
   unsigned int m_positionIdForDebugging;
   unsigned int m_stageIdForDebugging;
   std::vector<unsigned int> m_idsOfUniquePositions;

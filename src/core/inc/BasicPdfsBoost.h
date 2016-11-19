@@ -26,8 +26,6 @@
 #define UQ_BASIC_PDFS_BOOST_H
 
 #include <queso/BasicPdfsBase.h>
-#include <boost/random.hpp>
-#include <boost/math/distributions.hpp>
 
 namespace QUESO {
 

@@ -24,13 +24,12 @@
 
 #include <queso/Defines.h>
 
-#ifdef QUESO_HAVE_LIBMESH
+#ifdef QUESO_HAVE_LIBMESH_SLEPC
 
 #include <set>
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
-
+#include <queso/SharedPtr.h>
 #include <queso/FunctionOperatorBuilder.h>
 #include <queso/LibMeshNegativeLaplacianOperator.h>
 #include <libmesh/libmesh_common.h>
@@ -58,7 +57,7 @@ LibMeshNegativeLaplacianOperator::LibMeshNegativeLaplacianOperator(
     const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
   : LibMeshOperatorBase(builder, m)
 {
-  boost::shared_ptr<libMesh::EquationSystems> es(this->equation_systems);
+  typename SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
 
   // Give the system a pointer to the matrix assembly
   // function defined below.
@@ -143,7 +142,7 @@ void LibMeshNegativeLaplacianOperator::assemble()
 {
 #ifdef LIBMESH_HAVE_SLEPC
 
-  boost::shared_ptr<libMesh::EquationSystems> es(this->equation_systems);
+  typename SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
 
   // Get a constant reference to the mesh object.
   const libMesh::MeshBase& mesh = es->get_mesh();
@@ -164,9 +163,9 @@ void LibMeshNegativeLaplacianOperator::assemble()
 
   // Build a Finite Element object of the specified type.  Since the
   // \p FEBase::build() member dynamically creates memory we will
-  // store the object as an \p AutoPtr<FEBase>.  This can be thought
+  // store the object as an \p UniquePtr<FEBase>.  This can be thought
   // of as a pointer that will clean up after itself.
-  libMesh::AutoPtr<libMesh::FEBase> fe (libMesh::FEBase::build(dim, fe_type));
+  libMesh::UniquePtr<libMesh::FEBase> fe (libMesh::FEBase::build(dim, fe_type));
 
   // A  Gauss quadrature rule for numerical integration.
   // Use the default quadrature order.
@@ -277,4 +276,4 @@ void LibMeshNegativeLaplacianOperator::print_info() const
 
 }  // End namespace QUESO
 
-#endif  // QUESO_HAVE_LIBMESH
+#endif  // QUESO_HAVE_LIBMESH_SLEPC

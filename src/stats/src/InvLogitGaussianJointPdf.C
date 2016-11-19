@@ -86,6 +86,32 @@ InvLogitGaussianJointPdf<V,M>::lawVarVector() const
   return *m_lawVarVector;
 }
 
+template <class V, class M>
+void
+InvLogitGaussianJointPdf<V, M>::print(std::ostream & os) const
+{
+  // Print m_env?
+
+  os << "Start printing InvLogitGaussianJointPdf<V, M>" << std::endl;
+  os << "m_prefix:" << std::endl;
+  os << this->m_prefix << std::endl;
+  os << "m_domainSet:" << std::endl;
+  os << this->m_domainBoxSubset << std::endl;
+  os << "m_normalizationStyle:" << std::endl;
+  os << this->m_normalizationStyle << std::endl;
+  os << "m_logOfNormalizationFactor:" << std::endl;
+  os << this->m_logOfNormalizationFactor << std::endl;
+  os << "Mean:" << std::endl;
+  os << this->lawExpVector() << std::endl;
+  os << "Variance vector:" << std::endl;
+  os << this->lawVarVector() << std::endl;
+  os << "Covariance matrix:" << std::endl;
+  os << this->lawCovMatrix() << std::endl;
+  os << "Diagonal covariance?" << std::endl;
+  os << this->m_diagonalCovMatrix << std::endl;
+  os << "End printing InvLogitGaussianJointPdf<V, M>" << std::endl;
+}
+
 template<class V, class M>
 double
 InvLogitGaussianJointPdf<V,M>::actualValue(
@@ -123,8 +149,8 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
     double min_val = min_domain_bounds[i];
     double max_val = max_domain_bounds[i];
 
-    if (boost::math::isfinite(min_val) &&
-        boost::math::isfinite(max_val)) {
+    if (queso_isfinite(min_val) &&
+        queso_isfinite(max_val)) {
 
       if (domainVector[i] == min_val || domainVector[i] == max_val) {
         // Exit early if we can
@@ -139,8 +165,8 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
           std::log(domainVector[i] - min_val) -
           std::log(max_val - domainVector[i]);
     }
-    else if (boost::math::isfinite(min_val) &&
-             !boost::math::isfinite(max_val)) {
+    else if (queso_isfinite(min_val) &&
+             !queso_isfinite(max_val)) {
 
       if (domainVector[i] == min_val) {
         // Exit early if we can
@@ -153,8 +179,8 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
 
       lnjacobian += -std::log(domainVector[i] - min_val);
     }
-    else if (!boost::math::isfinite(min_val) &&
-             boost::math::isfinite(max_val)) {
+    else if (!queso_isfinite(min_val) &&
+             queso_isfinite(max_val)) {
 
       if (domainVector[i] == max_val) {
         // Exit early if we can
@@ -201,6 +227,30 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
 
   return returnValue;
 }
+
+template<class V, class M>
+void
+InvLogitGaussianJointPdf<V,M>::distributionMean(V& meanVector) const
+{
+  // AFAIK there's no simple closed form here, and taking the inverse
+  // transformation of the mean in the transformed space probably
+  // isn't accurate enough in cases where the mean is too near the
+  // bounds.
+  queso_not_implemented();
+}
+
+//---------------------------------------------------
+template<class V,class M>
+void
+InvLogitGaussianJointPdf<V,M>::distributionVariance(M & covMatrix) const
+{
+  // AFAIK there's no simple closed form here, and taking the inverse
+  // transformation of the variance in the transformed space probably
+  // isn't accurate enough in cases where the mean is too near the
+  // bounds.
+  queso_not_implemented();
+}
+
 
 template<class V, class M>
 double

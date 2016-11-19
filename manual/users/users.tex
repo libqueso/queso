@@ -10,6 +10,12 @@
 \usepackage{rotating}
 \usepackage{color}
 \usepackage{url}
+\usepackage{bm}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath,amssymb}
 \usepackage{fancyvrb}
 \usepackage{subfig}
 \usepackage{wrapfig}
@@ -20,8 +26,10 @@
 \usepackage{geometry}
 \geometry{top=1.00in, bottom=1.00in, left=1.00in, right=1.00in}
 \usepackage{enumerate}
-\usepackage[algoruled,vlined,linesnumbered,english]{algorithm2e}
+\usepackage[algoruled,vlined,linesnumbered,english,algo2e]{algorithm2e}
 \SetAlFnt{\footnotesize}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\V}{\mathbb{V}}
 
 \usepackage{titlesec}
 \titleformat{\section}{\LARGE\sffamily}{\thesection}{1em}{}
@@ -76,6 +84,8 @@
 \newcommand{\post}{\text{posterior}}
 \newcommand{\prior}{\text{prior}}
 \newcommand{\D}{ {\bf D}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
 
 \newcommand{\myverb}[1]{ \indent{ \begin{verbatim} #1 \end{verbatim} } }
 \newcommand{\QUESOversion}{0.51.0}
@@ -131,6 +141,10 @@ aboveskip =10pt,
 %\newcommand{\new}[1]{\reversemarginpar{\color{red}\tiny\raggedright\textsf{\hspace{-30pt}\vspace{-25pt} NEW}} \begin{leftbar} #1 \end{leftbar}}
 \newcommand{\new}[1]{#1}
 
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
 \begin{document}
 
 \setlength{\unitlength}{1.0in}
@@ -154,6 +168,8 @@ aboveskip =10pt,
 \include{users_3_classes}
 
 \include{users_4_remarks}
+
+\include{users_gsa}
 
 \include{users_5_examples}
 

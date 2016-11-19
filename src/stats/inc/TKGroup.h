@@ -72,6 +72,9 @@ public:
 
   //! Gaussian increment property to construct a transition kernel. See template specialization.
   virtual const BaseVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds) = 0;
+
+  //! Constructs transition kernel pdf based on internal \c m_stageId variable
+  virtual const BaseVectorRV<V, M> & rv(const V & position) const = 0;
   //@}
 
   //! @name Misc methods
@@ -87,6 +90,9 @@ public:
 
   //! Clears the pre-computing positions \c m_preComputingPositions[stageId]
   virtual       void                          clearPreComputingPositions();
+
+  //! Does nothing.  Subclasses may re-implement.  Returns the current stage id.
+  virtual unsigned int set_dr_stage(unsigned int stageId);
   //@}
 
   //! @name I/O methods
@@ -96,13 +102,14 @@ public:
   virtual       void                          print                     (std::ostream& os) const;
   //@}
 protected:
-  const   EmptyEnvironment*                    m_emptyEnv;
-  const   BaseEnvironment&                     m_env;
-          std::string                                 m_prefix;
-  const   VectorSpace<V,M>*                    m_vectorSpace;
-          std::vector<double>                         m_scales;
-          std::vector<const V*>                       m_preComputingPositions;
-          std::vector<BaseVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
+  const EmptyEnvironment*                m_emptyEnv;
+  const BaseEnvironment&                 m_env;
+        std::string                      m_prefix;
+  const VectorSpace<V,M>*                m_vectorSpace;
+        std::vector<double>              m_scales;
+        std::vector<const V*>            m_preComputingPositions;
+        std::vector<BaseVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
+  unsigned int m_stageId;
 };
 
 }  // End namespace QUESO

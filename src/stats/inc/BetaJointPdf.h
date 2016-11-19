@@ -27,8 +27,6 @@
 
 #include <cmath>
 
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
-
 #include <queso/JointPdf.h>
 #include <queso/Environment.h>
 #include <queso/ScalarFunction.h>
@@ -73,6 +71,12 @@ public:
    * factor (m_logOfNormalizationFactor) to it; otherwise the method uses the formula: \f$ lnValue =
    * \sum[ (alpha_i-1)*log(domainVector_i) + (beta_i-1)*log(1-domainVector_i)] + m_logOfNormalizationFactor \f$. */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+  //! Mean value of the underlying random variable.
+  virtual void   distributionMean (V & meanVector) const;
+
+  //! Covariance matrix of the underlying random variable.
+  virtual void   distributionVariance (M & covMatrix) const;
 
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/

@@ -22,8 +22,6 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <boost/program_options.hpp>
-
 #include <queso/MLSamplingOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -47,7 +45,9 @@ MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* pre
     m_dataOutputFileName                   (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),
   //m_dataOutputAllowedSet                 (),
     m_env                                  (env),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                          (m_prefix + "help"                          ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
     m_option_restartOutput_levelPeriod     (m_prefix + "restartOutput_levelPeriod"     ),
@@ -63,6 +63,7 @@ MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* pre
     m_option_dataOutputFileName            (m_prefix + "dataOutputFileName"  ),
     m_option_dataOutputAllowedSet          (m_prefix + "dataOutputAllowedSet")
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string >(m_option_help,                           UQ_ML_SAMPLING_HELP,                                   "produce help msg for ML sampling options"      );
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   m_parser->registerOption<unsigned int>(m_option_restartOutput_levelPeriod,      UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV,        "restartOutput_levelPeriod"                     );
@@ -94,6 +95,32 @@ MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* pre
 #endif
   m_parser->getOption<std::string >(m_option_dataOutputFileName,             m_dataOutputFileName);
   m_parser->getOption<std::set<unsigned int> >(m_option_dataOutputAllowedSet,           m_dataOutputAllowedSet);
+#else
+  m_help = m_env.input()(m_option_help, UQ_ML_SAMPLING_HELP);
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+  m_restartOutput_levelPeriod = m_env.input()(m_option_restartOutput_levelPeriod, UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV);
+  m_restartOutput_baseNameForFiles = m_env.input()(m_option_restartOutput_baseNameForFiles, UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV);
+  m_restartOutput_fileType = m_env.input()(m_option_restartOutput_fileType, UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV);
+  m_restartInput_baseNameForFiles = m_env.input()(m_option_restartInput_baseNameForFiles, UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV);
+  m_restartInput_fileType = m_env.input()(m_option_restartInput_fileType, UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV);
+#else
+  m_restartInputFileName = m_env.input()(m_option_restartInputFileName, UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV);
+  m_restartInputFileType = m_env.input()(m_option_restartInputFileType, UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV);
+  m_restartChainSize = m_env.input()(m_option_restartChainSize, UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV);
+#endif
+  m_dataOutputFileName = m_env.input()(m_option_dataOutputFileName, UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  );
+
+  // UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by
+  // default
+  unsigned int size = m_env.input().vector_variable_size(m_option_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env.input()(m_option_dataOutputAllowedSet, i, i);
+    m_dataOutputAllowedSet.insert(allowed);
+  }
+
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions(&env);
 }
@@ -114,7 +141,7 @@ MLSamplingOptions::checkOptions(const BaseEnvironment * env)
   }
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-  if ((m_restartOutput_levelPeriod > 0)) queso_require_not_equal_to_msg(m_restartOutput_baseNameForFiles, ".", "Option 'restartOutput_levelPeriod' is > 0, but 'restartOutput_baseNameForFiles' is not specified...");
+  if ((m_restartOutput_levelPeriod > 0)) queso_require_not_equal_to_msg(m_restartOutput_baseNameForFiles, std::string("."), std::string("Option 'restartOutput_levelPeriod' is > 0, but 'restartOutput_baseNameForFiles' is not specified..."));
 #endif
 }
 
@@ -144,7 +171,9 @@ MLSamplingOptions::print(std::ostream& os) const
 
 std::ostream& operator<<(std::ostream& os, const MLSamplingOptions& obj)
 {
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   obj.print(os);
   return os;

@@ -27,8 +27,6 @@
 
 #include <cmath>
 
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
-
 #include <queso/JointPdf.h>
 #include <queso/Environment.h>
 #include <queso/ScalarFunction.h>
@@ -73,6 +71,12 @@ public:
   //! TODO: Logarithm of the value of the Gamma PDF.
   /*! \todo: implement me!*/
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+  //! Mean value of the underlying random variable.
+  virtual void   distributionMean (V & meanVector) const;
+
+  //! Covariance matrix of the underlying random variable.
+  virtual void   distributionVariance (M & covMatrix) const;
 
   //! Computes the logarithm of the normalization factor.
   /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
