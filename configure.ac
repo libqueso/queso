@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.55.0], [queso-users@googlegroups.com])
+AC_INIT([queso], [0.56.0], [queso-users@googlegroups.com])
 PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
 AC_SUBST([PACKAGE_DESCRIPTION])
 PACKAGE_URL="https://github.com/libqueso/queso"
