@@ -28,6 +28,9 @@
 #include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
 #ifdef QUESO_HAS_ANN
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/GaussianVectorRV.h>
 
 namespace QUESO {
 
@@ -444,6 +447,11 @@ double estimateCE_ANN( RV_1<P_V,P_M>& xRV,
 
   return CE_est;
 }
+
+// Explicit instantiations
+template double estimateMI_ANN<GaussianVectorRV, GslVector, GslMatrix>( const GaussianVectorRV<GslVector,GslMatrix> & jointRV, const unsigned int xDimSel[], unsigned int dimX, const unsigned int yDimSel[], unsigned int dimY, unsigned int k, unsigned int N, double eps);
+template double estimateKL_ANN<GslVector, GslMatrix, GaussianVectorRV, GaussianVectorRV>(GaussianVectorRV<GslVector, GslMatrix> & xRV, GaussianVectorRV<GslVector, GslMatrix> & yRV, unsigned int xDimSel[], unsigned int dimX, unsigned int yDimSel[], unsigned int dimY, unsigned int xN, unsigned int yN, unsigned int k, double eps);
+template double estimateCE_ANN<GslVector, GslMatrix, GaussianVectorRV, GaussianVectorRV>(GaussianVectorRV<GslVector, GslMatrix> & xRV, GaussianVectorRV<GslVector, GslMatrix> & yRV, unsigned int xDimSel[], unsigned int dimX, unsigned int yDimSel[], unsigned int dimY, unsigned int xN, unsigned int yN, unsigned int k, double eps);
 
 }  // End namespace QUESO
 
