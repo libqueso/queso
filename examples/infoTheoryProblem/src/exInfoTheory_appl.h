@@ -31,7 +31,7 @@
 #ifdef QUESO_HAS_ANN
 
 #include <queso/StatisticalForwardProblem.h>
-#include <queso/InfoTheory.h>
+#include <queso/InfoTheory_impl.h>
 #include <gsl/gsl_linalg.h>
 //#include <exInfoTheory_qoi.h>
 #include <queso/GaussianVectorRV.h>
