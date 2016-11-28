@@ -1,12 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 if HAVE_ANN
 
-SUBDIRS    = test
+noinst_LTLIBRARIES = libANN.la
 
-lib_LTLIBRARIES		= libANN.la
-libANN_includedir 	= $(prefix)/include/ANN
-
-AM_CPPFLAGS = -I$(top_srcdir)/src -I$(top_srcdir)/include
+AM_CPPFLAGS = -I$(top_srcdir)/src -I$(top_srcdir)/include -I$(top_srcdir)/src/contrib/ANN/include
 
 libANN_la_SOURCES =
 libANN_la_SOURCES += src/ANN.cpp
@@ -23,10 +20,8 @@ libANN_la_SOURCES += src/bd_search.cpp
 libANN_la_SOURCES += src/bd_pr_search.cpp
 libANN_la_SOURCES += src/bd_fix_rad_search.cpp
 libANN_la_SOURCES += src/perf.cpp
-
-libANN_include_HEADERS =
-libANN_include_HEADERS += include/ANN/ANN.h
-libANN_include_HEADERS += include/ANN/ANNx.h
-libANN_include_HEADERS += include/ANN/ANNperf.h
+libANN_la_SOURCES += include/ANN/ANN.h
+libANN_la_SOURCES += include/ANN/ANNx.h
+libANN_la_SOURCES += include/ANN/ANNperf.h
 
 endif

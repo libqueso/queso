@@ -3,7 +3,10 @@ AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS += -I$(top_builddir)/src/core/inc  # For queso.h
 AM_CPPFLAGS += $(BOOST_CPPFLAGS)
 AM_CPPFLAGS += $(GSL_CFLAGS)
+
+if HAVE_ANN
 AM_CPPFLAGS += $(ANN_CFLAGS)
+endif
 
 if GRVY_ENABLED
   AM_CPPFLAGS += $(GRVY_CFLAGS)
@@ -31,8 +34,12 @@ libqueso_includedir  = $(prefix)/include/queso
 libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GSL_LIBS)
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
-libqueso_la_LDFLAGS += $(ANN_LIBS)
 libqueso_la_LDFLAGS += $(HDF5_LIBS)
+libqueso_la_LIBADD   =  # Empty.  Append below.
+
+if HAVE_ANN
+libqueso_la_LIBADD += contrib/ANN/libANN.la
+endif
 
 if GRVY_ENABLED
   libqueso_la_LDFLAGS += $(GRVY_LIBS)
