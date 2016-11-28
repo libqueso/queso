@@ -11,6 +11,9 @@
 #   On success, sets ANN_CFLAGS, ANN_LIBS, and
 #   #defines HAVE_ANN.
 #
+#   ANN_LIBS is set to the empty string, as it is assumed that the build sytem
+#   uses libtool to work it out.
+#
 # LAST MODIFICATION
 #
 #   2011-02-08 by Gabriel Terejanu
@@ -47,7 +50,7 @@ if test "${enable_ann}" == yes ; then
       HAVE_ANN=1
 
       ANN_PREFIX="\$(top_srcdir)/src/contrib/ANN"
-      ANN_LIBS="-L${ANN_PREFIX}/lib -lANN"
+      ANN_LIBS=""
       ANN_CFLAGS="-I${ANN_PREFIX}/include"
       ANN_CPPFLAGS="-I${ANN_PREFIX}/include"
 
