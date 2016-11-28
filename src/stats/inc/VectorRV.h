@@ -33,7 +33,6 @@
 #include <queso/VectorCdf.h>
 #include <queso/VectorMdf.h>
 #include <queso/SequenceOfVectors.h>
-#include <queso/InfoTheory.h>
 
 namespace QUESO {
 
