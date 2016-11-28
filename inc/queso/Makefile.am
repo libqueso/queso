@@ -142,6 +142,7 @@ BUILT_SOURCES += GenericVectorRV.h
 BUILT_SOURCES += GenericVectorRealizer.h
 BUILT_SOURCES += HessianCovMatricesTKGroup.h
 BUILT_SOURCES += InfoTheory.h
+BUILT_SOURCES += InfoTheory_impl.h
 BUILT_SOURCES += InvLogitGaussianJointPdf.h
 BUILT_SOURCES += InvLogitGaussianVectorRV.h
 BUILT_SOURCES += InvLogitGaussianVectorRealizer.h
@@ -482,6 +483,8 @@ GenericVectorRealizer.h: $(top_srcdir)/src/stats/inc/GenericVectorRealizer.h
 HessianCovMatricesTKGroup.h: $(top_srcdir)/src/stats/inc/HessianCovMatricesTKGroup.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InfoTheory_impl.h: $(top_srcdir)/src/stats/inc/InfoTheory_impl.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InvLogitGaussianJointPdf.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
