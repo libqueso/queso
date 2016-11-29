@@ -3,7 +3,10 @@ AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS += -I$(top_builddir)/src/core/inc  # For queso.h
 AM_CPPFLAGS += $(BOOST_CPPFLAGS)
 AM_CPPFLAGS += $(GSL_CFLAGS)
+
+if HAVE_ANN
 AM_CPPFLAGS += $(ANN_CFLAGS)
+endif
 
 if GRVY_ENABLED
   AM_CPPFLAGS += $(GRVY_CFLAGS)
@@ -31,8 +34,12 @@ libqueso_includedir  = $(prefix)/include/queso
 libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GSL_LIBS)
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
-libqueso_la_LDFLAGS += $(ANN_LIBS)
 libqueso_la_LDFLAGS += $(HDF5_LIBS)
+libqueso_la_LIBADD   =  # Empty.  Append below.
+
+if HAVE_ANN
+libqueso_la_LIBADD += contrib/ANN/libANN.la
+endif
 
 if GRVY_ENABLED
   libqueso_la_LDFLAGS += $(GRVY_LIBS)
@@ -179,7 +186,6 @@ libqueso_la_SOURCES += stats/src/StatisticalInverseProblemOptions.C
 libqueso_la_SOURCES += stats/src/StatisticalForwardProblem.C
 libqueso_la_SOURCES += stats/src/StatisticalInverseProblem.C
 libqueso_la_SOURCES += stats/src/StatisticalForwardProblemOptions.C
-libqueso_la_SOURCES += stats/src/InfoTheory.C
 libqueso_la_SOURCES += stats/src/JointPdf.C
 libqueso_la_SOURCES += stats/src/BayesianJointPdf.C
 libqueso_la_SOURCES += stats/src/BetaJointPdf.C
@@ -453,6 +459,7 @@ libqueso_include_HEADERS += stats/inc/LogNormalVectorRV.h
 libqueso_include_HEADERS += stats/inc/UniformVectorRV.h
 libqueso_include_HEADERS += stats/inc/WignerVectorRV.h
 libqueso_include_HEADERS += stats/inc/InfoTheory.h
+libqueso_include_HEADERS += stats/inc/InfoTheory_impl.h
 libqueso_include_HEADERS += stats/inc/ScalarCovarianceFunction.h
 libqueso_include_HEADERS += stats/inc/ExponentialScalarCovarianceFunction.h
 libqueso_include_HEADERS += stats/inc/GenericScalarCovarianceFunction.h

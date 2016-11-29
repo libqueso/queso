@@ -22,12 +22,15 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/InfoTheory.h>
-
 #include <queso/Defines.h>
-#include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
 #ifdef QUESO_HAS_ANN
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/GaussianVectorRV.h>
+#include <queso/InfoTheory.h>
+
+#include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
 namespace QUESO {
 
@@ -390,7 +393,6 @@ double estimateCE_ANN( RV_1<P_V,P_M>& xRV,
   ANNpointArray dataY;
   double* distsXY;
   double CE_est;
-  ANNkd_tree* kdTree;
 
   // sanity check
   if( dimX != dimY ) {
@@ -401,7 +403,6 @@ double estimateCE_ANN( RV_1<P_V,P_M>& xRV,
   dataX = annAllocPts( xN, dimX );
   dataY = annAllocPts( yN, dimY );
   distsXY = new double[xN];
-  kdTree = new ANNkd_tree( dataY, yN, dimY );
 
   // Copy X samples in ANN data structure
   P_V xSmpRV( xRV.imageSet().vectorSpace().zeroVector() );
@@ -427,7 +428,6 @@ double estimateCE_ANN( RV_1<P_V,P_M>& xRV,
 
   // Get distance to knn for each point
   distANN_XY( dataX, dataY, distsXY, dimX, dimY, xN, yN, k, eps );
-  kdTree = new ANNkd_tree( dataY, yN, dimY );
 
   // Compute cross entropy estimate
   double sum_log = 0.0;
