@@ -25,11 +25,12 @@
 #include <queso/Defines.h>
 
 #ifdef QUESO_HAS_ANN
-#include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/GaussianVectorRV.h>
 #include <queso/InfoTheory.h>
+
+#include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
 namespace QUESO {
 
