@@ -54,7 +54,7 @@ InfiniteDimensionalGaussian::~InfiniteDimensionalGaussian()
 {
 }
 
-typename SharedPtr<FunctionBase>::Type InfiniteDimensionalGaussian::draw()
+SharedPtr<FunctionBase>::Type InfiniteDimensionalGaussian::draw()
 {
   unsigned int i;
 
@@ -64,7 +64,7 @@ typename SharedPtr<FunctionBase>::Type InfiniteDimensionalGaussian::draw()
 
 #warning We never use the mean?
 
-typename SharedPtr<FunctionBase>::Type f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
+SharedPtr<FunctionBase>::Type f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
   return f;
 }
 
