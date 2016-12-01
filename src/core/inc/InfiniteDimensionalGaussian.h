@@ -65,7 +65,7 @@ public:
   //@}
 
   //! Draw from the measure, and then return a shared pointer to the draw
-  virtual typename SharedPtr<FunctionBase>::Type draw();
+  virtual SharedPtr<FunctionBase>::Type draw();
 
   //! Return coefficient \c i of the KL expansion of the current draw.  Must be called after draw()
   virtual double get_kl_coefficient(unsigned int i) const;

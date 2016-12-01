@@ -118,11 +118,11 @@ private:
    * Create a Base class.  Force this to be implemented
    * later.
    */
-  virtual typename SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type create();
+  virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type create();
 };
 
 inline
-typename SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type TransitionKernelFactory::create()
+SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type TransitionKernelFactory::create()
 {
   queso_require_msg(m_vectorSpace, "ERROR: must call set_vectorspace() before building tk!");
   queso_require_msg(m_dr_scales, "ERROR: must call set_dr_scales() before building tk!");
