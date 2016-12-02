@@ -104,7 +104,7 @@ void LibMeshOperatorBase::save_converged_evec(const std::string & filename,
     unsigned int i) const
 {
   if (i < this->nconv) {
-    typename SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
+    SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
     es->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
     libMesh::ExodusII_IO(es->get_mesh()).write_equation_systems(filename, *es);
   }
@@ -123,7 +123,7 @@ double LibMeshOperatorBase::get_eigenvalue(unsigned int i) const
 {
   if (i < this->nconv) {
     std::pair<libMesh::Real, libMesh::Real> eval;
-    typename SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
+    SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
     eval = es->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
     return eval.first;
   }
@@ -142,12 +142,12 @@ libMesh::EquationSystems & LibMeshOperatorBase::get_equation_systems() const
   return *this->equation_systems;
 }
 
-typename SharedPtr<FunctionBase>::Type
+SharedPtr<FunctionBase>::Type
 LibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
     double alpha) const
 {
   unsigned int i;
-  typename SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
+  SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
   LibMeshFunction *kl = new LibMeshFunction(this->builder, es->get_mesh());
 
   // Make sure all procs in libmesh mpi communicator all have the same xi.  No,
@@ -155,7 +155,7 @@ LibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
   // communicator.
   this->equation_systems->comm().broadcast(xi);
 
-  typename SharedPtr<libMesh::EquationSystems>::Type kl_eq_sys(kl->get_equation_systems());
+  SharedPtr<libMesh::EquationSystems>::Type kl_eq_sys(kl->get_equation_systems());
 
   std::pair<libMesh::Real, libMesh::Real> eval;
   for (i = 0; i < this->get_num_converged(); i++) {
@@ -165,7 +165,7 @@ LibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
         *es->get_system<libMesh::EigenSystem>("Eigensystem").solution);
   }
 
-  typename SharedPtr<FunctionBase>::Type ap(kl);
+  SharedPtr<FunctionBase>::Type ap(kl);
   return ap;
 }
 
