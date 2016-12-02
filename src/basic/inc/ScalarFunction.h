@@ -67,15 +67,50 @@ public:
   //@{
   //! Access to the protected attribute \c m_domainSet: domain set of the scalar function.
   const VectorSet<V, M> & domainSet() const;
+  //@}
+
+  //! @name Evaluation methods
+  //@{
+  //! Logarithm of the value of the scalar function.  Deprecated.
+  /*!
+   * Pointers will be NULL if derivative information is not required by QUESO.
+   *
+   * Default implementation throws an exception.
+   */
+  virtual double lnValue(const V & domainVector,
+                         const V * domainDirection,
+                         V * gradVector,
+                         M * hessianMatrix,
+                         V * hessianEffect) const;
+
+  //! Returns the logarithm of the function at \c domainVector
+  /*!
+   * Default implementation calls the deprecated method.
+   *
+   * QUESO calls this method when it needs to evaluate the function but doesn't
+   * need derivative information about that function.
+   */
+  virtual double lnValue(const V & domainVector) const;
+
+  //! Returns the logarithm of the function and its gradient at \c domainVector
+  /*!
+   * Default implementation calls above method successively to fill up
+   * \c gradVector with a finite difference approximation.
+   *
+   * Note, gradVector should be filled with the gradient of the logarithm of
+   * the function, not the gradient of the function.
+   *
+   * QUESO calls this method when it needs to evaluate the function, needs
+   * first order derivative information, but doesn't need second order
+   * derivative information.
+   */
+  virtual double lnValue(const V & domainVector, V & gradVector) const;
 
   //! Actual value of the scalar function.
   virtual double actualValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const = 0;
-
-  //! Logarithm of the value of the scalar function.
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const = 0;
   //@}
+
 protected:
   const BaseEnvironment & m_env;
   std::string m_prefix;

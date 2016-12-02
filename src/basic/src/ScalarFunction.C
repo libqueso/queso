@@ -52,6 +52,56 @@ const VectorSet<V, M> & BaseScalarFunction<V, M>::domainSet() const
   return m_domainSet;
 }
 
+template <class V, class M>
+double
+BaseScalarFunction<V, M>::lnValue(const V & domainVector,
+                                  const V * domainDirection,
+                                  V * gradVector,
+                                  M * hessianMatrix,
+                                  V * hessianEffect) const
+{
+  std::string msg;
+
+  msg += "Implementation of all lnValue methods is missing.  Please implement";
+  msg += "at least lnValue(const V &).";
+
+  queso_error_msg(msg);
+}
+
+template <class V, class M>
+double
+BaseScalarFunction<V, M>::lnValue(const V & domainVector) const
+{
+  return this->lnValue(domainVector, NULL, NULL, NULL, NULL);
+}
+
+template <class V, class M>
+double
+BaseScalarFunction<V, M>::lnValue(const V & domainVector, V & gradVector) const
+{
+  // Read this from an input file, or make it a settable member variable.
+  double h = 1e-6;
+
+  double value = this->lnValue(domainVector);
+
+  // Create perturbed version of domainVector to use in finite difference
+  V perturbedVector(domainVector);
+
+  // Fill up gradVector with a finite difference approximation
+  for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
+    // Store the old value of the perturbed element so we can undo it later
+    double tmp = perturbedVector[i];
+
+    perturbedVector[i] += h;
+    gradVector[i] = (this->lnValue(perturbedVector) - value) / h;
+
+    // Restore the old value of the perturbedVector element
+    perturbedVector[i] = tmp;
+  }
+
+  return value;
+}
+
 }  // End namespace QUESO
 
 template class QUESO::BaseScalarFunction<QUESO::GslVector, QUESO::GslMatrix>;
