@@ -106,6 +106,28 @@ public:
    */
   virtual double lnValue(const V & domainVector, V & gradVector) const;
 
+  //! Returns the logarithm of the function \c domainVector, the gradient of
+  //! the logarithm at \c domainVector, and the effect of the hessian of the
+  //! logarithm in the direction at \c domainDirection
+  /*!
+   * Default implementation throws an exception because we don't expect the
+   * user to tolerate a finite difference approximation of the hessian.
+   *
+   * Note, gradVector should be filled with the gradient of the logarithm of
+   * the function, not the gradient of the function.
+   *
+   * The 'hessian' referred to here should be the hessian of the logarithm
+   * of the function at \c domainVector.
+   *
+   * QUESO calls this method when it needs to evaluate the function, needs
+   * first order derivative information, and also needs second-order deriative
+   * information
+   */
+  virtual double lnValue(const V & domainVector,
+                         V & gradVector,
+                         const V & domainDirection,
+                         V & hessianEffect) const;
+
   //! Actual value of the scalar function.
   virtual double actualValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const = 0;

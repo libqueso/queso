@@ -63,7 +63,7 @@ BaseScalarFunction<V, M>::lnValue(const V & domainVector,
   std::string msg;
 
   msg += "Implementation of all lnValue methods is missing.  Please implement";
-  msg += "at least lnValue(const V &).";
+  msg += " at least lnValue(const V &).";
 
   queso_error_msg(msg);
 }
@@ -100,6 +100,22 @@ BaseScalarFunction<V, M>::lnValue(const V & domainVector, V & gradVector) const
   }
 
   return value;
+}
+
+template <class V, class M>
+double
+BaseScalarFunction<V, M>::lnValue(const V & domainVector,
+                                  V & gradVector,
+                                  const V & domainDirection,
+                                  V & hessianEffect) const
+{
+  std::string msg;
+
+  msg += "QUESO asked for Hessian information from an lnValue method, but the";
+  msg += " implementation of is missing.  Please implement";
+  msg += " lnValue(const V &, V &, const V &, V &).";
+
+  queso_error_msg(msg);
 }
 
 }  // End namespace QUESO
