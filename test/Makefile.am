@@ -80,6 +80,7 @@ check_PROGRAMS += TgaValidationCycle_gsl
 check_PROGRAMS += SipSfpExample_gsl
 check_PROGRAMS += SequenceExample_gsl
 check_PROGRAMS += BimodalExample_gsl
+check_PROGRAMS += test_fd_fallback
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -202,6 +203,7 @@ test_seq_of_vec_hdf5_write_SOURCES = test_SequenceOfVectors/test_HDF5Write.C
 test_optimizer_input_parameters_SOURCES = test_optimizer/test_optimizer_input_parameters.C
 test_sip_gslopt_options_SOURCES = test_optimizer/test_sip_gslopt_options.C
 test_mala_SOURCES = test_algorithms/test_mala.C
+test_fd_fallback_SOURCES = test_BaseScalarFunction/test_fd_fallback.C
 
 TgaValidationCycle_gsl_SOURCES =
 TgaValidationCycle_gsl_SOURCES += t01_valid_cycle/TgaValidationCycle_gsl.C
@@ -313,6 +315,7 @@ srcstamp += $(test_mala_SOURCES)
 srcstamp += $(TgaValidationCycle_gsl_SOURCES)
 srcstamp += $(SequenceExample_gsl_SOURCES)
 srcstamp += $(SipSfpExample_gsl_SOURCES)
+srcstamp += $(test_fd_fallback_SOURCES)
 
 TESTS =
 TESTS += test_gsl_get_set_row_column
@@ -394,6 +397,7 @@ TESTS += t01_valid_cycle/rtest01.sh
 TESTS += t02_sip_sfp/rtest02.sh
 # TESTS += rtest03.sh  # Leaving disabled for now, need to check with Ernesto
 TESTS += t04_bimodal/rtest04.sh
+TESTS += test_fd_fallback
 
 XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
