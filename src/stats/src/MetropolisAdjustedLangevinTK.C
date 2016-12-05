@@ -144,7 +144,7 @@ MetropolisAdjustedLangevinTK<V, M>::rv(const V & position) const
 
   // Get the gradient of the log-posterior.  This is so inefficient it's
   // painful.  We should be caching the gradient evaluations.
-  this->m_targetPdf.lnValue(position, NULL, &grad, NULL, NULL);
+  this->m_targetPdf.lnValue(position, grad);
 
   // Euler time-step
   grad *= 0.5 * this->m_time_step;

@@ -104,12 +104,12 @@ Algorithm<V, M>::acceptance_ratio(
         }
       }
       else {
-        double qyx = m_tk.rv(tk_pos_x).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+        double qyx = m_tk.rv(tk_pos_x).pdf().lnValue(x.vecValues());
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           )) {
           *m_env.subDisplayFile() << m_tk.rv(tk_pos_x).pdf() << std::endl;
         }
-        double qxy = m_tk.rv(tk_pos_y).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+        double qxy = m_tk.rv(tk_pos_y).pdf().lnValue(y.vecValues());
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           )) {
           *m_env.subDisplayFile() << m_tk.rv(tk_pos_y).pdf() << std::endl;
