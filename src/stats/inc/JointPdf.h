@@ -84,7 +84,16 @@ public:
    */
   virtual void   distributionVariance           (M & covMatrix) const;
 
-  //! Sets a value to be used in the normalization style (stored in the protected attribute m_normalizationStyle.)
+  //! Sets a value to be used in the normalization style.  Default value is
+  //! zero.
+  /*!
+   * The value is stored in m_normalizationStyle.
+   *
+   * If the normalization style is zero, one should compute analytical
+   * normalization constants in lnValue and actualValue.  It doesn't appear
+   * to be used in many of of the computeLogOfNormalizationFactor methods in
+   * derived classes.
+   */
   virtual void   setNormalizationStyle          (unsigned int value) const;
 
   //! Sets a logarithmic value to be used in the normalization factor (stored in the protected attribute m_normalizationStyle.)
@@ -110,6 +119,8 @@ protected:
   using BaseScalarFunction<V,M>::m_prefix;
   using BaseScalarFunction<V,M>::m_domainSet;
 
+  //! Flag to decide which style of normalisation to use.  The constructor sets
+  //! this to zero in the initialisation list.
   mutable unsigned int m_normalizationStyle;
   mutable double       m_logOfNormalizationFactor;
 
