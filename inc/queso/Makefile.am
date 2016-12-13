@@ -75,6 +75,7 @@ BUILT_SOURCES += TransitionKernelFactory.h
 BUILT_SOURCES += Vector.h
 BUILT_SOURCES += asserts.h
 BUILT_SOURCES += exceptions.h
+BUILT_SOURCES += queso.h
 BUILT_SOURCES += ExperimentModel.h
 BUILT_SOURCES += ExperimentModelOptions.h
 BUILT_SOURCES += ExperimentStorage.h
@@ -205,7 +206,6 @@ BUILT_SOURCES += LinearLagrangeInterpolationSurrogate.h
 BUILT_SOURCES += SurrogateBase.h
 BUILT_SOURCES += SurrogateBuilderBase.h
 BUILT_SOURCES += config_queso.h
-BUILT_SOURCES += queso.h
 
 DISTCLEANFILES = $(BUILT_SOURCES)
 
@@ -348,6 +348,8 @@ Vector.h: $(top_srcdir)/src/core/inc/Vector.h
 asserts.h: $(top_srcdir)/src/core/inc/asserts.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 exceptions.h: $(top_srcdir)/src/core/inc/exceptions.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+queso.h: $(top_srcdir)/src/core/inc/queso.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ExperimentModel.h: $(top_srcdir)/src/gp/inc/ExperimentModel.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -608,6 +610,4 @@ SurrogateBase.h: $(top_srcdir)/src/surrogates/inc/SurrogateBase.h
 SurrogateBuilderBase.h: $(top_srcdir)/src/surrogates/inc/SurrogateBuilderBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 config_queso.h: $(top_builddir)/config_queso.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-queso.h: $(top_builddir)/src/core/inc/queso.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

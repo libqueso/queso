@@ -1,6 +1,5 @@
 AM_CPPFLAGS = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I$(top_builddir)/inc
-AM_CPPFLAGS += -I$(top_builddir)/src/core/inc  # For queso.h
 AM_CPPFLAGS += $(BOOST_CPPFLAGS)
 AM_CPPFLAGS += $(GSL_CFLAGS)
 AM_CPPFLAGS += $(ANN_CFLAGS)
@@ -289,7 +288,7 @@ libqueso_la_SOURCES += gp/src/GPMSAOptions.C
 # Headers to install from core/inc
 
 libqueso_include_HEADERS =
-libqueso_include_HEADERS += $(top_builddir)/src/core/inc/queso.h
+libqueso_include_HEADERS += core/inc/queso.h
 libqueso_include_HEADERS += core/inc/Defines.h
 libqueso_include_HEADERS += core/inc/Environment.h
 libqueso_include_HEADERS += core/inc/EnvironmentOptions.h
@@ -512,7 +511,6 @@ libqueso_include_HEADERS += contrib/getpot/getpot.h
 
 nodist_libqueso_include_HEADERS =
 nodist_libqueso_include_HEADERS += $(top_builddir)/config_queso.h
-nodist_libqueso_include_HEADERS += $(top_builddir)/src/core/inc/queso.h
 
 # Standalone binaries
 

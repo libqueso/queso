@@ -29,7 +29,7 @@
 #define GETPOT_NAMESPACE QUESO
 #include <queso/getpot.h>
 
-#include <queso/queso.h>
+#include <queso/config_queso.h>
 #include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
 #include <queso/RngGsl.h>
@@ -56,10 +56,10 @@ namespace QUESO {
     {
       os << "------------------------------------------------------------------------------------------" ;
       os << "--------------------" << std::endl;
-      os << "QUESO Library: Version = " << QUESO_LIB_VERSION;
+      os << "QUESO Library: Version = " << QUESO_VERSION;
       os << " (" << QUESO_get_numeric_version() << ")" << std::endl << std::endl;
 
-      os << QUESO_LIB_RELEASE << std::endl << std::endl;
+      os << QUESO_BUILD_DEVSTATUS << std::endl << std::endl;
 
       os << "Build Date   = " << QUESO_BUILD_DATE     << std::endl;
       os << "Build Host   = " << QUESO_BUILD_HOST     << std::endl;
