@@ -80,7 +80,7 @@ public:
   unsigned int iteration() const;
 
   //! Returns a pointer to new sampler, with all the moments reset.
-  typename SharedPtr<InfiniteDimensionalMCMCSampler>::Type clone_and_reset() const;
+  SharedPtr<InfiniteDimensionalMCMCSampler>::Type clone_and_reset() const;
 
 private:
   // Current iteration
@@ -109,22 +109,22 @@ private:
   const BaseEnvironment& m_env;
 
   // Pointer to the current physical state
-  typename SharedPtr<FunctionBase>::Type current_physical_state;
+  SharedPtr<FunctionBase>::Type current_physical_state;
 
   // Pointer to the current proposed state
-  typename SharedPtr<FunctionBase>::Type proposed_physical_state;
+  SharedPtr<FunctionBase>::Type proposed_physical_state;
 
   // Pointer to the current physical mean
-  typename SharedPtr<FunctionBase>::Type current_physical_mean;
+  SharedPtr<FunctionBase>::Type current_physical_mean;
 
   // Pointer to the current physical variance
-  typename SharedPtr<FunctionBase>::Type current_physical_var;
+  SharedPtr<FunctionBase>::Type current_physical_var;
 
   // Stores the differences from the mean
-  typename SharedPtr<FunctionBase>::Type _delta;
+  SharedPtr<FunctionBase>::Type _delta;
 
   // Stores a running sum-of-squares (kinda)
-  typename SharedPtr<FunctionBase>::Type _M2;
+  SharedPtr<FunctionBase>::Type _M2;
 
   // A pointer to the random number generator to use.
   // Should probably use the one in the queso environment.

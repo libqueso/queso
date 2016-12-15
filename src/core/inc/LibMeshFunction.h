@@ -98,15 +98,15 @@ public:
    * identically zero (by copying \c this) everywhere and return a boost shared
    * pointer to it
    */
-  virtual typename SharedPtr<FunctionBase>::Type zero_clone() const;
+  virtual SharedPtr<FunctionBase>::Type zero_clone() const;
 
   //! Return the internal libmesh equation systems object
-  virtual typename SharedPtr<libMesh::EquationSystems>::Type get_equation_systems() const;
+  virtual SharedPtr<libMesh::EquationSystems>::Type get_equation_systems() const;
 
 private:
   const FunctionOperatorBuilder & builder;
 
-  typename SharedPtr<libMesh::EquationSystems>::Type equation_systems;
+  SharedPtr<libMesh::EquationSystems>::Type equation_systems;
 };
 
 }  // End namespace QUESO

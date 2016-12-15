@@ -29,30 +29,23 @@
 #ifndef QUESO_H_
 #define QUESO_H_
 
+#warning Header queso.h is deprecated; use config_queso.h instead.
+
+#include "config_queso.h"
+
 // Library version/build info
 
-#define QUESO_MAJOR_VERSION  @GENERIC_MAJOR_VERSION@
-#define QUESO_MINOR_VERSION  @GENERIC_MINOR_VERSION@
-#define QUESO_MICRO_VERSION  @GENERIC_MICRO_VERSION@
+// Deprecated backward-compatible duplicate definitions, now derived
+// from config_queso.h
 
-#define QUESO_BUILD_USER     "@BUILD_USER@"
-#define QUESO_BUILD_ARCH     "@BUILD_ARCH@"
-#define QUESO_BUILD_HOST     "@BUILD_HOST@"
-#define QUESO_BUILD_DATE     "@BUILD_DATE@"
-#define QUESO_BUILD_VERSION  "@BUILD_VERSION@"
+#ifndef QUESO_LIB_VERSION
+#define QUESO_LIB_VERSION QUESO_VERSION
+#warning QUESO_LIB_VERSION is deprecated; use QUESO_VERSION instead.
+#endif
 
-#define QUESO_LIB_VERSION    "@VERSION@"
-#define QUESO_LIB_RELEASE    "@BUILD_DEVSTATUS@"
-
-#define QUESO_CXX            "@CXX@"
-#define QUESO_CXXFLAGS       "@CXXFLAGS@"
-
-// External libraries
-
-#define QUESO_TRILINOS_DIR  "@TRILINOS_HOME@"
-#define QUESO_GSL_DIR       "@GSL_LIBS@"
-#define QUESO_GRVY_DIR      "@GRVY_PREFIX@"
-#define QUESO_GLPK_DIR      "@GLPK_PREFIX@"
-#define QUESO_HDF5_DIR      "@HDF5_PREFIX@"
+#ifndef QUESO_LIB_RELEASE
+#define QUESO_LIB_RELEASE QUESO_BUILD_DEVSTATUS
+#warning QUESO_LIB_RELEASE is deprecated; use QUESO_BUILD_DEVSTATUS instead.
+#endif
 
 #endif

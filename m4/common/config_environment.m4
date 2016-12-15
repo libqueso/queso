@@ -56,10 +56,25 @@ AC_DEFINE_UNQUOTED([BUILD_VERSION],  "${BUILD_VERSION}",  [git revision])
 AC_DEFINE_UNQUOTED([BUILD_DEVSTATUS],"${BUILD_DEVSTATUS}",[Dev/Release build])
 AC_DEFINE(         [BUILD_DATE],     __DATE__ " " __TIME__, [Build date])
 
+# Defines needed by Environment.C (formerly in queso.h)
+AC_DEFINE_UNQUOTED([CXX],          "${CXX}",           [C++ compiler])
+AC_DEFINE_UNQUOTED([CXXFLAGS],     "${CXXFLAGS}",      [C++ compiler flags])
+# The following must be unconditionally defined per Environment.C
+# TODO: Should these go in the respective <tpl>.m4?
+AC_DEFINE_UNQUOTED([TRILINOS_DIR], "${TRILINOS_HOME}", [Trilinos home directory])
+AC_DEFINE_UNQUOTED([GSL_DIR],      "${GSL_LIBS}",      [GSL libraries])
+AC_DEFINE_UNQUOTED([GRVY_DIR],     "${GRVY_PREFIX}",   [GRVY directory])
+AC_DEFINE_UNQUOTED([GLPK_DIR],     "${GLPK_PREFIX}",   [GLPK directory])
+AC_DEFINE_UNQUOTED([HDF5_DIR],     "${HDF5_PREFIX}",   [HDF directory])
+
 AC_SUBST(BUILD_USER)
 AC_SUBST(BUILD_ARCH)
 AC_SUBST(BUILD_HOST)
 AC_SUBST(BUILD_DATE)
 AC_SUBST(BUILD_VERSION)
+
+# Defines needed by Environment.C (formerly in queso.h)
+AC_SUBST(CXX)
+AC_SUBST(CXX_FLAGS)
 
 ])

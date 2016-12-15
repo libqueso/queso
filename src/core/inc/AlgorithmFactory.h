@@ -75,11 +75,11 @@ private:
    * Create a Base class.  Force this to be implemented
    * later.
    */
-  virtual typename SharedPtr<Algorithm<GslVector, GslMatrix> >::Type create();
+  virtual SharedPtr<Algorithm<GslVector, GslMatrix> >::Type create();
 };
 
 inline
-typename SharedPtr<Algorithm<GslVector, GslMatrix> >::Type
+SharedPtr<Algorithm<GslVector, GslMatrix> >::Type
 AlgorithmFactory::create()
 {
   queso_require_msg(m_env, "ERROR: must call set_environment() before building alg!");

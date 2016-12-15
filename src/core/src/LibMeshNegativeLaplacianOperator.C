@@ -57,7 +57,7 @@ LibMeshNegativeLaplacianOperator::LibMeshNegativeLaplacianOperator(
     const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
   : LibMeshOperatorBase(builder, m)
 {
-  typename SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
+  SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
 
   // Give the system a pointer to the matrix assembly
   // function defined below.
@@ -142,7 +142,7 @@ void LibMeshNegativeLaplacianOperator::assemble()
 {
 #ifdef LIBMESH_HAVE_SLEPC
 
-  typename SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
+  SharedPtr<libMesh::EquationSystems>::Type es(this->equation_systems);
 
   // Get a constant reference to the mesh object.
   const libMesh::MeshBase& mesh = es->get_mesh();
