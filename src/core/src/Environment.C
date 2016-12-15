@@ -213,20 +213,19 @@ BaseEnvironment::~BaseEnvironment()
   /*int iRC = 0;*/
   /*iRC = */gettimeofday(&timevalNow, NULL);
 
-  if( this->displayVerbosity() > 0 )
-    {
-     if (m_subDisplayFile) {
-	*m_subDisplayFile << "Ending run at "    << ctime(&timevalNow.tv_sec)
-			  << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
-			  << " seconds"
-			  << std::endl;
-      }
+  if (this->displayVerbosity() > 0) {
+    if (m_subDisplayFile) {
+       *m_subDisplayFile << "Ending run at "    << ctime(&timevalNow.tv_sec)
+                         << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
+                         << " seconds"
+                         << std::endl;
+    }
 
     if (m_fullRank == 0) {
-	std::cout << "Ending run at "    << ctime(&timevalNow.tv_sec)
-		  << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
-		  << " seconds"
-		  << std::endl;
+      std::cout << "Ending run at "    << ctime(&timevalNow.tv_sec)
+                << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
+                << " seconds"
+                << std::endl;
       }
     }
 
@@ -1405,7 +1404,7 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
         for (unsigned int j = 0; j < fullRanksOfMySubEnvironment.size(); ++j) {
           std::cout << " " << fullRanksOfMySubEnvironment[j];
         }
-	std::cout << "\n";
+        std::cout << "\n";
 
         if (m_inter0Comm) {
           std::cout << "MPI node of worldRank " << m_worldRank
@@ -1415,9 +1414,9 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
           }
           std::cout << ", and has inter0Rank " << m_inter0Rank;
         }
-	std::cout << "\n";
+        std::cout << "\n";
 
-	std::cout << std::endl;
+        std::cout << std::endl;
       }
       m_fullComm->Barrier();
     }

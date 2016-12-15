@@ -330,21 +330,21 @@ public:
 
   //! Opens an output file for each sub-environment that was chosen to send data to the file.
   bool    openOutputFile(const std::string& fileName, const std::string& fileType,
-			 const std::set<unsigned int>& allowedSubEnvIds, bool writeOver,
-			 FilePtrSetStruct& filePtrSet) const;
+                         const std::set<unsigned int>& allowedSubEnvIds, bool writeOver,
+                         FilePtrSetStruct& filePtrSet) const;
 
   //! Opens a unified output file, that will contain data from all sub-environments.
   bool    openUnifiedOutputFile (const std::string& fileName, const std::string& fileType,
-				 bool writeOver, FilePtrSetStruct& filePtrSet) const;
+                                 bool writeOver, FilePtrSetStruct& filePtrSet) const;
 
   //! Opens an input file.
   bool    openInputFile (const std::string& fileName, const std::string& fileType,
-			 const std::set<unsigned int>& allowedSubEnvIds,
-			 FilePtrSetStruct& filePtrSet) const;
+                         const std::set<unsigned int>& allowedSubEnvIds,
+                         FilePtrSetStruct& filePtrSet) const;
 
   //! Opens the unified input file.
   bool    openUnifiedInputFile  (const std::string& fileName, const std::string& fileType,
-				 FilePtrSetStruct& filePtrSet) const;
+                                 FilePtrSetStruct& filePtrSet) const;
 
   //! Closes the file.
   void    closeFile     (FilePtrSetStruct& filePtrSet, const std::string& fileType) const;
@@ -363,41 +363,41 @@ public:
 
   //@}
 protected:
-  bool       		     m_fullEnvIsReady;
-  int 	     		     m_worldRank;
+  bool                            m_fullEnvIsReady;
+  int                                   m_worldRank;
 
-  MpiComm*    	     m_fullComm;
+  MpiComm*                 m_fullComm;
   int                        m_fullRank;
   int                        m_fullCommSize;
   RawType_MPI_Group        m_fullGroup;
 
-  std::string		     m_optionsInputFileName;
-  mutable bool       	     m_optionsInputFileAccessState; // Yes, 'mutable'
+  std::string                     m_optionsInputFileName;
+  mutable bool                    m_optionsInputFileAccessState; // Yes, 'mutable'
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   boost::program_options::options_description*   m_allOptionsDesc;
-  boost::program_options::variables_map* 	     m_allOptionsMap;
+  boost::program_options::variables_map*              m_allOptionsMap;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   ScopedPtr<GetPot>::Type m_input;
 
   unsigned int               m_subId;
-  std::string 		     m_subIdString;
+  std::string                      m_subIdString;
   RawType_MPI_Group        m_subGroup;
   MpiComm*            m_subComm;
-  int			     m_subRank;
-  int			     m_subCommSize;
+  int                             m_subRank;
+  int                             m_subCommSize;
 
   MpiComm*            m_selfComm;
 
   RawType_MPI_Group        m_inter0Group;
   MpiComm*            m_inter0Comm;
-  int	                     m_inter0Rank;
+  int                             m_inter0Rank;
   int                        m_inter0CommSize;
 
   mutable std::ofstream*     m_subDisplayFile;
-  RngBase*    	     m_rngObject;
+  RngBase*                 m_rngObject;
   BasicPdfsBase*      m_basicPdfs;
   struct timeval             m_timevalBegin;
-  mutable bool       	     m_exceptionalCircumstance;
+  mutable bool                    m_exceptionalCircumstance;
 
   EnvOptionsValues * m_optionsObj;
 };
@@ -469,22 +469,22 @@ public:
   //! @name I/O methods
   //@{
   //! Sends the environment options to the stream.
-  void	print       (std::ostream& os) const;
+  void        print       (std::ostream& os) const;
   //@}
 
 private:
 #ifdef QUESO_HAS_MPI
   //! Named constructor backend for multiple constructor overloads
-  void	construct(RawType_MPI_Comm inputComm,
+  void        construct(RawType_MPI_Comm inputComm,
                   const char *prefix);
 #endif
 
   //! Named constructor backend for multiple constructor overloads
-  void	construct(const char *prefix);
+  void        construct(const char *prefix);
 
   //! Checks the options input file and reads the options.
-  void	readOptionsInputFile();
-  //void	queso_terminate_handler();
+  void        readOptionsInputFile();
+  //void        queso_terminate_handler();
 
 };
 
