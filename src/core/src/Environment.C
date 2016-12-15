@@ -144,7 +144,7 @@ BaseEnvironment::BaseEnvironment(
   :
   m_fullEnvIsReady             (false),
   m_worldRank                  (-1),
-  m_fullComm                   (NULL),
+  m_fullComm                   (),
   m_fullRank                   (-1),
   m_fullCommSize               (1),
   m_optionsInputFileName       (""),
@@ -176,7 +176,7 @@ BaseEnvironment::BaseEnvironment(
   :
   m_fullEnvIsReady             (false),
   m_worldRank                  (-1),
-  m_fullComm                   (NULL),
+  m_fullComm                   (),
   m_fullRank                   (-1),
   m_fullCommSize               (1),
   m_optionsInputFileName       (passedOptionsInputFileName),
@@ -248,7 +248,6 @@ BaseEnvironment::~BaseEnvironment()
   if (m_inter0Comm    ) delete m_inter0Comm;
   if (m_selfComm      ) delete m_selfComm;
   if (m_subComm       ) delete m_subComm;
-  if (m_fullComm      ) delete m_fullComm;
 }
 // Environment, Communicator and Options Input File methods
 bool
@@ -1210,7 +1209,7 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
   int mpiRC = MPI_Comm_rank(inputComm,&m_worldRank);
   queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed to get world fullRank()");
 
-  m_fullComm = new MpiComm(*this,inputComm);
+  m_fullComm.reset(new MpiComm(*this,inputComm));
 
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
@@ -1487,7 +1486,7 @@ FullEnvironment::construct (const char *prefix)
 
   m_worldRank = 0;
 
-  m_fullComm = new MpiComm(*this);
+  m_fullComm.reset(new MpiComm(*this));
   m_fullRank     = 0;
   m_fullCommSize = 1;
 

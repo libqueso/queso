@@ -366,7 +366,7 @@ protected:
   bool m_fullEnvIsReady;
   int m_worldRank;
 
-  MpiComm * m_fullComm;
+  ScopedPtr<MpiComm>::Type m_fullComm;
   int m_fullRank;
   int m_fullCommSize;
   RawType_MPI_Group m_fullGroup;
