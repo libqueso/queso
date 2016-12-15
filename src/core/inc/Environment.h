@@ -386,7 +386,7 @@ protected:
   int m_subRank;
   int m_subCommSize;
 
-  MpiComm * m_selfComm;
+  ScopedPtr<MpiComm>::Type m_selfComm;
 
   RawType_MPI_Group m_inter0Group;
   MpiComm * m_inter0Comm;

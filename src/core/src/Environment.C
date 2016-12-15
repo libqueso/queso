@@ -157,7 +157,7 @@ BaseEnvironment::BaseEnvironment(
   m_subComm                    (),
   m_subRank                    (-1),
   m_subCommSize                (1),
-  m_selfComm                   (NULL),
+  m_selfComm                   (),
   m_inter0Comm                 (NULL),
   m_inter0Rank                 (-1),
   m_inter0CommSize             (1),
@@ -189,7 +189,7 @@ BaseEnvironment::BaseEnvironment(
   m_subComm                    (),
   m_subRank                    (-1),
   m_subCommSize                (1),
-  m_selfComm                   (NULL),
+  m_selfComm                   (),
   m_inter0Comm                 (NULL),
   m_inter0Rank                 (-1),
   m_inter0CommSize             (1),
@@ -246,7 +246,6 @@ BaseEnvironment::~BaseEnvironment()
 
   if (m_subDisplayFile) delete m_subDisplayFile;
   if (m_inter0Comm    ) delete m_inter0Comm;
-  if (m_selfComm      ) delete m_selfComm;
 }
 // Environment, Communicator and Options Input File methods
 bool
@@ -1316,7 +1315,7 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the self communicator
   //////////////////////////////////////////////////
-  m_selfComm = new MpiComm(*this,RawValue_MPI_COMM_SELF);
+  m_selfComm.reset(new MpiComm(*this,RawValue_MPI_COMM_SELF));
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the inter0 communicator
@@ -1579,7 +1578,7 @@ FullEnvironment::construct (const char *prefix)
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the self communicator
   //////////////////////////////////////////////////
-  m_selfComm = new MpiComm(*this);
+  m_selfComm.reset(new MpiComm(*this));
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the inter0 communicator
