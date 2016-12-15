@@ -363,41 +363,41 @@ public:
 
   //@}
 protected:
-  bool                            m_fullEnvIsReady;
-  int                                   m_worldRank;
+  bool m_fullEnvIsReady;
+  int m_worldRank;
 
-  MpiComm*                 m_fullComm;
-  int                        m_fullRank;
-  int                        m_fullCommSize;
-  RawType_MPI_Group        m_fullGroup;
+  MpiComm * m_fullComm;
+  int m_fullRank;
+  int m_fullCommSize;
+  RawType_MPI_Group m_fullGroup;
 
-  std::string                     m_optionsInputFileName;
-  mutable bool                    m_optionsInputFileAccessState; // Yes, 'mutable'
+  std::string m_optionsInputFileName;
+  mutable bool m_optionsInputFileAccessState; // Yes, 'mutable'
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  boost::program_options::options_description*   m_allOptionsDesc;
-  boost::program_options::variables_map*              m_allOptionsMap;
+  boost::program_options::options_description * m_allOptionsDesc;
+  boost::program_options::variables_map * m_allOptionsMap;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   ScopedPtr<GetPot>::Type m_input;
 
-  unsigned int               m_subId;
-  std::string                      m_subIdString;
-  RawType_MPI_Group        m_subGroup;
-  MpiComm*            m_subComm;
-  int                             m_subRank;
-  int                             m_subCommSize;
+  unsigned int m_subId;
+  std::string m_subIdString;
+  RawType_MPI_Group m_subGroup;
+  MpiComm * m_subComm;
+  int m_subRank;
+  int m_subCommSize;
 
-  MpiComm*            m_selfComm;
+  MpiComm * m_selfComm;
 
-  RawType_MPI_Group        m_inter0Group;
-  MpiComm*            m_inter0Comm;
-  int                             m_inter0Rank;
-  int                        m_inter0CommSize;
+  RawType_MPI_Group m_inter0Group;
+  MpiComm * m_inter0Comm;
+  int m_inter0Rank;
+  int m_inter0CommSize;
 
-  mutable std::ofstream*     m_subDisplayFile;
-  RngBase*                 m_rngObject;
-  BasicPdfsBase*      m_basicPdfs;
-  struct timeval             m_timevalBegin;
-  mutable bool                    m_exceptionalCircumstance;
+  mutable std::ofstream * m_subDisplayFile;
+  RngBase * m_rngObject;
+  BasicPdfsBase * m_basicPdfs;
+  struct timeval m_timevalBegin;
+  mutable bool m_exceptionalCircumstance;
 
   EnvOptionsValues * m_optionsObj;
 };
