@@ -82,7 +82,7 @@ HAVE_QUESO=0
 
     AC_LANG_PUSH([C++])
 
-    AC_CHECK_HEADER([queso/queso.h], [found_header=yes], [found_header=no])
+    AC_CHECK_HEADER([queso/config_queso.h], [found_header=yes], [found_header=no])
 
     #-----------------------
     # Minimum version check
@@ -115,7 +115,7 @@ HAVE_QUESO=0
         version_succeeded=no
 
         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-        @%:@include <queso/queso.h>
+        @%:@include <queso/config_queso.h>
             ]], [[
             #if QUESO_MAJOR_VERSION > $MAJOR_VER
             /* Sweet nibblets */
@@ -136,7 +136,7 @@ HAVE_QUESO=0
     fi   dnl end test if header if available
 
 
-#####     AC_COMPILE_IFELSE([#include "queso/queso.h"],[found_header=yes],[found_header=no])
+#####     AC_COMPILE_IFELSE([#include "queso/config_queso.h"],[found_header=yes],[found_header=no])
 ##### 
 #####     ac_QUESO_BOOST_PROGRAM_OPTIONS_LDFLAGS_COMPILER=''
 #####     

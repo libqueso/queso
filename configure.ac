@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.56.0], [queso-users@googlegroups.com])
+AC_INIT([queso], [0.56.1], [queso-users@googlegroups.com])
 PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
 AC_SUBST([PACKAGE_DESCRIPTION])
 PACKAGE_URL="https://github.com/libqueso/queso"
@@ -25,6 +25,12 @@ AX_SPLIT_VERSION
 GENERIC_MAJOR_VERSION=$AX_MAJOR_VERSION
 GENERIC_MINOR_VERSION=$AX_MINOR_VERSION
 GENERIC_MICRO_VERSION=$AX_POINT_VERSION
+
+# Defines needed by Environment.C (formerly in queso.h)
+# The values are not quoted strings per queso.h history (Environment.C uses for arithmetic)
+AC_DEFINE_UNQUOTED([MAJOR_VERSION], ${GENERIC_MAJOR_VERSION}, "Major version")
+AC_DEFINE_UNQUOTED([MINOR_VERSION], ${GENERIC_MINOR_VERSION}, "Minor version")
+AC_DEFINE_UNQUOTED([MICRO_VERSION], ${GENERIC_MICRO_VERSION}, "Micro version")
 
 # Generating a libtool library
 
@@ -257,7 +263,6 @@ AC_CONFIG_FILES([
   src/Makefile
   src/contrib/ANN/Makefile
   src/contrib/ANN/test/Makefile
-  src/core/inc/queso.h
   examples/Makefile
   test/Makefile
   test/t01_valid_cycle/Makefile
