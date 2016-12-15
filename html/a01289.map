@@ -1,3 +1,9 @@
-<map id="QUESO::InfiniteDimensionalMeasureBase" name="QUESO::InfiniteDimensionalMeasureBase">
-<area shape="rect" id="node2" href="$a00140.html" title="Class defining infinite dimensional Gaussian measures. " alt="" coords="5,97,187,138"/>
+<map id="QUESO::InfiniteDimensionalMCMCSamplerOptions" name="QUESO::InfiniteDimensionalMCMCSamplerOptions">
+<area shape="rect" id="node2" href="$a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="306,104,480,131"/>
+<area shape="rect" id="node5" href="$a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="233,253,409,280"/>
+<area shape="rect" id="node8" href="$a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="476,253,609,280"/>
+<area shape="rect" id="node3" href="$a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="281,5,441,32"/>
+<area shape="rect" id="node4" href="$a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="466,5,592,32"/>
+<area shape="rect" id="node6" href="$a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="27,97,207,138"/>
+<area shape="rect" id="node7" href="$a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="11,5,224,32"/>
 </map>

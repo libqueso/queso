@@ -1,9 +1,11 @@
-<map id="QUESO::BaseGaussianLikelihood&lt; V, M &gt;" name="QUESO::BaseGaussianLikelihood&lt; V, M &gt;">
-<area shape="rect" id="node3" href="$a00099.html" title="A class representing a Gaussian likelihood with block&#45;diagonal covariance matrix. ..." alt="" coords="558,5,743,61"/>
-<area shape="rect" id="node4" href="$a00100.html" title="A class representing a Gaussian likelihood with block&#45;diagonal covariance matrix. ..." alt="" coords="509,85,792,141"/>
-<area shape="rect" id="node5" href="$a00101.html" title="A class that represents a Gaussian likelihood with diagonal covariance matrix. " alt="" coords="558,166,743,207"/>
-<area shape="rect" id="node6" href="$a00102.html" title="A class that represents a Gaussian likelihood with full covariance. " alt="" coords="558,231,743,273"/>
-<area shape="rect" id="node7" href="$a00103.html" title="A class that represents a Gaussian likelihood with full covariance and random coefficient. " alt="" coords="543,297,758,353"/>
-<area shape="rect" id="node8" href="$a00104.html" title="A class that represents a Gaussian likelihood with scalar covariance. " alt="" coords="558,378,743,419"/>
-<area shape="rect" id="node2" href="$a00044.html" title="A templated (base) class for handling scalar functions. " alt="" coords="6,199,197,241"/>
+<map id="QUESO::GaussianJointPdf&lt; V, M &gt;" name="QUESO::GaussianJointPdf&lt; V, M &gt;">
+<area shape="rect" id="node2" href="$a00038.html" title="A templated (base) class for handling joint PDFs. " alt="" coords="305,339,455,381"/>
+<area shape="rect" id="node3" href="$a00044.html" title="A templated (base) class for handling scalar functions. " alt="" coords="285,246,475,287"/>
+<area shape="rect" id="node4" href="$a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="298,104,472,131"/>
+<area shape="rect" id="node7" href="$a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="83,253,260,280"/>
+<area shape="rect" id="node10" href="$a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="500,253,633,280"/>
+<area shape="rect" id="node5" href="$a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="274,5,435,32"/>
+<area shape="rect" id="node6" href="$a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="459,5,585,32"/>
+<area shape="rect" id="node8" href="$a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="22,97,201,138"/>
+<area shape="rect" id="node9" href="$a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,5,219,32"/>
 </map>

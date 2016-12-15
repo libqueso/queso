@@ -1,3 +1,12 @@
-<map id="QUESO::GenericScalarCovarianceFunction&lt; V, M &gt;" name="QUESO::GenericScalarCovarianceFunction&lt; V, M &gt;">
-<area shape="rect" id="node2" href="$a00043.html" title="A templated (base) class to accommodate scalar covariance functions (of random variables). " alt="" coords="13,6,216,47"/>
+<map id="QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;" name="QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;">
+<area shape="rect" id="node2" href="$a00039.html" title="A templated (base) class to accommodate covariance matrix of (random) vector functions. " alt="" coords="533,353,752,394"/>
+<area shape="rect" id="node3" href="$a00246.html" title="QUESO::VectorSet\&lt; Q\l_V, Q_M \&gt;" alt="" coords="285,246,437,287"/>
+<area shape="rect" id="node4" href="$a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="370,104,544,131"/>
+<area shape="rect" id="node7" href="$a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="83,253,260,280"/>
+<area shape="rect" id="node10" href="$a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="461,253,595,280"/>
+<area shape="rect" id="node11" href="$a00246.html" title="QUESO::VectorSet\&lt; P\l_V, P_M \&gt;" alt="" coords="709,246,859,287"/>
+<area shape="rect" id="node5" href="$a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="310,5,471,32"/>
+<area shape="rect" id="node6" href="$a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="495,5,621,32"/>
+<area shape="rect" id="node8" href="$a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="22,97,201,138"/>
+<area shape="rect" id="node9" href="$a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,5,219,32"/>
 </map>

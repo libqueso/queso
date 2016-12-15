@@ -1,4 +1,4 @@
-<map id="ANNbd_tree" name="ANNbd_tree">
-<area shape="rect" id="node2" href="$a00019.html" title="ANNkd_tree" alt="" coords="7,80,99,107"/>
-<area shape="rect" id="node3" href="$a00024.html" title="ANNpointSet" alt="" coords="5,5,101,32"/>
+<map id="ANNbd_shrink" name="ANNbd_shrink">
+<area shape="rect" id="node2" href="$a00017.html" title="ANNkd_node" alt="" coords="5,5,104,32"/>
+<area shape="rect" id="node3" href="$a00022.html" title="ANNorthHalfSpace" alt="" coords="128,5,259,32"/>
 </map>

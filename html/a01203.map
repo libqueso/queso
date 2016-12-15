@@ -1,4 +1,11 @@
-<map id="QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;" name="QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;">
-<area shape="rect" id="node2" href="$a00068.html" title="A class for handling vector functions which image is constant. " alt="" coords="246,5,458,46"/>
-<area shape="rect" id="node3" href="$a00125.html" title="A class for handling generic vector functions. " alt="" coords="249,70,455,111"/>
+<map id="QUESO::SequenceOfVectors&lt; V, M &gt;" name="QUESO::SequenceOfVectors&lt; V, M &gt;">
+<area shape="rect" id="node2" href="$a00051.html" title="Base class for handling vector and array samples (sequence of vectors or arrays). ..." alt="" coords="267,483,465,525"/>
+<area shape="rect" id="node4" href="$a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="309,104,483,131"/>
+<area shape="rect" id="node7" href="$a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="126,245,303,272"/>
+<area shape="rect" id="node10" href="$a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="432,245,565,272"/>
+<area shape="rect" id="node11" href="$a00085.html" title="QUESO::Fft\&lt; double \&gt;" alt="" coords="590,245,740,272"/>
+<area shape="rect" id="node5" href="$a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="279,5,440,32"/>
+<area shape="rect" id="node6" href="$a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="465,5,591,32"/>
+<area shape="rect" id="node8" href="$a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="22,97,201,138"/>
+<area shape="rect" id="node9" href="$a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,5,219,32"/>
 </map>

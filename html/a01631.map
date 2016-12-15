@@ -1,3 +1,10 @@
-<map id="QUESO::SampledVectorCdf&lt; V, M &gt;" name="QUESO::SampledVectorCdf&lt; V, M &gt;">
-<area shape="rect" id="node2" href="$a00046.html" title="A templated (base) class for handling CDFs of vector functions. " alt="" coords="16,6,176,47"/>
+<map id="QUESO::SampledScalarCdf&lt; T &gt;" name="QUESO::SampledScalarCdf&lt; T &gt;">
+<area shape="rect" id="node2" href="$a00042.html" title="A templated (base) class for handling CDFs. " alt="" coords="285,245,475,272"/>
+<area shape="rect" id="node3" href="$a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="298,104,472,131"/>
+<area shape="rect" id="node6" href="$a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="83,245,260,272"/>
+<area shape="rect" id="node9" href="$a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="500,245,633,272"/>
+<area shape="rect" id="node4" href="$a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="274,5,435,32"/>
+<area shape="rect" id="node5" href="$a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="459,5,585,32"/>
+<area shape="rect" id="node7" href="$a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="22,97,201,138"/>
+<area shape="rect" id="node8" href="$a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,5,219,32"/>
 </map>
