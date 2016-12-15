@@ -42,13 +42,14 @@ Documentation
 
 Documentation for older versions:
 
--  [v0.50.1](http://libqueso.github.io/queso/v0.50.1/html/)
--  [v0.51.1](http://libqueso.github.io/queso/v0.51.1/html/)
--  [v0.52.0](http://libqueso.github.io/queso/v0.52.0/html/)
--  [v0.53.0](http://libqueso.github.io/queso/v0.53.0/html/)
--  [v0.54.0](http://libqueso.github.io/queso/v0.54.0/html/)
--  [v0.55.0](http://libqueso.github.io/queso/v0.55.0/html/)
+-  [v0.56.1](http://libqueso.github.io/queso/v0.56.1/html/)
 -  [v0.56.0](http://libqueso.github.io/queso/v0.56.0/html/)
+-  [v0.55.0](http://libqueso.github.io/queso/v0.55.0/html/)
+-  [v0.54.0](http://libqueso.github.io/queso/v0.54.0/html/)
+-  [v0.53.0](http://libqueso.github.io/queso/v0.53.0/html/)
+-  [v0.52.0](http://libqueso.github.io/queso/v0.52.0/html/)
+-  [v0.51.1](http://libqueso.github.io/queso/v0.51.1/html/)
+-  [v0.50.1](http://libqueso.github.io/queso/v0.50.1/html/)
 
 Dependencies
 ------------
