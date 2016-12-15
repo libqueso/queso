@@ -2,7 +2,6 @@
 
 AM_CPPFLAGS =
 AM_CPPFLAGS += -I$(top_builddir)/inc
-AM_CPPFLAGS += -I$(top_builddir)/src/core/inc  # For queso.h
 AM_CPPFLAGS += $(BOOST_CPPFLAGS)
 AM_CPPFLAGS += $(GSL_CFLAGS)
 AM_CPPFLAGS += $(GRVY_CFLAGS)
@@ -30,6 +29,6 @@ exStatisticalInverseProblem_gsl_SOURCES += example_compute.C
 exStatisticalInverseProblem_gsl_SOURCES += example_likelihood.C
 exStatisticalInverseProblem_gsl_SOURCES += example_compute.h
 exStatisticalInverseProblem_gsl_SOURCES += example_likelihood.h
-	       
+
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@
