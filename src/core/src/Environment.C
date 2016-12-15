@@ -154,7 +154,7 @@ BaseEnvironment::BaseEnvironment(
   m_allOptionsMap              (NULL),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_input                      (new GetPot),
-  m_subComm                    (NULL),
+  m_subComm                    (),
   m_subRank                    (-1),
   m_subCommSize                (1),
   m_selfComm                   (NULL),
@@ -186,7 +186,7 @@ BaseEnvironment::BaseEnvironment(
   m_allOptionsMap              (NULL),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_input                      (new GetPot),
-  m_subComm                    (NULL),
+  m_subComm                    (),
   m_subRank                    (-1),
   m_subCommSize                (1),
   m_selfComm                   (NULL),
@@ -247,7 +247,6 @@ BaseEnvironment::~BaseEnvironment()
   if (m_subDisplayFile) delete m_subDisplayFile;
   if (m_inter0Comm    ) delete m_inter0Comm;
   if (m_selfComm      ) delete m_selfComm;
-  if (m_subComm       ) delete m_subComm;
 }
 // Environment, Communicator and Options Input File methods
 bool
@@ -1310,7 +1309,7 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
   RawType_MPI_Comm subRawComm;
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_subGroup, &subRawComm);
   queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Comm_group() for a subEnvironment");
-  m_subComm = new MpiComm(*this,subRawComm);
+  m_subComm.reset(new MpiComm(*this,subRawComm));
   m_subRank     = m_subComm->MyPID();
   m_subCommSize = m_subComm->NumProc();
 
@@ -1573,7 +1572,7 @@ FullEnvironment::construct (const char *prefix)
   m_subGroup = 0;
 #endif
 
-  m_subComm = new MpiComm(*this);
+  m_subComm.reset(new MpiComm(*this));
   m_subRank     = 0;
   m_subCommSize = 1;
 

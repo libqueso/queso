@@ -382,7 +382,7 @@ protected:
   unsigned int m_subId;
   std::string m_subIdString;
   RawType_MPI_Group m_subGroup;
-  MpiComm * m_subComm;
+  ScopedPtr<MpiComm>::Type m_subComm;
   int m_subRank;
   int m_subCommSize;
 
