@@ -28,9 +28,9 @@ GENERIC_MICRO_VERSION=$AX_POINT_VERSION
 
 # Defines needed by Environment.C (formerly in queso.h)
 # The values are not quoted strings per queso.h history (Environment.C uses for arithmetic)
-AC_DEFINE_UNQUOTED([GENERIC_MAJOR_VERSION], ${GENERIC_MAJOR_VERSION}, "Major version")
-AC_DEFINE_UNQUOTED([GENERIC_MINOR_VERSION], ${GENERIC_MINOR_VERSION}, "Minor version")
-AC_DEFINE_UNQUOTED([GENERIC_MICRO_VERSION], ${GENERIC_MICRO_VERSION}, "Micro version")
+AC_DEFINE_UNQUOTED([MAJOR_VERSION], ${GENERIC_MAJOR_VERSION}, "Major version")
+AC_DEFINE_UNQUOTED([MINOR_VERSION], ${GENERIC_MINOR_VERSION}, "Minor version")
+AC_DEFINE_UNQUOTED([MICRO_VERSION], ${GENERIC_MICRO_VERSION}, "Micro version")
 
 # Generating a libtool library
 
