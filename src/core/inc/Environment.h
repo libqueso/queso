@@ -400,7 +400,7 @@ protected:
   struct timeval m_timevalBegin;
   mutable bool m_exceptionalCircumstance;
 
-  EnvOptionsValues * m_optionsObj;
+  ScopedPtr<EnvOptionsValues>::Type m_optionsObj;
 };
 
 //*****************************************************

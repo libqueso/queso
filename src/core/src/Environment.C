@@ -165,9 +165,16 @@ BaseEnvironment::BaseEnvironment(
   m_rngObject                  (),
   m_basicPdfs                  (),
   m_exceptionalCircumstance    (false),
-  m_optionsObj                 (alternativeOptionsValues)
+  m_optionsObj                 ()
 {
   if (passedOptionsInputFileName) m_optionsInputFileName     = passedOptionsInputFileName;
+
+  // If the user passed in an options object pointer, we really shouldn't let
+  // ScopedPtr delete their object, so we make a copy.  That way, the dtor
+  // will kill this local copy and leave the user's object in tact.
+  if (alternativeOptionsValues != NULL) {
+    m_optionsObj.reset(new EnvOptionsValues(*alternativeOptionsValues));
+  }
 }
 
 BaseEnvironment::BaseEnvironment(
@@ -197,8 +204,14 @@ BaseEnvironment::BaseEnvironment(
   m_rngObject                  (),
   m_basicPdfs                  (),
   m_exceptionalCircumstance    (false),
-  m_optionsObj                 (alternativeOptionsValues)
+  m_optionsObj                 ()
 {
+  // If the user passed in an options object pointer, we really shouldn't let
+  // ScopedPtr delete their object, so we make a copy.  That way, the dtor
+  // will kill this local copy and leave the user's object in tact.
+  if (alternativeOptionsValues != NULL) {
+    m_optionsObj.reset(new EnvOptionsValues(*alternativeOptionsValues));
+  }
 }
 
 // Destructor -------------------------------------------
@@ -1235,11 +1248,7 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
       m_input->parse_input_file(m_optionsInputFileName);
     }
 
-    EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
-
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
+    m_optionsObj.reset(new EnvOptionsValues(this, prefix));
   }
 
   // If help option was supplied, print info
@@ -1512,11 +1521,7 @@ FullEnvironment::construct (const char *prefix)
       m_input->parse_input_file(m_optionsInputFileName);
     }
 
-    EnvOptionsValues * tempOptions = new EnvOptionsValues(this, prefix);
-
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
+    m_optionsObj.reset(new EnvOptionsValues(this, prefix));
   }
 
   // If help option was supplied, print info
