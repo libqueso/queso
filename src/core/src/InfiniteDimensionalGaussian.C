@@ -62,9 +62,11 @@ SharedPtr<FunctionBase>::Type InfiniteDimensionalGaussian::draw()
     (this->coeffs)[i] = env.rngObject()->gaussianSample(this->beta);
   }
 
-#warning We never use the mean?
+  SharedPtr<FunctionBase>::Type f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
 
-SharedPtr<FunctionBase>::Type f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
+  // Add on the mean
+  f->add(1.0, mean);
+
   return f;
 }
 
