@@ -161,7 +161,7 @@ BaseEnvironment::BaseEnvironment(
   m_inter0Comm                 (),
   m_inter0Rank                 (-1),
   m_inter0CommSize             (1),
-  m_subDisplayFile             (NULL),
+  m_subDisplayFile             (),
   m_rngObject                  (NULL),
   m_basicPdfs                  (NULL),
   m_exceptionalCircumstance    (false),
@@ -193,7 +193,7 @@ BaseEnvironment::BaseEnvironment(
   m_inter0Comm                 (),
   m_inter0Rank                 (-1),
   m_inter0CommSize             (1),
-  m_subDisplayFile             (NULL),
+  m_subDisplayFile             (),
   m_rngObject                  (NULL),
   m_basicPdfs                  (NULL),
   m_exceptionalCircumstance    (false),
@@ -243,8 +243,6 @@ BaseEnvironment::~BaseEnvironment()
   //  *m_subDisplayFile << "Leaving BaseEnvironment::destructor()"
   //                          << std::endl;
   //}
-
-  if (m_subDisplayFile) delete m_subDisplayFile;
 }
 // Environment, Communicator and Options Input File methods
 bool
@@ -314,7 +312,8 @@ BaseEnvironment::inter0Comm() const
 std::ofstream*
 BaseEnvironment::subDisplayFile() const
 {
-  return m_subDisplayFile;
+  // Potentially dangerous?  The user might delete it...
+  return m_subDisplayFile.get();
 }
 //-------------------------------------------------------
 std::string
@@ -1372,8 +1371,8 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
     //////////////////////////////////////////////////////////////////
     // Always write over an eventual pre-existing file
     //////////////////////////////////////////////////////////////////
-    m_subDisplayFile = new std::ofstream((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
-                                         std::ofstream::out | std::ofstream::trunc);
+    m_subDisplayFile.reset(new std::ofstream((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
+                                         std::ofstream::out | std::ofstream::trunc));
     queso_require_msg((m_subDisplayFile && m_subDisplayFile->is_open()), "failed to open sub screen file");
 
     QUESO_version_print(*m_subDisplayFile);
@@ -1628,8 +1627,8 @@ FullEnvironment::construct (const char *prefix)
     //////////////////////////////////////////////////////////////////
     // Always write over an eventual pre-existing file
     //////////////////////////////////////////////////////////////////
-    m_subDisplayFile = new std::ofstream((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
-                                         std::ofstream::out | std::ofstream::trunc);
+    m_subDisplayFile.reset(new std::ofstream((m_optionsObj->m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
+                                         std::ofstream::out | std::ofstream::trunc));
     queso_require_msg((m_subDisplayFile && m_subDisplayFile->is_open()), "failed to open sub screen file");
 
     QUESO_version_print(*m_subDisplayFile);
