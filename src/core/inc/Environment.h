@@ -29,15 +29,14 @@
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
 #include <queso/MpiComm.h>
+#include <queso/ScopedPtr.h>
+
 #ifdef QUESO_HAS_HDF5
 #include <hdf5.h>
 #endif
 #include <iostream>
 #include <fstream>
 
-#include <queso/ScopedPtr.h>
-#include <queso/RngBase.h>
-#include <queso/BasicPdfsBase.h>
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 // Forward declarations
@@ -55,6 +54,8 @@ namespace QUESO {
 class GetPot;
 class EnvironmentOptions;
 class EnvOptionsValues;
+class BasicPdfsBase;
+class RngBase;
 
 
   /*! queso_terminate_handler

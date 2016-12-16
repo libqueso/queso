@@ -23,6 +23,7 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/FiniteDistribution.h>
+#include <queso/RngBase.h>
 
 namespace QUESO {
 

@@ -25,6 +25,7 @@
 #include <queso/GammaJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/BasicPdfsBase.h>
 
 namespace QUESO {
 

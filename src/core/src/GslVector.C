@@ -22,9 +22,10 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <algorithm>
-#include <queso/GslVector.h>
 #include <queso/Defines.h>
+#include <queso/GslVector.h>
+#include <queso/RngBase.h>
+#include <algorithm>
 #include <gsl/gsl_sort_vector.h>
 #include <cmath>
 
