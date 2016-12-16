@@ -389,7 +389,7 @@ protected:
   ScopedPtr<MpiComm>::Type m_selfComm;
 
   RawType_MPI_Group m_inter0Group;
-  MpiComm * m_inter0Comm;
+  ScopedPtr<MpiComm>::Type m_inter0Comm;
   int m_inter0Rank;
   int m_inter0CommSize;
 

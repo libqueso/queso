@@ -158,7 +158,7 @@ BaseEnvironment::BaseEnvironment(
   m_subRank                    (-1),
   m_subCommSize                (1),
   m_selfComm                   (),
-  m_inter0Comm                 (NULL),
+  m_inter0Comm                 (),
   m_inter0Rank                 (-1),
   m_inter0CommSize             (1),
   m_subDisplayFile             (NULL),
@@ -190,7 +190,7 @@ BaseEnvironment::BaseEnvironment(
   m_subRank                    (-1),
   m_subCommSize                (1),
   m_selfComm                   (),
-  m_inter0Comm                 (NULL),
+  m_inter0Comm                 (),
   m_inter0Rank                 (-1),
   m_inter0CommSize             (1),
   m_subDisplayFile             (NULL),
@@ -245,7 +245,6 @@ BaseEnvironment::~BaseEnvironment()
   //}
 
   if (m_subDisplayFile) delete m_subDisplayFile;
-  if (m_inter0Comm    ) delete m_inter0Comm;
 }
 // Environment, Communicator and Options Input File methods
 bool
@@ -1330,7 +1329,7 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_inter0Group, &inter0RawComm);
   queso_require_equal_to_msg(mpiRC, MPI_SUCCESS, "failed MPI_Comm_group() for inter0");
   if (m_fullRank%numRanksPerSubEnvironment == 0) {
-    m_inter0Comm = new MpiComm(*this,inter0RawComm);
+    m_inter0Comm.reset(new MpiComm(*this,inter0RawComm));
     m_inter0Rank     = m_inter0Comm->MyPID();
     m_inter0CommSize = m_inter0Comm->NumProc();
   }
@@ -1587,7 +1586,7 @@ FullEnvironment::construct (const char *prefix)
 #ifndef QUESO_HAS_MPI
   m_inter0Group = 0;
 #endif
-  m_inter0Comm = new MpiComm(*this);
+  m_inter0Comm.reset(new MpiComm(*this));
   m_inter0Rank     = 0;
   m_inter0CommSize = 1;
 
