@@ -162,7 +162,7 @@ BaseEnvironment::BaseEnvironment(
   m_inter0Rank                 (-1),
   m_inter0CommSize             (1),
   m_subDisplayFile             (),
-  m_rngObject                  (NULL),
+  m_rngObject                  (),
   m_basicPdfs                  (NULL),
   m_exceptionalCircumstance    (false),
   m_optionsObj                 (alternativeOptionsValues)
@@ -194,7 +194,7 @@ BaseEnvironment::BaseEnvironment(
   m_inter0Rank                 (-1),
   m_inter0CommSize             (1),
   m_subDisplayFile             (),
-  m_rngObject                  (NULL),
+  m_rngObject                  (),
   m_basicPdfs                  (NULL),
   m_exceptionalCircumstance    (false),
   m_optionsObj                 (alternativeOptionsValues)
@@ -237,7 +237,6 @@ BaseEnvironment::~BaseEnvironment()
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   if (m_basicPdfs) delete m_basicPdfs;
-  if (m_rngObject) delete m_rngObject;
 
   //if (m_subDisplayFile) {
   //  *m_subDisplayFile << "Leaving BaseEnvironment::destructor()"
@@ -463,7 +462,7 @@ BaseEnvironment::checkingLevel() const
 const RngBase*
 BaseEnvironment::rngObject() const
 {
-  return m_rngObject;
+  return m_rngObject.get();
 }
 //-------------------------------------------------------
 int
@@ -1424,11 +1423,11 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
   // Deal with seed
   //////////////////////////////////////////////////
   if (m_optionsObj->m_rngType == "gsl") {
-    m_rngObject = new RngGsl(m_optionsObj->m_seed,m_worldRank);
+    m_rngObject.reset(new RngGsl(m_optionsObj->m_seed,m_worldRank));
     m_basicPdfs = new BasicPdfsGsl(m_worldRank);
   }
   else if (m_optionsObj->m_rngType == "boost") {
-    m_rngObject = new RngBoost(m_optionsObj->m_seed,m_worldRank);
+    m_rngObject.reset(new RngBoost(m_optionsObj->m_seed,m_worldRank));
     m_basicPdfs = new BasicPdfsBoost(m_worldRank);
   }
   else {
@@ -1673,11 +1672,11 @@ FullEnvironment::construct (const char *prefix)
   // Deal with seed
   //////////////////////////////////////////////////
   if (m_optionsObj->m_rngType == "gsl") {
-    m_rngObject = new RngGsl(m_optionsObj->m_seed,m_worldRank);
+    m_rngObject.reset(new RngGsl(m_optionsObj->m_seed,m_worldRank));
     m_basicPdfs = new BasicPdfsGsl(m_worldRank);
   }
   else if (m_optionsObj->m_rngType == "boost") {
-    m_rngObject = new RngBoost(m_optionsObj->m_seed,m_worldRank);
+    m_rngObject.reset(new RngBoost(m_optionsObj->m_seed,m_worldRank));
     m_basicPdfs = new BasicPdfsBoost(m_worldRank);
   }
   else {

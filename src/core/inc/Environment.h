@@ -394,7 +394,7 @@ protected:
   int m_inter0CommSize;
 
   mutable ScopedPtr<std::ofstream>::Type m_subDisplayFile;
-  RngBase * m_rngObject;
+  ScopedPtr<RngBase>::Type m_rngObject;
   BasicPdfsBase * m_basicPdfs;
   struct timeval m_timevalBegin;
   mutable bool m_exceptionalCircumstance;
