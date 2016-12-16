@@ -163,7 +163,7 @@ BaseEnvironment::BaseEnvironment(
   m_inter0CommSize             (1),
   m_subDisplayFile             (),
   m_rngObject                  (),
-  m_basicPdfs                  (NULL),
+  m_basicPdfs                  (),
   m_exceptionalCircumstance    (false),
   m_optionsObj                 (alternativeOptionsValues)
 {
@@ -195,7 +195,7 @@ BaseEnvironment::BaseEnvironment(
   m_inter0CommSize             (1),
   m_subDisplayFile             (),
   m_rngObject                  (),
-  m_basicPdfs                  (NULL),
+  m_basicPdfs                  (),
   m_exceptionalCircumstance    (false),
   m_optionsObj                 (alternativeOptionsValues)
 {
@@ -235,8 +235,6 @@ BaseEnvironment::~BaseEnvironment()
     delete m_allOptionsDesc;
   }
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
-
-  if (m_basicPdfs) delete m_basicPdfs;
 
   //if (m_subDisplayFile) {
   //  *m_subDisplayFile << "Leaving BaseEnvironment::destructor()"
@@ -481,7 +479,7 @@ BaseEnvironment::resetSeed(int newSeedOption)
 const BasicPdfsBase*
 BaseEnvironment::basicPdfs() const
 {
-  return m_basicPdfs;
+  return m_basicPdfs.get();
 }
 //-------------------------------------------------------
 std::string
@@ -1424,11 +1422,11 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
   //////////////////////////////////////////////////
   if (m_optionsObj->m_rngType == "gsl") {
     m_rngObject.reset(new RngGsl(m_optionsObj->m_seed,m_worldRank));
-    m_basicPdfs = new BasicPdfsGsl(m_worldRank);
+    m_basicPdfs.reset(new BasicPdfsGsl(m_worldRank));
   }
   else if (m_optionsObj->m_rngType == "boost") {
     m_rngObject.reset(new RngBoost(m_optionsObj->m_seed,m_worldRank));
-    m_basicPdfs = new BasicPdfsBoost(m_worldRank);
+    m_basicPdfs.reset(new BasicPdfsBoost(m_worldRank));
   }
   else {
     std::cerr << "In Environment::constructor()"
@@ -1673,11 +1671,11 @@ FullEnvironment::construct (const char *prefix)
   //////////////////////////////////////////////////
   if (m_optionsObj->m_rngType == "gsl") {
     m_rngObject.reset(new RngGsl(m_optionsObj->m_seed,m_worldRank));
-    m_basicPdfs = new BasicPdfsGsl(m_worldRank);
+    m_basicPdfs.reset(new BasicPdfsGsl(m_worldRank));
   }
   else if (m_optionsObj->m_rngType == "boost") {
     m_rngObject.reset(new RngBoost(m_optionsObj->m_seed,m_worldRank));
-    m_basicPdfs = new BasicPdfsBoost(m_worldRank);
+    m_basicPdfs.reset(new BasicPdfsBoost(m_worldRank));
   }
   else {
     std::cerr << "In Environment::constructor()"

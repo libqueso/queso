@@ -395,7 +395,7 @@ protected:
 
   mutable ScopedPtr<std::ofstream>::Type m_subDisplayFile;
   ScopedPtr<RngBase>::Type m_rngObject;
-  BasicPdfsBase * m_basicPdfs;
+  ScopedPtr<BasicPdfsBase>::Type m_basicPdfs;
   struct timeval m_timevalBegin;
   mutable bool m_exceptionalCircumstance;
 
