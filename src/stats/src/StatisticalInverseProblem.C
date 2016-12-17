@@ -51,7 +51,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_subSolutionCdf          (),
   m_solutionRealizer        (),
   m_mhSeqGenerator          (),
-  m_mlSampler               (NULL),
+  m_mlSampler               (),
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
@@ -119,7 +119,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_subSolutionCdf          (),
   m_solutionRealizer        (),
   m_mhSeqGenerator          (),
-  m_mlSampler               (NULL),
+  m_mlSampler               (),
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
@@ -180,7 +180,6 @@ StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
     m_logTargetValues->clear();
     delete m_logTargetValues;
   }
-  if (m_mlSampler       ) delete m_mlSampler;
 }
 // Statistical methods -----------------------------
 template <class P_V,class P_M>
@@ -216,8 +215,6 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
     queso_require_equal_to_msg(m_priorRv.imageSet().vectorSpace().dimLocal(), initialProposalCovMatrix->numRowsLocal(), "'m_priorRv' and 'initialProposalCovMatrix' should have equal dimensions");
     queso_require_equal_to_msg(initialProposalCovMatrix->numCols(), initialProposalCovMatrix->numRowsGlobal(), "'initialProposalCovMatrix' should be a square matrix");
   }
-
-  if (m_mlSampler       ) delete m_mlSampler;
 
   P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
   numEvaluationPointsVec.cwSet(250.);
@@ -377,8 +374,6 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
                             << std::endl;
   }
 
-  if (m_mlSampler       ) delete m_mlSampler;
-
   P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
   numEvaluationPointsVec.cwSet(250.);
 
@@ -395,10 +390,10 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
 
   // Compute output realizer: ML approach
   m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
-  m_mlSampler = new MLSampling<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_mlSampler.reset(new MLSampling<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                              //m_postRv,
                                                m_priorRv,
-                                               m_likelihoodFunction);
+                                               m_likelihoodFunction));
   //                                           initialValues,
   //                                           initialProposalCovMatrix);
 
