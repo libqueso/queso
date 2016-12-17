@@ -55,9 +55,8 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
-  m_optionsObj              (alternativeOptionsValues),
-  m_seedWithMAPEstimator    (false),
-  m_userDidNotProvideOptions(false)
+  m_optionsObj              (),
+  m_seedWithMAPEstimator    (false)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering Sip" << std::endl;
@@ -72,15 +71,12 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
 
   // If NULL, we create one
   if (m_optionsObj == NULL) {
-    SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
-
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
-
-    // We set this flag so we don't delete the user-created object when it
-    // comes time to deconstruct
-    m_userDidNotProvideOptions = true;
+    m_optionsObj.reset(new SipOptionsValues(&m_env, prefix));
+  }
+  else {
+    // If the user passed in a legitimate options object, then copy it into a
+    // ScopedPtr
+    m_optionsObj.reset(new SipOptionsValues(*alternativeOptionsValues));
   }
 
   if (m_optionsObj->m_help != "") {
@@ -127,9 +123,8 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_chain                   (NULL),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
-  m_optionsObj              (alternativeOptionsValues),
-  m_seedWithMAPEstimator    (false),
-  m_userDidNotProvideOptions(false)
+  m_optionsObj              (),
+  m_seedWithMAPEstimator    (false)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering StatisticalInverseProblem<P_V,P_M>::constructor()"
@@ -141,14 +136,14 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
 
   // If NULL, we create one
   if (m_optionsObj == NULL) {
-    SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
-
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
-
-    m_userDidNotProvideOptions = true;
+    m_optionsObj.reset(new SipOptionsValues(&m_env, prefix));
   }
+  else {
+    // If the user passed in a legitimate options object, then copy it into a
+    // ScopedPtr
+    m_optionsObj.reset(new SipOptionsValues(*alternativeOptionsValues));
+  }
+
 
   if (m_optionsObj->m_help != "") {
     if (m_env.subDisplayFile()) {
@@ -192,10 +187,6 @@ StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
   if (m_subSolutionMdf  ) delete m_subSolutionMdf;
   if (m_solutionPdf     ) delete m_solutionPdf;
   if (m_solutionDomain  ) delete m_solutionDomain;
-
-  if (m_optionsObj && m_userDidNotProvideOptions) {
-    delete m_optionsObj;
-  }
 }
 // Statistical methods -----------------------------
 template <class P_V,class P_M>
