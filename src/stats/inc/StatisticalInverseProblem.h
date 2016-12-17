@@ -156,8 +156,8 @@ public:
    * procedure, the result of which will be used as the seed for the chain.
    */
   void solveWithBayesMetropolisHastings(const MhOptionsValues* alternativeOptionsValues, // dakota
-					const P_V&                    initialValues,
-					const P_M*                    initialProposalCovMatrix);
+                                        const P_V&                    initialValues,
+                                        const P_M*                    initialProposalCovMatrix);
 
   //! Seeds the chain with the result of a deterministic optimisation
   /*!
