@@ -290,8 +290,8 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
 
   // Compute output mdf: uniform sampling approach
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-  m_subMdfGrids  = new ArrayOfOneDGrids <P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
-  m_subMdfValues = new ArrayOfOneDTables<P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  m_subMdfGrids.reset(new ArrayOfOneDGrids <P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace()));
+  m_subMdfValues.reset(new ArrayOfOneDTables<P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace()));
   m_chain->subUniformlySampledMdf(numEvaluationPointsVec, // input
                                   *m_subMdfGrids,         // output
                                   *m_subMdfValues);       // output

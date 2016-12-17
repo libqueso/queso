@@ -237,8 +237,8 @@ private:
   bool m_seedWithMAPEstimator;
 
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-        ArrayOfOneDGrids    <P_V,P_M>*   m_subMdfGrids;
-        ArrayOfOneDTables   <P_V,P_M>*   m_subMdfValues;
+  typename ScopedPtr<ArrayOfOneDGrids    <P_V,P_M> > m_subMdfGrids;
+  typename ScopedPtr<ArrayOfOneDTables   <P_V,P_M> > m_subMdfValues;
 #endif
 };
 
