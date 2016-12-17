@@ -226,7 +226,7 @@ private:
   typename ScopedPtr<BaseVectorCdf       <P_V,P_M> >::Type m_subSolutionCdf;
   typename ScopedPtr<BaseVectorRealizer  <P_V,P_M> >::Type m_solutionRealizer;
 
-        MetropolisHastingsSG<P_V,P_M>*   m_mhSeqGenerator;
+  typename ScopedPtr<MetropolisHastingsSG<P_V,P_M> >::Type m_mhSeqGenerator;
         MLSampling          <P_V,P_M>*   m_mlSampler;
         BaseVectorSequence  <P_V,P_M>*   m_chain;
         ScalarSequence      <double>*    m_logLikelihoodValues;
