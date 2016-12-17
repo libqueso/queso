@@ -375,8 +375,8 @@ protected:
   std::string m_optionsInputFileName;
   mutable bool m_optionsInputFileAccessState; // Yes, 'mutable'
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  boost::program_options::options_description * m_allOptionsDesc;
-  boost::program_options::variables_map * m_allOptionsMap;
+  ScopedPtr<boost::program_options::options_description>::Type m_allOptionsDesc;
+  ScopedPtr<boost::program_options::variables_map>::Type m_allOptionsMap;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   ScopedPtr<GetPot>::Type m_input;
 

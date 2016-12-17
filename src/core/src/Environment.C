@@ -150,8 +150,8 @@ BaseEnvironment::BaseEnvironment(
   m_optionsInputFileName       (""),
   m_optionsInputFileAccessState(true),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_allOptionsDesc             (NULL),
-  m_allOptionsMap              (NULL),
+  m_allOptionsDesc             (),
+  m_allOptionsMap              (),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_input                      (new GetPot),
   m_subComm                    (),
@@ -189,8 +189,8 @@ BaseEnvironment::BaseEnvironment(
   m_optionsInputFileName       (passedOptionsInputFileName),
   m_optionsInputFileAccessState(true),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_allOptionsDesc             (NULL),
-  m_allOptionsMap              (NULL),
+  m_allOptionsDesc             (),
+  m_allOptionsMap              (),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_input                      (new GetPot),
   m_subComm                    (),
@@ -241,13 +241,6 @@ BaseEnvironment::~BaseEnvironment()
                 << std::endl;
       }
     }
-
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  if (m_allOptionsMap) {
-    delete m_allOptionsMap;
-    delete m_allOptionsDesc;
-  }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   //if (m_subDisplayFile) {
   //  *m_subDisplayFile << "Leaving BaseEnvironment::destructor()"
@@ -1239,8 +1232,8 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
     // defaults are used
     if (m_optionsInputFileName != "") {
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-      m_allOptionsMap  = new boost::program_options::variables_map();
-      m_allOptionsDesc = new boost::program_options::options_description("Allowed options");
+      m_allOptionsMap.reset(new boost::program_options::variables_map());
+      m_allOptionsDesc.reset(new boost::program_options::options_description("Allowed options"));
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
       readOptionsInputFile();
@@ -1512,8 +1505,8 @@ FullEnvironment::construct (const char *prefix)
     // defaults are used
     if (m_optionsInputFileName != "") {
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-      m_allOptionsMap  = new boost::program_options::variables_map();
-      m_allOptionsDesc = new boost::program_options::options_description("Allowed options");
+      m_allOptionsMap.reset(new boost::program_options::variables_map());
+      m_allOptionsDesc.reset(new boost::program_options::options_description("Allowed options"));
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
       readOptionsInputFile();
