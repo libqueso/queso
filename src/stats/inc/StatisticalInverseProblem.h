@@ -228,7 +228,7 @@ private:
 
   typename ScopedPtr<MetropolisHastingsSG<P_V,P_M> >::Type m_mhSeqGenerator;
   typename ScopedPtr<MLSampling          <P_V,P_M> >::Type m_mlSampler;
-        BaseVectorSequence  <P_V,P_M>*   m_chain;
+  typename ScopedPtr<BaseVectorSequence  <P_V,P_M> >::Type m_chain;
         ScalarSequence      <double>*    m_logLikelihoodValues;
         ScalarSequence      <double>*    m_logTargetValues;
 

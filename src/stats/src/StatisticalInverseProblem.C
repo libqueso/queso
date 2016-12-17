@@ -52,7 +52,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_solutionRealizer        (),
   m_mhSeqGenerator          (),
   m_mlSampler               (),
-  m_chain                   (NULL),
+  m_chain                   (),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
   m_optionsObj              (),
@@ -120,7 +120,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_solutionRealizer        (),
   m_mhSeqGenerator          (),
   m_mlSampler               (),
-  m_chain                   (NULL),
+  m_chain                   (),
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
   m_optionsObj              (),
@@ -170,7 +170,6 @@ StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
 {
   if (m_chain) {
     m_chain->clear();
-    delete m_chain;
   }
   if (m_logLikelihoodValues) {
     m_logLikelihoodValues->clear();
@@ -229,7 +228,7 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
                                                        *m_solutionDomain));
 
   m_postRv.setPdf(*m_solutionPdf);
-  m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+  m_chain.reset(new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain"));
 
   // Decide whether or not to create a MetropolisHastingsSG instance from the
   // user-provided initial seed, or use the user-provided seed for a
@@ -389,7 +388,7 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
   m_postRv.setPdf(*m_solutionPdf);
 
   // Compute output realizer: ML approach
-  m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+  m_chain.reset(new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain"));
   m_mlSampler.reset(new MLSampling<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                              //m_postRv,
                                                m_priorRv,
