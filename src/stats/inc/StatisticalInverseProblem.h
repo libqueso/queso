@@ -34,6 +34,7 @@
 #include <queso/VectorRV.h>
 #include <queso/ScalarFunction.h>
 #include <queso/GPMSA.h>
+#include <queso/ScopedPtr.h>
 
 namespace QUESO {
 
@@ -219,11 +220,11 @@ private:
   const BaseScalarFunction  <P_V,P_M>&   m_likelihoodFunction;
         GenericVectorRV     <P_V,P_M>&   m_postRv;
 
-        VectorSet           <P_V,P_M>*   m_solutionDomain;
-        BaseJointPdf        <P_V,P_M>*   m_solutionPdf;
-        BaseVectorMdf       <P_V,P_M>*   m_subSolutionMdf;
-        BaseVectorCdf       <P_V,P_M>*   m_subSolutionCdf;
-        BaseVectorRealizer  <P_V,P_M>*   m_solutionRealizer;
+  typename ScopedPtr<VectorSet           <P_V,P_M> >::Type m_solutionDomain;
+  typename ScopedPtr<BaseJointPdf        <P_V,P_M> >::Type m_solutionPdf;
+  typename ScopedPtr<BaseVectorMdf       <P_V,P_M> >::Type m_subSolutionMdf;
+  typename ScopedPtr<BaseVectorCdf       <P_V,P_M> >::Type m_subSolutionCdf;
+  typename ScopedPtr<BaseVectorRealizer  <P_V,P_M> >::Type m_solutionRealizer;
 
         MetropolisHastingsSG<P_V,P_M>*   m_mhSeqGenerator;
         MLSampling          <P_V,P_M>*   m_mlSampler;

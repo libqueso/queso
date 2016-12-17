@@ -45,11 +45,11 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_priorRv                 (priorRv),
   m_likelihoodFunction      (likelihoodFunction),
   m_postRv                  (postRv),
-  m_solutionDomain          (NULL),
-  m_solutionPdf             (NULL),
-  m_subSolutionMdf          (NULL),
-  m_subSolutionCdf          (NULL),
-  m_solutionRealizer        (NULL),
+  m_solutionDomain          (),
+  m_solutionPdf             (),
+  m_subSolutionMdf          (),
+  m_subSolutionCdf          (),
+  m_solutionRealizer        (),
   m_mhSeqGenerator          (NULL),
   m_mlSampler               (NULL),
   m_chain                   (NULL),
@@ -113,11 +113,11 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_priorRv                 (*(gpmsaFactory.m_totalPrior)),
   m_likelihoodFunction      (gpmsaFactory.getGPMSAEmulator()),
   m_postRv                  (postRv),
-  m_solutionDomain          (NULL),
-  m_solutionPdf             (NULL),
-  m_subSolutionMdf          (NULL),
-  m_subSolutionCdf          (NULL),
-  m_solutionRealizer        (NULL),
+  m_solutionDomain          (),
+  m_solutionPdf             (),
+  m_subSolutionMdf          (),
+  m_subSolutionCdf          (),
+  m_solutionRealizer        (),
   m_mhSeqGenerator          (NULL),
   m_mlSampler               (NULL),
   m_chain                   (NULL),
@@ -182,11 +182,6 @@ StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
   }
   if (m_mlSampler       ) delete m_mlSampler;
   if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
-  if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
-  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
-  if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_solutionDomain  ) delete m_solutionDomain;
 }
 // Statistical methods -----------------------------
 template <class P_V,class P_M>
@@ -225,23 +220,18 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
 
   if (m_mlSampler       ) delete m_mlSampler;
   if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
-  if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
-  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
-  if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_solutionDomain  ) delete m_solutionDomain;
 
   P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
   numEvaluationPointsVec.cwSet(250.);
 
   // Compute output pdf up to a multiplicative constant: Bayesian approach
-  m_solutionDomain = InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
+  m_solutionDomain.reset(InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet()));
 
-  m_solutionPdf = new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_solutionPdf.reset(new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                        1.,
-                                                       *m_solutionDomain);
+                                                       *m_solutionDomain));
 
   m_postRv.setPdf(*m_solutionPdf);
   m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
@@ -298,8 +288,8 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   m_mhSeqGenerator->generateSequence(*m_chain, m_logLikelihoodValues,
                                      m_logTargetValues);
 
-  m_solutionRealizer = new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                                    *m_chain);
+  m_solutionRealizer.reset(new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                                    *m_chain));
 
   m_postRv.setRealizer(*m_solutionRealizer);
 
@@ -313,9 +303,9 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   m_chain->subUniformlySampledMdf(numEvaluationPointsVec, // input
                                   *m_subMdfGrids,         // output
                                   *m_subMdfValues);       // output
-  m_subSolutionMdf = new SampledVectorMdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_subSolutionMdf.reset(new SampledVectorMdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                           *m_subMdfGrids,
-                                                          *m_subMdfValues);
+                                                          *m_subMdfValues));
   m_postRv.setMdf(*m_subSolutionMdf);
 
   if ((m_optionsObj->m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE                    ) &&
@@ -391,23 +381,18 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
 
   if (m_mlSampler       ) delete m_mlSampler;
   if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
-  if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
-  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
-  if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_solutionDomain  ) delete m_solutionDomain;
 
   P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
   numEvaluationPointsVec.cwSet(250.);
 
   // Compute output pdf up to a multiplicative constant: Bayesian approach
-  m_solutionDomain = InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
+  m_solutionDomain.reset(InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet()));
 
-  m_solutionPdf = new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_solutionPdf.reset(new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                        1.,
-                                                       *m_solutionDomain);
+                                                       *m_solutionDomain));
 
   m_postRv.setPdf(*m_solutionPdf);
 
@@ -424,8 +409,8 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
                                 NULL,
                                 NULL);
 
-  m_solutionRealizer = new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                                    *m_chain);
+  m_solutionRealizer.reset(new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                                    *m_chain));
 
   m_postRv.setRealizer(*m_solutionRealizer);
 
