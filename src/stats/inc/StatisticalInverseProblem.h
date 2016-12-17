@@ -232,9 +232,9 @@ private:
   ScopedPtr<ScalarSequence<double> >::Type m_logLikelihoodValues;
   ScopedPtr<ScalarSequence<double> >::Type m_logTargetValues;
 
-        ScopedPtr<const SipOptionsValues>::Type m_optionsObj;
+  ScopedPtr<const SipOptionsValues>::Type m_optionsObj;
 
-        bool                              m_seedWithMAPEstimator;
+  bool m_seedWithMAPEstimator;
 
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         ArrayOfOneDGrids    <P_V,P_M>*   m_subMdfGrids;
