@@ -47,7 +47,7 @@ SipOptionsValues::SipOptionsValues()
   m_useOptimizerMonitor(UQ_SIP_USEOPTIMIZERMONITOR),
 //m_dataOutputAllowedSet(),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_parser(NULL),
+  m_parser(),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
@@ -223,7 +223,7 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
   m_prefix                     ((std::string)(prefix) + "ip_"),
   m_env                        (env),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_optionsDesc                (NULL),
+  m_optionsDesc                (),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
@@ -251,9 +251,6 @@ StatisticalInverseProblemOptions::StatisticalInverseProblemOptions(
 StatisticalInverseProblemOptions::~StatisticalInverseProblemOptions()
 {
   queso_deprecated();
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  if (m_optionsDesc) delete m_optionsDesc;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // I/O methods --------------------------------------

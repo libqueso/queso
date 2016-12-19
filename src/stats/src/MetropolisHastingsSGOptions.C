@@ -109,7 +109,7 @@ MhOptionsValues::MhOptionsValues(
 #endif
     m_env(NULL),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-    m_parser(NULL),
+    m_parser(),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                                      (m_prefix + "help"                                      ),
     m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
@@ -919,7 +919,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_prefix                                           ((std::string)(prefix) + "mh_"),
   m_env                                              (env),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_optionsDesc                                      (NULL),
+  m_optionsDesc                                      (),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                                      (m_prefix + "help"                                      ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
@@ -1020,7 +1020,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_prefix                                           (mlOptions.m_prefix),
   m_env                                              (mlOptions.env()),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_optionsDesc                                      (NULL),
+  m_optionsDesc                                      (),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                                      (m_prefix + "help"                                      ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
@@ -1170,9 +1170,6 @@ MetropolisHastingsSGOptions::~MetropolisHastingsSGOptions()
   if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptionsObj;
   if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptionsObj;
 #endif
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  if (m_optionsDesc                      ) delete m_optionsDesc;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // I/O methods -------------------------------------
