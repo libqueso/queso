@@ -58,7 +58,7 @@ EnvOptionsValues::EnvOptionsValues()
     m_debugParams(m_numDebugParams,0.),
     m_env(NULL),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-    m_parser(NULL),
+    m_parser(),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_numSubEnvironments(m_prefix + "numSubEnvironments"),
@@ -197,11 +197,6 @@ EnvOptionsValues::EnvOptionsValues(const EnvOptionsValues& src)
 // Destructor ---------------------------------------
 EnvOptionsValues::~EnvOptionsValues()
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  if (m_parser) {
-    delete m_parser;
-  }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // Set methods---------------------------------------
@@ -305,7 +300,7 @@ EnvironmentOptions::EnvironmentOptions(
   m_env                         (env),
   m_prefix                      ((std::string)(prefix) + "env_"),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_optionsDesc                 (NULL),
+  m_optionsDesc                 (),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                 (m_prefix + "help"                 ),
   m_option_numSubEnvironments   (m_prefix + "numSubEnvironments"   ),
@@ -336,10 +331,6 @@ EnvironmentOptions::EnvironmentOptions(
 EnvironmentOptions::~EnvironmentOptions()
 {
   queso_deprecated();
-
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  if (m_optionsDesc) delete m_optionsDesc;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // I/O methods---------------------------------------
