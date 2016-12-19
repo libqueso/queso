@@ -88,12 +88,22 @@ public:
  //! @name Constructor/Destructor methods
  //@{
  //! Constructor.
- /*! Requirements: 1) the image set of the vector random variable 'priorRv', 2) the domain set of
- * the likelihood function 'likelihoodFunction' and 3) the image set of the vector random variable
- * 'postRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied,
- * the constructor then reads input options that begin with the string '\<prefix\>ip_'. If no
- * options input file is provided, the construction assigns \c alternativeOptionsValues to the
- * options of the SIP.*/
+ /*!
+  * Requirements:
+  *   -# the image set of the vector random variable 'priorRv',
+  *   -# the domain set of the likelihood function 'likelihoodFunction', and
+  *   -# the image set of the vector random variable 'postRv' should belong to
+  *      vector spaces of equal dimensions.
+  *
+  * If \c alternativeOptionsValues is NULL and an input file is specified, the
+  * constructor reads input options that begin with the string '\<prefix\>ip_'.
+  *
+  * If \c alternativeOptionsValues is not NULL, the input file is ignored and
+  * construction copies the object pointed to by \c alternativeOptionsValues
+  * to and stores the copy internally.  Users may delete the object poined to
+  * by \c alternativeOptionsValues.  Users cannot change the options object
+  * after StatisticalInverseProblem has been constructed.
+  */
   StatisticalInverseProblem(const char*                               prefix,
                                    const SipOptionsValues*            alternativeOptionsValues, // dakota
                                    const BaseVectorRV      <P_V,P_M>& priorRv,
@@ -103,15 +113,19 @@ public:
   //! Constructor for statistical inverse problems to be sovled using GPMSA
   /*!
    * Requirements:
-   *   1) the factory for the GPMSA object
-   *   2) the image set of the vector random variable \c postRv (obtainable via
+   *   -# the factory for the GPMSA object
+   *   -# the image set of the vector random variable \c postRv (obtainable via
    *      GaussianProcessFactory::prior method) should be equal to the full
    *      prior image set (including all the hyperparameters)
    *
-   * If the requirements are satisfied, the constructor then reads input
-   * options that begin with the string '\<prefix\>ip_'.  If no options input
-   * file is provided, the construction assigns \c alternativeOptionsValues to
-   * the options of the statistical inverse problem.
+   * If \c alternativeOptionsValues is NULL and an input file is specified, the
+   * constructor reads input options that begin with the string '\<prefix\>ip_'.
+   *
+   * If \c alternativeOptionsValues is not NULL, the input file is ignored and
+   * construction copies the object pointed to by \c alternativeOptionsValues
+   * to and stores the copy internally.  Users may delete the object poined to
+   * by \c alternativeOptionsValues.  Users cannot change the options object
+   * after StatisticalInverseProblem has been constructed.
    */
   StatisticalInverseProblem(const char * prefix,
                             const SipOptionsValues * alternativeOptionsValues,
