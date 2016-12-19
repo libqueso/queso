@@ -163,7 +163,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
   m_numPositionsNotSubWritten (0),
-  m_optionsObj                (alternativeOptionsValues),
+  m_optionsObj                (),
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
   m_initialLogLikelihoodValue (0.),
@@ -172,16 +172,14 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
   }
-  // If NULL, we create one
-  if (m_optionsObj == NULL) {
-    MhOptionsValues * tempOptions = new MhOptionsValues(&m_env, prefix);
 
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
-
-    // We set this flag so we don't free something the user created
-    m_userDidNotProvideOptions = true;
+  // If user provided options, copy their object
+  if (alternativeOptionsValues != NULL) {
+    m_optionsObj.reset(new MhOptionsValues(*alternativeOptionsValues));
+  }
+  else {
+    // Otherwise, we create one with the default
+    m_optionsObj.reset(new MhOptionsValues(&m_env, prefix));
   }
 
   if (m_optionsObj->m_help != "") {
@@ -215,6 +213,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
                             << std::endl;
   }
 }
+
 template<class P_V,class P_M>
 MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   /*! Prefix                     */ const char*                         prefix,
@@ -245,7 +244,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
   m_numPositionsNotSubWritten (0),
-  m_optionsObj                (alternativeOptionsValues),
+  m_optionsObj                (),
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
   m_initialLogLikelihoodValue (initialLogLikelihood),
@@ -255,15 +254,13 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
   }
 
-  // If NULL, we create one
-  if (m_optionsObj == NULL) {
-    MhOptionsValues * tempOptions = new MhOptionsValues(&m_env, prefix);
-
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
-
-    m_userDidNotProvideOptions = true;
+  // If user provided options, copy their object
+  if (alternativeOptionsValues != NULL) {
+    m_optionsObj.reset(new MhOptionsValues(*alternativeOptionsValues));
+  }
+  else {
+    // Otherwise we create one
+    m_optionsObj.reset(new MhOptionsValues(&m_env, prefix));
   }
 
   if (m_optionsObj->m_help != "") {
@@ -337,7 +334,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   // as a member (m_oldOptions) because otherwise m_ov will die when the
   // MetropolisHastingsSGOptions instance dies.
   m_oldOptions = new MetropolisHastingsSGOptions(mlOptions);
-  m_optionsObj = &(m_oldOptions->m_ov);
+  m_optionsObj.reset(new MhOptionsValues(m_oldOptions->m_ov));
 
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -404,7 +401,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   // as a member (m_oldOptions) because otherwise m_ov will die when the
   // MetropolisHastingsSGOptions instance dies.
   m_oldOptions = new MetropolisHastingsSGOptions(mlOptions);
-  m_optionsObj = &(m_oldOptions->m_ov);
+  m_optionsObj.reset(new MhOptionsValues(m_oldOptions->m_ov));
 
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -451,13 +448,6 @@ MetropolisHastingsSG<P_V,P_M>::~MetropolisHastingsSG()
   m_idsOfUniquePositions.clear();
 
   if (m_targetPdfSynchronizer) delete m_targetPdfSynchronizer;
-
-  // Only delete if the user didn't provide the options
-  // I.e., if the user created their options object, then they are resonsible
-  // for freeing it.
-  if (m_optionsObj && m_userDidNotProvideOptions) {
-    delete m_optionsObj;
-  }
 
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::destructor()"
