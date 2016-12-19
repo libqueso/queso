@@ -168,15 +168,6 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
 template <class P_V,class P_M>
 StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
 {
-  if (m_chain) {
-    m_chain->clear();
-  }
-  if (m_logLikelihoodValues) {
-    m_logLikelihoodValues->clear();
-  }
-  if (m_logTargetValues) {
-    m_logTargetValues->clear();
-  }
 }
 // Statistical methods -----------------------------
 template <class P_V,class P_M>
