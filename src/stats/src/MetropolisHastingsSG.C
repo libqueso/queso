@@ -333,7 +333,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   // We do a copy and then pull out the raw values from m_ov.  We also need it
   // as a member (m_oldOptions) because otherwise m_ov will die when the
   // MetropolisHastingsSGOptions instance dies.
-  m_oldOptions = new MetropolisHastingsSGOptions(mlOptions);
+  m_oldOptions.reset(new MetropolisHastingsSGOptions(mlOptions));
   m_optionsObj.reset(new MhOptionsValues(m_oldOptions->m_ov));
 
   if (inputProposalCovMatrix != NULL) {
@@ -400,7 +400,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   // We do a copy and then pull out the raw values from m_ov.  We also need it
   // as a member (m_oldOptions) because otherwise m_ov will die when the
   // MetropolisHastingsSGOptions instance dies.
-  m_oldOptions = new MetropolisHastingsSGOptions(mlOptions);
+  m_oldOptions.reset(new MetropolisHastingsSGOptions(mlOptions));
   m_optionsObj.reset(new MhOptionsValues(m_oldOptions->m_ov));
 
   if (inputProposalCovMatrix != NULL) {
