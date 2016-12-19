@@ -31,6 +31,7 @@
 #include <queso/Environment.h>
 #include <queso/FunctionBase.h>
 #include <queso/OperatorBase.h>
+#include <queso/RngBase.h>
 
 namespace QUESO {
 

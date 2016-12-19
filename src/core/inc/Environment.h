@@ -29,15 +29,14 @@
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
 #include <queso/MpiComm.h>
+#include <queso/ScopedPtr.h>
+
 #ifdef QUESO_HAS_HDF5
 #include <hdf5.h>
 #endif
 #include <iostream>
 #include <fstream>
 
-#include <queso/ScopedPtr.h>
-#include <queso/RngBase.h>
-#include <queso/BasicPdfsBase.h>
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 // Forward declarations
@@ -55,6 +54,8 @@ namespace QUESO {
 class GetPot;
 class EnvironmentOptions;
 class EnvOptionsValues;
+class BasicPdfsBase;
+class RngBase;
 
 
   /*! queso_terminate_handler
@@ -330,21 +331,21 @@ public:
 
   //! Opens an output file for each sub-environment that was chosen to send data to the file.
   bool    openOutputFile(const std::string& fileName, const std::string& fileType,
-			 const std::set<unsigned int>& allowedSubEnvIds, bool writeOver,
-			 FilePtrSetStruct& filePtrSet) const;
+                         const std::set<unsigned int>& allowedSubEnvIds, bool writeOver,
+                         FilePtrSetStruct& filePtrSet) const;
 
   //! Opens a unified output file, that will contain data from all sub-environments.
   bool    openUnifiedOutputFile (const std::string& fileName, const std::string& fileType,
-				 bool writeOver, FilePtrSetStruct& filePtrSet) const;
+                                 bool writeOver, FilePtrSetStruct& filePtrSet) const;
 
   //! Opens an input file.
   bool    openInputFile (const std::string& fileName, const std::string& fileType,
-			 const std::set<unsigned int>& allowedSubEnvIds,
-			 FilePtrSetStruct& filePtrSet) const;
+                         const std::set<unsigned int>& allowedSubEnvIds,
+                         FilePtrSetStruct& filePtrSet) const;
 
   //! Opens the unified input file.
   bool    openUnifiedInputFile  (const std::string& fileName, const std::string& fileType,
-				 FilePtrSetStruct& filePtrSet) const;
+                                 FilePtrSetStruct& filePtrSet) const;
 
   //! Closes the file.
   void    closeFile     (FilePtrSetStruct& filePtrSet, const std::string& fileType) const;
@@ -363,43 +364,43 @@ public:
 
   //@}
 protected:
-  bool       		     m_fullEnvIsReady;
-  int 	     		     m_worldRank;
+  bool m_fullEnvIsReady;
+  int m_worldRank;
 
-  MpiComm*    	     m_fullComm;
-  int                        m_fullRank;
-  int                        m_fullCommSize;
-  RawType_MPI_Group        m_fullGroup;
+  ScopedPtr<MpiComm>::Type m_fullComm;
+  int m_fullRank;
+  int m_fullCommSize;
+  RawType_MPI_Group m_fullGroup;
 
-  std::string		     m_optionsInputFileName;
-  mutable bool       	     m_optionsInputFileAccessState; // Yes, 'mutable'
+  std::string m_optionsInputFileName;
+  mutable bool m_optionsInputFileAccessState; // Yes, 'mutable'
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  boost::program_options::options_description*   m_allOptionsDesc;
-  boost::program_options::variables_map* 	     m_allOptionsMap;
+  ScopedPtr<boost::program_options::options_description>::Type m_allOptionsDesc;
+  ScopedPtr<boost::program_options::variables_map>::Type m_allOptionsMap;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   ScopedPtr<GetPot>::Type m_input;
 
-  unsigned int               m_subId;
-  std::string 		     m_subIdString;
-  RawType_MPI_Group        m_subGroup;
-  MpiComm*            m_subComm;
-  int			     m_subRank;
-  int			     m_subCommSize;
+  unsigned int m_subId;
+  std::string m_subIdString;
+  RawType_MPI_Group m_subGroup;
+  ScopedPtr<MpiComm>::Type m_subComm;
+  int m_subRank;
+  int m_subCommSize;
 
-  MpiComm*            m_selfComm;
+  ScopedPtr<MpiComm>::Type m_selfComm;
 
-  RawType_MPI_Group        m_inter0Group;
-  MpiComm*            m_inter0Comm;
-  int	                     m_inter0Rank;
-  int                        m_inter0CommSize;
+  RawType_MPI_Group m_inter0Group;
+  ScopedPtr<MpiComm>::Type m_inter0Comm;
+  int m_inter0Rank;
+  int m_inter0CommSize;
 
-  mutable std::ofstream*     m_subDisplayFile;
-  RngBase*    	     m_rngObject;
-  BasicPdfsBase*      m_basicPdfs;
-  struct timeval             m_timevalBegin;
-  mutable bool       	     m_exceptionalCircumstance;
+  mutable ScopedPtr<std::ofstream>::Type m_subDisplayFile;
+  ScopedPtr<RngBase>::Type m_rngObject;
+  ScopedPtr<BasicPdfsBase>::Type m_basicPdfs;
+  struct timeval m_timevalBegin;
+  mutable bool m_exceptionalCircumstance;
 
-  EnvOptionsValues * m_optionsObj;
+  ScopedPtr<EnvOptionsValues>::Type m_optionsObj;
 };
 
 //*****************************************************
@@ -469,22 +470,22 @@ public:
   //! @name I/O methods
   //@{
   //! Sends the environment options to the stream.
-  void	print       (std::ostream& os) const;
+  void        print       (std::ostream& os) const;
   //@}
 
 private:
 #ifdef QUESO_HAS_MPI
   //! Named constructor backend for multiple constructor overloads
-  void	construct(RawType_MPI_Comm inputComm,
+  void        construct(RawType_MPI_Comm inputComm,
                   const char *prefix);
 #endif
 
   //! Named constructor backend for multiple constructor overloads
-  void	construct(const char *prefix);
+  void        construct(const char *prefix);
 
   //! Checks the options input file and reads the options.
-  void	readOptionsInputFile();
-  //void	queso_terminate_handler();
+  void        readOptionsInputFile();
+  //void        queso_terminate_handler();
 
 };
 
