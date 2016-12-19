@@ -230,7 +230,7 @@ private:
   typename ScopedPtr<MLSampling          <P_V,P_M> >::Type m_mlSampler;
   typename ScopedPtr<BaseVectorSequence  <P_V,P_M> >::Type m_chain;
   ScopedPtr<ScalarSequence<double> >::Type m_logLikelihoodValues;
-        ScalarSequence      <double>*    m_logTargetValues;
+  ScopedPtr<ScalarSequence<double> >::Type m_logTargetValues;
 
         ScopedPtr<const SipOptionsValues>::Type m_optionsObj;
 

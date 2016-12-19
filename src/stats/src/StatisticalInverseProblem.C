@@ -54,7 +54,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_mlSampler               (),
   m_chain                   (),
   m_logLikelihoodValues     (),
-  m_logTargetValues         (NULL),
+  m_logTargetValues         (),
   m_optionsObj              (),
   m_seedWithMAPEstimator    (false)
 {
@@ -122,7 +122,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_mlSampler               (),
   m_chain                   (),
   m_logLikelihoodValues     (),
-  m_logTargetValues         (NULL),
+  m_logTargetValues         (),
   m_optionsObj              (),
   m_seedWithMAPEstimator    (false)
 {
@@ -176,7 +176,6 @@ StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
   }
   if (m_logTargetValues) {
     m_logTargetValues->clear();
-    delete m_logTargetValues;
   }
 }
 // Statistical methods -----------------------------
@@ -273,13 +272,13 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
                                                      m_optionsObj->m_prefix +
                                                      "logLike"));
 
-  m_logTargetValues = new ScalarSequence<double>(m_env, 0,
+  m_logTargetValues.reset(new ScalarSequence<double>(m_env, 0,
                                                  m_optionsObj->m_prefix +
-                                                 "logTarget");
+                                                 "logTarget"));
 
   // m_logLikelihoodValues and m_logTargetValues may be NULL
   m_mhSeqGenerator->generateSequence(*m_chain, m_logLikelihoodValues.get(),
-                                     m_logTargetValues);
+                                     m_logTargetValues.get());
 
   m_solutionRealizer.reset(new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                                     *m_chain));
