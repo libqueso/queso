@@ -617,7 +617,7 @@ private:
   const BaseEnvironment * m_env;
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  BoostInputOptionsParser * m_parser;
+  ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   //! Option name for MhOptionsValues::m_help.  Option name is m_prefix + "mh_help"
@@ -819,7 +819,7 @@ private:
 
   const BaseEnvironment& m_env;
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  boost::program_options::options_description*      m_optionsDesc;
+  ScopedPtr<boost::program_options::options_description>::Type m_optionsDesc;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;
