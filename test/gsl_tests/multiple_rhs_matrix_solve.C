@@ -33,9 +33,9 @@ int main(int argc, char* argv[])
    // Initialize environment
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
-  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,"input","",NULL);
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,"gsl_tests/input","",NULL);
 #else
-  QUESO::FullEnvironment* env = new QUESO::FullEnvironment("input","",NULL);
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment("gsl_tests/input","",NULL);
 #endif
 
   return_flag = actualChecking(env);
