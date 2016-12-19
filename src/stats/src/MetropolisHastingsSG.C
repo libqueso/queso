@@ -160,8 +160,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
   m_lastChainSize             (0),
-  m_lastMean                  (NULL),
-  m_lastAdaptedCovMatrix      (NULL),
+  m_lastMean                  (),
+  m_lastAdaptedCovMatrix      (),
   m_numPositionsNotSubWritten (0),
   m_optionsObj                (),
   m_computeInitialPriorAndLikelihoodValues(true),
@@ -241,8 +241,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
   m_lastChainSize             (0),
-  m_lastMean                  (NULL),
-  m_lastAdaptedCovMatrix      (NULL),
+  m_lastMean                  (),
+  m_lastAdaptedCovMatrix      (),
   m_numPositionsNotSubWritten (0),
   m_optionsObj                (),
   m_computeInitialPriorAndLikelihoodValues(false),
@@ -319,8 +319,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
   m_lastChainSize             (0),
-  m_lastMean                  (NULL),
-  m_lastAdaptedCovMatrix      (NULL),
+  m_lastMean                  (),
+  m_lastAdaptedCovMatrix      (),
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
   m_initialLogLikelihoodValue (0.),
@@ -386,8 +386,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
   m_lastChainSize             (0),
-  m_lastMean                  (NULL),
-  m_lastAdaptedCovMatrix      (NULL),
+  m_lastMean                  (),
+  m_lastAdaptedCovMatrix      (),
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
   m_initialLogLikelihoodValue (initialLogLikelihood),
@@ -435,8 +435,6 @@ MetropolisHastingsSG<P_V,P_M>::~MetropolisHastingsSG()
   //                          << std::endl;
   //}
 
-  if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
-  if (m_lastMean)             delete m_lastMean;
   m_lastChainSize             = 0;
   m_rawChainInfo.reset();
   m_alphaQuotients.clear();
@@ -1988,8 +1986,8 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
   else if (positionId == m_optionsObj->m_amInitialNonAdaptInterval) {
     idOfFirstPositionInSubChain = 0;
     partialChain.resizeSequence(m_optionsObj->m_amInitialNonAdaptInterval+1);
-    m_lastMean             = m_vectorSpace.newVector();
-    m_lastAdaptedCovMatrix = m_vectorSpace.newMatrix();
+    m_lastMean.reset(m_vectorSpace.newVector());
+    m_lastAdaptedCovMatrix.reset(m_vectorSpace.newMatrix());
     printAdaptedMatrix = true;
   }
   else {

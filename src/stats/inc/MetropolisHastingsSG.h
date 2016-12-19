@@ -312,8 +312,8 @@ private:
   std::vector<double> m_logTargets;
   std::vector<double> m_alphaQuotients;
   double m_lastChainSize;
-  P_V * m_lastMean;
-  P_M * m_lastAdaptedCovMatrix;
+  typename ScopedPtr<P_V>::Type m_lastMean;
+  typename ScopedPtr<P_M>::Type m_lastAdaptedCovMatrix;
   unsigned int m_numPositionsNotSubWritten;
 
   MHRawChainInfoStruct m_rawChainInfo;
