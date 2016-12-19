@@ -129,14 +129,30 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor.
-  /*! This method reads the options from the options input file. It calls commonConstructor().
-   * Requirements: 1) the image set of the vector random variable 'sourceRv' should belong to a
-   * vector space of dimension equal to the size of the vector 'initialPosition' and 2) if
-   * 'inputProposalCovMatrix' is not NULL, is should be square and its size should be equal to the
-   * size of 'initialPosition'. If the requirements are satisfied, the constructor then reads input
-   * options that begin with the string '\<prefix\>_mh_'. For instance, if 'prefix' is
-   * 'pROblem_775_ip_', then the constructor will read all options that begin with 'pROblem_775_ip_mh_'.
-    Options reading is handled by class 'MetropolisHastingsOptions'.*/
+  /*!
+   * This method reads the options from the options input file. It calls
+   * \c commonConstructor().
+   *
+   * Requirements:
+   *   -# the image set of the vector random variable 'sourceRv' should belong
+   *      to a vector space of dimension equal to the size of the vector
+   *      'initialPosition' and
+   *   -# if 'inputProposalCovMatrix' is not NULL, is should be square and its
+   *      size should be equal to the size of 'initialPosition'.
+   *
+   * If \c alternativeOptionsValues is NULL and an input file is specified, the
+   * constructor reads input options that begin with the string
+   * '\<prefix\>mh_'.  For instance, if 'prefix' is 'pROblem_775_ip_', then
+   * the constructor will read all options that begin with 'pROblem_775_ip_mh_'.
+   *
+   * If \c alternativeOptionsValues is not NULL, the input file is ignored and
+   * construction copies the object pointed to by \c alternativeOptionsValues
+   * to and stores the copy internally.  Users may delete the object poined to
+   * by \c alternativeOptionsValues.  Users cannot change the options object
+   * after MetropolisHastingsSG has been constructed.
+   *
+   * Options reading is handled by class 'MetropolisHastingsOptions'.
+   */
   MetropolisHastingsSG(const char*                         prefix,
 		       const MhOptionsValues*       alternativeOptionsValues, // dakota
 		       const BaseVectorRV<P_V,P_M>& sourceRv,
