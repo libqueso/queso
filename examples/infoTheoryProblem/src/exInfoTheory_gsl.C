@@ -35,47 +35,43 @@
  *-------------------------------------------------------------------------- */
 
 #include <exInfoTheory_appl.h>
+#include <queso/asserts.h>
 #include <queso/GslMatrix.h>
 
 int main(int argc, char* argv[])
 {
-
 #ifdef QUESO_HAS_ANN
+  queso_require_equal_to_msg(argc, 2, "Please specify an input file on the command line");
 
-  //************************************************
   // Initialize environment
-  //************************************************
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
-
-  UQ_FATAL_TEST_MACRO(argc != 2,
-                      UQ_UNAVAILABLE_RANK,
-                      "main()",
-                      "input file must be specified in command line as argv[1], just after executable argv[0]");
-  uqFullEnvironment* env = new uqFullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD, argv[1], "", NULL);
+#else
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(argv[1], "", NULL);
+#endif
 
   //************************************************
   // Call application
   //************************************************
-  uqAppl<uqGslVector, // type for parameter vectors
-         uqGslMatrix, // type for parameter matrices
-         uqGslVector, // type for qoi vectors
-         uqGslMatrix  // type for qoi matrices
+  uqAppl<QUESO::GslVector, // type for parameter vectors
+         QUESO::GslMatrix, // type for parameter matrices
+         QUESO::GslVector, // type for qoi vectors
+         QUESO::GslMatrix  // type for qoi matrices
         >(*env);
 
   //************************************************
   // Finalize environment
   //************************************************
   delete env;
+
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 
-
 #else // QUESO_HAS_ANN
-
-  std::cout << "Error: the ANN has not been enabled. Please recompile with --enable-ann=yes" << std::endl;
-  exit(1);
-
+  queso_error_msg("ANN has not been enabled. Please recompile QUESO with --enable-ann=yes");
 #endif // QUESO_HAS_ANN
-
 }

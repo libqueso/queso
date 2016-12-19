@@ -1,15 +1,18 @@
 # SYNOPSIS
 #
-#   Test for  
+#   Test for
 #
 #   AM_ENABLE_ANN([, ACTION-IF-GIVEN [, ACTION-IF-NOT-GIVEN]]])
 #
 # DESCRIPTION
 #
-#   Provides a --enable-ann=[yes|no] option. 
+#   Provides a --enable-ann=[yes|no] option.
 #
 #   On success, sets ANN_CFLAGS, ANN_LIBS, and
 #   #defines HAVE_ANN.
+#
+#   ANN_LIBS is set to the empty string, as it is assumed that the build sytem
+#   uses libtool to work it out.
 #
 # LAST MODIFICATION
 #
@@ -26,7 +29,7 @@ AC_MSG_CHECKING([whether to enable ANN])
 
 HAVE_ANN=0
 
-AC_ARG_ENABLE(ann, 
+AC_ARG_ENABLE(ann,
   [AS_HELP_STRING([--enable-ann[=yes|no]],[enable ANN installation (default = no)])],
   [if test "$enableval" = "yes" ; then
       enable_ann=yes
@@ -47,7 +50,7 @@ if test "${enable_ann}" == yes ; then
       HAVE_ANN=1
 
       ANN_PREFIX="\$(top_srcdir)/src/contrib/ANN"
-      ANN_LIBS="-L${ANN_PREFIX}/lib -lANN"
+      ANN_LIBS=""
       ANN_CFLAGS="-I${ANN_PREFIX}/include"
       ANN_CPPFLAGS="-I${ANN_PREFIX}/include"
 

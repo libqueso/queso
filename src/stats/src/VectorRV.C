@@ -28,6 +28,7 @@
 
 #include <queso/Defines.h>
 #include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
+#include <queso/InfoTheory_impl.h>
 
 namespace QUESO {
 
