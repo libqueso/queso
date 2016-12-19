@@ -445,8 +445,6 @@ MetropolisHastingsSG<P_V,P_M>::~MetropolisHastingsSG()
   m_stageIdForDebugging    = 0;
   m_idsOfUniquePositions.clear();
 
-  if (m_targetPdfSynchronizer) delete m_targetPdfSynchronizer;
-
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::destructor()"
   //                          << std::endl;

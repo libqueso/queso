@@ -302,7 +302,7 @@ private:
   bool m_nullInputProposalCovMatrix;
   unsigned int m_numDisabledParameters; // gpmsa2
   std::vector<bool> m_parameterEnabledStatus; // gpmsa2
-  const ScalarFunctionSynchronizer<P_V,P_M> * m_targetPdfSynchronizer;
+  typename ScopedPtr<const ScalarFunctionSynchronizer<P_V,P_M> >::Type m_targetPdfSynchronizer;
 
   typename SharedPtr<BaseTKGroup<P_V,P_M> >::Type m_tk;
   typename SharedPtr<Algorithm<P_V, P_M> >::Type m_algorithm;
