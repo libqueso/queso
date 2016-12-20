@@ -39,15 +39,18 @@ int main(int argc, char* argv[])
   //************************************************
   // Initialize environment
   //************************************************
+
+  std::string inputFileName = "t01_valid_cycle/tgaCycle.inp";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir) {
+    inputFileName = test_srcdir + ('/' + inputFileName);
+  }
+
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
-  UQ_FATAL_TEST_MACRO(argc != 2,
-                      QUESO::UQ_UNAVAILABLE_RANK,
-                      "main()",
-                      "input file must be specified in command line as argv[1], just after executable argv[0]");
-  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,inputFileName,"",NULL);
 #else
-  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(argv[1],"",NULL);
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(inputFileName,"",NULL);
 #endif
 
   //************************************************

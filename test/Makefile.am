@@ -1,4 +1,4 @@
-SUBDIRS = t01_valid_cycle t02_sip_sfp t03_sequence t04_bimodal
+SUBDIRS    = t02_sip_sfp t03_sequence t04_bimodal
 
 BUILT_SOURCES =
 
@@ -78,6 +78,7 @@ check_PROGRAMS += test_seq_of_vec_hdf5_write
 check_PROGRAMS += test_optimizer_input_parameters
 check_PROGRAMS += test_sip_gslopt_options
 check_PROGRAMS += test_mala
+check_PROGRAMS += TgaValidationCycle_gsl
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -201,6 +202,13 @@ test_optimizer_input_parameters_SOURCES = test_optimizer/test_optimizer_input_pa
 test_sip_gslopt_options_SOURCES = test_optimizer/test_sip_gslopt_options.C
 test_mala_SOURCES = test_algorithms/test_mala.C
 
+TgaValidationCycle_gsl_SOURCES =
+TgaValidationCycle_gsl_SOURCES += t01_valid_cycle/TgaValidationCycle_gsl.C
+TgaValidationCycle_gsl_SOURCES += t01_valid_cycle/TgaValidationCycle_appl.h
+TgaValidationCycle_gsl_SOURCES += t01_valid_cycle/TgaValidationCycle_likelihood.h
+TgaValidationCycle_gsl_SOURCES += t01_valid_cycle/TgaValidationCycle_qoi.h
+TgaValidationCycle_gsl_CPPFLAGS = -I$(srcdir)/t01_valid_cycle $(AM_CPPFLAGS)
+
 # Files to freedom stamp
 srcstamp =
 srcstamp += $(test_gsl_get_set_row_column_SOURCES)
@@ -277,6 +285,7 @@ srcstamp += $(test_seq_of_vec_hdf5_write_SOURCES)
 srcstamp += $(test_optimizer_input_parameters_SOURCES)
 srcstamp += $(test_sip_gslopt_options_SOURCES)
 srcstamp += $(test_mala_SOURCES)
+srcstamp += $(TgaValidationCycle_gsl_SOURCES)
 
 TESTS =
 TESTS += test_gsl_get_set_row_column
@@ -354,6 +363,7 @@ TESTS += test_optimizer_input_parameters
 TESTS += test_sip_gslopt_options
 TESTS += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 TESTS += test_mala
+TESTS += t01_valid_cycle/rtest01.sh
 
 XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
@@ -400,6 +410,11 @@ EXTRA_DIST += test_optimizer/input_test_optimizer_input_parameters
 EXTRA_DIST += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 EXTRA_DIST += test_algorithms/input_test_mala.txt
 
+EXTRA_DIST += t01_valid_cycle/inputData
+EXTRA_DIST += t01_valid_cycle/regression
+EXTRA_DIST += t01_valid_cycle/rtest01.sh
+EXTRA_DIST += t01_valid_cycle/tgaCycle.inp
+
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
 CLEANFILES += gslvector_out_sub0.m
@@ -420,6 +435,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_1
 	rm -rf $(top_builddir)/test/output_test_intercomm0_gravity_2
 	rm -rf $(top_builddir)/test/output_test_mala
+	rm -rf $(top_builddir)/test/output_test_TgaValidationCycle_gsl
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno

@@ -265,7 +265,6 @@ AC_CONFIG_FILES([
   src/contrib/ANN/test/Makefile
   examples/Makefile
   test/Makefile
-  test/t01_valid_cycle/Makefile
   test/t02_sip_sfp/Makefile
   test/t03_sequence/Makefile
   test/t04_bimodal/Makefile
@@ -292,6 +291,10 @@ AC_SUBST(QUESO_STAMPED_FILES)
 AM_CONDITIONAL(QUESO_LICENSESTAMPEXISTS, [test -f $ac_abs_top_srcdir/src/common/lic_utils/update_license.pl])
 
 AC_OUTPUT()
+
+dnl Hackish fix for Ubuntu/Debian libtool
+dnl See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=702737
+perl -pi -e 's/link_all_deplibs=no/link_all_deplibs=yes/' libtool
 
 #---------------
 # Final summary
