@@ -265,7 +265,6 @@ AC_CONFIG_FILES([
   src/contrib/ANN/test/Makefile
   examples/Makefile
   test/Makefile
-  test/t03_sequence/Makefile
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page

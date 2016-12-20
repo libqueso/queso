@@ -1,5 +1,3 @@
-SUBDIRS    = t03_sequence
-
 BUILT_SOURCES =
 
 check_PROGRAMS = # Append below
@@ -80,6 +78,7 @@ check_PROGRAMS += test_sip_gslopt_options
 check_PROGRAMS += test_mala
 check_PROGRAMS += TgaValidationCycle_gsl
 check_PROGRAMS += SipSfpExample_gsl
+check_PROGRAMS += SequenceExample_gsl
 check_PROGRAMS += BimodalExample_gsl
 
 LDADD       = $(top_builddir)/src/libqueso.la
@@ -221,6 +220,12 @@ SipSfpExample_gsl_SOURCES += t02_sip_sfp/example_likelihood.h
 SipSfpExample_gsl_SOURCES += t02_sip_sfp/example_qoi.h
 SipSfpExample_gsl_CPPFLAGS = -I$(srcdir)/t02_sip_sfp $(AM_CPPFLAGS)
 
+SequenceExample_gsl_SOURCES =
+SequenceExample_gsl_SOURCES += t03_sequence/example_main.C
+SequenceExample_gsl_SOURCES += t03_sequence/example_compute.C
+SequenceExample_gsl_SOURCES += t03_sequence/example_compute.h
+SequenceExample_gsl_CPPFLAGS = -I$(srcdir)/t03_sequence $(AM_CPPFLAGS)
+
 BimodalExample_gsl_SOURCES =
 BimodalExample_gsl_SOURCES += t04_bimodal/example_main.C
 BimodalExample_gsl_SOURCES += t04_bimodal/example_compute.C
@@ -306,6 +311,7 @@ srcstamp += $(test_optimizer_input_parameters_SOURCES)
 srcstamp += $(test_sip_gslopt_options_SOURCES)
 srcstamp += $(test_mala_SOURCES)
 srcstamp += $(TgaValidationCycle_gsl_SOURCES)
+srcstamp += $(SequenceExample_gsl_SOURCES)
 srcstamp += $(SipSfpExample_gsl_SOURCES)
 
 TESTS =
@@ -386,6 +392,7 @@ TESTS += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 TESTS += test_mala
 TESTS += t01_valid_cycle/rtest01.sh
 TESTS += t02_sip_sfp/rtest02.sh
+# TESTS += rtest03.sh  # Leaving disabled for now, need to check with Ernesto
 TESTS += t04_bimodal/rtest04.sh
 
 XFAIL_TESTS = test_SequenceOfVectorsErase
@@ -441,6 +448,9 @@ EXTRA_DIST += t01_valid_cycle/tgaCycle.inp
 EXTRA_DIST += t02_sip_sfp/regression
 EXTRA_DIST += t02_sip_sfp/rtest02.sh
 EXTRA_DIST += t02_sip_sfp/example.inp
+
+EXTRA_DIST += t03_sequence/rtest03.sh
+EXTRA_DIST += t03_sequence/example.inp
 
 EXTRA_DIST += t04_bimodal/regression
 EXTRA_DIST += t04_bimodal/rtest04.sh
