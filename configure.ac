@@ -266,7 +266,6 @@ AC_CONFIG_FILES([
   examples/Makefile
   test/Makefile
   test/t03_sequence/Makefile
-  test/t04_bimodal/Makefile
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page

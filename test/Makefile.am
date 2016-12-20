@@ -1,4 +1,4 @@
-SUBDIRS    = t03_sequence t04_bimodal
+SUBDIRS    = t03_sequence
 
 BUILT_SOURCES =
 
@@ -80,6 +80,7 @@ check_PROGRAMS += test_sip_gslopt_options
 check_PROGRAMS += test_mala
 check_PROGRAMS += TgaValidationCycle_gsl
 check_PROGRAMS += SipSfpExample_gsl
+check_PROGRAMS += BimodalExample_gsl
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -219,6 +220,14 @@ SipSfpExample_gsl_SOURCES += t02_sip_sfp/example_compute.h
 SipSfpExample_gsl_SOURCES += t02_sip_sfp/example_likelihood.h
 SipSfpExample_gsl_SOURCES += t02_sip_sfp/example_qoi.h
 SipSfpExample_gsl_CPPFLAGS = -I$(srcdir)/t02_sip_sfp $(AM_CPPFLAGS)
+
+BimodalExample_gsl_SOURCES =
+BimodalExample_gsl_SOURCES += t04_bimodal/example_main.C
+BimodalExample_gsl_SOURCES += t04_bimodal/example_compute.C
+BimodalExample_gsl_SOURCES += t04_bimodal/example_likelihood.C
+BimodalExample_gsl_SOURCES += t04_bimodal/example_compute.h
+BimodalExample_gsl_SOURCES += t04_bimodal/example_likelihood.h
+BimodalExample_gsl_CPPFLAGS = -I$(srcdir)/t04_bimodal $(AM_CPPFLAGS)
 
 # Files to freedom stamp
 srcstamp =
@@ -377,6 +386,7 @@ TESTS += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 TESTS += test_mala
 TESTS += t01_valid_cycle/rtest01.sh
 TESTS += t02_sip_sfp/rtest02.sh
+TESTS += t04_bimodal/rtest04.sh
 
 XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
@@ -431,6 +441,10 @@ EXTRA_DIST += t01_valid_cycle/tgaCycle.inp
 EXTRA_DIST += t02_sip_sfp/regression
 EXTRA_DIST += t02_sip_sfp/rtest02.sh
 EXTRA_DIST += t02_sip_sfp/example.inp
+
+EXTRA_DIST += t04_bimodal/regression
+EXTRA_DIST += t04_bimodal/rtest04.sh
+EXTRA_DIST += t04_bimodal/example_1chain.inp
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
