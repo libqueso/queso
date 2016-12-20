@@ -66,7 +66,7 @@ uqAppl(const QUESO::BaseEnvironment& env)
   }
 
   const std::string inputDataDir = std::string(std::getenv("srcdir"))
-    + "/inputData";
+    + "/t01_valid_cycle/inputData";
 
   int iRC;
   struct timeval timevalRef;
