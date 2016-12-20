@@ -9,7 +9,7 @@
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (relative)
 SAVELOG=1		                   # Log model output?
-COMMONDIR="$srcdir/../common"
+COMMONDIR="$srcdir/common"
 
 #----------------
 # Initialization
@@ -32,10 +32,10 @@ RUNDIR=`pwd`
 # VERIFY_DATE="06-11-2014"
 # VERIFY_DATE="09-15-2014"
 VERIFY_DATE="05-01-2015"
-SOLDIR="outputData"
+SOLDIR="./output_test_SipSfpExample_gsl"
 EXE="./SipSfpExample_gsl"   # executable name
-SOLREFS="$srcdir/regression/$VERIFY_DATE"
-INFILE="$srcdir/example.inp"
+SOLREFS="$srcdir/t02_sip_sfp/regression/$VERIFY_DATE"
+INFILE="$srcdir/t02_sip_sfp/example.inp"
 TESTNAME='Test 2 (Sip + Sfp example)'
 
 # Setup desired input for the model
@@ -49,7 +49,7 @@ verify_file_exists $INFILE
 # Remove output directory to nullify any previous results (and verify QUESO
 # creates necessary parent directory).
 
-rm -rf ./outputData
+rm -rf $SOLDIR
 
 # Run the model
 

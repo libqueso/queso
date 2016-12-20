@@ -265,7 +265,6 @@ AC_CONFIG_FILES([
   src/contrib/ANN/test/Makefile
   examples/Makefile
   test/Makefile
-  test/t02_sip_sfp/Makefile
   test/t03_sequence/Makefile
   test/t04_bimodal/Makefile
   doxygen/Makefile
