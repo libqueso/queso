@@ -34,12 +34,18 @@ int main(int argc, char* argv[])
 {
   int return_flag = 0;
 
+  std::string inputFileName = "gsl_tests/input";
+  const char * test_srcdir = std::getenv("srcdir");
+  if (test_srcdir) {
+    inputFileName = test_srcdir + ('/' + inputFileName);
+  }
+
    // Initialize environment
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
-  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,"input","",NULL);
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,inputFileName,"",NULL);
 #else
-  QUESO::FullEnvironment* env = new QUESO::FullEnvironment("input","",NULL);
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(inputFileName,"",NULL);
 #endif
 
   return_flag = actualChecking(env);
