@@ -22,23 +22,23 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/GslVector.h>
-#include <queso/GslMatrix.h>
 #include <queso/AlgorithmFactory.h>
+#include <queso/AlgorithmFactoryInitializer.h>
 
 namespace QUESO
 {
 
-template <>
-std::map<std::string, Factory<Algorithm<GslVector, GslMatrix> > *> &
-Factory<Algorithm<GslVector, GslMatrix> >::factory_map()
+AlgorithmFactoryInitializer::AlgorithmFactoryInitializer()
 {
-  static std::map<std::string, Factory<Algorithm<GslVector, GslMatrix> > *> _factory_map;
+  // Instantiate all the algorithm factories
+  static AlgorithmFactoryImp<Algorithm<GslVector, GslMatrix> > random_walk_alg("random_walk");
+  static AlgorithmFactoryImp<Algorithm<GslVector, GslMatrix> > logit_random_walk_alg("logit_random_walk");
 
-  return _factory_map;
 }
 
-const BaseEnvironment * AlgorithmFactory::m_env = NULL;
-const BaseTKGroup<GslVector, GslMatrix> * AlgorithmFactory::m_tk = NULL;
+AlgorithmFactoryInitializer::~AlgorithmFactoryInitializer()
+{
+  // Do nothing
+}
 
 } // namespace QUESO

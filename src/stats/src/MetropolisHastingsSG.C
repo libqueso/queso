@@ -37,6 +37,7 @@
 
 #include <queso/TKFactoryInitializer.h>
 #include <queso/TransitionKernelFactory.h>
+#include <queso/AlgorithmFactoryInitializer.h>
 #include <queso/AlgorithmFactory.h>
 
 namespace QUESO {
@@ -556,6 +557,9 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   TransitionKernelFactory::set_dr_scales(drScalesAll);
   TransitionKernelFactory::set_target_pdf(m_targetPdf);
   m_tk = TransitionKernelFactory::build(m_optionsObj->m_tk);
+
+  // This instantiates all the algorithms with their associated factories
+  AlgorithmFactoryInitializer algorithm_factory_initializer;
 
   AlgorithmFactory::set_environment(m_env);
   AlgorithmFactory::set_tk(*m_tk);

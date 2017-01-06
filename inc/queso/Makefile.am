@@ -29,6 +29,7 @@ BUILT_SOURCES += VectorSpace.h
 BUILT_SOURCES += VectorSubset.h
 BUILT_SOURCES += getpot.h
 BUILT_SOURCES += AlgorithmFactory.h
+BUILT_SOURCES += AlgorithmFactoryInitializer.h
 BUILT_SOURCES += BaseInputOptionsParser.h
 BUILT_SOURCES += BasicPdfsBase.h
 BUILT_SOURCES += BasicPdfsBoost.h
@@ -257,6 +258,8 @@ VectorSubset.h: $(top_srcdir)/src/basic/inc/VectorSubset.h
 getpot.h: $(top_srcdir)/src/contrib/getpot/getpot.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 AlgorithmFactory.h: $(top_srcdir)/src/core/inc/AlgorithmFactory.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+AlgorithmFactoryInitializer.h: $(top_srcdir)/src/core/inc/AlgorithmFactoryInitializer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BaseInputOptionsParser.h: $(top_srcdir)/src/core/inc/BaseInputOptionsParser.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
