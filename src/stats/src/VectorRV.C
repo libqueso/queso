@@ -95,6 +95,13 @@ BaseVectorRV<V,M>::pdf() const
 }
 //---------------------------------------------------
 template<class V, class M>
+bool
+BaseVectorRV<V,M>::has_realizer() const
+{
+  return (m_realizer != NULL);
+}
+//---------------------------------------------------
+template<class V, class M>
 const BaseVectorRealizer<V,M>&
 BaseVectorRV<V,M>::realizer() const
 {
