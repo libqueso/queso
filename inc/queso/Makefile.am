@@ -65,6 +65,7 @@ BUILT_SOURCES += RngBoost.h
 BUILT_SOURCES += RngGsl.h
 BUILT_SOURCES += ScopedPtr.h
 BUILT_SOURCES += SharedPtr.h
+BUILT_SOURCES += TKFactoryInitializer.h
 BUILT_SOURCES += TKFactoryLogitRandomWalk.h
 BUILT_SOURCES += TKFactoryMALA.h
 BUILT_SOURCES += TKFactoryRandomWalk.h
@@ -328,6 +329,8 @@ RngGsl.h: $(top_srcdir)/src/core/inc/RngGsl.h
 ScopedPtr.h: $(top_srcdir)/src/core/inc/ScopedPtr.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SharedPtr.h: $(top_srcdir)/src/core/inc/SharedPtr.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TKFactoryInitializer.h: $(top_srcdir)/src/core/inc/TKFactoryInitializer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TKFactoryLogitRandomWalk.h: $(top_srcdir)/src/core/inc/TKFactoryLogitRandomWalk.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

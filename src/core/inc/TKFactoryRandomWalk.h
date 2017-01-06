@@ -52,7 +52,18 @@ public:
   virtual ~TKFactoryRandomWalk() {}
 
 protected:
-  virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk();
+  virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk()
+  {
+    SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk;
+
+    new_tk.reset(new DerivedTK(this->m_options->m_prefix.c_str(),
+                               *(this->m_vectorSpace),
+                               *(this->m_dr_scales),
+                               *(this->m_initial_cov_matrix)));
+
+    return new_tk;
+  }
+
 };
 
 } // namespace QUESO

@@ -22,33 +22,32 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/TKFactoryInitializer.h>
+
+#include <queso/TKFactoryRandomWalk.h>
 #include <queso/TKFactoryMALA.h>
+#include <queso/TKFactoryLogitRandomWalk.h>
+#include <queso/TKFactoryStochasticNewton.h>
+#include <queso/ScaledCovMatrixTKGroup.h>
+#include <queso/TransformedScaledCovMatrixTKGroup.h>
 #include <queso/MetropolisAdjustedLangevinTK.h>
-#include <queso/BayesianJointPdf.h>
+#include <queso/HessianCovMatricesTKGroup.h>
 
 namespace QUESO
 {
 
-template <class DerivedTK>
-SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type
-TKFactoryMALA<DerivedTK>::build_tk()
+TKFactoryInitializer::TKFactoryInitializer()
 {
-  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk;
-
-  // Assume the problem is Bayesian
-  const BayesianJointPdf<GslVector, GslMatrix> * target_bayesian_pdf =
-    dynamic_cast<const BayesianJointPdf<GslVector, GslMatrix> *>(
-        this->m_target_pdf);
-
-  new_tk.reset(new DerivedTK(this->m_options->m_prefix.c_str(),
-                             *target_bayesian_pdf,
-                             *(this->m_dr_scales),
-                             *(this->m_initial_cov_matrix)));
-
-  return new_tk;
+  // Instantiate all the transition kernel factories
+  static TKFactoryRandomWalk<ScaledCovMatrixTKGroup<GslVector, GslMatrix> > tk_factory_random_walk("random_walk");
+  static TKFactoryLogitRandomWalk<TransformedScaledCovMatrixTKGroup<GslVector, GslMatrix> > tk_factory_logit_random_walk("logit_random_walk");
+  static TKFactoryStochasticNewton<HessianCovMatricesTKGroup<GslVector, GslMatrix> > tk_factory_stochastic_newton("stochastic_newton");
+  static TKFactoryMALA<MetropolisAdjustedLangevinTK<GslVector, GslMatrix> > tk_factory_mala("mala");
 }
 
-// Instantiate all the transition kernel factories
-TKFactoryMALA<MetropolisAdjustedLangevinTK<GslVector, GslMatrix> > tk_factory_mala("mala");
+TKFactoryInitializer::~TKFactoryInitializer()
+{
+  // Do nothing
+}
 
 } // namespace QUESO

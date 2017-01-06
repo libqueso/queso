@@ -35,6 +35,7 @@
 
 #include <queso/GaussianJointPdf.h>
 
+#include <queso/TKFactoryInitializer.h>
 #include <queso/TransitionKernelFactory.h>
 #include <queso/AlgorithmFactory.h>
 
@@ -543,6 +544,10 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
     transformInitialCovMatrixToGaussianSpace(
         dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
   }
+
+  // This instantiates all the transition kernels with their associated
+  // factories
+  TKFactoryInitializer tk_factory_initializer;
 
   TransitionKernelFactory::set_vectorspace(m_vectorSpace);
   TransitionKernelFactory::set_options(*m_optionsObj);
