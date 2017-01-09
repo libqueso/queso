@@ -35,7 +35,9 @@
 
 #include <queso/GaussianJointPdf.h>
 
+#include <queso/TKFactoryInitializer.h>
 #include <queso/TransitionKernelFactory.h>
+#include <queso/AlgorithmFactoryInitializer.h>
 #include <queso/AlgorithmFactory.h>
 
 namespace QUESO {
@@ -544,6 +546,10 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
         dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
   }
 
+  // This instantiates all the transition kernels with their associated
+  // factories
+  TKFactoryInitializer tk_factory_initializer;
+
   TransitionKernelFactory::set_vectorspace(m_vectorSpace);
   TransitionKernelFactory::set_options(*m_optionsObj);
   TransitionKernelFactory::set_pdf_synchronizer(*m_targetPdfSynchronizer);
@@ -551,6 +557,9 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
   TransitionKernelFactory::set_dr_scales(drScalesAll);
   TransitionKernelFactory::set_target_pdf(m_targetPdf);
   m_tk = TransitionKernelFactory::build(m_optionsObj->m_tk);
+
+  // This instantiates all the algorithms with their associated factories
+  AlgorithmFactoryInitializer algorithm_factory_initializer;
 
   AlgorithmFactory::set_environment(m_env);
   AlgorithmFactory::set_tk(*m_tk);

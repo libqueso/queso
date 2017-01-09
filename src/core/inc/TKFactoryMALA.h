@@ -27,6 +27,7 @@
 
 #include <queso/TransitionKernelFactory.h>
 #include <queso/TKGroup.h>
+#include <queso/BayesianJointPdf.h>
 
 namespace QUESO
 {
@@ -52,7 +53,23 @@ public:
   virtual ~TKFactoryMALA() {}
 
 protected:
-  virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk();
+  virtual SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type build_tk()
+  {
+    SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk;
+
+    // Assume the problem is Bayesian
+    const BayesianJointPdf<GslVector, GslMatrix> * target_bayesian_pdf =
+      dynamic_cast<const BayesianJointPdf<GslVector, GslMatrix> *>(
+          this->m_target_pdf);
+
+    new_tk.reset(new DerivedTK(this->m_options->m_prefix.c_str(),
+                               *target_bayesian_pdf,
+                               *(this->m_dr_scales),
+                               *(this->m_initial_cov_matrix)));
+
+    return new_tk;
+  }
+
 };
 
 } // namespace QUESO
