@@ -76,6 +76,9 @@ public:
   //! Posterior Density Function of the vector RV; access to private attribute m_pdf.
   const   BaseJointPdf      <V,M>& pdf       () const;
 
+  //! Returns true iff this RV has the ability to produce realizations (samples)
+          bool                  has_realizer () const;
+
   //! Finds a realization (sample) of the PDF of this vector RV; access to private attribute m_realizer.
   const   BaseVectorRealizer<V,M>& realizer  () const;
 
