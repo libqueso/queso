@@ -105,18 +105,18 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // theta(dimParameter)
   // emulator_mean                // = "mu"
   // emulator_precision           // = "lambda_eta"
-  // weights_precision(1)         // = "lambda_{wi}" in vector case
+  // weights_precision(1)         // = "lambda_{w i}" in vector case
   // ...                          // nonexistent in scalar case
   // weights_precision(num_svd_terms)
   // emulator_corr_strength(1)    // = "rho_{eta k}"
   // ...                          // dimScenario = "p_x", dimParameter = "p_t"
   // emulator_corr_strength(dimScenario + dimParameter)
   // discrepancy_precision(1)     // = "lambda_delta" in scalar case,
-  //                              //   "lambda_{vi}" in vector
+  //                              //   "lambda_{v i}" in vector
   // ...
   // discrepancy_precision(F)     // FIXME: F = 1, |G_1| = p_delta, for now.
-  // discrepancy_corr_strength(1) // = "rho_{deltak}"
-  // ...
+  // discrepancy_corr_strength(1) // = "rho_{delta k}" in scalar case,
+  // ...                          //   "rho_{v i}" in vector
   // discrepancy_corr_strength(dimScenario)
   // emulator_data_precision(1)   // = "small white noise", "small ridge"
   // observation_error_precision  // = "lambda_y", only in vector case
