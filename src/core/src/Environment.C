@@ -34,8 +34,10 @@
 #include <queso/EnvironmentOptions.h>
 #include <queso/RngGsl.h>
 #include <queso/RngBoost.h>
+#include <queso/RngCXX11.h>
 #include <queso/BasicPdfsGsl.h>
 #include <queso/BasicPdfsBoost.h>
+#include <queso/BasicPdfsCXX11.h>
 #include <queso/Miscellaneous.h>
 #include <sys/time.h>
 #ifdef HAVE_GRVY
@@ -1430,6 +1432,14 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
     m_rngObject.reset(new RngBoost(m_optionsObj->m_seed,m_worldRank));
     m_basicPdfs.reset(new BasicPdfsBoost(m_worldRank));
   }
+  else if (m_optionsObj->m_rngType == "cxx11") {
+#ifdef QUESO_HAVE_CXX11
+    m_rngObject.reset(new RngCXX11(m_optionsObj->m_seed, m_worldRank));
+    m_basicPdfs.reset(new BasicPdfsCXX11(m_worldRank));
+#else
+    queso_error_msg("C++11 RNGs requested, but QUESO wasn't compiled with C++11 support");
+#endif
+  }
   else {
     std::cerr << "In Environment::constructor()"
               << ": rngType = " << m_optionsObj->m_rngType
@@ -1674,6 +1684,14 @@ FullEnvironment::construct (const char *prefix)
   else if (m_optionsObj->m_rngType == "boost") {
     m_rngObject.reset(new RngBoost(m_optionsObj->m_seed,m_worldRank));
     m_basicPdfs.reset(new BasicPdfsBoost(m_worldRank));
+  }
+  else if (m_optionsObj->m_rngType == "cxx11") {
+#ifdef QUESO_HAVE_CXX11
+    m_rngObject.reset(new RngCXX11(m_optionsObj->m_seed, m_worldRank));
+    m_basicPdfs.reset(new BasicPdfsCXX11(m_worldRank));
+#else
+    queso_error_msg("C++11 RNGs requested, but QUESO wasn't compiled with C++11 support");
+#endif
   }
   else {
     std::cerr << "In Environment::constructor()"
