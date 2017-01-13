@@ -32,6 +32,7 @@ BUILT_SOURCES += AlgorithmFactory.h
 BUILT_SOURCES += BaseInputOptionsParser.h
 BUILT_SOURCES += BasicPdfsBase.h
 BUILT_SOURCES += BasicPdfsBoost.h
+BUILT_SOURCES += BasicPdfsCXX11.h
 BUILT_SOURCES += BasicPdfsGsl.h
 BUILT_SOURCES += BoostInputOptionsParser.h
 BUILT_SOURCES += Defines.h
@@ -264,6 +265,8 @@ BaseInputOptionsParser.h: $(top_srcdir)/src/core/inc/BaseInputOptionsParser.h
 BasicPdfsBase.h: $(top_srcdir)/src/core/inc/BasicPdfsBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsBoost.h: $(top_srcdir)/src/core/inc/BasicPdfsBoost.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BasicPdfsCXX11.h: $(top_srcdir)/src/core/inc/BasicPdfsCXX11.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsGsl.h: $(top_srcdir)/src/core/inc/BasicPdfsGsl.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
