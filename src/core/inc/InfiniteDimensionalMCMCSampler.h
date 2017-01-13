@@ -36,9 +36,6 @@
 #include <queso/InfiniteDimensionalLikelihoodBase.h>
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 
-// GSL includes
-#include <gsl/gsl_rng.h>
-
 // HDF5 includes
 #include <hdf5.h>
 
@@ -125,10 +122,6 @@ private:
 
   // Stores a running sum-of-squares (kinda)
   SharedPtr<FunctionBase>::Type _M2;
-
-  // A pointer to the random number generator to use.
-  // Should probably use the one in the queso environment.
-  gsl_rng *r;
 
   // HDF5 file identifier
   hid_t _outfile;
