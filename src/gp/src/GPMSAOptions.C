@@ -124,19 +124,64 @@ GPMSAOptions::parse(const BaseEnvironment & env,
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser.reset(new BoostInputOptionsParser(env.optionsInputFileName()));
 
-  m_parser->registerOption<std::string>(m_option_help, UQ_GPMSA_HELP, "produce help message Gaussian process emulator");
-  m_parser->registerOption<double>(m_option_emulatorPrecisionShape, UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV, "shape hyperprior (Gamma) parameter for emulator precision");
-  m_parser->registerOption<double>(m_option_emulatorPrecisionScale, UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV, "scale hyperprior (Gamma) parameter for emulator precision");
-  m_parser->registerOption<double>(m_option_observationalPrecisionShape, UQ_GPMSA_OBSERVATIONAL_PRECISION_SHAPE_ODV, "shape hyperprior (Gamma) parameter for observational precision");
-  m_parser->registerOption<double>(m_option_observationalPrecisionScale, UQ_GPMSA_OBSERVATIONAL_PRECISION_SCALE_ODV, "scale hyperprior (Gamma) parameter for observational precision");
-  m_parser->registerOption<double>(m_option_emulatorCorrelationStrengthAlpha, UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV, "alpha hyperprior (Beta) parameter for emulator correlation strength");
-  m_parser->registerOption<double>(m_option_emulatorCorrelationStrengthBeta, UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV, "beta hyperprior (Beta) parameter for emulator correlation strength");
-  m_parser->registerOption<double>(m_option_discrepancyPrecisionShape, UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV, "shape hyperprior (Gamma) parameter for discrepancy precision");
-  m_parser->registerOption<double>(m_option_discrepancyPrecisionScale, UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV, "scale hyperprior (Gamma) parameter for discrepancy precision");
-  m_parser->registerOption<double>(m_option_discrepancyCorrelationStrengthAlpha, UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV, "alpha hyperprior (Beta) parameter for discrepancy correlation strength");
-  m_parser->registerOption<double>(m_option_discrepancyCorrelationStrengthBeta, UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV, "beta hyperprior (Beta) parameter for discrepancy correlation strength");
-  m_parser->registerOption<double>(m_option_emulatorDataPrecisionShape, UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV, "shape hyperprior (Gamma) parameter for emulator data precision");
-  m_parser->registerOption<double>(m_option_emulatorDataPrecisionScale, UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV, "scale hyperprior (Gamma) parameter for emulator data precision");
+  m_parser->registerOption<std::string>
+    (m_option_help,
+     m_help,
+     "produce help message Gaussian process emulator");
+
+  m_parser->registerOption
+    (m_option_emulatorPrecisionShape,
+     m_emulatorPrecisionShape,
+     "shape hyperprior (Gamma) parameter for emulator precision");
+  m_parser->registerOption
+    (m_option_emulatorPrecisionScale,
+    m_emulatorPrecisionScale,
+    "scale hyperprior (Gamma) parameter for emulator precision");
+
+  m_parser->registerOption
+    (m_option_observationalPrecisionShape,
+    m_observationalPrecisionShape,
+    "shape hyperprior (Gamma) parameter for observational precision");
+  m_parser->registerOption
+    (m_option_observationalPrecisionScale,
+    m_observationalPrecisionScale,
+    "scale hyperprior (Gamma) parameter for observational precision");
+
+  m_parser->registerOption
+    (m_option_emulatorCorrelationStrengthAlpha,
+    m_emulatorCorrelationStrengthAlpha,
+    "alpha hyperprior (Beta) parameter for emulator correlation strength");
+  m_parser->registerOption
+    (m_option_emulatorCorrelationStrengthBeta,
+    m_emulatorCorrelationStrengthBeta,
+    "beta hyperprior (Beta) parameter for emulator correlation strength");
+
+  m_parser->registerOption
+    (m_option_discrepancyPrecisionShape,
+    m_discrepancyPrecisionShape,
+    "shape hyperprior (Gamma) parameter for discrepancy precision");
+  m_parser->registerOption
+    (m_option_discrepancyPrecisionScale,
+    m_discrepancyPrecisionScale,
+    "scale hyperprior (Gamma) parameter for discrepancy precision");
+
+  m_parser->registerOption
+    (m_option_discrepancyCorrelationStrengthAlpha,
+    m_discrepancyCorrelationStrengthAlpha,
+    "alpha hyperprior (Beta) parameter for discrepancy correlation strength");
+  m_parser->registerOption
+    (m_option_discrepancyCorrelationStrengthBeta,
+    m_discrepancyCorrelationStrengthBeta,
+    "beta hyperprior (Beta) parameter for discrepancy correlation strength");
+
+  m_parser->registerOption
+    (m_option_emulatorDataPrecisionShape,
+    m_emulatorDataPrecisionShape,
+    "shape hyperprior (Gamma) parameter for emulator data precision");
+  m_parser->registerOption
+    (m_option_emulatorDataPrecisionScale,
+    m_emulatorDataPrecisionScale,
+    "scale hyperprior (Gamma) parameter for emulator data precision");
 
   m_parser->scanInputFile();
 
@@ -155,18 +200,47 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<double>(m_option_emulatorDataPrecisionScale,          m_emulatorDataPrecisionScale);
 #else
   m_help = env.input()(m_option_help, UQ_GPMSA_HELP);
-  m_emulatorPrecisionShape = env.input()(m_option_emulatorPrecisionShape, UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV);
-  m_emulatorPrecisionScale = env.input()(m_option_emulatorPrecisionScale, UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV);
-  m_observationalPrecisionShape = env.input()(m_option_observationalPrecisionShape, UQ_GPMSA_OBSERVATIONAL_PRECISION_SHAPE_ODV);
-  m_observationalPrecisionScale = env.input()(m_option_observationalPrecisionScale, UQ_GPMSA_OBSERVATIONAL_PRECISION_SCALE_ODV);
-  m_emulatorCorrelationStrengthAlpha = env.input()(m_option_emulatorCorrelationStrengthAlpha, UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV);
-  m_emulatorCorrelationStrengthBeta = env.input()(m_option_emulatorCorrelationStrengthBeta, UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV);
-  m_discrepancyPrecisionShape = env.input()(m_option_discrepancyPrecisionShape, UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV);
-  m_discrepancyPrecisionScale = env.input()(m_option_discrepancyPrecisionScale, UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV);
-  m_discrepancyCorrelationStrengthAlpha = env.input()(m_option_discrepancyCorrelationStrengthAlpha, UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV);
-  m_discrepancyCorrelationStrengthBeta = env.input()(m_option_discrepancyCorrelationStrengthBeta, UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV);
-  m_emulatorDataPrecisionShape = env.input()(m_option_emulatorDataPrecisionShape, UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV);
-  m_emulatorDataPrecisionScale = env.input()(m_option_emulatorDataPrecisionScale, UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV);
+  m_emulatorPrecisionShape =
+    env.input()(m_option_emulatorPrecisionShape,
+                m_emulatorPrecisionShape);
+  m_emulatorPrecisionScale =
+    env.input()(m_option_emulatorPrecisionScale,
+                m_emulatorPrecisionScale);
+
+  m_observationalPrecisionShape =
+    env.input()(m_option_observationalPrecisionShape,
+                m_observationalPrecisionShape);
+  m_observationalPrecisionScale =
+    env.input()(m_option_observationalPrecisionScale,
+                m_observationalPrecisionScale);
+
+  m_emulatorCorrelationStrengthAlpha =
+    env.input()(m_option_emulatorCorrelationStrengthAlpha,
+                m_emulatorCorrelationStrengthAlpha);
+  m_emulatorCorrelationStrengthBeta =
+    env.input()(m_option_emulatorCorrelationStrengthBeta,
+                m_emulatorCorrelationStrengthBeta);
+
+  m_discrepancyPrecisionShape =
+    env.input()(m_option_discrepancyPrecisionShape,
+                m_discrepancyPrecisionShape);
+  m_discrepancyPrecisionScale =
+    env.input()(m_option_discrepancyPrecisionScale,
+                m_discrepancyPrecisionScale);
+
+  m_discrepancyCorrelationStrengthAlpha =
+    env.input()(m_option_discrepancyCorrelationStrengthAlpha,
+                m_discrepancyCorrelationStrengthAlpha);
+  m_discrepancyCorrelationStrengthBeta =
+    env.input()(m_option_discrepancyCorrelationStrengthBeta,
+                m_discrepancyCorrelationStrengthBeta);
+
+  m_emulatorDataPrecisionShape =
+    env.input()(m_option_emulatorDataPrecisionShape,
+                m_emulatorDataPrecisionShape);
+  m_emulatorDataPrecisionScale =
+    env.input()(m_option_emulatorDataPrecisionScale,
+                m_emulatorDataPrecisionScale);
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
