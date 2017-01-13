@@ -48,44 +48,82 @@ namespace QUESO {
 GPMSAOptions::GPMSAOptions(
   const BaseEnvironment & env,
   const char * prefix)
-  :
-  m_prefix((std::string)(prefix) + "gpmsa_"),
-  m_help(UQ_GPMSA_HELP),
-  m_emulatorPrecisionShape(UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV),
-  m_emulatorPrecisionScale(UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV),
-  m_observationalPrecisionShape(UQ_GPMSA_OBSERVATIONAL_PRECISION_SHAPE_ODV),
-  m_observationalPrecisionScale(UQ_GPMSA_OBSERVATIONAL_PRECISION_SCALE_ODV),
-  m_emulatorCorrelationStrengthAlpha(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV),
-  m_emulatorCorrelationStrengthBeta(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV),
-  m_discrepancyPrecisionShape(UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV),
-  m_discrepancyPrecisionScale(UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV),
-  m_discrepancyCorrelationStrengthAlpha(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV),
-  m_discrepancyCorrelationStrengthBeta(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV),
-  m_emulatorDataPrecisionShape(UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV),
-  m_emulatorDataPrecisionScale(UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV),
-  m_env(env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
-  m_option_help(m_prefix + "help"),
-  m_option_emulatorPrecisionShape(m_prefix + "emulator_precision_shape"),
-  m_option_emulatorPrecisionScale(m_prefix + "emulator_precision_scale"),
-  m_option_observationalPrecisionShape(m_prefix + "observational_precision_shape"),
-  m_option_observationalPrecisionScale(m_prefix + "observational_precision_scale"),
-  m_option_emulatorCorrelationStrengthAlpha(m_prefix + "emulator_correlation_strength_alpha"),
-  m_option_emulatorCorrelationStrengthBeta(m_prefix + "emulator_correlation_strength_beta"),
-  m_option_discrepancyPrecisionShape(m_prefix + "discrepancy_precision_shape"),
-  m_option_discrepancyPrecisionScale(m_prefix + "discrepancy_precision_scale"),
-  m_option_discrepancyCorrelationStrengthAlpha(m_prefix + "discrepancy_correlation_strength_alpha"),
-  m_option_discrepancyCorrelationStrengthBeta(m_prefix + "discrepancy_correlation_strength_beta"),
-  m_option_emulatorDataPrecisionShape(m_prefix + "emulator_data_precision_shape"),
-  m_option_emulatorDataPrecisionScale(m_prefix + "emulator_data_precision_scale")
 {
-  if (m_env.optionsInputFileName() == "") {
+  this->set_defaults();
+  this->parse(env, prefix);
+}
+
+
+GPMSAOptions::GPMSAOptions()
+  :
+  m_env(NULL),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+  m_parser(new BoostInputOptionsParser())
+#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+{
+  this->set_defaults();
+  this->set_prefix("");
+}
+
+
+void
+GPMSAOptions::set_prefix(const char * prefix)
+{
+  m_prefix = std::string(prefix) + "gpmsa_";
+
+  m_option_help = m_prefix + "help";
+  m_option_emulatorPrecisionShape = m_prefix + "emulator_precision_shape";
+  m_option_emulatorPrecisionScale = m_prefix + "emulator_precision_scale";
+  m_option_observationalPrecisionShape = m_prefix + "observational_precision_shape";
+  m_option_observationalPrecisionScale = m_prefix + "observational_precision_scale";
+  m_option_emulatorCorrelationStrengthAlpha = m_prefix + "emulator_correlation_strength_alpha";
+  m_option_emulatorCorrelationStrengthBeta = m_prefix + "emulator_correlation_strength_beta";
+  m_option_discrepancyPrecisionShape = m_prefix + "discrepancy_precision_shape";
+  m_option_discrepancyPrecisionScale = m_prefix + "discrepancy_precision_scale";
+  m_option_discrepancyCorrelationStrengthAlpha = m_prefix + "discrepancy_correlation_strength_alpha";
+  m_option_discrepancyCorrelationStrengthBeta = m_prefix + "discrepancy_correlation_strength_beta";
+  m_option_emulatorDataPrecisionShape = m_prefix + "emulator_data_precision_shape";
+  m_option_emulatorDataPrecisionScale = m_prefix + "emulator_data_precision_scale";
+}
+
+
+
+void
+GPMSAOptions::set_defaults()
+{
+  m_help = UQ_GPMSA_HELP;
+  m_emulatorPrecisionShape = UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV;
+  m_emulatorPrecisionScale = UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV;
+  m_observationalPrecisionShape = UQ_GPMSA_OBSERVATIONAL_PRECISION_SHAPE_ODV;
+  m_observationalPrecisionScale = UQ_GPMSA_OBSERVATIONAL_PRECISION_SCALE_ODV;
+  m_emulatorCorrelationStrengthAlpha = UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV;
+  m_emulatorCorrelationStrengthBeta = UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV;
+  m_discrepancyPrecisionShape = UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV;
+  m_discrepancyPrecisionScale = UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV;
+  m_discrepancyCorrelationStrengthAlpha = UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV;
+  m_discrepancyCorrelationStrengthBeta = UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV;
+  m_emulatorDataPrecisionShape = UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV;
+  m_emulatorDataPrecisionScale = UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV;
+
+  checkOptions();
+}
+
+
+void
+GPMSAOptions::parse(const BaseEnvironment & env,
+                    const char * prefix)
+{
+  m_env = &env;
+
+  if (m_env->optionsInputFileName() == "") {
     queso_error_msg("Missing input file is required");
   }
 
+  this->set_prefix(prefix);
+
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+  m_parser.reset(new BoostInputOptionsParser(env.optionsInputFileName()));
+
   m_parser->registerOption<std::string>(m_option_help, UQ_GPMSA_HELP, "produce help message Gaussian process emulator");
   m_parser->registerOption<double>(m_option_emulatorPrecisionShape, UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV, "shape hyperprior (Gamma) parameter for emulator precision");
   m_parser->registerOption<double>(m_option_emulatorPrecisionScale, UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV, "scale hyperprior (Gamma) parameter for emulator precision");
@@ -142,8 +180,8 @@ void
 GPMSAOptions::checkOptions()
 {
   if (m_help != "") {
-    if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << (*this) << std::endl;
+    if (m_env && m_env->subDisplayFile()) {
+      *m_env->subDisplayFile() << (*this) << std::endl;
     }
   }
 }

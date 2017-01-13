@@ -25,6 +25,7 @@
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#include <queso/ScopedPtr.h>
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #ifndef UQ_GPMSA_OPTIONS_H
@@ -43,8 +44,20 @@ namespace QUESO {
 class GPMSAOptions
 {
 public:
-  //! Given prefix, read the input file for parameters named prefix_*
+  //! Given prefix, read the input file for parameters named "prefix"+*
   GPMSAOptions(const BaseEnvironment& env, const char* prefix);
+
+  //! Construct with default parameters
+  GPMSAOptions();
+
+  //! Set parameter option names to begin with prefix
+  void set_prefix(const char* prefix);
+
+  //! Set default values for parameter options
+  void set_defaults();
+
+  //! Given prefix, read the input file for parameters named "prefix"+*
+  void parse(const BaseEnvironment& env, const char* prefix);
 
   //! Destructor
   virtual ~GPMSAOptions();
@@ -101,10 +114,10 @@ public:
   friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj);
 
 private:
-  const BaseEnvironment& m_env;
+  const BaseEnvironment * m_env;
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  BoostInputOptionsParser * m_parser;
+  QUESO::ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string m_option_help;
