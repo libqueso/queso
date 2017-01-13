@@ -74,14 +74,16 @@ public:
    * the option with a helpful message using \c description.
    */
   template <class T>
-  void registerOption(std::string name, T defaultValue, std::string description);
+  void registerOption(const std::string & name,
+                      const T & defaultValue,
+                      const std::string & description);
 
   //! For flags *without* values.  Like a help message, for example.
-  void registerOption(std::string name, std::string description);
+  void registerOption(const std::string & name, const std::string & description);
 
   //! Get option \c name from the parser and set \c value to the parsed value.
   template <class T>
-  void getOption(std::string & name, T & value);
+  void getOption(const std::string & name, T & value) const;
 
   //! Helpful stream operator for printing the parser state
   friend std::ostream & operator<<(std::ostream & os,
