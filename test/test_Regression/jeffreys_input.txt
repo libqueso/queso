@@ -7,6 +7,9 @@ env_subDisplayAllowAll   = 0
 env_subDisplayAllowedSet = 0
 env_displayVerbosity     = 2
 env_syncVerbosity        = 0
+
+# Force gsl; prevents regression failures with other rngs
+env_rngType              = gsl
 env_seed                 = 0
 
 ###############################################
