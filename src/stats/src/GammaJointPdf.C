@@ -91,7 +91,6 @@ GammaJointPdf<V,M>::lnValue(
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
     if (m_normalizationStyle == 0) {
-      //aux = log(gsl_ran_gamma_pdf(domainVector[i],m_a[i],m_b[i]));
       aux = log(m_env.basicPdfs()->gammaPdfActualValue(domainVector[i],m_a[i],m_b[i]));
     }
     else {
