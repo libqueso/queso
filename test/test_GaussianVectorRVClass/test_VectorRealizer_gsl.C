@@ -35,6 +35,9 @@ int main(int argc, char ** argv) {
 #endif
 
   EnvOptionsValues envOptionsValues;
+
+  // Force gsl to prevent regression failures with other rngs
+  envOptionsValues.m_rngType = "gsl";
 #ifdef QUESO_HAS_MPI
   FullEnvironment env(MPI_COMM_WORLD, "", "", &envOptionsValues);
 #else
