@@ -62,6 +62,7 @@ BUILT_SOURCES += OptimizerMonitor.h
 BUILT_SOURCES += OptimizerOptions.h
 BUILT_SOURCES += RngBase.h
 BUILT_SOURCES += RngBoost.h
+BUILT_SOURCES += RngCXX11.h
 BUILT_SOURCES += RngGsl.h
 BUILT_SOURCES += ScopedPtr.h
 BUILT_SOURCES += SharedPtr.h
@@ -323,6 +324,8 @@ OptimizerOptions.h: $(top_srcdir)/src/core/inc/OptimizerOptions.h
 RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBoost.h: $(top_srcdir)/src/core/inc/RngBoost.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+RngCXX11.h: $(top_srcdir)/src/core/inc/RngCXX11.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngGsl.h: $(top_srcdir)/src/core/inc/RngGsl.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
