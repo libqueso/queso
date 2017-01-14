@@ -3,7 +3,6 @@ BUILT_SOURCES =
 check_PROGRAMS = # Append below
 check_PROGRAMS += unit_driver
 check_PROGRAMS += test_gsl_get_set_row_column
-check_PROGRAMS += test_gsl_get_min_max_vec
 check_PROGRAMS += test_gsl_multiple_rhs_matrix_solve
 check_PROGRAMS += test_gsl_power_method
 check_PROGRAMS += test_gsl_inverse_power_method
@@ -123,9 +122,6 @@ unit_driver_SOURCES += unit/gsl_vector.C
 
 test_gsl_get_set_row_column_SOURCES = gsl_tests/get_set_row_column.C gsl_tests/get_set_row_column.h
 test_gsl_get_set_row_column_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
-
-test_gsl_get_min_max_vec_SOURCES = gsl_tests/get_min_max_vec.C gsl_tests/get_min_max_vec.h
-test_gsl_get_min_max_vec_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
 
 test_gsl_multiple_rhs_matrix_solve_SOURCES = gsl_tests/multiple_rhs_matrix_solve.C gsl_tests/multiple_rhs_matrix_solve.h
 test_gsl_multiple_rhs_matrix_solve_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
@@ -249,7 +245,6 @@ BimodalExample_gsl_CPPFLAGS = -I$(srcdir)/t04_bimodal $(AM_CPPFLAGS)
 # Files to freedom stamp
 srcstamp =
 srcstamp += $(test_gsl_get_set_row_column_SOURCES)
-srcstamp += $(test_gsl_get_min_max_vec_SOURCES)
 srcstamp += $(test_gsl_multiple_rhs_matrix_solve_SOURCES)
 srcstamp += $(test_gsl_power_method_SOURCES)
 srcstamp += $(test_gsl_inverse_power_method_SOURCES)
@@ -329,7 +324,6 @@ srcstamp += $(SipSfpExample_gsl_SOURCES)
 TESTS =
 TESTS += unit_driver
 TESTS += test_gsl_get_set_row_column
-TESTS += test_gsl_get_min_max_vec
 TESTS += test_gsl_multiple_rhs_matrix_solve
 TESTS += test_gsl_power_method
 TESTS += test_gsl_inverse_power_method
