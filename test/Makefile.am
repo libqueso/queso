@@ -119,6 +119,7 @@ endif
 
 unit_driver_SOURCES  = unit/unit_driver.C
 unit_driver_SOURCES += unit/gsl_vector.C
+unit_driver_SOURCES += unit/gsl_matrix.C
 
 test_gsl_get_set_row_column_SOURCES = gsl_tests/get_set_row_column.C gsl_tests/get_set_row_column.h
 test_gsl_get_set_row_column_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
