@@ -137,6 +137,16 @@ BaseScalarFunction<V, M>::lnValue(const V & domainVector,
   queso_error_msg(msg);
 }
 
+template <class V, class M>
+void
+BaseScalarFunction<V, M>::setFiniteDifferenceStepSize(double fdStepSize)
+{
+  queso_require_greater_msg(fdStepSize, 0.0,
+                            "Must provide a finite difference step > 0");
+
+  this->m_fdStepSize = fdStepSize;
+}
+
 }  // End namespace QUESO
 
 template class QUESO::BaseScalarFunction<QUESO::GslVector, QUESO::GslMatrix>;

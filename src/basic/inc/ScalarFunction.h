@@ -134,6 +134,13 @@ public:
       V * gradVector, M * hessianMatrix, V * hessianEffect) const = 0;
   //@}
 
+  //! Sets the step size for finite differencing gradients
+  /*!
+   * If the function is multi-dimensional then the same finite difference step
+   * size is used in every direction.
+   */
+  void setFiniteDifferenceStepSize(double fdStepSize);
+
 protected:
   const BaseEnvironment & m_env;
   std::string m_prefix;
