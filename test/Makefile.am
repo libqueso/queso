@@ -1,6 +1,7 @@
 BUILT_SOURCES =
 
 check_PROGRAMS = # Append below
+check_PROGRAMS += unit_driver
 check_PROGRAMS += test_gsl_get_set_row_column
 check_PROGRAMS += test_gsl_get_min_max_vec
 check_PROGRAMS += test_gsl_multiple_rhs_matrix_solve
@@ -88,6 +89,14 @@ AM_CPPFLAGS += -I.
 AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
+#----------------
+# CppUnit support
+#----------------
+if QUESO_ENABLE_CPPUNIT
+  AM_CPPFLAGS += $(CPPUNIT_CPPFLAGS)
+  LIBS += $(CPPUNIT_LIBS)
+endif
+
 if GRVY_ENABLED
   AM_CPPFLAGS += $(GRVY_CFLAGS)
 endif
@@ -108,6 +117,8 @@ endif
 if LIBMESH_SLEPC_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
 endif
+
+unit_driver_SOURCES = unit/unit_driver.C
 
 test_gsl_get_set_row_column_SOURCES = gsl_tests/get_set_row_column.C gsl_tests/get_set_row_column.h
 test_gsl_get_set_row_column_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
@@ -315,6 +326,7 @@ srcstamp += $(SequenceExample_gsl_SOURCES)
 srcstamp += $(SipSfpExample_gsl_SOURCES)
 
 TESTS =
+TESTS += unit_driver
 TESTS += test_gsl_get_set_row_column
 TESTS += test_gsl_get_min_max_vec
 TESTS += test_gsl_multiple_rhs_matrix_solve
