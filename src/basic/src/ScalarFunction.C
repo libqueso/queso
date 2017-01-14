@@ -22,10 +22,13 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/VectorSet.h>
 #include <queso/ScalarFunction.h>
+#include <queso/VectorSet.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/BoostInputOptionsParser.h>
+
+#define QUESO_BASESCALARFN_FD_STEPSIZE_ODV 1e-6
 
 namespace QUESO {
 
@@ -35,8 +38,27 @@ BaseScalarFunction<V, M>::BaseScalarFunction(const char * prefix,
     const VectorSet<V, M> & domainSet)
   : m_env(domainSet.env()),
     m_prefix((std::string)(prefix) + "func_"),
-    m_domainSet(domainSet)
+    m_domainSet(domainSet),
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+    m_parser(new BoostInputOptionsParser(m_env.optionsInputFileName())),
+#endif
+    m_fdStepSize(QUESO_BASESCALARFN_FD_STEPSIZE_ODV)
 {
+  // Snarf fd step size from input file.
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+  m_parser->registerOption<double>(m_prefix + "fdStepSize",
+                                   QUESO_BASESCALARFN_FD_STEPSIZE_ODV,
+                                   "step size for finite difference");
+  m_parser->scanInputFile();
+  m_parser->getOption<double>(m_prefix + "fdStepSize", m_fdStepSize);
+#else
+  m_fdStepSize = m_env.input()(m_prefix + "fdStepSize",
+                               QUESO_BASESCALARFN_FD_STEPSIZE_ODV);
+#endif
+
+  queso_require_greater_msg(m_fdStepSize,
+                            0.0,
+                            "Finite difference step size must be positive");
 }
 
 // Destructor
@@ -79,9 +101,6 @@ template <class V, class M>
 double
 BaseScalarFunction<V, M>::lnValue(const V & domainVector, V & gradVector) const
 {
-  // Read this from an input file, or make it a settable member variable.
-  double h = 1e-6;
-
   double value = this->lnValue(domainVector);
 
   // Create perturbed version of domainVector to use in finite difference
@@ -92,8 +111,8 @@ BaseScalarFunction<V, M>::lnValue(const V & domainVector, V & gradVector) const
     // Store the old value of the perturbed element so we can undo it later
     double tmp = perturbedVector[i];
 
-    perturbedVector[i] += h;
-    gradVector[i] = (this->lnValue(perturbedVector) - value) / h;
+    perturbedVector[i] += m_fdStepSize;
+    gradVector[i] = (this->lnValue(perturbedVector) - value) / m_fdStepSize;
 
     // Restore the old value of the perturbedVector element
     perturbedVector[i] = tmp;

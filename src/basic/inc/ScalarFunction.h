@@ -25,15 +25,16 @@
 #ifndef UQ_SCALAR_FUNCTION_H
 #define UQ_SCALAR_FUNCTION_H
 
+#include <queso/Environment.h>
 #include <queso/VectorSet.h>
 #include <queso/VectorSubset.h>
-#include <queso/Environment.h>
-#include <queso/Defines.h>
+#include <queso/ScopedPtr.h>
 
 namespace QUESO {
 
 class GslVector;
 class GslMatrix;
+class BoostInputOptionsParser;
 
 /*! \file ScalarFunction.h
  * \brief Set of classes for handling vector functions.
@@ -139,6 +140,15 @@ protected:
 
   //! Domain set of the scalar function.
   const VectorSet<V, M> & m_domainSet;
+
+private:
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+  //! Input parser
+  ScopedPtr<BoostInputOptionsParser>::Type m_parser;
+#endif
+
+  //! Finite different step size
+  double m_fdStepSize;
 };
 
 }  // End namespace QUESO
