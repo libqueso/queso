@@ -37,12 +37,12 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const VectorSpace<V, M> & m_experimentOutputSpace,
     const unsigned int m_numSimulations,
     const unsigned int m_numExperiments,
-    const std::vector<V *> & m_simulationScenarios,
-    const std::vector<V *> & m_simulationParameters,
-    const std::vector<V *> & m_simulationOutputs,
-    const std::vector<V *> & m_experimentScenarios,
-    const std::vector<V *> & m_experimentOutputs,
-    const std::vector<V>   & m_discrepancyBases,
+    const std::vector<typename SharedPtr<V>::Type> & m_simulationScenarios,
+    const std::vector<typename SharedPtr<V>::Type> & m_simulationParameters,
+    const std::vector<typename SharedPtr<V>::Type> & m_simulationOutputs,
+    const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
+    const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs,
+    const std::vector<typename SharedPtr<V>::Type> & m_discrepancyBases,
     const std::vector<M>   & m_observationErrorMatrices,
     const M & m_experimentErrors,
     const ConcatenatedVectorRV<V, M> & m_totalPrior,
@@ -185,17 +185,18 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   Map z_map(residualSize, 0, comm);
   M covMatrix(this->m_env, z_map, residualSize);
 
-  V domainVectorParameter(*(this->m_simulationParameters[0]));
+  typename SharedPtr<V>::Type domainVectorParameter
+    (new V(*(this->m_simulationParameters[0])));
   for (unsigned int k = 0; k < dimParameter; k++) {
     queso_assert (!queso_isnan(domainVector[k]));
-    domainVectorParameter[k] = domainVector[k];
+    (*domainVectorParameter)[k] = domainVector[k];
   }
 
   // This for loop is a disaster and could do with a *lot* of optimisation
   for (unsigned int i = 0; i < totalRuns; i++) {
 
-     const V* scenario1;
-     const V* parameter1;
+     typename SharedPtr<V>::Type scenario1;
+     typename SharedPtr<V>::Type parameter1;
 
     // Decide whether to do experiment part of the covariance matrix
     // Get i-th simulation-parameter pair
@@ -204,7 +205,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       scenario1 = (this->m_experimentScenarios)[i];
 
       // Experiment parameter (unknown)
-      parameter1 = &domainVectorParameter;
+      parameter1 = domainVectorParameter;
     }
     else {
       scenario1 =
@@ -215,12 +216,12 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
     for (unsigned int j = 0; j < totalRuns; j++) {
 
-       const V* scenario2;
-       const V* parameter2;
+       typename SharedPtr<V>::Type scenario2;
+       typename SharedPtr<V>::Type parameter2;
 
       if (j < this->m_numExperiments) {
         scenario2 = (this->m_experimentScenarios)[j];
-        parameter2 = &domainVectorParameter;
+        parameter2 = domainVectorParameter;
       }
       else {
         scenario2 =
@@ -287,8 +288,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       // If we're in the experiment cross correlation part, need extra
       // foo: Sigma_delta/Sigma_v and Sigma_y
       if (i < this->m_numExperiments && j < this->m_numExperiments) {
-        V* cross_scenario1 = (this->m_simulationScenarios)[i];
-        V* cross_scenario2 = (this->m_simulationScenarios)[j];
+        typename SharedPtr<V>::Type cross_scenario1 = (this->m_simulationScenarios)[i];
+        typename SharedPtr<V>::Type cross_scenario2 = (this->m_simulationScenarios)[j];
         prodDiscrepancy = 1.0;
         unsigned int discrepancyCorrStrStart = dimParameter +
                                                num_svd_terms +
@@ -323,7 +324,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           {
             // Sigma_y term from below (3)
             const double experimentalError =
-              (this->m_experimentErrors)(i,j);
+              this->m_experimentErrors(i,j);
 
             queso_assert_greater_equal (experimentalError, 0);
 
@@ -441,11 +442,11 @@ GPMSAFactory<V, M>::GPMSAFactory(
     m_experimentOutputSpace(experimentOutputSpace),
     m_numSimulations(numSimulations),
     m_numExperiments(numExperiments),
-    m_simulationScenarios(numSimulations, (V *)NULL),
-    m_simulationParameters(numSimulations, (V *)NULL),
-    m_simulationOutputs(numSimulations, (V *)NULL),
-    m_experimentScenarios(numExperiments, (V *)NULL),
-    m_experimentOutputs(numExperiments, (V *)NULL),
+    m_simulationScenarios(numSimulations),
+    m_simulationParameters(numSimulations),
+    m_simulationOutputs(numSimulations),
+    m_experimentScenarios(numExperiments),
+    m_experimentOutputs(numExperiments),
     m_numSimulationAdds(0),
     m_numExperimentAdds(0),
     priors(7, (const BaseVectorRV<V, M> *)NULL),  // Needed for gcc 4.3.2
@@ -462,9 +463,9 @@ GPMSAFactory<V, M>::GPMSAFactory(
     const Map & output_map = experimentOutputSpace.map();
 
     // Set up the default discrepancy basis:
-    V all_ones_basis(env, output_map);
+    typename SharedPtr<V>::Type all_ones_basis(new V(env, output_map));
     for (unsigned int i=0; i != numOutputs; ++i)
-      all_ones_basis[i] = 1;
+      (*all_ones_basis)[i] = 1;
     m_discrepancyBases.push_back(all_ones_basis);
 
     // Set up the default observation error covariance matrix:
@@ -556,7 +557,7 @@ GPMSAFactory<V, M>::simulationScenario(
 }
 
 template <class V, class M>
-const std::vector<V *> &
+const std::vector<typename SharedPtr<V>::Type> &
 GPMSAFactory<V, M>::simulationScenarios() const
 {
   return this->m_simulationScenarios;
@@ -575,7 +576,7 @@ GPMSAFactory<V, M>::simulationParameter(
 }
 
 template <class V, class M>
-const std::vector<V *> &
+const std::vector<typename SharedPtr<V>::Type> &
 GPMSAFactory<V, M>::simulationParameters() const
 {
   return this->m_simulationParameters;
@@ -594,7 +595,7 @@ GPMSAFactory<V, M>::simulationOutput(
 }
 
 template <class V, class M>
-const std::vector<V *> &
+const std::vector<typename SharedPtr<V>::Type> &
 GPMSAFactory<V, M>::simulationOutputs() const
 {
   return this->m_simulationOutputs;
@@ -613,7 +614,7 @@ GPMSAFactory<V, M>::experimentScenario(
 }
 
 template <class V, class M>
-const std::vector<V *> &
+const std::vector<typename SharedPtr<V>::Type> &
 GPMSAFactory<V, M>::experimentScenarios() const
 {
   return this->m_experimentScenarios;
@@ -632,17 +633,17 @@ GPMSAFactory<V, M>::experimentOutput(
 }
 
 template <class V, class M>
-const std::vector<V *> &
+const std::vector<typename SharedPtr<V>::Type> &
 GPMSAFactory<V, M>::experimentOutputs() const
 {
   return this->m_experimentOutputs;
 }
 
 template <class V, class M>
-const M &
+const typename SharedPtr<M>::Type
 GPMSAFactory<V, M>::experimentErrors() const
 {
-  return *(this->m_experimentErrors);
+  return this->m_experimentErrors;
 }
 
 template <class V, class M>
@@ -661,15 +662,15 @@ GPMSAFactory<V, M>::getGPMSAEmulator() const
 
 template <class V, class M>
 void
-GPMSAFactory<V, M>::addSimulation(V & simulationScenario,
-                                            V & simulationParameter,
-                                            V & simulationOutput)
+GPMSAFactory<V, M>::addSimulation(typename SharedPtr<V>::Type simulationScenario,
+                                  typename SharedPtr<V>::Type simulationParameter,
+                                  typename SharedPtr<V>::Type simulationOutput)
 {
   queso_require_less_msg(this->m_numSimulationAdds, this->m_numSimulations, "too many simulation adds...");
 
-  this->m_simulationScenarios[this->m_numSimulationAdds] = &simulationScenario;
-  this->m_simulationParameters[this->m_numSimulationAdds] = &simulationParameter;
-  this->m_simulationOutputs[this->m_numSimulationAdds] = &simulationOutput;
+  this->m_simulationScenarios[this->m_numSimulationAdds] = simulationScenario;
+  this->m_simulationParameters[this->m_numSimulationAdds] = simulationParameter;
+  this->m_simulationOutputs[this->m_numSimulationAdds] = simulationOutput;
   this->m_numSimulationAdds++;
 
   if ((this->m_numSimulationAdds == this->m_numSimulations) &&
@@ -682,13 +683,14 @@ GPMSAFactory<V, M>::addSimulation(V & simulationScenario,
 template <class V, class M>
 void
 GPMSAFactory<V, M>::addSimulations(
-    const std::vector<V *> & simulationScenarios,
-    const std::vector<V *> & simulationParameters,
-    const std::vector<V *> & simulationOutputs)
+    const std::vector<typename SharedPtr<V>::Type> & simulationScenarios,
+    const std::vector<typename SharedPtr<V>::Type> & simulationParameters,
+    const std::vector<typename SharedPtr<V>::Type> & simulationOutputs)
 {
   for (unsigned int i = 0; i < this->m_numSimulations; i++) {
-    this->addSimulation(*(simulationScenarios[i]), *(simulationParameters[i]),
-        *(simulationOutputs[i]));
+    this->addSimulation(simulationScenarios[i],
+                        simulationParameters[i],
+                        simulationOutputs[i]);
   }
 }
 
@@ -775,7 +777,7 @@ GPMSAFactory<V, M>::setUpEmulator()
 
       for (unsigned int j=0; j != numOutputs; ++j)
         for (unsigned int k=0; k != m_discrepancyBases.size(); ++k)
-          D_i(j,k) = m_discrepancyBases[k][j];
+          D_i(j,k) = (*m_discrepancyBases[k])[j];
 
       m_discrepancyMatrices.push_back(D_i);
     }
@@ -892,9 +894,9 @@ GPMSAFactory<V, M>::setUpEmulator()
 template <class V, class M>
 void
 GPMSAFactory<V, M>::addExperiments(
-    const std::vector<V *> & experimentScenarios,
-    const std::vector<V *> & experimentOutputs,
-    const M * experimentErrors)
+    const std::vector<typename SharedPtr<V>::Type> & experimentScenarios,
+    const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
+    const typename SharedPtr<M>::Type experimentErrors)
 {
   queso_require_less_equal_msg(experimentScenarios.size(), this->m_numExperiments, "too many experiments...");
 
@@ -916,13 +918,9 @@ GPMSAFactory<V, M>::addExperiments(
 template <class V, class M>
 void
 GPMSAFactory<V, M>::setDiscrepancyBases(
-    const std::vector<V *> & discrepancyBases)
+    const std::vector<typename SharedPtr<V>::Type> & discrepancyBases)
 {
-  m_discrepancyBases.clear();
-
-  for (unsigned int i = 0; i < discrepancyBases.size(); i++) {
-    m_discrepancyBases.push_back(*(discrepancyBases[i]));
-  }
+  m_discrepancyBases = discrepancyBases;
 
   // We should not yet have constructed the underlying GP model
   queso_assert_equal_to(this->m_constructedGP, false);
