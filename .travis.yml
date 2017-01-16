@@ -8,6 +8,7 @@ before_script:
   - sudo apt-get install -q libgsl0-dev
   - sudo apt-get install -q openmpi-bin openmpi-dev
   - sudo apt-get install -q libboost-dev libboost-math-dev libboost-program-options-dev
+  - sudo apt-get install -q libcppunit-dev
 script:
   - ./bootstrap
   - ./configure CC="mpicc" CXX="mpicxx"
