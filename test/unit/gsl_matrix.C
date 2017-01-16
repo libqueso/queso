@@ -41,8 +41,9 @@ namespace QUESOTesting
     CPPUNIT_TEST_SUITE( GslMatrixTest );
 
     CPPUNIT_TEST( test_get_set_row_column );
-    CPPUNIT_TEST( inverse_power_method );
-    CPPUNIT_TEST( power_method );
+    CPPUNIT_TEST( test_inverse_power_method );
+    CPPUNIT_TEST( test_power_method );
+    CPPUNIT_TEST( test_multiple_rhs_matrix_solve );
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -96,7 +97,7 @@ namespace QUESOTesting
       CPPUNIT_ASSERT_EQUAL( (*matrix)(1,1), row[1]);
     }
 
-    void inverse_power_method()
+    void test_inverse_power_method()
     {
       QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
         paramSpace( (*_env), "param_", 2, NULL);
@@ -144,7 +145,7 @@ namespace QUESOTesting
       CPPUNIT_ASSERT_DOUBLES_EQUAL(eVectorExact[1],eVector[1],1.0e-13);
     }
 
-    void power_method()
+    void test_power_method()
     {
       QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
         paramSpace( (*_env), "param_", 2, NULL);
@@ -187,6 +188,27 @@ namespace QUESOTesting
       CPPUNIT_ASSERT_DOUBLES_EQUAL(eValueExact,eValue,1.0e-13);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(eVectorExact[0],eVector[0],1.0e-13);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(eVectorExact[1],eVector[1],1.0e-13);
+    }
+
+    void test_multiple_rhs_matrix_solve()
+    {
+      QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
+        paramSpace( (*_env), "param_", 2, NULL);
+
+      typename QUESO::ScopedPtr<QUESO::GslMatrix>::Type
+        matrix( paramSpace.newMatrix() );
+      (*matrix)(0,0) = 4.; (*matrix)(0,1) = 3.;
+      (*matrix)(1,0) = 5.; (*matrix)(1,1) = 7.;
+
+      QUESO::GslMatrix result( (*matrix) );
+
+      matrix->invertMultiply( (*matrix), result );
+
+      // We should be getting back the identity matrix in result
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0,result(0,0),1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0,result(1,1),1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0,result(0,1),1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0,result(1,0),1.0e-14);
     }
 
   private:
