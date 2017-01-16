@@ -42,6 +42,7 @@ namespace QUESOTesting
 
     CPPUNIT_TEST( test_get_set_row_column );
     CPPUNIT_TEST( inverse_power_method );
+    CPPUNIT_TEST( power_method );
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -132,6 +133,51 @@ namespace QUESOTesting
       QUESO::GslVector eVectorExact( (*paramSpace.newVector() ) );
       eVectorExact[0] =  0.749062754969087;
       eVectorExact[1] = -0.662499048390352;
+
+      // MATLAB returns normalized vectors while the Power method
+      // function does not, so we must normalize.
+      double norm = eVector.norm2();
+      eVector /= norm;
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(eValueExact,eValue,1.0e-13);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(eVectorExact[0],eVector[0],1.0e-13);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(eVectorExact[1],eVector[1],1.0e-13);
+    }
+
+    void power_method()
+    {
+      QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
+        paramSpace( (*_env), "param_", 2, NULL);
+
+      typename QUESO::ScopedPtr<QUESO::GslMatrix>::Type
+        matrix( paramSpace.newMatrix() );
+      (*matrix)(0,0) = 4.; (*matrix)(0,1) = 3.;
+      (*matrix)(1,0) = 5.; (*matrix)(1,1) = 7.;
+
+      double eValue = 0.0;
+      QUESO::GslVector eVector( (*paramSpace.newVector()) );
+
+      matrix->largestEigen( eValue, eVector );
+
+      // MATLAB reports the following for the eigenvalues and eigenvectors
+      // of the matrix:
+      // A = [ 4, 3; 5, 7];
+      // [V,D] = eig(A)
+      // V =
+      //
+      //  -0.749062754969087  -0.468750367387953
+      //   0.662499048390352  -0.883330681610041
+      //
+      // D =
+      //
+      //   1.346688068540963                   0
+      //                   0   9.653311931459037
+
+      double eValueExact = 9.653311931459037;
+
+      QUESO::GslVector eVectorExact( (*paramSpace.newVector() ) );
+      eVectorExact[0] = 0.468750367387953;
+      eVectorExact[1] = 0.883330681610041;
 
       // MATLAB returns normalized vectors while the Power method
       // function does not, so we must normalize.
