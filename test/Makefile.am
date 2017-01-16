@@ -3,7 +3,6 @@ BUILT_SOURCES =
 check_PROGRAMS = # Append below
 check_PROGRAMS += unit_driver
 check_PROGRAMS += test_gsl_multiple_rhs_matrix_solve
-check_PROGRAMS += test_gsl_power_method
 check_PROGRAMS += test_boxsubset_centroid
 check_PROGRAMS += test_concatenation_centroid
 check_PROGRAMS += test_beta_moments
@@ -122,9 +121,6 @@ unit_driver_SOURCES += unit/gsl_matrix.C
 test_gsl_multiple_rhs_matrix_solve_SOURCES = gsl_tests/multiple_rhs_matrix_solve.C gsl_tests/multiple_rhs_matrix_solve.h
 test_gsl_multiple_rhs_matrix_solve_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
 
-test_gsl_power_method_SOURCES = gsl_tests/power_method.C gsl_tests/power_method.h
-test_gsl_power_method_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
-
 test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
 test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
 test_beta_moments_SOURCES = test_pdfmoments/test_beta_moments.C
@@ -238,7 +234,6 @@ BimodalExample_gsl_CPPFLAGS = -I$(srcdir)/t04_bimodal $(AM_CPPFLAGS)
 # Files to freedom stamp
 srcstamp =
 srcstamp += $(test_gsl_multiple_rhs_matrix_solve_SOURCES)
-srcstamp += $(test_gsl_power_method_SOURCES)
 srcstamp += $(test_boxsubset_centroid_SOURCES)
 srcstamp += $(test_concatenation_centroid_SOURCES)
 srcstamp += $(test_beta_moments_SOURCES)
@@ -315,7 +310,6 @@ srcstamp += $(SipSfpExample_gsl_SOURCES)
 TESTS =
 TESTS += unit_driver
 TESTS += test_gsl_multiple_rhs_matrix_solve
-TESTS += test_gsl_power_method
 TESTS += test_boxsubset_centroid
 TESTS += test_concatenation_centroid
 TESTS += test_beta_moments
