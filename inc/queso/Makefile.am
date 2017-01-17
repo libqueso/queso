@@ -29,6 +29,7 @@ BUILT_SOURCES += VectorSpace.h
 BUILT_SOURCES += VectorSubset.h
 BUILT_SOURCES += getpot.h
 BUILT_SOURCES += AlgorithmFactory.h
+BUILT_SOURCES += AlgorithmFactoryInitializer.h
 BUILT_SOURCES += BaseInputOptionsParser.h
 BUILT_SOURCES += BasicPdfsBase.h
 BUILT_SOURCES += BasicPdfsBoost.h
@@ -67,6 +68,7 @@ BUILT_SOURCES += RngCXX11.h
 BUILT_SOURCES += RngGsl.h
 BUILT_SOURCES += ScopedPtr.h
 BUILT_SOURCES += SharedPtr.h
+BUILT_SOURCES += TKFactoryInitializer.h
 BUILT_SOURCES += TKFactoryLogitRandomWalk.h
 BUILT_SOURCES += TKFactoryMALA.h
 BUILT_SOURCES += TKFactoryRandomWalk.h
@@ -260,6 +262,8 @@ getpot.h: $(top_srcdir)/src/contrib/getpot/getpot.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 AlgorithmFactory.h: $(top_srcdir)/src/core/inc/AlgorithmFactory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+AlgorithmFactoryInitializer.h: $(top_srcdir)/src/core/inc/AlgorithmFactoryInitializer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BaseInputOptionsParser.h: $(top_srcdir)/src/core/inc/BaseInputOptionsParser.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsBase.h: $(top_srcdir)/src/core/inc/BasicPdfsBase.h
@@ -335,6 +339,8 @@ RngGsl.h: $(top_srcdir)/src/core/inc/RngGsl.h
 ScopedPtr.h: $(top_srcdir)/src/core/inc/ScopedPtr.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SharedPtr.h: $(top_srcdir)/src/core/inc/SharedPtr.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TKFactoryInitializer.h: $(top_srcdir)/src/core/inc/TKFactoryInitializer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TKFactoryLogitRandomWalk.h: $(top_srcdir)/src/core/inc/TKFactoryLogitRandomWalk.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
