@@ -351,6 +351,7 @@ libqueso_include_HEADERS += core/inc/SharedPtr.h
 
 # Headers to install from misc/inc
 
+libqueso_include_HEADERS += misc/inc/BaseQuadrature.h
 libqueso_include_HEADERS += misc/inc/1D1DFunction.h
 libqueso_include_HEADERS += misc/inc/1DQuadrature.h
 libqueso_include_HEADERS += misc/inc/2dArrayOfStuff.h

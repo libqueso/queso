@@ -33,12 +33,10 @@ Base1DQuadrature::Base1DQuadrature(
   double minDomainValue,
   double maxDomainValue,
   unsigned int order)
-  :
+  : BaseQuadrature(),
   m_minDomainValue(minDomainValue),
   m_maxDomainValue(maxDomainValue),
-  m_order         (order),
-  m_positions     (0),
-  m_weights       (0)
+  m_order         (order)
 {
   queso_require_less_msg(m_minDomainValue, m_maxDomainValue, "min >= max");
 
@@ -67,20 +65,6 @@ unsigned int
 Base1DQuadrature::order() const
 {
   return m_order;
-}
-
-const std::vector<double>&
-Base1DQuadrature::positions() const
-{
-  queso_require_not_equal_to_msg(m_positions.size(), 0, "size = 0");
-  return m_positions;
-}
-
-const std::vector<double>&
-Base1DQuadrature::weights() const
-{
-  queso_require_not_equal_to_msg(m_weights.size(), 0, "size = 0");
-  return m_weights;
 }
 
 //*****************************************************

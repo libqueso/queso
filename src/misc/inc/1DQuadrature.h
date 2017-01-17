@@ -25,6 +25,7 @@
 #ifndef UQ_1D_1D_QUADRATURE_H
 #define UQ_1D_1D_QUADRATURE_H
 
+#include <queso/BaseQuadrature.h>
 #include <queso/Environment.h>
 #include <queso/Defines.h>
 #include <vector>
@@ -44,8 +45,8 @@ namespace QUESO {
 
     Base class for numerical integration via quadrature rules of one-dimensional functions.
 */
-class
-Base1DQuadrature {
+class Base1DQuadrature : public BaseQuadrature
+{
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -68,12 +69,6 @@ public:
   //! Returns the order of the quadrature rule.
   unsigned int               order         () const;
 
-  //! Array of the positions for the numerical integration.
-  const std::vector<double>& positions     () const;
-
-  //! Array of the weights used in the numerical integration.
-  const std::vector<double>& weights       () const;
-
   //! A bogus method.
   virtual  void                       dumbRoutine   () const = 0;
   //@}
@@ -82,8 +77,6 @@ protected:
   double              m_minDomainValue;
   double              m_maxDomainValue;
   unsigned int        m_order;
-  std::vector<double> m_positions;
-  std::vector<double> m_weights;
 };
 
 //*****************************************************

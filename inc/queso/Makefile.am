@@ -104,6 +104,7 @@ BUILT_SOURCES += 2dArrayOfStuff.h
 BUILT_SOURCES += ArrayOfOneDGrids.h
 BUILT_SOURCES += ArrayOfOneDTables.h
 BUILT_SOURCES += AsciiTable.h
+BUILT_SOURCES += BaseQuadrature.h
 BUILT_SOURCES += CovCond.h
 BUILT_SOURCES += Fft.h
 BUILT_SOURCES += Miscellaneous.h
@@ -411,6 +412,8 @@ ArrayOfOneDGrids.h: $(top_srcdir)/src/misc/inc/ArrayOfOneDGrids.h
 ArrayOfOneDTables.h: $(top_srcdir)/src/misc/inc/ArrayOfOneDTables.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 AsciiTable.h: $(top_srcdir)/src/misc/inc/AsciiTable.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BaseQuadrature.h: $(top_srcdir)/src/misc/inc/BaseQuadrature.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 CovCond.h: $(top_srcdir)/src/misc/inc/CovCond.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
