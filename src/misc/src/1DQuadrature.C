@@ -90,12 +90,6 @@ Generic1DQuadrature::~Generic1DQuadrature()
 {
 }
 
-void
-Generic1DQuadrature::dumbRoutine() const
-{
-  return;
-}
-
 //*****************************************************
 // UniformLegendre 1D quadrature class
 //*****************************************************
@@ -400,12 +394,6 @@ UniformLegendre1DQuadrature::~UniformLegendre1DQuadrature()
 {
 }
 
-void
-UniformLegendre1DQuadrature::dumbRoutine() const
-{
-  return;
-}
-
 //*****************************************************
 // GaussianHermite 1D quadrature class
 //*****************************************************
@@ -629,12 +617,6 @@ GaussianHermite1DQuadrature::~GaussianHermite1DQuadrature()
 {
 }
 
-void
-GaussianHermite1DQuadrature::dumbRoutine() const
-{
-  return;
-}
-
 //*****************************************************
 // WignerInverseChebyshev1st 1D quadrature class
 //*****************************************************
@@ -664,12 +646,6 @@ WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature(
 
 WignerInverseChebyshev1st1DQuadrature::~WignerInverseChebyshev1st1DQuadrature()
 {
-}
-
-void
-WignerInverseChebyshev1st1DQuadrature::dumbRoutine() const
-{
-  return;
 }
 
 //*****************************************************
@@ -704,12 +680,6 @@ WignerChebyshev2nd1DQuadrature::WignerChebyshev2nd1DQuadrature(
 
 WignerChebyshev2nd1DQuadrature::~WignerChebyshev2nd1DQuadrature()
 {
-}
-
-void
-WignerChebyshev2nd1DQuadrature::dumbRoutine() const
-{
-  return;
 }
 
 }  // End namespace QUESO

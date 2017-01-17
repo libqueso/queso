@@ -68,9 +68,6 @@ public:
 
   //! Returns the order of the quadrature rule.
   unsigned int               order         () const;
-
-  //! A bogus method.
-  virtual  void                       dumbRoutine   () const = 0;
   //@}
 
 protected:
@@ -101,11 +98,6 @@ public:
   ~Generic1DQuadrature();
  //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! Bogus routine.
-  void dumbRoutine() const;
-  //@}
 protected:
   using Base1DQuadrature::m_minDomainValue;
   using Base1DQuadrature::m_maxDomainValue;
@@ -171,11 +163,6 @@ public:
   ~UniformLegendre1DQuadrature();
   //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! A bogus method.
-  void dumbRoutine() const;
-  //@}
 protected:
   using Base1DQuadrature::m_minDomainValue;
   using Base1DQuadrature::m_maxDomainValue;
@@ -224,11 +211,6 @@ public:
   ~GaussianHermite1DQuadrature();
   //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! A bogus method.
-  void dumbRoutine() const;
-  //@}
 protected:
   using Base1DQuadrature::m_minDomainValue;
   using Base1DQuadrature::m_maxDomainValue;
@@ -273,11 +255,6 @@ public:
   ~WignerInverseChebyshev1st1DQuadrature();
   //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! A bogus method.
-  void dumbRoutine() const;
-  //@}
 protected:
   using Base1DQuadrature::m_minDomainValue;
   using Base1DQuadrature::m_maxDomainValue;
@@ -320,11 +297,6 @@ public:
   ~WignerChebyshev2nd1DQuadrature();
   //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! Bogus routine.
-  void dumbRoutine() const;
-  //@}
 protected:
   using Base1DQuadrature::m_minDomainValue;
   using Base1DQuadrature::m_maxDomainValue;
