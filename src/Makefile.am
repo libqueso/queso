@@ -366,6 +366,7 @@ libqueso_include_HEADERS += misc/inc/UniformOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StdOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StreamUtilities.h
 libqueso_include_HEADERS += misc/inc/math_macros.h
+libqueso_include_HEADERS += misc/inc/MultiDQuadratureBase.h
 
 # Headers to install from basic/inc
 
