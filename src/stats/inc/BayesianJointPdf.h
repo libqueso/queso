@@ -97,6 +97,11 @@ public:
 
   //@}
 
+  //! @name Using declarations
+  //@{
+  using BaseScalarFunction<V, M>::lnValue;
+  //@}
+
 protected:
   using BaseScalarFunction<V,M>::m_env;
   using BaseScalarFunction<V,M>::m_prefix;

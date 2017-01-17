@@ -69,9 +69,6 @@ public:
   //! Actual value of the PDF (scalar function).
   virtual double actualValue                    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
 
-  //! Logarithm of the value of the function.
-  virtual double lnValue                        (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
-
   /*! Mean value of the underlying random variable.
    * Not implemented in base class, but not pure virtual for backwards
    * compatibility reasons.
