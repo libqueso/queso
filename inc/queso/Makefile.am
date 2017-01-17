@@ -108,6 +108,7 @@ BUILT_SOURCES += BaseQuadrature.h
 BUILT_SOURCES += CovCond.h
 BUILT_SOURCES += Fft.h
 BUILT_SOURCES += Miscellaneous.h
+BUILT_SOURCES += MonteCarloQuadrature.h
 BUILT_SOURCES += MultiDQuadratureBase.h
 BUILT_SOURCES += OneDGrid.h
 BUILT_SOURCES += StdOneDGrid.h
@@ -421,6 +422,8 @@ CovCond.h: $(top_srcdir)/src/misc/inc/CovCond.h
 Fft.h: $(top_srcdir)/src/misc/inc/Fft.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Miscellaneous.h: $(top_srcdir)/src/misc/inc/Miscellaneous.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+MonteCarloQuadrature.h: $(top_srcdir)/src/misc/inc/MonteCarloQuadrature.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 MultiDQuadratureBase.h: $(top_srcdir)/src/misc/inc/MultiDQuadratureBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

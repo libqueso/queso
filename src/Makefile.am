@@ -132,6 +132,7 @@ libqueso_la_SOURCES += misc/src/AsciiTable.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDTables.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDGrids.C
 libqueso_la_SOURCES += misc/src/StreamUtilities.C
+libqueso_la_SOURCES += misc/src/MonteCarloQuadrature.C
 
 # Sources from misc/src withn gsl conditional
 
@@ -367,6 +368,7 @@ libqueso_include_HEADERS += misc/inc/StdOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StreamUtilities.h
 libqueso_include_HEADERS += misc/inc/math_macros.h
 libqueso_include_HEADERS += misc/inc/MultiDQuadratureBase.h
+libqueso_include_HEADERS += misc/inc/MonteCarloQuadrature.h
 
 # Headers to install from basic/inc
 
