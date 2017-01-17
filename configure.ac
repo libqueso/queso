@@ -228,6 +228,18 @@ AX_PATH_GRVY_NEW([0.29],[no])
 
 AC_CACHE_SAVE
 
+# -------------------------------------------------------------
+# cppunit C++ unit testing -- enabled by default                                                                                                                                                                                           
+# -------------------------------------------------------------
+AC_ARG_ENABLE(cppunit,
+              AS_HELP_STRING([--disable-cppunit],
+                             [Build without cppunit C++ unit testing support]))
+AS_IF([test "x$enable_cppunit" != "xno"], [
+   AM_PATH_CPPUNIT([1.10.0],[enablecppunit=yes],[enablecppunit=no])
+])
+
+AM_CONDITIONAL(QUESO_ENABLE_CPPUNIT, test x$enablecppunit = xyes)
+
 #----------------
 # Doxygen support
 #----------------

@@ -22,10 +22,31 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef __GET_SET_ROW_COLUMN_TESTS_H__
-#define __GET_SET_ROW_COLUMN_TESTS_H__
+#include "config_queso.h"
 
-#include <queso/Environment.h>
-int actualChecking(const QUESO::FullEnvironment* env);
+#ifdef QUESO_HAVE_CPPUNIT
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/ui/text/TestRunner.h>
+#endif // QUESO_HAVE_CPPUNIT
 
-#endif // __GET_SET_ROW_COLUMN_TESTS_H__
+int main(int argc, char **argv)
+{
+#ifdef QUESO_HAVE_CPPUNIT
+
+  CppUnit::TextUi::TestRunner runner;
+  CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
+  runner.addTest( registry.makeTest() );
+
+  // If the tests all succeed, report success
+  if (runner.run())
+    return 0;
+
+  // If any test fails report failure
+  return 1;
+
+#else
+  // If we don't have CPPUnit, report we skipped
+  // 77 return code tells Automake we skipped this.
+  return 77;
+#endif // QUESO_HAVE_CPPUNIT
+}

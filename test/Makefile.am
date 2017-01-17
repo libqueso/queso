@@ -1,11 +1,7 @@
 BUILT_SOURCES =
 
 check_PROGRAMS = # Append below
-check_PROGRAMS += test_gsl_get_set_row_column
-check_PROGRAMS += test_gsl_get_min_max_vec
-check_PROGRAMS += test_gsl_multiple_rhs_matrix_solve
-check_PROGRAMS += test_gsl_power_method
-check_PROGRAMS += test_gsl_inverse_power_method
+check_PROGRAMS += unit_driver
 check_PROGRAMS += test_boxsubset_centroid
 check_PROGRAMS += test_concatenation_centroid
 check_PROGRAMS += test_beta_moments
@@ -88,6 +84,14 @@ AM_CPPFLAGS += -I.
 AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
+#----------------
+# CppUnit support
+#----------------
+if QUESO_ENABLE_CPPUNIT
+  AM_CPPFLAGS += $(CPPUNIT_CPPFLAGS)
+  LIBS += $(CPPUNIT_LIBS)
+endif
+
 if GRVY_ENABLED
   AM_CPPFLAGS += $(GRVY_CFLAGS)
 endif
@@ -109,20 +113,10 @@ if LIBMESH_SLEPC_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
 endif
 
-test_gsl_get_set_row_column_SOURCES = gsl_tests/get_set_row_column.C gsl_tests/get_set_row_column.h
-test_gsl_get_set_row_column_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
-
-test_gsl_get_min_max_vec_SOURCES = gsl_tests/get_min_max_vec.C gsl_tests/get_min_max_vec.h
-test_gsl_get_min_max_vec_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
-
-test_gsl_multiple_rhs_matrix_solve_SOURCES = gsl_tests/multiple_rhs_matrix_solve.C gsl_tests/multiple_rhs_matrix_solve.h
-test_gsl_multiple_rhs_matrix_solve_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
-
-test_gsl_power_method_SOURCES = gsl_tests/power_method.C gsl_tests/power_method.h
-test_gsl_power_method_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
-
-test_gsl_inverse_power_method_SOURCES = gsl_tests/inverse_power_method.C gsl_tests/inverse_power_method.h
-test_gsl_inverse_power_method_CPPFLAGS = -I$(srcdir)/gsl_tests $(AM_CPPFLAGS)
+unit_driver_SOURCES  = unit/unit_driver.C
+unit_driver_SOURCES += unit/gsl_vector.C
+unit_driver_SOURCES += unit/gsl_matrix.C
+unit_driver_SOURCES += unit/quadrature_1d.C
 
 test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
 test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
@@ -236,11 +230,6 @@ BimodalExample_gsl_CPPFLAGS = -I$(srcdir)/t04_bimodal $(AM_CPPFLAGS)
 
 # Files to freedom stamp
 srcstamp =
-srcstamp += $(test_gsl_get_set_row_column_SOURCES)
-srcstamp += $(test_gsl_get_min_max_vec_SOURCES)
-srcstamp += $(test_gsl_multiple_rhs_matrix_solve_SOURCES)
-srcstamp += $(test_gsl_power_method_SOURCES)
-srcstamp += $(test_gsl_inverse_power_method_SOURCES)
 srcstamp += $(test_boxsubset_centroid_SOURCES)
 srcstamp += $(test_concatenation_centroid_SOURCES)
 srcstamp += $(test_beta_moments_SOURCES)
@@ -315,11 +304,7 @@ srcstamp += $(SequenceExample_gsl_SOURCES)
 srcstamp += $(SipSfpExample_gsl_SOURCES)
 
 TESTS =
-TESTS += test_gsl_get_set_row_column
-TESTS += test_gsl_get_min_max_vec
-TESTS += test_gsl_multiple_rhs_matrix_solve
-TESTS += test_gsl_power_method
-TESTS += test_gsl_inverse_power_method
+TESTS += unit_driver
 TESTS += test_boxsubset_centroid
 TESTS += test_concatenation_centroid
 TESTS += test_beta_moments
@@ -404,7 +389,6 @@ endif
 EXTRA_DIST =
 EXTRA_DIST += common/compare.pl
 EXTRA_DIST += common/verify.sh
-EXTRA_DIST += gsl_tests/input
 EXTRA_DIST += test_infinite/inf_options
 EXTRA_DIST += test_Regression/GaussianMean1DRegression_options
 EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt
