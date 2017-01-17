@@ -24,7 +24,13 @@
 
 #include <queso/Defines.h>
 #include <queso/Environment.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#else
+#include <queso/getpot.h>
+#endif
+
 #include <queso/OptimizerOptions.h>
 
 namespace QUESO {
