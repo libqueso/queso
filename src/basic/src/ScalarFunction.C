@@ -24,11 +24,14 @@
 
 #include <queso/ScalarFunction.h>
 #include <queso/VectorSet.h>
+#include <queso/VectorSpace.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/BoostInputOptionsParser.h>
 
-#define QUESO_BASESCALARFN_FD_STEPSIZE_ODV 1e-6
+#include <cstdlib>
+
+#define QUESO_BASESCALARFN_FD_STEPSIZE_ODV "1e-6"
 
 namespace QUESO {
 
@@ -42,23 +45,60 @@ BaseScalarFunction<V, M>::BaseScalarFunction(const char * prefix,
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(m_env.optionsInputFileName())),
 #endif
-    m_fdStepSize(QUESO_BASESCALARFN_FD_STEPSIZE_ODV)
+    m_fdStepSize(1, std::atof(QUESO_BASESCALARFN_FD_STEPSIZE_ODV))
 {
+  unsigned int dim = m_domainSet.vectorSpace().dimLocal();
+
   // Snarf fd step size from input file.
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_parser->registerOption<double>(m_prefix + "fdStepSize",
-                                   QUESO_BASESCALARFN_FD_STEPSIZE_ODV,
-                                   "step size for finite difference");
+  m_parser->registerOption<std::string>(m_prefix + "fdStepSize",
+                                        QUESO_BASESCALARFN_FD_STEPSIZE_ODV,
+                                        "step size for finite difference");
   m_parser->scanInputFile();
-  m_parser->getOption<double>(m_prefix + "fdStepSize", m_fdStepSize);
+  m_parser->getOption<std::vector<double> >(m_prefix + "fdStepSize",
+                                            m_fdStepSize);
+
+  // Check size of finite difference vector the user provided.
+  queso_require_msg((m_fdStepSize.size() == 1) || (m_fdStepSize.size() == dim),
+                    "Finite difference vector is not the correct size");
+
+  // If the user provided a scalar for a multi-dimensional function...
+  if (dim > 1 && m_fdStepSize.size() == 1) {
+    // ...get the only element
+    double stepSize = m_fdStepSize[0];
+
+    // and use it to fill a vector of length dim
+    m_fdStepSize.resize(dim, stepSize);
+  }
 #else
-  m_fdStepSize = m_env.input()(m_prefix + "fdStepSize",
-                               QUESO_BASESCALARFN_FD_STEPSIZE_ODV);
+  unsigned int size = m_env.input().vector_variable_size(m_prefix + "fdStepSize");
+
+  queso_require_msg(size == 1 || size == dim,
+                    "Finite difference vector is not the correct size");
+
+  m_fdStepSize.resize(size);
+  for (unsigned int i = 0; i < size; i++) {
+    m_fdStepSize[i] = m_env.input()(m_prefix + "fdStepSize",
+                                    QUESO_BASESCALARFN_FD_STEPSIZE_ODV,
+                                    i);
+  }
+
+  // If the user provided a scalar for a multi-dimensional function...
+  if (dim > 1 && size == 1) {
+    // ...get the only element
+    double stepSize = m_fdStepSize[0];
+
+    // and use it to fill a vector of length dim
+    m_fdStepSize.resize(dim, stepSize);
+  }
 #endif
 
-  queso_require_greater_msg(m_fdStepSize,
-                            0.0,
-                            "Finite difference step size must be positive");
+  // Check all the elements of the finite difference vector are positive
+  for (unsigned int i = 0; i < dim; i++) {
+    queso_require_greater_msg(m_fdStepSize[i],
+                              0.0,
+                              "Finite difference step sizes must be positive");
+  }
 }
 
 // Destructor
@@ -111,8 +151,8 @@ BaseScalarFunction<V, M>::lnValue(const V & domainVector, V & gradVector) const
     // Store the old value of the perturbed element so we can undo it later
     double tmp = perturbedVector[i];
 
-    perturbedVector[i] += m_fdStepSize;
-    gradVector[i] = (this->lnValue(perturbedVector) - value) / m_fdStepSize;
+    perturbedVector[i] += m_fdStepSize[i];
+    gradVector[i] = (this->lnValue(perturbedVector) - value) / m_fdStepSize[i];
 
     // Restore the old value of the perturbedVector element
     perturbedVector[i] = tmp;
@@ -144,7 +184,25 @@ BaseScalarFunction<V, M>::setFiniteDifferenceStepSize(double fdStepSize)
   queso_require_greater_msg(fdStepSize, 0.0,
                             "Must provide a finite difference step > 0");
 
-  this->m_fdStepSize = fdStepSize;
+  for (unsigned int i = 0; i < this->m_fdStepSize.size(); i++) {
+    this->m_fdStepSize[i] = fdStepSize;
+  }
+}
+
+template <class V, class M>
+void
+BaseScalarFunction<V, M>::setFiniteDifferenceStepSize(unsigned int i,
+                                                      double fdStepSize)
+{
+  queso_require_greater_msg(fdStepSize, 0.0,
+                            "Must provide a finite difference step > 0");
+
+  queso_require_greater_equal_msg(i, 0, "Must provide a nonnegative index");
+
+  unsigned int size = this->m_fdStepSize.size();
+  queso_require_less_msg(i, size, "Must provide an index less than size of parameter dimension");
+
+  this->m_fdStepSize[i] = fdStepSize;
 }
 
 }  // End namespace QUESO

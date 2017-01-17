@@ -141,6 +141,15 @@ public:
    */
   void setFiniteDifferenceStepSize(double fdStepSize);
 
+  //! Sets the step size for the i-th component of the finite differencing
+  //! vector
+  /*!
+   * i is a zero-based index.
+   *
+   * If the function is one-dimensional, the only allowed value for i is 0.
+   */
+  void setFiniteDifferenceStepSize(unsigned int i, double fdStepSize);
+
 protected:
   const BaseEnvironment & m_env;
   std::string m_prefix;
@@ -155,7 +164,7 @@ private:
 #endif
 
   //! Finite different step size
-  double m_fdStepSize;
+  std::vector<double> m_fdStepSize;
 };
 
 }  // End namespace QUESO
