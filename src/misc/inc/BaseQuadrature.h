@@ -45,19 +45,12 @@ namespace QUESO
 
     virtual ~BaseQuadrature(){}
 
-    //! Array of the positions for the numerical integration.
-    const std::vector<double> & positions() const
-    { queso_assert(!m_positions.empty());
-      return m_positions; }
-
     //! Array of the weights used in the numerical integration.
     const std::vector<double> & weights() const
     { queso_assert(!m_weights.empty());
       return m_weights; }
 
   protected:
-
-    std::vector<double> m_positions;
 
     std::vector<double> m_weights;
   };

@@ -68,12 +68,18 @@ public:
 
   //! Returns the order of the quadrature rule.
   unsigned int               order         () const;
+
+  //! Array of the positions for the numerical integration.
+  const std::vector<double> & positions() const
+  { queso_assert(!m_positions.empty());
+    return m_positions; }
   //@}
 
 protected:
   double              m_minDomainValue;
   double              m_maxDomainValue;
   unsigned int        m_order;
+  std::vector<double> m_positions;
 };
 
 //*****************************************************
