@@ -98,12 +98,6 @@ public:
   ~Generic1DQuadrature();
  //@}
 
-protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 };
 
 //*****************************************************
@@ -163,12 +157,6 @@ public:
   ~UniformLegendre1DQuadrature();
   //@}
 
-protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 };
 
 //*****************************************************
@@ -212,11 +200,6 @@ public:
   //@}
 
 protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 
   double m_mean;
   double m_stddev;
@@ -255,12 +238,6 @@ public:
   ~WignerInverseChebyshev1st1DQuadrature();
   //@}
 
-protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 };
 
 //*****************************************************
@@ -297,12 +274,6 @@ public:
   ~WignerChebyshev2nd1DQuadrature();
   //@}
 
-protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 };
 
 }  // End namespace QUESO
