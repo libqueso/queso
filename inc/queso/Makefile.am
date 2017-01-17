@@ -114,6 +114,7 @@ BUILT_SOURCES += MultiDimensionalIndexing.h
 BUILT_SOURCES += OneDGrid.h
 BUILT_SOURCES += StdOneDGrid.h
 BUILT_SOURCES += StreamUtilities.h
+BUILT_SOURCES += TensorProductQuadrature.h
 BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += math_macros.h
 BUILT_SOURCES += Algorithm.h
@@ -434,6 +435,8 @@ OneDGrid.h: $(top_srcdir)/src/misc/inc/OneDGrid.h
 StdOneDGrid.h: $(top_srcdir)/src/misc/inc/StdOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 StreamUtilities.h: $(top_srcdir)/src/misc/inc/StreamUtilities.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TensorProductQuadrature.h: $(top_srcdir)/src/misc/inc/TensorProductQuadrature.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformOneDGrid.h: $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
