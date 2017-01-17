@@ -9,11 +9,11 @@
 
 // Read in data files.  Return std deviations for each output.
 std::vector<double>
-readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
-         const std::vector<QUESO::GslVector *> & simulationParameters,
-         const std::vector<QUESO::GslVector *> & simulationOutputs,
-         const std::vector<QUESO::GslVector *> & experimentScenarios,
-         const std::vector<QUESO::GslVector *> & experimentOutputs) {
+readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationScenarios,
+         const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationParameters,
+         const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationOutputs,
+         const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentScenarios,
+         const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentOutputs) {
   FILE * fp_in = fopen("gp/vector/dakota_pstudy.dat", "r");
   if (!fp_in)
     fp_in = fopen("dakota_pstudy.dat", "r");
@@ -187,40 +187,41 @@ int main(int argc, char ** argv) {
 
   // std::vector containing all the points in scenario space where we have
   // simulations
-  std::vector<QUESO::GslVector *> simulationScenarios(numSimulations,
-      (QUESO::GslVector *) NULL);
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    simulationScenarios(numSimulations);
 
   // std::vector containing all the points in parameter space where we have
   // simulations
-  std::vector<QUESO::GslVector *> paramVecs(numSimulations,
-      (QUESO::GslVector *) NULL);
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    paramVecs(numSimulations);
 
   // std::vector containing all the simulation output data
-  std::vector<QUESO::GslVector *> outputVecs(numSimulations,
-      (QUESO::GslVector *) NULL);
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    outputVecs(numSimulations);
 
   // std::vector containing all the points in scenario space where we have
   // experiments
-  std::vector<QUESO::GslVector *> experimentScenarios(numExperiments,
-      (QUESO::GslVector *) NULL);
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    experimentScenarios(numExperiments);
 
   // std::vector containing all the experimental output data
-  std::vector<QUESO::GslVector *> experimentVecs(numExperiments,
-      (QUESO::GslVector *) NULL);
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    experimentVecs(numExperiments);
 
   // The experimental output data observation error covariance matrix
-  QUESO::GslMatrix experimentMat(totalExperimentSpace.zeroVector());
+  QUESO::SharedPtr<QUESO::GslMatrix>::Type experimentMat
+    (new QUESO::GslMatrix(totalExperimentSpace.zeroVector()));
 
   // Instantiate each of the simulation points/outputs
   for (unsigned int i = 0; i < numSimulations; i++) {
-    simulationScenarios[i] = new QUESO::GslVector(configSpace.zeroVector());  // 'x_{i+1}^*' in paper
-    paramVecs          [i] = new QUESO::GslVector(paramSpace.zeroVector());  // 't_{i+1}^*' in paper
-    outputVecs         [i] = new QUESO::GslVector(nEtaSpace.zeroVector());  // 'eta_{i+1}' in paper
+    simulationScenarios[i].reset(new QUESO::GslVector(configSpace.zeroVector()));  // 'x_{i+1}^*' in paper
+    paramVecs          [i].reset(new QUESO::GslVector(paramSpace.zeroVector()));  // 't_{i+1}^*' in paper
+    outputVecs         [i].reset(new QUESO::GslVector(nEtaSpace.zeroVector()));  // 'eta_{i+1}' in paper
   }
 
   for (unsigned int i = 0; i < numExperiments; i++) {
-    experimentScenarios[i] = new QUESO::GslVector(configSpace.zeroVector()); // 'x_{i+1}' in paper
-    experimentVecs[i] = new QUESO::GslVector(experimentSpace.zeroVector());
+    experimentScenarios[i].reset(new QUESO::GslVector(configSpace.zeroVector())); // 'x_{i+1}' in paper
+    experimentVecs     [i].reset(new QUESO::GslVector(experimentSpace.zeroVector()));
   }
 
   // Read in data and store the standard deviations of the simulation
@@ -239,14 +240,14 @@ int main(int argc, char ** argv) {
           // The "magic number" here will in practice be an estimate
           // of experimental error.  In this test example it is pulled
           // from our posterior.
-          experimentMat(experimentSize*i+j, experimentSize*i+j) =
+          (*experimentMat)(experimentSize*i+j, experimentSize*i+j) =
             (0.025 / stdsim[j]) * (0.025 / stdsim[j]);
         }
     }
 
   // Add simulation and experimental data
   gpmsaFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
-  gpmsaFactory.addExperiments(experimentScenarios, experimentVecs, &experimentMat);
+  gpmsaFactory.addExperiments(experimentScenarios, experimentVecs, experimentMat);
 
   QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix> postRv(
       "post_",
