@@ -88,7 +88,7 @@ AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 # CppUnit support
 #----------------
 if QUESO_ENABLE_CPPUNIT
-  AM_CPPFLAGS += $(CPPUNIT_CPPFLAGS)
+  AM_CPPFLAGS += $(CPPUNIT_CPPFLAGS) -I$(top_srcdir)/test/unit
   LIBS += $(CPPUNIT_LIBS)
 endif
 
@@ -322,6 +322,7 @@ endif
 EXTRA_DIST =
 EXTRA_DIST += common/compare.pl
 EXTRA_DIST += common/verify.sh
+EXTRA_DIST += unit/convergence_rate_helper.h
 EXTRA_DIST += test_infinite/inf_options
 EXTRA_DIST += test_Regression/GaussianMean1DRegression_options
 EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt
