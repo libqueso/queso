@@ -103,6 +103,9 @@ namespace QUESO
     //! Helper function for sizing m_values
     void init_values( const std::vector<unsigned int>& n_points );
 
+    //! Helper function for checking domain extent
+    void check_domain_bounds() const;
+
     //! Parameter domain over which we use surrogate
     const BoxSubset<V,M>& m_domain;
 
