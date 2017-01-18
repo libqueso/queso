@@ -538,14 +538,3 @@ queso_version_DEPENDENCIES = libqueso.la
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif
-
-#---------------------------------
-# Embedded license header support
-#---------------------------------
-
-if QUESO_LICENSESTAMPEXISTS
-BUILT_SOURCES += .license.stamp
-.license.stamp: $(top_srcdir)/LICENSE
-	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
-	echo 'updated source license headers' >$@
-endif

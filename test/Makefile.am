@@ -230,82 +230,6 @@ BimodalExample_gsl_SOURCES += t04_bimodal/example_compute.h
 BimodalExample_gsl_SOURCES += t04_bimodal/example_likelihood.h
 BimodalExample_gsl_CPPFLAGS = -I$(srcdir)/t04_bimodal $(AM_CPPFLAGS)
 
-# Files to freedom stamp
-srcstamp =
-srcstamp += $(test_boxsubset_centroid_SOURCES)
-srcstamp += $(test_concatenation_centroid_SOURCES)
-srcstamp += $(test_beta_moments_SOURCES)
-srcstamp += $(test_concatenated_moments_SOURCES)
-srcstamp += $(test_gamma_moments_SOURCES)
-srcstamp += $(test_gaussian_moments_SOURCES)
-srcstamp += $(test_inversegamma_moments_SOURCES)
-srcstamp += $(test_jeffreys_mean_SOURCES)
-srcstamp += $(test_lognormal_moments_SOURCES)
-srcstamp += $(test_uniform_moments_SOURCES)
-srcstamp += $(test_wigner_mean_SOURCES)
-srcstamp += $(test_uqEnvironmentNonFatal_SOURCES)
-srcstamp += $(test_uqEnvironmentOptionsPrint_SOURCES)
-srcstamp += $(test_uqGslVectorConstructorFatal_SOURCES)
-srcstamp += $(test_uqGslVector_SOURCES)
-srcstamp += $(test_uqGaussianVectorRVClass_SOURCES)
-srcstamp += $(test_VectorPdf_gsl_SOURCES)
-srcstamp += $(test_VectorRV_gsl_SOURCES)
-srcstamp += $(test_VectorRealizer_gsl_SOURCES)
-srcstamp += $(test_uqGslMatrixConstructorFatal_SOURCES)
-srcstamp += $(test_uqGslMatrix_SOURCES)
-srcstamp += $(test_uqTeuchosVector_SOURCES)
-srcstamp += $(test_uqexception_SOURCES)
-srcstamp += $(test_DistArrayCtor_SOURCES)
-srcstamp += $(test_DistArrayCopy_SOURCES)
-srcstamp += $(test_DistArrayEquals_SOURCES)
-srcstamp += $(test_DistArrayMisc_SOURCES)
-srcstamp += $(test_GslVectorSpaceMisc_SOURCES)
-srcstamp += $(test_IntersectionSubsetContains_SOURCES)
-srcstamp += $(test_operator_SOURCES)
-srcstamp += $(test_inf_gaussian_SOURCES)
-srcstamp += $(test_inf_options_SOURCES)
-srcstamp += $(test_GaussianMean1DRegression_SOURCES)
-srcstamp += $(test_gpmsa_cobra_SOURCES)
-srcstamp += $(test_gpmsa_vector_SOURCES)
-srcstamp += $(test_LlhdTargetOutput_SOURCES)
-srcstamp += $(test_jeffreys_SOURCES)
-srcstamp += $(test_gsloptimizer_SOURCES)
-srcstamp += $(test_seedwithmap_SOURCES)
-srcstamp += $(test_seedwithmap_fd_SOURCES)
-srcstamp += $(test_logitadaptedcov_SOURCES)
-srcstamp += $(test_scalarCovariance_SOURCES)
-srcstamp += $(test_diagonalCovariance_SOURCES)
-srcstamp += $(test_fullCovariance_SOURCES)
-srcstamp += $(test_blockDiagonalCovariance_SOURCES)
-srcstamp += $(test_GslBlockMatrixInvertMultiply_SOURCES)
-srcstamp += $(test_unifiedPositionsOfMaximum_SOURCES)
-srcstamp += $(test_fullCovarianceRandomCoefficient_SOURCES)
-srcstamp += $(test_blockDiagonalCovarianceRandomCoefficients_SOURCES)
-srcstamp += $(test_1D_LinearLagrangeInterpolationSurrogate_SOURCES)
-srcstamp += $(test_2D_LinearLagrangeInterpolationSurrogate_SOURCES)
-srcstamp += $(test_3D_LinearLagrangeInterpolationSurrogate_SOURCES)
-srcstamp += $(test_4D_LinearLagrangeInterpolationSurrogate_SOURCES)
-srcstamp += $(test_InterpolationSurrogateHelper_SOURCES)
-srcstamp += $(test_build_InterpolationSurrogateBuilder_SOURCES)
-srcstamp += $(test_BoostInputOptionsParser_SOURCES)
-srcstamp += $(test_NoInputFile_SOURCES)
-srcstamp += $(test_optimizer_options_SOURCES)
-srcstamp += $(test_SharedPtr_SOURCES)
-srcstamp += $(test_serialEnv_SOURCES)
-srcstamp += $(test_jeffreys_pdf_SOURCES)
-srcstamp += $(test_gaussian_pdf_gradient_SOURCES)
-srcstamp += $(test_log_normal_pdf_gradient_SOURCES)
-srcstamp += $(test_beta_pdf_gradient_SOURCES)
-srcstamp += $(test_intercomm0_gravity_SOURCES)
-srcstamp += $(test_seq_of_vec_hdf5_write_SOURCES)
-srcstamp += $(test_optimizer_input_parameters_SOURCES)
-srcstamp += $(test_sip_gslopt_options_SOURCES)
-srcstamp += $(test_mala_SOURCES)
-srcstamp += $(TgaValidationCycle_gsl_SOURCES)
-srcstamp += $(SequenceExample_gsl_SOURCES)
-srcstamp += $(SipSfpExample_gsl_SOURCES)
-srcstamp += $(test_fd_fallback_SOURCES)
-
 TESTS =
 TESTS += unit_driver
 TESTS += test_boxsubset_centroid
@@ -469,13 +393,6 @@ clean-local:
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
-endif
-
-if QUESO_LICENSESTAMPEXISTS
-BUILT_SOURCES += .license.stamp
-.license.stamp: $(top_srcdir)/LICENSE
-	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
-	echo 'updated source license headers' >$@
 endif
 
 # Required for AX_AM_MACROS
