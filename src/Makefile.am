@@ -133,6 +133,7 @@ libqueso_la_SOURCES += misc/src/ArrayOfOneDTables.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDGrids.C
 libqueso_la_SOURCES += misc/src/StreamUtilities.C
 libqueso_la_SOURCES += misc/src/MonteCarloQuadrature.C
+libqueso_la_SOURCES += misc/src/MultiDimensionalIndexing.C
 
 # Sources from misc/src withn gsl conditional
 
@@ -265,7 +266,6 @@ libqueso_la_SOURCES += stats/src/MetropolisAdjustedLangevinTK.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateData.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateDataSet.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBase.C
-libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateHelper.C
 libqueso_la_SOURCES += surrogates/src/LinearLagrangeInterpolationSurrogate.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBuilder.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOBase.C
@@ -369,6 +369,7 @@ libqueso_include_HEADERS += misc/inc/StreamUtilities.h
 libqueso_include_HEADERS += misc/inc/math_macros.h
 libqueso_include_HEADERS += misc/inc/MultiDQuadratureBase.h
 libqueso_include_HEADERS += misc/inc/MonteCarloQuadrature.h
+libqueso_include_HEADERS += misc/inc/MultiDimensionalIndexing.h
 
 # Headers to install from basic/inc
 
@@ -490,7 +491,6 @@ libqueso_include_HEADERS += surrogates/inc/SurrogateBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateData.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateDataSet.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBase.h
-libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateHelper.h
 libqueso_include_HEADERS += surrogates/inc/LinearLagrangeInterpolationSurrogate.h
 libqueso_include_HEADERS += surrogates/inc/SurrogateBuilderBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBuilder.h

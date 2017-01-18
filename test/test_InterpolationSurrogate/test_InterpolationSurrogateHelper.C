@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/InterpolationSurrogateHelper.h>
+#include <queso/MultiDimensionalIndexing.h>
 
 // C++
 #include <iostream>
@@ -53,19 +53,19 @@ int main()
 
   int return_flag = 0;
 
-  unsigned int global = QUESO::InterpolationSurrogateHelper::coordToGlobal( indices, n_points );
+  unsigned int global = QUESO::MultiDimensionalIndexing::coordToGlobal( indices, n_points );
 
   // This is integer arithmetic so it should be exactly zero error
   if( (global - global_exact) != 0 )
     {
-      std::cerr << "ERROR: mismatch in InterpolationSurrogateHelper::coordToGlobal test." << std::endl
+      std::cerr << "ERROR: mismatch in MultiDimensionalIndexing::coordToGlobal test." << std::endl
                 << "       test  = " << global << std::endl
                 << "       exact = " << global_exact << std::endl;
       return_flag = 1;
     }
 
   std::vector<unsigned int> indices_test;
-  QUESO::InterpolationSurrogateHelper::globalToCoord( global, n_points, indices_test );
+  QUESO::MultiDimensionalIndexing::globalToCoord( global, n_points, indices_test );
 
   unsigned int test_indices = 0;
   for( unsigned int d = 0; d < 5; d++ )
@@ -76,7 +76,7 @@ int main()
 
   if( test_indices == 1 )
     {
-      std::cerr << "ERROR: mismatch in InterpolationSurrogateHelper::globalToCoord test." << std::endl
+      std::cerr << "ERROR: mismatch in MultiDimensionalIndexing::globalToCoord test." << std::endl
                 << "       test  = ";
       for( unsigned int d = 0; d < 5; d++ )
         {
