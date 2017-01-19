@@ -22,15 +22,15 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Environment.h>
+
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
-#define GETPOT_NAMESPACE QUESO
 #include <queso/getpot.h>
 
 #include <queso/config_queso.h>
-#include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
 #include <queso/RngGsl.h>
 #include <queso/RngBoost.h>

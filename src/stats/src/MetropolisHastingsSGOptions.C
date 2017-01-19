@@ -22,11 +22,14 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Environment.h>
+
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#else
+#include <queso/getpot.h>
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
-#include <queso/Environment.h>
 #include <queso/MetropolisHastingsSGOptions.h>
 #include <queso/Miscellaneous.h>
 

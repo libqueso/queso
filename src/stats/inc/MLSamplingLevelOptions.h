@@ -29,7 +29,13 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#else
+#include <queso/getpot.h>
+#endif
+
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value

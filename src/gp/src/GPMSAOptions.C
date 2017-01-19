@@ -22,8 +22,12 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Defines.h>
+
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#else
+#include <queso/getpot.h>
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/GPMSAOptions.h>
@@ -56,9 +60,9 @@ GPMSAOptions::GPMSAOptions(
 
 GPMSAOptions::GPMSAOptions()
   :
-  m_env(NULL),
+  m_env(NULL)
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_parser(new BoostInputOptionsParser())
+  ,m_parser(new BoostInputOptionsParser())
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 {
   this->set_defaults();
