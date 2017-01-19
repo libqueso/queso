@@ -5,12 +5,17 @@ compiler:
 before_script:
   - sudo apt-get update -qq
   - sudo apt-get install -q build-essential
+  - sudo apt-get install -q gfortran
   - sudo apt-get install -q libgsl0-dev
   - sudo apt-get install -q openmpi-bin openmpi-dev
   - sudo apt-get install -q libboost-dev libboost-math-dev libboost-program-options-dev
   - sudo apt-get install -q libcppunit-dev
 script:
   - ./bootstrap
-  - ./configure CC="mpicc" CXX="mpicxx"
+  - ./configure CC="mpicc" CXX="mpicxx" --enable-coverage
   - make -j4
+  - make lcov-reset
   - make check -j4
+  - make lcov-report
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
