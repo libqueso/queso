@@ -27,7 +27,12 @@
 #include <queso/VectorSpace.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#else
+#include <queso/getpot.h>
+#endif
 
 #include <cstdlib>
 
@@ -73,23 +78,27 @@ BaseScalarFunction<V, M>::BaseScalarFunction(const char * prefix,
 #else
   unsigned int size = m_env.input().vector_variable_size(m_prefix + "fdStepSize");
 
-  queso_require_msg(size == 1 || size == dim,
-                    "Finite difference vector is not the correct size");
-
-  m_fdStepSize.resize(size);
-  for (unsigned int i = 0; i < size; i++) {
-    m_fdStepSize[i] = m_env.input()(m_prefix + "fdStepSize",
-                                    QUESO_BASESCALARFN_FD_STEPSIZE_ODV,
-                                    i);
+  if (size == 0) {
+    m_fdStepSize.resize(dim, std::atof(QUESO_BASESCALARFN_FD_STEPSIZE_ODV));
   }
+  else if (size == 1) {
+    double value = m_env.input()(m_prefix + "fdStepSize",
+                                 std::atof(QUESO_BASESCALARFN_FD_STEPSIZE_ODV),
+                                 0);
 
-  // If the user provided a scalar for a multi-dimensional function...
-  if (dim > 1 && size == 1) {
-    // ...get the only element
-    double stepSize = m_fdStepSize[0];
-
-    // and use it to fill a vector of length dim
-    m_fdStepSize.resize(dim, stepSize);
+    m_fdStepSize.resize(dim, value);
+  }
+  else if (size == dim) {
+    for (unsigned int i = 0; i < size; i++) {
+      m_fdStepSize[i] = m_env.input()(m_prefix + "fdStepSize",
+                                      std::atof(QUESO_BASESCALARFN_FD_STEPSIZE_ODV),
+                                      i);
+    }
+  }
+  else {
+    // Either the user provides nothing, a scalar, or the whole vector.
+    // Any other possiblities are not allowed so we error in this case.
+    queso_error_msg("Finite difference vector must be a scalar or a vector of length parameter dimension");
   }
 #endif
 
