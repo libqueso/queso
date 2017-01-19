@@ -1,4 +1,4 @@
-The `QUESO` Library [![Build Status](https://travis-ci.org/libqueso/queso.svg?branch=dev)](https://travis-ci.org/libqueso/queso)
+The `QUESO` Library [![Build Status](https://travis-ci.org/libqueso/queso.svg?branch=dev)](https://travis-ci.org/libqueso/queso) [![Coverage](https://codecov.io/gh/libqueso/queso/coverage.svg?branch=dev)](https://codecov.io/gh/libqueso/queso)
 ===================
 
 `QUESO` stands for Quantification of Uncertainty for Estimation,
