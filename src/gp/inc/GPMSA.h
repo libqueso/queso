@@ -272,6 +272,21 @@ public:
                       const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
                       const typename SharedPtr<M>::Type experimentErrors);
 
+  //! Add all experiments to \c this
+  /*!
+   * This method takes a vector of *all* the experimental data and associated
+   * observation errors/correlations and stores them.  This cannot be done
+   * piecemeal like the simulation data.
+   *
+   * Each experiment (\experimentOutputs[i]) is assumed to correspond to the
+   * point \c expermientScenarios[i] in scenario space.  Each
+   * experiment has a corresponding error covariance matrix stored in
+   * \c experimentErrors[i]
+   */
+  void addExperiments(const std::vector<typename SharedPtr<V>::Type> & experimentScenarios,
+                      const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
+                      const std::vector<typename SharedPtr<M>::Type> & experimentErrors);
+
   //! Add all discrepancy bases to \c this
   /*!
    * This method takes a vector of *all* the bases to use in the

@@ -920,6 +920,34 @@ GPMSAFactory<V, M>::addExperiments(
 
 template <class V, class M>
 void
+GPMSAFactory<V, M>::addExperiments(
+    const std::vector<typename SharedPtr<V>::Type> & experimentScenarios,
+    const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
+    const std::vector<typename SharedPtr<M>::Type> & experimentErrors)
+{
+  queso_require_less_equal_msg(experimentScenarios.size(), this->m_numExperiments, "too many experiments...");
+  queso_require_equal_to(experimentScenarios.size(),
+                         experimentOutputs.size());
+  queso_require_equal_to(experimentScenarios.size(),
+                         experimentErrors.size());
+
+  for (unsigned int i = 0; i < this->m_experimentScenarios.size(); i++) {
+    this->m_experimentScenarios[i] = experimentScenarios[i];
+    this->m_experimentOutputs[i] = experimentOutputs[i];
+    this->m_observationErrorMatrices[i] = experimentErrors[i];
+  }
+  this->m_numExperimentAdds += experimentScenarios.size();
+
+  if ((this->m_numSimulationAdds == this->m_numSimulations) &&
+      (this->m_numExperimentAdds == this->m_numExperiments) &&
+      (this->m_constructedGP == false)) {
+    this->setUpEmulator();
+  }
+}
+
+
+template <class V, class M>
+void
 GPMSAFactory<V, M>::setDiscrepancyBases(
     const std::vector<typename SharedPtr<V>::Type> & discrepancyBases)
 {
