@@ -119,6 +119,7 @@ unit_driver_SOURCES += unit/gsl_vector.C
 unit_driver_SOURCES += unit/gsl_matrix.C
 unit_driver_SOURCES += unit/quadrature_1d.C
 unit_driver_SOURCES += unit/concatenation_subset.C
+unit_driver_SOURCES += unit/constant_vector_function.C
 
 test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
 test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
