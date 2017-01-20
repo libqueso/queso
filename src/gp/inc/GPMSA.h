@@ -61,7 +61,7 @@ public:
                 const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
                 const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs,
                 const std::vector<typename SharedPtr<V>::Type> & m_discrepancyBases,
-                const std::vector<M>   & m_observationErrorMatrices,
+                const std::vector<typename SharedPtr<M>::Type> & m_observationErrorMatrices,
                 const M & m_experimentErrors,
                 const ConcatenatedVectorRV<V, M> & m_totalPrior,
                 const V & residual_in,
@@ -98,7 +98,7 @@ public:
 
         std::vector<typename SharedPtr<V>::Type>   m_discrepancyBases;
 
-  const std::vector<M> & m_observationErrorMatrices;
+  const std::vector<typename SharedPtr<M>::Type> & m_observationErrorMatrices;
 
   //
   // Intermediate calculations we can cache
@@ -328,7 +328,7 @@ public:
 
   std::vector<typename SharedPtr<V>::Type> m_discrepancyBases;
 
-  std::vector<M> m_observationErrorMatrices;
+  std::vector<typename SharedPtr<M>::Type> m_observationErrorMatrices;
 
   // Total observation error covriance matrix
   typename SharedPtr<M>::Type m_experimentErrors;

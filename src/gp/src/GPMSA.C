@@ -43,7 +43,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
     const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs,
     const std::vector<typename SharedPtr<V>::Type> & m_discrepancyBases,
-    const std::vector<M>   & m_observationErrorMatrices,
+    const std::vector<typename SharedPtr<M>::Type> & m_observationErrorMatrices,
     const M & m_experimentErrors,
     const ConcatenatedVectorRV<V, M> & m_totalPrior,
     const V & residual_in,
@@ -472,11 +472,11 @@ GPMSAFactory<V, M>::GPMSAFactory(
     m_discrepancyBases.push_back(all_ones_basis);
 
     // Set up the default observation error covariance matrix:
-
-    M identity_matrix(env, output_map, 1.0);
-
     for (unsigned int i = 0; i != numExperiments; ++i)
-      m_observationErrorMatrices.push_back(identity_matrix);
+      {
+        typename SharedPtr<M>::Type identity_matrix(new M(env, output_map, 1.0));
+        m_observationErrorMatrices.push_back(identity_matrix);
+      }
   }
 
   // DM: Not sure if the logic in these 3 if-blocks is correct
@@ -852,7 +852,7 @@ GPMSAFactory<V, M>::setUpEmulator()
               // No fancy perturbation here
               unsigned int j = ex*numOutputs+outj;
 
-              Wy(i,j) = m_observationErrorMatrices[ex](outi,outj);
+              Wy(i,j) = (*m_observationErrorMatrices[ex])(outi,outj);
             }
         }
     }
@@ -939,7 +939,7 @@ GPMSAFactory<V, M>::getObservationErrorCovariance
   queso_assert_less(simulationNumber, m_numSimulations);
   queso_assert_equal_to(m_observationErrorMatrices.size(), m_numSimulations);
 
-  return m_observationErrorMatrices[simulationNumber];
+  return *m_observationErrorMatrices[simulationNumber];
 }
 
 
@@ -951,7 +951,7 @@ GPMSAFactory<V, M>::getObservationErrorCovariance
   queso_assert_less(simulationNumber, m_numSimulations);
   queso_assert_equal_to(m_observationErrorMatrices.size(), m_numSimulations);
 
-  return m_observationErrorMatrices[simulationNumber];
+  return *m_observationErrorMatrices[simulationNumber];
 }
 
 
