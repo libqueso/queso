@@ -31,6 +31,8 @@
 
 #include <queso/1DQuadrature.h>
 
+#include <quadrature_testing_helper.h>
+
 #include <cmath>
 #include <limits>
 
@@ -67,7 +69,8 @@ namespace QUESOTesting
     }
   };
 
-  class LegendreQuadrature1DTest : public Quadrature1DTestBase
+  class LegendreQuadrature1DTest : public Quadrature1DTestBase,
+                                   public LegendreQuadratureTestingHelper
   {
   public:
     CPPUNIT_TEST_SUITE( LegendreQuadrature1DTest );
@@ -131,24 +134,6 @@ namespace QUESOTesting
   private:
 
     int _order;
-
-    void testing_orders( std::vector<unsigned int> & orders )
-    {
-      // These are the valid listed orders for Legendre quadrature in QUESO;
-      // TODO: With C++11, we can initialize this with array syntax
-      orders.resize(11);
-      orders[0] = 1;
-      orders[1] = 2;
-      orders[2] = 3;
-      orders[3] = 4;
-      orders[4] = 5;
-      orders[5] = 6;
-      orders[6] = 7;
-      orders[7] = 10;
-      orders[8] = 11;
-      orders[9] = 12;
-      orders[10] = 16;
-    }
 
     void test_1d_legendre_quadrature(double min_domain_value, double max_domain_value)
     {

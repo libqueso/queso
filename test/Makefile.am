@@ -323,6 +323,7 @@ EXTRA_DIST =
 EXTRA_DIST += common/compare.pl
 EXTRA_DIST += common/verify.sh
 EXTRA_DIST += unit/convergence_rate_helper.h
+EXTRA_DIST += unit/quadrature_testing_helper.h
 EXTRA_DIST += test_infinite/inf_options
 EXTRA_DIST += test_Regression/GaussianMean1DRegression_options
 EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt
