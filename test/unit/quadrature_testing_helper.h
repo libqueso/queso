@@ -59,6 +59,73 @@ namespace QUESOTesting
 
   };
 
+  template <class V, class M>
+  class MultiDQuadratureFunction
+  {
+  public:
+
+    virtual double f( const V & x ) const =0;
+
+    virtual double int_f( const QUESO::BoxSubset<V,M> & domain ) const =0;
+  };
+
+  template <class V, class M>
+  class MultiDLinearFunction : public MultiDQuadratureFunction<V,M>
+  {
+  public:
+
+    //! e.g. in 3D: f =  1 + x + y + z
+    virtual double f( const V & x ) const
+    {
+      double value = 1.0;
+
+      unsigned int dim = x.sizeGlobal();
+
+      for( unsigned int i = 0; i < dim; i++ )
+        value += x[i];
+
+      return value;
+    }
+
+    //! e.g. in 3D: \int f = x*y*z + (x^2/2)*y*z + x*(y^2/2)*z + x*y*(z^2/2)
+    virtual double int_f( const QUESO::BoxSubset<V,M> & domain ) const
+    {
+      unsigned int dim = domain.vectorSpace().dimGlobal();
+      unsigned int n_terms = dim+1;
+
+      const V & min_values = domain.minValues();
+      const V & max_values = domain.maxValues();
+
+      double value = 0.0;
+
+      for( unsigned int t = 0; t < n_terms; t++ )
+        {
+          double term = 1.0;
+
+          if( t == 0 )
+            {
+              for( unsigned int i = 0; i < dim; i++ )
+                term *= (max_values[i] - min_values[i]);
+            }
+          else
+            {
+              for( unsigned int i = 0; i < dim; i++ )
+                {
+                  if( i == (t-1) )
+                    term *= (max_values[i]*max_values[i] - min_values[i]*min_values[i])/2.0;
+                  else
+                    term *= (max_values[i] - min_values[i]);
+                }
+            }
+
+          value += term;
+        }
+
+      return value;
+    }
+
+  };
+
 } // end namespace QUESOTesting
 
 #endif // QUESO_HAVE_CPPUNIT
