@@ -46,6 +46,7 @@ public:
   CPPUNIT_TEST(test_sub_min_plain);
   CPPUNIT_TEST(test_unified_min_plain);
   CPPUNIT_TEST(test_sub_mean_plain);
+  CPPUNIT_TEST(test_sub_median_plain);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -129,6 +130,18 @@ public:
     CPPUNIT_ASSERT_EQUAL(actualMean, subMeanPlain);
   }
 
+  void test_sub_median_plain()
+  {
+    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+    for (unsigned int i = 0; i < 13; i++) {
+      (*sequence)[i] = i;
+    }
+
+    double actualMedian = 6;
+    double subMedianPlain = sequence->subMedianPlain();
+
+    CPPUNIT_ASSERT_EQUAL(actualMedian, subMedianPlain);
+  }
 
 private:
   typename QUESO::ScopedPtr<QUESO::BaseEnvironment>::Type env;
