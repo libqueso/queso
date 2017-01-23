@@ -527,34 +527,11 @@ void
 ScalarSequence<T>::setUniform(const T& a, const T& b)
 {
   unsigned int maxJ = this->subSequenceSize();
-  if (a == 0.) {
-    if (b == 1.) {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        m_seq[j] = m_env.rngObject()->uniformSample();
-      }
-    }
-    else {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        m_seq[j] = b*m_env.rngObject()->uniformSample();
-      }
-    }
-  }
-  else {
-    if ((b-a) == 1.) {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        m_seq[j] = a + m_env.rngObject()->uniformSample();
-      }
-    }
-    else {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        m_seq[j] = a + (b-a)*m_env.rngObject()->uniformSample();
-      }
-    }
+  for (unsigned int j = 0; j < maxJ; ++j) {
+    m_seq[j] = a + (b-a)*m_env.rngObject()->uniformSample();
   }
 
   deleteStoredScalars();
-
-  return;
 }
 // --------------------------------------------------
 template <class T>
