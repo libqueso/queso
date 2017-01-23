@@ -126,6 +126,7 @@ unit_driver_SOURCES += unit/vector_space.C
 unit_driver_SOURCES += unit/base_vector_sequence.C
 unit_driver_SOURCES += unit/sequence_of_vectors.C
 unit_driver_SOURCES += unit/tensor_product_quadrature.C
+unit_driver_SOURCES += unit/monte_carlo_quadrature.C
 
 test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
 test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
