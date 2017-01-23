@@ -49,6 +49,7 @@ public:
   CPPUNIT_TEST(test_sub_median_plain);
   CPPUNIT_TEST(test_unified_median_plain);
   CPPUNIT_TEST(test_sub_sample_variance_plain);
+  CPPUNIT_TEST(test_unified_sample_variance_plain);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -178,6 +179,28 @@ public:
     double subVariancePlain = sequence->subSampleVariancePlain();
 
     CPPUNIT_ASSERT_EQUAL(actualVar, subVariancePlain);
+  }
+
+  void test_unified_sample_variance_plain()
+  {
+    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+    for (unsigned int i = 0; i < 13; i++) {
+      (*sequence)[i] = i;
+    }
+
+    double actualMean = 6.0;
+
+    double runningSumSq = 0.0;
+    for (unsigned int i = 0; i < 13; i++) {
+      double diff = (*sequence)[i] - actualMean;
+      runningSumSq += diff * diff;
+    }
+
+    double actualVar = runningSumSq / 12.0;  // Sample variance, not population
+
+    double unifiedVariancePlain = sequence->unifiedSampleVariancePlain(false);
+
+    CPPUNIT_ASSERT_EQUAL(actualVar, unifiedVariancePlain);
   }
 
 private:
