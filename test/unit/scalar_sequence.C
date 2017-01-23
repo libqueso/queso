@@ -58,6 +58,11 @@ public:
   {
     env.reset(new QUESO::FullEnvironment("","",NULL));
     sequence.reset(new QUESO::ScalarSequence<double>(*env, 13, "my_sequence"));
+
+    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+    for (unsigned int i = 0; i < 13; i++) {
+      (*sequence)[i] = i;
+    }
   }
 
   void test_setup()
@@ -73,11 +78,6 @@ public:
   {
     unsigned int expectedSize = 13;
     CPPUNIT_ASSERT_EQUAL(expectedSize, sequence->subSequenceSize());
-
-    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    for (unsigned int i = 0; i < 13; i++) {
-      (*sequence)[i] = i;
-    }
 
     // Remove (0-based) elements 2 to 7 (not including 7)
     sequence->erasePositions(2, 5);
@@ -97,11 +97,6 @@ public:
 
   void test_sub_min_plain()
   {
-    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    for (unsigned int i = 0; i < 13; i++) {
-      (*sequence)[i] = i;
-    }
-
     double subMinPlain = sequence->subMinPlain();
 
     CPPUNIT_ASSERT_EQUAL(0.0, subMinPlain);
@@ -109,11 +104,6 @@ public:
 
   void test_unified_min_plain()
   {
-    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    for (unsigned int i = 0; i < 13; i++) {
-      (*sequence)[i] = i;
-    }
-
     double unifiedMinPlain = sequence->unifiedMinPlain(false);
 
     CPPUNIT_ASSERT_EQUAL(0.0, unifiedMinPlain);
@@ -121,11 +111,6 @@ public:
 
   void test_sub_mean_plain()
   {
-    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    for (unsigned int i = 0; i < 13; i++) {
-      (*sequence)[i] = i;
-    }
-
     double actualMean = (1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12) / 13.0;
 
     double subMeanPlain = sequence->subMeanPlain();
@@ -135,11 +120,6 @@ public:
 
   void test_sub_median_plain()
   {
-    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    for (unsigned int i = 0; i < 13; i++) {
-      (*sequence)[i] = i;
-    }
-
     double actualMedian = 6;
     double subMedianPlain = sequence->subMedianPlain();
 
@@ -148,11 +128,6 @@ public:
 
   void test_unified_median_plain()
   {
-    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    for (unsigned int i = 0; i < 13; i++) {
-      (*sequence)[i] = i;
-    }
-
     double actualMedian = 6;
     double unifiedMedianPlain = sequence->unifiedMedianPlain(false);
 
@@ -161,11 +136,6 @@ public:
 
   void test_sub_sample_variance_plain()
   {
-    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    for (unsigned int i = 0; i < 13; i++) {
-      (*sequence)[i] = i;
-    }
-
     double actualMean = 6.0;
 
     double runningSumSq = 0.0;
@@ -183,11 +153,6 @@ public:
 
   void test_unified_sample_variance_plain()
   {
-    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    for (unsigned int i = 0; i < 13; i++) {
-      (*sequence)[i] = i;
-    }
-
     double actualMean = 6.0;
 
     double runningSumSq = 0.0;
