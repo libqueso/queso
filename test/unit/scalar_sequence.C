@@ -43,6 +43,7 @@ public:
   CPPUNIT_TEST_SUITE(ScalarSequenceTest);
   CPPUNIT_TEST(test_setup);
   CPPUNIT_TEST(test_erase);
+  CPPUNIT_TEST(test_sub_min_plain);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -86,6 +87,18 @@ public:
       }
       CPPUNIT_ASSERT_EQUAL(expected, (*sequence)[i]);
     }
+  }
+
+  void test_sub_min_plain()
+  {
+    // Set *sequence to (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+    for (unsigned int i = 0; i < 13; i++) {
+      (*sequence)[i] = i;
+    }
+
+    double subMinPlain = sequence->subMinPlain();
+
+    CPPUNIT_ASSERT_EQUAL(0.0, subMinPlain);
   }
 
 private:
