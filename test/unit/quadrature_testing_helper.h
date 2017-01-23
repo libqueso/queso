@@ -126,6 +126,56 @@ namespace QUESOTesting
 
   };
 
+  //! Base class for testing multi-dimensional quadrature rules
+  template <class V, class M>
+  class QuadratureMultiDTestBase : public CppUnit::TestCase
+  {
+  public:
+
+    double integrate_func( const MultiDQuadratureFunction<V,M> & func,
+                           QUESO::MultiDQuadratureBase<V,M> & quad_rule,
+                           unsigned int n_points )
+    {
+      const std::vector<typename QUESO::SharedPtr<V>::Type> & x = quad_rule.positions();
+      const std::vector<double> & w = quad_rule.weights();
+
+      CPPUNIT_ASSERT_EQUAL(x.size(),w.size());
+      CPPUNIT_ASSERT( n_points <= x.size());
+
+      double int_value = 0.0;
+
+      for( unsigned int q = 0; q < n_points; q++ )
+        int_value += func.f( (*x[q]) )*w[q];
+
+      return int_value;
+    }
+
+    void exact_quadrature_rule_test( const MultiDQuadratureFunction<V,M> & func,
+                                     const QUESO::BoxSubset<V,M> & domain,
+                                     QUESO::MultiDQuadratureBase<V,M> & quad_rule,
+                                     double tol )
+    {
+      double int_value = this->integrate_func(func,quad_rule,quad_rule.positions().size());
+
+      double exact_int_value = func.int_f( domain );
+
+      double rel_error = std::abs( (int_value-exact_int_value)/exact_int_value );
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL( 0.0, rel_error, tol );
+    }
+
+    protected:
+
+      QUESO::EnvOptionsValues _options;
+
+      typename QUESO::ScopedPtr<QUESO::BaseEnvironment>::Type _env;
+
+      void init_env()
+      {
+        _env.reset( new QUESO::FullEnvironment("","",&_options) );
+      }
+  };
+
 } // end namespace QUESOTesting
 
 #endif // QUESO_HAVE_CPPUNIT
