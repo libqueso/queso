@@ -50,6 +50,7 @@ public:
   CPPUNIT_TEST(test_unified_median_plain);
   CPPUNIT_TEST(test_sub_sample_variance_plain);
   CPPUNIT_TEST(test_unified_sample_variance_plain);
+  CPPUNIT_TEST(test_set_gaussian);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -166,6 +167,25 @@ public:
     double unifiedVariancePlain = sequence->unifiedSampleVariancePlain(false);
 
     CPPUNIT_ASSERT_EQUAL(actualVar, unifiedVariancePlain);
+  }
+
+  void test_set_gaussian()
+  {
+    unsigned int N = 1000000;
+    QUESO::ScalarSequence<double> gaussian_sequence(*env, N, "");
+    gaussian_sequence.setGaussian(5.0, 0.1);
+
+    // Check the mean is close to 5.0
+    double mean = gaussian_sequence.subMeanPlain();
+
+    // Just use 0.001 delta to account for statistical error.  Not rigorous.
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(5.0, mean, 0.001);
+
+    // Check variance is close to 1.0
+    double variance = gaussian_sequence.subSampleVariancePlain();
+
+    // Just use 0.01 delta to account for statistical error.  Not rigorous.
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(0.1 * 0.1, variance, 0.001);
   }
 
 private:
