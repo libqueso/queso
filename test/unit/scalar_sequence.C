@@ -52,6 +52,7 @@ public:
   CPPUNIT_TEST(test_unified_sample_variance_plain);
   CPPUNIT_TEST(test_set_gaussian);
   CPPUNIT_TEST(test_set_uniform);
+  CPPUNIT_TEST(test_sub_uniformly_sampled_cdf);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -202,6 +203,18 @@ public:
 
     // Check mean is close to 5.0
     CPPUNIT_ASSERT_DOUBLES_EQUAL(5.0, mean, 0.01);
+  }
+
+  void test_sub_uniformly_sampled_cdf()
+  {
+    double min, max;
+    std::vector<double> cdf;
+    sequence->subUniformlySampledCdf(14, min, max, cdf);
+
+    for (unsigned int i = 0; i < cdf.size(); i++) {
+      unsigned int cdf_val = cdf[i] * 13;
+      CPPUNIT_ASSERT_EQUAL(i, cdf_val);  // Expect linearly increasing ints
+    }
   }
 
 private:
