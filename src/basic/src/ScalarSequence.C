@@ -216,7 +216,7 @@ ScalarSequence<T>::erasePositions(unsigned int initialPos, unsigned int numPos)
   if (initialPos < this->subSequenceSize()) std::advance(posIteratorBegin,initialPos);
   else                                      posIteratorBegin = m_seq.end();
 
-  unsigned int posEnd = initialPos + numPos - 1;
+  unsigned int posEnd = initialPos + numPos;
   seqScalarPositionIteratorTypedef posIteratorEnd = m_seq.begin();
   if (posEnd < this->subSequenceSize()) std::advance(posIteratorEnd,posEnd);
   else                                  posIteratorEnd = m_seq.end();
