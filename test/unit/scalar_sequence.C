@@ -54,6 +54,7 @@ public:
   CPPUNIT_TEST(test_set_uniform);
   CPPUNIT_TEST(test_sub_uniformly_sampled_cdf);
   CPPUNIT_TEST(test_unified_uniformly_sampled_cdf);
+  CPPUNIT_TEST(test_compare_hists);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -227,6 +228,29 @@ public:
     for (unsigned int i = 0; i < cdf.size(); i++) {
       unsigned int cdf_val = cdf[i] * 13;
       CPPUNIT_ASSERT_EQUAL(i, cdf_val);  // Expect linearly increasing ints
+    }
+  }
+
+  void test_compare_hists()
+  {
+    unsigned int num_points = 14;
+    std::vector<unsigned int> bins1(num_points, 0);
+    std::vector<unsigned int> bins2(num_points, 0);
+    std::vector<double> centers(num_points, 0);
+
+    QUESO::ScopedPtr<QUESO::UniformOneDGrid<double> >::Type grid;
+    QUESO::UniformOneDGrid<double> * grid_rawptr = grid.get();
+
+    // Compute histogram from subBasicHistogram
+    double min, max;
+    sequence->subMinMaxExtra(0, sequence->subSequenceSize(), min, max);
+    sequence->subBasicHistogram(0, min, max, grid_rawptr, bins1);
+
+    // Compute histogram from subHistogram
+    sequence->subHistogram(0, min, max, centers, bins2);
+
+    for (unsigned int i = 0; i < bins1.size(); i++) {
+      CPPUNIT_ASSERT_EQUAL(bins1[i], bins2[i]);
     }
   }
 

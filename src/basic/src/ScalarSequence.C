@@ -1729,14 +1729,14 @@ ScalarSequence<T>::subBasicHistogram(
   for (unsigned int j = 0; j < dataSize; ++j) {
     double value = m_seq[j];
     if (value < minHorizontalValue) {
-      bins[0] += value;
+      bins[0]++;
     }
     else if (value >= maxHorizontalValue) {
-      bins[bins.size()-1] += value;
+      bins[bins.size()-1]++;
     }
     else {
       unsigned int index = 1 + (unsigned int) ((value - minHorizontalValue)/horizontalDelta);
-      bins[index] += value;
+      bins[index]++;
     }
   }
 
