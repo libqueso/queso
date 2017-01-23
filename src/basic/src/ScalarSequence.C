@@ -515,20 +515,11 @@ void
 ScalarSequence<T>::setGaussian(const T& meanValue, const T& stdDev)
 {
   unsigned int maxJ = this->subSequenceSize();
-  if (meanValue == 0.) {
-    for (unsigned int j = 0; j < maxJ; ++j) {
-      m_seq[j] = m_env.rngObject()->gaussianSample(stdDev);
-    }
-  }
-  else {
-    for (unsigned int j = 0; j < maxJ; ++j) {
-      m_seq[j] = meanValue + m_env.rngObject()->gaussianSample(stdDev);
-    }
+  for (unsigned int j = 0; j < maxJ; ++j) {
+    m_seq[j] = meanValue + m_env.rngObject()->gaussianSample(stdDev);
   }
 
   deleteStoredScalars();
-
-  return;
 }
 // --------------------------------------------------
 template <class T>
