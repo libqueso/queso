@@ -154,8 +154,10 @@ public:
     double actualVar = runningSumSq / 12.0;  // Sample variance, not population
 
     double subVariancePlain = sequence->subSampleVariancePlain();
+    double subStd = sequence->subSampleStd(0, sequence->subSequenceSize(), actualMean);
 
     CPPUNIT_ASSERT_EQUAL(actualVar, subVariancePlain);
+    CPPUNIT_ASSERT_EQUAL(std::sqrt(actualVar), subStd);
   }
 
   void test_unified_sample_variance_plain()
@@ -171,8 +173,10 @@ public:
     double actualVar = runningSumSq / 12.0;  // Sample variance, not population
 
     double unifiedVariancePlain = sequence->unifiedSampleVariancePlain(false);
+    double unifiedStd = sequence->unifiedSampleStd(false, 0, sequence->subSequenceSize(), actualMean);
 
     CPPUNIT_ASSERT_EQUAL(actualVar, unifiedVariancePlain);
+    CPPUNIT_ASSERT_EQUAL(std::sqrt(actualVar), unifiedStd);
   }
 
   void test_set_gaussian()
