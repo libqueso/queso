@@ -63,6 +63,7 @@ public:
   CPPUNIT_TEST(test_sub_weight_cdf);
   CPPUNIT_TEST(test_scale_kde);
   CPPUNIT_TEST(test_gaussian_kde);
+  CPPUNIT_TEST(test_positions_of_maximum);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -418,6 +419,35 @@ public:
 
     point.unifiedGaussian1dKde(false, 0, 1.0, positions, density);
     CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDE, density[0], TOL);
+  }
+
+  void test_positions_of_maximum()
+  {
+    QUESO::ScalarSequence<double> response(*env, 13, "");
+    response[0] = 1.0;
+    response[1] = 2.0;
+    response[2] = 3.0;
+    response[3] = 3.0;
+    response[4] = 2.0;
+    response[5] = 9.0;
+    response[6] = 9.0;
+    response[7] = 8.0;
+    response[8] = 7.0;
+    response[9] = 3.0;
+    response[10] = 2.0;
+    response[11] = -1.0;
+    response[12] = -10.0;
+
+    QUESO::ScalarSequence<double> positions(*env, 0, "");
+    double max = sequence->subPositionsOfMaximum(response, positions);
+    CPPUNIT_ASSERT_EQUAL(9.0, max);
+    CPPUNIT_ASSERT_EQUAL(5.0, positions[0]);
+    CPPUNIT_ASSERT_EQUAL(6.0, positions[1]);
+
+    max = sequence->unifiedPositionsOfMaximum(response, positions);
+    CPPUNIT_ASSERT_EQUAL(9.0, max);
+    CPPUNIT_ASSERT_EQUAL(5.0, positions[0]);
+    CPPUNIT_ASSERT_EQUAL(6.0, positions[1]);
   }
 
 private:
