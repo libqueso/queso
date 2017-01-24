@@ -62,6 +62,7 @@ public:
   CPPUNIT_TEST(test_interquantile_range);
   CPPUNIT_TEST(test_sub_weight_cdf);
   CPPUNIT_TEST(test_scale_kde);
+  CPPUNIT_TEST(test_gaussian_kde);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -399,6 +400,24 @@ public:
 
     KDEScale = sequence->unifiedScaleForKde(false, 0, actualIrq, 1);
     CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDEScale, KDEScale, TOL);
+  }
+
+  void test_gaussian_kde()
+  {
+    double TOL = 1e-12;
+
+    QUESO::ScalarSequence<double> point(*env, 1, "");
+    point[0] = -0.1;
+
+    std::vector<double> positions(1, -0.1);
+    std::vector<double> density(1, 0.0);
+    point.subGaussian1dKde(0, 1.0, positions, density);
+
+    double actualKDE = 1.0 / std::sqrt(2.0 * M_PI);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDE, density[0], TOL);
+
+    point.unifiedGaussian1dKde(false, 0, 1.0, positions, density);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDE, density[0], TOL);
   }
 
 private:
