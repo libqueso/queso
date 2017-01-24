@@ -43,6 +43,20 @@ LikelihoodBase<V, M>::~LikelihoodBase()
 {
 }
 
+template<class V, class M>
+void LikelihoodBase<V, M>::evaluateModel(const V & domainVector, const V * domainDirection,
+                                         V & modelOutput, V * gradVector, M * hessianMatrix,
+                                         V * hessianEffect) const
+{
+  std::stringstream ss;
+  ss << "ERROR: evaluateModel() not implemented! This interface is deprecated."
+     << std::endl
+     << "Prefer implementing evaluateModel(const V & domainVector, V & modelOutput)"
+     << std::endl;
+
+  queso_error_msg(ss.str());
+}
+
 }  // End namespace QUESO
 
 template class QUESO::LikelihoodBase<QUESO::GslVector, QUESO::GslMatrix>;
