@@ -61,6 +61,7 @@ public:
   CPPUNIT_TEST(test_sort);
   CPPUNIT_TEST(test_interquantile_range);
   CPPUNIT_TEST(test_sub_weight_cdf);
+  CPPUNIT_TEST(test_scale_kde);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -381,6 +382,23 @@ public:
       CPPUNIT_ASSERT_EQUAL(i, cdf_val1);  // Expect linearly increasing ints
       CPPUNIT_ASSERT_EQUAL(i, cdf_val2);  // Expect linearly increasing ints
     }
+  }
+
+  void test_scale_kde()
+  {
+    double TOL = 1e-12;
+    double actualIrq = 7.0;
+
+    // Regression solution
+    double actualKDEScale = 2.471509395452762269940194528317;
+
+    double KDEScale;
+
+    KDEScale = sequence->subScaleForKde(0, actualIrq, 1);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDEScale, KDEScale, TOL);
+
+    KDEScale = sequence->unifiedScaleForKde(false, 0, actualIrq, 1);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDEScale, KDEScale, TOL);
   }
 
 private:
