@@ -57,6 +57,7 @@ public:
   CPPUNIT_TEST(test_compare_hists);
   CPPUNIT_TEST(test_sub_basic_cdf);
   CPPUNIT_TEST(test_population_variance);
+  CPPUNIT_TEST(test_auto_covariance);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -283,6 +284,28 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(actualPopVar, subPopVariance);
     CPPUNIT_ASSERT_EQUAL(actualPopVar, unifiedPopVariance);
+  }
+
+  void test_auto_covariance()
+  {
+    double actualMean = 6.0;
+    double actualPopVar = 14.0;
+    unsigned int numPos = sequence->subSequenceSize();
+
+    // Compute auto covariance with zero lag.  Should be population var?
+    double autoCov = sequence->autoCovariance(0, numPos, actualMean, 0);
+    CPPUNIT_ASSERT_EQUAL(actualPopVar, autoCov);
+
+    // This is normalised by autoCov, so result should be 1.0 with lag 0
+    double autoCorrViaDef = sequence->autoCorrViaDef(0, numPos, 0);
+    CPPUNIT_ASSERT_EQUAL(1.0, autoCorrViaDef);
+
+    std::vector<double> autoCorrsViaFft;
+    sequence->autoCorrViaFft(0, numPos, 0, autoCorrsViaFft);
+    CPPUNIT_ASSERT_EQUAL(1.0, autoCorrsViaFft[0]);
+
+    sequence->autoCorrViaFft(0, numPos, 1, autoCorrsViaFft[0]);
+    CPPUNIT_ASSERT_EQUAL(1.0, autoCorrsViaFft[0]);
   }
 
 private:
