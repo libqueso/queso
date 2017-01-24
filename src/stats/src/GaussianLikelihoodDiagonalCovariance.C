@@ -50,16 +50,6 @@ GaussianLikelihoodDiagonalCovariance<V, M>::~GaussianLikelihoodDiagonalCovarianc
 
 template<class V, class M>
 double
-GaussianLikelihoodDiagonalCovariance<V, M>::actualValue(const V & domainVector,
-    const V * domainDirection, V * gradVector, M * hessianMatrix,
-    V * hessianEffect) const
-{
-  return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
-        hessianMatrix, hessianEffect));
-}
-
-template<class V, class M>
-double
 GaussianLikelihoodDiagonalCovariance<V, M>::lnValue(const V & domainVector,
     const V * domainDirection, V * gradVector, M * hessianMatrix,
     V * hessianEffect) const

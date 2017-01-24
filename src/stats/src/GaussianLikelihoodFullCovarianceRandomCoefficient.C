@@ -49,16 +49,6 @@ GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::~GaussianLikelihoodFull
 
 template<class V, class M>
 double
-GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::actualValue(
-    const V & domainVector, const V * domainDirection, V * gradVector,
-    M * hessianMatrix, V * hessianEffect) const
-{
-  return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
-        hessianMatrix, hessianEffect));
-}
-
-template<class V, class M>
-double
 GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::lnValue(
     const V & domainVector, const V * domainDirection, V * gradVector,
     M * hessianMatrix, V * hessianEffect) const

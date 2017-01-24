@@ -70,10 +70,6 @@ public:
   //! Get (const) multiplicative coefficient for block \c i
   const double & getBlockCoefficient(unsigned int i) const;
 
-  //! Actual value of the scalar function.
-  virtual double actualValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
-
   //! Logarithm of the value of the scalar function.
   virtual double lnValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const;

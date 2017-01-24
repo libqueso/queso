@@ -26,6 +26,7 @@
 #define UQ_GAUSSIAN_LLHD_H
 
 #include <vector>
+#include <cmath>
 #include <queso/ScalarFunction.h>
 
 namespace QUESO {
@@ -92,6 +93,12 @@ public:
    */
   virtual void evaluateModel(const V & domainVector, V & modelOutput) const
   { this->evaluateModel(domainVector,NULL,modelOutput,NULL,NULL,NULL); }
+
+  //! Actual value of the scalar function.
+  virtual double actualValue(const V & domainVector, const V * domainDirection,
+                             V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  { return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
+                                  hessianMatrix, hessianEffect)); }
 
 protected:
   const V & m_observations;

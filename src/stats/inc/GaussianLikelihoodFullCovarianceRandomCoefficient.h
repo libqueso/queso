@@ -67,10 +67,6 @@ public:
   virtual ~GaussianLikelihoodFullCovarianceRandomCoefficient();
   //@}
 
-  //! Actual value of the scalar function.
-  virtual double actualValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
-
   //! Logarithm of the value of the scalar function.
   virtual double lnValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const;

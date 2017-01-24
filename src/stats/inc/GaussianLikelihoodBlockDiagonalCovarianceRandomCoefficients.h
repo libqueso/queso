@@ -66,10 +66,6 @@ public:
   virtual ~GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients();
   //@}
 
-  //! Actual value of the scalar function.
-  virtual double actualValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
-
   //! Logarithm of the value of the scalar function.
   /*!
    * The last \c n elements of \c domainVector, where \c n is the number of
