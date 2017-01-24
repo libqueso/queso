@@ -124,6 +124,7 @@ unit_driver_SOURCES += unit/instantiate_intersection.C
 unit_driver_SOURCES += unit/scalar_function.C
 unit_driver_SOURCES += unit/scalar_sequence.C
 unit_driver_SOURCES += unit/vector_space.C
+unit_driver_SOURCES += unit/base_vector_sequence.C
 
 test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
 test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
