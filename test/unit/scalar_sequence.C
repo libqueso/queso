@@ -58,6 +58,7 @@ public:
   CPPUNIT_TEST(test_sub_basic_cdf);
   CPPUNIT_TEST(test_population_variance);
   CPPUNIT_TEST(test_auto_covariance);
+  CPPUNIT_TEST(test_sort);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -306,6 +307,28 @@ public:
 
     sequence->autoCorrViaFft(0, numPos, 1, autoCorrsViaFft[0]);
     CPPUNIT_ASSERT_EQUAL(1.0, autoCorrsViaFft[0]);
+  }
+
+  void test_sort()
+  {
+    QUESO::ScalarSequence<double> reversed_sequence(*env, 13, "");
+
+    unsigned int size = sequence->subSequenceSize();
+    for (unsigned int i = 0; i < size; i++) {
+      reversed_sequence[i] = (*sequence)[size-1-i];
+    }
+
+    QUESO::ScalarSequence<double> sorted_sequence(*env, 13, "");
+    reversed_sequence.subSort(0, sorted_sequence);
+
+    for (unsigned int i = 0; i < size; i++) {
+      CPPUNIT_ASSERT_EQUAL((*sequence)[i], sorted_sequence[i]);
+    }
+
+    reversed_sequence.unifiedSort(false, 0, sorted_sequence);
+    for (unsigned int i = 0; i < size; i++) {
+      CPPUNIT_ASSERT_EQUAL((*sequence)[i], sorted_sequence[i]);
+    }
   }
 
 private:
