@@ -59,6 +59,7 @@ public:
   CPPUNIT_TEST(test_population_variance);
   CPPUNIT_TEST(test_auto_covariance);
   CPPUNIT_TEST(test_sort);
+  CPPUNIT_TEST(test_interquantile_range);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -329,6 +330,17 @@ public:
     for (unsigned int i = 0; i < size; i++) {
       CPPUNIT_ASSERT_EQUAL((*sequence)[i], sorted_sequence[i]);
     }
+  }
+
+  void test_interquantile_range()
+  {
+    double actual_iqr = 7.0;
+
+    double iqr = sequence->subInterQuantileRange(0);
+    CPPUNIT_ASSERT_EQUAL(actual_iqr, iqr);
+
+    iqr = sequence->unifiedInterQuantileRange(false, 0);
+    CPPUNIT_ASSERT_EQUAL(actual_iqr, iqr);
   }
 
 private:
