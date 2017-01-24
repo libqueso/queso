@@ -65,6 +65,7 @@ public:
   CPPUNIT_TEST(test_gaussian_kde);
   CPPUNIT_TEST(test_positions_of_maximum);
   CPPUNIT_TEST(test_read);
+  CPPUNIT_TEST(test_brooks_gelman);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -468,6 +469,22 @@ public:
       double val = i + 1;
       CPPUNIT_ASSERT_EQUAL(val, read_sequence[i]);
     }
+  }
+
+  void test_brooks_gelman()
+  {
+    int returnVal;
+    try {
+      returnVal = 1;
+      sequence->brooksGelmanConvMeasure(true, 0, 0);
+    }
+    catch (...) {
+      returnVal = 0;
+    }
+
+    // We expect the exception to be caught because brooks gelman isn't
+    // implemented
+    CPPUNIT_ASSERT_EQUAL(0, returnVal);
   }
 
 private:
