@@ -35,7 +35,7 @@ template<class V, class M>
 GaussianLikelihoodDiagonalCovariance<V, M>::GaussianLikelihoodDiagonalCovariance(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, const V & covariance)
-  : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+  : LikelihoodBase<V, M>(prefix, domainSet, observations),
     m_covariance(covariance)
 {
   if (covariance.sizeLocal() != observations.sizeLocal()) {

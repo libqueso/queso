@@ -27,7 +27,7 @@
 
 #include <vector>
 #include <queso/GslBlockMatrix.h>
-#include <queso/GaussianLikelihood.h>
+#include <queso/LikelihoodBase.h>
 
 namespace QUESO {
 
@@ -42,7 +42,7 @@ class GslMatrix;
  */
 
 template <class V = GslVector, class M = GslMatrix>
-class GaussianLikelihoodBlockDiagonalCovariance : public BaseGaussianLikelihood<V, M> {
+class GaussianLikelihoodBlockDiagonalCovariance : public LikelihoodBase<V, M> {
 public:
   //! @name Constructor/Destructor methods.
   //@{

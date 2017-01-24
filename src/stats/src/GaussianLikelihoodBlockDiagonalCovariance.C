@@ -35,7 +35,7 @@ template<class V, class M>
 GaussianLikelihoodBlockDiagonalCovariance<V, M>::GaussianLikelihoodBlockDiagonalCovariance(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, const GslBlockMatrix & covariance)
-  : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+  : LikelihoodBase<V, M>(prefix, domainSet, observations),
     m_covarianceCoefficients(covariance.numBlocks(), 1.0),
     m_covariance(covariance)
 {

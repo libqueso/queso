@@ -25,12 +25,12 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSet.h>
-#include <queso/GaussianLikelihood.h>
+#include <queso/LikelihoodBase.h>
 
 namespace QUESO {
 
 template<class V, class M>
-BaseGaussianLikelihood<V, M>::BaseGaussianLikelihood(
+LikelihoodBase<V, M>::LikelihoodBase(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations)
   : BaseScalarFunction<V, M>(prefix, domainSet),
@@ -39,10 +39,10 @@ BaseGaussianLikelihood<V, M>::BaseGaussianLikelihood(
 }
 
 template<class V, class M>
-BaseGaussianLikelihood<V, M>::~BaseGaussianLikelihood()
+LikelihoodBase<V, M>::~LikelihoodBase()
 {
 }
 
 }  // End namespace QUESO
 
-template class QUESO::BaseGaussianLikelihood<QUESO::GslVector, QUESO::GslMatrix>;
+template class QUESO::LikelihoodBase<QUESO::GslVector, QUESO::GslMatrix>;

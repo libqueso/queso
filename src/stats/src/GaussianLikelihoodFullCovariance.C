@@ -35,7 +35,7 @@ template<class V, class M>
 GaussianLikelihoodFullCovariance<V, M>::GaussianLikelihoodFullCovariance(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, const M & covariance, double covarianceCoefficient)
-  : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+  : LikelihoodBase<V, M>(prefix, domainSet, observations),
     m_covarianceCoefficient(covarianceCoefficient),
     m_covariance(covariance)
 {

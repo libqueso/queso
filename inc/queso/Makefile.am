@@ -132,7 +132,6 @@ BUILT_SOURCES += GammaJointPdf.h
 BUILT_SOURCES += GammaVectorRV.h
 BUILT_SOURCES += GammaVectorRealizer.h
 BUILT_SOURCES += GaussianJointPdf.h
-BUILT_SOURCES += GaussianLikelihood.h
 BUILT_SOURCES += GaussianLikelihoodBlockDiagonalCovariance.h
 BUILT_SOURCES += GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
 BUILT_SOURCES += GaussianLikelihoodDiagonalCovariance.h
@@ -163,6 +162,7 @@ BUILT_SOURCES += JeffreysJointPdf.h
 BUILT_SOURCES += JeffreysVectorRV.h
 BUILT_SOURCES += JeffreysVectorRealizer.h
 BUILT_SOURCES += JointPdf.h
+BUILT_SOURCES += LikelihoodBase.h
 BUILT_SOURCES += LogNormalJointPdf.h
 BUILT_SOURCES += LogNormalVectorRV.h
 BUILT_SOURCES += LogNormalVectorRealizer.h
@@ -472,8 +472,6 @@ GammaVectorRealizer.h: $(top_srcdir)/src/stats/inc/GammaVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianJointPdf.h: $(top_srcdir)/src/stats/inc/GaussianJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GaussianLikelihood.h: $(top_srcdir)/src/stats/inc/GaussianLikelihood.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianLikelihoodBlockDiagonalCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodBlockDiagonalCovariance.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
@@ -533,6 +531,8 @@ JeffreysVectorRV.h: $(top_srcdir)/src/stats/inc/JeffreysVectorRV.h
 JeffreysVectorRealizer.h: $(top_srcdir)/src/stats/inc/JeffreysVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 JointPdf.h: $(top_srcdir)/src/stats/inc/JointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+LikelihoodBase.h: $(top_srcdir)/src/stats/inc/LikelihoodBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 LogNormalJointPdf.h: $(top_srcdir)/src/stats/inc/LogNormalJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

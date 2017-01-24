@@ -33,7 +33,7 @@ template<class V, class M>
 GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, const GslBlockMatrix & covariance)
-  : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+  : LikelihoodBase<V, M>(prefix, domainSet, observations),
     m_covariance(covariance)
 {
   unsigned int totalDim = 0;

@@ -35,7 +35,7 @@ template<class V, class M>
 GaussianLikelihoodScalarCovariance<V, M>::GaussianLikelihoodScalarCovariance(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, double covariance)
-  : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+  : LikelihoodBase<V, M>(prefix, domainSet, observations),
     m_covariance(covariance)
 {
 }

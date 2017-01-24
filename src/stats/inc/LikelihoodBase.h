@@ -34,9 +34,9 @@ class GslVector;
 class GslMatrix;
 
 /*!
- * \file BaseGaussianLikelihood.h
+ * \file LikelihoodBase.h
  *
- * \class BaseGaussianLikelihood
+ * \class LikelihoodBase
  * \brief Base class for canned Gaussian likelihoods
  *
  * This class is an abstract base class for 'canned' Gaussian likelihoods.  All
@@ -45,7 +45,7 @@ class GslMatrix;
  */
 
 template <class V = GslVector, class M = GslMatrix>
-class BaseGaussianLikelihood : public BaseScalarFunction<V, M> {
+class LikelihoodBase : public BaseScalarFunction<V, M> {
 public:
   //! @name Constructor/Destructor methods.
   //@{
@@ -54,12 +54,12 @@ public:
    * The vector of observations must be passed.  This will be used when
    * evaluating the likelihood functional
    */
-  BaseGaussianLikelihood(const char * prefix,
+  LikelihoodBase(const char * prefix,
       const VectorSet<V, M> & domainSet,
       const V & observations);
 
   //! Destructor
-  virtual ~BaseGaussianLikelihood();
+  virtual ~LikelihoodBase();
   //@}
 
   //! Evaluates the user's model at the point \c domainVector

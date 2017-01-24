@@ -25,7 +25,7 @@
 #ifndef UQ_GAUSSIAN_LIKELIHOOD_FULL_COV_RAND_COEFF_H
 #define UQ_GAUSSIAN_LIKELIHOOD_FULL_COV_RAND_COEFF_H
 
-#include <queso/GaussianLikelihood.h>
+#include <queso/LikelihoodBase.h>
 
 namespace QUESO {
 
@@ -45,7 +45,7 @@ class GslMatrix;
  */
 
 template <class V = GslVector, class M = GslMatrix>
-class GaussianLikelihoodFullCovarianceRandomCoefficient : public BaseGaussianLikelihood<V, M> {
+class GaussianLikelihoodFullCovarianceRandomCoefficient : public LikelihoodBase<V, M> {
 public:
   //! @name Constructor/Destructor methods.
   //@{

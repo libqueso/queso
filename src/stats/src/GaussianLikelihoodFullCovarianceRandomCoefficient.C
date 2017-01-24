@@ -34,7 +34,7 @@ template<class V, class M>
 GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::GaussianLikelihoodFullCovarianceRandomCoefficient(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, const M & covariance)
-  : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+  : LikelihoodBase<V, M>(prefix, domainSet, observations),
     m_covariance(covariance)
 {
   if (covariance.numRowsLocal() != observations.sizeLocal()) {
