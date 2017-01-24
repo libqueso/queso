@@ -55,6 +55,7 @@ public:
   CPPUNIT_TEST(test_sub_uniformly_sampled_cdf);
   CPPUNIT_TEST(test_unified_uniformly_sampled_cdf);
   CPPUNIT_TEST(test_compare_hists);
+  CPPUNIT_TEST(test_sub_basic_cdf);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -251,6 +252,19 @@ public:
 
     for (unsigned int i = 0; i < bins1.size(); i++) {
       CPPUNIT_ASSERT_EQUAL(bins1[i], bins2[i]);
+    }
+  }
+
+  void test_sub_basic_cdf()
+  {
+    std::vector<double> cdf;
+    QUESO::UniformOneDGrid<double> * grid;
+
+    sequence->subBasicCdf(14, grid, cdf);
+
+    for (unsigned int i = 0; i < cdf.size(); i++) {
+      unsigned int cdf_val = cdf[i] * 13;
+      CPPUNIT_ASSERT_EQUAL(i, cdf_val);  // Expect linearly increasing ints
     }
   }
 
