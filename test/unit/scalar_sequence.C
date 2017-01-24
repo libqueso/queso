@@ -261,6 +261,20 @@ public:
     for (unsigned int i = 0; i < bins1.size(); i++) {
       CPPUNIT_ASSERT_EQUAL(bins1[i], bins2[i]);
     }
+
+    // Now test the weighted versions.  Let's overwrite bins2
+    grid.reset(0);
+    grid_rawptr = grid.get();
+    sequence->subWeightHistogram(0, min, max, grid_rawptr, bins2);
+
+    for (unsigned int i = 0; i < bins2.size(); i++) {
+      CPPUNIT_ASSERT_EQUAL(bins1[i], bins2[i]);
+    }
+
+    sequence->subWeightHistogram(0, min, max, centers, bins2);
+    for (unsigned int i = 0; i < bins2.size(); i++) {
+      CPPUNIT_ASSERT_EQUAL(bins1[i], bins2[i]);
+    }
   }
 
   void test_sub_basic_cdf()
