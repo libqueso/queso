@@ -64,6 +64,7 @@ public:
   CPPUNIT_TEST(test_scale_kde);
   CPPUNIT_TEST(test_gaussian_kde);
   CPPUNIT_TEST(test_positions_of_maximum);
+  CPPUNIT_TEST(test_read);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -448,6 +449,25 @@ public:
     CPPUNIT_ASSERT_EQUAL(9.0, max);
     CPPUNIT_ASSERT_EQUAL(5.0, positions[0]);
     CPPUNIT_ASSERT_EQUAL(6.0, positions[1]);
+  }
+
+  void test_read()
+  {
+    QUESO::ScalarSequence<double> read_sequence(*env, 5, "");
+
+    // Filename logic
+    std::string sequenceFileName = "unit/read_sequence";
+    const char * test_srcdir = std::getenv("srcdir");
+    if (test_srcdir) {
+      sequenceFileName = test_srcdir + ('/' + sequenceFileName);
+    }
+
+    read_sequence.unifiedReadContents(sequenceFileName, "m", 5);
+
+    for (unsigned int i = 0; i < 5; i++) {
+      double val = i + 1;
+      CPPUNIT_ASSERT_EQUAL(val, read_sequence[i]);
+    }
   }
 
 private:
