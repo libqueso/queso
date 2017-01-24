@@ -56,6 +56,7 @@ public:
   CPPUNIT_TEST(test_unified_uniformly_sampled_cdf);
   CPPUNIT_TEST(test_compare_hists);
   CPPUNIT_TEST(test_sub_basic_cdf);
+  CPPUNIT_TEST(test_population_variance);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -266,6 +267,18 @@ public:
       unsigned int cdf_val = cdf[i] * 13;
       CPPUNIT_ASSERT_EQUAL(i, cdf_val);  // Expect linearly increasing ints
     }
+  }
+
+  void test_population_variance()
+  {
+    double actualMean = 6.0;
+    double actualPopVar = 14.0;
+
+    double subPopVariance = sequence->subPopulationVariance(0, sequence->subSequenceSize(), actualMean);
+    double unifiedPopVariance = sequence->unifiedPopulationVariance(false, 0, sequence->subSequenceSize(), actualMean);
+
+    CPPUNIT_ASSERT_EQUAL(actualPopVar, subPopVariance);
+    CPPUNIT_ASSERT_EQUAL(actualPopVar, unifiedPopVariance);
   }
 
 private:
