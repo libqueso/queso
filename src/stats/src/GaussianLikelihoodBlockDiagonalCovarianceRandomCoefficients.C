@@ -54,15 +54,12 @@ GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::~GaussianLike
 
 template<class V, class M>
 double
-GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::lnValue(
-    const V & domainVector, const V * domainDirection, V * gradVector,
-    M * hessianMatrix, V * hessianEffect) const
+GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::lnValue(const V & domainVector) const
 {
   V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
   V weightedMisfit(this->m_observations, 0, 0);  // At least it's not a copy
 
-  this->evaluateModel(domainVector, domainDirection, modelOutput, gradVector,
-      hessianMatrix, hessianEffect);
+  this->evaluateModel(domainVector, modelOutput);
 
   // Compute misfit G(x) - y
   modelOutput -= this->m_observations;

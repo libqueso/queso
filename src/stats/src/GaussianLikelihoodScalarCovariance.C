@@ -47,14 +47,11 @@ GaussianLikelihoodScalarCovariance<V, M>::~GaussianLikelihoodScalarCovariance()
 
 template<class V, class M>
 double
-GaussianLikelihoodScalarCovariance<V, M>::lnValue(const V & domainVector,
-    const V * domainDirection, V * gradVector, M * hessianMatrix,
-    V * hessianEffect) const
+GaussianLikelihoodScalarCovariance<V, M>::lnValue(const V & domainVector) const
 {
   V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
 
-  this->evaluateModel(domainVector, domainDirection, modelOutput, gradVector,
-      hessianMatrix, hessianEffect);
+  this->evaluateModel(domainVector, modelOutput);
 
   modelOutput -= this->m_observations;  // Compute misfit
   double norm2_squared = modelOutput.norm2Sq();  // Compute square of 2-norm

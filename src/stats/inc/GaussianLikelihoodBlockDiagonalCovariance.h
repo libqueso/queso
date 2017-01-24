@@ -71,8 +71,7 @@ public:
   const double & getBlockCoefficient(unsigned int i) const;
 
   //! Logarithm of the value of the scalar function.
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
+  virtual double lnValue(const V & domainVector) const;
 
 private:
   std::vector<double> m_covarianceCoefficients;

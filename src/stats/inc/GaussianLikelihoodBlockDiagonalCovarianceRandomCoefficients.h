@@ -76,8 +76,7 @@ public:
    * evaluation routine, since they are handled by the likelihood evaluation
    * routine.
    */
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
+  virtual double lnValue(const V & domainVector) const;
 
 private:
   const GslBlockMatrix & m_covariance;
