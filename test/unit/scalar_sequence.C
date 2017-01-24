@@ -60,6 +60,7 @@ public:
   CPPUNIT_TEST(test_auto_covariance);
   CPPUNIT_TEST(test_sort);
   CPPUNIT_TEST(test_interquantile_range);
+  CPPUNIT_TEST(test_sub_weight_cdf);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -355,6 +356,25 @@ public:
 
     iqr = sequence->unifiedInterQuantileRange(false, 0);
     CPPUNIT_ASSERT_EQUAL(actual_iqr, iqr);
+  }
+
+  void test_sub_weight_cdf()
+  {
+    unsigned int num_points = 14;
+    std::vector<double> cdf1;
+    std::vector<double> cdf2;
+    std::vector<double> centers(num_points, 0);
+    QUESO::UniformOneDGrid<double> * grid;
+
+    sequence->subWeightCdf(num_points, grid, cdf1);
+    sequence->subWeightCdf(num_points, centers, cdf2);
+
+    for (unsigned int i = 0; i < cdf1.size(); i++) {
+      unsigned int cdf_val1 = cdf1[i] * 13;
+      unsigned int cdf_val2 = cdf2[i] * 13;
+      CPPUNIT_ASSERT_EQUAL(i, cdf_val1);  // Expect linearly increasing ints
+      CPPUNIT_ASSERT_EQUAL(i, cdf_val2);  // Expect linearly increasing ints
+    }
   }
 
 private:
