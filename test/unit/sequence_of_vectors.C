@@ -48,6 +48,7 @@ public:
   CPPUNIT_TEST(test_std_var);
   CPPUNIT_TEST(test_hists);
   CPPUNIT_TEST(test_iqr);
+  CPPUNIT_TEST(test_auto_covariance);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -165,6 +166,38 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(actualIqr, iqr[0]);
     CPPUNIT_ASSERT_EQUAL(actualIqr, iqr[1]);
+  }
+
+  void test_auto_covariance()
+  {
+    QUESO::GslVector actualMean(space->zeroVector());
+    actualMean[0] = 6.0;
+    actualMean[1] = 7.0;
+    double actualPopVar = 182.0 / 13.0;
+    unsigned int numPos = sequence->subSequenceSize();
+
+    // Compute auto covariance with zero lag.  Should be population var?
+    QUESO::GslVector autoCov(space->zeroVector());
+    sequence->autoCovariance(0, numPos, actualMean, 0, autoCov);
+    CPPUNIT_ASSERT_EQUAL(actualPopVar, autoCov[0]);
+    CPPUNIT_ASSERT_EQUAL(actualPopVar, autoCov[1]);
+
+    // This is normalised by autoCov, so result should be 1.0 with lag 0
+    QUESO::GslVector autoCorrViaDef(space->zeroVector());
+    sequence->autoCorrViaDef(0, numPos, 0, autoCorrViaDef);
+    CPPUNIT_ASSERT_EQUAL(1.0, autoCorrViaDef[0]);
+    CPPUNIT_ASSERT_EQUAL(1.0, autoCorrViaDef[1]);
+
+    std::vector<unsigned int> lags(2, 0);
+    std::vector<QUESO::GslVector *> autoCorrsViaFft(2, (QUESO::GslVector *)NULL);
+    sequence->autoCorrViaFft(0, numPos, lags, autoCorrsViaFft);
+    CPPUNIT_ASSERT_EQUAL(1.0, (*autoCorrsViaFft[0])[0]);
+    CPPUNIT_ASSERT_EQUAL(1.0, (*autoCorrsViaFft[0])[1]);
+
+    QUESO::GslVector autoCorrsViaFftSum(space->zeroVector());
+    sequence->autoCorrViaFft(0, numPos, 1, autoCorrsViaFftSum);
+    CPPUNIT_ASSERT_EQUAL(1.0, autoCorrsViaFftSum[0]);
+    CPPUNIT_ASSERT_EQUAL(1.0, autoCorrsViaFftSum[1]);
   }
 
 private:
