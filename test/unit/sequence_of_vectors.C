@@ -1,0 +1,104 @@
+//-----------------------------------------------------------------------bl-
+//--------------------------------------------------------------------------
+//
+// QUESO - a library to support the Quantification of Uncertainty
+// for Estimation, Simulation and Optimization
+//
+// Copyright (C) 2008-2017 The PECOS Development Team
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the Version 2.1 GNU Lesser General
+// Public License as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
+// Boston, MA  02110-1301  USA
+//
+//-----------------------------------------------------------------------el-
+
+#include "config_queso.h"
+
+#ifdef QUESO_HAVE_CPPUNIT
+
+#include <cppunit/extensions/HelperMacros.h>
+#include <cppunit/TestCase.h>
+
+#include <queso/Environment.h>
+#include <queso/ScopedPtr.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorSpace.h>
+#include <queso/SequenceOfVectors.h>
+#include <queso/BoxSubset.h>
+
+namespace QUESOTesting
+{
+
+class SequenceOfVectorsTest : public CppUnit::TestCase
+{
+public:
+  CPPUNIT_TEST_SUITE(SequenceOfVectorsTest);
+  CPPUNIT_TEST(test_uniformly_sampled_cdf);
+  CPPUNIT_TEST_SUITE_END();
+
+  // yes, this is necessary
+public:
+  void setUp()
+  {
+    env.reset(new QUESO::FullEnvironment("","",NULL));
+    space.reset(new QUESO::VectorSpace<>(*env, "", 2, NULL));
+    sequence.reset(new QUESO::SequenceOfVectors<>(*space, 13, ""));
+
+    // Fill up the sequence with some not-so-random stuff
+    QUESO::GslVector v(space->zeroVector());
+    for (unsigned int i = 0; i < sequence->subSequenceSize(); i++) {
+      v[0] = i;
+      v[1] = i + 1;
+      sequence->setPositionValues(i, v);
+    }
+  }
+
+  void test_uniformly_sampled_cdf()
+  {
+    QUESO::GslVector num_points(space->zeroVector());
+    num_points.cwSet(14.0);
+
+    QUESO::VectorSpace<> rowSpace(*env, "", sequence->subSequenceSize(), NULL);
+    QUESO::ArrayOfOneDGrids<> cdfGrids("", rowSpace);
+    QUESO::ArrayOfOneDTables<> cdfValues("", rowSpace);
+    sequence->subUniformlySampledCdf(num_points, cdfGrids, cdfValues);
+
+    for (unsigned int i = 0; i < sequence->subSequenceSize(); i++) {
+      unsigned int cdf_val1 = cdfValues.oneDTable(0)[i] * 13;
+      unsigned int cdf_val2 = cdfValues.oneDTable(1)[i] * 13;
+      CPPUNIT_ASSERT_EQUAL(i, cdf_val1);
+      CPPUNIT_ASSERT_EQUAL(i, cdf_val2);
+    }
+
+    sequence->unifiedUniformlySampledCdf(num_points, cdfGrids, cdfValues);
+
+    for (unsigned int i = 0; i < sequence->subSequenceSize(); i++) {
+      unsigned int cdf_val1 = cdfValues.oneDTable(0)[i] * 13;
+      unsigned int cdf_val2 = cdfValues.oneDTable(1)[i] * 13;
+      CPPUNIT_ASSERT_EQUAL(i, cdf_val1);
+      CPPUNIT_ASSERT_EQUAL(i, cdf_val2);
+    }
+  }
+
+private:
+  typename QUESO::ScopedPtr<QUESO::BaseEnvironment>::Type env;
+  typename QUESO::ScopedPtr<QUESO::VectorSpace<> >::Type space;
+  typename QUESO::ScopedPtr<QUESO::SequenceOfVectors<> >::Type sequence;
+};
+
+CPPUNIT_TEST_SUITE_REGISTRATION(SequenceOfVectorsTest);
+
+}  // end namespace QUESOTesting
+
+#endif  // QUESO_HAVE_CPPUNIT
