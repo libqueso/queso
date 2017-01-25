@@ -49,6 +49,7 @@ public:
   CPPUNIT_TEST(test_hists);
   CPPUNIT_TEST(test_iqr);
   CPPUNIT_TEST(test_auto_covariance);
+  CPPUNIT_TEST(test_read);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -198,6 +199,29 @@ public:
     sequence->autoCorrViaFft(0, numPos, 1, autoCorrsViaFftSum);
     CPPUNIT_ASSERT_EQUAL(1.0, autoCorrsViaFftSum[0]);
     CPPUNIT_ASSERT_EQUAL(1.0, autoCorrsViaFftSum[1]);
+  }
+
+  void test_read()
+  {
+    QUESO::SequenceOfVectors<> read_sequence(*space, 5, "");
+
+    // Filename logic
+    std::string sequenceFileName = "unit/read_vector_sequence";
+    const char * test_srcdir = std::getenv("srcdir");
+    if (test_srcdir) {
+      sequenceFileName = test_srcdir + ('/' + sequenceFileName);
+    }
+
+    read_sequence.unifiedReadContents(sequenceFileName, "m", 5);
+
+    QUESO::GslVector value(space->zeroVector());
+    for (unsigned int i = 0; i < 5; i++) {
+      double val1 = i + 1;
+      double val2 = i + 2;
+      read_sequence.getPositionValues(i, value);
+      CPPUNIT_ASSERT_EQUAL(val1, value[0]);
+      CPPUNIT_ASSERT_EQUAL(val2, value[1]);
+    }
   }
 
 private:

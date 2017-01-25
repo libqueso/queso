@@ -360,6 +360,7 @@ EXTRA_DIST += test_optimizer/input_test_optimizer_input_parameters
 EXTRA_DIST += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 EXTRA_DIST += test_algorithms/input_test_mala.txt
 EXTRA_DIST += unit/read_sequence.m
+EXTRA_DIST += unit/read_vector_sequence.m
 
 EXTRA_DIST += t01_valid_cycle/inputData
 EXTRA_DIST += t01_valid_cycle/regression
