@@ -127,7 +127,80 @@ namespace QUESOTesting
     }
   };
 
+  class HermiteQuadrature1DTest : public Quadrature1DTestBase,
+                                  public HermiteQuadratureTestingHelper
+  {
+  public:
+    CPPUNIT_TEST_SUITE( HermiteQuadrature1DTest );
+
+    CPPUNIT_TEST( test_1d_hermite_quadrature_erf );
+    CPPUNIT_TEST( test_1d_hermite_quadrature_x2erf );
+    CPPUNIT_TEST( test_1d_hermite_quadrature_x4erf );
+
+    CPPUNIT_TEST_SUITE_END();
+
+    // yes, this is necessary
+  public:
+
+    void test_1d_hermite_quadrature_erf()
+    {
+      Erf func;
+      std::vector<unsigned int> testing_orders;
+      this->testing_orders(testing_orders);
+
+      double tol = std::numeric_limits<double>::epsilon()*50000;
+
+      this->test_1d_hermite_quadrature(func,testing_orders,tol);
+    }
+
+    void test_1d_hermite_quadrature_x2erf()
+    {
+      X2Erf func;
+      std::vector<unsigned int> testing_orders;
+      this->testing_orders(testing_orders);
+
+      double tol = 1.0e-10;
+
+      this->test_1d_hermite_quadrature(func,testing_orders,tol);
+    }
+
+    void test_1d_hermite_quadrature_x4erf()
+    {
+      std::cout << std::endl << "Beginning Hermite X4Erf test!" << std::endl;
+      X4Erf func;
+      std::vector<unsigned int> testing_orders;
+      this->testing_orders(testing_orders);
+
+      // We need at least a 3-point rule, so get rid of the first entry
+      testing_orders.erase(testing_orders.begin());
+
+      double tol = 2.0e-10;
+
+      this->test_1d_hermite_quadrature(func,testing_orders,tol);
+    }
+
+  private:
+
+    void test_1d_hermite_quadrature(OneDQuadratureFunction & func,
+                                    const std::vector<unsigned int> & testing_orders,
+                                    double tol)
+    {
+      for( std::vector<unsigned int>::const_iterator it = testing_orders.begin();
+           it < testing_orders.end(); ++it )
+      {
+        unsigned int quad_order = *it;
+
+        // 0 mean, unit variance
+        QUESO::GaussianHermite1DQuadrature quad_rule(0.0,1.0,quad_order);
+
+        this->test_quadrature_rule( quad_rule, func,
+                                    -INFINITY, INFINITY, tol );
+      }
+    }
+  };
+
   CPPUNIT_TEST_SUITE_REGISTRATION( LegendreQuadrature1DTest );
+  CPPUNIT_TEST_SUITE_REGISTRATION( HermiteQuadrature1DTest );
 
 } // end namespace QUESOTesting
 
