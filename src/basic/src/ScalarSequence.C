@@ -216,7 +216,7 @@ ScalarSequence<T>::erasePositions(unsigned int initialPos, unsigned int numPos)
   if (initialPos < this->subSequenceSize()) std::advance(posIteratorBegin,initialPos);
   else                                      posIteratorBegin = m_seq.end();
 
-  unsigned int posEnd = initialPos + numPos - 1;
+  unsigned int posEnd = initialPos + numPos;
   seqScalarPositionIteratorTypedef posIteratorEnd = m_seq.begin();
   if (posEnd < this->subSequenceSize()) std::advance(posIteratorEnd,posEnd);
   else                                  posIteratorEnd = m_seq.end();
@@ -515,20 +515,11 @@ void
 ScalarSequence<T>::setGaussian(const T& meanValue, const T& stdDev)
 {
   unsigned int maxJ = this->subSequenceSize();
-  if (meanValue == 0.) {
-    for (unsigned int j = 0; j < maxJ; ++j) {
-      m_seq[j] = m_env.rngObject()->gaussianSample(stdDev);
-    }
-  }
-  else {
-    for (unsigned int j = 0; j < maxJ; ++j) {
-      m_seq[j] = meanValue + m_env.rngObject()->gaussianSample(stdDev);
-    }
+  for (unsigned int j = 0; j < maxJ; ++j) {
+    m_seq[j] = meanValue + m_env.rngObject()->gaussianSample(stdDev);
   }
 
   deleteStoredScalars();
-
-  return;
 }
 // --------------------------------------------------
 template <class T>
@@ -536,34 +527,11 @@ void
 ScalarSequence<T>::setUniform(const T& a, const T& b)
 {
   unsigned int maxJ = this->subSequenceSize();
-  if (a == 0.) {
-    if (b == 1.) {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        m_seq[j] = m_env.rngObject()->uniformSample();
-      }
-    }
-    else {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        m_seq[j] = b*m_env.rngObject()->uniformSample();
-      }
-    }
-  }
-  else {
-    if ((b-a) == 1.) {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        m_seq[j] = a + m_env.rngObject()->uniformSample();
-      }
-    }
-    else {
-      for (unsigned int j = 0; j < maxJ; ++j) {
-        m_seq[j] = a + (b-a)*m_env.rngObject()->uniformSample();
-      }
-    }
+  for (unsigned int j = 0; j < maxJ; ++j) {
+    m_seq[j] = a + (b-a)*m_env.rngObject()->uniformSample();
   }
 
   deleteStoredScalars();
-
-  return;
 }
 // --------------------------------------------------
 template <class T>
@@ -1761,14 +1729,14 @@ ScalarSequence<T>::subBasicHistogram(
   for (unsigned int j = 0; j < dataSize; ++j) {
     double value = m_seq[j];
     if (value < minHorizontalValue) {
-      bins[0] += value;
+      bins[0]++;
     }
     else if (value >= maxHorizontalValue) {
-      bins[bins.size()-1] += value;
+      bins[bins.size()-1]++;
     }
     else {
       unsigned int index = 1 + (unsigned int) ((value - minHorizontalValue)/horizontalDelta);
-      bins[index] += value;
+      bins[index]++;
     }
   }
 
@@ -1803,14 +1771,14 @@ ScalarSequence<T>::subWeightHistogram(
   for (unsigned int j = 0; j < dataSize; ++j) {
     double value = m_seq[j];
     if (value < minHorizontalValue) {
-      bins[0] += value;
+      bins[0]++;
     }
     else if (value >= maxHorizontalValue) {
-      bins[bins.size()-1] += value;
+      bins[bins.size()-1]++;
     }
     else {
       unsigned int index = 1 + (unsigned int) ((value - minHorizontalValue)/horizontalDelta);
-      bins[index] += value;
+      bins[index]++;
     }
   }
 
@@ -1850,14 +1818,14 @@ ScalarSequence<T>::subWeightHistogram(
   for (unsigned int j = 0; j < dataSize; ++j) {
     double value = m_seq[j];
     if (value < minHorizontalValue) {
-      bins[0] += value;
+      bins[0]++;
     }
     else if (value >= maxHorizontalValue) {
-      bins[bins.size()-1] += value;
+      bins[bins.size()-1]++;
     }
     else {
       unsigned int index = 1 + (unsigned int) ((value - minHorizontalValue)/horizontalDelta);
-      bins[index] += value;
+      bins[index]++;
     }
   }
 

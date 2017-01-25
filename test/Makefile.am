@@ -118,6 +118,14 @@ unit_driver_SOURCES  = unit/unit_driver.C
 unit_driver_SOURCES += unit/gsl_vector.C
 unit_driver_SOURCES += unit/gsl_matrix.C
 unit_driver_SOURCES += unit/quadrature_1d.C
+unit_driver_SOURCES += unit/concatenation_subset.C
+unit_driver_SOURCES += unit/constant_vector_function.C
+unit_driver_SOURCES += unit/instantiate_intersection.C
+unit_driver_SOURCES += unit/scalar_function.C
+unit_driver_SOURCES += unit/scalar_sequence.C
+unit_driver_SOURCES += unit/vector_space.C
+unit_driver_SOURCES += unit/base_vector_sequence.C
+unit_driver_SOURCES += unit/sequence_of_vectors.C
 
 test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
 test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
@@ -307,10 +315,10 @@ TESTS += t02_sip_sfp/rtest02.sh
 # TESTS += rtest03.sh  # Leaving disabled for now, need to check with Ernesto
 TESTS += t04_bimodal/rtest04.sh
 TESTS += test_fd_fallback
+TESTS += test_SequenceOfVectorsErase
 
-XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
-XFAIL_TESTS += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+XFAIL_TESTS = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 endif
 
 
@@ -351,6 +359,8 @@ EXTRA_DIST += test_intercomm0/test_intercomm0_gravity_run.sh
 EXTRA_DIST += test_optimizer/input_test_optimizer_input_parameters
 EXTRA_DIST += test_SequenceOfVectors/test_seq_of_vec_hdf5_write_run.sh
 EXTRA_DIST += test_algorithms/input_test_mala.txt
+EXTRA_DIST += unit/read_sequence.m
+EXTRA_DIST += unit/read_vector_sequence.m
 
 EXTRA_DIST += t01_valid_cycle/inputData
 EXTRA_DIST += t01_valid_cycle/regression

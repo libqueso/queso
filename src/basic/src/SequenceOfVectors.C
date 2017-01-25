@@ -169,7 +169,7 @@ SequenceOfVectors<V,M>::erasePositions(unsigned int initialPos, unsigned int num
   if (initialPos < this->subSequenceSize()) std::advance(posIteratorBegin,initialPos);
   else                                      posIteratorBegin = m_seq.end();
 
-  unsigned int posEnd = initialPos + numPos - 1;
+  unsigned int posEnd = initialPos + numPos;
   seqVectorPositionIteratorTypedef posIteratorEnd = m_seq.begin();
   if (posEnd < this->subSequenceSize()) std::advance(posIteratorEnd,posEnd);
   else                                  posIteratorEnd = m_seq.end();
