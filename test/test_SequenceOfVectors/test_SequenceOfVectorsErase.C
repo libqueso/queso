@@ -30,37 +30,48 @@ int main(int argc, char **argv) {
 #endif
 
   // Create a vector space
-  std::vector<std::string> names(1);
-  names[0] = "my_name";
+  std::vector<std::string> names(2);
+  names[0] = "my_name_0";
+  names[1] = "my_name_1";
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> vec_space(env,
-      "vec_prefix", 1, &names);
+      "vec_prefix", 2, &names);
 
   // Create some things to put in the sequence
-  QUESO::GslVector v1(vec_space.zeroVector());
-  QUESO::GslVector v2(vec_space.zeroVector());
-  v1[0] = 0.0;
-  v2[0] = 1.0;
+  QUESO::GslVector v(vec_space.zeroVector());
 
   // Create a sequence of vectors
   QUESO::SequenceOfVectors<QUESO::GslVector, QUESO::GslMatrix> vec_seq(
-      vec_space, 2, "vec_seq");
+      vec_space, 13, "vec_seq");
 
-  vec_seq.setPositionValues(0, v1);
-  vec_seq.setPositionValues(1, v2);
+  for (unsigned int i = 0; i < 13; i++) {
+    v[0] = i;
+    v[1] = i + 1;
+    vec_seq.setPositionValues(i, v);
+  }
 
   // Now erase
-  vec_seq.erasePositions(0, 1);
+  vec_seq.erasePositions(2, 5);
 
-  // Should generate an error
-  try {
-    vec_seq.getPositionValues(0, v1);
-  }
-  catch (...) {
-    return 0;
+  QUESO::GslVector expected(vec_space.zeroVector());
+  QUESO::GslVector computed(vec_space.zeroVector());
+  for (unsigned int i = 0; i < 8; i++) {
+    if (i < 2) {
+      expected[0] = i;
+      expected[1] = i + 1;
+    }
+    else {
+      expected[0] = i + 5;
+      expected[1] = i + 6;
+    }
+
+    vec_seq.getPositionValues(i, computed);
+    queso_require_equal_to(expected[0], computed[0]);
+    queso_require_equal_to(expected[1], computed[1]);
   }
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();
 #endif
-  return 1;
+
+  return 0;
 }

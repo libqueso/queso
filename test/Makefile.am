@@ -315,10 +315,10 @@ TESTS += t02_sip_sfp/rtest02.sh
 # TESTS += rtest03.sh  # Leaving disabled for now, need to check with Ernesto
 TESTS += t04_bimodal/rtest04.sh
 TESTS += test_fd_fallback
+TESTS += test_SequenceOfVectorsErase
 
-XFAIL_TESTS = test_SequenceOfVectorsErase
 if ! MPI_ENABLED
-XFAIL_TESTS += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+XFAIL_TESTS = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 endif
 
 
