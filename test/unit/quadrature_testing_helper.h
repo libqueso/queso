@@ -128,6 +128,57 @@ namespace QUESOTesting
   };
 
 
+  // For integrating -\infty,\infty using Gauss-Hermite
+  // The weighting function is not included in the function evaluation
+  class Erf : public OneDQuadratureFunction
+  {
+  public:
+
+    virtual double f( double /*x*/ )
+    {
+      return 1.0;
+    }
+
+    virtual double int_f( double /*lower*/, double /*upper*/ )
+    {
+      return std::sqrt(M_PI);
+    }
+  };
+
+  // For integrating -\infty,\infty using Gauss-Hermite
+  // The weighting function is not included in the function evaluation
+  class X2Erf : public OneDQuadratureFunction
+  {
+  public:
+
+    virtual double f( double x )
+    {
+      return x*x;
+    }
+
+    virtual double int_f( double /*lower*/, double /*upper*/ )
+    {
+      return std::sqrt(M_PI)/2.0;
+    }
+  };
+
+  // For integrating -\infty,\infty using Gauss-Hermite
+  // The weighting function is not included in the function evaluation
+  class X4Erf : public OneDQuadratureFunction
+  {
+  public:
+
+    virtual double f( double x )
+    {
+      return x*x*x*x;
+    }
+
+    virtual double int_f( double /*lower*/, double /*upper*/ )
+    {
+      return 3.0*std::sqrt(M_PI)/4.0;
+    }
+  };
+
   template <class V, class M>
   class MultiDQuadratureFunction
   {
