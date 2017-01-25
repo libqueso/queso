@@ -59,6 +59,52 @@ namespace QUESOTesting
 
   };
 
+  class OneDQuadratureFunction
+  {
+  public:
+
+    virtual double f( double x ) =0;
+
+    virtual double int_f( double lower, double upper ) =0;
+  };
+
+  class PolynomialFunction : public OneDQuadratureFunction
+  {
+  public:
+    PolynomialFunction(int order )
+      : _order(order)
+    {}
+
+    // e.g. 4*x^3 + 3*x^2 + 2*x + 1
+    virtual double f( double x )
+    {
+      CPPUNIT_ASSERT(_order>=0);
+      double value = 0.0;
+
+      for( int i = 0; i <= _order; i++ )
+        value += (i+1)*std::pow( x, i );
+
+      return value;
+    }
+
+    // Integral of the function in f()
+    virtual double int_f( double lower, double upper )
+    {
+      CPPUNIT_ASSERT(_order>=0);
+      double value = 0.0;
+
+      for( int i = 0; i <= _order; i++ )
+        value += (std::pow(upper,i+1.0) - std::pow(lower,i+1.0) );
+
+      return value;
+    }
+
+  private:
+
+    int _order;
+  };
+
+
   template <class V, class M>
   class MultiDQuadratureFunction
   {
