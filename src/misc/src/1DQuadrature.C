@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <sstream>
+
 #include <queso/1DQuadrature.h>
 
 namespace QUESO {
@@ -601,15 +603,12 @@ GaussianHermite1DQuadrature::GaussianHermite1DQuadrature(
     break;
 
     default:
-      std::cerr << "In GaussianHermite1DQuadrature::constructor()"
-                << ": m_order = " << m_order
-                << std::endl;
-      queso_error_msg("order not supported");
+      std::stringstream ss;
+      ss << "In GaussianHermite1DQuadrature::constructor()"
+         << ": m_order = " << m_order
+         << std::endl;
+      queso_error_msg(ss.str());
     break;
-  }
-  for (unsigned int j = 0; j < (m_order+1); ++j) {
-    m_weights  [j] *= sqrt(2.);
-    m_positions[j] *= sqrt(2.);
   }
 }
 
