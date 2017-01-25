@@ -51,6 +51,7 @@ public:
   CPPUNIT_TEST(test_auto_covariance);
   CPPUNIT_TEST(test_read);
   CPPUNIT_TEST(test_scale_kde);
+  CPPUNIT_TEST(test_gaussian_kde);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -242,6 +243,31 @@ public:
     sequence->unifiedScalesForKde(0, actualIrq, 1, KDEScale);
     CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDEScale, KDEScale[0], TOL);
     CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDEScale, KDEScale[1], TOL);
+  }
+
+  void test_gaussian_kde()
+  {
+    double TOL = 1e-12;
+
+    QUESO::SequenceOfVectors<> point(*space, 1, "");
+    QUESO::GslVector mp1(space->zeroVector());
+    mp1[0] = -0.1;
+    mp1[1] = -0.1;
+    point.setPositionValues(0, mp1);
+
+    std::vector<QUESO::GslVector *> positions(1, &mp1);
+    std::vector<QUESO::GslVector *> density(1, (QUESO::GslVector *)NULL);
+    QUESO::GslVector scale(space->zeroVector());
+    scale.cwSet(1.0);
+    point.subGaussian1dKde(0, scale, positions, density);
+
+    double actualKDE = 1.0 / std::sqrt(2.0 * M_PI);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDE, (*density[0])[0], TOL);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDE, (*density[0])[1], TOL);
+
+    point.unifiedGaussian1dKde(0, scale, positions, density);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDE, (*density[0])[0], TOL);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDE, (*density[0])[1], TOL);
   }
 
 private:
