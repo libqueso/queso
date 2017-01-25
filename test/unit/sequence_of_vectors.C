@@ -50,6 +50,7 @@ public:
   CPPUNIT_TEST(test_iqr);
   CPPUNIT_TEST(test_auto_covariance);
   CPPUNIT_TEST(test_read);
+  CPPUNIT_TEST(test_scale_kde);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -222,6 +223,25 @@ public:
       CPPUNIT_ASSERT_EQUAL(val1, value[0]);
       CPPUNIT_ASSERT_EQUAL(val2, value[1]);
     }
+  }
+
+  void test_scale_kde()
+  {
+    double TOL = 1e-12;
+    QUESO::GslVector actualIrq(space->zeroVector());
+    actualIrq.cwSet(7.0);
+
+    // Regression solution
+    double actualKDEScale = 2.471509395452762269940194528317;
+
+    QUESO::GslVector KDEScale(space->zeroVector());
+    sequence->subScalesForKde(0, actualIrq, 1, KDEScale);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDEScale, KDEScale[0], TOL);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDEScale, KDEScale[1], TOL);
+
+    sequence->unifiedScalesForKde(0, actualIrq, 1, KDEScale);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDEScale, KDEScale[0], TOL);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualKDEScale, KDEScale[1], TOL);
   }
 
 private:
