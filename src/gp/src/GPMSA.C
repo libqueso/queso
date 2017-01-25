@@ -44,7 +44,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs,
     const std::vector<typename SharedPtr<V>::Type> & m_discrepancyBases,
     const std::vector<typename SharedPtr<M>::Type> & m_observationErrorMatrices,
-    const M & m_experimentErrors,
+    const typename SharedPtr<M>::Type & m_observationErrorMatrix,
     const ConcatenatedVectorRV<V, M> & m_totalPrior,
     const V & residual_in,
     const M & BT_Wy_B_inv_in,
@@ -64,7 +64,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   m_experimentOutputs(m_experimentOutputs),
   m_discrepancyBases(m_discrepancyBases),
   m_observationErrorMatrices(m_observationErrorMatrices),
-  m_experimentErrors(m_experimentErrors),
+  m_observationErrorMatrix(m_observationErrorMatrix),
   m_totalPrior(m_totalPrior),
   residual(residual_in),
   BT_Wy_B_inv(BT_Wy_B_inv_in),
@@ -128,7 +128,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // m_numExperiments             // = "n"
   // m_simulationScenarios        // = "eta"
   // m_experimentScenarios        // = "y"
-  // m_experimentErrors           // = "Sigma_y"
+  // m_experimentErrors           // = "Sigma_y"; now obsoleted by "W_y"
   // numOutputs                   // = "n_eta"
   //                              // "n_y" := sum(n_y_i)
   //                              //      (== n*n_eta for us for now)
@@ -321,13 +321,16 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           covMatrix(disc*m_numExperiments+i,
                     disc*m_numExperiments+j) += R_v;
 
-        // Experimental error comes in via K in the multivariate
-        // case, but comes in via Sigma_y in the univariate case here
         if (numOutputs == 1)
           {
+            // Experimental error comes in via W_y now.
+/*
             // Sigma_y term from below (3)
             const double experimentalError =
               this->m_experimentErrors(i,j);
+*/
+            const double experimentalError =
+              (*this->m_observationErrorMatrix)(i,j);
 
             queso_assert_greater_equal (experimentalError, 0);
 
@@ -643,13 +646,6 @@ GPMSAFactory<V, M>::experimentOutputs() const
 }
 
 template <class V, class M>
-const typename SharedPtr<M>::Type
-GPMSAFactory<V, M>::experimentErrors() const
-{
-  return this->m_experimentErrors;
-}
-
-template <class V, class M>
 const BaseEnvironment &
 GPMSAFactory<V, M>::env() const
 {
@@ -885,7 +881,7 @@ GPMSAFactory<V, M>::setUpEmulator()
       this->m_experimentOutputs,
       this->m_discrepancyBases,
       this->m_observationErrorMatrices,
-      *(this->m_experimentErrors),
+      this->m_observationErrorMatrix,
       *(this->m_totalPrior),
       *this->residual,
       *this->BT_Wy_B_inv,
@@ -903,11 +899,21 @@ GPMSAFactory<V, M>::addExperiments(
 {
   queso_require_less_equal_msg(experimentScenarios.size(), this->m_numExperiments, "too many experiments...");
 
+  unsigned int offset = 0;
   for (unsigned int i = 0; i < this->m_experimentScenarios.size(); i++) {
     this->m_experimentScenarios[i] = experimentScenarios[i];
     this->m_experimentOutputs[i] = experimentOutputs[i];
+
+    const unsigned int outsize =
+      this->m_experimentOutputs[i]->sizeGlobal();
+    for (unsigned int outi = 0; outi != outsize; ++outi)
+      for (unsigned int outj = 0; outj != outsize; ++outj)
+        (*this->m_observationErrorMatrices[i])(outi,outj) =
+          (*experimentErrors)(offset+outi, offset+outj);
+
+    offset += outsize;
   }
-  this->m_experimentErrors = experimentErrors;
+
   this->m_numExperimentAdds += experimentScenarios.size();
 
   if ((this->m_numSimulationAdds == this->m_numSimulations) &&
