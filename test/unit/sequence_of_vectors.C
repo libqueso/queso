@@ -47,6 +47,7 @@ public:
   CPPUNIT_TEST(test_uniformly_sampled_cdf);
   CPPUNIT_TEST(test_std_var);
   CPPUNIT_TEST(test_hists);
+  CPPUNIT_TEST(test_iqr);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -148,6 +149,22 @@ public:
       CPPUNIT_ASSERT_EQUAL(1.0, (*bins2[i])[0]);
       CPPUNIT_ASSERT_EQUAL(1.0, (*bins2[i])[1]);
     }
+  }
+
+  void test_iqr()
+  {
+    QUESO::GslVector iqr(space->zeroVector());
+    sequence->subInterQuantileRange(0, iqr);
+
+    double actualIqr = 7.0;
+
+    CPPUNIT_ASSERT_EQUAL(actualIqr, iqr[0]);
+    CPPUNIT_ASSERT_EQUAL(actualIqr, iqr[1]);
+
+    sequence->unifiedInterQuantileRange(0, iqr);
+
+    CPPUNIT_ASSERT_EQUAL(actualIqr, iqr[0]);
+    CPPUNIT_ASSERT_EQUAL(actualIqr, iqr[1]);
   }
 
 private:
