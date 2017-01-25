@@ -46,6 +46,7 @@ public:
   CPPUNIT_TEST_SUITE(SequenceOfVectorsTest);
   CPPUNIT_TEST(test_uniformly_sampled_cdf);
   CPPUNIT_TEST(test_std_var);
+  CPPUNIT_TEST(test_hists);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -121,6 +122,32 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(actualPopulationVar, var[0]);
     CPPUNIT_ASSERT_EQUAL(actualPopulationVar, var[1]);
+  }
+
+  void test_hists()
+  {
+    QUESO::GslVector min(space->zeroVector());
+    QUESO::GslVector max(space->zeroVector());
+    std::vector<QUESO::GslVector *> centers(14, (QUESO::GslVector *)NULL);
+    std::vector<QUESO::GslVector *> bins1(14, (QUESO::GslVector *)NULL);
+    std::vector<QUESO::GslVector *> bins2(14, (QUESO::GslVector *)NULL);
+
+    sequence->subMinMaxExtra(0, sequence->subSequenceSize(), min, max);
+    sequence->subHistogram(0, min, max, centers, bins1);
+    sequence->unifiedHistogram(0, min, max, centers, bins2);
+
+    for (unsigned int i = 0; i < 14; i++) {
+      CPPUNIT_ASSERT_EQUAL((*bins1[i])[0], (*bins2[i])[0]);
+      CPPUNIT_ASSERT_EQUAL((*bins1[i])[1], (*bins2[i])[1]);
+    }
+
+    // The first element appears to always be zero.
+    for (unsigned int i = 1; i < 14; i++) {
+      CPPUNIT_ASSERT_EQUAL(1.0, (*bins1[i])[0]);
+      CPPUNIT_ASSERT_EQUAL(1.0, (*bins1[i])[1]);
+      CPPUNIT_ASSERT_EQUAL(1.0, (*bins2[i])[0]);
+      CPPUNIT_ASSERT_EQUAL(1.0, (*bins2[i])[1]);
+    }
   }
 
 private:
