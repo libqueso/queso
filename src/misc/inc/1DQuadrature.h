@@ -54,8 +54,9 @@ public:
   Base1DQuadrature(double minDomainValue,
 			  double maxDomainValue,
 			  unsigned int order);
-  //! Virtual destructor.
-  virtual ~Base1DQuadrature();
+
+  //! Pure virtual destructor, forcing this to be an abstract object.
+  virtual ~Base1DQuadrature() =0;
   //@}
 
   //! @name Mathematical  methods

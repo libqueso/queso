@@ -54,7 +54,8 @@ namespace QUESO
         m_domain(domain)
     {}
 
-    virtual ~MultiDQuadratureBase(){};
+    //! Pure virtual destructor, forcing this to be an abstract object.
+    virtual ~MultiDQuadratureBase() =0;
 
     const std::vector<typename QUESO::SharedPtr<V>::Type> & positions() const
     { queso_assert(!m_positions.empty());
@@ -72,6 +73,10 @@ namespace QUESO
     //! Domain over which the quadrature will be performed
     const VectorSubset<V,M> & m_domain;
   };
+
+  template <class V, class M>
+  inline
+  MultiDQuadratureBase<V,M>::~MultiDQuadratureBase(){}
 
 } // end namespace QUESO
 

@@ -43,7 +43,8 @@ namespace QUESO
 
     BaseQuadrature(){}
 
-    virtual ~BaseQuadrature(){}
+    //! Pure virtual destructor, forcing this to be an abstract object.
+    virtual ~BaseQuadrature() =0;
 
     //! Array of the weights used in the numerical integration.
     const std::vector<double> & weights() const
@@ -54,6 +55,9 @@ namespace QUESO
 
     std::vector<double> m_weights;
   };
+
+  inline
+  BaseQuadrature::~BaseQuadrature(){}
 
 } // end namespace QUESO
 
