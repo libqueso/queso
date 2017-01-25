@@ -132,6 +132,9 @@ libqueso_la_SOURCES += misc/src/AsciiTable.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDTables.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDGrids.C
 libqueso_la_SOURCES += misc/src/StreamUtilities.C
+libqueso_la_SOURCES += misc/src/MonteCarloQuadrature.C
+libqueso_la_SOURCES += misc/src/MultiDimensionalIndexing.C
+libqueso_la_SOURCES += misc/src/TensorProductQuadrature.C
 
 # Sources from misc/src withn gsl conditional
 
@@ -264,7 +267,6 @@ libqueso_la_SOURCES += stats/src/MetropolisAdjustedLangevinTK.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateData.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateDataSet.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBase.C
-libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateHelper.C
 libqueso_la_SOURCES += surrogates/src/LinearLagrangeInterpolationSurrogate.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBuilder.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOBase.C
@@ -351,6 +353,7 @@ libqueso_include_HEADERS += core/inc/SharedPtr.h
 
 # Headers to install from misc/inc
 
+libqueso_include_HEADERS += misc/inc/BaseQuadrature.h
 libqueso_include_HEADERS += misc/inc/1D1DFunction.h
 libqueso_include_HEADERS += misc/inc/1DQuadrature.h
 libqueso_include_HEADERS += misc/inc/2dArrayOfStuff.h
@@ -365,6 +368,10 @@ libqueso_include_HEADERS += misc/inc/UniformOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StdOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StreamUtilities.h
 libqueso_include_HEADERS += misc/inc/math_macros.h
+libqueso_include_HEADERS += misc/inc/MultiDQuadratureBase.h
+libqueso_include_HEADERS += misc/inc/MonteCarloQuadrature.h
+libqueso_include_HEADERS += misc/inc/MultiDimensionalIndexing.h
+libqueso_include_HEADERS += misc/inc/TensorProductQuadrature.h
 
 # Headers to install from basic/inc
 
@@ -486,7 +493,6 @@ libqueso_include_HEADERS += surrogates/inc/SurrogateBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateData.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateDataSet.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBase.h
-libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateHelper.h
 libqueso_include_HEADERS += surrogates/inc/LinearLagrangeInterpolationSurrogate.h
 libqueso_include_HEADERS += surrogates/inc/SurrogateBuilderBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBuilder.h

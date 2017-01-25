@@ -22,21 +22,21 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef UQ_INTERPOLATION_SURROGATE_HELPER_H
-#define UQ_INTERPOLATION_SURROGATE_HELPER_H
+#ifndef UQ_MULTI_DIMENSIONAL_INDEXING_H
+#define UQ_MULTI_DIMENSIONAL_INDEXING_H
 
 // C++
 #include <vector>
 
 namespace QUESO
 {
-  class InterpolationSurrogateHelper
+  class MultiDimensionalIndexing
   {
   public:
 
-    InterpolationSurrogateHelper(){};
+    MultiDimensionalIndexing(){};
 
-    ~InterpolationSurrogateHelper(){};
+    ~MultiDimensionalIndexing(){};
 
     //! Map coordinate indices to a singal global index.
     /*! e.g. in 3-D, you pass in i,j,k and the n_points in each of the 3 directions.
@@ -68,4 +68,4 @@ namespace QUESO
 
 } // end namespace QUESO
 
-#endif // UQ_INTERPOLATION_SURROGATE_HELPER_H
+#endif // UQ_MULTI_DIMENSIONAL_INDEXING_H

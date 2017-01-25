@@ -56,7 +56,6 @@ check_PROGRAMS += test_1D_LinearLagrangeInterpolationSurrogate
 check_PROGRAMS += test_2D_LinearLagrangeInterpolationSurrogate
 check_PROGRAMS += test_3D_LinearLagrangeInterpolationSurrogate
 check_PROGRAMS += test_4D_LinearLagrangeInterpolationSurrogate
-check_PROGRAMS += test_InterpolationSurrogateHelper
 check_PROGRAMS += test_build_InterpolationSurrogateBuilder
 check_PROGRAMS += test_BoostInputOptionsParser
 check_PROGRAMS += test_NoInputFile
@@ -89,7 +88,7 @@ AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 # CppUnit support
 #----------------
 if QUESO_ENABLE_CPPUNIT
-  AM_CPPFLAGS += $(CPPUNIT_CPPFLAGS)
+  AM_CPPFLAGS += $(CPPUNIT_CPPFLAGS) -I$(top_srcdir)/test/unit
   LIBS += $(CPPUNIT_LIBS)
 endif
 
@@ -126,6 +125,8 @@ unit_driver_SOURCES += unit/scalar_sequence.C
 unit_driver_SOURCES += unit/vector_space.C
 unit_driver_SOURCES += unit/base_vector_sequence.C
 unit_driver_SOURCES += unit/sequence_of_vectors.C
+unit_driver_SOURCES += unit/tensor_product_quadrature.C
+unit_driver_SOURCES += unit/monte_carlo_quadrature.C
 
 test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
 test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
@@ -181,7 +182,6 @@ test_1D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurroga
 test_2D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurrogate/test_2D_LinearLagrangeInterpolationSurrogate.C
 test_3D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurrogate/test_3D_LinearLagrangeInterpolationSurrogate.C
 test_4D_LinearLagrangeInterpolationSurrogate_SOURCES = test_InterpolationSurrogate/test_4D_LinearLagrangeInterpolationSurrogate.C
-test_InterpolationSurrogateHelper_SOURCES = test_InterpolationSurrogate/test_InterpolationSurrogateHelper.C
 test_build_InterpolationSurrogateBuilder_SOURCES = test_InterpolationSurrogate/test_build_InterpolationSurrogateBuilder.C
 test_BoostInputOptionsParser_SOURCES = test_InputOptionsParser/test_BoostInputOptionsParser.C
 test_NoInputFile_SOURCES = test_StatisticalInverseProblem/test_NoInputFile.C
@@ -294,7 +294,6 @@ TESTS += test_1D_LinearLagrangeInterpolationSurrogate
 TESTS += test_2D_LinearLagrangeInterpolationSurrogate
 TESTS += test_3D_LinearLagrangeInterpolationSurrogate
 TESTS += test_4D_LinearLagrangeInterpolationSurrogate
-TESTS += test_InterpolationSurrogateHelper
 TESTS += test_build_InterpolationSurrogateBuilder
 TESTS += test_BoostInputOptionsParser
 TESTS += test_NoInputFile
@@ -325,6 +324,8 @@ endif
 EXTRA_DIST =
 EXTRA_DIST += common/compare.pl
 EXTRA_DIST += common/verify.sh
+EXTRA_DIST += unit/convergence_rate_helper.h
+EXTRA_DIST += unit/quadrature_testing_helper.h
 EXTRA_DIST += test_infinite/inf_options
 EXTRA_DIST += test_Regression/GaussianMean1DRegression_options
 EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt

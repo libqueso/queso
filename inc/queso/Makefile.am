@@ -104,12 +104,17 @@ BUILT_SOURCES += 2dArrayOfStuff.h
 BUILT_SOURCES += ArrayOfOneDGrids.h
 BUILT_SOURCES += ArrayOfOneDTables.h
 BUILT_SOURCES += AsciiTable.h
+BUILT_SOURCES += BaseQuadrature.h
 BUILT_SOURCES += CovCond.h
 BUILT_SOURCES += Fft.h
 BUILT_SOURCES += Miscellaneous.h
+BUILT_SOURCES += MonteCarloQuadrature.h
+BUILT_SOURCES += MultiDQuadratureBase.h
+BUILT_SOURCES += MultiDimensionalIndexing.h
 BUILT_SOURCES += OneDGrid.h
 BUILT_SOURCES += StdOneDGrid.h
 BUILT_SOURCES += StreamUtilities.h
+BUILT_SOURCES += TensorProductQuadrature.h
 BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += math_macros.h
 BUILT_SOURCES += Algorithm.h
@@ -204,7 +209,6 @@ BUILT_SOURCES += InterpolationSurrogateBase.h
 BUILT_SOURCES += InterpolationSurrogateBuilder.h
 BUILT_SOURCES += InterpolationSurrogateData.h
 BUILT_SOURCES += InterpolationSurrogateDataSet.h
-BUILT_SOURCES += InterpolationSurrogateHelper.h
 BUILT_SOURCES += InterpolationSurrogateIOASCII.h
 BUILT_SOURCES += InterpolationSurrogateIOBase.h
 BUILT_SOURCES += LinearLagrangeInterpolationSurrogate.h
@@ -412,17 +416,27 @@ ArrayOfOneDTables.h: $(top_srcdir)/src/misc/inc/ArrayOfOneDTables.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 AsciiTable.h: $(top_srcdir)/src/misc/inc/AsciiTable.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BaseQuadrature.h: $(top_srcdir)/src/misc/inc/BaseQuadrature.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 CovCond.h: $(top_srcdir)/src/misc/inc/CovCond.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Fft.h: $(top_srcdir)/src/misc/inc/Fft.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Miscellaneous.h: $(top_srcdir)/src/misc/inc/Miscellaneous.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+MonteCarloQuadrature.h: $(top_srcdir)/src/misc/inc/MonteCarloQuadrature.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+MultiDQuadratureBase.h: $(top_srcdir)/src/misc/inc/MultiDQuadratureBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+MultiDimensionalIndexing.h: $(top_srcdir)/src/misc/inc/MultiDimensionalIndexing.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 OneDGrid.h: $(top_srcdir)/src/misc/inc/OneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 StdOneDGrid.h: $(top_srcdir)/src/misc/inc/StdOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 StreamUtilities.h: $(top_srcdir)/src/misc/inc/StreamUtilities.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TensorProductQuadrature.h: $(top_srcdir)/src/misc/inc/TensorProductQuadrature.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformOneDGrid.h: $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -611,8 +625,6 @@ InterpolationSurrogateBuilder.h: $(top_srcdir)/src/surrogates/inc/InterpolationS
 InterpolationSurrogateData.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateData.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InterpolationSurrogateDataSet.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateDataSet.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-InterpolationSurrogateHelper.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateHelper.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InterpolationSurrogateIOASCII.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateIOASCII.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

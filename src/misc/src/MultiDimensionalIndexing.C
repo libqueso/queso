@@ -23,7 +23,7 @@
 //-----------------------------------------------------------------------el-
 
 // This class
-#include <queso/InterpolationSurrogateHelper.h>
+#include <queso/MultiDimensionalIndexing.h>
 
 // QUESO
 #include <queso/asserts.h>
@@ -31,8 +31,8 @@
 namespace QUESO
 {
 
-  unsigned int InterpolationSurrogateHelper::coordToGlobal( const std::vector<unsigned int>& coord_indices,
-                                                            const std::vector<unsigned int>& n_points )
+  unsigned int MultiDimensionalIndexing::coordToGlobal( const std::vector<unsigned int>& coord_indices,
+                                                        const std::vector<unsigned int>& n_points )
   {
     // Make sure the dimension is consisent
     queso_assert_equal_to( coord_indices.size(), n_points.size() );
@@ -65,9 +65,9 @@ namespace QUESO
     return global_index;
   }
 
-  void InterpolationSurrogateHelper::globalToCoord( unsigned int global,
-                                                    const std::vector<unsigned int>& n_points,
-                                                    std::vector<unsigned int>& coord_indices )
+  void MultiDimensionalIndexing::globalToCoord( unsigned int global,
+                                                const std::vector<unsigned int>& n_points,
+                                                std::vector<unsigned int>& coord_indices )
   {
     // The input object implicitly carry's the dimension
     unsigned int dim = n_points.size();
@@ -92,8 +92,8 @@ namespace QUESO
     queso_assert_equal_to( global, coordToGlobal(coord_indices,n_points) );
   }
 
-  unsigned int InterpolationSurrogateHelper::compute_npoints_factor( const std::vector<unsigned int>& n_points,
-                                                                     unsigned int term )
+  unsigned int MultiDimensionalIndexing::compute_npoints_factor( const std::vector<unsigned int>& n_points,
+                                                                 unsigned int term )
   {
     unsigned int value = 1;
 
