@@ -59,6 +59,29 @@ namespace QUESOTesting
 
   };
 
+  class HermiteQuadratureTestingHelper
+  {
+  public:
+
+    void testing_orders( std::vector<unsigned int> & orders )
+    {
+      // These are the valid listed orders for Legendre quadrature in QUESO;
+      // TODO: With C++11, we can initialize this with array syntax
+      orders.resize(10);
+      orders[0] = 1;
+      orders[1] = 2;
+      orders[2] = 3;
+      orders[3] = 4;
+      orders[4] = 5;
+      orders[5] = 6;
+      orders[6] = 7;
+      orders[7] = 8;
+      orders[8] = 9;
+      orders[9] = 19;
+    }
+
+  };
+
   class OneDQuadratureFunction
   {
   public:
