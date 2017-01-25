@@ -45,6 +45,7 @@ class SequenceOfVectorsTest : public CppUnit::TestCase
 public:
   CPPUNIT_TEST_SUITE(SequenceOfVectorsTest);
   CPPUNIT_TEST(test_uniformly_sampled_cdf);
+  CPPUNIT_TEST(test_std_var);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -89,6 +90,37 @@ public:
       CPPUNIT_ASSERT_EQUAL(i, cdf_val1);
       CPPUNIT_ASSERT_EQUAL(i, cdf_val2);
     }
+  }
+
+  void test_std_var()
+  {
+    QUESO::GslVector mean(space->zeroVector());
+    mean[0] = 6.0;
+    mean[1] = 7.0;
+    QUESO::GslVector std(space->zeroVector());
+    QUESO::GslVector var(space->zeroVector());
+
+    double actualSampleStd = std::sqrt(182.0 / 12.0);
+    sequence->subSampleStd(0, sequence->subSequenceSize(), mean, std);
+
+    CPPUNIT_ASSERT_EQUAL(actualSampleStd, std[0]);
+    CPPUNIT_ASSERT_EQUAL(actualSampleStd, std[1]);
+
+    sequence->unifiedSampleStd(0, sequence->subSequenceSize(), mean, std);
+
+    CPPUNIT_ASSERT_EQUAL(actualSampleStd, std[0]);
+    CPPUNIT_ASSERT_EQUAL(actualSampleStd, std[1]);
+
+    double actualPopulationVar = 182.0 / 13.0;
+    sequence->subPopulationVariance(0, sequence->subSequenceSize(), mean, var);
+
+    CPPUNIT_ASSERT_EQUAL(actualPopulationVar, var[0]);
+    CPPUNIT_ASSERT_EQUAL(actualPopulationVar, var[1]);
+
+    sequence->unifiedPopulationVariance(0, sequence->subSequenceSize(), mean, var);
+
+    CPPUNIT_ASSERT_EQUAL(actualPopulationVar, var[0]);
+    CPPUNIT_ASSERT_EQUAL(actualPopulationVar, var[1]);
   }
 
 private:
