@@ -59,6 +59,126 @@ namespace QUESOTesting
 
   };
 
+  class HermiteQuadratureTestingHelper
+  {
+  public:
+
+    void testing_orders( std::vector<unsigned int> & orders )
+    {
+      // These are the valid listed orders for Legendre quadrature in QUESO;
+      // TODO: With C++11, we can initialize this with array syntax
+      orders.resize(10);
+      orders[0] = 1;
+      orders[1] = 2;
+      orders[2] = 3;
+      orders[3] = 4;
+      orders[4] = 5;
+      orders[5] = 6;
+      orders[6] = 7;
+      orders[7] = 8;
+      orders[8] = 9;
+      orders[9] = 19;
+    }
+
+  };
+
+  class OneDQuadratureFunction
+  {
+  public:
+
+    virtual double f( double x ) =0;
+
+    virtual double int_f( double lower, double upper ) =0;
+  };
+
+  class PolynomialFunction : public OneDQuadratureFunction
+  {
+  public:
+    PolynomialFunction(int order )
+      : _order(order)
+    {}
+
+    // e.g. 4*x^3 + 3*x^2 + 2*x + 1
+    virtual double f( double x )
+    {
+      CPPUNIT_ASSERT(_order>=0);
+      double value = 0.0;
+
+      for( int i = 0; i <= _order; i++ )
+        value += (i+1)*std::pow( x, i );
+
+      return value;
+    }
+
+    // Integral of the function in f()
+    virtual double int_f( double lower, double upper )
+    {
+      CPPUNIT_ASSERT(_order>=0);
+      double value = 0.0;
+
+      for( int i = 0; i <= _order; i++ )
+        value += (std::pow(upper,i+1.0) - std::pow(lower,i+1.0) );
+
+      return value;
+    }
+
+  private:
+
+    int _order;
+  };
+
+
+  // For integrating -\infty,\infty using Gauss-Hermite
+  // The weighting function is not included in the function evaluation
+  class Erf : public OneDQuadratureFunction
+  {
+  public:
+
+    virtual double f( double /*x*/ )
+    {
+      return 1.0;
+    }
+
+    virtual double int_f( double /*lower*/, double /*upper*/ )
+    {
+      return std::sqrt(M_PI);
+    }
+  };
+
+  // For integrating -\infty,\infty using Gauss-Hermite
+  // The weighting function is not included in the function evaluation
+  class X2Erf : public OneDQuadratureFunction
+  {
+  public:
+
+    virtual double f( double x )
+    {
+      return x*x;
+    }
+
+    virtual double int_f( double /*lower*/, double /*upper*/ )
+    {
+      return std::sqrt(M_PI)/2.0;
+    }
+  };
+
+  // For integrating -\infty,\infty using Gauss-Hermite
+  // The weighting function is not included in the function evaluation
+  class X4Erf : public OneDQuadratureFunction
+  {
+  public:
+
+    virtual double f( double x )
+    {
+      return x*x*x*x;
+    }
+
+    virtual double int_f( double /*lower*/, double /*upper*/ )
+    {
+      return 3.0*std::sqrt(M_PI)/4.0;
+    }
+  };
+
   template <class V, class M>
   class MultiDQuadratureFunction
   {

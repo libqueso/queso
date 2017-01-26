@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <sstream>
+
 #include <queso/1DQuadrature.h>
 
 namespace QUESO {
@@ -431,10 +433,10 @@ GaussianHermite1DQuadrature::GaussianHermite1DQuadrature(
     break;
 
     case 3:
-      m_weights  [0] =  sqrt(M_PI)/4./(3.-sqrt(6.));
-      m_weights  [1] =  sqrt(M_PI)/4./(3.+sqrt(6.));
-      m_weights  [2] =  sqrt(M_PI)/4./(3.+sqrt(6.));
-      m_weights  [3] =  sqrt(M_PI)/4./(3.-sqrt(6.));
+      m_weights  [0] =  sqrt(M_PI)/4./(3.+sqrt(6.));
+      m_weights  [1] =  sqrt(M_PI)/4./(3.-sqrt(6.));
+      m_weights  [2] =  sqrt(M_PI)/4./(3.-sqrt(6.));
+      m_weights  [3] =  sqrt(M_PI)/4./(3.+sqrt(6.));
 
       m_positions[0] = -sqrt(1.5+sqrt(1.5));
       m_positions[1] = -sqrt(1.5-sqrt(1.5));
@@ -601,15 +603,12 @@ GaussianHermite1DQuadrature::GaussianHermite1DQuadrature(
     break;
 
     default:
-      std::cerr << "In GaussianHermite1DQuadrature::constructor()"
-                << ": m_order = " << m_order
-                << std::endl;
-      queso_error_msg("order not supported");
+      std::stringstream ss;
+      ss << "In GaussianHermite1DQuadrature::constructor()"
+         << ": m_order = " << m_order
+         << std::endl;
+      queso_error_msg(ss.str());
     break;
-  }
-  for (unsigned int j = 0; j < (m_order+1); ++j) {
-    m_weights  [j] *= sqrt(2.);
-    m_positions[j] *= sqrt(2.);
   }
 }
 

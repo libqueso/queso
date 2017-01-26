@@ -42,11 +42,8 @@ namespace QUESOTesting
   {
   public:
 
-    virtual double f( double x ) =0;
-
-    virtual double int_f( double lower, double upper ) =0;
-
     void test_quadrature_rule( QUESO::Base1DQuadrature & quad_rule,
+                               OneDQuadratureFunction & func,
                                double min_domain_value, double max_domain_value,
                                double tol )
     {
@@ -59,9 +56,9 @@ namespace QUESOTesting
 
       double int_value = 0.0;
       for( unsigned int q = 0; q < n_points; q++ )
-        int_value += this->f(x[q])*w[q];
+        int_value += func.f(x[q])*w[q];
 
-      double exact_int_value = this->int_f(min_domain_value,max_domain_value);
+      double exact_int_value = func.int_f(min_domain_value,max_domain_value);
 
       double rel_error = std::abs( (int_value-exact_int_value)/exact_int_value );
 
@@ -101,39 +98,7 @@ namespace QUESOTesting
       this->test_1d_legendre_quadrature(min_domain_value,max_domain_value);
     }
 
-    // e.g. 4*x^3 + 3*x^2 + 2*x + 1
-    virtual double f( double x )
-    {
-      CPPUNIT_ASSERT(_order>=0);
-      double value = 0.0;
-
-      for( int i = 0; i <= _order; i++ )
-        value += (i+1)*std::pow( x, i );
-
-      return value;
-    }
-
-    // Integral of the function in f()
-    virtual double int_f( double lower, double upper )
-    {
-      CPPUNIT_ASSERT(_order>=0);
-      double value = 0.0;
-
-      for( int i = 0; i <= _order; i++ )
-        value += (std::pow(upper,i+1.0) - std::pow(lower,i+1.0) );
-
-      return value;
-    }
-
-    void setUp()
-    {
-      // Setup for error checking, in order to make sure this gets reset later.
-      _order = -1;
-    }
-
   private:
-
-    int _order;
 
     void test_1d_legendre_quadrature(double min_domain_value, double max_domain_value)
     {
@@ -148,7 +113,7 @@ namespace QUESOTesting
 
         // We should be able to integrate polynomials of order 2*n-1 exactly
         // order = quad_order + 1 by QUESO convention
-        _order = 2*(quad_rule.order()+1)-1;
+        PolynomialFunction func( 2*(quad_rule.order()+1)-1 );
 
         double tol = std::numeric_limits<double>::epsilon()*20;
 
@@ -156,12 +121,86 @@ namespace QUESOTesting
         if( quad_order == 7 )
           tol = 1.0e-7;
 
-        this->test_quadrature_rule( quad_rule, min_domain_value, max_domain_value, tol );
+        this->test_quadrature_rule( quad_rule, func,
+                                    min_domain_value, max_domain_value, tol );
+      }
+    }
+  };
+
+  class HermiteQuadrature1DTest : public Quadrature1DTestBase,
+                                  public HermiteQuadratureTestingHelper
+  {
+  public:
+    CPPUNIT_TEST_SUITE( HermiteQuadrature1DTest );
+
+    CPPUNIT_TEST( test_1d_hermite_quadrature_erf );
+    CPPUNIT_TEST( test_1d_hermite_quadrature_x2erf );
+    CPPUNIT_TEST( test_1d_hermite_quadrature_x4erf );
+
+    CPPUNIT_TEST_SUITE_END();
+
+    // yes, this is necessary
+  public:
+
+    void test_1d_hermite_quadrature_erf()
+    {
+      Erf func;
+      std::vector<unsigned int> testing_orders;
+      this->testing_orders(testing_orders);
+
+      double tol = std::numeric_limits<double>::epsilon()*50000;
+
+      this->test_1d_hermite_quadrature(func,testing_orders,tol);
+    }
+
+    void test_1d_hermite_quadrature_x2erf()
+    {
+      X2Erf func;
+      std::vector<unsigned int> testing_orders;
+      this->testing_orders(testing_orders);
+
+      double tol = 1.0e-10;
+
+      this->test_1d_hermite_quadrature(func,testing_orders,tol);
+    }
+
+    void test_1d_hermite_quadrature_x4erf()
+    {
+      std::cout << std::endl << "Beginning Hermite X4Erf test!" << std::endl;
+      X4Erf func;
+      std::vector<unsigned int> testing_orders;
+      this->testing_orders(testing_orders);
+
+      // We need at least a 3-point rule, so get rid of the first entry
+      testing_orders.erase(testing_orders.begin());
+
+      double tol = 2.0e-10;
+
+      this->test_1d_hermite_quadrature(func,testing_orders,tol);
+    }
+
+  private:
+
+    void test_1d_hermite_quadrature(OneDQuadratureFunction & func,
+                                    const std::vector<unsigned int> & testing_orders,
+                                    double tol)
+    {
+      for( std::vector<unsigned int>::const_iterator it = testing_orders.begin();
+           it < testing_orders.end(); ++it )
+      {
+        unsigned int quad_order = *it;
+
+        // 0 mean, unit variance
+        QUESO::GaussianHermite1DQuadrature quad_rule(0.0,1.0,quad_order);
+
+        this->test_quadrature_rule( quad_rule, func,
+                                    -INFINITY, INFINITY, tol );
       }
     }
   };
 
   CPPUNIT_TEST_SUITE_REGISTRATION( LegendreQuadrature1DTest );
+  CPPUNIT_TEST_SUITE_REGISTRATION( HermiteQuadrature1DTest );
 
 } // end namespace QUESOTesting
 
