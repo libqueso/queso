@@ -273,8 +273,9 @@ int main(int argc, char ** argv) {
           // The "magic number" here will in practice be an estimate
           // of experimental error.  In this test example it is pulled
           // from our posterior.
-          (*experimentMat)(experimentSize*i+j, experimentSize*i+j) =
-            (0.025 / stdsim[j]) * (0.025 / stdsim[j]);
+          (*experimentMat)(experimentSize*i+j, experimentSize*i+j) = 1;
+//          (*experimentMat)(experimentSize*i+j, experimentSize*i+j) =
+//            (0.025 / stdsim[j]) * (0.025 / stdsim[j]);
         }
     }
 

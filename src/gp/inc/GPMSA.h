@@ -61,8 +61,8 @@ public:
                 const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
                 const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs,
                 const std::vector<typename SharedPtr<V>::Type> & m_discrepancyBases,
-                const std::vector<M>   & m_observationErrorMatrices,
-                const M & m_experimentErrors,
+                const std::vector<typename SharedPtr<M>::Type> & m_observationErrorMatrices,
+                const typename SharedPtr<M>::Type & m_observationErrorMatrix,
                 const ConcatenatedVectorRV<V, M> & m_totalPrior,
                 const V & residual_in,
                 const M & BT_Wy_B_inv_in,
@@ -98,15 +98,15 @@ public:
 
         std::vector<typename SharedPtr<V>::Type>   m_discrepancyBases;
 
-  const std::vector<M> & m_observationErrorMatrices;
+  const std::vector<typename SharedPtr<M>::Type> & m_observationErrorMatrices;
+
+  // Block diagonal matrix; sacrificing efficiency for clarity
+  typename SharedPtr<M>::Type m_observationErrorMatrix;
 
   //
   // Intermediate calculations we can cache
   //
   unsigned int num_svd_terms;
-
-  // Total observation error covriance matrix
-  const M & m_experimentErrors;
 
   const ConcatenatedVectorRV<V, M> & m_totalPrior;
 
@@ -267,10 +267,28 @@ public:
    * Each experiment (\experimentOutputs[i]) is assumed to correspond to the
    * point \c expermientScenarios[i] in scenario space.  The observation error
    * covariance matrix is assumed to be stored in \c experimentErrors.
+   *
+   * This method is solely for backward compatibility.  Covariances
+   * between errors from different experiments will be ignored.
    */
   void addExperiments(const std::vector<typename SharedPtr<V>::Type> & experimentScenarios,
                       const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
                       const typename SharedPtr<M>::Type experimentErrors);
+
+  //! Add all experiments to \c this
+  /*!
+   * This method takes a vector of *all* the experimental data and associated
+   * observation errors/correlations and stores them.  This cannot be done
+   * piecemeal like the simulation data.
+   *
+   * Each experiment (\experimentOutputs[i]) is assumed to correspond to the
+   * point \c expermientScenarios[i] in scenario space.  Each
+   * experiment has a corresponding error covariance matrix stored in
+   * \c experimentErrors[i]
+   */
+  void addExperiments(const std::vector<typename SharedPtr<V>::Type> & experimentScenarios,
+                      const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
+                      const std::vector<typename SharedPtr<M>::Type> & experimentErrors);
 
   //! Add all discrepancy bases to \c this
   /*!
@@ -328,10 +346,7 @@ public:
 
   std::vector<typename SharedPtr<V>::Type> m_discrepancyBases;
 
-  std::vector<M> m_observationErrorMatrices;
-
-  // Total observation error covriance matrix
-  typename SharedPtr<M>::Type m_experimentErrors;
+  std::vector<typename SharedPtr<M>::Type> m_observationErrorMatrices;
 
   // Counter for the number of adds that happen
   unsigned int m_numSimulationAdds;
@@ -428,7 +443,7 @@ public:
   bool m_constructedGP;
 
   // Block diagonal matrix; sacrificing efficiency for clarity
-  typename ScopedPtr<M>::Type m_observationErrorMatrix;
+  typename SharedPtr<M>::Type m_observationErrorMatrix;
 
   //
   // Intermediate calculations we can cache
