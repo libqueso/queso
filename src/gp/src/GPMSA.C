@@ -818,6 +818,15 @@ GPMSAFactory<V, M>::setUpEmulator()
     {
       const M & D_i = m_discrepancyMatrices[ex];
 
+      // Each error covariance matrix had better be SPD
+      const M & W_i = (*m_observationErrorMatrices[ex]);
+#ifndef NDEBUG
+      M W_i_copy(W_i);
+      int rv = W_i_copy.chol();
+      queso_assert_msg(!rv, "Observation error matrix W_" << ex <<
+                       " was not SPD!");
+#endif
+
       // For the multivariate case, the bases K_eta computed from
       // simulator outputs are the same as the bases K_i which apply
       // to quantities of interest, because simulator outputs are QoIs
@@ -848,7 +857,7 @@ GPMSAFactory<V, M>::setUpEmulator()
               // No fancy perturbation here
               unsigned int j = ex*numOutputs+outj;
 
-              Wy(i,j) = (*m_observationErrorMatrices[ex])(outi,outj);
+              Wy(i,j) = W_i(outi,outj);
             }
         }
     }
