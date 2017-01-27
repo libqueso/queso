@@ -57,10 +57,8 @@ extern "C" {
       return GSL_NAN;
     }
 
-    // Should cache derivative here so we don't a) segfault in the user's code
-    // and b) so we don't recompute stuff
-    double result = -optimizer->objectiveFunction().lnValue(state, NULL, NULL,
-        NULL, NULL);
+    // Should cache derivative here so we don't recompute stuff
+    double result = -optimizer->objectiveFunction().lnValue(state);
 
     return result;
   }
@@ -93,8 +91,7 @@ extern "C" {
     }
     else {
       // We should cache the return value here so we don't recompute stuff
-      double fx = -optimizer->objectiveFunction().lnValue(state, NULL, &deriv,
-          NULL, NULL);
+      double fx = -optimizer->objectiveFunction().lnValue(state, deriv);
 
       // Decide whether or not we need to do a finite difference based on
       // whether the user actually filled deriv with values that are not
@@ -129,8 +126,7 @@ extern "C" {
 
           // User didn't provide a derivative, so we don't bother passing in
           // the derivative vector again
-          double fxph = -optimizer->objectiveFunction().lnValue(state, NULL,
-              NULL, NULL, NULL);
+          double fxph = -optimizer->objectiveFunction().lnValue(state);
 
           // Reset the state back to what it was before
           state[i] = tempState;

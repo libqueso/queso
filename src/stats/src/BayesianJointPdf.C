@@ -135,48 +135,12 @@ BayesianJointPdf<V,M>::actualValue(
 
   return returnValue;
 }
-// --------------------------------------------------
+
 template<class V, class M>
 double
-BayesianJointPdf<V,M>::lnValue(
-  const V& domainVector,
-  const V* domainDirection,
-        V* gradVector,
-        M* hessianMatrix,
-        V* hessianEffect) const
+BayesianJointPdf<V,M>::lnValue(const V & domainVector) const
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BayesianJointPdf<V,M>::lnValue()"
-                            << ": domainVector = " << domainVector
-                            << std::endl;
-  }
-
-  V* gradVLike = NULL;
-  if (gradVector) {
-    gradVLike = &m_tmpVector1;
-
-    // DM:  We do this because we want to be able to test whether the user
-    //      actually filled gradVector, rather than passing a different
-    //      instance of V to the likelihood code
-    for (unsigned int i = 0; i < m_tmpVector1.sizeLocal(); i++) {
-      m_tmpVector1[i] = (*gradVector)[i];
-    }
-  }
-
-  M* hessianMLike = NULL;
-  if (hessianMatrix) hessianMLike = m_tmpMatrix;
-
-  V* hessianELike = NULL;
-  if (hessianEffect) hessianELike = &m_tmpVector2;
-
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
-                            << ", domainVector = " << domainVector
-                            << ": about to call prior()"
-                            << std::endl;
-  }
-
-  double value1 = m_priorDensity.lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
+  double value1 = m_priorDensity.lnValue(domainVector);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
@@ -194,41 +158,8 @@ BayesianJointPdf<V,M>::lnValue(
 
   double value2 = 0.;
   if (m_likelihoodExponent != 0.) {
-    value2 = m_likelihoodFunction.lnValue(domainVector,domainDirection,gradVLike, hessianMLike, hessianELike );
+    value2 = m_likelihoodFunction.lnValue(domainVector);
   }
-
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
-                            << ", domainVector = " << domainVector
-                            << ": value1 = "       << value1
-                            << ", value2 = "       << value2
-                            << std::endl;
-    if (gradVector) {
-      *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
-                              << ", domainVector = " << domainVector
-                              << ": gradVector = "   << *gradVector
-                              << ", gradVLike = "    << *gradVLike
-                              << std::endl;
-    }
-    if (hessianMatrix) {
-      *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
-                              << ", domainVector = "  << domainVector
-                              << ": hessianMatrix = " << *hessianMatrix
-                              << ", hessianMLike = "  << *hessianMLike
-                              << std::endl;
-    }
-    if (hessianEffect) {
-      *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
-                              << ", domainVector = "  << domainVector
-                              << ": hessianEffect = " << *hessianEffect
-                              << ", hessianELike = "  << *hessianELike
-                              << std::endl;
-    }
-  }
-
-  if (gradVector   ) *gradVector    += *gradVLike;
-  if (hessianMatrix) *hessianMatrix += *hessianMLike;
-  if (hessianEffect) *hessianEffect += *hessianELike;
 
   double returnValue = value1;
   if (m_likelihoodExponent == 0.) {
@@ -245,15 +176,60 @@ BayesianJointPdf<V,M>::lnValue(
   m_lastComputedLogPrior      = value1;
   m_lastComputedLogLikelihood = m_likelihoodExponent*value2;
 
+  return returnValue;
+}
+
+template<class V, class M>
+double
+BayesianJointPdf<V,M>::lnValue(const V & domainVector, V & gradVector) const
+{
+  double value1 = m_priorDensity.lnValue(domainVector, gradVector);
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BayesianJointPdf<V,M>::lnValue()"
-                            << ": domainVector = " << domainVector
-                            << ", returnValue = "  << returnValue
+    *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
+                            << ", domainVector = " << domainVector
+                            << ": lnPrior = " << value1
                             << std::endl;
   }
 
+  double value2 = 0.;
+  if (m_likelihoodExponent != 0.) {
+    value2 = m_likelihoodFunction.lnValue(domainVector, m_tmpVector1);
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
+                            << ", domainVector = " << domainVector
+                            << ": value1 = "       << value1
+                            << ", value2 = "       << value2
+                            << std::endl;
+    *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
+                            << ", domainVector = " << domainVector
+                            << ": gradVector = "   << gradVector
+                            << ", gradVLike = "    << m_tmpVector1
+                            << std::endl;
+  }
+
+  gradVector += m_tmpVector1;
+
+  double returnValue = value1;
+  if (m_likelihoodExponent == 0.) {
+    // Do nothing
+  }
+  else if (m_likelihoodExponent == 1.) {
+    returnValue += value2;
+  }
+  else {
+    returnValue += value2*m_likelihoodExponent;
+  } // prudenci 2010/03/05
+  returnValue += m_logOfNormalizationFactor; // [PDF-02] ???
+
+  m_lastComputedLogPrior      = value1;
+  m_lastComputedLogLikelihood = m_likelihoodExponent*value2;
+
   return returnValue;
 }
+
 // --------------------------------------------------
 template<class V, class M>
 double
