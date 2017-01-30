@@ -28,19 +28,21 @@
 #define __TGA2_LIKELIHOOD_H__
 
 #include <queso/GslMatrix.h>
+#include <queso/ScalarFunction.h>
 
-//********************************************************
-// The (user defined) data class that carries the data
-// needed by the (user defined) likelihood routine
-//********************************************************
-struct
-likelihoodRoutine_Data
+#include <cmath>
+
+template <class V = QUESO::GslVector, class M = QUESO::GslMatrix>
+class Likelihood : public QUESO::BaseScalarFunction<V, M>
 {
-  likelihoodRoutine_Data(const QUESO::BaseEnvironment& env,
-                              const char* inpName1,
-                              const char* inpName2,
-                              const char* inpName3);
- ~likelihoodRoutine_Data();
+public:
+  Likelihood(const char * prefix,
+             const QUESO::VectorSet<V, M> & domainSet,
+             const char* inpName1,
+             const char* inpName2,
+             const char* inpName3);
+
+  virtual ~Likelihood();
 
   double              m_beta1;
   double              m_variance1;
@@ -56,17 +58,15 @@ likelihoodRoutine_Data
   double              m_variance3;
   std::vector<double> m_Te3; // temperatures
   std::vector<double> m_Me3; // relative masses
+  const QUESO::BaseEnvironment & m_env;
 
-  const QUESO::BaseEnvironment* m_env;
+  virtual double lnValue(const QUESO::GslVector & paramValues) const;
+
+  virtual double actualValue(const V & domainVector, const V * domainDirection,
+          V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  {
+    return std::exp(this->lnValue(domainVector));
+  }
 };
-
-double
-likelihoodRoutine(
-  const QUESO::GslVector&  paramValues,
-  const QUESO::GslVector*  paramDirection,
-  const void*              functionDataPtr,
-  QUESO::GslVector*        gradVector,
-  QUESO::GslMatrix*        hessianMatrix,
-  QUESO::GslVector*        hessianEffect);
 
 #endif // __TGA2_LIKELIHOOD_H__
