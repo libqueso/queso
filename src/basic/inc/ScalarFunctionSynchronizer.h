@@ -77,6 +77,10 @@ public:
                             V* hessianEffect,
                             double* extraOutput1,
                             double* extraOutput2) const;
+
+  double callFunction(const V* vecValues,
+                      double* extraOutput1,
+                      double* extraOutput2) const;
   //@}
 private:
   const BaseEnvironment&         m_env;

@@ -10,8 +10,7 @@ class Likelihood : public QUESO::BaseScalarFunction<V, M>
 public:
   Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain);
   virtual ~Likelihood();
-  virtual double lnValue(const V &domainVector, const V * domainDirection,
-	V * gradVector, M * hessianMatrix, V * hessianEffect) const;
+  virtual double lnValue(const V & domainVector) const;
   virtual double actualValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const;  
 

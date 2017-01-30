@@ -1408,7 +1408,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       iRC = gettimeofday(&timevalTarget, NULL);
       queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
     }
-    logTarget = m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment // KEY
+    logTarget = m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,&logPrior,&logLikelihood); // Might demand parallel environment // KEY
     if (m_optionsObj->m_rawChainMeasureRunTimes) {
       m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
     }
@@ -1534,10 +1534,6 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
                                                 NULL,
-                                                NULL,
-                                                NULL,
-                                                NULL,
-                                                NULL,
                                                 NULL);
     if (aux) {}; // just to remove compiler warning
     for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
@@ -1655,7 +1651,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         iRC = gettimeofday(&timevalTarget, NULL);
         queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
       }
-      logTarget = m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
+      logTarget = m_targetPdfSynchronizer->callFunction(&tmpVecValues,&logPrior,&logLikelihood); // Might demand parallel environment
       if (m_optionsObj->m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
       m_rawChainInfo.numTargetCalls++;
       if ((m_env.subDisplayFile()                   ) &&
@@ -1892,10 +1888,6 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
-                                                NULL,
-                                                NULL,
-                                                NULL,
-                                                NULL,
                                                 NULL,
                                                 NULL);
     if (aux) {}; // just to remove compiler warning
@@ -2365,7 +2357,7 @@ MetropolisHastingsSG<P_V, P_M>::delayedRejection(unsigned int positionId,
         iRC = gettimeofday(&timevalTarget, NULL);
         queso_require_equal_to_msg(iRC, 0, "gettimeofday call failed");
       }
-      logTarget = m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
+      logTarget = m_targetPdfSynchronizer->callFunction(&tmpVecValues,&logPrior,&logLikelihood); // Might demand parallel environment
       if (m_optionsObj->m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
       m_rawChainInfo.numTargetCalls++;
       if ((m_env.subDisplayFile()                   ) &&

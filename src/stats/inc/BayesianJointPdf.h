@@ -74,7 +74,8 @@ public:
    * (likelihoodExponent) is zero then the Logarithm of the value of the function is the logarithm of
    * the value of the prior PDF; otherwise, the value is scaled (added) by a power of the value of the
    * likelihood function.*/
-  double lnValue                  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  virtual double lnValue(const V & domainVector) const;
+  virtual double lnValue(const V & domainVector, V & gradVector) const;
 
   //! Mean value of the underlying random variable.
   virtual void   distributionMean (V & meanVector) const { queso_not_implemented(); }
