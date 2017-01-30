@@ -66,8 +66,7 @@ Likelihood<V, M>::~Likelihood()
 
 template<class V, class M>
 double
-Likelihood<V, M>::lnValue(const V & domainVector, const V * domainDirection,
-    V * gradVector, M * hessianMatrix, V * hessianEffect) const
+Likelihood<V, M>::lnValue(const V & domainVector) const
 {
   double g = domainVector[0];
 
@@ -87,8 +86,7 @@ Likelihood<V, M>::actualValue(const V & domainVector,
     const V * domainDirection, V * gradVector, M * hessianMatrix,
     V * hessianEffect) const
 {
-  return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
-        hessianMatrix, hessianEffect));
+  return std::exp(this->lnValue(domainVector));
 }
 
 template class Likelihood<QUESO::GslVector, QUESO::GslMatrix>;
