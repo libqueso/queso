@@ -49,9 +49,7 @@ public:
   {
   }
 
-  virtual void evaluateModel(const V & domainVector, const V * domainDirection,
-      V & modelOutput, V * gradVector, M * hessianMatrix,
-      V * hessianEffect) const
+  virtual void evaluateModel(const V & domainVector, V & modelOutput) const
   {
     // Evaluate model and fill up the m_modelOutput member variable
     for (unsigned int i = 0; i < modelOutput.sizeLocal(); i++) {
