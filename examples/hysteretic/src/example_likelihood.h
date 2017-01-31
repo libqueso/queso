@@ -34,20 +34,32 @@
 #define __EX_LIKELIHOOD_H__
 
 #include <queso/GslMatrix.h>
+#include <queso/ScalarFunction.h>
+#include <cmath>
 
-struct
-likelihoodRoutine_DataType
+template <class V = QUESO::GslVector, class M = QUESO::GslMatrix>
+class Likelihood : public QUESO::BaseScalarFunction<V, M>
 {
+public:
+  Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domainSet)
+    : QUESO::BaseScalarFunction<V, M>(prefix, domainSet)
+  {
+  }
+
+  virtual ~Likelihood() { }
+
+  virtual double lnValue(const V & paramValues) const;
+  virtual double actualValue(const V & paramValues,
+                             const V * paramDirection,
+                             V *       gradVector,
+                             M *       hessianMatrix,
+                             V *       hessianEffect) const
+  {
+    return std::exp(this->lnValue(paramValues));
+  }
+
   std::vector<std::vector<double>* > floor;
               std::vector<double>    accel;
 };
-
-double likelihoodRoutine(
-  const QUESO::GslVector& paramValues,
-  const QUESO::GslVector* paramDirection,
-  const void*             functionDataPtr,
-  QUESO::GslVector*       gradVector,
-  QUESO::GslMatrix*       hessianMatrix,
-  QUESO::GslVector*       hessianEffect);
 
 #endif
