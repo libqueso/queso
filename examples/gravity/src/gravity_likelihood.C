@@ -24,7 +24,6 @@
 
 #include <cmath>
 
-#include <queso/GenericScalarFunction.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/UniformVectorRV.h>
