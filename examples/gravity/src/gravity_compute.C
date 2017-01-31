@@ -39,7 +39,6 @@
 #include <sys/time.h>
 
 #include <queso/GslMatrix.h>
-#include <queso/GenericScalarFunction.h>
 #include <queso/GenericVectorFunction.h>
 #include <queso/GaussianVectorRV.h>
 #include <queso/UniformVectorRV.h>
