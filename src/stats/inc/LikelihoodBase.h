@@ -58,8 +58,8 @@ public:
       const VectorSet<V, M> & domainSet,
       const V & observations);
 
-  //! Destructor
-  virtual ~LikelihoodBase();
+  //! Destructor, pure to make this class abstract
+  virtual ~LikelihoodBase() =0;
   //@}
 
   //! Evaluates the user's model at the point \c domainVector
