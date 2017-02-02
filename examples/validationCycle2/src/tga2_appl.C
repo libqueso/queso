@@ -92,22 +92,18 @@ uqAppl(const QUESO::BaseEnvironment& env)
   QUESO::UniformVectorRV<QUESO::GslVector,QUESO::GslMatrix> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
                                                                        paramDomain);
 
-  // Inverse problem: instantiate the likelihood function object (data + routine)
-  likelihoodRoutine_Data calLikelihoodRoutine_Data(env,
-                                                        "inputData/scenario_5_K_min.dat",
-                                                        "inputData/scenario_25_K_min.dat",
-                                                        "inputData/scenario_50_K_min.dat");
+  // Inverse problem: instantiate the likelihood
+  Likelihood<> calLikelihood("cal_like_",
+                           paramDomain,
+                           "inputData/scenario_5_K_min.dat",
+                           "inputData/scenario_25_K_min.dat",
+                           "inputData/scenario_50_K_min.dat");
 
-  QUESO::GenericScalarFunction<QUESO::GslVector,QUESO::GslMatrix> calLikelihoodFunctionObj("cal_like_",
-                                                                                           paramDomain,
-                                                                                           likelihoodRoutine,
-                                                                                           (void *) &calLikelihoodRoutine_Data,
-                                                                                           true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
   cycle.instantiateCalIP(NULL,
                          calPriorRv,
-                         calLikelihoodFunctionObj);
+                         calLikelihood);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
   QUESO::GslVector paramInitialValues(paramSpace.zeroVector());
@@ -162,20 +158,15 @@ uqAppl(const QUESO::BaseEnvironment& env)
 
   // Inverse problem: no need to instantiate the prior rv (= posterior rv of calibration inverse problem)
 
-  // Inverse problem: instantiate the likelihood function object (data + routine)
-  likelihoodRoutine_Data valLikelihoodRoutine_Data(env,
-                                                        "inputData/scenario_100_K_min.dat",
-                                                        NULL,
-                                                        NULL);
-
-  QUESO::GenericScalarFunction<QUESO::GslVector,QUESO::GslMatrix> valLikelihoodFunctionObj("val_like_",
-                                                                                           paramDomain,
-                                                                                           likelihoodRoutine,
-                                                                                           (void *) &valLikelihoodRoutine_Data,
-                                                                                           true); // the routine computes [ln(function)]
+  // Inverse problem: instantiate the likelihood function object
+  Likelihood<> valLikelihood("val_like_",
+                             paramDomain,
+                             "inputData/scenario_100_K_min.dat",
+                             NULL,
+                             NULL);
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  cycle.instantiateValIP(NULL,valLikelihoodFunctionObj);
+  cycle.instantiateValIP(NULL,valLikelihood);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
   const QUESO::SequentialVectorRealizer<QUESO::GslVector,QUESO::GslMatrix>* tmpRealizer = dynamic_cast< const QUESO::SequentialVectorRealizer<QUESO::GslVector,QUESO::GslMatrix>* >(&(cycle.calIP().postRv().realizer()));

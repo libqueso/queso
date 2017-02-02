@@ -24,22 +24,10 @@
 
 #include <example_likelihood.h>
 
-double likelihoodRoutine(
-  const QUESO::GslVector& paramValues,
-  const QUESO::GslVector* paramDirection,
-  const void*             functionDataPtr,
-  QUESO::GslVector*       gradVector,
-  QUESO::GslMatrix*       hessianMatrix,
-  QUESO::GslVector*       hessianEffect)
+template <class V, class M>
+double
+Likelihood<V, M>::lnValue(const V & paramValues) const
 {
-  // Logic just to avoid warnings from INTEL compiler
-  const QUESO::GslVector* aux1 = paramDirection;
-  if (aux1) {};
-  aux1 = gradVector;
-  aux1 = hessianEffect;
-  QUESO::GslMatrix* aux2 = hessianMatrix;
-  if (aux2) {};
-
   // Just checking: the user, at the application level, expects
   // vector 'paramValues' to have size 2.
   UQ_FATAL_TEST_MACRO(paramValues.sizeGlobal() != 2,
@@ -60,14 +48,10 @@ double likelihoodRoutine(
   double result = 0.;
   const QUESO::BaseEnvironment& env = paramValues.env();
   if (env.subRank() == 0) {
-    const QUESO::GslVector& meanVector =
-      *((likelihoodRoutine_DataType *) functionDataPtr)->meanVector;
-    const QUESO::GslMatrix& covMatrix  =
-      *((likelihoodRoutine_DataType *) functionDataPtr)->covMatrix;
 
-    QUESO::GslVector diffVec(paramValues - meanVector);
+    QUESO::GslVector diffVec(paramValues - *meanVector);
 
-    result= scalarProduct(diffVec,covMatrix.invertMultiply(diffVec));
+    result= scalarProduct(diffVec,covMatrix->invertMultiply(diffVec));
   }
   else {
     // Do nothing;
@@ -75,3 +59,5 @@ double likelihoodRoutine(
 
   return -.5*result;
 }
+
+template class Likelihood<QUESO::GslVector, QUESO::GslMatrix>;

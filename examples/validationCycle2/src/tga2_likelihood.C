@@ -29,25 +29,26 @@
 #include <queso/Environment.h>
 #include <gsl/gsl_odeiv.h>
 
-likelihoodRoutine_Data::likelihoodRoutine_Data(
-  const QUESO::BaseEnvironment& env,
-  const char* inpName1,
-  const char* inpName2,
-  const char* inpName3)
-  :
-  m_beta1    (0.),
-  m_variance1(0.),
-  m_Te1      (0),
-  m_Me1      (0),
-  m_beta2    (0.),
-  m_variance2(0.),
-  m_Te2      (0),
-  m_Me2      (0),
-  m_beta3    (0.),
-  m_variance3(0.),
-  m_Te3      (0),
-  m_Me3      (0),
-  m_env      (&env)
+template <class V, class M>
+Likelihood<V, M>::Likelihood(const char * prefix,
+                             const QUESO::VectorSet<V, M> & domainSet,
+                             const char * inpName1,
+                             const char * inpName2,
+                             const char * inpName3)
+  : QUESO::BaseScalarFunction<V, M>(prefix, domainSet),
+    m_beta1    (0.),
+    m_variance1(0.),
+    m_Te1      (0),
+    m_Me1      (0),
+    m_beta2    (0.),
+    m_variance2(0.),
+    m_Te2      (0),
+    m_Me2      (0),
+    m_beta3    (0.),
+    m_variance3(0.),
+    m_Te3      (0),
+    m_Me3      (0),
+    m_env      (domainSet.env())
 {
   // Read experimental data
   if (inpName1) {
@@ -71,7 +72,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
     double tmpMe;
     while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
       UQ_FATAL_TEST_MACRO((numObservations >= m_Te1.size()),
-                          env.fullRank(),
+                          m_env.fullRank(),
                           "uqAppl(), in uqTgaEx4.h",
                           "input file 1 has too many observations");
       m_Te1[numObservations] = tmpTe;
@@ -79,7 +80,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
       numObservations++;
     }
     UQ_FATAL_TEST_MACRO((numObservations != m_Te1.size()),
-                        env.fullRank(),
+                        m_env.fullRank(),
                         "uqAppl(), in uqTgaEx4.h",
                         "input file 1 has a smaller number of observations than expected");
 
@@ -109,7 +110,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
     double tmpMe;
     while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
       UQ_FATAL_TEST_MACRO((numObservations >= m_Te2.size()),
-                          env.fullRank(),
+                          m_env.fullRank(),
                           "uqAppl(), in uqTgaEx4.h",
                           "input file 2 has too many observations");
       m_Te2[numObservations] = tmpTe;
@@ -117,7 +118,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
       numObservations++;
     }
     UQ_FATAL_TEST_MACRO((numObservations != m_Te2.size()),
-                        env.fullRank(),
+                        m_env.fullRank(),
                         "uqAppl(), in uqTgaEx4.h",
                         "input file 2 has a smaller number of observations than expected");
 
@@ -145,7 +146,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
     double tmpMe;
     while (fscanf(inp,"%lf %lf",&tmpTe,&tmpMe) != EOF) {
       UQ_FATAL_TEST_MACRO((numObservations >= m_Te3.size()),
-                          env.fullRank(),
+                          m_env.fullRank(),
                           "uqAppl(), in uqTgaEx4.h",
                           "input file 3 has too many observations");
       m_Te3[numObservations] = tmpTe;
@@ -153,7 +154,7 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
       numObservations++;
     }
     UQ_FATAL_TEST_MACRO((numObservations != m_Te3.size()),
-                        env.fullRank(),
+                        m_env.fullRank(),
                         "uqAppl(), in uqTgaEx4.h",
                         "input file 3 has a smaller number of observations than expected");
 
@@ -162,46 +163,29 @@ likelihoodRoutine_Data::likelihoodRoutine_Data(
   }
 }
 
-likelihoodRoutine_Data::~likelihoodRoutine_Data()
+template <class V, class M>
+Likelihood<V, M>::~Likelihood()
 {
 }
 
-//********************************************************
-// The actual (user defined) likelihood routine
-//********************************************************
+template <class V, class M>
 double
-likelihoodRoutine(
-  const QUESO::GslVector& paramValues,
-  const QUESO::GslVector* paramDirection,
-  const void*             functionDataPtr,
-  QUESO::GslVector*       gradVector,
-  QUESO::GslMatrix*       hessianMatrix,
-  QUESO::GslVector*       hessianEffect)
+Likelihood<V, M>::lnValue(const QUESO::GslVector & paramValues) const
 {
   double resultValue = 0.;
 
-  const QUESO::BaseEnvironment& env = *(((likelihoodRoutine_Data*) functionDataPtr)->m_env);
-
-  if (paramDirection  &&
-      functionDataPtr &&
-      gradVector      &&
-      hessianMatrix   &&
-      hessianEffect) {
-    // Just to eliminate INTEL compiler warnings
-  }
-
-  env.subComm().Barrier();
+  m_env.subComm().Barrier();
   //env.syncPrintDebugMsg("Entering likelihoodRoutine()",1,env.fullComm());
 
   // Compute likelihood for scenario 1
-  double betaTest = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta1;
+  double betaTest = m_beta1;
   if (betaTest) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta1;
-    double variance                = ((likelihoodRoutine_Data*) functionDataPtr)->m_variance1;
-    const std::vector<double>& Te  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Te1;
-    const std::vector<double>& Me  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Me1;
+    double beta                    = m_beta1;
+    double variance                = m_variance1;
+    const std::vector<double>& Te  = m_Te1;
+    const std::vector<double>& Me  = m_Me1;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -257,14 +241,14 @@ likelihoodRoutine(
   }
 
   // Compute likelihood for scenario 2
-  betaTest = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta2;
+  betaTest = m_beta2;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta2;
-    double variance                = ((likelihoodRoutine_Data*) functionDataPtr)->m_variance2;
-    const std::vector<double>& Te  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Te2;
-    const std::vector<double>& Me  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Me2;
+    double beta                    = m_beta2;
+    double variance                = m_variance2;
+    const std::vector<double>& Te  = m_Te2;
+    const std::vector<double>& Me  = m_Me2;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -320,14 +304,14 @@ likelihoodRoutine(
   }
 
   // Compute likelihood for scenario 3
-  betaTest = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta3;
+  betaTest = m_beta3;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta3;
-    double variance                = ((likelihoodRoutine_Data*) functionDataPtr)->m_variance3;
-    const std::vector<double>& Te  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Te3;
-    const std::vector<double>& Me  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Me3;
+    double beta                    = m_beta3;
+    double variance                = m_variance3;
+    const std::vector<double>& Te  = m_Te3;
+    const std::vector<double>& Me  = m_Me3;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -382,9 +366,10 @@ likelihoodRoutine(
     gsl_odeiv_step_free   (s);
   }
 
-  env.subComm().Barrier();
+  m_env.subComm().Barrier();
   //env.syncPrintDebugMsg("Leaving likelihoodRoutine()",1,env.fullComm());
 
   return -.5*resultValue;
 }
 
+template class Likelihood<QUESO::GslVector, QUESO::GslMatrix>;
