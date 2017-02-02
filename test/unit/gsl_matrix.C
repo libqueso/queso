@@ -44,12 +44,12 @@ namespace QUESOTesting
     CPPUNIT_TEST( test_inverse_power_method );
     CPPUNIT_TEST( test_power_method );
     CPPUNIT_TEST( test_multiple_rhs_matrix_solve );
+    CPPUNIT_TEST( test_cw_extract );
 
     CPPUNIT_TEST_SUITE_END();
 
     // yes, this is necessary
   public:
-
     void setUp()
     {
       _env.reset( new QUESO::FullEnvironment("","",&_options) );
@@ -211,11 +211,31 @@ namespace QUESOTesting
       CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0,result(1,0),1.0e-14);
     }
 
-  private:
+    void test_cw_extract()
+    {
+      QUESO::VectorSpace<> space4(*_env, "", 4, NULL);
+      QUESO::GslMatrix mat4(space4.zeroVector());
 
+      for (unsigned int i = 0; i < 4; i++) {
+        for (unsigned int j = 0; j < 4; j++) {
+          mat4(i,j) = 4*i+j;
+        }
+      }
+
+      QUESO::VectorSpace<> space2(*_env, "", 2, NULL);
+      QUESO::GslMatrix mat2(space2.zeroVector());
+
+      mat4.cwExtract(1, 1, mat2);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(5.0, mat2(0,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(6.0, mat2(0,1), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(9.0, mat2(1,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(10.0, mat2(1,1), 1.0e-14);
+    }
+
+  private:
     QUESO::EnvOptionsValues _options;
     typename QUESO::ScopedPtr<QUESO::BaseEnvironment>::Type _env;
-
   };
 
   CPPUNIT_TEST_SUITE_REGISTRATION( GslMatrixTest );
