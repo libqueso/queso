@@ -25,7 +25,7 @@
 #ifndef UQ_GAUSSIAN_LIKELIHOOD_DIAG_COV_H
 #define UQ_GAUSSIAN_LIKELIHOOD_DIAG_COV_H
 
-#include <queso/GaussianLikelihood.h>
+#include <queso/LikelihoodBase.h>
 
 namespace QUESO {
 
@@ -40,7 +40,7 @@ class GslMatrix;
  */
 
 template <class V = GslVector, class M = GslMatrix>
-class GaussianLikelihoodDiagonalCovariance : public BaseGaussianLikelihood<V, M> {
+class GaussianLikelihoodDiagonalCovariance : public LikelihoodBase<V, M> {
 public:
   //! @name Constructor/Destructor methods.
   //@{
@@ -58,13 +58,8 @@ public:
   virtual ~GaussianLikelihoodDiagonalCovariance();
   //@}
 
-  //! Actual value of the scalar function.
-  virtual double actualValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
-
   //! Logarithm of the value of the scalar function.
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
+  virtual double lnValue(const V & domainVector) const;
 
 private:
   const V & m_covariance;

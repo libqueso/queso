@@ -48,9 +48,7 @@ public:
   {
   }
 
-  virtual void evaluateModel(const V & domainVector, const V * domainDirection,
-      V & modelOutput, V * gradVector, M * hessianMatrix,
-      V * hessianEffect) const
+  virtual void evaluateModel(const V & domainVector, V & modelOutput) const
   {
     // Model is a map from R to R^2
 
@@ -137,4 +135,3 @@ int main(int argc, char ** argv) {
 
   return 0;
 }
-

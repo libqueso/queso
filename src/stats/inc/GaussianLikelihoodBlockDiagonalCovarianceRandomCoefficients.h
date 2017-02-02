@@ -26,7 +26,7 @@
 #define UQ_GAUSSIAN_LIKELIHOOD_BLOCK_DIAG_COV_RAND_COEFFS_H
 
 #include <queso/GslBlockMatrix.h>
-#include <queso/GaussianLikelihood.h>
+#include <queso/LikelihoodBase.h>
 
 namespace QUESO {
 
@@ -44,7 +44,7 @@ class GslMatrix;
  */
 
 template <class V = GslVector, class M = GslMatrix>
-class GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients : public BaseGaussianLikelihood<V, M> {
+class GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients : public LikelihoodBase<V, M> {
 public:
   //! @name Constructor/Destructor methods.
   //@{
@@ -66,10 +66,6 @@ public:
   virtual ~GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients();
   //@}
 
-  //! Actual value of the scalar function.
-  virtual double actualValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
-
   //! Logarithm of the value of the scalar function.
   /*!
    * The last \c n elements of \c domainVector, where \c n is the number of
@@ -80,8 +76,7 @@ public:
    * evaluation routine, since they are handled by the likelihood evaluation
    * routine.
    */
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
+  virtual double lnValue(const V & domainVector) const;
 
 private:
   const GslBlockMatrix & m_covariance;

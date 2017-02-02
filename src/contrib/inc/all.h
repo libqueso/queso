@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include<queso/GaussianLikelihood.h>
+#include<queso/LikelihoodBase.h>
 #include<queso/WignerJointPdf.h>
 #include<queso/ExponentialScalarCovarianceFunction.h>
 #include<queso/GaussianLikelihoodFullCovariance.h>

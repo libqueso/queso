@@ -35,7 +35,7 @@ template<class V, class M>
 GaussianLikelihoodBlockDiagonalCovariance<V, M>::GaussianLikelihoodBlockDiagonalCovariance(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, const GslBlockMatrix & covariance)
-  : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+  : LikelihoodBase<V, M>(prefix, domainSet, observations),
     m_covarianceCoefficients(covariance.numBlocks(), 1.0),
     m_covariance(covariance)
 {
@@ -73,25 +73,12 @@ GaussianLikelihoodBlockDiagonalCovariance<V, M>::getBlockCoefficient(
 
 template<class V, class M>
 double
-GaussianLikelihoodBlockDiagonalCovariance<V, M>::actualValue(
-    const V & domainVector, const V * domainDirection, V * gradVector,
-    M * hessianMatrix, V * hessianEffect) const
-{
-  return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
-        hessianMatrix, hessianEffect));
-}
-
-template<class V, class M>
-double
-GaussianLikelihoodBlockDiagonalCovariance<V, M>::lnValue(
-    const V & domainVector, const V * domainDirection, V * gradVector,
-    M * hessianMatrix, V * hessianEffect) const
+GaussianLikelihoodBlockDiagonalCovariance<V, M>::lnValue(const V & domainVector) const
 {
   V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
   V weightedMisfit(this->m_observations, 0, 0);  // At least it's not a copy
 
-  this->evaluateModel(domainVector, domainDirection, modelOutput, gradVector,
-      hessianMatrix, hessianEffect);
+  this->evaluateModel(domainVector, modelOutput);
 
   // Compute misfit G(x) - y
   modelOutput -= this->m_observations;

@@ -22,15 +22,17 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <sstream>
+
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSet.h>
-#include <queso/GaussianLikelihood.h>
+#include <queso/LikelihoodBase.h>
 
 namespace QUESO {
 
 template<class V, class M>
-BaseGaussianLikelihood<V, M>::BaseGaussianLikelihood(
+LikelihoodBase<V, M>::LikelihoodBase(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations)
   : BaseScalarFunction<V, M>(prefix, domainSet),
@@ -39,10 +41,24 @@ BaseGaussianLikelihood<V, M>::BaseGaussianLikelihood(
 }
 
 template<class V, class M>
-BaseGaussianLikelihood<V, M>::~BaseGaussianLikelihood()
+LikelihoodBase<V, M>::~LikelihoodBase()
 {
+}
+
+template<class V, class M>
+void LikelihoodBase<V, M>::evaluateModel(const V & domainVector, const V * domainDirection,
+                                         V & modelOutput, V * gradVector, M * hessianMatrix,
+                                         V * hessianEffect) const
+{
+  std::stringstream ss;
+  ss << "ERROR: evaluateModel() not implemented! This interface is deprecated."
+     << std::endl
+     << "Prefer implementing evaluateModel(const V & domainVector, V & modelOutput)"
+     << std::endl;
+
+  queso_error_msg(ss.str());
 }
 
 }  // End namespace QUESO
 
-template class QUESO::BaseGaussianLikelihood<QUESO::GslVector, QUESO::GslMatrix>;
+template class QUESO::LikelihoodBase<QUESO::GslVector, QUESO::GslMatrix>;

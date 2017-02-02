@@ -25,7 +25,7 @@
 #ifndef UQ_GAUSSIAN_LIKELIHOOD_FULL_COV_RAND_COEFF_H
 #define UQ_GAUSSIAN_LIKELIHOOD_FULL_COV_RAND_COEFF_H
 
-#include <queso/GaussianLikelihood.h>
+#include <queso/LikelihoodBase.h>
 
 namespace QUESO {
 
@@ -45,7 +45,7 @@ class GslMatrix;
  */
 
 template <class V = GslVector, class M = GslMatrix>
-class GaussianLikelihoodFullCovarianceRandomCoefficient : public BaseGaussianLikelihood<V, M> {
+class GaussianLikelihoodFullCovarianceRandomCoefficient : public LikelihoodBase<V, M> {
 public:
   //! @name Constructor/Destructor methods.
   //@{
@@ -67,13 +67,8 @@ public:
   virtual ~GaussianLikelihoodFullCovarianceRandomCoefficient();
   //@}
 
-  //! Actual value of the scalar function.
-  virtual double actualValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
-
   //! Logarithm of the value of the scalar function.
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const;
+  virtual double lnValue(const V & domainVector) const;
 
 private:
   const M & m_covariance;

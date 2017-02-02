@@ -34,7 +34,7 @@ template<class V, class M>
 GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::GaussianLikelihoodFullCovarianceRandomCoefficient(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, const M & covariance)
-  : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+  : LikelihoodBase<V, M>(prefix, domainSet, observations),
     m_covariance(covariance)
 {
   if (covariance.numRowsLocal() != observations.sizeLocal()) {
@@ -49,25 +49,12 @@ GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::~GaussianLikelihoodFull
 
 template<class V, class M>
 double
-GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::actualValue(
-    const V & domainVector, const V * domainDirection, V * gradVector,
-    M * hessianMatrix, V * hessianEffect) const
-{
-  return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
-        hessianMatrix, hessianEffect));
-}
-
-template<class V, class M>
-double
-GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::lnValue(
-    const V & domainVector, const V * domainDirection, V * gradVector,
-    M * hessianMatrix, V * hessianEffect) const
+GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::lnValue(const V & domainVector) const
 {
   V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
   V weightedMisfit(this->m_observations, 0, 0);  // At least it's not a copy
 
-  this->evaluateModel(domainVector, domainDirection, modelOutput, gradVector,
-      hessianMatrix, hessianEffect);
+  this->evaluateModel(domainVector, modelOutput);
 
   // Compute misfit G(x) - y
   modelOutput -= this->m_observations;
