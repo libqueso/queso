@@ -3,6 +3,9 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.56.2 (Feb 2, 2017)
+  * Fixed missing factory symbols when linking statically
+
 Version 0.56.1 (Dec 15, 2016)
   * queso.h and config_queso.h had some duplicate #defines.  These have been
     consodlidated and queso.h has been deprecated.

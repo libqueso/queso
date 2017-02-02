@@ -22,32 +22,19 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/TKFactoryLogitRandomWalk.h>
-#include <queso/TransformedScaledCovMatrixTKGroup.h>
+#ifndef QUESO_TK_FACTORY_INITIALIZER_H
+#define QUESO_TK_FACTORY_INITIALIZER_H
 
 namespace QUESO
 {
 
-template <class DerivedTK>
-SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type
-TKFactoryLogitRandomWalk<DerivedTK>::build_tk()
+class TKFactoryInitializer
 {
-  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk;
+public:
+  TKFactoryInitializer();
+  virtual ~TKFactoryInitializer();
+};
 
-  // Cast the domain to a box.  Might this cast fail?
-  const BoxSubset<GslVector, GslMatrix> & boxSubset =
-    dynamic_cast<const BoxSubset<GslVector, GslMatrix> & >(
-        this->m_target_pdf->domainSet());
+} // namespace QUESO
 
-  new_tk.reset(new DerivedTK(this->m_options->m_prefix.c_str(),
-                             boxSubset,
-                             *(this->m_dr_scales),
-                             *(this->m_initial_cov_matrix)));
-
-  return new_tk;
-}
-
-// Instantiate all the transition kernel factories
-TKFactoryLogitRandomWalk<TransformedScaledCovMatrixTKGroup<GslVector, GslMatrix> > tk_factory_logit_random_walk("logit_random_walk");
-
-}  // namespace QUESO
+#endif  // QUESO_TK_FACTORY_INITIALIZER_H

@@ -22,27 +22,23 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/TKFactoryStochasticNewton.h>
-#include <queso/HessianCovMatricesTKGroup.h>
+#include <queso/AlgorithmFactory.h>
+#include <queso/AlgorithmFactoryInitializer.h>
 
 namespace QUESO
 {
 
-template <class DerivedTK>
-SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type
-TKFactoryStochasticNewton<DerivedTK>::build_tk()
+AlgorithmFactoryInitializer::AlgorithmFactoryInitializer()
 {
-  SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk;
+  // Instantiate all the algorithm factories
+  static AlgorithmFactoryImp<Algorithm<GslVector, GslMatrix> > random_walk_alg("random_walk");
+  static AlgorithmFactoryImp<Algorithm<GslVector, GslMatrix> > logit_random_walk_alg("logit_random_walk");
 
-  new_tk.reset(new DerivedTK(this->m_options->m_prefix.c_str(),
-                             *(this->m_vectorSpace),
-                             *(this->m_dr_scales),
-                             *(this->m_pdf_synchronizer)));
-
-  return new_tk;
 }
 
-// Instantiate all the transition kernel factories
-TKFactoryStochasticNewton<HessianCovMatricesTKGroup<GslVector, GslMatrix> > tk_factory_stochastic_newton("stochastic_newton");
+AlgorithmFactoryInitializer::~AlgorithmFactoryInitializer()
+{
+  // Do nothing
+}
 
 } // namespace QUESO

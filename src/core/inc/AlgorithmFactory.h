@@ -108,7 +108,13 @@ public:
   virtual ~AlgorithmFactoryImp() {}
 
 private:
-  virtual SharedPtr<Algorithm<GslVector, GslMatrix> >::Type build_algorithm();
+  virtual SharedPtr<Algorithm<GslVector, GslMatrix> >::Type build_algorithm()
+  {
+    SharedPtr<Algorithm<GslVector, GslMatrix> >::Type new_alg;
+    new_alg.reset(new DerivedAlgorithm(*(this->m_env), *(this->m_tk)));
+    return new_alg;
+  }
+
 };
 
 } // namespace QUESO

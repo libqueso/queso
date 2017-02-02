@@ -79,11 +79,9 @@ libqueso_la_SOURCES += core/src/OptimizerOptions.C
 libqueso_la_SOURCES += core/src/BaseInputOptionsParser.C
 libqueso_la_SOURCES += core/src/BoostInputOptionsParser.C
 libqueso_la_SOURCES += core/src/TransitionKernelFactory.C
-libqueso_la_SOURCES += core/src/TKFactoryStochasticNewton.C
-libqueso_la_SOURCES += core/src/TKFactoryRandomWalk.C
-libqueso_la_SOURCES += core/src/TKFactoryLogitRandomWalk.C
 libqueso_la_SOURCES += core/src/AlgorithmFactory.C
-libqueso_la_SOURCES += core/src/TKFactoryMALA.C
+libqueso_la_SOURCES += core/src/TKFactoryInitializer.C
+libqueso_la_SOURCES += core/src/AlgorithmFactoryInitializer.C
 
 
 # Sources that need libmesh
@@ -322,6 +320,8 @@ libqueso_include_HEADERS += core/inc/TKFactoryRandomWalk.h
 libqueso_include_HEADERS += core/inc/TKFactoryLogitRandomWalk.h
 libqueso_include_HEADERS += core/inc/AlgorithmFactory.h
 libqueso_include_HEADERS += core/inc/TKFactoryMALA.h
+libqueso_include_HEADERS += core/inc/TKFactoryInitializer.h
+libqueso_include_HEADERS += core/inc/AlgorithmFactoryInitializer.h
 
 # Headers that need libmesh
 libqueso_include_HEADERS += core/inc/FunctionBase.h
