@@ -45,6 +45,7 @@ namespace QUESOTesting
     CPPUNIT_TEST( test_power_method );
     CPPUNIT_TEST( test_multiple_rhs_matrix_solve );
     CPPUNIT_TEST( test_cw_extract );
+    CPPUNIT_TEST( test_svd );
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -231,6 +232,67 @@ namespace QUESOTesting
       CPPUNIT_ASSERT_DOUBLES_EQUAL(6.0, mat2(0,1), 1.0e-14);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(9.0, mat2(1,0), 1.0e-14);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(10.0, mat2(1,1), 1.0e-14);
+    }
+
+    void test_svd()
+    {
+      QUESO::VectorSpace<> space(*_env, "", 2, NULL);
+      QUESO::GslMatrix M(space.zeroVector());
+      QUESO::GslMatrix U(space.zeroVector());
+      QUESO::GslMatrix Vs(space.zeroVector());
+      QUESO::GslVector S(space.zeroVector());
+
+      M(0,0) = 1.0;
+      M(0,1) = 2.0;
+      M(1,0) = -2.0;
+      M(1,1) = 1.0;
+
+      M.svd(U, S, Vs);
+
+      // Sanity check the decomposition
+      QUESO::GslMatrix M_computed(space.zeroVector());
+      QUESO::GslMatrix temp(space.zeroVector());
+      QUESO::GslMatrix S_matrix(S);
+
+      U.multiply(S_matrix, temp);
+      temp.multiply(Vs, M_computed);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(M(0,0), M_computed(0,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(M(0,1), M_computed(0,1), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(M(1,0), M_computed(1,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(M(1,1), M_computed(1,1), 1.0e-14);
+
+      // Check solves
+      QUESO::GslMatrix X(space.zeroVector());
+      QUESO::GslMatrix X_computed(space.zeroVector());
+      QUESO::GslMatrix B(space.zeroVector());
+
+      B(0,0) = 11.0;
+      B(0,1) = 17.0;
+      B(1,0) = -2.0;
+      B(1,1) = -4.0;
+
+      X(0,0) = 3.0;
+      X(0,1) = 5.0;
+      X(1,0) = 4.0;
+      X(1,1) = 6.0;
+
+      M.svdSolve(B, X_computed);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(X(0,0), X_computed(0,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(X(0,1), X_computed(0,1), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(X(1,0), X_computed(1,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(X(1,1), X_computed(1,1), 1.0e-14);
+
+      // Test getters
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(U(0,0), M.svdMatU()(0,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(U(0,1), M.svdMatU()(0,1), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(U(1,0), M.svdMatU()(1,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(U(1,1), M.svdMatU()(1,1), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(Vs(0,0), M.svdMatV()(0,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(Vs(0,1), M.svdMatV()(0,1), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(Vs(1,0), M.svdMatV()(1,0), 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(Vs(1,1), M.svdMatV()(1,1), 1.0e-14);
     }
 
   private:
