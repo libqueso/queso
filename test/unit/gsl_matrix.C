@@ -51,6 +51,7 @@ namespace QUESOTesting
     CPPUNIT_TEST( test_fill_vert );
     CPPUNIT_TEST( test_fill_tensor_product );
     CPPUNIT_TEST( test_fill_transpose );
+    CPPUNIT_TEST( test_write_read );
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -540,6 +541,42 @@ namespace QUESOTesting
       CPPUNIT_ASSERT_DOUBLES_EQUAL(m1.transpose()(0,1), m2(0,1), 1e-14);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(m1.transpose()(1,0), m2(1,0), 1e-14);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(m1.transpose()(1,1), m2(1,1), 1e-14);
+    }
+
+    void test_write_read()
+    {
+      QUESO::VectorSpace<> space(*_env, "", 2, NULL);
+      QUESO::GslMatrix m(space.zeroVector());
+
+      m(0,0) = 1.0;
+      m(0,1) = 2.0;
+      m(1,0) = 3.0;
+      m(1,1) = 4.0;
+
+      std::set<unsigned int> allowedSubEnvIds;
+      allowedSubEnvIds.insert(0);
+
+      // Write to file
+      m.subWriteContents("my_prefix",
+                         "gsl_matrix_test_write_read",
+                         "m",
+                         allowedSubEnvIds);
+
+      // Now read and make sure we get the same thing
+      QUESO::GslMatrix m2(space.zeroVector());
+      m2.subReadContents("gsl_matrix_test_write_read_sub0", // Need "_sub0"
+                         "m",
+                         allowedSubEnvIds);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,0), m(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,1), m(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,0), m(1,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,1), m(1,1), 1e-14);
+
+      // Clean up the file we created
+      int result = std::remove("gsl_matrix_test_write_read_sub0.m");
+
+      CPPUNIT_ASSERT_EQUAL(0, result);  // Make sure nothing went wrong
     }
 
   private:
