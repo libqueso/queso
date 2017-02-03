@@ -46,6 +46,11 @@ namespace QUESOTesting
     CPPUNIT_TEST( test_multiple_rhs_matrix_solve );
     CPPUNIT_TEST( test_cw_extract );
     CPPUNIT_TEST( test_svd );
+    CPPUNIT_TEST( test_fill_diag );
+    CPPUNIT_TEST( test_fill_horiz );
+    CPPUNIT_TEST( test_fill_vert );
+    CPPUNIT_TEST( test_fill_tensor_product );
+    CPPUNIT_TEST( test_fill_transpose );
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -293,6 +298,248 @@ namespace QUESOTesting
       CPPUNIT_ASSERT_DOUBLES_EQUAL(Vs(0,1), M.svdMatV()(0,1), 1.0e-14);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(Vs(1,0), M.svdMatV()(1,0), 1.0e-14);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(Vs(1,1), M.svdMatV()(1,1), 1.0e-14);
+    }
+
+    void test_fill_diag()
+    {
+      QUESO::VectorSpace<> space2(*_env, "", 2, NULL);
+      QUESO::GslMatrix m1(space2.zeroVector());
+      QUESO::GslMatrix m2(space2.zeroVector());
+
+      m1(0,0) = 1.0;
+      m1(0,1) = 2.0;
+      m1(1,0) = 3.0;
+      m1(1,1) = 4.0;
+      m2(0,0) = 5.0;
+      m2(0,1) = 6.0;
+      m2(1,0) = 7.0;
+      m2(1,1) = 8.0;
+
+      QUESO::VectorSpace<> space4(*_env, "", 4, NULL);
+      QUESO::GslMatrix m(space4.zeroVector());
+
+      std::vector<const QUESO::GslMatrix *> ms;
+      ms.push_back(&m1);
+      ms.push_back(&m2);
+
+      m.fillWithBlocksDiagonally(0, 0, ms, true, true);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0), m(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1), m(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0), m(1,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1), m(1,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,0), m(2,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,1), m(2,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,0), m(3,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,1), m(3,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(0,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(0,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(1,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(1,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(2,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(2,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(3,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(3,1), 1e-14);
+
+      m.cwSet(0.0);
+      std::vector<QUESO::GslMatrix *> ms2;
+      ms2.push_back(&m1);
+      ms2.push_back(&m2);
+
+      m.fillWithBlocksDiagonally(0, 0, ms2, true, true);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0), m(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1), m(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0), m(1,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1), m(1,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,0), m(2,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,1), m(2,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,0), m(3,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,1), m(3,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(0,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(0,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(1,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(1,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(2,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(2,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(3,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, m(3,1), 1e-14);
+    }
+
+    void test_fill_horiz()
+    {
+      QUESO::Map map(2, 0, _env->fullComm());
+      QUESO::GslMatrix m1(*_env, map, (unsigned int)2);  // 2 x 2 matrix
+      QUESO::GslMatrix m2(*_env, map, (unsigned int)2);  // 2 x 2 matrix
+      QUESO::GslMatrix m(*_env, map, (unsigned int)4);  // 2 x 4 matrix
+
+      m1(0,0) = 1.0;
+      m1(0,1) = 2.0;
+      m1(1,0) = 3.0;
+      m1(1,1) = 4.0;
+      m2(0,0) = 5.0;
+      m2(0,1) = 6.0;
+      m2(1,0) = 7.0;
+      m2(1,1) = 8.0;
+
+      std::vector<const QUESO::GslMatrix *> ms;
+      ms.push_back(&m1);
+      ms.push_back(&m2);
+
+      m.fillWithBlocksHorizontally(0, 0, ms, true, true);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0), m(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1), m(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0), m(1,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1), m(1,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,0), m(0,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,1), m(0,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,0), m(1,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,1), m(1,3), 1e-14);
+
+      m.cwSet(0.0);
+      std::vector<QUESO::GslMatrix *> ms2;
+      ms2.push_back(&m1);
+      ms2.push_back(&m2);
+
+      m.fillWithBlocksHorizontally(0, 0, ms2, true, true);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0), m(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1), m(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0), m(1,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1), m(1,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,0), m(0,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,1), m(0,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,0), m(1,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,1), m(1,3), 1e-14);
+    }
+
+    void test_fill_vert()
+    {
+      QUESO::Map map(4, 0, _env->fullComm());
+      QUESO::GslMatrix m(*_env, map, (unsigned int)2);  // 4 x 2 matrix
+
+      QUESO::VectorSpace<> space(*_env, "", 2, NULL);
+      QUESO::GslMatrix m1(space.zeroVector());  // 2 x 2 matrix
+      QUESO::GslMatrix m2(space.zeroVector());  // 2 x 2 matrix
+
+      m1(0,0) = 1.0;
+      m1(0,1) = 2.0;
+      m1(1,0) = 3.0;
+      m1(1,1) = 4.0;
+      m2(0,0) = 5.0;
+      m2(0,1) = 6.0;
+      m2(1,0) = 7.0;
+      m2(1,1) = 8.0;
+
+      std::vector<const QUESO::GslMatrix *> ms;
+      ms.push_back(&m1);
+      ms.push_back(&m2);
+
+      m.fillWithBlocksVertically(0, 0, ms, true, true);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0), m(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1), m(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0), m(1,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1), m(1,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,0), m(2,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,1), m(2,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,0), m(3,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,1), m(3,1), 1e-14);
+
+      m.cwSet(0.0);
+      std::vector<QUESO::GslMatrix *> ms2;
+      ms2.push_back(&m1);
+      ms2.push_back(&m2);
+
+      m.fillWithBlocksVertically(0, 0, ms2, true, true);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0), m(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1), m(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0), m(1,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1), m(1,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,0), m(2,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(0,1), m(2,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,0), m(3,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m2(1,1), m(3,1), 1e-14);
+    }
+
+    void test_fill_tensor_product()
+    {
+      QUESO::VectorSpace<> space4(*_env, "", 4, NULL);
+      QUESO::GslMatrix m(space4.zeroVector());
+
+      QUESO::VectorSpace<> space2(*_env, "", 2, NULL);
+      QUESO::GslMatrix m1(space2.zeroVector());
+      QUESO::GslMatrix m2(space2.zeroVector());
+
+      m1(0,0) = 1.0;
+      m1(0,1) = 2.0;
+      m1(1,0) = 3.0;
+      m1(1,1) = 4.0;
+      m2(0,0) = 1.0;
+      m2(0,1) = 1.0;
+      m2(1,0) = 1.0;
+      m2(1,1) = 1.0;
+
+      m.fillWithTensorProduct(0, 0, m1, m2, true, true);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0) * m2(0,0), m(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0) * m2(0,1), m(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0) * m2(1,0), m(1,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0) * m2(1,1), m(1,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1) * m2(0,0), m(0,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1) * m2(0,1), m(0,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1) * m2(1,0), m(1,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1) * m2(1,1), m(1,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0) * m2(0,0), m(2,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0) * m2(0,1), m(2,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0) * m2(1,0), m(3,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0) * m2(1,1), m(3,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1) * m2(0,0), m(2,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1) * m2(0,1), m(2,3), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1) * m2(1,0), m(3,2), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1) * m2(1,1), m(3,3), 1e-14);
+
+      QUESO::Map map(4, 0, _env->fullComm());
+      QUESO::GslMatrix mv(*_env, map, (unsigned int)2);  // 4 x 2 matrix
+
+      QUESO::GslVector v(space2.zeroVector());
+      v[0] = 1.0;
+      v[1] = 1.0;
+
+      mv.fillWithTensorProduct(0, 0, m1, v, true, true);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0) * v[0], mv(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,0) * v[1], mv(1,0), 1e-14);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1) * v[0], mv(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(0,1) * v[1], mv(1,1), 1e-14);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0) * v[0], mv(2,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,0) * v[1], mv(3,0), 1e-14);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1) * v[0], mv(2,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1(1,1) * v[1], mv(3,1), 1e-14);
+    }
+
+    void test_fill_transpose()
+    {
+      QUESO::VectorSpace<> space2(*_env, "", 2, NULL);
+      QUESO::GslMatrix m1(space2.zeroVector());
+      QUESO::GslMatrix m2(space2.zeroVector());
+
+      m1(0,0) = 1.0;
+      m1(0,1) = 2.0;
+      m1(1,0) = 3.0;
+      m1(1,1) = 4.0;
+
+      m2.fillWithTranspose(0, 0, m1, true, true);
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1.transpose()(0,0), m2(0,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1.transpose()(0,1), m2(0,1), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1.transpose()(1,0), m2(1,0), 1e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(m1.transpose()(1,1), m2(1,1), 1e-14);
     }
 
   private:
