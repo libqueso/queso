@@ -39,9 +39,10 @@ namespace QUESOTesting
   {
   public:
     CPPUNIT_TEST_SUITE( GslVectorTest );
-
     CPPUNIT_TEST( test_min_max );
-
+    CPPUNIT_TEST( test_beta );
+    CPPUNIT_TEST( test_gamma );
+    CPPUNIT_TEST( test_inverse_gamma );
     CPPUNIT_TEST_SUITE_END();
 
     // yes, this is necessary
@@ -75,6 +76,66 @@ namespace QUESOTesting
 
       CPPUNIT_ASSERT_EQUAL(1,index);
       CPPUNIT_ASSERT_EQUAL(vec[1],value);
+    }
+
+    void test_beta()
+    {
+      unsigned int num_samples = 1000000;
+
+      // Instantiate the parameter space
+      QUESO::VectorSpace<> paramSpace(*_env, "", num_samples, NULL);
+
+      // Instantiate the parameter domain
+      QUESO::GslVector vec(paramSpace.zeroVector());
+      QUESO::GslVector a(paramSpace.zeroVector());
+      QUESO::GslVector b(paramSpace.zeroVector());
+      a.cwSet(2.0);
+      b.cwSet(2.0);
+      vec.cwSetBeta(a, b);
+
+      double mean = vec.sumOfComponents() / num_samples;
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.5, mean, 1e-2);
+    }
+
+    void test_gamma()
+    {
+      unsigned int num_samples = 1000000;
+
+      // Instantiate the parameter space
+      QUESO::VectorSpace<> paramSpace(*_env, "", num_samples, NULL);
+
+      // Instantiate the parameter domain
+      QUESO::GslVector vec(paramSpace.zeroVector());
+      QUESO::GslVector a(paramSpace.zeroVector());
+      QUESO::GslVector b(paramSpace.zeroVector());
+      a.cwSet(10.0);
+      b.cwSet(0.5);
+      vec.cwSetGamma(a, b);
+
+      double mean = vec.sumOfComponents() / num_samples;
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(5.0, mean, 1e-2);
+    }
+
+    void test_inverse_gamma()
+    {
+      unsigned int num_samples = 1000000;
+
+      // Instantiate the parameter space
+      QUESO::VectorSpace<> paramSpace(*_env, "", num_samples, NULL);
+
+      // Instantiate the parameter domain
+      QUESO::GslVector vec(paramSpace.zeroVector());
+      QUESO::GslVector a(paramSpace.zeroVector());
+      QUESO::GslVector b(paramSpace.zeroVector());
+      a.cwSet(11.0);
+      b.cwSet(1.0);
+      vec.cwSetInverseGamma(a, b);
+
+      double mean = vec.sumOfComponents() / num_samples;
+
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.1, mean, 1e-3);
     }
 
   private:
