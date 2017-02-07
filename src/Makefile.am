@@ -273,23 +273,6 @@ libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOBase.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOASCII.C
 
 # Sources from gp/src
-
-libqueso_la_SOURCES += gp/src/ExperimentModel.C
-libqueso_la_SOURCES += gp/src/ExperimentModelOptions.C
-libqueso_la_SOURCES += gp/src/ExperimentStorage.C
-libqueso_la_SOURCES += gp/src/GpmsaComputerModel.C
-libqueso_la_SOURCES += gp/src/GpmsaComputerModelOptions.C
-libqueso_la_SOURCES += gp/src/SimulationModelOptions.C
-libqueso_la_SOURCES += gp/src/GcmExperimentInfo.C
-libqueso_la_SOURCES += gp/src/GcmJointInfo.C
-libqueso_la_SOURCES += gp/src/GcmJointTildeInfo.C
-libqueso_la_SOURCES += gp/src/GcmSimulationInfo.C
-libqueso_la_SOURCES += gp/src/GcmSimulationTildeInfo.C
-libqueso_la_SOURCES += gp/src/GcmTotalInfo.C
-libqueso_la_SOURCES += gp/src/GcmZInfo.C
-libqueso_la_SOURCES += gp/src/GcmZTildeInfo.C
-libqueso_la_SOURCES += gp/src/SimulationModel.C
-libqueso_la_SOURCES += gp/src/SimulationStorage.C
 libqueso_la_SOURCES += gp/src/GPMSA.C
 libqueso_la_SOURCES += gp/src/GPMSAOptions.C
 
@@ -500,23 +483,6 @@ libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOASCII.h
 
 # Headers to install from gp/inc
-
-libqueso_include_HEADERS += gp/inc/ExperimentModel.h
-libqueso_include_HEADERS += gp/inc/ExperimentModelOptions.h
-libqueso_include_HEADERS += gp/inc/ExperimentStorage.h
-libqueso_include_HEADERS += gp/inc/GcmExperimentInfo.h
-libqueso_include_HEADERS += gp/inc/GcmJointInfo.h
-libqueso_include_HEADERS += gp/inc/GcmJointTildeInfo.h
-libqueso_include_HEADERS += gp/inc/GcmSimulationInfo.h
-libqueso_include_HEADERS += gp/inc/GcmSimulationTildeInfo.h
-libqueso_include_HEADERS += gp/inc/GcmTotalInfo.h
-libqueso_include_HEADERS += gp/inc/GcmZInfo.h
-libqueso_include_HEADERS += gp/inc/GcmZTildeInfo.h
-libqueso_include_HEADERS += gp/inc/GpmsaComputerModel.h
-libqueso_include_HEADERS += gp/inc/GpmsaComputerModelOptions.h
-libqueso_include_HEADERS += gp/inc/SimulationModel.h
-libqueso_include_HEADERS += gp/inc/SimulationModelOptions.h
-libqueso_include_HEADERS += gp/inc/SimulationStorage.h
 libqueso_include_HEADERS += gp/inc/GPMSA.h
 libqueso_include_HEADERS += gp/inc/GPMSAOptions.h
 
