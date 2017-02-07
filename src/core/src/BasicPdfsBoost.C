@@ -23,6 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/BasicPdfsBoost.h>
+#include <boost/math/distributions/gamma.hpp>
+#include <boost/math/distributions/beta.hpp>
 
 namespace QUESO {
 
@@ -43,14 +45,16 @@ BasicPdfsBoost::~BasicPdfsBoost()
 double
 BasicPdfsBoost::betaPdfActualValue(double x, double alpha, double beta) const
 {
-  queso_not_implemented();
+  boost::math::beta_distribution<> beta_dist(alpha, beta);
+  return boost::math::pdf(beta_dist, x);
 }
 
 // --------------------------------------------------
 double
 BasicPdfsBoost::gammaPdfActualValue(double x, double a, double b) const
 {
-  queso_not_implemented();
+  boost::math::gamma_distribution<> gamma_dist(a, b);
+  return boost::math::pdf(gamma_dist, x);
 }
 
 }  // End namespace QUESO
