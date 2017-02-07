@@ -38,10 +38,10 @@
 namespace QUESOTesting
 {
 
-class BasicPdfsCXX11 : public CppUnit::TestCase
+class BasicPdfsCXX11Test : public CppUnit::TestCase
 {
 public:
-  CPPUNIT_TEST_SUITE(BasicPdfsCXX11);
+  CPPUNIT_TEST_SUITE(BasicPdfsCXX11Test);
   CPPUNIT_TEST(test_beta);
   CPPUNIT_TEST(test_gamma);
   CPPUNIT_TEST_SUITE_END();
@@ -59,6 +59,15 @@ public:
 
     double value = pdf_cxx11.betaPdfActualValue(0.5, 2.0, 2.0);
     CPPUNIT_ASSERT_DOUBLES_EQUAL(1.5, value, 1e-14);
+
+    value = pdf_cxx11.betaPdfActualValue(-1.0, 2.0, 2.0);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, value, 1e-14);
+
+    value = pdf_cxx11.betaPdfActualValue(0.0, 2.0, 2.0);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, value, 1e-14);
+
+    value = pdf_cxx11.betaPdfActualValue(0.0, 0.5, 0.5);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(INFINITY, (float)value, 1e-14);
   }
 
   void test_gamma()
@@ -66,16 +75,26 @@ public:
     QUESO::BasicPdfsCXX11 pdf_cxx11(0);
 
     double value = pdf_cxx11.gammaPdfActualValue(1.5, 4.0, 0.5);
-
     double actualValue = 1.5 * 1.5 * 1.5 * std::exp(-3.0) / (3.0 * 0.5 * 0.5 * 0.5);
     CPPUNIT_ASSERT_DOUBLES_EQUAL(actualValue, value, 1e-14);
+
+    value = pdf_cxx11.gammaPdfActualValue(-1.0, 4.0, 0.5);
+    actualValue = 0.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualValue, value, 1e-14);
+
+    value = pdf_cxx11.gammaPdfActualValue(0.0, 4.0, 0.5);
+    actualValue = 0.0;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(actualValue, value, 1e-14);
+
+    value = pdf_cxx11.gammaPdfActualValue(0.0, 0.5, 0.5);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(INFINITY, (float)value, 1e-14);
   }
 
 private:
   typename QUESO::ScopedPtr<QUESO::BaseEnvironment>::Type _env;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(BasicPdfsCXX11);
+CPPUNIT_TEST_SUITE_REGISTRATION(BasicPdfsCXX11Test);
 
 } // end namespace QUESOTesting
 
