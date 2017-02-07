@@ -130,6 +130,7 @@ unit_driver_SOURCES += unit/monte_carlo_quadrature.C
 unit_driver_SOURCES += unit/rng_gsl.C
 unit_driver_SOURCES += unit/rng_cxx11.C
 unit_driver_SOURCES += unit/rng_boost.C
+unit_driver_SOURCES += unit/basic_pdfs_cxx11.C
 
 test_boxsubset_centroid_SOURCES = test_centroids/test_boxsubset_centroid.C
 test_concatenation_centroid_SOURCES = test_centroids/test_concatenation_centroid.C
