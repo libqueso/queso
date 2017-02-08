@@ -72,7 +72,7 @@ BasicPdfsCXX11::betaPdfActualValue(double x, double alpha, double beta) const
       ln_gamma_b = std::lgamma(beta);
 
       return std::exp(ln_gamma_apb - ln_gamma_a - ln_gamma_b +
-          (alpha - 1) + std::log(x) + (beta - 1) * std::log1p(-x));
+          (alpha - 1) * std::log(x) + (beta - 1) * std::log1p(-x));
     }
   }
 }
