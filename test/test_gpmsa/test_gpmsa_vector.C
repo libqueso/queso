@@ -297,24 +297,21 @@ int main(int argc, char ** argv) {
   // Start with the mean of the prior
   gpmsaFactory.prior().pdf().distributionMean(paramInitials);
 
-  // But override whatever we want.
-  paramInitials[5]  = 0;   // Emulator mean, unused but don't leave it NaN!
-
-  // The rest of these we'll override, not because we have to, but
-  // because the regression gold standard predates distributionMean()
-  paramInitials[6]  = 0.4; // emulator precision
-  paramInitials[7]  = 0.4; // weights0 precision
-  paramInitials[8]  = 0.4; // weights1 precision
+  // These we'll override, not because we have to, but because the
+  // regression gold standard predates distributionMean()
+  paramInitials[5]  = 0.4; // emulator precision
+  paramInitials[6]  = 0.4; // weights0 precision
+  paramInitials[7]  = 0.4; // weights1 precision
+  paramInitials[8]  = 0.97; // emulator corr str
   paramInitials[9]  = 0.97; // emulator corr str
   paramInitials[10] = 0.97; // emulator corr str
   paramInitials[11] = 0.97; // emulator corr str
-  paramInitials[12]  = 0.97; // emulator corr str
-  paramInitials[13]  = 0.20; // emulator corr str
-  paramInitials[14]  = 0.80; // emulator corr str
-  paramInitials[15]  = 10.0; // discrepancy precision
-  paramInitials[16]  = 0.97; // discrepancy corr str
-  paramInitials[17]  = 8000.0; // emulator data precision
-  // paramInitials[18]  = 1.0;  // observation error precision
+  paramInitials[12] = 0.20; // emulator corr str
+  paramInitials[13] = 0.80; // emulator corr str
+  paramInitials[14] = 10.0; // discrepancy precision
+  paramInitials[15] = 0.97; // discrepancy corr str
+  paramInitials[16] = 8000.0; // emulator data precision
+  // paramInitials[17]  = 1.0;  // observation error precision
 
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
@@ -334,23 +331,22 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(2, 2)   = 3.1508 / 10.0;  // param 3
   proposalCovMatrix(3, 3)   = 0.3757 / 10.0;  // param 4
   proposalCovMatrix(4, 4)   = 0.6719 / 10.0;  // param 5
-  proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used.  emulator mean
-  proposalCovMatrix(6, 6)   = 0.4953 / scale;  // emulator precision
-  proposalCovMatrix(7, 7)   = 0.4953 / scale;  // weights0 precision
-  proposalCovMatrix(8, 8)   = 0.4953 / scale;  // weights1 precision
-  proposalCovMatrix(9, 9)   = 0.6058 / scale;  // emulator corr str
-  proposalCovMatrix(10, 10) = 7.6032e-04 / scale;  // emulator corr str
-  proposalCovMatrix(11, 11) = 8.3815e-04 / scale;  // emulator corr str
-  proposalCovMatrix(12, 12) = 7.5412e-04 / scale;  // emulator corr str
-  proposalCovMatrix(13, 13) = 0.2682 / scale;  // emulator corr str
-  proposalCovMatrix(14, 14) = 0.0572 / scale;  // emulator corr str
-  proposalCovMatrix(15, 15) = 1.3417 / scale;  // discrepancy precision
-  proposalCovMatrix(16, 16) = 0.3461 / scale;  // discrepancy corr str
-  proposalCovMatrix(17, 17) = 495.3 / scale;  // emulator data precision
-  proposalCovMatrix(18, 18) = 0.4953 / scale;  // observation error precision
+  proposalCovMatrix(5, 5)   = 0.4953 / scale;  // emulator precision
+  proposalCovMatrix(6, 6)   = 0.4953 / scale;  // weights0 precision
+  proposalCovMatrix(7, 7)   = 0.4953 / scale;  // weights1 precision
+  proposalCovMatrix(8, 8)   = 0.6058 / scale;  // emulator corr str
+  proposalCovMatrix(9, 9)   = 7.6032e-04 / scale;  // emulator corr str
+  proposalCovMatrix(10, 10) = 8.3815e-04 / scale;  // emulator corr str
+  proposalCovMatrix(11, 11) = 7.5412e-04 / scale;  // emulator corr str
+  proposalCovMatrix(12, 12) = 0.2682 / scale;  // emulator corr str
+  proposalCovMatrix(13, 13) = 0.0572 / scale;  // emulator corr str
+  proposalCovMatrix(14, 14) = 1.3417 / scale;  // discrepancy precision
+  proposalCovMatrix(15, 15) = 0.3461 / scale;  // discrepancy corr str
+  proposalCovMatrix(16, 16) = 495.3 / scale;  // emulator data precision
+  proposalCovMatrix(17, 17) = 0.4953 / scale;  // observation error precision
 
   // Square to get variances
-  for (unsigned int i = 0; i < 16; i++) {
+  for (unsigned int i = 0; i < 15; i++) {
     proposalCovMatrix(i, i) = proposalCovMatrix(i, i) * proposalCovMatrix(i, i);
   }
 
