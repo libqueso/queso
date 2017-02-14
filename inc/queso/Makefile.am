@@ -80,24 +80,8 @@ BUILT_SOURCES += Vector.h
 BUILT_SOURCES += asserts.h
 BUILT_SOURCES += exceptions.h
 BUILT_SOURCES += queso.h
-BUILT_SOURCES += ExperimentModel.h
-BUILT_SOURCES += ExperimentModelOptions.h
-BUILT_SOURCES += ExperimentStorage.h
 BUILT_SOURCES += GPMSA.h
 BUILT_SOURCES += GPMSAOptions.h
-BUILT_SOURCES += GcmExperimentInfo.h
-BUILT_SOURCES += GcmJointInfo.h
-BUILT_SOURCES += GcmJointTildeInfo.h
-BUILT_SOURCES += GcmSimulationInfo.h
-BUILT_SOURCES += GcmSimulationTildeInfo.h
-BUILT_SOURCES += GcmTotalInfo.h
-BUILT_SOURCES += GcmZInfo.h
-BUILT_SOURCES += GcmZTildeInfo.h
-BUILT_SOURCES += GpmsaComputerModel.h
-BUILT_SOURCES += GpmsaComputerModelOptions.h
-BUILT_SOURCES += SimulationModel.h
-BUILT_SOURCES += SimulationModelOptions.h
-BUILT_SOURCES += SimulationStorage.h
 BUILT_SOURCES += 1D1DFunction.h
 BUILT_SOURCES += 1DQuadrature.h
 BUILT_SOURCES += 2dArrayOfStuff.h
@@ -368,41 +352,9 @@ exceptions.h: $(top_srcdir)/src/core/inc/exceptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 queso.h: $(top_srcdir)/src/core/inc/queso.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-ExperimentModel.h: $(top_srcdir)/src/gp/inc/ExperimentModel.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-ExperimentModelOptions.h: $(top_srcdir)/src/gp/inc/ExperimentModelOptions.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-ExperimentStorage.h: $(top_srcdir)/src/gp/inc/ExperimentStorage.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GPMSA.h: $(top_srcdir)/src/gp/inc/GPMSA.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GPMSAOptions.h: $(top_srcdir)/src/gp/inc/GPMSAOptions.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmExperimentInfo.h: $(top_srcdir)/src/gp/inc/GcmExperimentInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmJointInfo.h: $(top_srcdir)/src/gp/inc/GcmJointInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmJointTildeInfo.h: $(top_srcdir)/src/gp/inc/GcmJointTildeInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmSimulationInfo.h: $(top_srcdir)/src/gp/inc/GcmSimulationInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmSimulationTildeInfo.h: $(top_srcdir)/src/gp/inc/GcmSimulationTildeInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmTotalInfo.h: $(top_srcdir)/src/gp/inc/GcmTotalInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmZInfo.h: $(top_srcdir)/src/gp/inc/GcmZInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmZTildeInfo.h: $(top_srcdir)/src/gp/inc/GcmZTildeInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GpmsaComputerModel.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModel.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GpmsaComputerModelOptions.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModelOptions.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-SimulationModel.h: $(top_srcdir)/src/gp/inc/SimulationModel.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-SimulationModelOptions.h: $(top_srcdir)/src/gp/inc/SimulationModelOptions.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-SimulationStorage.h: $(top_srcdir)/src/gp/inc/SimulationStorage.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 1D1DFunction.h: $(top_srcdir)/src/misc/inc/1D1DFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
