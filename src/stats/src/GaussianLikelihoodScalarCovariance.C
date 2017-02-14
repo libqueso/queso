@@ -41,18 +41,26 @@ GaussianLikelihoodScalarCovariance<V, M>::GaussianLikelihoodScalarCovariance(
 }
 
 template<class V, class M>
+GaussianLikelihoodScalarCovariance<V, M>::GaussianLikelihoodScalarCovariance(
+    const char * prefix, const VectorSet<V, M> & domainSet,
+    const V & observations, double covariance,
+    typename SharedPtr<BaseVectorRV<V,M> >::Type & marg_param_pdf,
+    typename SharedPtr<MultiDQuadratureBase<V,M> >::Type & marg_integration,
+    bool marg_pdf_is_weight_func)
+  : LikelihoodBase<V,M>(prefix,domainSet,observations,marg_param_pdf,marg_integration,marg_pdf_is_weight_func),
+    m_covariance(covariance)
+{
+}
+
+template<class V, class M>
 GaussianLikelihoodScalarCovariance<V, M>::~GaussianLikelihoodScalarCovariance()
 {
 }
 
 template<class V, class M>
 double
-GaussianLikelihoodScalarCovariance<V, M>::lnValue(const V & domainVector) const
+GaussianLikelihoodScalarCovariance<V, M>::lnLikelihood(const V & domainVector, V & modelOutput) const
 {
-  V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
-
-  this->evaluateModel(domainVector, modelOutput);
-
   modelOutput -= this->m_observations;  // Compute misfit
   double norm2_squared = modelOutput.norm2Sq();  // Compute square of 2-norm
 

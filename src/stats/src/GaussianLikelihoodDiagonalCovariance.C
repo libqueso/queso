@@ -44,18 +44,29 @@ GaussianLikelihoodDiagonalCovariance<V, M>::GaussianLikelihoodDiagonalCovariance
 }
 
 template<class V, class M>
+GaussianLikelihoodDiagonalCovariance<V, M>::GaussianLikelihoodDiagonalCovariance(
+    const char * prefix, const VectorSet<V, M> & domainSet,
+    const V & observations, const V & covariance,
+    typename SharedPtr<BaseVectorRV<V,M> >::Type & marg_param_pdf,
+    typename SharedPtr<MultiDQuadratureBase<V,M> >::Type & marg_integration,
+    bool marg_pdf_is_weight_func)
+  : LikelihoodBase<V,M>(prefix,domainSet,observations,marg_param_pdf,marg_integration,marg_pdf_is_weight_func),
+    m_covariance(covariance)
+{
+  if (covariance.sizeLocal() != observations.sizeLocal()) {
+    queso_error_msg("Covariance matrix not same size as observation vector");
+  }
+}
+
+template<class V, class M>
 GaussianLikelihoodDiagonalCovariance<V, M>::~GaussianLikelihoodDiagonalCovariance()
 {
 }
 
 template<class V, class M>
 double
-GaussianLikelihoodDiagonalCovariance<V, M>::lnValue(const V & domainVector) const
+GaussianLikelihoodDiagonalCovariance<V, M>::lnLikelihood(const V & domainVector, V & modelOutput) const
 {
-  V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
-
-  this->evaluateModel(domainVector, modelOutput);
-
   modelOutput -= this->m_observations;  // Compute misfit
   modelOutput *= modelOutput;
   modelOutput /= this->m_covariance;  // Multiply by inverse covriance matrix

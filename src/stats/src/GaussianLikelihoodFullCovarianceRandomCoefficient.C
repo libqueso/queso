@@ -43,18 +43,30 @@ GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::GaussianLikelihoodFullC
 }
 
 template<class V, class M>
+GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::GaussianLikelihoodFullCovarianceRandomCoefficient(
+    const char * prefix, const VectorSet<V, M> & domainSet,
+    const V & observations, const M & covariance,
+    typename SharedPtr<BaseVectorRV<V,M> >::Type & marg_param_pdf,
+    typename SharedPtr<MultiDQuadratureBase<V,M> >::Type & marg_integration,
+    bool marg_pdf_is_weight_func)
+  : LikelihoodBase<V,M>(prefix,domainSet,observations,marg_param_pdf,marg_integration,marg_pdf_is_weight_func),
+    m_covariance(covariance)
+{
+  if (covariance.numRowsLocal() != observations.sizeLocal()) {
+    queso_error_msg("Covariance matrix not same size as observation vector");
+  }
+}
+
+template<class V, class M>
 GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::~GaussianLikelihoodFullCovarianceRandomCoefficient()
 {
 }
 
 template<class V, class M>
 double
-GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::lnValue(const V & domainVector) const
+GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::lnLikelihood(const V & domainVector, V & modelOutput) const
 {
-  V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
   V weightedMisfit(this->m_observations, 0, 0);  // At least it's not a copy
-
-  this->evaluateModel(domainVector, modelOutput);
 
   // Compute misfit G(x) - y
   modelOutput -= this->m_observations;

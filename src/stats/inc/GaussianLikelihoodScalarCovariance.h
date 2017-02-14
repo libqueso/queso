@@ -54,12 +54,39 @@ public:
       const VectorSet<V, M> & domainSet, const V & observations,
       double covariance);
 
+  //! Constructor for likelihood that includes marginalization
+  /*!
+   * If the likelihood requires marginalization, the user can provide the pdf of the
+   * marginal parameter(s) and the integration to be used. Additionally, the user will
+   * be required to have provided an implementation of
+   * evaluateModel(const V & domainVector, const V & marginalVector, V & modelOutput).
+   *
+   * Mathematically, this likelihood evaluation will be
+   * \f[ \pi(d|m) = \int \pi(d|m,q) \pi(q)\; dq \approx \sum_{i=1}^{N} \pi(d|m,q_i) \pi(q_i) w_i\f]
+   * where \f$ N \f$ is the number of quadrature points. However, the PDF for the
+   * marginal parameter(s) may be such that it is convenient to interpret it as a
+   * weighting function for Gaussian quadrature. In that case, then,
+   * \f[ \int \pi(d|m,q) \pi(q)\; dq \approx \sum_{i=1}^{N} \pi(d|m,q_i) w_i \f]
+   * If this is the case, the user should set the argument marg_pdf_is_weight_func = true.
+   * If it is set to false, then the former quadrature equation will be used.
+   * For example, if the marginal parameter(s) pdf is Gaussian, a Gauss-Hermite quadrature
+   * rule could make sense (GaussianHermite1DQuadrature).
+   */
+  GaussianLikelihoodScalarCovariance(const char * prefix,
+      const VectorSet<V, M> & domainSet, const V & observations,
+      double covariance,
+      typename SharedPtr<BaseVectorRV<V,M> >::Type & marg_param_pdf,
+      typename SharedPtr<MultiDQuadratureBase<V,M> >::Type & marg_integration,
+      bool marg_pdf_is_weight_func);
+
   //! Destructor
   virtual ~GaussianLikelihoodScalarCovariance();
   //@}
 
-  //! Logarithm of the value of the scalar function.
-  virtual double lnValue(const V & domainVector) const;
+protected:
+
+  //! Logarithm of the value of the likelihood function.
+  virtual double lnLikelihood(const V & domainVector, V & modelOutput) const;
 
 private:
   double m_covariance;

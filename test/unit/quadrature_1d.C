@@ -166,7 +166,6 @@ namespace QUESOTesting
 
     void test_1d_hermite_quadrature_x4erf()
     {
-      std::cout << std::endl << "Beginning Hermite X4Erf test!" << std::endl;
       X4Erf func;
       std::vector<unsigned int> testing_orders;
       this->testing_orders(testing_orders);
