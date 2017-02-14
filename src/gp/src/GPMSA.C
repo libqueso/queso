@@ -163,7 +163,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   unsigned int dimParameter = (this->m_parameterSpace).dimLocal();
 
   // Length of prior+hyperprior inputs
-  unsigned int dimSum = 3 +
+  unsigned int dimSum = 2 +
+                        (this->num_svd_terms < numOutputs) +
                         (numOutputs > 1) * 2 +
                         num_svd_terms +
                         dimParameter +
@@ -236,7 +237,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       // Emulator component       // = first term in (1)
       prodScenario = 1.0;
       unsigned int emulatorCorrStrStart =
-        dimParameter + 1 + num_svd_terms;
+        dimParameter + (this->num_svd_terms < numOutputs) + num_svd_terms;
       for (unsigned int k = 0; k < dimScenario; k++) {
         const double & emulator_corr_strength =
           domainVector[emulatorCorrStrStart+k];
@@ -271,7 +272,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           // The relevant precision for Sigma_eta is lambda_eta; for
           // Sigma_uw etc. it's lambda_wi and we skip lambda_eta
           const double relevant_precision =
-            domainVector[dimParameter+basis+1+(numOutputs>1)];
+            domainVector[dimParameter + basis +
+                         (this->num_svd_terms<numOutputs) + (numOutputs>1)];
           queso_assert_greater(relevant_precision, 0.0);
 
           const unsigned int stridei =
@@ -294,11 +296,9 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         typename SharedPtr<V>::Type cross_scenario1 = (this->m_simulationScenarios)[i];
         typename SharedPtr<V>::Type cross_scenario2 = (this->m_simulationScenarios)[j];
         prodDiscrepancy = 1.0;
-        unsigned int discrepancyCorrStrStart = dimParameter +
-                                               num_svd_terms +
-                                               dimParameter +
-                                               dimScenario + 2 +
-                                               (numOutputs > 1);
+        unsigned int discrepancyCorrStrStart =
+          dimParameter + num_svd_terms + dimParameter + dimScenario + 1 +
+          (this->num_svd_terms<numOutputs) + (numOutputs > 1);
         for (unsigned int k = 0; k < dimScenario; k++) {
           const double & discrepancy_corr_strength =
             domainVector[discrepancyCorrStrStart+k];
@@ -455,9 +455,16 @@ GPMSAFactory<V, M>::GPMSAFactory(
     m_experimentOutputs(numExperiments),
     m_numSimulationAdds(0),
     m_numExperimentAdds(0),
-    priors(7, (const BaseVectorRV<V, M> *)NULL),  // Needed for gcc 4.3.2
+    num_svd_terms(0),
+    priors(),
     m_constructedGP(false)
 {
+  const unsigned int numOutputs =
+    this->m_experimentOutputSpace.dimLocal();
+  const unsigned int MAX_SVD_TERMS =
+    std::min(m_numSimulations,(unsigned int)(5));
+  this->num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
+
   // We should have the same number of outputs from both simulations
   // and experiments
   queso_assert_equal_to(simulationOutputSpace.dimGlobal(),
@@ -701,10 +708,6 @@ GPMSAFactory<V, M>::setUpEmulator()
 {
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
-  const unsigned int MAX_SVD_TERMS =
-    std::min(m_numSimulations,(unsigned int)(5));
-  const unsigned int num_svd_terms =
-    std::min(MAX_SVD_TERMS, numOutputs);
 
   const Map & output_map = m_simulationOutputs[0]->map();
 
@@ -1022,8 +1025,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     this->m_experimentOutputSpace.dimLocal();
   const unsigned int MAX_SVD_TERMS =
     std::min(m_numSimulations,(unsigned int)(5));
-  const unsigned int num_svd_terms =
-    std::min(MAX_SVD_TERMS, numOutputs);
+  num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
   const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
 
   const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
@@ -1137,23 +1139,26 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   this->oneDSpace.reset
     (new VectorSpace<V, M>(this->m_env, "", 1, NULL));
 
-  // Emulator mean
-  this->emulatorMeanMin.reset(new V(this->oneDSpace->zeroVector()));
-  this->emulatorMeanMax.reset(new V(this->oneDSpace->zeroVector()));
-  this->emulatorMeanMin->cwSet(-INFINITY);
-  this->emulatorMeanMax->cwSet(INFINITY);
+  // Truncation error precision
+  if (this->num_svd_terms < numOutputs)
+    {
+      this->truncationErrorPrecisionMin.reset(new V(this->oneDSpace->zeroVector()));
+      this->truncationErrorPrecisionMax.reset(new V(this->oneDSpace->zeroVector()));
+      this->truncationErrorPrecisionMin->cwSet(-INFINITY);
+      this->truncationErrorPrecisionMax->cwSet(INFINITY);
 
-  this->emulatorMeanDomain.reset
-    (new BoxSubset<V, M>
-      ("",
-       *(this->oneDSpace),
-       *(this->emulatorMeanMin),
-       *(this->emulatorMeanMax)));
+      this->truncationErrorPrecisionDomain.reset
+        (new BoxSubset<V, M>
+          ("",
+           *(this->oneDSpace),
+           *(this->truncationErrorPrecisionMin),
+           *(this->truncationErrorPrecisionMax)));
 
-  this->m_emulatorMean.reset
-    (new UniformVectorRV<V, M>
-     ("",
-      *(this->emulatorMeanDomain)));
+      this->m_truncationErrorPrecision.reset
+        (new UniformVectorRV<V, M>
+         ("",
+          *(this->truncationErrorPrecisionDomain)));
+    }
 
   // Emulator precision
   this->emulatorPrecisionSpace.reset
@@ -1356,7 +1361,8 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       *(this->m_emulatorDataPrecisionScaleVec)));
 
   // Now form full prior
-  unsigned int dimSum = 3 +
+  unsigned int dimSum = 2 +
+                        (this->num_svd_terms < numOutputs) +
                         (numOutputs > 1) * 2 +
                         num_svd_terms +
                         dimParameter +
@@ -1377,28 +1383,25 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   this->totalMins->cwSet(0);
   this->totalMaxs->cwSet(1);
 
-  (*(this->totalMins))[dimParameter] = -INFINITY;  // Min mean
-  (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
-
   // Min emulator precision
-  (*(this->totalMins))[dimParameter+1] = 0.3;
+  (*(this->totalMins))[dimParameter] = 0.3;
   // Max emulator precision
-  (*(this->totalMaxs))[dimParameter+1] = INFINITY;
+  (*(this->totalMaxs))[dimParameter] = INFINITY;
 
   if (numOutputs > 1)
     for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
       {
         // Min weights precision
-        (*(this->totalMins))[dimParameter+2+basis] = 0.3;
+        (*(this->totalMins))[dimParameter+1+basis] = 0.3;
         // Max weights precision
-        (*(this->totalMaxs))[dimParameter+2+basis] = INFINITY;
+        (*(this->totalMaxs))[dimParameter+1+basis] = INFINITY;
       }
 
   // FIXME: F = 1 for now
   // Min discrepancy precision
-  (*(this->totalMins))[dimParameter+1+(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = 0;
+  (*(this->totalMins))[dimParameter+(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = 0;
   // Max discrepancy precision
-  (*(this->totalMaxs))[dimParameter+1+(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = INFINITY;
+  (*(this->totalMaxs))[dimParameter+(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = INFINITY;
 
   (*(this->totalMins))[dimSum-1-(numOutputs>1)] = 60.0;  // Min emulator data precision
   (*(this->totalMaxs))[dimSum-1-(numOutputs>1)] = 1e5;   // Max emulator data precision
@@ -1415,13 +1418,16 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       *(this->totalMins),
       *(this->totalMaxs)));
 
-  this->priors[0] = &(this->m_parameterPrior);
-  this->priors[1] = this->m_emulatorMean.get();
-  this->priors[2] = this->m_emulatorPrecision.get();
-  this->priors[3] = this->m_emulatorCorrelationStrength.get();
-  this->priors[4] = this->m_discrepancyPrecision.get();
-  this->priors[5] = this->m_discrepancyCorrelationStrength.get();
-  this->priors[6] = this->m_emulatorDataPrecision.get();
+  this->priors.push_back(&(this->m_parameterPrior));
+
+  if (this->num_svd_terms < numOutputs)
+    this->priors.push_back(this->m_truncationErrorPrecision.get());
+
+  this->priors.push_back(this->m_emulatorPrecision.get());
+  this->priors.push_back(this->m_emulatorCorrelationStrength.get());
+  this->priors.push_back(this->m_discrepancyPrecision.get());
+  this->priors.push_back(this->m_discrepancyCorrelationStrength.get());
+  this->priors.push_back(this->m_emulatorDataPrecision.get());
   if (numOutputs > 1)
     this->priors.push_back(this->m_observationalPrecision.get());
 

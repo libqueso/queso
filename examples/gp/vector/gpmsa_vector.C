@@ -281,10 +281,7 @@ int main(int argc, char ** argv) {
   // Start with the mean of the prior
   gpmsaFactory.prior().pdf().distributionMean(paramInitials);
 
-  // But override whatever we want
-  paramInitials[5]  = 0.4; // Not currently used.  Emulator mean
-
-  // Initial proposal convariance matrix of the chain
+  // Initial proposal covariance matrix of the chain
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
 
@@ -299,14 +296,12 @@ int main(int argc, char ** argv) {
   // values were taken from the gpmsa matlab code and fiddled with.
   double scale = 3000.0;
 
-  proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used.  emulator mean
-
-  proposalCovMatrix(10, 10) = 7.6032e-04 / scale;  // emulator corr str
-  proposalCovMatrix(11, 11) = 8.3815e-04 / scale;  // emulator corr str
-  proposalCovMatrix(12, 12) = 7.5412e-04 / scale;  // emulator corr str
+  proposalCovMatrix(9, 9)   = 7.6032e-04 / scale;  // emulator corr str
+  proposalCovMatrix(10, 10) = 8.3815e-04 / scale;  // emulator corr str
+  proposalCovMatrix(11, 11) = 7.5412e-04 / scale;  // emulator corr str
 
   // Square hand-tweaked standard deviations to get variances
-  for (unsigned int i = 10; i != 13; i++) {
+  for (unsigned int i = 9; i != 12; i++) {
     proposalCovMatrix(i, i) = proposalCovMatrix(i, i) * proposalCovMatrix(i, i);
   }
 

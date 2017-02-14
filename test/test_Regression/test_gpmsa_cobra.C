@@ -252,22 +252,21 @@ int main(int argc, char ** argv) {
   // Initial condition of the chain
   // Have to set each of these by hand, *and* the sampler is sensitive to these
   // values
-  paramInitials[0] = 0.5; // param 1
-  paramInitials[1] = 0.5; // param 2
-  paramInitials[2] = 0.5; // param 3
-  paramInitials[3] = 0.5; // param 4
-  paramInitials[4] = 0.5; // param 5
-  paramInitials[5]  = 0.4;  // not used.  emulator mean
-  paramInitials[6]  = 0.4; // emulator precision
+  paramInitials[0]  = 0.5; // param 1
+  paramInitials[1]  = 0.5; // param 2
+  paramInitials[2]  = 0.5; // param 3
+  paramInitials[3]  = 0.5; // param 4
+  paramInitials[4]  = 0.5; // param 5
+  paramInitials[5]  = 0.4; // emulator precision
+  paramInitials[6]  = 0.97; // emulator corr str
   paramInitials[7]  = 0.97; // emulator corr str
   paramInitials[8]  = 0.97; // emulator corr str
   paramInitials[9]  = 0.97; // emulator corr str
-  paramInitials[10]  = 0.97; // emulator corr str
-  paramInitials[11]  = 0.20; // emulator corr str
-  paramInitials[12]  = 0.80; // emulator corr str
-  paramInitials[13]  = 10.0; // discrepancy precision
-  paramInitials[14]  = 0.97; // discrepancy corr str
-  paramInitials[15]  = 8000.0; // emulator data precision
+  paramInitials[10] = 0.20; // emulator corr str
+  paramInitials[11] = 0.80; // emulator corr str
+  paramInitials[12] = 10.0; // discrepancy precision
+  paramInitials[13] = 0.97; // discrepancy corr str
+  paramInitials[14] = 8000.0; // emulator data precision
 
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
@@ -281,20 +280,19 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(2, 2)   = 3.1508 / 10.0;  // param 3
   proposalCovMatrix(3, 3)   = 0.3757 / 10.0;  // param 4
   proposalCovMatrix(4, 4)   = 0.6719 / 10.0;  // param 5
-  proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used.  emulator mean
-  proposalCovMatrix(6, 6)   = 0.4953 / scale;  // emulator precision
-  proposalCovMatrix(7, 7)   = 0.6058 / scale;  // emulator corr str
-  proposalCovMatrix(8, 8)   = 7.6032e-04 / scale;  // emulator corr str
-  proposalCovMatrix(9, 9)   = 8.3815e-04 / scale;  // emulator corr str
-  proposalCovMatrix(10, 10) = 7.5412e-04 / scale;  // emulator corr str
-  proposalCovMatrix(11, 11) = 0.2682 / scale;  // emulator corr str
-  proposalCovMatrix(12, 12) = 0.0572 / scale;  // emulator corr str
-  proposalCovMatrix(13, 13) = 1.3417 / scale;  // discrepancy precision
-  proposalCovMatrix(14, 14) = 0.3461 / scale;  // discrepancy corr str
-  proposalCovMatrix(15, 15) = 495.3 / scale;  // emulator data precision
+  proposalCovMatrix(5, 5)   = 0.4953 / scale;  // emulator precision
+  proposalCovMatrix(6, 6)   = 0.6058 / scale;  // emulator corr str
+  proposalCovMatrix(7, 7)   = 7.6032e-04 / scale;  // emulator corr str
+  proposalCovMatrix(8, 8)   = 8.3815e-04 / scale;  // emulator corr str
+  proposalCovMatrix(9, 9)   = 7.5412e-04 / scale;  // emulator corr str
+  proposalCovMatrix(10, 10) = 0.2682 / scale;  // emulator corr str
+  proposalCovMatrix(11, 11) = 0.0572 / scale;  // emulator corr str
+  proposalCovMatrix(12, 12) = 1.3417 / scale;  // discrepancy precision
+  proposalCovMatrix(13, 13) = 0.3461 / scale;  // discrepancy corr str
+  proposalCovMatrix(14, 14) = 495.3 / scale;  // emulator data precision
 
   // Square to get variances
-  for (unsigned int i = 0; i < 16; i++) {
+  for (unsigned int i = 0; i < 15; i++) {
     proposalCovMatrix(i, i) = proposalCovMatrix(i, i) * proposalCovMatrix(i, i);
   }
 

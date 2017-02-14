@@ -364,13 +364,16 @@ public:
   // All the GP priors information for a scalar GP follows:
   void setUpHyperpriors();
 
+  // Number of dimensions preserved from the SVD of simulation outputs
+  unsigned int num_svd_terms;
+
   // Domains for all the hyperpriors
   typename ScopedPtr<VectorSpace<V, M> >::Type oneDSpace;
 
-  // Emulator mean
-  typename ScopedPtr<V>::Type emulatorMeanMin;
-  typename ScopedPtr<V>::Type emulatorMeanMax;
-  typename ScopedPtr<BoxSubset<V, M> >::Type emulatorMeanDomain;
+  // Truncation error precision
+  typename ScopedPtr<V>::Type truncationErrorPrecisionMin;
+  typename ScopedPtr<V>::Type truncationErrorPrecisionMax;
+  typename ScopedPtr<BoxSubset<V, M> >::Type truncationErrorPrecisionDomain;
 
   // Emulator precision
   typename ScopedPtr<VectorSpace<V, M> >::Type emulatorPrecisionSpace;
@@ -416,7 +419,7 @@ public:
   std::vector<const BaseVectorRV<V, M> *> priors;
 
   // The hyperpriors
-  typename ScopedPtr<UniformVectorRV<V, M> >::Type m_emulatorMean;  // scalar
+  typename ScopedPtr<UniformVectorRV<V, M> >::Type m_truncationErrorPrecision;  // scalar
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_emulatorPrecision;  // (dim num_svd_terms) gamma(a, b) shape-rate
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_observationalPrecision;  // scalar gamma(a, b) shape-rate
   typename ScopedPtr<BetaVectorRV<V, M> >::Type m_emulatorCorrelationStrength;  // (dim scenariosspace + dim parameterspace)
