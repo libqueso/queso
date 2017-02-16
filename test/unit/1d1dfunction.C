@@ -54,6 +54,9 @@ public:
   CPPUNIT_TEST(test_piecewise_linear);
   CPPUNIT_TEST(test_quadratic);
   CPPUNIT_TEST(test_sampled);
+  CPPUNIT_TEST(test_func_with_operations);
+  CPPUNIT_TEST(test_lagrange_polynomial);
+  CPPUNIT_TEST(test_lagrange_basis);
   CPPUNIT_TEST_SUITE_END();
 
   // yes, this is necessary
@@ -162,6 +165,58 @@ public:
     QUESO::FullEnvironment env("", "", NULL);
     std::ofstream out_stream("/dev/null");
     sampled.printForMatlab(env, out_stream, "");
+  }
+
+  void test_func_with_operations()
+  {
+    QUESO::Constant1D1DFunction constant(-1.0, 1.0, 2.0);
+    QUESO::ScalarTimesFunc1D1DFunction scalar_times_constant(2.0, constant);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(4.0, scalar_times_constant.value(0.0), 1e-14);
+
+    QUESO::Constant1D1DFunction constant2(-1.0, 1.0, 2.0);
+    QUESO::FuncTimesFunc1D1DFunction const_times_const(constant, constant2);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(4.0, const_times_const.value(0.0), 1e-14);
+
+    QUESO::FuncPlusFunc1D1DFunction const_plus_const(constant, constant2);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(4.0, const_plus_const.value(0.0), 1e-14);
+  }
+
+  void test_lagrange_polynomial()
+  {
+    std::vector<double> points(3);
+    points[0] = 0.0;
+    points[1] = 1.0;
+    points[2] = 2.0;
+
+    std::vector<double> values(3);
+    values[0] = 0.0;
+    values[1] = 1.0;
+    values[2] = 0.0;
+
+    QUESO::LagrangePolynomial1D1DFunction l(points, &values);
+
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, l.value(0.0), 1e-14);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, l.value(1.0), 1e-14);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, l.value(2.0), 1e-14);
+
+    double x = 0.5;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(x * (2.0 - x), l.value(x), 1e-14);
+    x = 1.5;
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(x * (2.0 - x), l.value(x), 1e-14);
+  }
+
+  void test_lagrange_basis()
+  {
+    std::vector<double> points(3);
+    points[0] = 1.0;
+    points[1] = 2.0;
+    points[2] = 3.0;
+
+    QUESO::LagrangeBasis1D1DFunction l(points, 0);
+
+    double x = 2.0;
+    double val = (x - 2.0) * (x - 3.0) / ((1.0 - 2.0) * (1.0 - 3.0));
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(val, l.value(x), 1e-14);
   }
 };
 
