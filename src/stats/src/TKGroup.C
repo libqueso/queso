@@ -127,6 +127,20 @@ BaseTKGroup<V, M>::set_dr_stage(unsigned int stageId)
   return this->m_stageId;
 }
 
+template <class V, class M>
+bool
+BaseTKGroup<V, M>::covMatrixIsDirty() const
+{
+  return this->m_dirtyCovarianceMatrix;
+}
+
+template <class V, class M>
+void
+BaseTKGroup<V, M>::setCovMatrixIsDirty(bool isDirty)
+{
+  this->m_dirtyCovarianceMatrix = isDirty;
+}
+
 // I/O methods---------------------------------------
 template<class V, class M>
 void

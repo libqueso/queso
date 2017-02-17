@@ -100,6 +100,13 @@ public:
    * Default behaviour is a no-op.
    */
   virtual void updateTK() { };
+
+  //! This flag determines whether or not the user has 'dirtied' the covariance
+  //! matrix, thereby necessitating an AM reset
+  bool covMatrixIsDirty() const;
+
+  //! Sets the dirty flag for the covariance matrix.
+  void setCovMatrixIsDirty(bool isDirty);
   //@}
 
   //! @name I/O methods
@@ -118,6 +125,10 @@ protected:
         std::vector<BaseVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
   unsigned int m_stageId;
 
+private:
+  //! This flag determines whether or not the user has 'dirtied' the covariance
+  //! matrix, thereby necessitating an AM reset
+  bool m_dirtyCovarianceMatrix;
 };
 
 }  // End namespace QUESO
