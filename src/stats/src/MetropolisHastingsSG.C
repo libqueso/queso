@@ -2005,8 +2005,29 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
   else {
     unsigned int interval = positionId - m_optionsObj->m_amInitialNonAdaptInterval;
     if ((interval % m_optionsObj->m_amAdaptInterval) == 0) {
-      idOfFirstPositionInSubChain = positionId - m_optionsObj->m_amAdaptInterval;
-      partialChain.resizeSequence(m_optionsObj->m_amAdaptInterval);
+
+      // If the user has set the proposal cov matrix to 'dirty', we need to
+      // reset the state
+      //
+      // If the user didn't dirty it, we're good.
+      if (m_tk->covMatrixIsDirty()) {
+        m_lastMean->cwSet(0.0);
+        m_lastAdaptedCovMatrix->cwSet(0.0);
+
+        // We'll adapt over the states from when the user dirtied the matrix
+        // until the current one
+        unsigned int iter_diff = positionId - m_latestDirtyCovMatrixIteration;
+        idOfFirstPositionInSubChain = iter_diff;
+        partialChain.resizeSequence(iter_diff);
+
+        // Finally set the dirty state to false so that if the user doesn't
+        // touch the cov matrix again, we'll continue as normal
+        m_tk->setCovMatrixIsDirty(false);
+      }
+      else {
+        idOfFirstPositionInSubChain = positionId - m_optionsObj->m_amAdaptInterval;
+        partialChain.resizeSequence(m_optionsObj->m_amAdaptInterval);
+      }
 
       if (m_optionsObj->m_amAdaptedMatricesDataOutputPeriod > 0) {
         if ((interval % m_optionsObj->m_amAdaptedMatricesDataOutputPeriod) == 0) {
