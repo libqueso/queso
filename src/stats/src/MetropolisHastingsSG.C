@@ -169,7 +169,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
   m_initialLogLikelihoodValue (0.),
-  m_userDidNotProvideOptions(false)
+  m_userDidNotProvideOptions(false),
+  m_latestDirtyCovMatrixIteration(0)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -250,7 +251,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
   m_initialLogLikelihoodValue (initialLogLikelihood),
-  m_userDidNotProvideOptions(false)
+  m_userDidNotProvideOptions(false),
+  m_latestDirtyCovMatrixIteration(0)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -326,7 +328,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
   m_initialLogLikelihoodValue (0.),
-  m_userDidNotProvideOptions(true)
+  m_userDidNotProvideOptions(true),
+  m_latestDirtyCovMatrixIteration(0)
 {
   // We do this dance because one of the MetropolisHastingsSGOptions
   // constructors takes one of the old-style MLSamplingLevelOptions options
@@ -393,7 +396,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
   m_initialLogLikelihoodValue (initialLogLikelihood),
-  m_userDidNotProvideOptions(true)
+  m_userDidNotProvideOptions(true),
+  m_latestDirtyCovMatrixIteration(0)
 {
   // We do this dance because one of the MetropolisHastingsSGOptions
   // constructors takes one of the old-style MLSamplingLevelOptions options
@@ -1841,6 +1845,12 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 
     // Possibly user-overridden to implement strange things, but we allow it.
     m_tk->updateTK();
+
+    // If the user dirtied the cov matrix, keep track of the latest iteration
+    // number it happened at
+    if (m_tk->covMatrixIsDirty()) {
+      m_latestDirtyCovMatrixIteration = positionId;
+    }
 
     //****************************************************
     // Point 5/6 of logic for new position
