@@ -220,10 +220,22 @@ public:
   //! Returns the process world rank.
   int     worldRank     () const;
 
-  //! Returns the process full rank.
+  //! Returns the rank of the MPI process in QUESO's full communicator
+  /*!
+   * Returns the rank of the MPI process in the communicator returned by
+   * fullComm().
+   *
+   * See fullComm() for what the full communicator is.
+   */
   int     fullRank      () const;
 
-  //! Access function for MpiComm full communicator.
+  //! Access function for the communicator that was passed to QUESO's environment
+  /*!
+   * The 'full' communicator is the MPI communicator that the user passed when
+   * creating the QUESO FullEnvironment.  This is usually MPI_COMM_WORLD, but
+   * the user is permitted to pass any MPI communicator smaller than
+   * MPI_COMM_WORLD.
+   */
   const MpiComm&   fullComm      () const;
 
   //! Access function for sub-group.
