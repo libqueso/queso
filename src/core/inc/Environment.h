@@ -297,6 +297,9 @@ public:
   const MpiComm&   subComm       () const;
 
   //! Access function for MpiComm self-communicator.
+  /*!
+   * This communicator is exactly MPI_COMM_SELF.
+   */
   const MpiComm&   selfComm      () const;
 
   //! Returns the process inter0 rank.
