@@ -2054,7 +2054,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 
     // Transform to the space without boundaries.  This is the space
     // where the proposal distribution is Gaussian
-    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
+    if (this->m_optionsObj->m_tk == "logit_random_walk") {
       // Only do this when we don't use the Hessian (this may change in
       // future, but transformToGaussianSpace() is only implemented in
       // TransformedScaledCovMatrixTKGroup
@@ -2239,11 +2239,11 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 
     // Transform the proposal covariance matrix if we have Logit transforms
     // turned on
-    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
+    if (this->m_optionsObj->m_tk == "logit_random_walk") {
       (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
-    else if (this->m_optionsObj->m_algorithm == "random_walk") {
+    else if (this->m_optionsObj->m_tk == "random_walk") {
       (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
