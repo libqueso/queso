@@ -217,7 +217,12 @@ public:
   //! Returns whether the full environment class is ready (constructor has successfully been called).
   bool    fullEnvIsReady() const;
 
-  //! Returns the process world rank.
+  //! Returns the same thing as fullRank()
+  /*!
+   * This is the same thing as fullRank(), since QUESO's 'world' communicator
+   * is not MPI_COMM_WORLD, but the communicator that user passed to it when
+   * creating the environment.
+   */
   int     worldRank     () const;
 
   //! Returns the rank of the MPI process in QUESO's full communicator
