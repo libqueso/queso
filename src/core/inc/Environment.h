@@ -217,31 +217,103 @@ public:
   //! Returns whether the full environment class is ready (constructor has successfully been called).
   bool    fullEnvIsReady() const;
 
-  //! Returns the process world rank.
+  //! Returns the same thing as fullRank()
+  /*!
+   * This is the same thing as fullRank(), since QUESO's 'world' communicator
+   * is not MPI_COMM_WORLD, but the communicator that user passed to it when
+   * creating the environment.
+   */
   int     worldRank     () const;
 
-  //! Returns the process full rank.
+  //! Returns the rank of the MPI process in QUESO's full communicator
+  /*!
+   * Returns the rank of the MPI process in the communicator returned by
+   * fullComm().
+   *
+   * See fullComm() for what the full communicator is.
+   */
   int     fullRank      () const;
 
-  //! Access function for MpiComm full communicator.
+  //! Access function for the communicator that was passed to QUESO's environment
+  /*!
+   * The 'full' communicator is the MPI communicator that the user passed when
+   * creating the QUESO FullEnvironment.  This is usually MPI_COMM_WORLD, but
+   * the user is permitted to pass any MPI communicator smaller than
+   * MPI_COMM_WORLD.
+   */
   const MpiComm&   fullComm      () const;
 
   //! Access function for sub-group.
   RawType_MPI_Group     subGroup      () const;
 
-  //! Access function for sub-rank.
+  //! Returns the rank of the MPI process in the sub-communicator subComm()
+  /*!
+   * Example, if the calling MPI process has fullRank() equal to 3, the size of
+   * fullComm() is 6, and the user asked for two sub-environments, then this
+   * method will return 0. Here's why.
+   *
+   * fullComm() has MPI processes with these ranks:
+   * 0 1 2 3 4 5
+   *
+   * QUESO divides the first three (ranks 0, 1, 2) of these into a
+   * sub-communicator for sub-environment 0.  Inside the sub-communicator their
+   * ranks are 0, 1, 2, respectively.
+   *
+   * QUESO divides the second three (ranks 3, 4, 5) of these into a
+   * sub-communicator for sub-environment 1.  Inside the sub-communicator their
+   * ranks are 0, 1, 2, respectively.
+   *
+   * It should be clear, now, that if fullRank() is 3 then subRank() is 0.
+   */
   int     subRank       () const;
 
-  //! Access function for MpiComm sub communicator.
+  //! Access function for each sub-environment's communicator.
+  /*!
+   * Let's say QUESO was passed a fullComm() communicator of size N.  The ranks
+   * of each process in this communicator are:
+   *
+   * 0 1 2 ... N-2 N-1
+   *
+   * If the user asks for M sub-environments (chains) then, assuming M divides
+   * N, QUESO partitions the processes in the fullComm() communicator
+   * into M sub-communicators like so:
+   *
+   * Sub-environment 0 contains processes with fullRank()
+   * 0 1 ... M-1
+   *
+   * Sub-environment 1 contains processes with fullRank()
+   * M M+1 ... 2M-1
+   *
+   * et cetera
+   *
+   * Sub-environment M-1 contains processes with fullRank()
+   * N-M N-M+1 ... N-1
+   *
+   * subComm() returns the sub-communicator corresponding to the
+   * sub-environment the calling MPI process belongs to.  For example, if I am
+   * an MPI process calling this function and I live in sub-environment \c k,
+   * then this method returns the sub-communicator for sub-environment k.
+   */
   const MpiComm&   subComm       () const;
 
   //! Access function for MpiComm self-communicator.
+  /*!
+   * This communicator is exactly MPI_COMM_SELF.
+   */
   const MpiComm&   selfComm      () const;
 
   //! Returns the process inter0 rank.
   int     inter0Rank    () const;
 
-  //! Access function for MpiComm inter0-communicator.
+  //! Access function for MpiComm communicator for processes with subRank() 0
+  /*
+   * This communicator contains all the processes that have subRank() equal to
+   * 0.
+   *
+   * Their corresponding fullRank() values will be 0, M, 2M, ..., N-M,
+   * where M is the number of sub-environments the user asked for and N is the
+   * size of fullComm().
+   */
   const MpiComm&   inter0Comm    () const;
 
   //! Access function for m_subDisplayFile (displays file on stream).
