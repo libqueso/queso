@@ -246,10 +246,54 @@ public:
   //! Access function for sub-group.
   RawType_MPI_Group     subGroup      () const;
 
-  //! Access function for sub-rank.
+  //! Returns the rank of the MPI process in the sub-communicator subComm()
+  /*!
+   * Example, if the calling MPI process has fullRank() equal to 3, the size of
+   * fullComm() is 6, and the user asked for two sub-environments, then this
+   * method will return 0. Here's why.
+   *
+   * fullComm() has MPI processes with these ranks:
+   * 0 1 2 3 4 5
+   *
+   * QUESO divides the first three (ranks 0, 1, 2) of these into a
+   * sub-communicator for sub-environment 0.  Inside the sub-communicator their
+   * ranks are 0, 1, 2, respectively.
+   *
+   * QUESO divides the second three (ranks 3, 4, 5) of these into a
+   * sub-communicator for sub-environment 1.  Inside the sub-communicator their
+   * ranks are 0, 1, 2, respectively.
+   *
+   * It should be clear, now, that if fullRank() is 3 then subRank() is 0.
+   */
   int     subRank       () const;
 
-  //! Access function for MpiComm sub communicator.
+  //! Access function for each sub-environment's communicator.
+  /*!
+   * Let's say QUESO was passed a fullComm() communicator of size N.  The ranks
+   * of each process in this communicator are:
+   *
+   * 0 1 2 ... N-2 N-1
+   *
+   * If the user asks for M sub-environments (chains) then, assuming M divides
+   * N, QUESO partitions the processes in the fullComm() communicator
+   * into M sub-communicators like so:
+   *
+   * Sub-environment 0 contains processes with fullRank()
+   * 0 1 ... M-1
+   *
+   * Sub-environment 1 contains processes with fullRank()
+   * M M+1 ... 2M-1
+   *
+   * et cetera
+   *
+   * Sub-environment M-1 contains processes with fullRank()
+   * N-M N-M+1 ... N-1
+   *
+   * subComm() returns the sub-communicator corresponding to the
+   * sub-environment the calling MPI process belongs to.  For example, if I am
+   * an MPI process calling this function and I live in sub-environment \c k,
+   * then this method returns the sub-communicator for sub-environment k.
+   */
   const MpiComm&   subComm       () const;
 
   //! Access function for MpiComm self-communicator.
