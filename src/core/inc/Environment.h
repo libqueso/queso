@@ -305,7 +305,15 @@ public:
   //! Returns the process inter0 rank.
   int     inter0Rank    () const;
 
-  //! Access function for MpiComm inter0-communicator.
+  //! Access function for MpiComm communicator for processes with subRank() 0
+  /*
+   * This communicator contains all the processes that have subRank() equal to
+   * 0.
+   *
+   * Their corresponding fullRank() values will be 0, M, 2M, ..., N-M,
+   * where M is the number of sub-environments the user asked for and N is the
+   * size of fullComm().
+   */
   const MpiComm&   inter0Comm    () const;
 
   //! Access function for m_subDisplayFile (displays file on stream).
