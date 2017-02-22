@@ -46,6 +46,9 @@ public:
   virtual void updateTK();
 
   const VectorSpace<V, M> & m_vectorSpace;
+
+private:
+  unsigned int m_counter;
 };
 
 }  // End namespace QUESO

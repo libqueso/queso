@@ -99,11 +99,13 @@ int main(int argc, char ** argv)
   QUESO::GslVector paramInitials(paramSpace.zeroVector());
 
   QUESO::GslMatrix proposalCovMatrix(paramSpace.zeroVector());
-  proposalCovMatrix(0,0) = 10.0;
+  proposalCovMatrix(0,0) = 1e-6;
 
   QUESO::MhOptionsValues mh_options;
   mh_options.m_tk = "my_tk";
-  mh_options.m_rawChainSize = 5;
+  mh_options.m_rawChainSize = 50;
+  mh_options.m_amInitialNonAdaptInterval = 10;
+  mh_options.m_amAdaptInterval = 10;
 
   ip.solveWithBayesMetropolisHastings(&mh_options, paramInitials, &proposalCovMatrix);
 
