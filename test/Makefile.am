@@ -76,6 +76,7 @@ check_PROGRAMS += SipSfpExample_gsl
 check_PROGRAMS += SequenceExample_gsl
 check_PROGRAMS += BimodalExample_gsl
 check_PROGRAMS += test_fd_fallback
+check_PROGRAMS += test_custom_tk_am
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -245,6 +246,12 @@ BimodalExample_gsl_SOURCES += t04_bimodal/example_compute.h
 BimodalExample_gsl_SOURCES += t04_bimodal/example_likelihood.h
 BimodalExample_gsl_CPPFLAGS = -I$(srcdir)/t04_bimodal $(AM_CPPFLAGS)
 
+test_custom_tk_am_SOURCES =
+test_custom_tk_am_SOURCES += custom_tk/adaptive_metropolis_main.C
+test_custom_tk_am_SOURCES += custom_tk/adaptive_metropolis.C
+test_custom_tk_am_SOURCES += test_custom_tk/adaptive_metropolis.h
+test_custom_tk_am_CPPFLAGS = -I$(srcdir)/custom_tk $(AM_CPPFLAGS)
+
 TESTS =
 TESTS += unit_driver
 TESTS += test_boxsubset_centroid
@@ -322,6 +329,7 @@ TESTS += t02_sip_sfp/rtest02.sh
 TESTS += t04_bimodal/rtest04.sh
 TESTS += test_fd_fallback
 TESTS += test_SequenceOfVectorsErase
+TESTS += test_custom_tk_am
 
 if ! MPI_ENABLED
 XFAIL_TESTS = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
@@ -386,6 +394,9 @@ EXTRA_DIST += t04_bimodal/regression
 EXTRA_DIST += t04_bimodal/rtest04.sh
 EXTRA_DIST += t04_bimodal/example_1chain.inp
 
+EXTRA_DIST += custom_tk/adaptive_metropolis.h
+EXTRA_DIST += custom_tk/output_test_custom_tk_am_regression
+
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
 CLEANFILES += gslvector_out_sub0.m
@@ -408,6 +419,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/output_test_mala
 	rm -rf $(top_builddir)/test/output_test_TgaValidationCycle_gsl
 	rm -rf $(top_builddir)/test/output_test_SipSfpExample_gsl
+	rm -rf $(top_builddir)/test/output_test_custom_tk_am
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
