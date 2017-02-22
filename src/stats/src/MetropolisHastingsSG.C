@@ -2238,12 +2238,16 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     }
 
     // Transform the proposal covariance matrix if we have Logit transforms
-    // turned on
+    // turned on.
+    //
+    // This logic should really be done inside the kernel itself
     if (this->m_optionsObj->m_tk == "logit_random_walk") {
       (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
-    else if (this->m_optionsObj->m_tk == "random_walk") {
+    else {
+      // Assume that if we're not doing a logit transform, we're doing a random
+      // something sensible
       (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
