@@ -1847,9 +1847,13 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     m_tk->updateTK();
 
     // If the user dirtied the cov matrix, keep track of the latest iteration
-    // number it happened at
+    // number it happened at.
     if (m_tk->covMatrixIsDirty()) {
       m_latestDirtyCovMatrixIteration = positionId;
+
+      // Set the dirty flag to false so that the last dirty iteration tracker
+      // doesn't get wiped in the next iteration.
+      m_tk->setCovMatrixIsDirty(false);
     }
 
     //****************************************************
@@ -2006,11 +2010,11 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     unsigned int interval = positionId - m_optionsObj->m_amInitialNonAdaptInterval;
     if ((interval % m_optionsObj->m_amAdaptInterval) == 0) {
 
-      // If the user has set the proposal cov matrix to 'dirty', we need to
-      // reset the state
+      // If the user has set the proposal cov matrix to 'dirty', already
+      // recorded the positionId at which that happened in m_latestDirtyCovMatrixIteration
       //
       // If the user didn't dirty it, we're good.
-      if (m_tk->covMatrixIsDirty()) {
+      if (m_latestDirtyCovMatrixIteration > 0) {
         m_lastMean->cwSet(0.0);
         m_lastAdaptedCovMatrix->cwSet(0.0);
 
@@ -2020,9 +2024,9 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
         idOfFirstPositionInSubChain = iter_diff;
         partialChain.resizeSequence(iter_diff);
 
-        // Finally set the dirty state to false so that if the user doesn't
-        // touch the cov matrix again, we'll continue as normal
-        m_tk->setCovMatrixIsDirty(false);
+        // Finally set the latest dirty iteration back to zero.  If the user
+        // sets the dirty flag again, then this will change.
+        m_latestDirtyCovMatrixIteration = 0;
       }
       else {
         idOfFirstPositionInSubChain = positionId - m_optionsObj->m_amAdaptInterval;
