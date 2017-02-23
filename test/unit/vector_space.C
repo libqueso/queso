@@ -42,7 +42,6 @@ class VectorSpaceTest : public CppUnit::TestCase
 {
 public:
   CPPUNIT_TEST_SUITE(VectorSpaceTest);
-  CPPUNIT_TEST(test_copy);
   CPPUNIT_TEST(test_centroid);
   CPPUNIT_TEST(test_moments);
   CPPUNIT_TEST_SUITE_END();
@@ -53,13 +52,6 @@ public:
   {
     env.reset(new QUESO::FullEnvironment("","",NULL));
     space.reset(new QUESO::VectorSpace<>(*env, "", 2, NULL));
-  }
-
-  void test_copy()
-  {
-    QUESO::VectorSpace<> copy(*space);
-
-    CPPUNIT_ASSERT_EQUAL(space->dimLocal(), copy.dimLocal());
   }
 
   void test_centroid()
