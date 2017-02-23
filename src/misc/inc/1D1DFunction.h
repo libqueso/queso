@@ -309,7 +309,7 @@ public:
   //! Returns the value of the quadratic function at point \c domainValue.
   /*! This function checks if point \c domainValue belongs to the domain of \c this function,
    * and in affirmative case, it evaluates the function at such point, namely:
-   * <c>imageValue = a*domainValue^2 + b*domainValue + c </c>\f$.*/
+   * <c>imageValue = a*domainValue^2 + b*domainValue + c </c>.*/
   double value(double domainValue) const;
 
   //! Returns the value of the derivative of the quadratic function at point \c domainValue.
