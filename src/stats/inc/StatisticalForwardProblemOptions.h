@@ -56,7 +56,7 @@ namespace boost {
 
 namespace QUESO {
 
-/*! \file uqStatisticalForwardProblemOptions.h
+/*! \file StatisticalForwardProblemOptions.h
     \brief Classes to allow options to be passed to a Statistical Forward Problem.
 */
 

@@ -32,7 +32,7 @@ namespace QUESO {
 class GslVector;
 class GslMatrix;
 
-/*! \file uqArrayOfSequences.h
+/*! \file ArrayOfSequences.h
  * \brief A templated class for handling samples of scalar sequences
  *
  * \class ArrayOfSequences

@@ -27,7 +27,7 @@
 
 namespace QUESO {
 
-/*! \file uq2dArrayOfStuff.h
+/*! \file 2dArrayOfStuff.h
  * \brief A templated class for handling arrays of data
  *
  * \class TwoDArray
