@@ -27,12 +27,12 @@
 
 #include <queso/Defines.h>
 
-#ifdef QUESO_HAS_TRILINOS
-#include <Epetra_MpiComm.h>
-#endif
-
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>
+#endif
+
+#ifdef QUESO_HAS_TRILINOS
+class Epetra_Comm;
 #endif
 
 namespace QUESO {

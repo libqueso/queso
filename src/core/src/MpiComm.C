@@ -28,6 +28,7 @@
 #include <queso/Environment.h>
 
 #ifdef QUESO_HAS_TRILINOS
+#include <Epetra_MpiComm.h>
 #include <Epetra_SerialComm.h>
 #endif
 

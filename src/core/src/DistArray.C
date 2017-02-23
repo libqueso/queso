@@ -30,6 +30,11 @@
 #include <queso/SampledScalarCdf.h>
 #include <queso/OneDGrid.h>
 
+#ifdef QUESO_HAS_TRILINOS
+#include <Epetra_MpiComm.h>
+#include <Epetra_SerialComm.h>
+#endif
+
 namespace QUESO {
 
 // Constructor for a given inputMap and inputRowSize.
