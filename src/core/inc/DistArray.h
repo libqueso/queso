@@ -63,18 +63,9 @@ public:
   DistArray(const Map& inputMap,
                    const int         inputRowSize);
 
-  //! Copy constructor
-  DistArray(const DistArray<T>& src);
-
   //! Destructor
  ~DistArray();
  //@}
-
-  //! @name Set methods
-  //@{
-  //! Assignment operator.
-  DistArray<T>& operator= (const DistArray<T>& rhs);
-  //@}
 
   //! @name Query methods
   //@{
@@ -111,8 +102,11 @@ private:
   //! Default constructor. Do not call this directly.
   DistArray();
 
-  //! Copies the array.
-  void copy        (const DistArray<T>& src);
+  //! Copy constructor.  Private.
+  DistArray(const DistArray<T>& src) : m_Map(src.m_Map) { }
+
+  //! Assignment operator.
+  DistArray<T>& operator=(const DistArray<T>& rhs);
 
   Map                   m_Map;
 #ifdef QUESO_HAS_TRILINOS

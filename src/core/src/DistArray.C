@@ -51,22 +51,6 @@ DistArray<T>::DistArray(const Map& inputMap, const int inputRowSize)
 #endif
 }
 
-// Copy constructor
-template<typename T>
-DistArray<T>::DistArray(const DistArray<T>& src)
-  : m_Map(src.m_Map)
-#ifdef QUESO_HAS_TRILINOS
-  ,
-  m_epetraDistArray(NULL)
-#endif
-{
-#ifdef QUESO_HAS_TRILINOS
-#else
-  m_elements.clear();
-#endif
-  this->copy(src);
-}
-
 // Destructor
 template<typename T>
 DistArray<T>::~DistArray()
@@ -87,14 +71,6 @@ template<typename T>
 DistArray<T>&
 DistArray<T>::operator=(const DistArray<T>& rhs)
 {
-#ifdef QUESO_HAS_TRILINOS
-#else
-  for (int i = 0; i < m_Map.NumGlobalElements(); ++i) {
-    m_elements[i].clear();
-  }
-  m_elements.clear();
-#endif
-  this->copy(rhs);
   return *this;
 }
 
@@ -152,14 +128,6 @@ DistArray<T>::RowSize() const
 #else
   return m_rowSize;
 #endif
-}
-
-// For some reason, we need to implement copy() otherwise the link stage during
-// `make distcheck` fails.  Building manually from the tarball works fine even
-// without copy() implemented.  Weirdness++.  -- Damon
-template<typename T> void DistArray<T>::copy(const DistArray<T>& src)
-{
-  queso_not_implemented();
 }
 
 // I/O methods
