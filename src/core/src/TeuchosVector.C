@@ -27,6 +27,7 @@
 #ifdef QUESO_HAS_TRILINOS
 
 #include <queso/TeuchosVector.h>
+#include <queso/RngBase.h>
 
 namespace QUESO {
 
