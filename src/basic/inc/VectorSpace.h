@@ -57,9 +57,6 @@ public:
                      unsigned int                    dimGlobalValue,
                      const std::vector<std::string>* componentsNamesVec);
 
-  //! Copy constructor.
-  VectorSpace(const VectorSpace<V,M>&  aux);
-
   //! Destructor
   ~VectorSpace();
   //@}
@@ -173,6 +170,9 @@ protected:
 private:
   //! Default constructor
   VectorSpace();
+
+  //! Copy constructor.
+  VectorSpace(const VectorSpace<V,M>&  aux);
 };
 
 }  // End namespace QUESO

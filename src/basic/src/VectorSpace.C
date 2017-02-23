@@ -109,21 +109,6 @@ VectorSpace<V,M>::VectorSpace(const VectorSpace<V,M>& aux)
     m_emptyComponentName(""),
     m_zeroVector(new V(m_env,*m_map))
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering VectorSpace<V,M>::constructor(2)"
-                            << ": aux.m_componentsNamesArray = " << aux.m_componentsNamesArray
-                            << ", aux.m_componentsNamesVec = "   << aux.m_componentsNamesVec
-                            << std::endl;
-  }
-
-  if (aux.m_componentsNamesArray != NULL) {
-    m_componentsNamesArray = new DistArray<std::string>(*(aux.m_componentsNamesArray));
-  }
-
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving VectorSpace<V,M>::constructor(2)"
-                            << std::endl;
-  }
 }
 
 // Destructor
