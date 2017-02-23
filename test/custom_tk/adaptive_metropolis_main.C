@@ -127,10 +127,16 @@ int main(int argc, char ** argv)
   computed_mat30.unifiedReadContents("output_test_custom_tk_am/matrices_am30_sub0", "m", 1);
   computed_mat40.unifiedReadContents("output_test_custom_tk_am/matrices_am40_sub0", "m", 1);
 
-  expected_mat10.unifiedReadContents("output_test_custom_tk_am/matrices_am10_sub0", "m", 1);
-  expected_mat20.unifiedReadContents("output_test_custom_tk_am/matrices_am20_sub0", "m", 1);
-  expected_mat30.unifiedReadContents("output_test_custom_tk_am/matrices_am30_sub0", "m", 1);
-  expected_mat40.unifiedReadContents("output_test_custom_tk_am/matrices_am40_sub0", "m", 1);
+  std::string regressionsFileName = "custom_tk/output_test_custom_tk_am_regression";
+  const char * regressions_srcdir = std::getenv("srcdir");
+  if (regressions_srcdir) {
+    regressionsFileName = regressions_srcdir + ('/' + regressionsFileName);
+  }
+
+  expected_mat10.unifiedReadContents(regressionsFileName + ('/' + std::string("matrices_am10_sub0")), "m", 1);
+  expected_mat20.unifiedReadContents(regressionsFileName + ('/' + std::string("matrices_am20_sub0")), "m", 1);
+  expected_mat30.unifiedReadContents(regressionsFileName + ('/' + std::string("matrices_am30_sub0")), "m", 1);
+  expected_mat40.unifiedReadContents(regressionsFileName + ('/' + std::string("matrices_am40_sub0")), "m", 1);
 
   queso_require_equal_to_msg(computed_mat10[0], expected_mat10[0], "adapted matrix at iter 10 not equal");
   queso_require_equal_to_msg(computed_mat20[0], expected_mat20[0], "adapted matrix at iter 20 not equal");
