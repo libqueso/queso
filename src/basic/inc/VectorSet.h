@@ -33,7 +33,7 @@ namespace QUESO {
 class GslVector;
 class GslMatrix;
 
-/*! \file uqVectorSet.h
+/*! \file VectorSet.h
  * \brief A templated class for handling sets.
  *
  * \class VectorSet

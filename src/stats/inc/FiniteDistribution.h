@@ -31,7 +31,7 @@
 
 namespace QUESO {
 
-/*! \file uqFiniteDistribution.h
+/*! \file FiniteDistribution.h
  * \brief A templated class for a finite distribution.
  *
  * \class FiniteDistribution

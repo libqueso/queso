@@ -34,7 +34,7 @@ namespace QUESO {
 class GslVector;
 class GslMatrix;
 
-/*! \file SequenceofVectors.h
+/*! \file SequenceOfVectors.h
  * \brief A templated class for handling vector samples
  *
  * \class SequenceOfVectors

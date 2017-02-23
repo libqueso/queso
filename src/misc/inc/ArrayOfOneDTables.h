@@ -33,7 +33,7 @@ namespace QUESO {
 class GslVector;
 class GslMatrix;
 
-/*!\file ArrayOfOneDTables
+/*!\file ArrayOfOneDTables.h
  * \brief Class to accommodate arrays of one-dimensional tables.
  *
  * \class ArrayOfOneDTables

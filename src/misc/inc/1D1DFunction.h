@@ -35,7 +35,7 @@
 
 namespace QUESO {
 
-/*! \file uqBase1D1DFunction.h
+/*! \file 1D1DFunction.h
     \brief One-dimension function class.
 */
 

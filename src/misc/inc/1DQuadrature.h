@@ -34,7 +34,7 @@
 
 namespace QUESO {
 
-/*!\file uqBase1DQuadrature.h
+/*!\file 1DQuadrature.h
  * \brief One-dimensional quadrature rules (numerical integration) class. */
 
 //*****************************************************
