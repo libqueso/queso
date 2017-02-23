@@ -377,7 +377,7 @@ public:
 
 #ifdef QUESO_HAS_TRILINOS
   //! Extract MPI Communicator from a Epetra_MpiComm object.
-  const Epetra_MpiComm& epetraMpiComm() const;
+  const Epetra_Comm& epetraMpiComm() const;
 #endif
 
  //@}
@@ -391,11 +391,12 @@ private:
 
   // QUESO environment
   const BaseEnvironment& m_env;
-#ifdef QUESO_HAS_TRILINOS
 
-  // Epetra MPI communicator
-  Epetra_MpiComm*               m_epetraMpiComm;
+#ifdef QUESO_HAS_TRILINOS
+  // Epetra communicator
+  Epetra_Comm*               m_epetraComm;
 #endif
+
   //! Embedded wrapped opaque MPI_Comm object.
   RawType_MPI_Comm            m_rawComm;
 
