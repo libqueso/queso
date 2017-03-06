@@ -242,8 +242,10 @@ public:
 
   //! @name Attribute Accessor Methods
   //@{
+#ifdef QUESO_HAS_MPI
   //! Extract MPI Communicator from a MpiComm object.
   RawType_MPI_Comm Comm     () const;
+#endif  // QUESO_HAS_MPI
 
   //! Return my process ID.
   int                MyPID    () const;

@@ -106,6 +106,7 @@ MpiComm::operator=(const MpiComm& rhs)
 }
 
 // Attribute access methods -------------------------
+#ifdef QUESO_HAS_MPI
 RawType_MPI_Comm
 MpiComm::Comm() const
 {
@@ -116,6 +117,8 @@ MpiComm::Comm() const
 #endif
   return m_rawComm;
 }
+#endif  // QUESO_HAS_MPI
+
 // --------------------------------------------------
 int
 MpiComm::MyPID() const
