@@ -44,11 +44,14 @@ public:
 
   virtual ~MyTransitionKernel();
   virtual void updateTK();
+  virtual bool covMatrixIsDirty();
+  virtual void cleanCovMatrix();
 
   const VectorSpace<V, M> & m_vectorSpace;
 
 private:
   unsigned int m_counter;
+  bool m_dirtyCovMatrix;
 };
 
 }  // End namespace QUESO

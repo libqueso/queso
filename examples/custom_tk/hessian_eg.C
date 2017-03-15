@@ -59,9 +59,6 @@ MyTransitionKernel<V, M>::updateTK()
 
     new_matrix(0, 0) = 1.0;
 
-    // Changing the matrix, so we set the dirty flag so AM can reset
-    this->setCovMatrixIsDirty(true);
-
     // Update all the RVs with new cov matrix (including all the ones used in
     // Delayed Rejection)
     this->updateLawCovMatrix(new_matrix);
@@ -69,6 +66,20 @@ MyTransitionKernel<V, M>::updateTK()
 
   // Just keeping track of a counter so I can trigger a 'dirty' matrix
   m_counter++;
+}
+
+template <class V, class M>
+bool
+MyTransitionKernel<V, M>::covMatrixIsDirty()
+{
+  return m_counter == 15;
+}
+
+template <class V, class M>
+void
+MyTransitionKernel<V, M>::cleanCovMatrix()
+{
+  // Don't need to do anything since we handled it in covMatrixIsDirty
 }
 
 // Explicit instantiation of the template

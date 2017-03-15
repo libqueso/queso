@@ -1851,9 +1851,9 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     if (m_tk->covMatrixIsDirty()) {
       m_latestDirtyCovMatrixIteration = positionId;
 
-      // Set the dirty flag to false so that the last dirty iteration tracker
+      // Clean the covariance matrix so that the last dirty iteration tracker
       // doesn't get wiped in the next iteration.
-      m_tk->setCovMatrixIsDirty(false);
+      m_tk->cleanCovMatrix();
     }
 
     //****************************************************

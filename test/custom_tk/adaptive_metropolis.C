@@ -40,9 +40,9 @@ MyTransitionKernel<V, M>::MyTransitionKernel(
   :
   ScaledCovMatrixTKGroup<V, M>(prefix, vectorSpace, scales, covMatrix),
   m_vectorSpace(vectorSpace),
-  m_counter(0)
+  m_counter(0),
+  m_dirtyCovMatrix(false)
 {
-  std::cout << "Hello from MyTransitionKernel!" << std::endl;
 }
 
 template<class V, class M>
@@ -59,8 +59,7 @@ MyTransitionKernel<V, M>::updateTK()
 
     new_matrix(0, 0) = 1.0;
 
-    // Changing the matrix, so we set the dirty flag so AM can reset
-    this->setCovMatrixIsDirty(true);
+    this->m_dirtyCovMatrix = true;
 
     // Update all the RVs with new cov matrix (including all the ones used in
     // Delayed Rejection)
@@ -69,6 +68,20 @@ MyTransitionKernel<V, M>::updateTK()
 
   // Just keeping track of a counter so I can trigger a 'dirty' matrix
   m_counter++;
+}
+
+template <class V, class M>
+bool
+MyTransitionKernel<V, M>::covMatrixIsDirty()
+{
+  return m_dirtyCovMatrix;
+}
+
+template <class V, class M>
+void
+MyTransitionKernel<V, M>::cleanCovMatrix()
+{
+  this->m_dirtyCovMatrix = false;
 }
 
 // Explicit instantiation of the template

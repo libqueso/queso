@@ -101,12 +101,20 @@ public:
    */
   virtual void updateTK() { };
 
-  //! This flag determines whether or not the user has 'dirtied' the covariance
-  //! matrix, thereby necessitating an AM reset
-  bool covMatrixIsDirty() const;
+  //! This method determines whether or not the user has 'dirtied' the
+  //! covariance matrix, thereby necessitating an AM reset.
+  /*!
+   * Should return true if the cov matrix was modified in such a way to affect
+   * the Adaptive Metropolis sample covariance calculation.
+   */
+  virtual bool covMatrixIsDirty() = 0;
 
-  //! Sets the dirty flag for the covariance matrix.
-  void setCovMatrixIsDirty(bool isDirty);
+  //! Performs whatever cleanup is needed (usually just resetting an internal
+  //! bool flag) after the covariance matrix was modified.
+  /*!
+   * After this method is called, covMatrixIsDirty should return \c true.
+   */
+  virtual void cleanCovMatrix() = 0;
   //@}
 
   //! @name I/O methods
@@ -124,11 +132,6 @@ protected:
         std::vector<const V*>            m_preComputingPositions;
         std::vector<BaseVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
   unsigned int m_stageId;
-
-private:
-  //! This flag determines whether or not the user has 'dirtied' the covariance
-  //! matrix, thereby necessitating an AM reset
-  bool m_dirtyCovarianceMatrix;
 };
 
 }  // End namespace QUESO

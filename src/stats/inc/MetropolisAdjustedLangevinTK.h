@@ -85,6 +85,9 @@ public:
 
   //! Clears the pre-computing positions \c m_preComputingPositions[stageId]
   void clearPreComputingPositions();
+
+  virtual bool covMatrixIsDirty() { return false; }
+  virtual void cleanCovMatrix() { }
   //@}
 
   //! @name I/O methods

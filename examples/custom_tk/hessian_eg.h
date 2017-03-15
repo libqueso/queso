@@ -44,6 +44,8 @@ public:
 
   virtual ~MyTransitionKernel();
   virtual void updateTK();
+  virtual bool covMatrixIsDirty();
+  virtual void cleanCovMatrix();
 
   const VectorSpace<V, M> & m_vectorSpace;
 
