@@ -109,6 +109,7 @@
 #define UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM                                   0
 #define UQ_ML_SAMPLING_L_ALGORITHM                                            "random_walk"
 #define UQ_ML_SAMPLING_L_TK                                                   "random_walk"
+#define UQ_ML_SAMPLING_L_UPDATE_INTERVAL                                      1
 
 namespace QUESO {
 
@@ -365,6 +366,9 @@ public:
   //! Which transition kernel to use for sampling
   std::string m_tk;
 
+  //! How often to call the TK's updateTK method
+  unsigned int m_updateInterval;
+
 private:
   //! Copies the option values from \c srcOptions to \c this.
   void   copyOptionsValues(const MLSamplingLevelOptions& srcOptions);
@@ -453,6 +457,7 @@ private:
   std::string                   m_option_doLogitTransform;
   std::string                   m_option_algorithm;
   std::string                   m_option_tk;
+  std::string                   m_option_updateInterval;
 
   void checkOptions(const BaseEnvironment * env);
 
