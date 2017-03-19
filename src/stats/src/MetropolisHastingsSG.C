@@ -1844,7 +1844,9 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     }
 
     // Possibly user-overridden to implement strange things, but we allow it.
-    m_tk->updateTK();
+    if (positionId % m_optionsObj->m_updateInterval == 0) {
+      m_tk->updateTK();
+    }
 
     // If the user dirtied the cov matrix, keep track of the latest iteration
     // number it happened at.
