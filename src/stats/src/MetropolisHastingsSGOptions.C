@@ -106,6 +106,7 @@ MhOptionsValues::MhOptionsValues(
     m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM),
     m_algorithm                                (UQ_MH_SG_ALGORITHM),
     m_tk                                       (UQ_MH_SG_TK),
+    m_updateInterval                           (UQ_MH_SG_UPDATE_INTERVAL),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     m_alternativeRawSsOptionsValues            (),
     m_alternativeFilteredSsOptionsValues       (),
@@ -171,7 +172,8 @@ MhOptionsValues::MhOptionsValues(
     m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
     m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
     m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
-    m_option_tk                                        (m_prefix + "tk"                                        )
+    m_option_tk                                        (m_prefix + "tk"                                        ),
+    m_option_updateInterval                            (m_prefix + "updateInterval"                            )
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativeRawSsOptionsValues     ) m_alternativeRawSsOptionsValues      = *alternativeRawSsOptionsValues;
@@ -247,6 +249,7 @@ MhOptionsValues::MhOptionsValues(
     m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM),
     m_algorithm                                (UQ_MH_SG_ALGORITHM),
     m_tk                                       (UQ_MH_SG_TK),
+    m_updateInterval                           (UQ_MH_SG_UPDATE_INTERVAL),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     m_alternativeRawSsOptionsValues            (),
     m_alternativeFilteredSsOptionsValues       (),
@@ -312,7 +315,8 @@ MhOptionsValues::MhOptionsValues(
     m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
     m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
     m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
-    m_option_tk                                        (m_prefix + "tk"                                        )
+    m_option_tk                                        (m_prefix + "tk"                                        ),
+    m_option_updateInterval                            (m_prefix + "updateInterval"                            )
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativeRawSsOptionsValues     ) m_alternativeRawSsOptionsValues      = *alternativeRawSsOptionsValues;
@@ -378,6 +382,7 @@ MhOptionsValues::MhOptionsValues(
   m_parser->registerOption<bool        >(m_option_doLogitTransform,                           UQ_MH_SG_DO_LOGIT_TRANSFORM                                  , "flag to toggle logit transform for bounded domains"         );
   m_parser->registerOption<std::string >(m_option_algorithm,                                  UQ_MH_SG_ALGORITHM                                           , "which MCMC algorithm to use"                                );
   m_parser->registerOption<std::string >(m_option_tk,                                         UQ_MH_SG_TK                                                  , "which MCMC transition kernel to use"                        );
+  m_parser->registerOption<unsigned int>(m_option_updateInterval,                             UQ_MH_SG_UPDATE_INTERVAL                                     , "how often to call updateTK method"                          );
 
   m_parser->scanInputFile();
 
@@ -439,6 +444,7 @@ MhOptionsValues::MhOptionsValues(
   m_parser->getOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform);
   m_parser->getOption<std::string >(m_option_algorithm,                                  m_algorithm);
   m_parser->getOption<std::string >(m_option_tk,                                         m_tk);
+  m_parser->getOption<unsigned int>(m_option_updateInterval,                             m_updateInterval);
 #else
   m_help = m_env->input()(m_option_help, UQ_MH_SG_HELP);
   m_dataOutputFileName = m_env->input()(m_option_dataOutputFileName, UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV);
@@ -553,6 +559,7 @@ MhOptionsValues::MhOptionsValues(
   m_doLogitTransform = m_env->input()(m_option_doLogitTransform, UQ_MH_SG_DO_LOGIT_TRANSFORM);
   m_algorithm = m_env->input()(m_option_algorithm, UQ_MH_SG_ALGORITHM);
   m_tk = m_env->input()(m_option_tk, UQ_MH_SG_TK);
+  m_updateInterval = m_env->input()(m_option_updateInterval, UQ_MH_SG_UPDATE_INTERVAL);
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions(env);
@@ -724,6 +731,7 @@ MhOptionsValues::copy(const MhOptionsValues& src)
   m_doLogitTransform                          = src.m_doLogitTransform;
   m_algorithm                                 = src.m_algorithm;
   m_tk                                        = src.m_tk;
+  m_updateInterval                            = src.m_updateInterval;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeRawSsOptionsValues             = src.m_alternativeRawSsOptionsValues;
@@ -815,6 +823,7 @@ std::ostream & operator<<(std::ostream & os, const MhOptionsValues & obj)
      << "\n" << obj.m_option_doLogitTransform                           << " = " << obj.m_doLogitTransform
      << "\n" << obj.m_option_algorithm                                  << " = " << obj.m_algorithm
      << "\n" << obj.m_option_tk                                         << " = " << obj.m_tk
+     << "\n" << obj.m_option_updateInterval                             << " = " << obj.m_updateInterval
      << std::endl;
 
   return os;
@@ -900,7 +909,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
   m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
   m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
-  m_option_tk                                        (m_prefix + "tk"                                        )
+  m_option_tk                                        (m_prefix + "tk"                                        ),
+  m_option_updateInterval                            (m_prefix + "updateInterval"                            )
 {
   queso_deprecated();
 
@@ -981,7 +991,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
   m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
   m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
-  m_option_tk                                        (m_prefix + "tk"                                        )
+  m_option_tk                                        (m_prefix + "tk"                                        ),
+  m_option_updateInterval                            (m_prefix + "updateInterval"                            )
 {
   queso_deprecated();
 
@@ -1082,7 +1093,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
   m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
   m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
-  m_option_tk                                        (m_prefix + "tk"                                        )
+  m_option_tk                                        (m_prefix + "tk"                                        ),
+  m_option_updateInterval                            (m_prefix + "updateInterval"                            )
 {
   queso_deprecated();
 
@@ -1143,6 +1155,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_ov.m_doLogitTransform                          = mlOptions.m_doLogitTransform;
   m_ov.m_algorithm                                 = mlOptions.m_algorithm;
   m_ov.m_tk                                        = mlOptions.m_tk;
+  m_ov.m_updateInterval                            = mlOptions.m_updateInterval;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 //m_ov.m_alternativeRawSsOptionsValues             = mlOptions.; // dakota
@@ -1294,6 +1307,7 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
      << "\n" << m_option_doLogitTransform                           << " = " << m_ov.m_doLogitTransform
      << "\n" << m_option_algorithm                                  << " = " << m_ov.m_algorithm
      << "\n" << m_option_tk                                         << " = " << m_ov.m_tk
+     << "\n" << m_option_updateInterval                             << " = " << m_ov.m_updateInterval
      << std::endl;
 
   return;
@@ -1365,6 +1379,7 @@ MetropolisHastingsSGOptions::defineMyOptions(boost::program_options::options_des
     (m_option_doLogitTransform.c_str(),                           boost::program_options::value<bool        >()->default_value(UQ_MH_SG_DO_LOGIT_TRANSFORM                                  ), "flag to toggle logit transform for bounded domains"         )
     (m_option_algorithm.c_str(),                                  boost::program_options::value<std::string >()->default_value(UQ_MH_SG_ALGORITHM                                           ), "which mcmc algorithm to use"                                )
     (m_option_tk.c_str(),                                         boost::program_options::value<std::string >()->default_value(UQ_MH_SG_TK                                                  ), "which mcmc tk to use"                                       )
+    (m_option_updateInterval.c_str(),                             boost::program_options::value<unsigned int>()->default_value(UQ_MH_SG_UPDATE_INTERVAL                                     ), "how often to call updateTK method"                          )
   ;
 
   return;
@@ -1690,6 +1705,10 @@ MetropolisHastingsSGOptions::getMyOptionValues(boost::program_options::options_d
 
   if (m_env.allOptionsMap().count(m_option_tk)) {
     m_ov.m_tk = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_tk]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_updateInterval)) {
+    m_ov.m_updateInterval = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_updateInterval]).as<unsigned int>();
   }
 }
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS

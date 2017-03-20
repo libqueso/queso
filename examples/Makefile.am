@@ -515,6 +515,25 @@ example_SharedPtr_CPPFLAGS = $(AM_CPPFLAGS)
 dist_pointers_DATA =
 dist_pointers_DATA += ${example_SharedPtr_SOURCES}
 
+####################################
+# Custom Transition Kernel Example #
+####################################
+custom_tkdir = $(prefix)/examples/custom_tk
+
+custom_tk_PROGRAMS = hessian_eg
+
+hessian_eg_SOURCES =
+hessian_eg_SOURCES += custom_tk/hessian_eg.C
+hessian_eg_SOURCES += custom_tk/hessian_eg_main.C
+custom_tk_HEADERS = custom_tk/hessian_eg.h
+hessian_eg_LDADD = $(top_builddir)/src/libqueso.la
+hessian_eg_CPPFLAGS = $(AM_CPPFLAGS)
+
+dist_custom_tk_DATA =
+dist_custom_tk_DATA += ${hessian_eg_SOURCES}
+dist_custom_tk_DATA += ${hessian_eg_HEADERS}
+
+
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif

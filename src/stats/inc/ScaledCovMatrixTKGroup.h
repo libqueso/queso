@@ -83,6 +83,9 @@ public:
 
   //! Sets the internal \c m_stageId varialbe to \c stageId
   virtual unsigned int set_dr_stage(unsigned int stageId);
+
+  virtual bool covMatrixIsDirty() { return false; }
+  virtual void cleanCovMatrix() { }
   //@}
 
   //! @name I/O methods

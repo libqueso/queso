@@ -93,6 +93,28 @@ public:
 
   //! Does nothing.  Subclasses may re-implement.  Returns the current stage id.
   virtual unsigned int set_dr_stage(unsigned int stageId);
+
+  //! The user can override this method to implement state-dependent
+  //! transition kernel behaviour.
+  /*!
+   * Default behaviour is a no-op.
+   */
+  virtual void updateTK() { };
+
+  //! This method determines whether or not the user has 'dirtied' the
+  //! covariance matrix, thereby necessitating an AM reset.
+  /*!
+   * Should return true if the cov matrix was modified in such a way to affect
+   * the Adaptive Metropolis sample covariance calculation.
+   */
+  virtual bool covMatrixIsDirty() = 0;
+
+  //! Performs whatever cleanup is needed (usually just resetting an internal
+  //! bool flag) after the covariance matrix was modified.
+  /*!
+   * After this method is called, covMatrixIsDirty should return \c true.
+   */
+  virtual void cleanCovMatrix() = 0;
   //@}
 
   //! @name I/O methods

@@ -169,7 +169,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
   m_initialLogLikelihoodValue (0.),
-  m_userDidNotProvideOptions(false)
+  m_userDidNotProvideOptions(false),
+  m_latestDirtyCovMatrixIteration(0)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -250,7 +251,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
   m_initialLogLikelihoodValue (initialLogLikelihood),
-  m_userDidNotProvideOptions(false)
+  m_userDidNotProvideOptions(false),
+  m_latestDirtyCovMatrixIteration(0)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -326,7 +328,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
   m_initialLogLikelihoodValue (0.),
-  m_userDidNotProvideOptions(true)
+  m_userDidNotProvideOptions(true),
+  m_latestDirtyCovMatrixIteration(0)
 {
   // We do this dance because one of the MetropolisHastingsSGOptions
   // constructors takes one of the old-style MLSamplingLevelOptions options
@@ -393,7 +396,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
   m_initialLogLikelihoodValue (initialLogLikelihood),
-  m_userDidNotProvideOptions(true)
+  m_userDidNotProvideOptions(true),
+  m_latestDirtyCovMatrixIteration(0)
 {
   // We do this dance because one of the MetropolisHastingsSGOptions
   // constructors takes one of the old-style MLSamplingLevelOptions options
@@ -1839,6 +1843,21 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       }
     }
 
+    // Possibly user-overridden to implement strange things, but we allow it.
+    if (positionId % m_optionsObj->m_updateInterval == 0) {
+      m_tk->updateTK();
+    }
+
+    // If the user dirtied the cov matrix, keep track of the latest iteration
+    // number it happened at.
+    if (m_tk->covMatrixIsDirty()) {
+      m_latestDirtyCovMatrixIteration = positionId;
+
+      // Clean the covariance matrix so that the last dirty iteration tracker
+      // doesn't get wiped in the next iteration.
+      m_tk->cleanCovMatrix();
+    }
+
     //****************************************************
     // Point 5/6 of logic for new position
     // Adaptive Metropolis calculation
@@ -1992,8 +2011,29 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
   else {
     unsigned int interval = positionId - m_optionsObj->m_amInitialNonAdaptInterval;
     if ((interval % m_optionsObj->m_amAdaptInterval) == 0) {
-      idOfFirstPositionInSubChain = positionId - m_optionsObj->m_amAdaptInterval;
-      partialChain.resizeSequence(m_optionsObj->m_amAdaptInterval);
+
+      // If the user has set the proposal cov matrix to 'dirty', already
+      // recorded the positionId at which that happened in m_latestDirtyCovMatrixIteration
+      //
+      // If the user didn't dirty it, we're good.
+      if (m_latestDirtyCovMatrixIteration > 0) {
+        m_lastMean->cwSet(0.0);
+        m_lastAdaptedCovMatrix->cwSet(0.0);
+
+        // We'll adapt over the states from when the user dirtied the matrix
+        // until the current one
+        unsigned int iter_diff = positionId - m_latestDirtyCovMatrixIteration;
+        idOfFirstPositionInSubChain = iter_diff;
+        partialChain.resizeSequence(iter_diff);
+
+        // Finally set the latest dirty iteration back to zero.  If the user
+        // sets the dirty flag again, then this will change.
+        m_latestDirtyCovMatrixIteration = 0;
+      }
+      else {
+        idOfFirstPositionInSubChain = positionId - m_optionsObj->m_amAdaptInterval;
+        partialChain.resizeSequence(m_optionsObj->m_amAdaptInterval);
+      }
 
       if (m_optionsObj->m_amAdaptedMatricesDataOutputPeriod > 0) {
         if ((interval % m_optionsObj->m_amAdaptedMatricesDataOutputPeriod) == 0) {
@@ -2020,7 +2060,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 
     // Transform to the space without boundaries.  This is the space
     // where the proposal distribution is Gaussian
-    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
+    if (this->m_optionsObj->m_tk == "logit_random_walk") {
       // Only do this when we don't use the Hessian (this may change in
       // future, but transformToGaussianSpace() is only implemented in
       // TransformedScaledCovMatrixTKGroup
@@ -2204,12 +2244,16 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     }
 
     // Transform the proposal covariance matrix if we have Logit transforms
-    // turned on
-    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
+    // turned on.
+    //
+    // This logic should really be done inside the kernel itself
+    if (this->m_optionsObj->m_tk == "logit_random_walk") {
       (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
-    else if (this->m_optionsObj->m_algorithm == "random_walk") {
+    else {
+      // Assume that if we're not doing a logit transform, we're doing a random
+      // something sensible
       (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }

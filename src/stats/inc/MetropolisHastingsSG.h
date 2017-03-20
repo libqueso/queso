@@ -345,6 +345,8 @@ private:
       boxSubset);
 
   bool m_userDidNotProvideOptions;
+
+  unsigned int m_latestDirtyCovMatrixIteration;
 };
 
 }  // End namespace QUESO
