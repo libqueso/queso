@@ -331,7 +331,21 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   m_env.fullComm().syncPrintDebugMsg("Leaving StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000);
   m_env.fullComm().Barrier();
   // grvy_timer_end("BayesMetropolisHastings"); TODO: revisit timers
-  return;
+}
+
+template <class P_V, class P_M>
+void
+StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
+  const MhOptionsValues * alternativeOptionsValues,
+  const P_V & initialValues)
+{
+  P_M proposalCovMatrix(m_priorRv.imageSet().vectorSpace().zeroVector());
+
+  m_priorRv.pdf().distributionVariance(proposalCovMatrix);
+
+  this->solveWithBayesMetropolisHastings(alternativeOptionsValues,
+                                         initialValues,
+                                         &proposalCovMatrix);
 }
 
 template <class P_V, class P_M>
