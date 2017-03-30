@@ -363,6 +363,13 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
 
 template <class P_V, class P_M>
 void
+StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()
+{
+  this->solveWithBayesMetropolisHastings(NULL);
+}
+
+template <class P_V, class P_M>
+void
 StatisticalInverseProblem<P_V, P_M>::seedWithMAPEstimator()
 {
   this->m_seedWithMAPEstimator = true;
