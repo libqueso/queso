@@ -185,6 +185,14 @@ public:
   void solveWithBayesMetropolisHastings(const MhOptionsValues * alternativeOptionsValues,
                                         const P_V & initialValues);
 
+  //! Solves the problem via Bayes formula and a Metropolis-Hastings algorithm.
+  /*!
+   * This calls
+   * solveWithBayesMetropolisHastings(const MhOptionsValues *, const P_V &);
+   * with the prior mean as the initial point in the second argument.
+   */
+  void solveWithBayesMetropolisHastings(const MhOptionsValues * alternativeOptionsValues);
+
   //! Seeds the chain with the result of a deterministic optimisation
   /*!
    * This only works for Metropolis-Hastings right now.  Multi-level is not
