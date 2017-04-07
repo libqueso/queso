@@ -75,6 +75,7 @@ check_PROGRAMS += SequenceExample_gsl
 check_PROGRAMS += BimodalExample_gsl
 check_PROGRAMS += test_fd_fallback
 check_PROGRAMS += test_custom_tk_am
+check_PROGRAMS += test_no_initial_point
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -248,6 +249,8 @@ test_custom_tk_am_SOURCES += custom_tk/adaptive_metropolis.C
 test_custom_tk_am_SOURCES += test_custom_tk/adaptive_metropolis.h
 test_custom_tk_am_CPPFLAGS = -I$(srcdir)/custom_tk $(AM_CPPFLAGS)
 
+test_no_initial_point_SOURCES = test_StatisticalInverseProblem/test_no_initial_point.C
+
 TESTS =
 TESTS += unit_driver
 TESTS += test_boxsubset_centroid
@@ -324,6 +327,7 @@ TESTS += t04_bimodal/rtest04.sh
 TESTS += test_fd_fallback
 TESTS += test_SequenceOfVectorsErase
 TESTS += test_custom_tk_am
+TESTS += test_no_initial_point
 
 if ! MPI_ENABLED
 XFAIL_TESTS = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
