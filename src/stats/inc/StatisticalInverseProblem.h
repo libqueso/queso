@@ -174,6 +174,33 @@ public:
                                         const P_V&                    initialValues,
                                         const P_M*                    initialProposalCovMatrix);
 
+  //! Solves the problem via Bayes formula and a Metropolis-Hastings algorithm.
+  /*!
+   * This calls
+   * solveWithBayesMetropolisHastings(const MhOptionsValues *, const P_V &,
+   * P_M *);
+   * with the prior variance as the proposal covariance matrix in the third
+   * argument.
+   */
+  void solveWithBayesMetropolisHastings(const MhOptionsValues * alternativeOptionsValues,
+                                        const P_V & initialValues);
+
+  //! Solves the problem via Bayes formula and a Metropolis-Hastings algorithm.
+  /*!
+   * This calls
+   * solveWithBayesMetropolisHastings(const MhOptionsValues *, const P_V &);
+   * with the prior mean as the initial point in the second argument.
+   */
+  void solveWithBayesMetropolisHastings(const MhOptionsValues * alternativeOptionsValues);
+
+  //! Solves the problem via Bayes formula and a Metropolis-Hastings algorithm.
+  /*!
+   * This calls
+   * solveWithBayesMetropolisHastings(const MhOptionsValues *);
+   * with NULL as the options object.  Options are read from the input file.
+   */
+  void solveWithBayesMetropolisHastings();
+
   //! Seeds the chain with the result of a deterministic optimisation
   /*!
    * This only works for Metropolis-Hastings right now.  Multi-level is not
