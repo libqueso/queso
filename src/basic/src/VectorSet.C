@@ -23,7 +23,6 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/Environment.h>
-#include <queso/Defines.h>
 #include <queso/VectorSet.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
