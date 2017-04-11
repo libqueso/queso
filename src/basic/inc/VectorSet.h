@@ -25,13 +25,13 @@
 #ifndef UQ_VECTOR_SET_H
 #define UQ_VECTOR_SET_H
 
-#include <queso/Environment.h>
-#include <queso/Defines.h>
+#include <string>
 
 namespace QUESO {
 
 class GslVector;
 class GslMatrix;
+class BaseEnvironment;
 
 /*! \file VectorSet.h
  * \brief A templated class for handling sets.
