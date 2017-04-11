@@ -41,6 +41,22 @@ ConcatenationSubset<V,M>::ConcatenationSubset(const char* prefix,
 {
   m_sets[0] = &set1;
   m_sets[1] = &set2;
+
+  V mins(vectorSpace.zeroVector());
+  V maxs(vectorSpace.zeroVector());
+
+  for (unsigned int i = 0; i < set1.minValues().sizeLocal(); i++) {
+    mins[i] = set1.minValues()[i];
+    maxs[i] = set1.maxValues()[i];
+  }
+
+  for (unsigned int i = 0; i < set2.minValues().sizeLocal(); i++) {
+    mins[i+set1.minValues().sizeLocal()] = set2.minValues()[i];
+    maxs[i+set1.maxValues().sizeLocal()] = set2.maxValues()[i];
+  }
+
+  this->setMinValues(mins);
+  this->setMaxValues(maxs);
 }
 
 // Default, shaped constructor
@@ -55,6 +71,21 @@ ConcatenationSubset<V,M>::ConcatenationSubset(const char* prefix,
   for (unsigned int i = 0; i < m_sets.size(); ++i) {
     m_sets[i] = sets[i];
   }
+
+  V mins(vectorSpace.zeroVector());
+  V maxs(vectorSpace.zeroVector());
+
+  unsigned int offset = 0;
+  for (unsigned int i = 0; i < m_sets.size(); i++) {
+    for (unsigned int j = 0; j < m_sets[i]->minValues().sizeLocal(); j++) {
+      mins[j+offset] = m_sets[i]->minValues()[j];
+      maxs[j+offset] = m_sets[i]->maxValues()[j];
+    }
+    offset += m_sets[i]->minValues().sizeLocal();
+  }
+
+  this->setMinValues(mins);
+  this->setMaxValues(maxs);
 }
 
 // Destructor
