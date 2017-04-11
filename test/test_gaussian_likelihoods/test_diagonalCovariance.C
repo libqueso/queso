@@ -25,10 +25,12 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSet.h>
+#include <queso/VectorSpace.h>
 #include <queso/BoxSubset.h>
 #include <queso/GaussianLikelihoodDiagonalCovariance.h>
 
 #include <cstdlib>
+#include <cmath>
 
 #define TOL 1e-8
 

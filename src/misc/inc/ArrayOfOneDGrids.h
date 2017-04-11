@@ -27,6 +27,7 @@
 
 #include <queso/OneDGrid.h>
 #include <queso/VectorSpace.h>
+#include <queso/DistArray.h>
 
 namespace QUESO {
 

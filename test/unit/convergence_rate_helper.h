@@ -28,6 +28,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <vector>
 #include <cmath>
 #include <limits>
 

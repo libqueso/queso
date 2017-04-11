@@ -7,6 +7,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSpace.h>
+#include <queso/DistArray.h>
 
 int main(int argc, char **argv) {
 #ifdef QUESO_HAS_MPI

@@ -27,6 +27,7 @@
 
 // QUESO
 #include <queso/MpiComm.h>
+#include <queso/VectorSpace.h>
 #include <queso/StreamUtilities.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>

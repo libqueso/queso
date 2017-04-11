@@ -31,6 +31,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/MultiDimensionalIndexing.h>
 #include <queso/StreamUtilities.h>
+#include <queso/VectorSpace.h>
 
 // C++
 #include <numeric>

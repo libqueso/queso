@@ -34,6 +34,10 @@
 #include <queso/GslVector.h>
 #include <queso/ScalarSequence.h>
 
+#include <string>
+#include <cmath>
+#include <vector>
+
 namespace QUESOTesting
 {
 

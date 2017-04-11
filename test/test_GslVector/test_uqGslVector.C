@@ -6,6 +6,8 @@
 #include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
 
+#include <cmath>
+
 #define TOL 1e-10
 
 int checkLinearSpacing(const QUESO::GslVector &v, double d1, double d2) {

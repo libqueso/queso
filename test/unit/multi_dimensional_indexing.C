@@ -31,6 +31,8 @@
 
 #include <queso/MultiDimensionalIndexing.h>
 
+#include <vector>
+
 namespace QUESOTesting
 {
   class MultiDimensionalIndexingTest : public CppUnit::TestCase

@@ -25,7 +25,11 @@
 #ifndef UQ_INTERPOLATION_SURROGATE_DATA_H
 #define UQ_INTERPOLATION_SURROGATE_DATA_H
 
+#include <queso/asserts.h>
+#include <queso/VectorSpace.h>
 #include <queso/BoxSubset.h>
+
+#include <vector>
 
 namespace QUESO
 {

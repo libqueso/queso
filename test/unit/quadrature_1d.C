@@ -33,8 +33,10 @@
 
 #include <quadrature_testing_helper.h>
 
+#include <vector>
 #include <cmath>
 #include <limits>
+#include <iostream>
 
 namespace QUESOTesting
 {

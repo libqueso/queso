@@ -26,8 +26,11 @@
 #include <queso/BetaJointPdf.h>
 #include <queso/ConcatenatedJointPdf.h>
 #include <queso/GammaJointPdf.h>
+#include <queso/VectorSpace.h>
 #include <queso/GslMatrix.h>
 #include <queso/GslVector.h>
+
+#include <cmath>
 
 #define TOL 1e-14
 

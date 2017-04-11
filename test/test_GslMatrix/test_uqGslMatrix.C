@@ -4,6 +4,8 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
+#include <cmath>
+
 #define TOL 1e-10
 
 using namespace std;

@@ -26,6 +26,9 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/GaussianJointPdf.h>
+#include <queso/VectorSpace.h>
+
+#include <cmath>
 
 #define TOL 1e-14
 

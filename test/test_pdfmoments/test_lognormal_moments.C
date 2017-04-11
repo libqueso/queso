@@ -24,6 +24,7 @@
 
 #include <queso/Environment.h>
 #include <queso/LogNormalJointPdf.h>
+#include <queso/VectorSpace.h>
 #include <queso/GslMatrix.h>
 #include <queso/GslVector.h>
 

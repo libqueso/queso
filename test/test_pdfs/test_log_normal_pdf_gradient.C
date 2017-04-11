@@ -25,6 +25,9 @@
 #include <queso/Environment.h>
 #include <queso/GslVector.h>
 #include <queso/LogNormalJointPdf.h>
+#include <queso/VectorSpace.h>
+
+#include <cmath>
 
 #define TOL 1e-14
 

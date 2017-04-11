@@ -24,8 +24,11 @@
 
 #include <queso/Environment.h>
 #include <queso/InverseGammaJointPdf.h>
+#include <queso/VectorSpace.h>
 #include <queso/GslMatrix.h>
 #include <queso/GslVector.h>
+
+#include <cmath>
 
 #define TOL 1e-14
 
