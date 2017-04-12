@@ -525,17 +525,6 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
     queso_require_msg(!(m_nullInputProposalCovMatrix), "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
   }
 
-  // Only transform prop cov matrix if we're doing a logit random walk.
-  // Also note we're transforming *after* we potentially read it from the input
-  // file.
-  if ((m_optionsObj->m_algorithm == "logit_random_walk") &&
-      (m_optionsObj->m_tk        == "logit_random_walk") &&
-      m_optionsObj->m_doLogitTransform) {
-    // Variable transform initial proposal cov matrix
-    transformInitialCovMatrixToGaussianSpace(
-        dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
-  }
-
   // This instantiates all the transition kernels with their associated
   // factories
   TKFactoryInitializer tk_factory_initializer;
@@ -2525,51 +2514,6 @@ MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix(
   }
 
   return;
-}
-
-template <class P_V, class P_M>
-void
-MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
-    const BoxSubset<P_V, P_M> & boxSubset)
-{
-  P_V min_domain_bounds(boxSubset.minValues());
-  P_V max_domain_bounds(boxSubset.maxValues());
-
-  for (unsigned int i = 0; i < min_domain_bounds.sizeLocal(); i++) {
-    double min_val = min_domain_bounds[i];
-    double max_val = max_domain_bounds[i];
-
-    if (queso_isfinite(min_val) && queso_isfinite(max_val)) {
-      if (m_initialProposalCovMatrix(i, i) >= max_val - min_val) {
-        // User is trying to specify a uniform proposal distribution, which
-        // is unsupported.  Throw an error for now.
-        std::cerr << "Proposal variance element "
-                  << i
-                  << " is "
-                  << m_initialProposalCovMatrix(i, i)
-                  << " but domain is of size "
-                  << max_val - min_val
-                  << std::endl;
-        std::cerr << "QUESO does not support uniform-like proposal "
-                  << "distributions.  Try making the proposal variance smaller"
-                  << std::endl;
-      }
-
-      // The jacobian at the midpoint of the domain
-      double transformJacobian = 4.0 / (max_val - min_val);
-
-      // Just do the multiplication by hand for now.  There's no method in
-      // Gsl(Vector|Matrix) to do this for me.
-      for (unsigned int j = 0; j < min_domain_bounds.sizeLocal(); j++) {
-        // Multiply column j by element j
-        m_initialProposalCovMatrix(j, i) *= transformJacobian;
-      }
-      for (unsigned int j = 0; j < min_domain_bounds.sizeLocal(); j++) {
-        // Multiply row j by element j
-        m_initialProposalCovMatrix(i, j) *= transformJacobian;
-      }
-    }
-  }
 }
 
 template class MetropolisHastingsSG<GslVector, GslMatrix>;

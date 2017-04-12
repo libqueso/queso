@@ -113,6 +113,8 @@ private:
   //! Sets the mean of the underlying Gaussian RVs to zero.
   void setRVsWithZeroMean();
 
+  void transformCovMatrixToGaussianSpace();
+
   using BaseTKGroup<V, M>::m_env;
   using BaseTKGroup<V, M>::m_prefix;
   using BaseTKGroup<V, M>::m_vectorSpace;
