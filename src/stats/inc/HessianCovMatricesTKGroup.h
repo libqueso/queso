@@ -82,6 +82,8 @@ public:
 
   virtual bool covMatrixIsDirty() { return false; }
   virtual void cleanCovMatrix() { }
+
+  virtual void updateLawCovMatrix(const M & covMatrix);
   //@}
 
   //! @name I/O methods

@@ -2232,20 +2232,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
       }
     }
 
-    // Transform the proposal covariance matrix if we have Logit transforms
-    // turned on.
-    //
-    // This logic should really be done inside the kernel itself
-    if (this->m_optionsObj->m_tk == "logit_random_walk") {
-      (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
-        ->updateLawCovMatrix(tmpMatrix);
-    }
-    else {
-      // Assume that if we're not doing a logit transform, we're doing a random
-      // something sensible
-      (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
-        ->updateLawCovMatrix(tmpMatrix);
-    }
+    m_tk->updateLawCovMatrix(tmpMatrix);
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
     queso_require_msg(!(UQ_INCOMPLETE_IMPLEMENTATION_RC), "need to code the update of m_upperCholProposalPrecMatrices");
