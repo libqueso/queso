@@ -77,6 +77,10 @@ public:
   //! The scale parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionScale;
 
+  //! Whether to use an observational error precision hyperparameter
+  //  lambda_y rather than a fixed multiplier of 1.
+  bool m_calibrateObservationalPrecision;
+
   //! The shape parameter for the Gamma hyperprior for the observational precision
   double m_observationalPrecisionShape;
 
@@ -123,6 +127,7 @@ private:
   std::string m_option_help;
   std::string m_option_emulatorPrecisionShape;
   std::string m_option_emulatorPrecisionScale;
+  std::string m_option_calibrateObservationalPrecision;
   std::string m_option_observationalPrecisionShape;
   std::string m_option_observationalPrecisionScale;
   std::string m_option_emulatorCorrelationStrengthAlpha;

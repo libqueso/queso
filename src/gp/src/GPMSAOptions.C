@@ -78,6 +78,7 @@ GPMSAOptions::set_prefix(const char * prefix)
   m_option_help = m_prefix + "help";
   m_option_emulatorPrecisionShape = m_prefix + "emulator_precision_shape";
   m_option_emulatorPrecisionScale = m_prefix + "emulator_precision_scale";
+  m_option_calibrateObservationalPrecision = m_prefix + "calibrate_observational_precision";
   m_option_observationalPrecisionShape = m_prefix + "observational_precision_shape";
   m_option_observationalPrecisionScale = m_prefix + "observational_precision_scale";
   m_option_emulatorCorrelationStrengthAlpha = m_prefix + "emulator_correlation_strength_alpha";
@@ -98,6 +99,7 @@ GPMSAOptions::set_defaults()
   m_help = UQ_GPMSA_HELP;
   m_emulatorPrecisionShape = UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV;
   m_emulatorPrecisionScale = UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV;
+  m_calibrateObservationalPrecision = false;
   m_observationalPrecisionShape = UQ_GPMSA_OBSERVATIONAL_PRECISION_SHAPE_ODV;
   m_observationalPrecisionScale = UQ_GPMSA_OBSERVATIONAL_PRECISION_SCALE_ODV;
   m_emulatorCorrelationStrengthAlpha = UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV;
@@ -141,6 +143,11 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     (m_option_emulatorPrecisionScale,
     m_emulatorPrecisionScale,
     "scale hyperprior (Gamma) parameter for emulator precision");
+
+  m_parser->registerOption
+    (m_option_calibrateObservationalPrecision,
+    m_calibrateObservationalPrecision,
+    "whether to use a calibrated hyperparameter for observational precision");
 
   m_parser->registerOption
     (m_option_observationalPrecisionShape,
@@ -192,6 +199,7 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<std::string>(m_option_help,                           m_help);
   m_parser->getOption<double>(m_option_emulatorPrecisionShape,              m_emulatorPrecisionShape);
   m_parser->getOption<double>(m_option_emulatorPrecisionScale,              m_emulatorPrecisionScale);
+  m_parser->getOption<bool>  (m_option_calibrateObservationalPrecision,     m_calibrateObservationalPrecision);
   m_parser->getOption<double>(m_option_observationalPrecisionShape,         m_observationalPrecisionShape);
   m_parser->getOption<double>(m_option_observationalPrecisionScale,         m_observationalPrecisionScale);
   m_parser->getOption<double>(m_option_emulatorCorrelationStrengthAlpha,    m_emulatorCorrelationStrengthAlpha);
@@ -211,6 +219,9 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     env.input()(m_option_emulatorPrecisionScale,
                 m_emulatorPrecisionScale);
 
+  m_calibrateObservationalPrecision =
+    env.input()(m_option_calibrateObservationalPrecision,
+                m_calibrateObservationalPrecision);
   m_observationalPrecisionShape =
     env.input()(m_option_observationalPrecisionShape,
                 m_observationalPrecisionShape);
@@ -269,6 +280,7 @@ GPMSAOptions::print(std::ostream& os) const
 {
   os << "\n" << m_option_emulatorPrecisionShape << " = " << this->m_emulatorPrecisionShape
      << "\n" << m_option_emulatorPrecisionScale << " = " << this->m_emulatorPrecisionScale
+     << "\n" << m_option_calibrateObservationalPrecision << " = " << this->m_calibrateObservationalPrecision
      << "\n" << m_option_observationalPrecisionShape << " = " << this->m_observationalPrecisionShape
      << "\n" << m_option_observationalPrecisionScale << " = " << this->m_observationalPrecisionScale
      << "\n" << m_option_emulatorCorrelationStrengthAlpha << " = " << this->m_emulatorCorrelationStrengthAlpha
