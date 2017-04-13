@@ -58,13 +58,8 @@ protected:
   {
     SharedPtr<BaseTKGroup<GslVector, GslMatrix> >::Type new_tk;
 
-    // Cast the domain to a box.  Might this cast fail?
-    const BoxSubset<GslVector, GslMatrix> & boxSubset =
-      dynamic_cast<const BoxSubset<GslVector, GslMatrix> & >(
-          this->m_target_pdf->domainSet());
-
     new_tk.reset(new DerivedTK(this->m_options->m_prefix.c_str(),
-                               boxSubset,
+                               this->m_target_pdf->domainSet(),
                                *(this->m_dr_scales),
                                *(this->m_initial_cov_matrix)));
 
