@@ -49,9 +49,8 @@ InvLogitGaussianVectorRV<V,M>::InvLogitGaussianVectorRV(
 
   queso_require_greater_msg(lawVarVector.getMinValue(), 0.0, "Covariance matrix is not symmetric positive definite.");
 
-  m_pdf = new InvLogitGaussianJointPdf<V,M>(m_prefix.c_str(),
-      dynamic_cast<const BoxSubset<V, M> & >(m_imageSet), lawExpVector,
-      lawVarVector);
+  m_pdf = new InvLogitGaussianJointPdf<V,M>(m_prefix.c_str(), m_imageSet,
+      lawExpVector, lawVarVector);
 
   V cholDiag(lawVarVector);
   cholDiag.cwSqrt();
@@ -88,8 +87,7 @@ InvLogitGaussianVectorRV<V, M>::InvLogitGaussianVectorRV(
                             << std::endl;
   }
 
-  m_pdf = new InvLogitGaussianJointPdf<V, M>(m_prefix.c_str(),
-      dynamic_cast<const BoxSubset<V, M> & >(m_imageSet),
+  m_pdf = new InvLogitGaussianJointPdf<V, M>(m_prefix.c_str(), m_imageSet,
       lawExpVector, lawCovMatrix);
 
   M lowerCholLawCovMatrix(lawCovMatrix);
