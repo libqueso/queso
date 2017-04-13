@@ -27,6 +27,7 @@
 #include <queso/InvLogitGaussianJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/VectorSet.h>
 
 namespace QUESO {
 
@@ -34,11 +35,11 @@ namespace QUESO {
 template<class V, class M>
 InvLogitGaussianVectorRV<V,M>::InvLogitGaussianVectorRV(
     const char * prefix,
-    const BoxSubset<V, M> & imageBoxSubset,
+    const VectorSet<V, M> & imageSet,
     const V & lawExpVector,
     const V & lawVarVector)
   : BaseVectorRV<V, M>(((std::string)(prefix)+"invlogit_gau").c_str(),
-      imageBoxSubset)
+      imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering InvLogitGaussianVectorRV<V,M>::constructor() [1]"
@@ -75,11 +76,11 @@ InvLogitGaussianVectorRV<V,M>::InvLogitGaussianVectorRV(
 template<class V, class M>
 InvLogitGaussianVectorRV<V, M>::InvLogitGaussianVectorRV(
     const char * prefix,
-    const BoxSubset<V, M> & imageBoxSubset,
+    const VectorSet<V, M> & imageSet,
     const V & lawExpVector,
     const M & lawCovMatrix)
   : BaseVectorRV<V, M>(((std::string)(prefix)+"invlogit_gau").c_str(),
-      imageBoxSubset)
+      imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering InvLogitGaussianVectorRV<V,M>::constructor() [2]"
