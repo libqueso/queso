@@ -58,8 +58,7 @@ InvLogitGaussianVectorRV<V,M>::InvLogitGaussianVectorRV(
   lowerCholLawCovMatrix.zeroUpper(false);
 
   m_realizer = new InvLogitGaussianVectorRealizer<V,M>(m_prefix.c_str(),
-      dynamic_cast<const BoxSubset<V, M> & >(m_imageSet), lawExpVector,
-      lowerCholLawCovMatrix);
+      m_imageSet, lawExpVector, lowerCholLawCovMatrix);
 
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
@@ -108,12 +107,11 @@ InvLogitGaussianVectorRV<V, M>::InvLogitGaussianVectorRV(
 
     vecS.cwSqrt();
     m_realizer = new InvLogitGaussianVectorRealizer<V,M>(m_prefix.c_str(),
-        dynamic_cast<const BoxSubset<V, M> & >(m_imageSet), lawExpVector, matU,
-        vecS, matVt);
+        m_imageSet, lawExpVector, matU, vecS, matVt);
   }
   else {
     m_realizer = new InvLogitGaussianVectorRealizer<V, M>(m_prefix.c_str(),
-        dynamic_cast<const BoxSubset<V, M> & >(m_imageSet), lawExpVector, lowerCholLawCovMatrix);
+        m_imageSet, lawExpVector, lowerCholLawCovMatrix);
   }
 
   m_subCdf     = NULL; // FIX ME: complete code
