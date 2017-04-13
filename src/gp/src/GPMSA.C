@@ -293,8 +293,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       // If we're in the experiment cross correlation part, need extra
       // foo: Sigma_delta/Sigma_v and Sigma_y
       if (i < this->m_numExperiments && j < this->m_numExperiments) {
-        typename SharedPtr<V>::Type cross_scenario1 = (this->m_simulationScenarios)[i];
-        typename SharedPtr<V>::Type cross_scenario2 = (this->m_simulationScenarios)[j];
+        typename SharedPtr<V>::Type cross_scenario1 = (this->m_experimentScenarios)[i];
+        typename SharedPtr<V>::Type cross_scenario2 = (this->m_experimentScenarios)[j];
         prodDiscrepancy = 1.0;
         unsigned int discrepancyCorrStrStart =
           dimParameter + num_svd_terms + dimParameter + dimScenario + 1 +
