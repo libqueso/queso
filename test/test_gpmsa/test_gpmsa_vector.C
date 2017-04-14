@@ -221,6 +221,9 @@ int main(int argc, char ** argv) {
                  numSimulations,
                  numExperiments);
 
+  // We want to calibrate for the observation precision
+  gpmsaFactory.options().m_calibrateObservationalPrecision = true;
+
   // std::vector containing all the points in scenario space where we have
   // simulations
   std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
