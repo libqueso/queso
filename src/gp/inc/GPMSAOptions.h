@@ -79,6 +79,8 @@ public:
 
   //! Whether to use an observational error precision hyperparameter
   //  lambda_y rather than a fixed multiplier of 1.
+  //
+  // False by default.
   bool m_calibrateObservationalPrecision;
 
   //! The shape parameter for the Gamma hyperprior for the observational precision
