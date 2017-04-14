@@ -141,6 +141,11 @@ public:
   //! @name Getters
   //@{
 
+  //! Return GPMSAOptions structure
+  const GPMSAOptions & options() const;
+
+  GPMSAOptions & options();
+
   //! Return number of simulations
   unsigned int numSimulations() const;
 

@@ -515,6 +515,22 @@ GPMSAFactory<V, M>::~GPMSAFactory()
 }
 
 template <class V, class M>
+const GPMSAOptions &
+GPMSAFactory<V, M>::options() const
+{
+  return *this->m_opts;
+}
+
+
+template <class V, class M>
+GPMSAOptions &
+GPMSAFactory<V, M>::options()
+{
+  return *this->m_opts;
+}
+
+
+template <class V, class M>
 unsigned int
 GPMSAFactory<V, M>::numSimulations() const
 {
