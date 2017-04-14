@@ -32,7 +32,9 @@ readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulatio
   double m2sim = 0;
 
   // First line is a header, so we ignore it
-  fgets(line, size, fp_in);
+  char * gotline = fgets(line, size, fp_in);
+  if (!gotline)
+    queso_error_msg("dakota_pstudy.dat was unreadable");
 
   i = 0;
   while (fscanf(fp_in, "%d %lf %lf %lf %lf %lf %lf\n", &id, &k_tmasl, &k_tmoml,
