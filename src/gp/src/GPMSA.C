@@ -49,7 +49,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const V & residual_in,
     const M & BT_Wy_B_inv_in,
     const M & KT_K_inv_in,
-    bool calibrate_observational_precision)
+    const GPMSAOptions & opts)
   :
   BaseScalarFunction<V, M>("", m_totalPrior.imageSet()),
   m_scenarioSpace(m_scenarioSpace),
@@ -70,7 +70,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   residual(residual_in),
   BT_Wy_B_inv(BT_Wy_B_inv_in),
   KT_K_inv(KT_K_inv_in),
-  m_calibrateObservationalPrecision(calibrate_observational_precision)
+  m_opts(opts)
 {
   queso_assert_greater(m_numSimulations, 0);
 
@@ -167,7 +167,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   unsigned int dimSum = 2 +
                         (this->num_svd_terms < numOutputs) +
                         (numOutputs > 1) +
-                        m_calibrateObservationalPrecision +
+                        m_opts.m_calibrateObservationalPrecision +
                         num_svd_terms +
                         dimParameter +
                         dimParameter +
@@ -336,7 +336,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
             queso_assert_greater_equal (experimentalError, 0);
 
-            const double lambda_y = m_calibrateObservationalPrecision ?
+            const double lambda_y =
+              m_opts.m_calibrateObservationalPrecision ?
               domainVector[dimSum-1] : 1.0;
 
             covMatrix(i,j) += lambda_y * experimentalError;
@@ -360,7 +361,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // matrix; now add the remaining Sigma_zhat terms
   if (numOutputs > 1)
     {
-      const double lambda_y = m_calibrateObservationalPrecision ?
+      const double lambda_y =
+        m_opts.m_calibrateObservationalPrecision ?
         domainVector[dimSum-1] : 1.0;
       const double inv_lambda_y = 1.0/lambda_y;
 
@@ -920,7 +922,7 @@ GPMSAFactory<V, M>::setUpEmulator()
       *this->residual,
       *this->BT_Wy_B_inv,
       *this->KT_K_inv,
-      this->m_opts->m_calibrateObservationalPrecision));
+      *this->m_opts));
 }
 
 
