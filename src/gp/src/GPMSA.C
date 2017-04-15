@@ -80,9 +80,9 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
 
-  const unsigned int MAX_SVD_TERMS =
-    std::min(m_numSimulations,(unsigned int)(5));
-  num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
+  this->num_svd_terms = this->m_opts.m_maxEmulatorBasisVectors ?
+    std::min((unsigned int)(this->m_opts.m_maxEmulatorBasisVectors), numOutputs) :
+    numOutputs;
 }
 
 template <class V, class M>
@@ -467,12 +467,6 @@ GPMSAFactory<V, M>::GPMSAFactory(
     priors(),
     m_constructedGP(false)
 {
-  const unsigned int numOutputs =
-    this->m_experimentOutputSpace.dimLocal();
-  const unsigned int MAX_SVD_TERMS =
-    std::min(m_numSimulations,(unsigned int)(5));
-  this->num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
-
   // We should have the same number of outputs from both simulations
   // and experiments
   queso_assert_equal_to(simulationOutputSpace.dimGlobal(),
@@ -732,6 +726,10 @@ GPMSAFactory<V, M>::setUpEmulator()
 {
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
+
+  this->num_svd_terms = this->m_opts->m_maxEmulatorBasisVectors ?
+    std::min((unsigned int)(this->m_opts->m_maxEmulatorBasisVectors), numOutputs) :
+    numOutputs;
 
   const Map & output_map = m_simulationOutputs[0]->map();
 
@@ -1048,9 +1046,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
 {
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
-  const unsigned int MAX_SVD_TERMS =
-    std::min(m_numSimulations,(unsigned int)(5));
-  num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
+
   const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
 
   const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
