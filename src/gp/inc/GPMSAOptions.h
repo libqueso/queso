@@ -71,6 +71,21 @@ public:
   //! If this string is non-empty, print the options object to the output file
   std::string m_help;
 
+  //! The maximum number of basis vectors to use for approximating
+  //  emulator output.  If this number is set to be zero (as it is by
+  //  default), then the number of basis vectors will be determined at
+  //  run time to preserve some minimum fraction of the variance in
+  //  simulation output.
+  int m_maxEmulatorBasisVectors;
+
+  //! The minimum fraction of the variance in simulation output to
+  //  capture with the emulator basis.  By default this is 1.0, i.e.
+  //  100%, in which case there will be one basis vector for each
+  //  dimension in the simulation output space.
+  //
+  //  Currently the only supported value is 1.0
+  double m_emulatorBasisVarianceToCapture;
+
   //! The shape parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionShape;
 
@@ -127,6 +142,8 @@ private:
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string m_option_help;
+  std::string m_option_maxEmulatorBasisVectors;
+  std::string m_option_emulatorBasisVarianceToCapture;
   std::string m_option_emulatorPrecisionShape;
   std::string m_option_emulatorPrecisionScale;
   std::string m_option_calibrateObservationalPrecision;
