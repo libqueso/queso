@@ -66,7 +66,8 @@ public:
                 const ConcatenatedVectorRV<V, M> & m_totalPrior,
                 const V & residual_in,
                 const M & BT_Wy_B_inv_in,
-                const M & KT_K_inv_in);
+                const M & KT_K_inv_in,
+                bool calibrate_observational_precision);
 
   virtual ~GPMSAEmulator();
 
@@ -118,6 +119,8 @@ public:
   const M & BT_Wy_B_inv;
 
   const M & KT_K_inv;
+
+  bool m_calibrateObservationalPrecision;
 };
 
 template <class V = GslVector, class M = GslMatrix>
@@ -140,6 +143,11 @@ public:
 
   //! @name Getters
   //@{
+
+  //! Return GPMSAOptions structure
+  const GPMSAOptions & options() const;
+
+  GPMSAOptions & options();
 
   //! Return number of simulations
   unsigned int numSimulations() const;
@@ -472,7 +480,6 @@ public:
 private:
   bool allocated_m_opts;
   GPMSAOptions * m_opts;
-
 };
 
 }  // End namespace QUESO

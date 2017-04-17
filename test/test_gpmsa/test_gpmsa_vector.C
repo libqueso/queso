@@ -40,7 +40,9 @@ readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulatio
   double m2expsim = 0;
 
   // First line is a header, so we ignore it
-  fgets(line, size, fp_in);
+  char * gotline = fgets(line, size, fp_in);
+  if (!gotline)
+    queso_error_msg("dakota_pstudy.dat was unreadable");
 
   i = 0;
   while (fscanf(fp_in, "%d %lf %lf %lf %lf %lf %lf\n", &id, &k_tmasl, &k_tmoml,
@@ -218,6 +220,9 @@ int main(int argc, char ** argv) {
                  experimentSpace,
                  numSimulations,
                  numExperiments);
+
+  // We want to calibrate for the observation precision
+  gpmsaFactory.options().m_calibrateObservationalPrecision = true;
 
   // std::vector containing all the points in scenario space where we have
   // simulations
