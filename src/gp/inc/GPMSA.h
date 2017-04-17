@@ -67,7 +67,7 @@ public:
                 const V & residual_in,
                 const M & BT_Wy_B_inv_in,
                 const M & KT_K_inv_in,
-                bool calibrate_observational_precision);
+                const GPMSAOptions & opts);
 
   virtual ~GPMSAEmulator();
 
@@ -120,7 +120,7 @@ public:
 
   const M & KT_K_inv;
 
-  bool m_calibrateObservationalPrecision;
+  const GPMSAOptions & m_opts;
 };
 
 template <class V = GslVector, class M = GslMatrix>

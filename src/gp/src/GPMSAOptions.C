@@ -34,6 +34,8 @@
 
 // ODV = option default value
 #define UQ_GPMSA_HELP ""
+#define UQ_GPMSA_MAX_SIMULATOR_BASIS_VECTORS_ODV 0
+#define UQ_GPMSA_SIMULATOR_BASIS_VARIANCE_TO_CAPTURE 1.0
 #define UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV 5.0
 #define UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV 0.2
 #define UQ_GPMSA_OBSERVATIONAL_PRECISION_SHAPE_ODV 5.0
@@ -76,6 +78,8 @@ GPMSAOptions::set_prefix(const char * prefix)
   m_prefix = std::string(prefix) + "gpmsa_";
 
   m_option_help = m_prefix + "help";
+  m_option_maxEmulatorBasisVectors = m_prefix + "max_emulator_basis_vectors";
+  m_option_emulatorBasisVarianceToCapture = m_prefix + "emulator_basis_variance_to_capture";
   m_option_emulatorPrecisionShape = m_prefix + "emulator_precision_shape";
   m_option_emulatorPrecisionScale = m_prefix + "emulator_precision_scale";
   m_option_calibrateObservationalPrecision = m_prefix + "calibrate_observational_precision";
@@ -97,6 +101,8 @@ void
 GPMSAOptions::set_defaults()
 {
   m_help = UQ_GPMSA_HELP;
+  m_maxEmulatorBasisVectors = UQ_GPMSA_MAX_SIMULATOR_BASIS_VECTORS_ODV;
+  m_emulatorBasisVarianceToCapture = UQ_GPMSA_SIMULATOR_BASIS_VARIANCE_TO_CAPTURE;
   m_emulatorPrecisionShape = UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV;
   m_emulatorPrecisionScale = UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV;
   m_calibrateObservationalPrecision = false;

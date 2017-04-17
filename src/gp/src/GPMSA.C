@@ -49,7 +49,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const V & residual_in,
     const M & BT_Wy_B_inv_in,
     const M & KT_K_inv_in,
-    bool calibrate_observational_precision)
+    const GPMSAOptions & opts)
   :
   BaseScalarFunction<V, M>("", m_totalPrior.imageSet()),
   m_scenarioSpace(m_scenarioSpace),
@@ -70,7 +70,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   residual(residual_in),
   BT_Wy_B_inv(BT_Wy_B_inv_in),
   KT_K_inv(KT_K_inv_in),
-  m_calibrateObservationalPrecision(calibrate_observational_precision)
+  m_opts(opts)
 {
   queso_assert_greater(m_numSimulations, 0);
 
@@ -80,9 +80,9 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
 
-  const unsigned int MAX_SVD_TERMS =
-    std::min(m_numSimulations,(unsigned int)(5));
-  num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
+  this->num_svd_terms = this->m_opts.m_maxEmulatorBasisVectors ?
+    std::min((unsigned int)(this->m_opts.m_maxEmulatorBasisVectors), numOutputs) :
+    numOutputs;
 }
 
 template <class V, class M>
@@ -167,7 +167,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   unsigned int dimSum = 2 +
                         (this->num_svd_terms < numOutputs) +
                         (numOutputs > 1) +
-                        m_calibrateObservationalPrecision +
+                        m_opts.m_calibrateObservationalPrecision +
                         num_svd_terms +
                         dimParameter +
                         dimParameter +
@@ -336,7 +336,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
             queso_assert_greater_equal (experimentalError, 0);
 
-            const double lambda_y = m_calibrateObservationalPrecision ?
+            const double lambda_y =
+              m_opts.m_calibrateObservationalPrecision ?
               domainVector[dimSum-1] : 1.0;
 
             covMatrix(i,j) += lambda_y * experimentalError;
@@ -360,7 +361,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // matrix; now add the remaining Sigma_zhat terms
   if (numOutputs > 1)
     {
-      const double lambda_y = m_calibrateObservationalPrecision ?
+      const double lambda_y =
+        m_opts.m_calibrateObservationalPrecision ?
         domainVector[dimSum-1] : 1.0;
       const double inv_lambda_y = 1.0/lambda_y;
 
@@ -465,12 +467,6 @@ GPMSAFactory<V, M>::GPMSAFactory(
     priors(),
     m_constructedGP(false)
 {
-  const unsigned int numOutputs =
-    this->m_experimentOutputSpace.dimLocal();
-  const unsigned int MAX_SVD_TERMS =
-    std::min(m_numSimulations,(unsigned int)(5));
-  this->num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
-
   // We should have the same number of outputs from both simulations
   // and experiments
   queso_assert_equal_to(simulationOutputSpace.dimGlobal(),
@@ -731,6 +727,10 @@ GPMSAFactory<V, M>::setUpEmulator()
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
 
+  this->num_svd_terms = this->m_opts->m_maxEmulatorBasisVectors ?
+    std::min((unsigned int)(this->m_opts->m_maxEmulatorBasisVectors), numOutputs) :
+    numOutputs;
+
   const Map & output_map = m_simulationOutputs[0]->map();
 
   const MpiComm & comm = output_map.Comm();
@@ -920,7 +920,7 @@ GPMSAFactory<V, M>::setUpEmulator()
       *this->residual,
       *this->BT_Wy_B_inv,
       *this->KT_K_inv,
-      this->m_opts->m_calibrateObservationalPrecision));
+      *this->m_opts));
 }
 
 
@@ -1046,9 +1046,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
 {
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
-  const unsigned int MAX_SVD_TERMS =
-    std::min(m_numSimulations,(unsigned int)(5));
-  num_svd_terms = std::min(MAX_SVD_TERMS, numOutputs);
+
   const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
 
   const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
