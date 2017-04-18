@@ -22,6 +22,7 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/Environment.h>
+#include <queso/SharedPtr.h>
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
@@ -86,6 +87,94 @@ public:
   //  Currently the only supported value is 1.0
   double m_emulatorBasisVarianceToCapture;
 
+  //! Do automatic normalization, using minimum and maximum values in
+  //  the supplied data, for uncertain parameter i.
+  //
+  //  Normalized values will range from 0 to 1.
+  void set_autoscale_minmax_uncertain_parameter(unsigned int i);
+
+  //! Do automatic normalization, using minimum and maximum values in
+  //  the supplied data, for scenario parameter i.
+  //
+  //  Normalized values will range from 0 to 1.
+  void set_autoscale_minmax_scenario_parameter(unsigned int i);
+
+  //! Do automatic normalization, using minimum and maximum values in
+  //  the supplied data, for all input uncertain parameters, all input
+  //  scenario parameters, and all output values.
+  //
+  //  Normalized values will range from 0 to 1.
+  void set_autoscale_minmax();
+
+  //! Do automatic normalization, using mean and variance of the
+  //  supplied data, for uncertain parameter i.
+  //
+  //  Normalized values will have mean 0 and standard deviation 1.
+  void set_autoscale_meanvar_uncertain_parameter(unsigned int i);
+
+  //! Do automatic normalization, using mean and variance of the
+  //  supplied data, for scenario parameter i.
+  //
+  //  Normalized values will have mean 0 and standard deviation 1.
+  void set_autoscale_meanvar_scenario_parameter(unsigned int i);
+
+  //! Do automatic normalization, using mean and variance of the
+  //  supplied data, for all input uncertain parameters, all input
+  //  scenario parameters, and all output values.
+  //
+  //  Normalized values will have mean 0 and standard deviation 1.
+  void set_autoscale_meanvar();
+
+  //! Set a value, for uncertain parameter i in simulation inputs, of
+  //  the physical parameter range (range_min, range_max) which should
+  //  be rescaled to (0,1)
+  //
+  //  If no value is set and no automatic normalization is specified,
+  //  a default of (0,1) will be used; i.e. no normalization.
+  //
+  //  This option is mutually exclusive with the above automatic
+  //  scaling options; trying to use both is a runtime error.
+  void set_uncertain_parameter_scaling(unsigned int i,
+                                       double range_min,
+                                       double range_max);
+
+  //! Set a value, for scenario parameter i in simulation and
+  //  experimental inputs, of the physical parameter range (range_min,
+  //  range_max) which should be rescaled to (0,1)
+  //
+  //  If no value is set and no automatic normalization is specified,
+  //  a default of (0,1) will be used; i.e. no normalization.
+  //
+  //  This option is mutually exclusive with the above automatic
+  //  scaling options; trying to use both is a runtime error.
+  void set_scenario_parameter_scaling(unsigned int i,
+                                      double range_min,
+                                      double range_max);
+
+  //! Set a value, for output value i in simulation and
+  //  experimental outputs, of the physical output range (range_min,
+  //  range_max) which should be rescaled to (0,1)
+  //
+  //  If no value is set and no automatic normalization is specified,
+  //  a default of (0,1) will be used; i.e. no normalization.
+  //
+  //  This option is mutually exclusive with the above automatic
+  //  scaling options; trying to use both is a runtime error.
+  void set_output_scaling(unsigned int i,
+                          double range_min,
+                          double range_max);
+
+  //! Determine the physical parameter ranges (range_min, range_max)
+  //  which should be rescaled to (0,1), based on our autoscaling option
+  //  settings.
+  template <typename V>
+  void set_final_scaling
+    (const std::vector<typename SharedPtr<V>::Type> & m_simulationScenarios,
+     const std::vector<typename SharedPtr<V>::Type> & m_simulationParameters,
+     const std::vector<typename SharedPtr<V>::Type> & m_simulationOutputs,
+     const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
+     const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs);
+
   //! The shape parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionShape;
 
@@ -141,6 +230,38 @@ private:
   QUESO::ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
+  // True if the specified autoscaling should be done for all inputs
+  bool m_autoscaleMinMaxAll;
+  bool m_autoscaleMeanVarAll;
+
+  // True if the specified autoscaling should be done for the specific
+  // uncertain input parameter index
+  std::set<unsigned int> m_autoscaleMinMaxUncertain;
+  std::set<unsigned int> m_autoscaleMeanVarUncertain;
+
+  // True if the specified autoscaling should be done for the specific
+  // scenario input parameter index
+  std::set<unsigned int> m_autoscaleMinMaxScenario;
+  std::set<unsigned int> m_autoscaleMeanVarScenario;
+
+  // The point in each uncertain input parameter range (typically min
+  // or mean) corresponding to a normalized parameter of 0
+  std::vector<double> m_uncertainScaleMin;
+
+  // The width of the physical uncertain input parameter range
+  // (typically max minus min or standard deviation) corresponding to
+  // a normalized width of 1
+  std::vector<double> m_uncertainScaleRange;
+
+  // The point in each input scenario parameter range (typically min
+  // or mean) corresponding to a normalized parameter of 0
+  std::vector<double> m_scenarioScaleMin;
+
+  // The width of the physical input scenario parameter range
+  // (typically max minus min or standard deviation) corresponding to
+  // a normalized width of 1
+  std::vector<double> m_scenarioScaleRange;
+
   std::string m_option_help;
   std::string m_option_maxEmulatorBasisVectors;
   std::string m_option_emulatorBasisVarianceToCapture;
@@ -157,6 +278,9 @@ private:
   std::string m_option_discrepancyCorrelationStrengthBeta;
   std::string m_option_emulatorDataPrecisionShape;
   std::string m_option_emulatorDataPrecisionScale;
+
+  std::string m_option_autoscaleMinMaxAll;
+  std::string m_option_autoscaleMeanVarAll;
 
   void checkOptions();
 };
