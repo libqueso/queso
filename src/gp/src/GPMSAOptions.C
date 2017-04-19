@@ -348,7 +348,7 @@ GPMSAOptions::set_uncertain_parameter_scaling(unsigned int i,
     m_uncertainScaleRange.resize(i+1, 1);
   }
   m_uncertainScaleMin[i] = range_min;
-  m_uncertainScaleRange[i] = range_max;
+  m_uncertainScaleRange[i] = range_max - range_min;
 }
 
 
@@ -376,8 +376,186 @@ GPMSAOptions::set_final_scaling
    const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
    const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs)
 {
-  queso_not_implemented();
+  if ((m_autoscaleMinMaxAll && m_autoscaleMeanVarAll) ||
+      ((m_autoscaleMinMaxAll || m_autoscaleMeanVarAll) &&
+       (!m_autoscaleMinMaxUncertain.empty() ||
+        !m_autoscaleMeanVarUncertain.empty() ||
+        !m_autoscaleMinMaxScenario.empty() ||
+        !m_autoscaleMeanVarScenario.empty())))
+    queso_error_msg("Cannot autoscale based on incompatible criteria");
+
+  unsigned int dimScenario = m_simulationScenarios.size() ?
+          m_simulationScenarios[0]->sizeGlobal() : 0;
+
+  unsigned int dimParameter = m_simulationParameters.size() ?
+          m_simulationParameters[0]->sizeGlobal() : 0;
+
+  if (m_autoscaleMinMaxAll || !m_autoscaleMinMaxScenario.empty())
+    {
+      V maxScenario(*m_simulationScenarios[0]);
+
+      V minScenario(*m_simulationScenarios[0]);
+
+      for (unsigned int i=1; i < m_simulationScenarios.size(); ++i)
+        for (unsigned int p=0; p != dimScenario; ++p)
+          {
+            minScenario[p] = std::min(minScenario[p],
+                                      (*m_simulationScenarios[i])[p]);
+            maxScenario[p] = std::max(maxScenario[p],
+                                      (*m_simulationScenarios[i])[p]);
+          }
+
+      for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
+        for (unsigned int p=0; p != dimScenario; ++p)
+          {
+            minScenario[p] = std::min(minScenario[p],
+                                      (*m_experimentScenarios[i])[p]);
+            maxScenario[p] = std::max(maxScenario[p],
+                                      (*m_experimentScenarios[i])[p]);
+          }
+
+      for (unsigned int p=0; p != dimScenario; ++p)
+        if (m_autoscaleMinMaxAll ||
+            m_autoscaleMinMaxScenario.count(p))
+          {
+            if ((m_scenarioScaleMin.size() > p) &&
+                ((m_scenarioScaleMin[p] != 0) ||
+                 (m_scenarioScaleRange[p] != 1)))
+              queso_error_msg("Cannot autoscale and manually scale the same scenario parameter");
+
+            this->set_scenario_parameter_scaling(p, minScenario[p],
+                                                    maxScenario[p]);
+          }
+    }
+
+  if (m_autoscaleMinMaxAll || !m_autoscaleMinMaxUncertain.empty())
+    {
+      V maxUncertain(*m_simulationParameters[0]);
+
+      V minUncertain(*m_simulationParameters[0]);
+
+      for (unsigned int i=1; i < m_simulationParameters.size(); ++i)
+        for (unsigned int p=0; p != dimParameter; ++p)
+          {
+            minUncertain[p] = std::min(minUncertain[p],
+                                       (*m_simulationParameters[i])[p]);
+            maxUncertain[p] = std::max(maxUncertain[p],
+                                       (*m_simulationParameters[i])[p]);
+          }
+
+      for (unsigned int p=0; p != dimParameter; ++p)
+        if (m_autoscaleMinMaxAll ||
+            m_autoscaleMinMaxUncertain.count(p))
+          {
+            if ((m_uncertainScaleMin.size() > p) &&
+                ((m_uncertainScaleMin[p] != 0) ||
+                 (m_uncertainScaleRange[p] != 1)))
+              queso_error_msg("Cannot autoscale and manually scale the same uncertain parameter");
+
+            this->set_uncertain_parameter_scaling(p, minUncertain[p],
+                                                     maxUncertain[p]);
+          }
+    }
+
+
+  if (m_autoscaleMeanVarAll || !m_autoscaleMeanVarScenario.empty())
+    {
+      V meanScenario(*m_simulationScenarios[0]);
+
+      for (unsigned int i=1; i < m_simulationScenarios.size(); ++i)
+        meanScenario += *m_simulationScenarios[i];
+
+      for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
+        meanScenario += *m_experimentScenarios[i];
+
+      meanScenario /= (m_simulationScenarios.size() +
+                       m_experimentScenarios.size());
+
+      V varScenario(m_simulationScenarios[0]->env(),
+                    m_simulationScenarios[0]->map());
+
+      for (unsigned int i=0; i < m_simulationScenarios.size(); ++i)
+        {
+          V varTerm = *m_simulationScenarios[i] - meanScenario;
+          varTerm *= varTerm;
+          varScenario += varTerm;
+        }
+
+      for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
+        {
+          V varTerm = *m_experimentScenarios[i] - meanScenario;
+          varTerm *= varTerm;
+          varScenario += varTerm;
+        }
+
+      varScenario /= (m_simulationScenarios.size() +
+                      m_experimentScenarios.size());
+
+      for (unsigned int p=0; p != dimScenario; ++p)
+        if (m_autoscaleMeanVarAll ||
+            m_autoscaleMeanVarScenario.count(p))
+          {
+            if ((m_scenarioScaleMin.size() > p) &&
+                ((m_scenarioScaleMin[p] != 0) ||
+                 (m_scenarioScaleRange[p] != 1)))
+              queso_error_msg("Cannot autoscale and manually scale the same scenario parameter");
+
+            this->set_scenario_parameter_scaling(p, meanScenario[p],
+                                                 meanScenario[p] +
+                                                 std::sqrt(varScenario[p]));
+          }
+    }
+
+
+  if (m_autoscaleMeanVarAll || !m_autoscaleMeanVarUncertain.empty())
+    {
+      V meanUncertain(*m_simulationScenarios[0]);
+
+      for (unsigned int i=1; i < m_simulationScenarios.size(); ++i)
+        meanUncertain += *m_simulationScenarios[i];
+
+      for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
+        meanUncertain += *m_experimentScenarios[i];
+
+      meanUncertain /= (m_simulationScenarios.size() +
+                       m_experimentScenarios.size());
+
+      V varUncertain(m_simulationScenarios[0]->env(),
+                    m_simulationScenarios[0]->map());
+
+      for (unsigned int i=0; i < m_simulationScenarios.size(); ++i)
+        {
+          V varTerm = *m_simulationScenarios[i] - meanUncertain;
+          varTerm *= varTerm;
+          varUncertain += varTerm;
+        }
+
+      for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
+        {
+          V varTerm = *m_experimentScenarios[i] - meanUncertain;
+          varTerm *= varTerm;
+          varUncertain += varTerm;
+        }
+
+      varUncertain /= (m_simulationScenarios.size() +
+                      m_experimentScenarios.size());
+
+      for (unsigned int p=0; p != dimScenario; ++p)
+        if (m_autoscaleMeanVarAll ||
+            m_autoscaleMeanVarUncertain.count(p))
+          {
+            if ((m_uncertainScaleMin.size() > p) &&
+                ((m_uncertainScaleMin[p] != 0) ||
+                 (m_uncertainScaleRange[p] != 1)))
+              queso_error_msg("Cannot autoscale and manually scale the same uncertain parameter");
+
+            this->set_uncertain_parameter_scaling(p, meanUncertain[p],
+                                                  meanUncertain[p] +
+                                                  std::sqrt(varUncertain[p]));
+          }
+    }
 }
+
 
 void
 GPMSAOptions::checkOptions()
