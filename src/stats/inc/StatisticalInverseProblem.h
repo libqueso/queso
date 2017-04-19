@@ -79,6 +79,8 @@ class GslMatrix;
  * <item> a vector realizer through the operation 'postRv().realizer()', which
           returns an instance of the class 'BaseVectorRealizer<P_V,P_M>'.
  * </list>
+ *
+ * \example template_example/template_example.C
  */
 
 /* OLD STUFF: The constructor of the 'scalar function' asks for the user to specify which
