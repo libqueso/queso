@@ -41,7 +41,7 @@ namespace QUESO
 
     const BaseVectorRealizer< V, M > & realizer = uniform_rv.realizer();
 
-    this->m_positions.resize(n_samples,NULL);
+    this->m_positions.resize(n_samples,SharedPtr<GslVector>::Type());
 
     for( unsigned int i = 0; i < n_samples; i++ )
       {

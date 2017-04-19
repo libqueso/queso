@@ -50,7 +50,7 @@ namespace QUESO
         total_n_q_points *= q_rules[i]->positions().size();
       }
 
-    this->m_positions.resize(total_n_q_points,NULL);
+    this->m_positions.resize(total_n_q_points,SharedPtr<GslVector>::Type());
     this->m_weights.resize(total_n_q_points);
 
     // The positions are just a tensor product of the positions for each of the 1-D rules.
