@@ -29,7 +29,6 @@
 
 #include <queso/MLSamplingOptions.h>
 #include <queso/MetropolisHastingsSG.h>
-#include <queso/FiniteDistribution.h>
 #include <queso/VectorRV.h>
 #include <queso/GenericVectorRV.h>
 #include <queso/VectorSpace.h>

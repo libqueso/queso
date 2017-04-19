@@ -152,6 +152,7 @@ libqueso_la_SOURCES += basic/src/VectorSet.C
 libqueso_la_SOURCES += basic/src/BoxSubset.C
 libqueso_la_SOURCES += basic/src/ConcatenationSubset.C
 libqueso_la_SOURCES += basic/src/DiscreteSubset.C
+libqueso_la_SOURCES += basic/inc/DiscreteSubset.h  # Not installed
 libqueso_la_SOURCES += basic/src/IntersectionSubset.C
 libqueso_la_SOURCES += basic/src/VectorSubset.C
 libqueso_la_SOURCES += basic/src/ScalarFunction.C
@@ -177,6 +178,7 @@ endif
 # Sources from stats/src
 
 libqueso_la_SOURCES += stats/src/FiniteDistribution.C
+libqueso_la_SOURCES += stats/inc/FiniteDistribution.h  # Not installed
 libqueso_la_SOURCES += stats/src/MetropolisHastingsSG.C
 libqueso_la_SOURCES += stats/src/MetropolisHastingsSGOptions.C
 libqueso_la_SOURCES += stats/src/MLSampling.C
@@ -375,14 +377,12 @@ libqueso_include_HEADERS += basic/inc/VectorSpace.h
 libqueso_include_HEADERS += basic/inc/VectorSubset.h
 libqueso_include_HEADERS += basic/inc/BoxSubset.h
 libqueso_include_HEADERS += basic/inc/ConcatenationSubset.h
-libqueso_include_HEADERS += basic/inc/DiscreteSubset.h
 libqueso_include_HEADERS += basic/inc/IntersectionSubset.h
 libqueso_include_HEADERS += basic/inc/GenericVectorFunction.h
 libqueso_include_HEADERS += basic/inc/ConstantVectorFunction.h
 
 # Headers to install from stats/inc
 
-libqueso_include_HEADERS += stats/inc/FiniteDistribution.h
 libqueso_include_HEADERS += stats/inc/JointPdf.h
 libqueso_include_HEADERS += stats/inc/BayesianJointPdf.h
 libqueso_include_HEADERS += stats/inc/BetaJointPdf.h

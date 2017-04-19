@@ -32,6 +32,8 @@
 #include <queso/GslMatrix.h>
 #include <queso/BayesianJointPdf.h>
 
+#include "stats/inc/FiniteDistribution.h"
+
 namespace QUESO {
 
 #ifdef QUESO_HAS_GLPK
