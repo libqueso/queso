@@ -557,6 +557,30 @@ GPMSAOptions::set_final_scaling
 }
 
 
+double
+GPMSAOptions::normalized_scenario_parameter(unsigned int i,
+                                            double physical_param)
+const
+{
+  if (i < m_scenarioScaleMin.size())
+    return (physical_param - m_scenarioScaleMin[i]) /
+            m_scenarioScaleRange[i];
+  return physical_param;
+}
+
+
+double
+GPMSAOptions::normalized_uncertain_parameter(unsigned int i,
+                                             double physical_param)
+const
+{
+  if (i < m_uncertainScaleMin.size())
+    return (physical_param - m_uncertainScaleMin[i]) /
+            m_uncertainScaleRange[i];
+  return physical_param;
+}
+
+
 void
 GPMSAOptions::checkOptions()
 {

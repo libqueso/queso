@@ -175,6 +175,16 @@ public:
      const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
      const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs);
 
+  //! Calculate a normalized value from a physical value for the
+  //  specified scenario parameter.
+  double normalized_scenario_parameter(unsigned int i,
+                                       double physical_param) const;
+
+  //! Calculate a normalized value from a physical value for the
+  //  specified uncertain parameter.
+  double normalized_uncertain_parameter(unsigned int i,
+                                        double physical_param) const;
+
   //! The shape parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionShape;
 
