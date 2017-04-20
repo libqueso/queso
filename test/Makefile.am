@@ -283,6 +283,7 @@ TESTS += test_SequenceOfVectorsErase
 TESTS += test_GaussianMean1DRegression
 TESTS += test_Regression/test_cobra_samples_diff.sh
 TESTS += test_gpmsa/test_gpmsa_samples_diff.sh
+TESTS += test_gpmsa/test_autoscaled.sh
 TESTS += test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
 TESTS += test_Regression/test_jeffreys_samples_diff.sh
 TESTS += test_gsloptimizer
@@ -348,7 +349,9 @@ EXTRA_DIST += test_Regression/ctf_dat.txt
 EXTRA_DIST += test_Regression/dakota_pstudy.dat
 EXTRA_DIST += test_gpmsa/gpmsa_vector_input.txt
 EXTRA_DIST += test_gpmsa/test_gpmsa_samples_diff.sh
+EXTRA_DIST += test_gpmsa/test_autoscaled.sh
 EXTRA_DIST += test_gpmsa/test_gpmsa_vector_samples.m
+EXTRA_DIST += test_gpmsa/test_gpmsa_autoscaled_samples.m
 EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt
@@ -407,6 +410,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/test_output_gaussian_likelihoods
 	rm -rf $(top_builddir)/test/test_gpmsa_cobra_output
 	rm -rf $(top_builddir)/test/test_gpmsa_vector_output
+	rm -rf $(top_builddir)/test/test_gpmsa_autoscaled_output
 	rm -rf $(top_builddir)/test/test_adaptedcov_output
 	rm -rf $(top_builddir)/test/test_outputNoInputFile
 	rm -rf $(top_builddir)/test/test_output_interp_surrogates

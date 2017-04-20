@@ -1,0 +1,63 @@
+###############################################
+# UQ Environment
+###############################################
+#env_help                = anything
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = test_gpmsa_autoscaled_output/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0
+env_displayVerbosity     = 2
+env_syncVerbosity        = 0
+
+# Force gsl to prevent regression failures on other rngs
+env_rngType              = gsl
+env_seed                 = -1
+
+###############################################
+# Statistical inverse problem (ip)
+###############################################
+#ip_help                 = anything
+ip_computeSolution      = 1
+ip_dataOutputFileName   = test_gpmsa_autoscaled_output/sipOutput
+ip_dataOutputAllowedSet = 0
+
+###############################################
+# 'ip_': information for Metropolis-Hastings algorithm
+###############################################
+#ip_mh_help                 = anything
+ip_mh_dataOutputFileName   = test_gpmsa_autoscaled_output/sipOutput
+ip_mh_dataOutputAllowedSet = 0 1
+
+ip_mh_rawChain_dataInputFileName    = .
+ip_mh_rawChain_size                 = 1000
+ip_mh_rawChain_generateExtra        = 0
+ip_mh_rawChain_displayPeriod        = 2000
+ip_mh_rawChain_measureRunTimes      = 1
+ip_mh_rawChain_dataOutputFileName   = test_gpmsa_autoscaled_output/ip_raw_chain
+ip_mh_rawChain_dataOutputAllowedSet = 0 1
+ip_mh_rawChain_computeStats         = 1
+
+ip_mh_displayCandidates             = 0
+ip_mh_putOutOfBoundsInChain         = 0
+ip_mh_tk_useLocalHessian            = 0
+ip_mh_tk_useNewtonComponent         = 0
+ip_mh_dr_maxNumExtraStages          = 0
+ip_mh_dr_listOfScalesForExtraStages = 5. 10. 20.
+ip_mh_am_initialNonAdaptInterval    = 1000
+ip_mh_am_adaptInterval              = 100000
+ip_mh_am_eta                        = 0.384
+ip_mh_am_epsilon                    = 1.e-5
+
+ip_mh_filteredChain_generate             = 0
+
+gpmsa_emulator_precision_shape = 5.0
+gpmsa_emulator_precision_scale = 0.2
+gpmsa_emulator_correlation_strength_alpha = 1.0
+gpmsa_emulator_correlation_strength_beta = 0.1
+gpmsa_discrepancy_precision_shape = 1.0
+gpmsa_discrepancy_precision_scale = 1e4
+gpmsa_discrepancy_correlation_strength_alpha = 1.0
+gpmsa_discrepancy_correlation_strength_beta = 0.1
+gpmsa_emulator_data_precision_shape = 3.0
+gpmsa_emulator_data_precision_scale = 333.333
+gpmsa_autoscale_min_max_all = true
