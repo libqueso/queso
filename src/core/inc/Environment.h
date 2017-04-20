@@ -165,7 +165,6 @@ a boolean, is set to 1 (the default value is 0);
     will write a message to the file 'pROblem_775_sub17.txt'.
 */
 
-
 class BaseEnvironment {
 public:
   //! @name Constructor/Destructor methods
