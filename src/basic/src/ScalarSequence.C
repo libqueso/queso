@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <queso/ScalarSequence.h>
+#include "core/inc/FilePtr.h"
 
 namespace QUESO {
 

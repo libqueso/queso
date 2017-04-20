@@ -31,6 +31,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/BayesianJointPdf.h>
+#include "core/inc/FilePtr.h"
 
 #include "stats/inc/FiniteDistribution.h"
 

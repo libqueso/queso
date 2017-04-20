@@ -25,6 +25,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/GslVector.h>
 #include <queso/Defines.h>
+#include "core/inc/FilePtr.h"
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_eigen.h>
 #include <sys/time.h>

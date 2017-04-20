@@ -31,12 +31,8 @@
 #include <queso/MpiComm.h>
 #include <queso/ScopedPtr.h>
 
-#ifdef QUESO_HAS_HDF5
-#include <hdf5.h>
-#endif
 #include <iostream>
 #include <fstream>
-
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 // Forward declarations
@@ -56,6 +52,7 @@ class EnvironmentOptions;
 class EnvOptionsValues;
 class BasicPdfsBase;
 class RngBase;
+class FilePtrSetStruct;
 
 
   /*! queso_terminate_handler
@@ -65,32 +62,6 @@ class RngBase;
    *  It provides a call to MPI_abort using the global communicator.
    */
   void queso_terminate_handler();
-
-/*! \struct FilePtrSetStruct
- *  \brief Struct for handling data input and output from files.
- *
- *  This struct deals with data input and output from files.
- *  It encapsulates the input/output stream class std:: fstream.
- */
-
-//!
-struct FilePtrSetStruct {
-
-  //! Struct constructor
-  FilePtrSetStruct();
-
-  //! Destructor
-  ~FilePtrSetStruct();
-
-  //! Provides a stream interface to write data to files.
-  std::ofstream* ofsVar;
-
-  //! Provides a stream interface to read data from files.
-  std::ifstream* ifsVar;
-#ifdef QUESO_HAS_HDF5
-  hid_t  h5Var;
-#endif
-};
 
 //------------------------------------------------------------------------
 // Library versioning routines: we include them in a QUESO namespace
