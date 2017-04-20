@@ -143,10 +143,10 @@ int main(int argc, char ** argv) {
   unsigned int experimentSize = 2;      // Size of each experiment
   unsigned int numEta = experimentSize;
 
-  std::string inputFileName = "test_gpmsa/gpmsa_vector_input.txt";
-  const char * test_srcdir = std::getenv("srcdir");
-  if (test_srcdir)
-    inputFileName = test_srcdir + ('/' + inputFileName);
+  if (argc < 2)
+    queso_error_msg("Usage: " << argv[0] << " input_filename");
+
+  std::string inputFileName = argv[1];
 
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);

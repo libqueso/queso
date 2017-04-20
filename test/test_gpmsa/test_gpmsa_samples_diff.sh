@@ -25,9 +25,9 @@ verify_file_exists $INFILE
 rm -rf ./test_gpmsa_vector_output
 
 if [ $SAVELOG -eq 1 ];then
-    ./$EXE
+    ./$EXE $INFILE
 else
-    ./$EXE >& /dev/null
+    ./$EXE $INFILE >& /dev/null
 fi
 
 verify_file_exists $SOLDIR/ip_raw_chain.m
