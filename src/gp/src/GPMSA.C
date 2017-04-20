@@ -738,6 +738,13 @@ template <class V, class M>
 void
 GPMSAFactory<V, M>::setUpEmulator()
 {
+  this->m_opts->template set_final_scaling<V>
+    (m_simulationScenarios,
+     m_simulationParameters,
+     m_simulationOutputs,
+     m_experimentScenarios,
+     m_experimentOutputs);
+
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
 
