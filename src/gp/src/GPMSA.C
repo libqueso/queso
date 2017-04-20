@@ -201,6 +201,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // This for loop is a disaster and could do with a *lot* of optimisation
   for (unsigned int i = 0; i < totalRuns; i++) {
 
+     // Scenario and uncertain input variables, *not* normalized
      typename SharedPtr<V>::Type scenario1;
      typename SharedPtr<V>::Type parameter1;
 
@@ -222,6 +223,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
     for (unsigned int j = 0; j < totalRuns; j++) {
 
+       // Scenario and uncertain input variables, *not* normalized
        typename SharedPtr<V>::Type scenario2;
        typename SharedPtr<V>::Type parameter2;
 
@@ -243,9 +245,13 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       for (unsigned int k = 0; k < dimScenario; k++) {
         const double & emulator_corr_strength =
           domainVector[emulatorCorrStrStart+k];
+        double scenario_param1 =
+          m_opts.normalized_scenario_parameter(k, (*scenario1)[k]);
+        double scenario_param2 =
+          m_opts.normalized_scenario_parameter(k, (*scenario2)[k]);
         prodScenario *= std::pow(emulator_corr_strength,
-                                 4.0 * ((*scenario1)[k] - (*scenario2)[k]) *
-                                       ((*scenario1)[k] - (*scenario2)[k]));
+                                 4.0 * (scenario_param1 - scenario_param2) *
+                                       (scenario_param1 - scenario_param2));
       }
 
       queso_assert (!queso_isnan(prodScenario));
@@ -258,10 +264,14 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         queso_assert (!queso_isnan((*parameter2)[k]));
         const double & emulator_corr_strength =
           domainVector[emulatorCorrStrStart+dimScenario+k];
+        double uncertain_param1 =
+          m_opts.normalized_uncertain_parameter(k, (*parameter1)[k]);
+        double uncertain_param2 =
+          m_opts.normalized_uncertain_parameter(k, (*parameter2)[k]);
         prodParameter *= std::pow(
             emulator_corr_strength,
-            4.0 * ((*parameter1)[k] - (*parameter2)[k]) *
-                  ((*parameter1)[k] - (*parameter2)[k]));
+            4.0 * (uncertain_param1 - uncertain_param2) *
+                  (uncertain_param1 - uncertain_param2));
       }
 
       queso_assert (!queso_isnan(prodParameter));
@@ -304,10 +314,14 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         for (unsigned int k = 0; k < dimScenario; k++) {
           const double & discrepancy_corr_strength =
             domainVector[discrepancyCorrStrStart+k];
+          double cross_scenario_param1 =
+            m_opts.normalized_scenario_parameter(k, (*cross_scenario1)[k]);
+          double cross_scenario_param2 =
+            m_opts.normalized_scenario_parameter(k, (*cross_scenario2)[k]);
           prodDiscrepancy *=
             std::pow(discrepancy_corr_strength, 4.0 *
-                     ((*cross_scenario1)[k] - (*cross_scenario2)[k]) *
-                     ((*cross_scenario1)[k] - (*cross_scenario2)[k]));
+                     (cross_scenario_param1 - cross_scenario_param2) *
+                     (cross_scenario_param1 - cross_scenario_param2));
         }
 
         const double discrepancy_precision =
