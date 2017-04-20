@@ -1,5 +1,0 @@
-make -f Makefile_prudenci_mac clean
-make -f Makefile_prudenci_mac
-cd ../tests/test1
-../../src/verif2_gsl test1_prudenci_mac.inp
-
