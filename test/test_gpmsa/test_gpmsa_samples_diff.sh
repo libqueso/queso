@@ -22,7 +22,7 @@ rm -f $SOLDIR/*.txt
 verify_file_exists $EXE
 verify_file_exists $INFILE
 
-rm -rf ./test_gpmsa_vector_output
+rm -rf $SOLDIR
 
 if [ $SAVELOG -eq 1 ];then
     ./$EXE $INFILE
