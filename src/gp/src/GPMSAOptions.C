@@ -32,6 +32,9 @@
 
 #include <queso/GPMSAOptions.h>
 
+#include <queso/GslVector.h>
+
+
 // ODV = option default value
 #define UQ_GPMSA_HELP ""
 #define UQ_GPMSA_MAX_SIMULATOR_BASIS_VECTORS_ODV 0
@@ -621,6 +624,18 @@ operator<<(std::ostream& os, const GPMSAOptions & obj)
   obj.print(os);
   return os;
 }
+
+
+
+// Template instantiations
+template
+void
+GPMSAOptions::set_final_scaling<GslVector>
+  (const std::vector<typename SharedPtr<GslVector>::Type> &,
+   const std::vector<typename SharedPtr<GslVector>::Type> &,
+   const std::vector<typename SharedPtr<GslVector>::Type> &,
+   const std::vector<typename SharedPtr<GslVector>::Type> &,
+   const std::vector<typename SharedPtr<GslVector>::Type> &);
 
 
 }  // End namespace QUESO
