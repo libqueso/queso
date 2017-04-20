@@ -55,13 +55,13 @@ class RngBase;
 class FilePtrSetStruct;
 
 
-  /*! queso_terminate_handler
-   *  \brief Function for unhandled exceptions in Queso
-   *
-   *  This function deals with unhandled exceptions encountered in Queso.
-   *  It provides a call to MPI_abort using the global communicator.
-   */
-  void queso_terminate_handler();
+/*! queso_terminate_handler
+ *  \brief Function for unhandled exceptions in Queso
+ *
+ *  This function deals with unhandled exceptions encountered in Queso.
+ *  It provides a call to MPI_abort using the global communicator.
+ */
+void queso_terminate_handler();
 
 //------------------------------------------------------------------------
 // Library versioning routines: we include them in a QUESO namespace
@@ -70,8 +70,8 @@ class FilePtrSetStruct;
 // QUESO MPI environment.
 //------------------------------------------------------------------------
 
-  void QUESO_version_print       (std::ostream &os);
-  int  QUESO_get_numeric_version ();
+void QUESO_version_print       (std::ostream &os);
+int  QUESO_get_numeric_version ();
 
 //*****************************************************
 // Base class
