@@ -48,34 +48,40 @@ class GslMatrix;
 /*! \class StatisticalInverseProblem
  *  \brief This templated class represents a Statistical Inverse Problem.
  *
- * This class is templated on the type 'P_V' of vector and type 'P_M' of matrix, where
- * 'P_' stands for 'parameter'. Some templated classes might also use 'Q_V' and 'Q_M'
- * when referring to a vector type and a matrix type, where 'Q_' stands for 'quantities
- * of interest'. Conceptually, a statistical inverse problem has two input entities and
- * one output entity.\n
+ * This class is templated on the type 'P_V' of vector and type 'P_M' of matrix,
+ * where 'P_' stands for 'parameter'. Some templated classes might also use
+ * 'Q_V' and 'Q_M' when referring to a vector type and a matrix type, where 'Q_'
+ * stands for 'quantities of interest'. Conceptually, a statistical inverse
+ * problem has two input entities and one output entity.\n
  *
  * The input entities of a statistical inverse problem are:
-<list type=number>
-<item> the prior RV, an instance of class 'BaseVectorRV<P_V,P_M>', and
-<item> the likelihood function, an instance of class 'BaseScalarFunction<P_V,P_M>'.
-</list>
- * Let \f$ \pi()\f$ denote the mathematical likelihood function and \f$ x \f$ denote a
- * vector of parameters. The likelihood function object stores the routine that computes
- * \f$ \pi(x) \f$ and whatever data necessary by such routine. The routine in the
- * likelihood function object can compute either the actual value \f$ \pi(x) \f$ or the
- * value \f$ \ln[\pi(x)] \f$. See files
+ * <list type=number>
+ * <item> the prior RV, an instance of class 'BaseVectorRV<P_V,P_M>', and
+ * <item> the likelihood function, an instance of class
+          'BaseScalarFunction<P_V,P_M>'.
+ * </list>
+ * Let \f$ \pi()\f$ denote the mathematical likelihood function and \f$ x \f$
+ * denote a vector of parameters. The likelihood function object stores the
+ * routine that computes \f$ \pi(x) \f$ and whatever data necessary by such
+ * routine. The routine in the likelihood function object can compute either the
+ * actual value \f$ \pi(x) \f$ or the value \f$ \ln[\pi(x)] \f$. See files
  * 'basic/inc/ScalarFunction.h' and 'stats/inc/JointPdf.h' for more details.\n
  *
- * The output entity of a statistical inverse problem is the posterior RV, another instance
- * of class 'BaseVectorRV<P_V,P_M>', which stores the solution according to the Bayesian
- * approach. Upon return from a solution operation, the posterior RV is available through the
- * operation 'postRv()'. Such posterior RV is able to provide:
-<list type=number>
-<item> a joint pdf (up to a multiplicative constant) through the operation 'postRv().pdf()',
-       which returns an instance of the class 'BaseJointPdf<P_V,P_M>', and
-<item> a vector realizer through the operation 'postRv().realizer()', which returns an
-       instance of the class 'BaseVectorRealizer<P_V,P_M>'.
-</list>*/
+ * The output entity of a statistical inverse problem is the posterior RV,
+ * another instance of class 'BaseVectorRV<P_V,P_M>', which stores the solution
+ * according to the Bayesian approach. Upon return from a solution operation,
+ * the posterior RV is available through the operation 'postRv()'. Such
+ * posterior RV is able to provide:
+ * <list type=number>
+ * <item> a joint pdf (up to a multiplicative constant) through the operation
+          'postRv().pdf()', which returns an instance of the class
+          'BaseJointPdf<P_V,P_M>', and
+ * <item> a vector realizer through the operation 'postRv().realizer()', which
+          returns an instance of the class 'BaseVectorRealizer<P_V,P_M>'.
+ * </list>
+ *
+ * \example template_example/template_example.C
+ */
 
 /* OLD STUFF: The constructor of the 'scalar function' asks for the user to specify which
  * value the routine is actually computing, so that the 'scalar function' class can properly
