@@ -52,6 +52,45 @@
 #define UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV 3.0
 #define UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV 333.333
 
+namespace { // Anonymous namespace for helper functions
+
+template <typename V>
+void min_max_update(V & min, V & max, const V & new_data)
+{
+  unsigned int dim = min.sizeGlobal();
+  queso_assert_equal_to(dim, max.sizeGlobal());
+  queso_assert_equal_to(dim, new_data.sizeGlobal());
+
+  for (unsigned int p=0; p != dim; ++p)
+    {
+      min[p] = std::min(min[p], new_data[p]);
+      max[p] = std::max(max[p], new_data[p]);
+    }
+}
+
+
+template <typename V>
+void mean_var_update(unsigned int & n, V & mean, V & var, const V & new_data)
+{
+  ++n;
+
+  const V delta (new_data - mean);
+
+  V delta_n (delta);
+  delta_n /= n;
+
+  mean += delta_n;
+
+  V delta2 (new_data - mean);
+  delta2 *= delta;
+
+  var += delta2;
+}
+
+} // end anonymous namespace
+
+
+
 namespace QUESO {
 
 GPMSAOptions::GPMSAOptions(
@@ -400,22 +439,12 @@ GPMSAOptions::set_final_scaling
       V minScenario(*m_simulationScenarios[0]);
 
       for (unsigned int i=1; i < m_simulationScenarios.size(); ++i)
-        for (unsigned int p=0; p != dimScenario; ++p)
-          {
-            minScenario[p] = std::min(minScenario[p],
-                                      (*m_simulationScenarios[i])[p]);
-            maxScenario[p] = std::max(maxScenario[p],
-                                      (*m_simulationScenarios[i])[p]);
-          }
+        min_max_update(minScenario, maxScenario,
+                       (*m_simulationScenarios[i]));
 
       for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
-        for (unsigned int p=0; p != dimScenario; ++p)
-          {
-            minScenario[p] = std::min(minScenario[p],
-                                      (*m_experimentScenarios[i])[p]);
-            maxScenario[p] = std::max(maxScenario[p],
-                                      (*m_experimentScenarios[i])[p]);
-          }
+        min_max_update(minScenario, maxScenario,
+                       (*m_experimentScenarios[i]));
 
       for (unsigned int p=0; p != dimScenario; ++p)
         if (m_autoscaleMinMaxAll ||
@@ -438,13 +467,8 @@ GPMSAOptions::set_final_scaling
       V minUncertain(*m_simulationParameters[0]);
 
       for (unsigned int i=1; i < m_simulationParameters.size(); ++i)
-        for (unsigned int p=0; p != dimParameter; ++p)
-          {
-            minUncertain[p] = std::min(minUncertain[p],
-                                       (*m_simulationParameters[i])[p]);
-            maxUncertain[p] = std::max(maxUncertain[p],
-                                       (*m_simulationParameters[i])[p]);
-          }
+        min_max_update(minUncertain, maxUncertain,
+                       (*m_simulationParameters[i]));
 
       for (unsigned int p=0; p != dimParameter; ++p)
         if (m_autoscaleMinMaxAll ||
@@ -463,36 +487,22 @@ GPMSAOptions::set_final_scaling
 
   if (m_autoscaleMeanVarAll || !m_autoscaleMeanVarScenario.empty())
     {
+      unsigned int n=0;
+
       V meanScenario(*m_simulationScenarios[0]);
-
-      for (unsigned int i=1; i < m_simulationScenarios.size(); ++i)
-        meanScenario += *m_simulationScenarios[i];
-
-      for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
-        meanScenario += *m_experimentScenarios[i];
-
-      meanScenario /= (m_simulationScenarios.size() +
-                       m_experimentScenarios.size());
 
       V varScenario(m_simulationScenarios[0]->env(),
                     m_simulationScenarios[0]->map());
 
       for (unsigned int i=0; i < m_simulationScenarios.size(); ++i)
-        {
-          V varTerm = *m_simulationScenarios[i] - meanScenario;
-          varTerm *= varTerm;
-          varScenario += varTerm;
-        }
+        mean_var_update(n, meanScenario, varScenario,
+                        *m_simulationScenarios[i]);
 
       for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
-        {
-          V varTerm = *m_experimentScenarios[i] - meanScenario;
-          varTerm *= varTerm;
-          varScenario += varTerm;
-        }
+        mean_var_update(n, meanScenario, varScenario,
+                        *m_experimentScenarios[i]);
 
-      varScenario /= (m_simulationScenarios.size() +
-                      m_experimentScenarios.size());
+      varScenario /= n;
 
       for (unsigned int p=0; p != dimScenario; ++p)
         if (m_autoscaleMeanVarAll ||
@@ -512,36 +522,18 @@ GPMSAOptions::set_final_scaling
 
   if (m_autoscaleMeanVarAll || !m_autoscaleMeanVarUncertain.empty())
     {
-      V meanUncertain(*m_simulationScenarios[0]);
+      unsigned int n=0;
 
-      for (unsigned int i=1; i < m_simulationScenarios.size(); ++i)
-        meanUncertain += *m_simulationScenarios[i];
+      V meanUncertain(*m_simulationParameters[0]);
 
-      for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
-        meanUncertain += *m_experimentScenarios[i];
+      V varUncertain(m_simulationParameters[0]->env(),
+                     m_simulationParameters[0]->map());
 
-      meanUncertain /= (m_simulationScenarios.size() +
-                       m_experimentScenarios.size());
+      for (unsigned int i=0; i < m_simulationParameters.size(); ++i)
+        mean_var_update(n, meanUncertain, varUncertain,
+                        *m_simulationParameters[i]);
 
-      V varUncertain(m_simulationScenarios[0]->env(),
-                    m_simulationScenarios[0]->map());
-
-      for (unsigned int i=0; i < m_simulationScenarios.size(); ++i)
-        {
-          V varTerm = *m_simulationScenarios[i] - meanUncertain;
-          varTerm *= varTerm;
-          varUncertain += varTerm;
-        }
-
-      for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
-        {
-          V varTerm = *m_experimentScenarios[i] - meanUncertain;
-          varTerm *= varTerm;
-          varUncertain += varTerm;
-        }
-
-      varUncertain /= (m_simulationScenarios.size() +
-                      m_experimentScenarios.size());
+      varUncertain /= n;
 
       for (unsigned int p=0; p != dimScenario; ++p)
         if (m_autoscaleMeanVarAll ||
