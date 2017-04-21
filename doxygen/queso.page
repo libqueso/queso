@@ -1,6 +1,6 @@
 /*! \mainpage The QUESO Library
 
-<b>Version \version</b>, May 2014
+<b>Version \version</b>
 <hr>
 
 <b>Quantification of Uncertainty for Estimation, Simulation and Optimization (QUESO) </b>
@@ -17,6 +17,17 @@ The QUESO library contains two forms of documentation: a User's Manual
 available in pdf format and this lower-level code documentation in web
 based/html format.
 
+\section Quickstart
+
+After installing QUESO, you may run of the examples like so:
+
+\code{.sh}
+$ cd /path/to/queso/examples/gravity
+$ ./gravity_gsl gravity_inv_fwd.inp
+$ # Inverse problem runs
+$ cat outputData/sip_gravity_raw_chain.m  # These are posterior samples
+\endcode
+
 \section bugs Reporting Bugs
 
 Bugs in the code and errors or omissions in the documentation can be reported
@@ -30,7 +41,7 @@ All bug reports should include:
 <li>the version number of the QUESO library,
 <li>the hardware and operating system,
 <li>the compiler used, including version number and compilation options,
-<li>a description of the bug behavior, and ideally, 
+<li>a description of the bug behavior, and ideally,
 <li>a short program which reproduces the bug.
 </ul>
 
