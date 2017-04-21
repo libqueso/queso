@@ -10,10 +10,10 @@ RUNDIR=`pwd`
 
 . $COMMONDIR/verify.sh
 
-SOLDIR="./test_gpmsa_vector_output"
+SOLDIR="./test_gpmsa_autoscaled_output"
 EXE="./test_gpmsa_vector"  # executable name
 SOLREFS="${srcdir}/test_gpmsa"
-INFILE="${srcdir}/test_gpmsa/gpmsa_vector_input.txt"
+INFILE="${srcdir}/test_gpmsa/gpmsa_autoscaled_input.txt"
 TESTNAME='Test Multivariate GPMSA'
 
 rm -f $SOLDIR/*.m
@@ -31,7 +31,7 @@ else
 fi
 
 verify_file_exists $SOLDIR/ip_raw_chain.m
-verify_file_exists $SOLREFS/test_gpmsa_vector_samples.m
+verify_file_exists $SOLREFS/test_gpmsa_autoscaled_samples.m
 
-$COMMONDIR/compare.pl $SOLDIR/ip_raw_chain.m $SOLREFS/test_gpmsa_vector_samples.m
+$COMMONDIR/compare.pl $SOLDIR/ip_raw_chain.m $SOLREFS/test_gpmsa_autoscaled_samples.m
 exit $?

@@ -23,7 +23,7 @@ readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulatio
 
   FILE * fp_in = fopen(simulationsFileName.c_str(), "r");
   if (!fp_in)
-    queso_error_msg("Cannot find dakota_pstudy.dat");
+    queso_error_msg("Cannot find " << simulationsFileName);
 
   unsigned int i, id, size = 512;
   double k_tmasl, k_tmoml, k_tnrgl, k_xkwlx, k_cd, pressure;
@@ -42,7 +42,7 @@ readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulatio
   // First line is a header, so we ignore it
   char * gotline = fgets(line, size, fp_in);
   if (!gotline)
-    queso_error_msg("dakota_pstudy.dat was unreadable");
+    queso_error_msg(simulationsFileName << " was unreadable");
 
   i = 0;
   while (fscanf(fp_in, "%d %lf %lf %lf %lf %lf %lf\n", &id, &k_tmasl, &k_tmoml,
@@ -99,7 +99,7 @@ readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulatio
 
   fp_in = fopen(experimentsFileName.c_str(), "r");
   if (!fp_in)
-    queso_error_msg("Cannot find ctf_dat.txt");
+    queso_error_msg("Cannot find " << experimentsFileName);
 
   i = 0;
   while (fscanf(fp_in, "%lf\n", &pressure) != EOF) {
@@ -143,10 +143,10 @@ int main(int argc, char ** argv) {
   unsigned int experimentSize = 2;      // Size of each experiment
   unsigned int numEta = experimentSize;
 
-  std::string inputFileName = "test_gpmsa/gpmsa_vector_input.txt";
-  const char * test_srcdir = std::getenv("srcdir");
-  if (test_srcdir)
-    inputFileName = test_srcdir + ('/' + inputFileName);
+  if (argc < 2)
+    queso_error_msg("Usage: " << argv[0] << " input_filename");
+
+  std::string inputFileName = argv[1];
 
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
@@ -223,6 +223,9 @@ int main(int argc, char ** argv) {
 
   // We want to calibrate for the observation precision
   gpmsaFactory.options().m_calibrateObservationalPrecision = true;
+
+  // Print our final options
+  gpmsaFactory.options().print(std::cout);
 
   // std::vector containing all the points in scenario space where we have
   // simulations
