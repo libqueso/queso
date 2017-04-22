@@ -3,6 +3,57 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.57.0 (Apr 22, 2017)
+  * Add methods to calculate normalized GP parameters
+  * GCC-4.4.7 compatibility fixes
+  * Add options for controlling GPMSA basis SVD
+  * Add GPMSAFactory::options() accessor
+  * Add calibrating GPMSA observationalPrecision option
+  * Update description of Monte Carlo method in manual
+  * Adding new ip.solve*() methods; use prior cov as default proposal cov matrix
+  * Implement iteration dependent TK
+  * Fix serial env failure when trilinos enabled
+  * Fix NULL pointer comparison for non-pointer object
+  * Fix queso.dox warnings
+  * Improve_mpi_comm_docs
+  * Adding custom tk example
+  * Update lcov version
+  * Remove old GPMSA interface
+  * Add boost implementations of pdfs
+  * Discourage use of GenericScalarFunction
+  * Refactor Gaussian likelihoods
+  * Fix for GCC 5.X builds
+  * Assert W_i observation error matrices are SPD
+  * Add new/update quadrature routines (Gauss-Hermite, MonteCarloQuadrature,
+    TensorProductQuadrature, MultiDQuadrature)
+  * Increase test coverage
+  * Fix bug in SequenceOfVectors::erasePositions
+  * Fix bug in weighted histogram calculations
+  * Fix bug in ScalarSequence in erasePositions
+  * Add GPMSA addExperiments + observationalErrorMatrices methods
+  * Add code coverage output to TravisCI
+  * Better bounds checking for interpolation datasets
+  * Add docs for ScopedPtr and SmartPtr
+  * Update License to 2017
+  * Add CppUnit as an option (for testing) dependency
+  * Implement default Hessian-informed log likelihoods
+  * Add lnValue methods for finite difference fallback (make QUESO call these)
+  * Make InfiniteDimensionalMCMCSampler use RngBase object
+  * Force GSL rngs usage for regression tests
+  * Add RngCXX11 class for C++11 random number support
+  * Allow ConcatenatedVectorRV without subrealizers
+  * Add VectorRV::has_realizer() test
+  * Use nonrecursive make for gsl_tests and t0* directories
+  * Update StatisticalInverseProblem/MetropolisHastingSG docs
+  * Reduce header dependencies a little, prefer fwd decl
+  * Smart pointer upgrades for some internals; better memory management
+  * Fix up ANN dependency, and information theory calculations
+  * Fix compiler warnings
+  * Add info theory method documentation
+  * Adding documentation links to README
+  * Rejig build system to make ANN build out of source
+  * Make old info theory example compile
+
 Version 0.56.2 (Feb 2, 2017)
   * Fixed missing factory symbols when linking statically
 
