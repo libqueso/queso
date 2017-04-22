@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -28,7 +28,7 @@
 // QUESO
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
-#include <queso/InterpolationSurrogateHelper.h>
+#include <queso/MultiDimensionalIndexing.h>
 #include <queso/InterpolationSurrogateData.h>
 
 namespace QUESO
@@ -130,7 +130,7 @@ namespace QUESO
         /* Now that we have the global indices for each coordinate,
            we get the "global" index. This is the index into the global
            values array */
-        unsigned int global = InterpolationSurrogateHelper::coordToGlobal( global_indices, this->m_data.get_n_points() );
+        unsigned int global = MultiDimensionalIndexing::coordToGlobal( global_indices, this->m_data.get_n_points() );
         values[n] = this->m_data.get_value(global);
       }
   }
@@ -170,7 +170,7 @@ namespace QUESO
 
     /* We're abusing this function as it does what we need to with local_dim = 2
        for all entries of n_points. */
-    return InterpolationSurrogateHelper::coordToGlobal( indices, n_points );
+    return MultiDimensionalIndexing::coordToGlobal( indices, n_points );
   }
 
   template<class V, class M>
@@ -181,7 +181,7 @@ namespace QUESO
 
     /* We're abusing this function as it does what we need to with local_dim = 2
        for all entries of n_points. */
-    return InterpolationSurrogateHelper::globalToCoord( global, n_points, indices );
+    return MultiDimensionalIndexing::globalToCoord( global, n_points, indices );
   }
 
   template<class V, class M>

@@ -1,4 +1,4 @@
-The `QUESO` Library [![Build Status](https://travis-ci.org/libqueso/queso.svg?branch=dev)](https://travis-ci.org/libqueso/queso)
+The `QUESO` Library [![Build Status](https://travis-ci.org/libqueso/queso.svg?branch=dev)](https://travis-ci.org/libqueso/queso) [![Coverage](https://codecov.io/gh/libqueso/queso/coverage.svg?branch=dev)](https://codecov.io/gh/libqueso/queso)
 ===================
 
 `QUESO` stands for Quantification of Uncertainty for Estimation,
@@ -42,9 +42,14 @@ Documentation
 
 Documentation for older versions:
 
--  [v0.50.1](http://libqueso.github.io/queso/v0.50.1/html/)
--  [v0.51.1](http://libqueso.github.io/queso/v0.51.1/html/)
+-  [v0.56.1](http://libqueso.github.io/queso/v0.56.1/html/)
+-  [v0.56.0](http://libqueso.github.io/queso/v0.56.0/html/)
+-  [v0.55.0](http://libqueso.github.io/queso/v0.55.0/html/)
+-  [v0.54.0](http://libqueso.github.io/queso/v0.54.0/html/)
+-  [v0.53.0](http://libqueso.github.io/queso/v0.53.0/html/)
 -  [v0.52.0](http://libqueso.github.io/queso/v0.52.0/html/)
+-  [v0.51.1](http://libqueso.github.io/queso/v0.51.1/html/)
+-  [v0.50.1](http://libqueso.github.io/queso/v0.50.1/html/)
 
 Dependencies
 ------------

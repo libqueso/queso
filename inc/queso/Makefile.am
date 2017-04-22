@@ -33,6 +33,7 @@ BUILT_SOURCES += AlgorithmFactoryInitializer.h
 BUILT_SOURCES += BaseInputOptionsParser.h
 BUILT_SOURCES += BasicPdfsBase.h
 BUILT_SOURCES += BasicPdfsBoost.h
+BUILT_SOURCES += BasicPdfsCXX11.h
 BUILT_SOURCES += BasicPdfsGsl.h
 BUILT_SOURCES += BoostInputOptionsParser.h
 BUILT_SOURCES += Defines.h
@@ -63,6 +64,7 @@ BUILT_SOURCES += OptimizerMonitor.h
 BUILT_SOURCES += OptimizerOptions.h
 BUILT_SOURCES += RngBase.h
 BUILT_SOURCES += RngBoost.h
+BUILT_SOURCES += RngCXX11.h
 BUILT_SOURCES += RngGsl.h
 BUILT_SOURCES += ScopedPtr.h
 BUILT_SOURCES += SharedPtr.h
@@ -78,36 +80,25 @@ BUILT_SOURCES += Vector.h
 BUILT_SOURCES += asserts.h
 BUILT_SOURCES += exceptions.h
 BUILT_SOURCES += queso.h
-BUILT_SOURCES += ExperimentModel.h
-BUILT_SOURCES += ExperimentModelOptions.h
-BUILT_SOURCES += ExperimentStorage.h
 BUILT_SOURCES += GPMSA.h
 BUILT_SOURCES += GPMSAOptions.h
-BUILT_SOURCES += GcmExperimentInfo.h
-BUILT_SOURCES += GcmJointInfo.h
-BUILT_SOURCES += GcmJointTildeInfo.h
-BUILT_SOURCES += GcmSimulationInfo.h
-BUILT_SOURCES += GcmSimulationTildeInfo.h
-BUILT_SOURCES += GcmTotalInfo.h
-BUILT_SOURCES += GcmZInfo.h
-BUILT_SOURCES += GcmZTildeInfo.h
-BUILT_SOURCES += GpmsaComputerModel.h
-BUILT_SOURCES += GpmsaComputerModelOptions.h
-BUILT_SOURCES += SimulationModel.h
-BUILT_SOURCES += SimulationModelOptions.h
-BUILT_SOURCES += SimulationStorage.h
 BUILT_SOURCES += 1D1DFunction.h
 BUILT_SOURCES += 1DQuadrature.h
 BUILT_SOURCES += 2dArrayOfStuff.h
 BUILT_SOURCES += ArrayOfOneDGrids.h
 BUILT_SOURCES += ArrayOfOneDTables.h
 BUILT_SOURCES += AsciiTable.h
+BUILT_SOURCES += BaseQuadrature.h
 BUILT_SOURCES += CovCond.h
 BUILT_SOURCES += Fft.h
 BUILT_SOURCES += Miscellaneous.h
+BUILT_SOURCES += MonteCarloQuadrature.h
+BUILT_SOURCES += MultiDQuadratureBase.h
+BUILT_SOURCES += MultiDimensionalIndexing.h
 BUILT_SOURCES += OneDGrid.h
 BUILT_SOURCES += StdOneDGrid.h
 BUILT_SOURCES += StreamUtilities.h
+BUILT_SOURCES += TensorProductQuadrature.h
 BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += math_macros.h
 BUILT_SOURCES += Algorithm.h
@@ -125,7 +116,6 @@ BUILT_SOURCES += GammaJointPdf.h
 BUILT_SOURCES += GammaVectorRV.h
 BUILT_SOURCES += GammaVectorRealizer.h
 BUILT_SOURCES += GaussianJointPdf.h
-BUILT_SOURCES += GaussianLikelihood.h
 BUILT_SOURCES += GaussianLikelihoodBlockDiagonalCovariance.h
 BUILT_SOURCES += GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
 BUILT_SOURCES += GaussianLikelihoodDiagonalCovariance.h
@@ -145,6 +135,7 @@ BUILT_SOURCES += GenericVectorRV.h
 BUILT_SOURCES += GenericVectorRealizer.h
 BUILT_SOURCES += HessianCovMatricesTKGroup.h
 BUILT_SOURCES += InfoTheory.h
+BUILT_SOURCES += InfoTheory_impl.h
 BUILT_SOURCES += InvLogitGaussianJointPdf.h
 BUILT_SOURCES += InvLogitGaussianVectorRV.h
 BUILT_SOURCES += InvLogitGaussianVectorRealizer.h
@@ -155,6 +146,7 @@ BUILT_SOURCES += JeffreysJointPdf.h
 BUILT_SOURCES += JeffreysVectorRV.h
 BUILT_SOURCES += JeffreysVectorRealizer.h
 BUILT_SOURCES += JointPdf.h
+BUILT_SOURCES += LikelihoodBase.h
 BUILT_SOURCES += LogNormalJointPdf.h
 BUILT_SOURCES += LogNormalVectorRV.h
 BUILT_SOURCES += LogNormalVectorRealizer.h
@@ -201,7 +193,6 @@ BUILT_SOURCES += InterpolationSurrogateBase.h
 BUILT_SOURCES += InterpolationSurrogateBuilder.h
 BUILT_SOURCES += InterpolationSurrogateData.h
 BUILT_SOURCES += InterpolationSurrogateDataSet.h
-BUILT_SOURCES += InterpolationSurrogateHelper.h
 BUILT_SOURCES += InterpolationSurrogateIOASCII.h
 BUILT_SOURCES += InterpolationSurrogateIOBase.h
 BUILT_SOURCES += LinearLagrangeInterpolationSurrogate.h
@@ -267,6 +258,8 @@ BasicPdfsBase.h: $(top_srcdir)/src/core/inc/BasicPdfsBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsBoost.h: $(top_srcdir)/src/core/inc/BasicPdfsBoost.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BasicPdfsCXX11.h: $(top_srcdir)/src/core/inc/BasicPdfsCXX11.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsGsl.h: $(top_srcdir)/src/core/inc/BasicPdfsGsl.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BoostInputOptionsParser.h: $(top_srcdir)/src/core/inc/BoostInputOptionsParser.h
@@ -327,6 +320,8 @@ RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBoost.h: $(top_srcdir)/src/core/inc/RngBoost.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+RngCXX11.h: $(top_srcdir)/src/core/inc/RngCXX11.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngGsl.h: $(top_srcdir)/src/core/inc/RngGsl.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ScopedPtr.h: $(top_srcdir)/src/core/inc/ScopedPtr.h
@@ -357,41 +352,9 @@ exceptions.h: $(top_srcdir)/src/core/inc/exceptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 queso.h: $(top_srcdir)/src/core/inc/queso.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-ExperimentModel.h: $(top_srcdir)/src/gp/inc/ExperimentModel.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-ExperimentModelOptions.h: $(top_srcdir)/src/gp/inc/ExperimentModelOptions.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-ExperimentStorage.h: $(top_srcdir)/src/gp/inc/ExperimentStorage.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GPMSA.h: $(top_srcdir)/src/gp/inc/GPMSA.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GPMSAOptions.h: $(top_srcdir)/src/gp/inc/GPMSAOptions.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmExperimentInfo.h: $(top_srcdir)/src/gp/inc/GcmExperimentInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmJointInfo.h: $(top_srcdir)/src/gp/inc/GcmJointInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmJointTildeInfo.h: $(top_srcdir)/src/gp/inc/GcmJointTildeInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmSimulationInfo.h: $(top_srcdir)/src/gp/inc/GcmSimulationInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmSimulationTildeInfo.h: $(top_srcdir)/src/gp/inc/GcmSimulationTildeInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmTotalInfo.h: $(top_srcdir)/src/gp/inc/GcmTotalInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmZInfo.h: $(top_srcdir)/src/gp/inc/GcmZInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GcmZTildeInfo.h: $(top_srcdir)/src/gp/inc/GcmZTildeInfo.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GpmsaComputerModel.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModel.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GpmsaComputerModelOptions.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModelOptions.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-SimulationModel.h: $(top_srcdir)/src/gp/inc/SimulationModel.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-SimulationModelOptions.h: $(top_srcdir)/src/gp/inc/SimulationModelOptions.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-SimulationStorage.h: $(top_srcdir)/src/gp/inc/SimulationStorage.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 1D1DFunction.h: $(top_srcdir)/src/misc/inc/1D1DFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -405,17 +368,27 @@ ArrayOfOneDTables.h: $(top_srcdir)/src/misc/inc/ArrayOfOneDTables.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 AsciiTable.h: $(top_srcdir)/src/misc/inc/AsciiTable.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BaseQuadrature.h: $(top_srcdir)/src/misc/inc/BaseQuadrature.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 CovCond.h: $(top_srcdir)/src/misc/inc/CovCond.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Fft.h: $(top_srcdir)/src/misc/inc/Fft.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Miscellaneous.h: $(top_srcdir)/src/misc/inc/Miscellaneous.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+MonteCarloQuadrature.h: $(top_srcdir)/src/misc/inc/MonteCarloQuadrature.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+MultiDQuadratureBase.h: $(top_srcdir)/src/misc/inc/MultiDQuadratureBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+MultiDimensionalIndexing.h: $(top_srcdir)/src/misc/inc/MultiDimensionalIndexing.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 OneDGrid.h: $(top_srcdir)/src/misc/inc/OneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 StdOneDGrid.h: $(top_srcdir)/src/misc/inc/StdOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 StreamUtilities.h: $(top_srcdir)/src/misc/inc/StreamUtilities.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TensorProductQuadrature.h: $(top_srcdir)/src/misc/inc/TensorProductQuadrature.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformOneDGrid.h: $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -450,8 +423,6 @@ GammaVectorRV.h: $(top_srcdir)/src/stats/inc/GammaVectorRV.h
 GammaVectorRealizer.h: $(top_srcdir)/src/stats/inc/GammaVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianJointPdf.h: $(top_srcdir)/src/stats/inc/GaussianJointPdf.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GaussianLikelihood.h: $(top_srcdir)/src/stats/inc/GaussianLikelihood.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianLikelihoodBlockDiagonalCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodBlockDiagonalCovariance.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -491,6 +462,8 @@ HessianCovMatricesTKGroup.h: $(top_srcdir)/src/stats/inc/HessianCovMatricesTKGro
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InfoTheory_impl.h: $(top_srcdir)/src/stats/inc/InfoTheory_impl.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InvLogitGaussianJointPdf.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InvLogitGaussianVectorRV.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianVectorRV.h
@@ -510,6 +483,8 @@ JeffreysVectorRV.h: $(top_srcdir)/src/stats/inc/JeffreysVectorRV.h
 JeffreysVectorRealizer.h: $(top_srcdir)/src/stats/inc/JeffreysVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 JointPdf.h: $(top_srcdir)/src/stats/inc/JointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+LikelihoodBase.h: $(top_srcdir)/src/stats/inc/LikelihoodBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 LogNormalJointPdf.h: $(top_srcdir)/src/stats/inc/LogNormalJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -602,8 +577,6 @@ InterpolationSurrogateBuilder.h: $(top_srcdir)/src/surrogates/inc/InterpolationS
 InterpolationSurrogateData.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateData.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InterpolationSurrogateDataSet.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateDataSet.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-InterpolationSurrogateHelper.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateHelper.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InterpolationSurrogateIOASCII.h: $(top_srcdir)/src/surrogates/inc/InterpolationSurrogateIOASCII.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

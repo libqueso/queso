@@ -22,20 +22,19 @@ public:
 
   virtual double actualValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const {
-    return std::exp(this->actualValue(domainVector, domainDirection,
-          gradVector, hessianMatrix, hessianEffect));
+    return std::exp(this->lnValue(domainVector));
   }
 
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const {
+  virtual double lnValue(const V & domainVector) const {
+    return -domainVector[0] * domainVector[0];
+  }
 
+  virtual double lnValue(const V & domainVector, V & gradVector) const {
     // Need to check if NULL because QUESO will somtimes call this with a
     // NULL pointer
-    if (gradVector != NULL) {
-      (*gradVector)[0] = -2.0 * domainVector[0];
-    }
+    gradVector[0] = -2.0 * domainVector[0];
 
-    return -(domainVector[0] * domainVector[0]);
+    return this->lnValue(domainVector);
   }
 };
 

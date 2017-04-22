@@ -12,7 +12,7 @@ set -o pipefail
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
 SAVELOG=1		                   # Log model output?
-COMMONDIR="$srcdir/../common"
+COMMONDIR="$srcdir/common"
 
 #----------------
 # Initialization
@@ -28,10 +28,9 @@ RUNDIR=`pwd`
 # Regresion Test #1: Validation cycle with TGA example
 
 VERIFY_DATE="04-06-2015"
-SOLDIR="outputData"
+SOLDIR="./output_test_TgaValidationCycle_gsl"
 EXE="./TgaValidationCycle_gsl"   # executable name
-SOLREFS="$srcdir/regression/$VERIFY_DATE"
-INFILE="$srcdir/tgaCycle.inp"
+SOLREFS="$srcdir/t01_valid_cycle/regression/$VERIFY_DATE"
 TESTNAME='Test 1 (TGA Validation Cycle)'
 
 # Setup desired input for the model
@@ -40,19 +39,18 @@ rm -f $SOLDIR/*.txt
 rm -f $SOLDIR/*.m
 
 verify_file_exists $EXE
-verify_file_exists $INFILE
 
 # Remove output directory to nullify any previous results (and verify QUESO
 # creates necessary parent directory).
 
-rm -rf ./outputData
+rm -rf $SOLDIR
 
 # Run the model
 
 if [ $SAVELOG -eq 1 ];then
-    ./$EXE $INFILE
+    ./$EXE
 else
-    ./$EXE $INFILE >& /dev/null
+    ./$EXE >& /dev/null
 fi
 
 # Verify results

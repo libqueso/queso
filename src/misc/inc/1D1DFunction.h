@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -35,7 +35,7 @@
 
 namespace QUESO {
 
-/*! \file uqBase1D1DFunction.h
+/*! \file 1D1DFunction.h
     \brief One-dimension function class.
 */
 
@@ -309,7 +309,7 @@ public:
   //! Returns the value of the quadratic function at point \c domainValue.
   /*! This function checks if point \c domainValue belongs to the domain of \c this function,
    * and in affirmative case, it evaluates the function at such point, namely:
-   * <c>imageValue = a*domainValue^2 + b*domainValue + c </c>\f$.*/
+   * <c>imageValue = a*domainValue^2 + b*domainValue + c </c>.*/
   double value(double domainValue) const;
 
   //! Returns the value of the derivative of the quadratic function at point \c domainValue.

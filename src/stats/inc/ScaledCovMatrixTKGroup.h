@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -83,6 +83,9 @@ public:
 
   //! Sets the internal \c m_stageId varialbe to \c stageId
   virtual unsigned int set_dr_stage(unsigned int stageId);
+
+  virtual bool covMatrixIsDirty() { return false; }
+  virtual void cleanCovMatrix() { }
   //@}
 
   //! @name I/O methods

@@ -105,9 +105,6 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
   this->_acc_prob = 0.0;
   this->_avg_acc_prob = 0.0;
 
-  // FIXME: Should use the QUESO rng here instead
-  r = gsl_rng_alloc(gsl_rng_taus2);
-
   // Zero out these guys.  There's probably a better way of doing this than
   // calling prior.draw() at the start, but creation of a Sampler object
   // should only be done a O(1) times anyway.
@@ -171,7 +168,7 @@ void InfiniteDimensionalMCMCSampler::_metropolis_hastings()
 
   double diff = this->_llhd_val - proposed_llhd;
   double alpha = std::min(1.0, std::exp(diff));
-  double rand = gsl_rng_uniform(this->r);
+  double rand = this->m_env.rngObject()->uniformSample();
   if (rand < alpha) {
     // Accept
     // std::cout << "accepted" << std::endl;
@@ -264,7 +261,7 @@ hid_t InfiniteDimensionalMCMCSampler::_create_scalar_dataset(const std::string &
     return dset;
   }
 
-  hid_t dummy;
+  hid_t dummy = -1;
   return dummy;
 }
 
@@ -282,6 +279,7 @@ void InfiniteDimensionalMCMCSampler::_append_scalar_dataset(hid_t dset, double d
     // Set dims to be the *new* dimension of the extended dataset
     dims[0] = this->_iteration / this->m_ov->m_save_freq;
     err = H5Dset_extent(dset, dims);
+    queso_require_greater_equal_msg(err, 0, "H5DSet_extent(dset, dims) failed");
 
     // Select hyperslab on file dataset
     hid_t file_space = H5Dget_space(dset);
@@ -289,6 +287,7 @@ void InfiniteDimensionalMCMCSampler::_append_scalar_dataset(hid_t dset, double d
     hsize_t count[1] = {1};
 
     err = H5Sselect_hyperslab(file_space, H5S_SELECT_SET, start, NULL, count, NULL);
+    queso_require_greater_equal_msg(err, 0, "H5Sselect_hyperslab(file_space, H5S_SELECT_SET, start, NULL, count, NULL) failed");
 
     // hsize_t      size[1];
     // size[0]   = this->_iteration / this->m_ov->m_save_freq;

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -27,6 +27,7 @@
 #ifdef QUESO_HAS_TRILINOS
 
 #include <queso/TeuchosVector.h>
+#include <queso/RngBase.h>
 
 namespace QUESO {
 
@@ -39,8 +40,6 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map)
   Vector(env,map)
 {
   m_vec.size(map.NumGlobalElements());
-
-  queso_require_msg(m_vec != NULL, "null vector generated");
 
   queso_require_equal_to_msg(m_vec.length(), map.NumMyElements(), "incompatible local vec size");
 
@@ -63,8 +62,6 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map, double 
   m_vec.size(map.NumGlobalElements());
   m_vec = value;
 
-  queso_require_msg(m_vec != NULL, "null vector generated");
-
   queso_require_equal_to_msg(m_vec.length(), map.NumMyElements(), "incompatible local vec size");
 
   queso_require_equal_to_msg(m_vec.length(), map.NumGlobalElements(), "incompatible global vec size");
@@ -78,8 +75,6 @@ TeuchosVector::TeuchosVector(const BaseEnvironment& env, double d1, double d2, c
   Vector(env,map)
   {
   m_vec.size(map.NumGlobalElements());
-
-  queso_require_msg(m_vec != NULL, "null vector generated");
 
   queso_require_equal_to_msg(m_vec.length(), map.NumMyElements(), "incompatible local vec size");
 
@@ -100,8 +95,6 @@ TeuchosVector::TeuchosVector(const TeuchosVector& v, double d1, double d2)
 {
   m_vec.size(v.sizeLocal());
 
-  queso_require_msg(m_vec != NULL, "null vector generated");
-
   queso_require_equal_to_msg(m_vec.length(), v.map().NumMyElements(), "incompatible local vec size");
 
   queso_require_equal_to_msg(m_vec.length(), v.map().NumGlobalElements(), "incompatible global vec size");
@@ -120,8 +113,6 @@ TeuchosVector::TeuchosVector(const TeuchosVector& v)  // mox
   Vector(v.env(),v.map())
  {
    m_vec.size(v.sizeLocal());
-
-  queso_require_msg(m_vec != NULL, "null vector generated");
 
   queso_require_equal_to_msg(m_vec.length(), v.map().NumMyElements(), "incompatible local vec size");
 

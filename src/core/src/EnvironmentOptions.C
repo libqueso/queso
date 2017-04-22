@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -22,8 +22,12 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Defines.h>
+
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
+#else
+#include <queso/getpot.h>
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/EnvironmentOptions.h>
@@ -58,7 +62,7 @@ EnvOptionsValues::EnvOptionsValues()
     m_debugParams(m_numDebugParams,0.),
     m_env(NULL),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-    m_parser(NULL),
+    m_parser(),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_numSubEnvironments(m_prefix + "numSubEnvironments"),
@@ -197,11 +201,6 @@ EnvOptionsValues::EnvOptionsValues(const EnvOptionsValues& src)
 // Destructor ---------------------------------------
 EnvOptionsValues::~EnvOptionsValues()
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  if (m_parser) {
-    delete m_parser;
-  }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // Set methods---------------------------------------
@@ -305,7 +304,7 @@ EnvironmentOptions::EnvironmentOptions(
   m_env                         (env),
   m_prefix                      ((std::string)(prefix) + "env_"),
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  m_optionsDesc                 (NULL),
+  m_optionsDesc                 (),
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                 (m_prefix + "help"                 ),
   m_option_numSubEnvironments   (m_prefix + "numSubEnvironments"   ),
@@ -336,10 +335,6 @@ EnvironmentOptions::EnvironmentOptions(
 EnvironmentOptions::~EnvironmentOptions()
 {
   queso_deprecated();
-
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  if (m_optionsDesc) delete m_optionsDesc;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // I/O methods---------------------------------------

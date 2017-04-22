@@ -3,11 +3,14 @@
 ###############################################
 #env_help                 = anything
 env_numSubEnvironments   = 1
-env_subDisplayFileName   = outputData/screen
+env_subDisplayFileName   = output_test_TgaValidationCycle_gsl/screen
 env_subDisplayAllowAll   = 0
 env_subDisplayAllowedSet = 0 1
 env_displayVerbosity     = 2
 env_syncVerbosity        = 0
+
+# Force gsl to prevent regression failures with other rngs
+env_rngType              = gsl
 env_seed                 = 0
 
 ###############################################
@@ -15,7 +18,7 @@ env_seed                 = 0
 ###############################################
 cycle_cal_ip_help                 = anything
 cycle_cal_ip_computeSolution      = 1
-cycle_cal_ip_dataOutputFileName   = outputData/tgaCalOutput
+cycle_cal_ip_dataOutputFileName   = output_test_TgaValidationCycle_gsl/tgaCalOutput
 cycle_cal_ip_dataOutputAllowedSet = 0 1
 
 ###############################################
@@ -25,15 +28,15 @@ cycle_cal_ip_dataOutputAllowedSet = 0 1
 #                  16384 131072 1048576 2097152 16777216
 ###############################################
 cycle_cal_ip_mh_help                 = anything
-cycle_cal_ip_mh_dataOutputFileName   = outputData/tgaCalOutput
+cycle_cal_ip_mh_dataOutputFileName   = output_test_TgaValidationCycle_gsl/tgaCalOutput
 cycle_cal_ip_mh_dataOutputAllowedSet = 0 1
 
-cycle_cal_ip_mh_rawChain_dataInputFileName    = . # outputData/file_cal_ip_raw1
+cycle_cal_ip_mh_rawChain_dataInputFileName    = . # output_test_TgaValidationCycle_gsl/file_cal_ip_raw1
 cycle_cal_ip_mh_rawChain_size                 = 16384
 cycle_cal_ip_mh_rawChain_generateExtra        = 0
 cycle_cal_ip_mh_rawChain_displayPeriod        = 20000
 cycle_cal_ip_mh_rawChain_measureRunTimes      = 1
-cycle_cal_ip_mh_rawChain_dataOutputFileName   = outputData/file_cal_ip_raw2
+cycle_cal_ip_mh_rawChain_dataOutputFileName   = output_test_TgaValidationCycle_gsl/file_cal_ip_raw2
 cycle_cal_ip_mh_rawChain_dataOutputAllowedSet = 0 1
 cycle_cal_ip_mh_rawChain_computeStats         = 1
 
@@ -144,7 +147,7 @@ cycle_cal_fp_help                 = anything
 cycle_cal_fp_computeSolution      = 1
 cycle_cal_fp_computeCovariances   = 1
 cycle_cal_fp_computeCorrelations  = 1
-cycle_cal_fp_dataOutputFileName   = outputData/tgaCalOutput
+cycle_cal_fp_dataOutputFileName   = output_test_TgaValidationCycle_gsl/tgaCalOutput
 cycle_cal_fp_dataOutputAllowedSet = 0 1
 
 ###############################################
@@ -154,7 +157,7 @@ cycle_cal_fp_dataOutputAllowedSet = 0 1
 #                  16384 131072 1048576 2097152 16777216
 ###############################################
 cycle_cal_fp_mc_help                 = anything
-cycle_cal_fp_mc_dataOutputFileName   = outputData/tgaCalOutput
+cycle_cal_fp_mc_dataOutputFileName   = output_test_TgaValidationCycle_gsl/tgaCalOutput
 cycle_cal_fp_mc_dataOutputAllowedSet = 0 1
 
 cycle_cal_fp_mc_pseq_dataOutputFileName   = .
@@ -173,11 +176,11 @@ cycle_cal_fp_mc_pseq_stats_kde_numEvalPositions      = 250
 cycle_cal_fp_mc_pseq_stats_covMatrix_compute         = 1
 cycle_cal_fp_mc_pseq_stats_corrMatrix_compute        = 1
 
-cycle_cal_fp_mc_qseq_dataInputFileName    = . # outputData/file_cal_fp_qoi1
+cycle_cal_fp_mc_qseq_dataInputFileName    = . # output_test_TgaValidationCycle_gsl/file_cal_fp_qoi1
 cycle_cal_fp_mc_qseq_size                 = 1048576
 cycle_cal_fp_mc_qseq_displayPeriod        = 20000
 cycle_cal_fp_mc_qseq_measureRunTimes      = 1
-cycle_cal_fp_mc_qseq_dataOutputFileName   = outputData/file_cal_fp_qoi2
+cycle_cal_fp_mc_qseq_dataOutputFileName   = output_test_TgaValidationCycle_gsl/file_cal_fp_qoi2
 cycle_cal_fp_mc_qseq_dataOutputAllowedSet = 0 1
 cycle_cal_fp_mc_qseq_computeStats         = 1
 
@@ -227,7 +230,7 @@ cycle_cal_fp_mc_qseq_stats_corrMatrix_compute        = 1
 ###############################################
 cycle_val_ip_help                 = anything
 cycle_val_ip_computeSolution      = 1
-cycle_val_ip_dataOutputFileName   = outputData/tgaValOutput
+cycle_val_ip_dataOutputFileName   = output_test_TgaValidationCycle_gsl/tgaValOutput
 cycle_val_ip_dataOutputAllowedSet = 0 1
 
 ###############################################
@@ -237,15 +240,15 @@ cycle_val_ip_dataOutputAllowedSet = 0 1
 #                  16384 131072 1048576 2097152 16777216
 ###############################################
 cycle_val_ip_mh_help                 = anything
-cycle_val_ip_mh_dataOutputFileName   = outputData/tgaValOutput
+cycle_val_ip_mh_dataOutputFileName   = output_test_TgaValidationCycle_gsl/tgaValOutput
 cycle_val_ip_mh_dataOutputAllowedSet = 0 1
 
-cycle_val_ip_mh_rawChain_dataInputFileName    = . # outputData/file_val_ip_raw1
+cycle_val_ip_mh_rawChain_dataInputFileName    = . # output_test_TgaValidationCycle_gsl/file_val_ip_raw1
 cycle_val_ip_mh_rawChain_size                 = 16384
 cycle_val_ip_mh_rawChain_generateExtra        = 0
 cycle_val_ip_mh_rawChain_displayPeriod        = 20000
 cycle_val_ip_mh_rawChain_measureRunTimes      = 1
-cycle_val_ip_mh_rawChain_dataOutputFileName   = outputData/file_val_ip_raw2
+cycle_val_ip_mh_rawChain_dataOutputFileName   = output_test_TgaValidationCycle_gsl/file_val_ip_raw2
 cycle_val_ip_mh_rawChain_dataOutputAllowedSet = 0 1
 cycle_val_ip_mh_rawChain_computeStats         = 1
 
@@ -356,7 +359,7 @@ cycle_val_fp_help                 = anything
 cycle_val_fp_computeSolution      = 1
 cycle_val_fp_computeCovariances   = 1
 cycle_val_fp_computeCorrelations  = 1
-cycle_val_fp_dataOutputFileName   = outputData/tgaValOutput
+cycle_val_fp_dataOutputFileName   = output_test_TgaValidationCycle_gsl/tgaValOutput
 cycle_val_fp_dataOutputAllowedSet = 0 1
 
 ###############################################
@@ -366,7 +369,7 @@ cycle_val_fp_dataOutputAllowedSet = 0 1
 #                  16384 131072 1048576 2097152 16777216
 ###############################################
 cycle_val_fp_mc_help                 = anything
-cycle_val_fp_mc_dataOutputFileName   = outputData/tgaValOutput
+cycle_val_fp_mc_dataOutputFileName   = output_test_TgaValidationCycle_gsl/tgaValOutput
 cycle_val_fp_mc_dataOutputAllowedSet = 0 1
 
 cycle_val_fp_mc_pseq_dataOutputFileName   = .
@@ -385,11 +388,11 @@ cycle_val_fp_mc_pseq_stats_kde_numEvalPositions      = 250
 cycle_val_fp_mc_pseq_stats_covMatrix_compute         = 1
 cycle_val_fp_mc_pseq_stats_corrMatrix_compute        = 1
 
-cycle_val_fp_mc_qseq_dataInputFileName    = . # outputData/file_val_fp_qoi1
+cycle_val_fp_mc_qseq_dataInputFileName    = . # output_test_TgaValidationCycle_gsl/file_val_fp_qoi1
 cycle_val_fp_mc_qseq_size                 = 1048576
 cycle_val_fp_mc_qseq_displayPeriod        = 20000
 cycle_val_fp_mc_qseq_measureRunTimes      = 1
-cycle_val_fp_mc_qseq_dataOutputFileName   = outputData/file_val_fp_qoi2
+cycle_val_fp_mc_qseq_dataOutputFileName   = output_test_TgaValidationCycle_gsl/file_val_fp_qoi2
 cycle_val_fp_mc_qseq_dataOutputAllowedSet = 0 1
 cycle_val_fp_mc_qseq_computeStats         = 1
 

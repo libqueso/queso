@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -27,7 +27,6 @@
 #include <queso/GslMatrix.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/1D1DFunction.h>
-#include <queso/GenericScalarFunction.h>
 #include <queso/GenericVectorRV.h>
 #include <queso/UniformVectorRV.h>
 
@@ -55,15 +54,10 @@ void compute(const QUESO::FullEnvironment& env) {
   meanVector[0] = 10.;
   QUESO::GslMatrix* covMatrix = paramSpace.newMatrix();
   (*covMatrix)(0,0) = 1.;
-  likelihoodRoutine_DataType likelihoodRoutine_Data;
-  likelihoodRoutine_Data.meanVector = &meanVector;
-  likelihoodRoutine_Data.covMatrix  = covMatrix;
-  QUESO::GenericScalarFunction<QUESO::GslVector,QUESO::GslMatrix>
-    likelihoodFunctionObj("like_",
-                          paramDomain,
-                          likelihoodRoutine,
-                          (void *) &likelihoodRoutine_Data,
-                          true); // routine computes [-2.*ln(function)]
+
+  Likelihood<> likelihood("like_", paramDomain);
+  likelihood.meanVector = &meanVector;
+  likelihood.covMatrix  = covMatrix;
 
   //------------------------------------------------------
   // Step 4 of 5: Instantiate the inverse problem
@@ -73,7 +67,7 @@ void compute(const QUESO::FullEnvironment& env) {
   QUESO::GenericVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     postRv("post_", paramSpace);
   QUESO::StatisticalInverseProblem<QUESO::GslVector,QUESO::GslMatrix>
-    ip("", NULL, priorRv, likelihoodFunctionObj, postRv);
+    ip("", NULL, priorRv, likelihood, postRv);
 
   //------------------------------------------------------
   // Step 5 of 5: Solve the inverse problem
@@ -157,7 +151,7 @@ void compute(const QUESO::FullEnvironment& env) {
   double integral = 0.;
   for (unsigned int i = 0; i < numGridPoints; ++i) {
     auxVec[0] = xMin + i*intervalSize;
-    integral += likelihoodFunctionObj.actualValue(auxVec,NULL,NULL,NULL,NULL);
+    integral += likelihood.actualValue(auxVec,NULL,NULL,NULL,NULL);
   }
   integral *= intervalSize;
   if (env.subDisplayFile()) {

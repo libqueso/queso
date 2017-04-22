@@ -40,6 +40,16 @@ echo Configure date................ : $BUILD_DATE
 echo Build architecture............ : $BUILD_ARCH
 echo git revision.................. : $BUILD_VERSION
 echo
+echo Testing Options:
+if test "x$HAVE_CPPUNIT" = "x1"; then
+  echo '  'CppUnit..................... : yes
+  echo '    'CPPUNIT_VERSION........... : $CPPUNIT_VERSION
+  echo '    'CPPUNIT_CPPFLAGS.......... : $CPPUNIT_CPPFLAGS
+  echo '    'CPPUNIT_LIBS.............. : $CPPUNIT_LIBS
+else
+  echo '  'CppUnit..................... : no
+fi
+echo
 echo Optional Features:
 
 # Optional Features Enabled?

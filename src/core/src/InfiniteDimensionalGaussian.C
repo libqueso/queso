@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -31,6 +31,7 @@
 #include <queso/Environment.h>
 #include <queso/FunctionBase.h>
 #include <queso/OperatorBase.h>
+#include <queso/RngBase.h>
 
 namespace QUESO {
 
@@ -62,9 +63,11 @@ SharedPtr<FunctionBase>::Type InfiniteDimensionalGaussian::draw()
     (this->coeffs)[i] = env.rngObject()->gaussianSample(this->beta);
   }
 
-#warning We never use the mean?
+  SharedPtr<FunctionBase>::Type f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
 
-SharedPtr<FunctionBase>::Type f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
+  // Add on the mean
+  f->add(1.0, mean);
+
   return f;
 }
 

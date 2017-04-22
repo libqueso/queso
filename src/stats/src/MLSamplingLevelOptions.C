@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -183,7 +183,8 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
     m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
     m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
-    m_option_tk                                        (m_prefix + "tk"                                        )
+    m_option_tk                                        (m_prefix + "tk"                                        ),
+    m_option_updateInterval                            (m_prefix + "updateInterval"                            )
 {
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   this->defineAllOptions();
@@ -268,6 +269,7 @@ MLSamplingLevelOptions::defineAllOptions()
   m_parser->registerOption<bool        >(m_option_doLogitTransform,                           UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        , "flag for doing logit transform for bounded domains"              );
   m_parser->registerOption<std::string >(m_option_algorithm,                                  UQ_ML_SAMPLING_L_ALGORITHM                 , "which algorithm to use for sampling"                             );
   m_parser->registerOption<std::string >(m_option_tk,                                         UQ_ML_SAMPLING_L_TK                        , "which transition kernel to use for sampling"                     );
+  m_parser->registerOption<unsigned int>(m_option_updateInterval,                             UQ_ML_SAMPLING_L_UPDATE_INTERVAL           , "how often to call TK's updateTK method"                          );
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
@@ -345,6 +347,7 @@ MLSamplingLevelOptions::getAllOptions()
   m_parser->getOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform);
   m_parser->getOption<std::string >(m_option_algorithm,                                  m_algorithm);
   m_parser->getOption<std::string >(m_option_tk,                                         m_tk);
+  m_parser->getOption<unsigned int>(m_option_updateInterval,                             m_updateInterval);
 #else
   m_help = m_env.input()(m_option_help,                                       UQ_ML_SAMPLING_L_HELP                      );
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
@@ -477,6 +480,7 @@ MLSamplingLevelOptions::getAllOptions()
   m_doLogitTransform                          = m_env.input()(m_option_doLogitTransform,                           UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        );
   m_algorithm                                 = m_env.input()(m_option_algorithm,                                  UQ_ML_SAMPLING_L_ALGORITHM                 );
   m_tk                                        = m_env.input()(m_option_tk,                                         UQ_ML_SAMPLING_L_TK                        );
+  m_updateInterval                            = m_env.input()(m_option_updateInterval,                             UQ_ML_SAMPLING_L_UPDATE_INTERVAL           );
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
@@ -564,6 +568,7 @@ MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptio
   m_doLogitTransform                          = srcOptions.m_doLogitTransform;
   m_algorithm                                 = srcOptions.m_algorithm;
   m_tk                                        = srcOptions.m_tk;
+  m_updateInterval                            = srcOptions.m_updateInterval;
 
   return;
 }
@@ -821,6 +826,7 @@ MLSamplingLevelOptions::print(std::ostream& os) const
      << "\n" << m_option_doLogitTransform                           << " = " << m_doLogitTransform
      << "\n" << m_option_algorithm                                  << " = " << m_algorithm
      << "\n" << m_option_tk                                         << " = " << m_tk
+     << "\n" << m_option_updateInterval                             << " = " << m_updateInterval
      << std::endl;
 
   return;

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -98,6 +98,7 @@
 #define UQ_MH_SG_DO_LOGIT_TRANSFORM                                   1
 #define UQ_MH_SG_ALGORITHM                                            "logit_random_walk"
 #define UQ_MH_SG_TK                                                   "logit_random_walk"
+#define UQ_MH_SG_UPDATE_INTERVAL                                      1
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 namespace boost {
@@ -612,12 +613,15 @@ public:
   //! Which transition kernel to use for MCMC.  Default is "random_walk"
   std::string m_tk;
 
+  //! How often to call the TK's updateTK method.  Default is 1.
+  unsigned int m_updateInterval;
+
 private:
   // Cache a pointer to the environment.
   const BaseEnvironment * m_env;
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  BoostInputOptionsParser * m_parser;
+  ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   //! Option name for MhOptionsValues::m_help.  Option name is m_prefix + "mh_help"
@@ -737,6 +741,8 @@ private:
   std::string                   m_option_algorithm;
   //! Option name for MhOptionsValues::m_tk.  Option name is m_prefix + "mh_tk"
   std::string                   m_option_tk;
+  //! Option name for MhOptionsValues::m_updateInterval.  Option name is m_prefix + "mh_updateInterval"
+  std::string                   m_option_updateInterval;
 
   //! Copies the option values from \c src to \c this.
   void copy(const MhOptionsValues& src);
@@ -819,7 +825,7 @@ private:
 
   const BaseEnvironment& m_env;
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  boost::program_options::options_description*      m_optionsDesc;
+  ScopedPtr<boost::program_options::options_description>::Type m_optionsDesc;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;
@@ -887,6 +893,7 @@ private:
   std::string                   m_option_doLogitTransform;
   std::string                   m_option_algorithm;
   std::string                   m_option_tk;
+  std::string                   m_option_updateInterval;
 };
 
 std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptions& obj);

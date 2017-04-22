@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -35,6 +35,38 @@
 #include <memory>
 #endif
 
+/*!
+ * \file ScopedPtr.h
+ * \brief This file declares and defines a scoped pointer
+ */
+
+/*!
+ * \class ScopedPtr
+ * \brief Definition of a scoped pointer.
+ *
+ * Scoped pointers are smart pointers that clean up after themselves when they
+ * go out of scope, with no shared ownership, and with no transfer of
+ * ownership regardless of the underlying implementation.
+ *
+ * If QUESO detects C++11 functionality at configure-time, then the underlying
+ * implementation of ScopedPtr is that of std::unique_ptr.  Even when this is
+ * the case, please note that shared ownership and transfer of ownership are
+ * not supported.
+ *
+ * If QUESO does not detect C++11 functionality then QUESO will check if boost
+ * is present and, if so, will use boost::scoped_ptr as the underlying
+ * implementation.  It should now be clear why shared ownership and transfer
+ * of ownership are not permitted.
+ *
+ * If QUESO fails to detect both C++11 functionality and boost then QUESO's
+ * last resort is to fall back on the C++03's std::auto_ptr.  If std::auto_ptr
+ * isn't detected, QUESO will fail to configure.
+ *
+ * ScopedPtr is implemented as a template typedef pattern.  That is, one
+ * declares a ScopedPtr like so:
+ *
+ * QUESO::ScopedPtr< name_of_type >::Type name_of_variable;
+ */
 namespace QUESO
 {
 #ifdef QUESO_HAVE_CXX11_UNIQUE_PTR

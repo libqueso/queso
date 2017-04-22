@@ -3,10 +3,12 @@
 # dependencies here.
 #-----------------------------------
 
-PECOS_extra_dependencies = $(top_srcdir)/doxygen/queso.page \
-			   $(top_builddir)/doxygen/txt_common/about.page \
-			   $(top_srcdir)/doxygen/txt_common/gpl.page \
-			   $(top_srcdir)/doxygen/txt_common/acknowledgment.page
+PECOS_extra_dependencies =
+PECOS_extra_dependencies += $(top_srcdir)/doxygen/queso.page
+PECOS_extra_dependencies += $(top_builddir)/doxygen/txt_common/about.page
+PECOS_extra_dependencies += $(top_srcdir)/doxygen/txt_common/gpl.page
+PECOS_extra_dependencies += $(top_srcdir)/doxygen/txt_common/acknowledgment.page
+PECOS_extra_dependencies += $(QUESO_STAMPED_FILES)
 
 ## --------------------------------- ##
 ## Format-independent Doxygen rules. ##

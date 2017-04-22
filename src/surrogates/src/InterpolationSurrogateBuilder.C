@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -29,7 +29,7 @@
 #include <queso/MpiComm.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
-#include <queso/InterpolationSurrogateHelper.h>
+#include <queso/MultiDimensionalIndexing.h>
 #include <queso/StreamUtilities.h>
 
 // C++
@@ -188,7 +188,7 @@ namespace QUESO
   {
     // Convert global index n to local coordinates in each dimension
     std::vector<unsigned int> indices(this->get_default_data().dim());
-    InterpolationSurrogateHelper::globalToCoord( n, this->get_default_data().get_n_points(), indices );
+    MultiDimensionalIndexing::globalToCoord( n, this->get_default_data().get_n_points(), indices );
 
     // Use indices to get x coordinates and populate domain_vector
     for( unsigned int d = 0; d < this->get_default_data().dim(); d++ )

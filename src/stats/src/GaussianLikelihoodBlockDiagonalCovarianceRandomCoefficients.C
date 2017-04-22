@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -33,7 +33,7 @@ template<class V, class M>
 GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const V & observations, const GslBlockMatrix & covariance)
-  : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+  : LikelihoodBase<V, M>(prefix, domainSet, observations),
     m_covariance(covariance)
 {
   unsigned int totalDim = 0;
@@ -54,25 +54,12 @@ GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::~GaussianLike
 
 template<class V, class M>
 double
-GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::actualValue(
-    const V & domainVector, const V * domainDirection, V * gradVector,
-    M * hessianMatrix, V * hessianEffect) const
-{
-  return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
-        hessianMatrix, hessianEffect));
-}
-
-template<class V, class M>
-double
-GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::lnValue(
-    const V & domainVector, const V * domainDirection, V * gradVector,
-    M * hessianMatrix, V * hessianEffect) const
+GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::lnValue(const V & domainVector) const
 {
   V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
   V weightedMisfit(this->m_observations, 0, 0);  // At least it's not a copy
 
-  this->evaluateModel(domainVector, domainDirection, modelOutput, gradVector,
-      hessianMatrix, hessianEffect);
+  this->evaluateModel(domainVector, modelOutput);
 
   // Compute misfit G(x) - y
   modelOutput -= this->m_observations;

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -144,7 +144,7 @@ MetropolisAdjustedLangevinTK<V, M>::rv(const V & position) const
 
   // Get the gradient of the log-posterior.  This is so inefficient it's
   // painful.  We should be caching the gradient evaluations.
-  this->m_targetPdf.lnValue(position, NULL, &grad, NULL, NULL);
+  this->m_targetPdf.lnValue(position, grad);
 
   // Euler time-step
   grad *= 0.5 * this->m_time_step;

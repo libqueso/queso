@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -29,6 +29,7 @@
 #include <queso/MpiComm.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/math_macros.h>
 
 // C++
 #include <sstream>
@@ -46,6 +47,9 @@ namespace QUESO
 
     // Size m_values
     this->init_values(this->m_n_points);
+
+    // Check the domain is bounded
+    this->check_domain_bounds();
   }
 
   template<class V, class M>
@@ -78,6 +82,17 @@ namespace QUESO
       }
 
     this->m_values.resize(n_total_points);
+  }
+
+  template<class V, class M>
+  void InterpolationSurrogateData<V,M>::check_domain_bounds() const
+  {
+    for (unsigned int i = 0; i < m_domain.vectorSpace().dimLocal(); i++) {
+      queso_require_msg(queso_isfinite(m_domain.minValues()[i]),
+          "Interpolation with an unbounded domain is unsupported");
+      queso_require_msg(queso_isfinite(m_domain.maxValues()[i]),
+          "Interpolation with an unbounded domain is unsupported");
+    }
   }
 
   template<class V, class M>

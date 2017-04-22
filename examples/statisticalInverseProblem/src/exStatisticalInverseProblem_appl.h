@@ -85,16 +85,11 @@ uqAppl(const QUESO::BaseEnvironment& env)
   P_M* covMatrix        = paramSpace.newMatrix();
   QUESO::CovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
 
-  likelihoodRoutine_DataType<P_V,P_M> likelihoodRoutine_Data;
-  likelihoodRoutine_Data.paramMeans        = &paramMeans;
-  likelihoodRoutine_Data.matrix            = covMatrixInverse;
-  likelihoodRoutine_Data.applyMatrixInvert = false;
+  Likelihood likelihood("like_", paramDomain);
 
-  QUESO::GenericScalarFunction<P_V,P_M> likelihoodFunctionObj("like_",
-                                                              paramDomain,
-                                                              likelihoodRoutine<P_V,P_M>,
-                                                              (void *) &likelihoodRoutine_Data,
-                                                              true); // the routine computes [ln(function)]
+  likelihood.paramMeans = &paramMeans;
+  likelihood.matrix = covMatrixInverse;
+  likelihood.applyMatrixInvert = false;
 
   //******************************************************
   // Step 4 of 5: Instantiate the inverse problem

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -112,7 +112,7 @@ public:
 
 private:
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  BoostInputOptionsParser * m_parser;
+  ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   // The input options as strings so we can parse the input file later
@@ -185,7 +185,7 @@ private:
   const BaseEnvironment& m_env;
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  boost::program_options::options_description*      m_optionsDesc;
+  ScopedPtr<boost::program_options::options_description>::Type m_optionsDesc;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;

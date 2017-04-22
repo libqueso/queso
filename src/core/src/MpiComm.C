@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -27,6 +27,11 @@
 #include <queso/MpiComm.h>
 #include <queso/Environment.h>
 
+#ifdef QUESO_HAS_TRILINOS
+#include <Epetra_MpiComm.h>
+#include <Epetra_SerialComm.h>
+#endif
+
 namespace QUESO {
 
 // QUESO MpiComm MPI Constructor ------------------
@@ -34,7 +39,7 @@ MpiComm::MpiComm(const BaseEnvironment& env, RawType_MPI_Comm inputRawComm)
   :
   m_env          (env),
 #ifdef QUESO_HAS_TRILINOS
-  m_epetraMpiComm( new Epetra_MpiComm(inputRawComm) ),
+  m_epetraComm( new Epetra_MpiComm(inputRawComm) ),
 #endif
   m_rawComm      (inputRawComm),
   m_worldRank    (-1),
@@ -61,7 +66,7 @@ MpiComm::MpiComm(const BaseEnvironment& env)
   :
   m_env          (env),
 #ifdef QUESO_HAS_TRILINOS
-  m_epetraMpiComm( new Epetra_MpiComm(MPI_COMM_SELF) ),
+  m_epetraComm( new Epetra_SerialComm() ),
 #endif
   m_rawComm      (RawValue_MPI_COMM_SELF),
   m_worldRank    (0),
@@ -76,7 +81,7 @@ MpiComm::MpiComm(const MpiComm& src)
   m_env          (src.m_env)
 #ifdef QUESO_HAS_TRILINOS
   ,
-  m_epetraMpiComm(NULL)
+  m_epetraComm(NULL)
 #endif
 {
   this->copy(src);
@@ -86,8 +91,8 @@ MpiComm::MpiComm(const MpiComm& src)
 MpiComm::~MpiComm()
 {
 #ifdef QUESO_HAS_TRILINOS
-  delete m_epetraMpiComm;
-  m_epetraMpiComm = NULL;
+  delete m_epetraComm;
+  m_epetraComm = NULL;
 #endif
 }
 
@@ -101,20 +106,25 @@ MpiComm::operator=(const MpiComm& rhs)
 }
 
 // Attribute access methods -------------------------
+#ifdef QUESO_HAS_MPI
 RawType_MPI_Comm
 MpiComm::Comm() const
 {
 #ifdef QUESO_HAS_TRILINOS
-  return m_epetraMpiComm->Comm();
+#ifdef QUESO_HAS_MPI
+  return dynamic_cast<Epetra_MpiComm *>(m_epetraComm)->Comm();
+#endif
 #endif
   return m_rawComm;
 }
+#endif  // QUESO_HAS_MPI
+
 // --------------------------------------------------
 int
 MpiComm::MyPID() const
 {
 #ifdef QUESO_HAS_TRILINOS
-  return m_epetraMpiComm->MyPID();
+  return m_epetraComm->MyPID();
 #endif
   return m_myPid;
 }
@@ -123,7 +133,7 @@ int
 MpiComm::NumProc() const
 {
 #ifdef QUESO_HAS_TRILINOS
-  return m_epetraMpiComm->NumProc();
+  return m_epetraComm->NumProc();
 #endif
   return m_numProc;
 }
@@ -164,7 +174,7 @@ void
 MpiComm::Barrier() const // const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_TRILINOS
-  return m_epetraMpiComm->Barrier();
+  return m_epetraComm->Barrier();
 #endif
 
   if (NumProc() > 1) {  // Necessarily true if QUESO_HAS_MPI
@@ -346,10 +356,10 @@ MpiComm::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned 
 }
 // -------------------------------------------------
 #ifdef QUESO_HAS_TRILINOS
-const Epetra_MpiComm&
+const Epetra_Comm&
 MpiComm::epetraMpiComm() const
 {
-  return *m_epetraMpiComm;
+  return *m_epetraComm;
 }
 #endif
 
@@ -358,8 +368,8 @@ void
 MpiComm::copy(const MpiComm& src)
 {
 #ifdef QUESO_HAS_TRILINOS
-  delete m_epetraMpiComm;
-  m_epetraMpiComm = new Epetra_MpiComm(*src.m_epetraMpiComm);
+  delete m_epetraComm;
+  m_epetraComm = src.m_epetraComm->Clone();
 #endif
   m_rawComm   = src.m_rawComm;
   m_worldRank = src.m_worldRank;

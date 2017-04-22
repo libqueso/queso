@@ -34,7 +34,6 @@
 #include <example_likelihood.h>
 #include <queso/GslMatrix.h>
 #include <queso/StatisticalInverseProblem.h>
-#include <queso/GenericScalarFunction.h>
 #include <queso/GenericVectorRV.h>
 #include <queso/UniformVectorRV.h>
 #include <queso/ConcatenatedVectorRV.h>
@@ -97,15 +96,8 @@ void compute(const QUESO::FullEnvironment& env, unsigned int numModes) {
   ////////////////////////////////////////////////////////
   // Step 3 of 5: Instantiate the likelihood function object
   ////////////////////////////////////////////////////////
-  likelihoodRoutine_DataType likelihoodRoutine_Data;
-
-  likelihoodRoutine_Data.numModes = numModes;
-  QUESO::GenericScalarFunction<QUESO::GslVector,QUESO::GslMatrix>
-    likelihoodFunctionObj("like_",
-                          paramDomain,
-                          likelihoodRoutine,
-                          (void *) &likelihoodRoutine_Data,
-                          true); // routine computes [-2.*ln(function)]
+  Likelihood<> likelihood("like_", paramDomain);
+  likelihood.numModes = numModes;
 
     ////////////////////////////////////////////////////////
   // Step 4 of 5: Instantiate the inverse problem
@@ -137,7 +129,7 @@ void compute(const QUESO::FullEnvironment& env, unsigned int numModes) {
     postRv("post_", paramSpace);
 
   QUESO::StatisticalInverseProblem<QUESO::GslVector,QUESO::GslMatrix>
-    ip("", NULL, priorRv, likelihoodFunctionObj, postRv);
+    ip("", NULL, priorRv, likelihood, postRv);
 
   ////////////////////////////////////////////////////////
   // Step 5 of 5: Solve the inverse problem

@@ -2,7 +2,7 @@
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-introduction}: Introduction}{Chapter \ref{ch-introduction}: Introduction}
 
-QUESO is a parallel object-oriented statistical library dedicated to the research of statistically robust, scalable, load balanced, and fault-tolerant mathematical algorithms for the quantification of uncertainty (UQ) of mathematical models and their predictions. 
+QUESO is a parallel object-oriented statistical library dedicated to the research of statistically robust, scalable, load balanced, and fault-tolerant mathematical algorithms for the quantification of uncertainty (UQ) of mathematical models and their predictions.
 % It has been developed to implement advanced algorithms for Bayesian
 % inference, including are many variants of MCMC and the multi-level algorithm.  It is able to handle uni- and multi-processor Linux
 % environments and to provide a wide range of diagnostics.
@@ -32,7 +32,7 @@ QUESO provides tools for both sampling algorithms for statistical inverse proble
 A computational model is a combination of a
 mathematical model and a discretization that enables the approximate
 solution of the mathematical model using computer algorithms and  might be used in two different types of problems:
-forward or inverse. 
+forward or inverse.
 
 Any computational model is composed of a vector $\boldsymbol{\theta}$ of $n$ {\it parameters}, {\it state variables} $\mathbf{u}$, and {\it state equations} $\mathbf{r}(\boldsymbol{\theta},\mathbf{u}) = \mathbf{0}$.
 Once the solution $\mathbf{u}$ is available, the computational model also includes extra functions for e.g.
@@ -57,7 +57,7 @@ one then needs to {\it estimate} the values of the parameters $\boldsymbol{\thet
 cause $\mathbf{y}$ to best fit  $\mathbf{d}$.
 %where ``best'' is an algorithm dependent concept.
 
-%The process of parameter estimation is also referred to as model calibration or model update, and it usually precedes the computation of a QoI, a process called model prediction. 
+%The process of parameter estimation is also referred to as model calibration or model update, and it usually precedes the computation of a QoI, a process called model prediction.
 
 Figure~\ref{fig-generic-problems} represents general inverse and forward problems respectively.
 %
@@ -69,7 +69,7 @@ Figure~\ref{fig-generic-problems} represents general inverse and forward problem
 \end{minipage}%\hfill
 \begin{minipage}[b]{0.5\textwidth}
 \input{rawfigs/gip01.latex}\\
-\centering 
+\centering
 (b)
 \end{minipage}
 %\end{center}
@@ -79,9 +79,9 @@ Figure~\ref{fig-generic-problems} represents general inverse and forward problem
 \end{figure*}
 
 
-There are many possible sources of uncertainty on a computational model. %procedures (a) and (b) above. 
+There are many possible sources of uncertainty on a computational model. %procedures (a) and (b) above.
 First, $\mathbf{d}$ need not be equal to the actual values of observables because of errors in the measurement process. Second, the values of the input parameters to the phenomenon might not be precisely known. Third, the appropriate set of
-equations governing the phenomenon might not be well understood. 
+equations governing the phenomenon might not be well understood.
 
 Computational models can be classified as either deterministic or stochastic -- which are the ones of interest here.  In deterministic models, all parameters are assigned numbers, and no parameter is related to the parametrization of a random variable (RV) or field. As a
 consequence, a deterministic model assigns a number to each of the components of quantities $\mathbf{u}$, $\mathbf{y}$ and $\mathbf{q}$. In stochastic models, however, at least one parameter is assigned a probability density function (PDF) or is related to the parametrization of a RV or field, causing $\mathbf{u}$, $\mathbf{y}$ and $\mathbf{q}$ to become random variables.  Note that not all components of $\boldsymbol{\theta}$ need to be treated as random. As long as at least one component is random, $\boldsymbol{\theta}$ is a random vector, and the problem is stochastic.
@@ -131,26 +131,26 @@ the information $\pi(\mathbf{d})$ on the data, and the likelihood $\pi_{\text{li
 
 This semantic interpretation of achieving a posterior knowledge on the parameters (on the model)
 after combining some prior model knowledge with experimental information provides an important mechanism for dealing with uncertainty.
-Although mathematically simple, is not computationally trivial. 
+Although mathematically simple, is not computationally trivial.
 
-% 
+%
 % \new{
-% 
-% 
-% 
+%
+%
+%
 % \section{Sampling the Posterior Density}
-% 
+%
 % The generation of a Markov chain of parameter vectors $\mathbf{m}\in\mathbb{R}^N$ demands at least the calculation of values $\mathcal{F}(\mathbf{m})$, where $\mathcal{F}$ is the misfit function.
 % A chain generation algorithm might also need the quantities $\nabla\mathcal{F}(\mathbf{m})$ and ${\nabla}^2\mathcal{F}(\mathbf{m})$.
-% 
+%
 % Target pdf $\pi:\mathbb{R}^N\rightarrow\mathbb{R}$ with support $supp(\pi)$.
-% 
-% 
+%
+%
 % \todo{\subsection{Misfit Functions $\mathcal{F}(\mathbf{m})$}}
-% 
-% % 
-% % 
-% % 
+%
+% %
+% %
+% %
 % % Let $\mathbf{m}=(A_1,E_1,\ldots,A_{N_{\text{mat}}},,E_{N_{\text{mat}}})$ be the vector of model parameters and $M=\mathbb{R}_{+}^{2N_{\text{mat}}}$ be the space of model parameters.
 % % Let
 % % $V_T$ denote the space of functions $f:\mathbb{R}_{+}\rightarrow\mathbb{R}_{+}$ that are weakly differentiable.
@@ -163,7 +163,7 @@ Although mathematically simple, is not computationally trivial.
 % % w(\mathbf{m},T)\in V_w
 % % \end{equation*}
 % % the solution of \eqref{eq-composite-sum}-\eqref{eq-composite-initial-values} for given $\mathbf{m}\in M$ and $T\in V_T$.
-% % 
+% %
 % % Let
 % % $V_S$ denote the space of all functions $f:\mathbb{R}_{+}\rightarrow\mathbb{R}_{+}$ that are square-Lebesgue-integrable
 % % over any finite interval.
@@ -172,7 +172,7 @@ Although mathematically simple, is not computationally trivial.
 % % $V_{\sigma}$ denote the space of all functions $f:\mathbb{R}_{+}\rightarrow\mathbb{R}_+^{*}$ such that $1/f$ is square-Lebesgue-integrable
 % % over any finite interval.
 % % $V_{\sigma}$ will be the space of variance functions.
-% % 
+% %
 % % Given a reference relative mass evolution function $\text{$d$}\in V_w$,
 % % a temperature profile $T\in V_T$,
 % % and some $t_{_{\text{F}}}>0$,
@@ -184,19 +184,19 @@ Although mathematically simple, is not computationally trivial.
 % % \begin{equation}\label{eq-F}
 % % \mathcal{F}(\mathbf{m}) = \int_{0}^{t_{_{\text{F}}}}~(w-d)^2\cdot S~dt.
 % % \end{equation}
-% % 
-% % 
+% %
+% %
 % % The functional \eqref{eq-F} is general enough for our studies, since it can properly describe
 % % not only the case where one has continuous measurements $\text{$d$}$,
 % % but also the case of a finite set of $N_{\text{meas}}$ discrete measurements $0\leqslant d_j\leqslant 1$,
 % % $1\leqslant i\leqslant N_{\text{meas}}$ at instants $0\leqslant t_1 < t_2 < \ldots < t_{N_{\text{meas}}}$.
-% % 
+% %
 % % In the case of continuous measurements, for instance, one can set
 % % \begin{equation*}
 % % \mathcal{F}_1(\mathbf{m}) = \int_{0}^{t_{_{\text{F}}}}~\left\{[w(\mathbf{m},T)](t)-\text{$d$}(t)\right\}^2\cdot\frac{1}{\sigma^2(t)}~dt,
 % % \end{equation*}
 % % for some given variance function $\sigma^2\in V_S$ satisfying $\sigma(t)>0$ for all $t\geqslant 0$.
-% % 
+% %
 % % On the other hand, when measurements are discrete and a corresponding finite set of variances $\sigma_j^2>0,~j=1,2,\ldots,N_{\text{meas}}$ is given, one can set
 % % \begin{equation*}
 % % \mathcal{F}_2(\mathbf{m}) = \int_0^{t_{_F}}~\{[w(\mathbf{m},T)](t)-\hat{d}(t)\}^2\cdot\left[\sum_{j=1}^{N_{\text{meas}}}\frac{\delta(t-t_j)}{{\hat{\sigma}}^2(t)}\right]~dt,
@@ -209,10 +209,10 @@ Although mathematically simple, is not computationally trivial.
 % % \mathcal{F}_2(\mathbf{m}) = \sum_{j=1}^{N_{\text{meas}}}~\frac{\{[w(\mathbf{m},T)](t_j)-d_j\}^2}{\sigma_j^2},
 % % \end{equation*}
 % % assuming, without loss of generality, that $t_{_F}\geqslant t_{N_{\text{meas}}}$.
-% 
-% 
+%
+%
 % \subsection{The Metropolis Hastings Algorithm}
-% 
+%
 % The inputs are:
 % \begin{equation}\label{eq-inputs-MH-method}
 % \left\{
@@ -223,12 +223,12 @@ Although mathematically simple, is not computationally trivial.
 % \end{array}
 % \right.
 % \end{equation}
-% 
+%
 % Let us define the function $\alpha:\mathbb{R}^N\times\mathbb{R}^N\rightarrow[0,1]$ defined by
 % \begin{equation}\label{eq-alpha}
 % \alpha(\mathbf{a},\mathbf{b})=\text{min}\left\{1,\frac{\pi(\mathbf{b})}{\pi(\mathbf{a})}\cdot\frac{q(\mathbf{b},\mathbf{a})}{q(\mathbf{a},\mathbf{b})}\right\}
 % \end{equation}
-% 
+%
 % \begin{equation}\label{eq-MH-method}
 % \left\{
 % \begin{array}{cl}
@@ -246,9 +246,9 @@ Although mathematically simple, is not computationally trivial.
 % \end{array}
 % \right.
 % \end{equation}
-% 
+%
 % \subsection{The Metropolis Hastings Algorithm with Delayed Rejection}
-% 
+%
 % The inputs are:
 % \begin{equation}\label{eq-inputs-DR-method}
 % \left\{
@@ -261,7 +261,7 @@ Although mathematically simple, is not computationally trivial.
 % \end{array}
 % \right.
 % \end{equation}
-% 
+%
 % We then recursively define
 % \begin{equation}\label{eq-alphas}
 % \alpha_i:\underbrace{\mathbb{R}^n\times\ldots\times\mathbb{R}^n}_{(i+1)\text{ times}}\rightarrow [0,1],\quad 1\leqslant i\leqslant n_{\text{stages}},
@@ -321,7 +321,7 @@ Although mathematically simple, is not computationally trivial.
 % {[1-\alpha_{i-1}(\mathbf{a},\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(i-1)})]}.
 % \end{equation*}
 % It should be emphasized that $\mathbf{a}$ does {\it not} appear on the numerator of $\alpha_{\text{fraction}}$.
-% 
+%
 % \begin{equation}\label{eq-DR-method}
 % \left\{
 % \begin{array}{cl}
@@ -332,7 +332,7 @@ Although mathematically simple, is not computationally trivial.
 % 05. & \quad\quad\text{If }\mathbf{c}^{(i)}\notin supp(\pi)\text{ then set }i=i+1; \\
 % 06. & \quad\quad\text{If }\mathbf{c}^{(i)}\in supp(\pi)\text{ then }\{ \\
 % 07. & \quad\quad\quad \underline{\text{{\bf Compute acceptance probability}}}~\alpha_i(\mathbf{m}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i-1)},\mathbf{c}^{(i)}); \\
-% 08. & \quad\quad\quad \text{Generate a sample }0 < \tau\leqslant 1 \text{ from an uniform rv defined over }(0,1]; \\ 
+% 08. & \quad\quad\quad \text{Generate a sample }0 < \tau\leqslant 1 \text{ from an uniform rv defined over }(0,1]; \\
 % 09. & \quad\quad\quad \text{If }\alpha_i<        \tau\text{ then set }i=i+1; \\
 % 10. & \quad\quad\quad \text{If }\alpha_i\geqslant\tau\text{ then set ACCEPT}=true; \\
 % 11. & \quad\quad\} \\
@@ -344,7 +344,7 @@ Although mathematically simple, is not computationally trivial.
 % \end{array}
 % \right.
 % \end{equation}
-% 
+%
 % }
 
 
@@ -355,7 +355,7 @@ Although mathematically simple, is not computationally trivial.
 % Section \ref{sc-concepts} identified many mathematical entities present in the description of statistical problems and in some algorithms used for their solution.
 % As part of the design, QUESO attempts to conceptually implement these entities in order to allow algorithmic researchers to manipulate
 % them at the library level, as well as for algorithm users (the modelers interested in UQ) to manipulate them at the application level.
-% Examples of entities are 
+% Examples of entities are
 % vector space $\mathbb{R}^n$;
 % vector subset $B\subset\mathbb{R}^n$;
 % vector $\boldsymbol{\theta}\in B$;
@@ -376,13 +376,13 @@ In each problem the user might deal with up to five vectors of potentially very 
 parameters $\boldsymbol{\theta}$, state $\mathbf{u}$, output $\mathbf{y}$, data $\mathbf{d}$ and QoIs $\mathbf{q}$.
 
 Algorithms in the QUESO library require the supply
-of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for statistical inverse problems and 
+of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for statistical inverse problems and
 of a QoI routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$ for statistical forward problems. These routines
 exist at the application level and provide the necessary bridge between the statistical algorithms in QUESO,
 model knowledge in the model library and scenario and experimental data in the disk space.
 %Concepts are further detailed in Chapter \ref{ch-introduction}.
 %
-Figure~\ref{fig-sw-stack} shows the software stack of a typical application that uses QUESO. In the figure, the symbol $\boldsymbol{\theta}$ represents a vector of $n\geqslant 1$ parameters. 
+Figure~\ref{fig-sw-stack} shows the software stack of a typical application that uses QUESO. In the figure, the symbol $\boldsymbol{\theta}$ represents a vector of $n\geqslant 1$ parameters.
 %
 \begin{figure}[!htbp]
 \centerline{
@@ -392,14 +392,14 @@ Figure~\ref{fig-sw-stack} shows the software stack of a typical application that
 An application software stack.
 QUESO requires the input
 %supply
-of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for IPs and 
+of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for IPs and
 of a QoI routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$ for FPs.
 These application level routines provide the bridge between
 % among
 the statistical algorithms in QUESO,
-physics 
+physics
 %model
-knowledge in the model library, and relevant 
+knowledge in the model library, and relevant
 experimental (calibration
     and validation) data.
 %model specific data in the disk space.
@@ -415,7 +415,7 @@ experimental (calibration
 % Overview of the software stack of a typical application that uses QUESO.
 % The symbol $\boldsymbol{\theta}$ represents a vector of $n\geqslant 1$ parameters.
 % Algorithms in the QUESO library require the supply
-% of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for statistical inverse problems and 
+% of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for statistical inverse problems and
 % of a qoi routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$ for statistical forward problems. These routines
 % exist at the application level and provide the necessary bridge between the statistical algorithms in QUESO,
 % model knowledge in the model library and scenario and experimental data in the disk space.
@@ -469,14 +469,14 @@ algorithm~\cite{HaLaMiSa06}. The DRAM is implemented in QUESO and available for
 the solution of SIP. MCMC methods are well-established and
 documented~\cite{CaSo07,GrMi01,HaLaMiSa06,HaSaTa01,Hast_1970,KaSo05,Laine08,Metr_1953,Mira01};
 thus only brief description of the DRAM algorithm is presented in Section
-\ref{sec:DRAM}. 
+\ref{sec:DRAM}.
 
 
 During model construction, errors arising from imperfect modeling and
 uncertainties due to incomplete information about the system and its
 environment always exist; thus, there has been a crescent interest in Bayesian
 model class updating  and selection
-\cite{ChingChen2007,ChOlPr10,CheungPrudencio2012}. 
+\cite{ChingChen2007,ChOlPr10,CheungPrudencio2012}.
 
 Model updating refers to the methodology that determines the most plausible
 model for a system, given a prior PDF. One stochastic method that handles model
@@ -495,7 +495,7 @@ the novel Adaptive Multilevel Stochastic Simulation Algorithm
 
 DRAM is a combination of two ideas for improving the efficiency of
 Metropolis-Hastings type Markov chain Monte Carlo (MCMC) algorithms, Delayed
-Rejection and Adaptive Metropolis~\cite{DRAMtool}. 
+Rejection and Adaptive Metropolis~\cite{DRAMtool}.
 
 Random walk Metropolis-Hasting algorithm with Gaussian proposal distribution is
 useful in simulating from the posterior distribution in many Bayesian data
@@ -505,7 +505,7 @@ analysis situations.
 % y = f(x;\btheta) + \varepsilon,\quad     \varepsilon \sim \mathcal{N}(0,I \sigma^2),
 % $$
 % where $y$ are indepndent observations of the system, with the expected behaviour described by the model function $f(x;\btheta)$, depending on control variables $x$ and model parameters $\btheta$ distribution.
-% 
+%
 In order for the chain to be efficient, the proposal covariance must somehow be
 tuned to the shape and size of the target distribution. This is important in
 highly nonlinear situations, when there are correlation between the components
@@ -582,20 +582,20 @@ we have just proposed and rejected.
 
 As the reversibility property is preserved, this method also leads to the same
 stationary distribution $\pi$ as the standard MH algorithm. The procedure can
-be iterated further for higher-stage proposals. 
+be iterated further for higher-stage proposals.
 %
 The Gaussian proposal at each stage $i$ is defined as:
 \begin{equation} % Gamma_i esta embutido na formula do q_i
 \label{eq:qi}
 q_i(\underbrace{\mathbf{a},\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(i-1)}}_{i\text{ terms}},\mathbf{z})
 =
-e^{-\dfrac{1}{2}{\displaystyle \left\{[\mathbf{z}-\mathbf{a}]^T\cdot \left[\mathbf{C}\right]^{-1}\cdot[\mathbf{z}-\mathbf{a}]\right\}}} 
+e^{-\dfrac{1}{2}{\displaystyle \left\{[\mathbf{z}-\mathbf{a}]^T\cdot \left[\mathbf{C}\right]^{-1}\cdot[\mathbf{z}-\mathbf{a}]\right\}}}
 \end{equation}
 
 % \begin{equation*} % Gamma_i esta embutido na formula do q_i
 % q_i(\underbrace{\mathbf{a},\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(i-1)}}_{i\text{ terms}},\mathbf{z})
 % =
-% e^{-\dfrac{1}{2}{\displaystyle \left\{[\mathbf{z}-\mathbf{a}]^T\cdot \left[\frac{1}{\gamma_i^2}\mathbf{C}\right]^{-1}\cdot[\mathbf{z}-\mathbf{a}]\right\}}} 
+% e^{-\dfrac{1}{2}{\displaystyle \left\{[\mathbf{z}-\mathbf{a}]^T\cdot \left[\frac{1}{\gamma_i^2}\mathbf{C}\right]^{-1}\cdot[\mathbf{z}-\mathbf{a}]\right\}}}
 % \end{equation*}
 where the covariance matrix $\mathbf{C}$ and the scalings for the higher-stage
 proposal covariances
@@ -642,18 +642,18 @@ put~\cite{HaLaMiSa06}.
 The smaller overall rejection rate of DR guarantees smaller asymptotic variance
 of the estimates based on the chain. The DR chain can be shown to be
 asymptotically more efficient that MH chain in the sense of Peskun ordering
-(Mira, 2001a). 
+(Mira, 2001a).
 
 % Haario, et al. 2006 \cite{} combine AM and DR into a method called DRAM, in whzt they clain to me a straightforward possibility amonsgt the possible different implementations of the idea, which is decribed in this section.
-% In order to be able to adapt the proposal at all you need some accepted points to start with. One ``master" proposal is tried first. After rejection, a try with modified version of the first proposal is done according to DR. A second proposal can be one with a smaller covariance, or with different orientation of the principal axes. The master proposal is adapted using the chain generated so far, and the second stage proposal follows the adaptation in obvious manner. %In the examples, and in the dramrun Matlab function, the second stage is just a scaled down version of the first stage proposal that itself is adapted according to AM. 
-% 
-% 
+% In order to be able to adapt the proposal at all you need some accepted points to start with. One ``master" proposal is tried first. After rejection, a try with modified version of the first proposal is done according to DR. A second proposal can be one with a smaller covariance, or with different orientation of the principal axes. The master proposal is adapted using the chain generated so far, and the second stage proposal follows the adaptation in obvious manner. %In the examples, and in the dramrun Matlab function, the second stage is just a scaled down version of the first stage proposal that itself is adapted according to AM.
+%
+%
 % The DRAM may be considered a straightforward way of combining AM adaptation with a $m$-stages DR algorithm, by doing:
 % i) the proposal at the first stage of DR is adapted just as in AM: the covariance $C^{(1)}$  is computed from the points of the
 % sampled chain, no matter at which stage these points have been accepted in the sample path;
 % ii0 the covariance $C^{(i)}$  of the proposal for the $i$-th stage ($i=2,\ldots, m$) is always computed simply as a scaled version
 % of the proposal of the first stage, $C^{(i)} = \gamma_i C^{(1)}$; where the scale factors $\gamma_i$ can be somewhat freely chosen.
-% 
+%
 % ------------
 
 
@@ -663,7 +663,7 @@ possible different implementations of the idea, and which is described in this
 section.
 
 In order to be able to adapt the proposal, all you need some accepted points to
-start with. 
+start with.
 %
 
 One ``master" proposal is tried first -- i.e., the proposal at the first stage
@@ -679,7 +679,7 @@ C^{(1)}$$ where the scale factors $\gamma_i$ can be somewhat freely chosen.
 Then, the master proposal is adapted using the chain generated so far, and the
 second stage proposal follows the adaptation in obvious manner.
 
-%In the examples, and in the dramrun Matlab function, the second stage is just a scaled down version of the first stage proposal that itself is adapted according to AM. 
+%In the examples, and in the dramrun Matlab function, the second stage is just a scaled down version of the first stage proposal that itself is adapted according to AM.
 
 The requirements for the DRAM algorithm are:
 \begin{itemize}
@@ -697,7 +697,7 @@ The requirements for the DRAM algorithm are:
 % e^{-\frac{1}{2}{\displaystyle \left\{[\mathbf{z}-\mathbf{a}]^T\cdot \left[\frac{1}{\gamma_i^2}\mathbf{C}\right]^{-1}\cdot[\mathbf{z}-\mathbf{a}]\right\}}}
 % \end{equation*}
 % when the covariance matrix $\mathbf{C}$ and the ($n_{\text{stages}}$) numbers $1=\gamma_1\leqslant\gamma_2\leqslant\ldots\leqslant\gamma_{n_{\text{stages}}}$ are given.
-% 
+%
 
 Recalling that a sample is defined as:
 \begin{equation*} % Gamma_i may or may not be embedded in the covariance matrix
@@ -705,7 +705,7 @@ Recalling that a sample is defined as:
 \text{a sample } = \mathbf{a}+\mathbf{C}^{1/2}\mathcal{N}(0,I).
 \end{equation*}
 a simple, but useful, implementation of DRAM is described in Algorithm \ref{alg:DRAM}.
- 
+
 
 \begin{algorithm}[!hp]
 \SetAlgoLined
@@ -720,11 +720,11 @@ Select $n_0$                \tcp*[r]{initial non-adaptation period}
 \For(\tcp*[f]{$n_{\text{stages}}$ is the number of tries allowed}){$i\leftarrow 1$ \KwTo $n_{\text{stages}}$}
   {Select $\gamma_i$ \tcp*[r]{scalings for the higher-stage proposal covariances}}   \nllabel{alg01_vf_ft}
 
-\Repeat{ ($k+1 < n_{\text{pos}}$ ) }{ 
+\Repeat{ ($k+1 < n_{\text{pos}}$ ) }{
  Set $ACCEPT \leftarrow false$\;
  Set $i \leftarrow 1$\;
 
- \tcp{After an initial period of simulation, adapt the master proposal (target) covariance using the chain generated so far:}  
+ \tcp{After an initial period of simulation, adapt the master proposal (target) covariance using the chain generated so far:}
  \If{$k \geqslant n_0$}{
  $C^{(1)} = s_d Cov(\mathbf{m}^{(0)} ,\ldots, \mathbf{m}^{(k-1)}) + s_d \varepsilon I_d$\;
    }
@@ -736,18 +736,18 @@ Generate candidate $\mathbf{c}^{(i)}\in\mathbb{R}^N$ by sampling $q_i(\mathbf{m}
 
 \If {$\mathbf{c}^{(i)}\notin supp(\pi)$}{$i \leftarrow i+1 $}
 
-\If {$\mathbf{c}^{(i)}\in supp(\pi)$}{ 
-  Compute $\alpha_i(\mathbf{m}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i-1)},\mathbf{c}^{(i)})$ \tcp*{acceptance probability} 
-  
-  Generate a sample $\tau \sim \mathcal{U}\left((0,1]\right ) $ %$0 < \tau\leqslant 1$ from an uniform rv defined over $(0,1]$\; 
-  
+\If {$\mathbf{c}^{(i)}\in supp(\pi)$}{
+  Compute $\alpha_i(\mathbf{m}^{(k)},\mathbf{c}^{(1)},\ldots,\mathbf{c}^{(i-1)},\mathbf{c}^{(i)})$ \tcp*{acceptance probability}
+
+  Generate a sample $\tau \sim \mathcal{U}\left((0,1]\right ) $ %$0 < \tau\leqslant 1$ from an uniform rv defined over $(0,1]$\;
+
   \lIf{ ($\alpha_i < \tau$)}{ $i\leftarrow i+1$}
-  
+
   \lIf{ ($\alpha_i \geqslant\tau$)}{ACCEPT$\leftarrow$true}
   }
 
   $C^{(i)} = \gamma_i C^{(1)}$ \tcp*{Calculate the higher-stage proposal as scaled versions of~$C^{(1)}$, according to the chosen rule}
- 
+
 } %\Repeat{ (ACCEPT==false) and ($i \leqslant n_{\text{stages}}$)}{
 
 \If{(\text{ACCEPT=true})}{ Set $\mathbf{m}^{(k+1)}\leftarrow \mathbf{c}^{(i)}$}
@@ -771,30 +771,30 @@ Algorithm \ref{alg:DRAM}.
 
  \item[\texttt{ip\_mh\_dr\_maxNumExtraStages}:] defines how many extra stages
    should be considered in the DR loop ($n_\text{stages}$);
- 
+
  \item[\texttt{ip\_mh\_dr\_listOfScalesForExtraStages}:] defines the list $s$
    of scaling factors that will multiply the covariance matrix (values of
    $\gamma_i$ );
- 
- 
+
+
  \item[\texttt{ip\_mh\_am\_adaptInterval}:] defines whether or not there will
    be a period of adaptation;
-   
+
    %the size of the interval in which each adapted proposal covariance matrix will be used;
- 
+
  \item[\texttt{ip\_mh\_am\_initialNonAdaptInterval}:] defines the initial
    interval where the proposal covariance matrix will not be changed ($n_0$);
-  
+
  \item[\texttt{ip\_mh\_am\_eta}:] is a factor used to scale the proposal
    covariance matrix, usually set to be $2.4^2/d$, where $d$ is the dimension
    of the problem~\cite{Laine08,HaLaMiSa06} ($s_d$);
- 
+
  \item[\texttt{ip\_mh\_am\_epsilon}:] is the covariance regularization factor
    ($\varepsilon$).
 
 \end{description}
-%  
-% ; they are presented and explained in details in Sections \ref{sec:MH} and \ref{sec:gravity-input-file}}. The three examples in Chapter \ref{chap:Queso-examples}, ``simpleStatisticalInverseProblem'', ``gravity'' and ``validation cycle'' use DRAM to solve their SIP. 
+%
+% ; they are presented and explained in details in Sections \ref{sec:MH} and \ref{sec:gravity-input-file}}. The three examples in Chapter \ref{chap:Queso-examples}, ``simpleStatisticalInverseProblem'', ``gravity'' and ``validation cycle'' use DRAM to solve their SIP.
 
 
 \subsection{Adaptive Multilevel Stochastic Simulation Algorithm}
@@ -805,7 +805,7 @@ In this section we rewrite the Bayesian formula \eqref{eq-Bayes-solution} by
 making explicit all the implicit model assumptions. Such explication demands
 the use of probability logic and the concept of a stochastic system model class
 (‘‘model class’’ for short); as these concepts enable the comparison of
-competing model classes. 
+competing model classes.
 
 Let $M_j$ be one model class; the choice of $\bv{\theta} $ specifies a
 particular predictive model in $M_j$, and, for brevity, we do not explicitly
@@ -820,9 +820,9 @@ Bayes’ theorem allows the update of the probability of each predictive model
 $M_j$ by combining measured data $D$ with the prior PDF into the posterior PDF:
 \begin{equation}
 \begin{split}
-\pi_\post (\bv{\theta}|\D, M_j) &= \dfrac{f(\D|\bv{\theta}, M_j) \cdot \pi_\prior (\bv{\theta} | M_j)}{\pi(\D, M_j)} 
+\pi_\post (\bv{\theta}|\D, M_j) &= \dfrac{f(\D|\bv{\theta}, M_j) \cdot \pi_\prior (\bv{\theta} | M_j)}{\pi(\D, M_j)}
 \\
-&= \dfrac{f(\D|\bv{\theta}, M_j) \cdot \pi_\prior (\bv{\theta} | M_j)}{\int f(\D|\bv{\theta}, M_j) \cdot \pi_\prior (\bv{\theta} | M_j)\, d\bv{\theta}} 
+&= \dfrac{f(\D|\bv{\theta}, M_j) \cdot \pi_\prior (\bv{\theta} | M_j)}{\int f(\D|\bv{\theta}, M_j) \cdot \pi_\prior (\bv{\theta} | M_j)\, d\bv{\theta}}
 \end{split}
 \end{equation}
 where the denominator expresses the probability of getting the data $\D$ based
@@ -831,7 +831,7 @@ $\pi_\prior (\bv{\theta} | M_j)$ is the prior PDF of the predictive model
 $\bv{\theta}$ within $M_j$; and the likelihood function $f(\D|\bv{\theta}, M_j)$
 expresses the probability of getting $\D$ given the predictive model
 $\bv{\theta}$ within $M_j$ -- and this allows stochastic models inside a model
-class $M_j$ to be compared. 
+class $M_j$ to be compared.
 
 
 
@@ -851,7 +851,7 @@ is proposed which can generate posterior samples from
 $\pi_\post (\bv{\theta}|\D, M_j)$ and compute the log of the evidence
 $p(\D | \boldsymbol{\theta},M_j)$ at the same time by adaptively moving samples
 from the prior to the posterior through an adaptively selected sequence of
-intermediate distributions~\cite{ChOlPr10}.  
+intermediate distributions~\cite{ChOlPr10}.
 
 Specifically, the intermediate distributions are given by:
 \begin{equation}
@@ -862,12 +862,12 @@ for a given $L > 0$ and a given sequence $0 = \tau_0 < \tau_1 < \ldots < \tau_L 
 of exponents.
 
 
- 
+
 
 In order to compute the model evidence $\pi( \D |M_j)$ where:
 \begin{equation}
  \label{eq:evidence}
- \pi( \D |M_j)=\int f(\bv{\theta}|\D, M_j) \cdot \pi_\prior (\bv{\theta}|M_j) \, d\bv{\theta}, 
+ \pi( \D |M_j)=\int f(\bv{\theta}|\D, M_j) \cdot \pi_\prior (\bv{\theta}|M_j) \, d\bv{\theta},
 \end{equation}
 the use of intermediate distribution is also beneficial.
 For that, recall that
@@ -903,7 +903,7 @@ the computer precision.
 %
 The posterior probability can be calculated readily in terms of the log
 evidence, allowing overflow and underflow errors to be avoided
-automatically~\cite{ChOlPr10}.  
+automatically~\cite{ChOlPr10}.
 % In terms of the log evidence, the posterior
 % probability is given by
 % %
@@ -923,33 +923,33 @@ automatically~\cite{ChOlPr10}.
 
 Now let's define some auxiliary variables for
 $k=1,\ldots,n_\text{total}^{(\ell)}$:
-    
-    
+
+
 \begin{itemize}
- \item $k$-th sample at the $\ell$-th level: 
+ \item $k$-th sample at the $\ell$-th level:
     \begin{equation}\label{eq:samples}
-    \bv{\theta}^{(\ell) [k]},   \quad \ell=0,1,\ldots, L \\ 
-    \end{equation} 
+    \bv{\theta}^{(\ell) [k]},   \quad \ell=0,1,\ldots, L \\
+    \end{equation}
 
  \item Plausibility weight:
     \begin{equation}
     \begin{split}\label{eq:w}
-    w^{(\ell) [k]} &= \dfrac{f(\bv{\theta}^{(\ell) [k]}|\D, M_j)^{\tau_\ell} \cdot \pi_\prior (\bv{\theta}^{(\ell) [k]}, M_j)}{f(\bv{\theta}^{(\ell) [k]}|\D, M_j)^{\tau_\ell-1} \cdot \pi_\prior (\bv{\theta}^{(\ell) [k]}, M_j)}  
+    w^{(\ell) [k]} &= \dfrac{f(\bv{\theta}^{(\ell) [k]}|\D, M_j)^{\tau_\ell} \cdot \pi_\prior (\bv{\theta}^{(\ell) [k]}, M_j)}{f(\bv{\theta}^{(\ell) [k]}|\D, M_j)^{\tau_\ell-1} \cdot \pi_\prior (\bv{\theta}^{(\ell) [k]}, M_j)}
 		=\dfrac{f^{(\tau_{\ell})}(\D | \bv{\theta}^{(\ell) [k]}, M_j) }{f^{(\tau_{\ell-1})}(\D | \bv{\theta}^{(\ell) [k]}, M_j)}, \\
-		&= f^{(\tau_{\ell}-\tau_{\ell-1})}(\D | \bv{\theta}^{(\ell) [k]}, M_j), \quad \ell=0,1,\ldots, L \\ 
+		&= f^{(\tau_{\ell}-\tau_{\ell-1})}(\D | \bv{\theta}^{(\ell) [k]}, M_j), \quad \ell=0,1,\ldots, L \\
     \end{split}
     \end{equation}
-    
+
 \item Normalized plausibility weight:
     \begin{equation}\label{eq:w-tilde}
-    \tilde{w}^{(\ell) [k]} = \dfrac{w^{(\ell) [k]}}{\sum_{s=1}^{n_\text{total}^{(\ell)}}  w^{(\ell) [s]} }, \quad \ell=0,1,\ldots,L 
+    \tilde{w}^{(\ell) [k]} = \dfrac{w^{(\ell) [k]}}{\sum_{s=1}^{n_\text{total}^{(\ell)}}  w^{(\ell) [s]} }, \quad \ell=0,1,\ldots,L
     \end{equation}
 
 \item Effective sample size:
     \begin{equation}\label{eq:neff}
     n_\text{eff}^{(\ell)} = \dfrac{1}{\sum_{s=1}^{n_\text{total}^{(\ell)}} \left( \tilde{w}^{(\ell) [s]}\right)^2}
     \end{equation}
-    
+
 \item Estimate for the sample covariance matrix for $\pi_\text{int}^{(\ell)}$:
     \begin{equation}\label{eq:est_cov}
      \Sigma = \sum_{m=1}^{n_\text{total}^{(\ell-1)}} \tilde{w}_{m} (\bv{\theta}^{(\ell-1) [m]} - \overline{\bv{\theta}}) (\bv{\theta}^{(\ell-1) [m]} - \overline{\bv{\theta}})^{t}, \quad \text{where} \quad
@@ -971,7 +971,7 @@ doing the following: given $n_\text{total}^{(\ell)}$ samples from
 $\pi_\text{int}^{(\ell)} (\bv{\theta}|\D)$, denoted by
 $\bv{\theta}^{(\ell)[k]}, k=1...n_\text{total}^{(\ell)}$ obtain samples from
 $\pi_\text{int}^{(\ell+1)} (\bv{\theta}|\D)$, denoted by
-$\bv{\theta}^{(\ell+1)[k]}, k=1...n_\text{total}^{(\ell+1)}$. 
+$\bv{\theta}^{(\ell+1)[k]}, k=1...n_\text{total}^{(\ell+1)}$.
 
 This is accomplished by: given the samples
 $\bv{\theta}^{(\ell)[k]}, k=1...n_\text{total}^{(\ell)}$, in Equation \eqref{eq:samples}, from
@@ -1001,7 +1001,7 @@ in QUESO, $\tau_\ell$ is computed through a bissection method so that:
 
 \subsubsection{AMSSA Algorithm}
 
-% Recall that for $\ell=0$, then $\pi_\text{int}^{(\ell)} (\bv{\theta}|\D)=\pi_\prior (\bv{\theta} | M_j)$ and for $\ell=L$ then $\pi_\text{int}^{(\ell)} (\bv{\theta}|\D)= \pi_\post(\bv{\theta}|\D, M_j)$, thus the series of intermediate PDFs start from the prior PDF and ends with the posterior PDF. 
+% Recall that for $\ell=0$, then $\pi_\text{int}^{(\ell)} (\bv{\theta}|\D)=\pi_\prior (\bv{\theta} | M_j)$ and for $\ell=L$ then $\pi_\text{int}^{(\ell)} (\bv{\theta}|\D)= \pi_\post(\bv{\theta}|\D, M_j)$, thus the series of intermediate PDFs start from the prior PDF and ends with the posterior PDF.
 Based on the above results, and recalling that the series of intermediate PDFs,
 $\pi_\text{int}^{(\ell)} (\bv{\theta}|\D)$, start from the prior PDF and ends
 with the posterior PDF,  Algorithm \ref{alg:ML} can be applied both to draw
@@ -1020,17 +1020,17 @@ estimate the evidence $\pi( \D ,M_j)$.
 
 \KwOut{$\prod_{\ell} c_{\ell}$; which is asymptotically unbiased for $\pi( \D ,M_j)$ }
 
-Set $\ell=0$\;                  
+Set $\ell=0$\;
 
-Set $\tau_\ell =0 $\;            
+Set $\tau_\ell =0 $\;
 
-Sample prior distribution, $\pi_\prior (\bv{\theta} | M_j)$, $n_\text{total}^{(0)}$ times  \tcp*[r]{i.e, 
+Sample prior distribution, $\pi_\prior (\bv{\theta} | M_j)$, $n_\text{total}^{(0)}$ times  \tcp*[r]{i.e,
 obtain $\bv{\theta}^{(0) [k]}, k=1,\ldots,n_\text{total}^{(0)}$}
 
 \While{$\tau_\ell < 1$}{
- 
+
  \tcc{At the beginning of the $\ell$-th level, we have the samples $\bv{\theta}^{(\ell-1)[k]}, k=1...n_\text{total}^{(\ell-1)}$ from  $\pi_\text{int}^{(\ell-1)} (\bv{\theta}|\D)$, Equation \eqref{eq:intermediate_dist}. }
- 
+
  Set $\ell \leftarrow \ell + 1 $                  \tcp*[r]{begin next level}
 
  Compute plausibility weights $w^{(\ell) [k]}$ via Equation \eqref{eq:w}\;
@@ -1042,23 +1042,23 @@ obtain $\bv{\theta}^{(0) [k]}, k=1,\ldots,n_\text{total}^{(0)}$}
     $\tau_\ell \leftarrow 1$\;
     Recompute  $w^{(\ell) [k]}$ and  $\tilde{w}^{(\ell) [k]}$\;
  }
- 
+
  Compute an estimate for the sample covariance matrix for $\pi_\text{int}^{(\ell)}$ via Equation \eqref{eq:est_cov}\;
- 
+
 %  Compute $c_{\ell} =\frac{1}{ n_\text{total}^{(\ell-1)}}  \left( \sum_{s=1}^{n_\text{total}^{(\ell-1)}} w_{s} \right)$ \tcp*[r]{recall that $\pi( \D |M_j) = \prod_{\ell} c_{\ell}$, Equation \eqref{eq:evidence}}
-  
+
  Select, from previous level, the initial positions for the Markov chains\;  \nllabel{alg:ML:initialpos}
 
  Compute sizes of the chains         \tcp*[r]{the sum of the sizes $=n_\text{total}^{(\ell)}$} \nllabel{alg:ML:computechainsize}
- 
+
  Redistribute chain initial positions among processors\; \nllabel{alg:ML:redist}
- 
+
  \tcc{Then the $n_\text{total}^{(\ell)}$ samples $\bv{\theta}^{(\ell)[k]}$, from $\pi_\text{int}^{(\ell)}(\bv{\theta})$ are generated by doing the following for  $k=1,\ldots,n_\text{total}^{(\ell)}$:}
 
  Generate chains: draw a number $k'$ from a discrete distribution $P^{(\ell)}(k)$ in Equation \eqref{eq:distribution} via Metropolis-Hastings \tcp*[r]{i.e., obtain $\bv{\theta}^{(\ell) [k]}= P^{(l)[k]}$}
- 
+
  Compute $c_{\ell} =\frac{1}{ n_\text{total}^{(\ell-1)}}  \left( \sum_{s=1}^{n_\text{total}^{(\ell-1)}} w_{s} \right)$ \tcp*[r]{recall that $\pi( \D |M_j) = \prod_{\ell} c_{\ell}$, Equation \eqref{eq:evidence}}
- 
+
  }
 \caption{Detailed description of the  Adaptive Multilevel Stochastic Simulation Algorithm proposed by \cite{CheungPrudencio2012}.}\label{alg:ML}
 \end{algorithm}
@@ -1067,27 +1067,27 @@ obtain $\bv{\theta}^{(0) [k]}, k=1,\ldots,n_\text{total}^{(0)}$}
 
 
 
-%  
-%  Using $\bv{\theta}^{(\ell-1)[s']}$ as the current sample, generate a sample $\bv{\theta}^{(\ell) [k]}$ for $\bv{\theta}$ by multi-group MCMC algorithms \nllabel{alg:ML:sampling} 
-%  
+%
+%  Using $\bv{\theta}^{(\ell-1)[s']}$ as the current sample, generate a sample $\bv{\theta}^{(\ell) [k]}$ for $\bv{\theta}$ by multi-group MCMC algorithms \nllabel{alg:ML:sampling}
+%
 %  Set $\bv{\theta}^{(\ell-1)[s']} =\bv{\theta}^{(\ell) [k]}$\;
 %  \;
-%  
+%
 %  \tcc{AQUI: ver Joseph's pagina 201/219}
 %  Select, from previous level, the initial positions for the Markov chains \tcp*[r]{using samples from SSS as starting points}  \nllabel{alg:ML:initialpos}
- 
 
-% 
+
+%
 % \begin{algorithm}[!htb]
 % \SetAlgoLined
 % \SetAlgoLined
 % \KwIn{for each $\ell=0,\ldots,L$: the total amount of samples to be generated at $\ell$-th level ($n_\text{total}^{(\ell)}>0$) and the thresholds ($0<\beta_\text{min}^{(\ell)}<\beta_\text{max}^{(\ell)}<1$) on the effective sample size of the $\ell$-th level}
 % \KwOut{}
-%  
-% Set $\ell=0$\;                  
-% Set $\tau_\ell =0 $\;            
+%
+% Set $\ell=0$\;
+% Set $\tau_\ell =0 $\;
 % Sample prior distribution $n_\text{total}^{(0)}$ times  \tcp*[r]{i.e, obtain $\bv{\theta}^{(0) [k]}, k=1,\ldots,n_\text{total}^{(0)}$}
-% 
+%
 % \While{$\tau_\ell < 1$}{
 %  Set $\ell \leftarrow \ell + 1 $                         \tcp*[r]{begin next level}
 %  Compute plausability weights $w^{(\ell) [k]}$ via Equation \ref{eq:w-tilde}
@@ -1111,9 +1111,9 @@ determines the size of the chain beginning at $\bv{\theta}^{(\ell) [k]}$.
 
 At each level $\ell$, many computing nodes can be used to sample the parameter
 space collectively. Beginning with $\ell = 0$, the computing nodes:
-(a) sample $\pi_\text{int}^{(\ell)}(\bv{\theta}|\bv{D}, M_j)$; 
-(b) select some of the generated samples (``knowledge'') to serve as initial positions of Markov chains for the next distribution $\pi_\text{int}^{(\ell+1)}(\bv{\theta}|\bv{D}, M_j)$; and 
-(c) generate the Markov chains for $\pi_\text{int}^{(\ell+1)}(\bv{\theta}|\bv{D}, M_j)$. 
+(a) sample $\pi_\text{int}^{(\ell)}(\bv{\theta}|\bv{D}, M_j)$;
+(b) select some of the generated samples (``knowledge'') to serve as initial positions of Markov chains for the next distribution $\pi_\text{int}^{(\ell+1)}(\bv{\theta}|\bv{D}, M_j)$; and
+(c) generate the Markov chains for $\pi_\text{int}^{(\ell+1)}(\bv{\theta}|\bv{D}, M_j)$.
 
 The process (a)--(b)--(c) continues until the final posterior distribution is
 sampled.  As $\ell$ increases, the selection process tends to value samples
@@ -1126,7 +1126,7 @@ ones that had, already at the initial levels, samples in the final posterior
 regions of high probability content) will tend to accumulate increasingly more
 samples in the next levels. This possible issue is avoided maintaining a
 balanced computational load among all computing nodes, which is handled in the
-ML by the step in Line \ref{alg:ML:redist}. 
+ML by the step in Line \ref{alg:ML:redist}.
 
 Running the step in Line \ref{alg:ML:redist} of Algorithm \ref{alg:ML} is then
 equivalent of solving the following problem: given the number of processors
@@ -1138,16 +1138,10 @@ $\bar{n}=n_\text{total}/N_p$. This parallel implementation of the algorithm is
 proposed in \cite{CheungPrudencio2012}, and it has been implemented in QUESO by
 the same authors/researchers.
 
-% 
-% There are several approaches in how to paralellize the multilevel algorithm~\cite{BeckAu2002,ChingChen2007,Angelikopoulos2012}. 
+%
+% There are several approaches in how to paralellize the multilevel algorithm~\cite{BeckAu2002,ChingChen2007,Angelikopoulos2012}.
 % The main problem in a straightforward parallel implementation, where each processor generates Markov chains independently for all $\tau_j$, is load imbalance.  Markov chains assigned to processors exploring high probability regions of the parameter space must generate a larger number of samples than those processors exploring low probability regions, leading to load imbalance as $\alpha_i \rightarrow 1$.  Thus, an important feature of the parallel implementation is the load
-% balancing at each point in the $\tau_j$ sequence.  The parallel implementation of the algorithm is proposed in \cite{CheungPrudencio2012}, and it is implemented in QUESO by the same authors/researchers. The redistribution of the initial chain positions among the processors is represented by step \ref{alg:ML:redist} of on Algorithm \ref{alg:ML}. 
-
-
-
-
-
-
+% balancing at each point in the $\tau_j$ sequence.  The parallel implementation of the algorithm is proposed in \cite{CheungPrudencio2012}, and it is implemented in QUESO by the same authors/researchers. The redistribution of the initial chain positions among the processors is represented by step \ref{alg:ML:redist} of on Algorithm \ref{alg:ML}.
 
 \section{Algorithms for solving the Statistical Forward Problem}
 
@@ -1156,94 +1150,36 @@ where the goal is to determine how random variation, lack of knowledge, or
 error affects the sensitivity, performance, or reliability of the system that
 is being modeled \cite{RoCa04}.
 
-Monte Carlo works by using random numbers to sample, according to a PDF, the
-`solution space' of the problem to be solved.  Then, it iteratively evaluates a
-deterministic model using such sets of random numbers as inputs.
-
-%aken from http://www.physics.buffalo.edu/phy411-506/topic2/topic2-lec2.pdf
-Suppose we wish to generate random numbers distributed according to a positive
-definite function in one dimension $P(x)$.  The function need not be normalized
-for the algorithm to work, and the same algorithm works just as easily in a
-many dimensional space. The random number sequence $x_i$, $i=0,1,2,\ldots$ is
-generated by a random walk as follows:
-
-\begin{enumerate}
-\item Choose a starting point $x_0$
-\item Choose a fixed maximum step size $\delta$.
-\item Given a $x_i$,  generate the next random number as follows: 
-  \begin{enumerate}
-  \item Choose $x_\text{trial}$  uniformly and randomly in the interval $[x_i-\delta, x_i+\delta]$.
-  \item Compute the ratio $w=\dfrac{P(x_\text{trial})}{P(x_i)}$.
- 
-   Note that $P$ need not be normalized to compute this ratio.
-  
-  \item If $w >1$ the trial step is in the  right direction, i.e., towards a region of higher probability. 
-  
-  Accept the step $x_{i+1} =x_\text{trial}$.
-  
-  \item  If $w <1$ the trial step is in the wrong direction, i.e., towards a region of lower probability.  We should not unconditionally reject this step! So accept the step conditionally if the decrease in probability is smaller than a random amount:
-     \begin{enumerate}
-     \item Generate a random number $r$ in the interval $[0,1]$.
-     \item If $r < w$ accept the trial step $x_{i+1} = x_\text{trial}$.
-     \item If $w \leq r $ reject the step $x_{i+1}=x_i$. Note that we don't discard this step! The two steps have the same value.
-     \end{enumerate}
-  \end{enumerate}
-\end{enumerate}
-
-There are essentially two important choices to be made.  First, the initial
-point $x_0$ must be chosen carefully. A good choice is close to the maximum of
-the desired probability distribution. If this maximum is not known (as is
-usually the case in multi-dimensional problems), then the random walker must be
-allowed to thermalize i.e., to find a good starting configuration: the
-algorithm is run for some large number of steps which are then discarded.
-Second, the step size must be carefully chosen. If it is too small, then most
-of the trial steps will be accepted, which will tend to give a uniform
-distribution that converges very slowly to $P(x)$. If it is too large the
-random walker will step right over and may not ` `see" important peaks in the
-probability distribution. If the walker is at a peak, too many steps will be
-rejected. A rough criterion for choosing the step size is for the
-$$ \text{Acceptance ratio} = \dfrac{\text{Number of steps accepted}}{\text{Total number of trial steps}}$$
-to be around 0.5.
-
-An implementation of Monte Carlo algorithm is described in Algorithm
+Monte Carlo works by iteratively evaluating a deterministic model using a set of
+random numbers with known distribution.  The output can then be used to compute
+empirical means, variances, or other higher-order moments.  \Queso's
+implementation of the Monte Carlo algorithm is described in Algorithm
 \ref{alg:MC}.
 
-
 \begin{algorithm}[!htb]
-%\AlFnt
-\SetAlgoLined
-\SetAlgoLined
-\KwIn{Starting point $x_0$, step size $\delta$, number of trials $M$, number of steps per trial $N$, unnormalized density or probability function  $P(x)$ for the target distribution.}
+  \SetAlgoLined
+  \SetAlgoLined
+  \KwIn{Samples $\{ x_i \}_{i=1}^N$ with known distribution $p$, and a known
+    deterministic model $f$.}
 
-\KwOut{Random number sequence $x_i$, $i=0,1,2,\ldots$}
+  \KwOut{Set of propagated quantities $f_i$, $i = 1, \ldots, N$}
 
-\For{$i=0...M$}{
-  \For{$j=0...N$}{
-
-  Set $ x_\text{trial} \leftarrow  x_i + (2 \, \text{RAND([0,1])} - 1)  \delta$\;
-  Set $ w = P(x_\text{trial}) / P(x) $\;
-  Set $accepts \leftarrow 0$\;
-
-  \eIf(\tcp*[h]{uphill}){$w \geq 1$}
-  {
-    $x_{i+1} \leftarrow x_\text{trial} $  \tcp*[r]{accept the step}
-    accepts $\leftarrow$ accepts+1\;
+  \For{$i=0...N$}{
+    Set $f_i \leftarrow f(x_i)$\;
   }
-  (\tcp*[h]{downhill}) %else
-  { 
-    Set $r \leftarrow$ RAND([0,1])\;
-      \If(\tcp*[h]{but not too far}){$ r < w$}{
-	$ x_{i+1} \leftarrow x_\text{trial} $  \tcp*[r]{accept the step}
-	accepts $\leftarrow$ accepts+1\;
-      }
-  }
-}
-}
 
-\caption{Detailed description of the Monte Carlo Algorithm proposed by \cite{Metr_1953}.}\label{alg:MC}
+  \caption{Description of the Monte Carlo algorithm implemented in \Queso.}
+  \label{alg:MC}
 \end{algorithm}
 
-
 Monte Carlo is implemented in QUESO and it is the chosen algorithm to compute a
-sample of the output RV (the QoI) of the SFP for each given sample of the input
-RV. 
+sample of the output random variable (the QoI) of the statistical forward
+problem for each given sample of the input random variable.
+
+The output of Algorithm~\ref{alg:MC} can be used to compute empirical moments,
+for example
+%
+\begin{equation*}
+  \int f(x) p(x) \ud x \approx \frac{1}{N} \sum_{i=0}^N f(x_i),
+  \quad x_i \sim p.
+\end{equation*}

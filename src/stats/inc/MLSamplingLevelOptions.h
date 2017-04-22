@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -29,7 +29,13 @@
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
+
+#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
+#else
+#include <queso/getpot.h>
+#endif
+
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
@@ -103,6 +109,7 @@
 #define UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM                                   0
 #define UQ_ML_SAMPLING_L_ALGORITHM                                            "random_walk"
 #define UQ_ML_SAMPLING_L_TK                                                   "random_walk"
+#define UQ_ML_SAMPLING_L_UPDATE_INTERVAL                                      1
 
 namespace QUESO {
 
@@ -359,6 +366,9 @@ public:
   //! Which transition kernel to use for sampling
   std::string m_tk;
 
+  //! How often to call the TK's updateTK method
+  unsigned int m_updateInterval;
+
 private:
   //! Copies the option values from \c srcOptions to \c this.
   void   copyOptionsValues(const MLSamplingLevelOptions& srcOptions);
@@ -447,6 +457,7 @@ private:
   std::string                   m_option_doLogitTransform;
   std::string                   m_option_algorithm;
   std::string                   m_option_tk;
+  std::string                   m_option_updateInterval;
 
   void checkOptions(const BaseEnvironment * env);
 

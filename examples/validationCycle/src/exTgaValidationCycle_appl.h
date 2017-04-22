@@ -34,17 +34,16 @@
 #include <queso/ValidationCycle.h>
 #include <queso/VectorSubset.h>
 #include <queso/UniformVectorRV.h>
-#include <queso/GenericScalarFunction.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
 //Just declaration: actual code is below
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl_LocalComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle);
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle);
 
 //********************************************************
@@ -58,7 +57,7 @@ uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle);
 // Tasks 2, 3 and 4 constitute the actual validation cycle.
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl(const QUESO::BaseEnvironment& env)
 {
   if (env.fullRank() == 0) {
@@ -120,16 +119,11 @@ uqAppl(const QUESO::BaseEnvironment& env)
     paramDomain);
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
-  likelihoodRoutine_Data<P_V,P_M> calLikelihoodRoutine_Data(env,
-                                                                 "scenario_5_K_min.dat",
-                                                                 "scenario_25_K_min.dat",
-                                                                 "scenario_50_K_min.dat");
-
-  QUESO::GenericScalarFunction<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
-                                                                 paramDomain,
-                                                                 likelihoodRoutine<P_V,P_M>,
-                                                                 (void *) &calLikelihoodRoutine_Data,
-                                                                 true); // the routine computes [ln(function)]
+  Likelihood<> calLikelihoodFunctionObj("cal_like_",
+                                        paramDomain,
+                                        "scenario_5_K_min.dat",
+                                        "scenario_25_K_min.dat",
+                                        "scenario_50_K_min.dat");
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
   QUESO::SipOptionsValues* calIpOptionsValues = NULL;
@@ -273,7 +267,7 @@ uqAppl(const QUESO::BaseEnvironment& env)
 
   ssOptionsValues3.m_initialDiscardedPortions.resize(1);
   ssOptionsValues3.m_initialDiscardedPortions[0] = 0.;
-  
+
   ssOptionsValues3.m_kdeCompute                  = true;
   ssOptionsValues3.m_kdeNumEvalPositions         = 250;
   ssOptionsValues3.m_covMatrixCompute            = true;
@@ -336,18 +330,12 @@ uqAppl(const QUESO::BaseEnvironment& env)
   }
 
   // Inverse problem: no need to instantiate the prior rv (= posterior rv of calibration inverse problem)
-
   // Inverse problem: instantiate the likelihood function object (data + routine)
-  likelihoodRoutine_Data<P_V,P_M> valLikelihoodRoutine_Data(env,
-                                                                 "scenario_100_K_min.dat",
-                                                                 NULL,
-                                                                 NULL);
-
-  QUESO::GenericScalarFunction<P_V,P_M> valLikelihoodFunctionObj("val_like_",
-                                                                 paramDomain,
-                                                                 likelihoodRoutine<P_V,P_M>,
-                                                                 (void *) &valLikelihoodRoutine_Data,
-                                                                 true); // the routine computes [ln(function)]
+  Likelihood<> valLikelihoodFunctionObj("val_like_",
+                                        paramDomain,
+                                        "scenario_100_K_min.dat",
+                                        NULL,
+                                        NULL);
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
   QUESO::SipOptionsValues* valIpOptionsValues = NULL;
@@ -365,14 +353,14 @@ uqAppl(const QUESO::BaseEnvironment& env)
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
   QUESO::MhOptionsValues* valIpMhOptionsValues = NULL;
 
-  const QUESO::SequentialVectorRealizer<P_V,P_M>* 
+  const QUESO::SequentialVectorRealizer<P_V,P_M>*
   	tmpRealizer = dynamic_cast< const QUESO::SequentialVectorRealizer<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
-  
+
   // Use 'realizer()' because the post. rv was computed with Metr. Hast.
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(
-    	    &tmpRealizer->unifiedSampleVarVector(),  
+    	    &tmpRealizer->unifiedSampleVarVector(),
     	    &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
-  	
+
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   QUESO::SsOptionsValues ssOptionsValues5;
@@ -454,7 +442,7 @@ uqAppl(const QUESO::BaseEnvironment& env)
   delete valProposalCovMatrix;
   delete valIpMhOptionsValues;
 
-  // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; 
+  // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem;
   // qoi rv is instantiated internally)
   qoiRoutine_Data<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
   valQoiRoutine_Data.m_beta         = beta_prediction;
@@ -578,7 +566,7 @@ uqAppl(const QUESO::BaseEnvironment& env)
 // The 'local comparison stage' of the driving routine "uqAppl()"
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl_LocalComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
@@ -592,7 +580,7 @@ uqAppl_LocalComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle)
 // The 'unified comparison stage' of the driving routine "uqAppl()"
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&

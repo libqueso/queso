@@ -32,19 +32,13 @@
 
 #include <example_likelihood.h>
 
-double likelihoodRoutine(
-  const QUESO::GslVector& paramValues,
-  const QUESO::GslVector* paramDirection,
-  const void*             functionDataPtr,
-  QUESO::GslVector*       gradVector,
-  QUESO::GslMatrix*       hessianMatrix,
-  QUESO::GslVector*       hessianEffect)
+template <class V, class M>
+double
+Likelihood<V, M>::lnValue(const V & paramValues) const
 {
   double theta1  = paramValues[0];
   double theta2  = paramValues[1];
   double sigmaSq = paramValues[2];
-
-  unsigned int numModes = ((likelihoodRoutine_DataType *) functionDataPtr)->numModes;
 
   double aux1 = theta1 + 2.*theta2;
   double aux2 = sqrt(theta1*theta1+4.*theta2*theta2);
@@ -93,3 +87,5 @@ double likelihoodRoutine(
 
   return result;
 }
+
+template class Likelihood<QUESO::GslVector, QUESO::GslMatrix>;

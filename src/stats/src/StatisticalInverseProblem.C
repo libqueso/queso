@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -45,19 +45,18 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_priorRv                 (priorRv),
   m_likelihoodFunction      (likelihoodFunction),
   m_postRv                  (postRv),
-  m_solutionDomain          (NULL),
-  m_solutionPdf             (NULL),
-  m_subSolutionMdf          (NULL),
-  m_subSolutionCdf          (NULL),
-  m_solutionRealizer        (NULL),
-  m_mhSeqGenerator          (NULL),
-  m_mlSampler               (NULL),
-  m_chain                   (NULL),
-  m_logLikelihoodValues     (NULL),
-  m_logTargetValues         (NULL),
-  m_optionsObj              (alternativeOptionsValues),
-  m_seedWithMAPEstimator    (false),
-  m_userDidNotProvideOptions(false)
+  m_solutionDomain          (),
+  m_solutionPdf             (),
+  m_subSolutionMdf          (),
+  m_subSolutionCdf          (),
+  m_solutionRealizer        (),
+  m_mhSeqGenerator          (),
+  m_mlSampler               (),
+  m_chain                   (),
+  m_logLikelihoodValues     (),
+  m_logTargetValues         (),
+  m_optionsObj              (),
+  m_seedWithMAPEstimator    (false)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering Sip" << std::endl;
@@ -72,15 +71,12 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
 
   // If NULL, we create one
   if (m_optionsObj == NULL) {
-    SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
-
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
-
-    // We set this flag so we don't delete the user-created object when it
-    // comes time to deconstruct
-    m_userDidNotProvideOptions = true;
+    m_optionsObj.reset(new SipOptionsValues(&m_env, prefix));
+  }
+  else {
+    // If the user passed in a legitimate options object, then copy it into a
+    // ScopedPtr
+    m_optionsObj.reset(new SipOptionsValues(*alternativeOptionsValues));
   }
 
   if (m_optionsObj->m_help != "") {
@@ -117,19 +113,18 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_priorRv                 (*(gpmsaFactory.m_totalPrior)),
   m_likelihoodFunction      (gpmsaFactory.getGPMSAEmulator()),
   m_postRv                  (postRv),
-  m_solutionDomain          (NULL),
-  m_solutionPdf             (NULL),
-  m_subSolutionMdf          (NULL),
-  m_subSolutionCdf          (NULL),
-  m_solutionRealizer        (NULL),
-  m_mhSeqGenerator          (NULL),
-  m_mlSampler               (NULL),
-  m_chain                   (NULL),
-  m_logLikelihoodValues     (NULL),
-  m_logTargetValues         (NULL),
-  m_optionsObj              (alternativeOptionsValues),
-  m_seedWithMAPEstimator    (false),
-  m_userDidNotProvideOptions(false)
+  m_solutionDomain          (),
+  m_solutionPdf             (),
+  m_subSolutionMdf          (),
+  m_subSolutionCdf          (),
+  m_solutionRealizer        (),
+  m_mhSeqGenerator          (),
+  m_mlSampler               (),
+  m_chain                   (),
+  m_logLikelihoodValues     (),
+  m_logTargetValues         (),
+  m_optionsObj              (),
+  m_seedWithMAPEstimator    (false)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering StatisticalInverseProblem<P_V,P_M>::constructor()"
@@ -141,14 +136,14 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
 
   // If NULL, we create one
   if (m_optionsObj == NULL) {
-    SipOptionsValues * tempOptions = new SipOptionsValues(&m_env, prefix);
-
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
-
-    m_userDidNotProvideOptions = true;
+    m_optionsObj.reset(new SipOptionsValues(&m_env, prefix));
   }
+  else {
+    // If the user passed in a legitimate options object, then copy it into a
+    // ScopedPtr
+    m_optionsObj.reset(new SipOptionsValues(*alternativeOptionsValues));
+  }
+
 
   if (m_optionsObj->m_help != "") {
     if (m_env.subDisplayFile()) {
@@ -173,29 +168,6 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
 template <class P_V,class P_M>
 StatisticalInverseProblem<P_V,P_M>::~StatisticalInverseProblem()
 {
-  if (m_chain) {
-    m_chain->clear();
-    delete m_chain;
-  }
-  if (m_logLikelihoodValues) {
-    m_logLikelihoodValues->clear();
-    delete m_logLikelihoodValues;
-  }
-  if (m_logTargetValues) {
-    m_logTargetValues->clear();
-    delete m_logTargetValues;
-  }
-  if (m_mlSampler       ) delete m_mlSampler;
-  if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
-  if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
-  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
-  if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_solutionDomain  ) delete m_solutionDomain;
-
-  if (m_optionsObj && m_userDidNotProvideOptions) {
-    delete m_optionsObj;
-  }
 }
 // Statistical methods -----------------------------
 template <class P_V,class P_M>
@@ -232,28 +204,20 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
     queso_require_equal_to_msg(initialProposalCovMatrix->numCols(), initialProposalCovMatrix->numRowsGlobal(), "'initialProposalCovMatrix' should be a square matrix");
   }
 
-  if (m_mlSampler       ) delete m_mlSampler;
-  if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
-  if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
-  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
-  if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_solutionDomain  ) delete m_solutionDomain;
-
   P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
   numEvaluationPointsVec.cwSet(250.);
 
   // Compute output pdf up to a multiplicative constant: Bayesian approach
-  m_solutionDomain = InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
+  m_solutionDomain.reset(InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet()));
 
-  m_solutionPdf = new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_solutionPdf.reset(new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                        1.,
-                                                       *m_solutionDomain);
+                                                       *m_solutionDomain));
 
   m_postRv.setPdf(*m_solutionPdf);
-  m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+  m_chain.reset(new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain"));
 
   // Decide whether or not to create a MetropolisHastingsSG instance from the
   // user-provided initial seed, or use the user-provided seed for a
@@ -283,32 +247,32 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
     }
 
     // Compute output realizer: Metropolis-Hastings approach
-    m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(
+    m_mhSeqGenerator.reset(new MetropolisHastingsSG<P_V, P_M>(
         m_optionsObj->m_prefix.c_str(), alternativeOptionsValues,
-        m_postRv, optimizer.minimizer(), initialProposalCovMatrix);
+        m_postRv, optimizer.minimizer(), initialProposalCovMatrix));
   }
   else {
     // Compute output realizer: Metropolis-Hastings approach
-    m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(
+    m_mhSeqGenerator.reset(new MetropolisHastingsSG<P_V, P_M>(
         m_optionsObj->m_prefix.c_str(), alternativeOptionsValues, m_postRv,
-        initialValues, initialProposalCovMatrix);
+        initialValues, initialProposalCovMatrix));
   }
 
 
-  m_logLikelihoodValues = new ScalarSequence<double>(m_env, 0,
+  m_logLikelihoodValues.reset(new ScalarSequence<double>(m_env, 0,
                                                      m_optionsObj->m_prefix +
-                                                     "logLike");
+                                                     "logLike"));
 
-  m_logTargetValues = new ScalarSequence<double>(m_env, 0,
+  m_logTargetValues.reset(new ScalarSequence<double>(m_env, 0,
                                                  m_optionsObj->m_prefix +
-                                                 "logTarget");
+                                                 "logTarget"));
 
   // m_logLikelihoodValues and m_logTargetValues may be NULL
-  m_mhSeqGenerator->generateSequence(*m_chain, m_logLikelihoodValues,
-                                     m_logTargetValues);
+  m_mhSeqGenerator->generateSequence(*m_chain, m_logLikelihoodValues.get(),
+                                     m_logTargetValues.get());
 
-  m_solutionRealizer = new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                                    *m_chain);
+  m_solutionRealizer.reset(new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                                    *m_chain));
 
   m_postRv.setRealizer(*m_solutionRealizer);
 
@@ -317,14 +281,14 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
 
   // Compute output mdf: uniform sampling approach
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-  m_subMdfGrids  = new ArrayOfOneDGrids <P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
-  m_subMdfValues = new ArrayOfOneDTables<P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace());
+  m_subMdfGrids.reset(new ArrayOfOneDGrids <P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace()));
+  m_subMdfValues.reset(new ArrayOfOneDTables<P_V,P_M>((m_optionsObj->m_prefix+"Mdf_").c_str(),m_postRv.imageSet().vectorSpace()));
   m_chain->subUniformlySampledMdf(numEvaluationPointsVec, // input
                                   *m_subMdfGrids,         // output
                                   *m_subMdfValues);       // output
-  m_subSolutionMdf = new SampledVectorMdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_subSolutionMdf.reset(new SampledVectorMdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                           *m_subMdfGrids,
-                                                          *m_subMdfValues);
+                                                          *m_subMdfValues));
   m_postRv.setMdf(*m_subSolutionMdf);
 
   if ((m_optionsObj->m_dataOutputFileName                       != UQ_SIP_FILENAME_FOR_NO_FILE                    ) &&
@@ -367,7 +331,41 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   m_env.fullComm().syncPrintDebugMsg("Leaving StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000);
   m_env.fullComm().Barrier();
   // grvy_timer_end("BayesMetropolisHastings"); TODO: revisit timers
-  return;
+}
+
+template <class P_V, class P_M>
+void
+StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
+  const MhOptionsValues * alternativeOptionsValues,
+  const P_V & initialValues)
+{
+  P_M proposalCovMatrix(m_priorRv.imageSet().vectorSpace().zeroVector());
+
+  m_priorRv.pdf().distributionVariance(proposalCovMatrix);
+
+  this->solveWithBayesMetropolisHastings(alternativeOptionsValues,
+                                         initialValues,
+                                         &proposalCovMatrix);
+}
+
+template <class P_V, class P_M>
+void
+StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
+  const MhOptionsValues * alternativeOptionsValues)
+{
+  P_V initialValues(m_priorRv.imageSet().vectorSpace().zeroVector());
+
+  m_priorRv.pdf().distributionMean(initialValues);
+
+  this->solveWithBayesMetropolisHastings(alternativeOptionsValues,
+                                         initialValues);
+}
+
+template <class P_V, class P_M>
+void
+StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings()
+{
+  this->solveWithBayesMetropolisHastings(NULL);
 }
 
 template <class P_V, class P_M>
@@ -398,34 +396,26 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
                             << std::endl;
   }
 
-  if (m_mlSampler       ) delete m_mlSampler;
-  if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
-  if (m_solutionRealizer) delete m_solutionRealizer;
-  if (m_subSolutionCdf  ) delete m_subSolutionCdf;
-  if (m_subSolutionMdf  ) delete m_subSolutionMdf;
-  if (m_solutionPdf     ) delete m_solutionPdf;
-  if (m_solutionDomain  ) delete m_solutionDomain;
-
   P_V numEvaluationPointsVec(m_priorRv.imageSet().vectorSpace().zeroVector());
   numEvaluationPointsVec.cwSet(250.);
 
   // Compute output pdf up to a multiplicative constant: Bayesian approach
-  m_solutionDomain = InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet());
+  m_solutionDomain.reset(InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet()));
 
-  m_solutionPdf = new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_solutionPdf.reset(new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                        m_priorRv.pdf(),
                                                        m_likelihoodFunction,
                                                        1.,
-                                                       *m_solutionDomain);
+                                                       *m_solutionDomain));
 
   m_postRv.setPdf(*m_solutionPdf);
 
   // Compute output realizer: ML approach
-  m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
-  m_mlSampler = new MLSampling<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_chain.reset(new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain"));
+  m_mlSampler.reset(new MLSampling<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                              //m_postRv,
                                                m_priorRv,
-                                               m_likelihoodFunction);
+                                               m_likelihoodFunction));
   //                                           initialValues,
   //                                           initialProposalCovMatrix);
 
@@ -433,8 +423,8 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
                                 NULL,
                                 NULL);
 
-  m_solutionRealizer = new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                                    *m_chain);
+  m_solutionRealizer.reset(new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                                    *m_chain));
 
   m_postRv.setRealizer(*m_solutionRealizer);
 

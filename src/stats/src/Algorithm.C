@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -104,12 +104,12 @@ Algorithm<V, M>::acceptance_ratio(
         }
       }
       else {
-        double qyx = m_tk.rv(tk_pos_x).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
+        double qyx = m_tk.rv(tk_pos_x).pdf().lnValue(x.vecValues());
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           )) {
           *m_env.subDisplayFile() << m_tk.rv(tk_pos_x).pdf() << std::endl;
         }
-        double qxy = m_tk.rv(tk_pos_y).pdf().lnValue(y.vecValues(),NULL,NULL,NULL,NULL);
+        double qxy = m_tk.rv(tk_pos_y).pdf().lnValue(y.vecValues());
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           )) {
           *m_env.subDisplayFile() << m_tk.rv(tk_pos_y).pdf() << std::endl;

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -27,6 +27,8 @@
 #include <queso/ConcatenatedJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+
+#include <limits>
 
 namespace QUESO {
 
@@ -53,18 +55,25 @@ ConcatenatedVectorRV<V,M>::ConcatenatedVectorRV(
   m_rvs[1]       = &rv2;
   m_pdfs[0]      = &(m_rvs[0]->pdf());
   m_pdfs[1]      = &(m_rvs[1]->pdf());
-  m_realizers[0] = &(m_rvs[0]->realizer());
-  m_realizers[1] = &(m_rvs[1]->realizer());
+  m_realizers[0] = m_rvs[0]->has_realizer() ?
+                   &(m_rvs[0]->realizer()) : NULL;
+  m_realizers[1] = m_rvs[1]->has_realizer() ?
+                   &(m_rvs[1]->realizer()) : NULL;
 
   m_pdf          = new ConcatenatedJointPdf<V,M>(m_prefix.c_str(),
                                                         *(m_pdfs[0]),
                                                         *(m_pdfs[1]),
                                                         m_imageSet);
 
-  m_realizer     = new ConcatenatedVectorRealizer<V,M>(m_prefix.c_str(),
-                                                              *(m_realizers[0]),
-                                                              *(m_realizers[1]),
-                                                              m_imageSet);
+  // Iff we have all sub-realizers, we can make our own realizer
+  m_realizer     = (m_rvs[0]->has_realizer() &&
+                    m_rvs[1]->has_realizer()) ?
+                     new ConcatenatedVectorRealizer<V,M>(m_prefix.c_str(),
+                                                         *(m_realizers[0]),
+                                                         *(m_realizers[1]),
+                                                         m_imageSet) :
+                     NULL;
+
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
@@ -93,27 +102,36 @@ ConcatenatedVectorRV<V,M>::ConcatenatedVectorRV(
                             << std::endl;
   }
 
+  bool have_all_subrealizers = true;  // maybe
   for (unsigned int i = 0; i < m_rvs.size(); ++i) {
     m_rvs [i]      = rvs[i];
     m_pdfs[i]      = &(m_rvs[i]->pdf());
-    m_realizers[i] = &(m_rvs[i]->realizer());
+
+    // If our sub-RV has no realizer, we leave our pointer to it set
+    // to NULL
+    if (m_rvs[i]->has_realizer())
+      m_realizers[i] = &(m_rvs[i]->realizer());
+    else
+      have_all_subrealizers = false;
   }
 
   m_pdf        = new ConcatenatedJointPdf<V,M>(m_prefix.c_str(),
                                                       m_pdfs,
                                                       m_imageSet);
 
-  unsigned int minPeriod = m_realizers[0]->subPeriod();
+  unsigned int minPeriod = std::numeric_limits<unsigned int>::max();
   for (unsigned int i = 0; i < m_realizers.size(); ++i) {
-    if (minPeriod > m_realizers[i]->subPeriod()) {
+    if (m_realizers[i] && minPeriod > m_realizers[i]->subPeriod()) {
       minPeriod = m_realizers[i]->subPeriod();
     }
   }
 
-  m_realizer   = new ConcatenatedVectorRealizer<V,M>(m_prefix.c_str(),
-                                                            m_realizers,
-                                                            minPeriod,
-                                                            m_imageSet);
+  m_realizer   = have_all_subrealizers ?
+                   new ConcatenatedVectorRealizer<V,M>(m_prefix.c_str(),
+                                                       m_realizers,
+                                                       minPeriod,
+                                                       m_imageSet) :
+                   NULL;
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code

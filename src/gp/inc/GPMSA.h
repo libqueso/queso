@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -37,6 +37,7 @@
 #include <queso/UniformVectorRV.h>
 #include <queso/GPMSAOptions.h>
 #include <queso/ScopedPtr.h>
+#include <queso/SharedPtr.h>
 
 namespace QUESO {
 
@@ -54,18 +55,19 @@ public:
                 const VectorSpace<V, M> & m_experimentOutputSpace,
                 const unsigned int m_numSimulations,
                 const unsigned int m_numExperiments,
-                const std::vector<V *> & m_simulationScenarios,
-                const std::vector<V *> & m_simulationParameters,
-                const std::vector<V *> & m_simulationOutputs,
-                const std::vector<V *> & m_experimentScenarios,
-                const std::vector<V *> & m_experimentOutputs,
-                const std::vector<V>   & m_discrepancyBases,
-                const std::vector<M>   & m_observationErrorMatrices,
-                const M & m_experimentErrors,
+                const std::vector<typename SharedPtr<V>::Type> & m_simulationScenarios,
+                const std::vector<typename SharedPtr<V>::Type> & m_simulationParameters,
+                const std::vector<typename SharedPtr<V>::Type> & m_simulationOutputs,
+                const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
+                const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs,
+                const std::vector<typename SharedPtr<V>::Type> & m_discrepancyBases,
+                const std::vector<typename SharedPtr<M>::Type> & m_observationErrorMatrices,
+                const typename SharedPtr<M>::Type & m_observationErrorMatrix,
                 const ConcatenatedVectorRV<V, M> & m_totalPrior,
                 const V & residual_in,
                 const M & BT_Wy_B_inv_in,
-                const M & KT_K_inv_in);
+                const M & KT_K_inv_in,
+                const GPMSAOptions & opts);
 
   virtual ~GPMSAEmulator();
 
@@ -89,23 +91,23 @@ public:
   const unsigned int m_numSimulations;
   const unsigned int m_numExperiments;
 
-  const std::vector<V *> & m_simulationScenarios;
-  const std::vector<V *> & m_simulationParameters;
-  const std::vector<V *> & m_simulationOutputs;
-  const std::vector<V *> & m_experimentScenarios;
-  const std::vector<V *> & m_experimentOutputs;
+  const std::vector<typename SharedPtr<V>::Type> & m_simulationScenarios;
+  const std::vector<typename SharedPtr<V>::Type> & m_simulationParameters;
+  const std::vector<typename SharedPtr<V>::Type> & m_simulationOutputs;
+  const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios;
+  const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs;
 
-        std::vector<V>     m_discrepancyBases;
+        std::vector<typename SharedPtr<V>::Type>   m_discrepancyBases;
 
-  const std::vector<M> & m_observationErrorMatrices;
+  const std::vector<typename SharedPtr<M>::Type> & m_observationErrorMatrices;
+
+  // Block diagonal matrix; sacrificing efficiency for clarity
+  typename SharedPtr<M>::Type m_observationErrorMatrix;
 
   //
   // Intermediate calculations we can cache
   //
   unsigned int num_svd_terms;
-
-  // Total observation error covriance matrix
-  const M & m_experimentErrors;
 
   const ConcatenatedVectorRV<V, M> & m_totalPrior;
 
@@ -117,6 +119,8 @@ public:
   const M & BT_Wy_B_inv;
 
   const M & KT_K_inv;
+
+  const GPMSAOptions & m_opts;
 };
 
 template <class V = GslVector, class M = GslMatrix>
@@ -139,6 +143,11 @@ public:
 
   //! @name Getters
   //@{
+
+  //! Return GPMSAOptions structure
+  const GPMSAOptions & options() const;
+
+  GPMSAOptions & options();
 
   //! Return number of simulations
   unsigned int numSimulations() const;
@@ -170,7 +179,7 @@ public:
    * This returns all points in scenario space at which simulations were
    * executed
    */
-  const std::vector<V *> & simulationScenarios() const;
+  const std::vector<typename SharedPtr<V>::Type> & simulationScenarios() const;
 
   //! Return the point in \c parameterSpace for simulation \c simulationId
   /*!
@@ -184,7 +193,7 @@ public:
    * This returns all points in parameter space at which simulations were
    * executed
    */
-  const std::vector<V *> & simulationParameters() const;
+  const std::vector<typename SharedPtr<V>::Type> & simulationParameters() const;
 
   //! Return the simulation output for simulation \c simulationId
   /*!
@@ -197,7 +206,7 @@ public:
    * This returns all points in simulation output space at which simulations
    * were executed
    */
-  const std::vector<V *> & simulationOutputs() const;
+  const std::vector<typename SharedPtr<V>::Type> & simulationOutputs() const;
 
   //! Return the point in \c scenarioSpace for experiment \c experimentId
   /*!
@@ -211,7 +220,7 @@ public:
    * This returns all points in scenario space at which experiments were
    * executed
    */
-  const std::vector<V *> & experimentScenarios() const;
+  const std::vector<typename SharedPtr<V>::Type> & experimentScenarios() const;
 
   //! Return the experiment output for experiment \c experimentId
   /*!
@@ -224,10 +233,10 @@ public:
    * This returns all points in experiment output space at which experiments
    * were executed
    */
-  const std::vector<V *> & experimentOutputs() const;
+  const std::vector<typename SharedPtr<V>::Type> & experimentOutputs() const;
 
   //! Return all observation error covarince matrices for all experiments
-  const M & experimentErrors() const;
+  const typename SharedPtr<M>::Type experimentErrors() const;
 
   //! Return the QUESO environment
   const BaseEnvironment & env() const;
@@ -244,18 +253,18 @@ public:
    * parameter space.  The simulation output is assumed to be stored in
    * \c simulationOutput.
    */
-  void addSimulation(V & simulationScenario,
-                     V & simulationParameter,
-                     V & simulationOutput);
+  void addSimulation(typename SharedPtr<V>::Type simulationScenario,
+                     typename SharedPtr<V>::Type simulationParameter,
+                     typename SharedPtr<V>::Type simulationOutput);
 
   //! Adds multiple simulations to \c this
   /*!
    * This method takes a vector of simulations and calls \c addSimulation on
    * each element
    */
-  void addSimulations(const std::vector<V *> & simulationScenarios,
-                      const std::vector<V *> & simulationParameters,
-                      const std::vector<V *> & simulationOutputs);
+  void addSimulations(const std::vector<typename SharedPtr<V>::Type> & simulationScenarios,
+                      const std::vector<typename SharedPtr<V>::Type> & simulationParameters,
+                      const std::vector<typename SharedPtr<V>::Type> & simulationOutputs);
 
   //! Add all experiments to \c this
   /*!
@@ -266,10 +275,28 @@ public:
    * Each experiment (\experimentOutputs[i]) is assumed to correspond to the
    * point \c expermientScenarios[i] in scenario space.  The observation error
    * covariance matrix is assumed to be stored in \c experimentErrors.
+   *
+   * This method is solely for backward compatibility.  Covariances
+   * between errors from different experiments will be ignored.
    */
-  void addExperiments(const std::vector<V *> & experimentScenarios,
-                      const std::vector<V *> & experimentOutputs,
-                      const M * experimentErrors);
+  void addExperiments(const std::vector<typename SharedPtr<V>::Type> & experimentScenarios,
+                      const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
+                      const typename SharedPtr<M>::Type experimentErrors);
+
+  //! Add all experiments to \c this
+  /*!
+   * This method takes a vector of *all* the experimental data and associated
+   * observation errors/correlations and stores them.  This cannot be done
+   * piecemeal like the simulation data.
+   *
+   * Each experiment (\experimentOutputs[i]) is assumed to correspond to the
+   * point \c expermientScenarios[i] in scenario space.  Each
+   * experiment has a corresponding error covariance matrix stored in
+   * \c experimentErrors[i]
+   */
+  void addExperiments(const std::vector<typename SharedPtr<V>::Type> & experimentScenarios,
+                      const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
+                      const std::vector<typename SharedPtr<M>::Type> & experimentErrors);
 
   //! Add all discrepancy bases to \c this
   /*!
@@ -288,7 +315,7 @@ public:
    * notation of Higdon et al), and so each discrepancy basis can be
    * expressed as a vector indexed by output index.
    */
-  void setDiscrepancyBases(const std::vector<V *> & discrepancyBases);
+  void setDiscrepancyBases(const std::vector<typename SharedPtr<V>::Type> & discrepancyBases);
 
   M & getObservationErrorCovariance(unsigned int simulationNumber);
 
@@ -316,21 +343,18 @@ public:
   unsigned int m_numSimulations;
   unsigned int m_numExperiments;
 
-  std::vector<V *> m_simulationScenarios;
-  std::vector<V *> m_simulationParameters;
-  std::vector<V *> m_simulationOutputs;
-  std::vector<V *> m_experimentScenarios;
-  std::vector<V *> m_experimentOutputs;
+  std::vector<typename SharedPtr<V>::Type> m_simulationScenarios;
+  std::vector<typename SharedPtr<V>::Type> m_simulationParameters;
+  std::vector<typename SharedPtr<V>::Type> m_simulationOutputs;
+  std::vector<typename SharedPtr<V>::Type> m_experimentScenarios;
+  std::vector<typename SharedPtr<V>::Type> m_experimentOutputs;
 
   // We will be recentering data around the simulation output mean
   typename ScopedPtr<V>::Type simulationOutputMeans;
 
-  std::vector<V> m_discrepancyBases;
+  std::vector<typename SharedPtr<V>::Type> m_discrepancyBases;
 
-  std::vector<M> m_observationErrorMatrices;
-
-  // Total observation error covriance matrix
-  const M * m_experimentErrors;
+  std::vector<typename SharedPtr<M>::Type> m_observationErrorMatrices;
 
   // Counter for the number of adds that happen
   unsigned int m_numSimulationAdds;
@@ -348,13 +372,16 @@ public:
   // All the GP priors information for a scalar GP follows:
   void setUpHyperpriors();
 
+  // Number of dimensions preserved from the SVD of simulation outputs
+  unsigned int num_svd_terms;
+
   // Domains for all the hyperpriors
   typename ScopedPtr<VectorSpace<V, M> >::Type oneDSpace;
 
-  // Emulator mean
-  typename ScopedPtr<V>::Type emulatorMeanMin;
-  typename ScopedPtr<V>::Type emulatorMeanMax;
-  typename ScopedPtr<BoxSubset<V, M> >::Type emulatorMeanDomain;
+  // Truncation error precision
+  typename ScopedPtr<V>::Type truncationErrorPrecisionMin;
+  typename ScopedPtr<V>::Type truncationErrorPrecisionMax;
+  typename ScopedPtr<BoxSubset<V, M> >::Type truncationErrorPrecisionDomain;
 
   // Emulator precision
   typename ScopedPtr<VectorSpace<V, M> >::Type emulatorPrecisionSpace;
@@ -400,7 +427,7 @@ public:
   std::vector<const BaseVectorRV<V, M> *> priors;
 
   // The hyperpriors
-  typename ScopedPtr<UniformVectorRV<V, M> >::Type m_emulatorMean;  // scalar
+  typename ScopedPtr<UniformVectorRV<V, M> >::Type m_truncationErrorPrecision;  // scalar
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_emulatorPrecision;  // (dim num_svd_terms) gamma(a, b) shape-rate
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_observationalPrecision;  // scalar gamma(a, b) shape-rate
   typename ScopedPtr<BetaVectorRV<V, M> >::Type m_emulatorCorrelationStrength;  // (dim scenariosspace + dim parameterspace)
@@ -427,7 +454,7 @@ public:
   bool m_constructedGP;
 
   // Block diagonal matrix; sacrificing efficiency for clarity
-  typename ScopedPtr<M>::Type m_observationErrorMatrix;
+  typename SharedPtr<M>::Type m_observationErrorMatrix;
 
   //
   // Intermediate calculations we can cache
@@ -453,7 +480,6 @@ public:
 private:
   bool allocated_m_opts;
   GPMSAOptions * m_opts;
-
 };
 
 }  // End namespace QUESO

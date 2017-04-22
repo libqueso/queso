@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -52,9 +52,7 @@ public:
   {
   }
 
-  virtual void evaluateModel(const V & domainVector, const V * domainDirection,
-      V & modelOutput, V * gradVector, M * hessianMatrix,
-      V * hessianEffect) const
+  virtual void evaluateModel(const V & domainVector, V & modelOutput) const
   {
     for (unsigned int i = 0; i < modelOutput.sizeLocal(); i++) {
       modelOutput[i] = domainVector[i];
@@ -76,8 +74,7 @@ public:
   {
   }
 
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  virtual double lnValue(const V & domainVector) const
   {
     double d1 = domainVector[0] - 1.0;
 
@@ -91,10 +88,10 @@ public:
     return misfit;
   }
 
-  virtual double actualValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  virtual double actualValue(const V & domainVector, const V * /*domainDirection*/,
+      V * /*gradVector*/, M * /*hessianMatrix*/, V * /*hessianEffect*/) const
   {
-    return this->lnValue(domainVector, domainDirection, gradVector, hessianMatrix, hessianEffect);
+    return this->lnValue(domainVector);
   }
 };
 

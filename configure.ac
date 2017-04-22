@@ -228,6 +228,18 @@ AX_PATH_GRVY_NEW([0.29],[no])
 
 AC_CACHE_SAVE
 
+# -------------------------------------------------------------
+# cppunit C++ unit testing -- enabled by default                                                                                                                                                                                           
+# -------------------------------------------------------------
+AC_ARG_ENABLE(cppunit,
+              AS_HELP_STRING([--disable-cppunit],
+                             [Build without cppunit C++ unit testing support]))
+AS_IF([test "x$enable_cppunit" != "xno"], [
+   AM_PATH_CPPUNIT([1.10.0],[enablecppunit=yes],[enablecppunit=no])
+])
+
+AM_CONDITIONAL(QUESO_ENABLE_CPPUNIT, test x$enablecppunit = xyes)
+
 #----------------
 # Doxygen support
 #----------------
@@ -265,12 +277,6 @@ AC_CONFIG_FILES([
   src/contrib/ANN/test/Makefile
   examples/Makefile
   test/Makefile
-  test/t01_valid_cycle/Makefile
-  test/t02_sip_sfp/Makefile
-  test/t03_sequence/Makefile
-  test/t04_bimodal/Makefile
-  test/gsl_tests/Makefile
-  test/gsl_tests/input
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
@@ -294,6 +300,10 @@ AC_SUBST(QUESO_STAMPED_FILES)
 AM_CONDITIONAL(QUESO_LICENSESTAMPEXISTS, [test -f $ac_abs_top_srcdir/src/common/lic_utils/update_license.pl])
 
 AC_OUTPUT()
+
+dnl Hackish fix for Ubuntu/Debian libtool
+dnl See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=702737
+perl -pi -e 's/link_all_deplibs=no/link_all_deplibs=yes/' libtool
 
 #---------------
 # Final summary

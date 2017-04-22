@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -53,12 +53,20 @@ public:
   //! @name Constructor/Destructor methods.
   //@{
 
+  //! Construct a zero vector
   GslVector(const BaseEnvironment& env, const Map& map);
+
+  //! Construct a vector with all entries set to \c value
   GslVector(const BaseEnvironment& env, const Map& map, double value);
-  GslVector(const BaseEnvironment& env, double d1, double d2, const Map& map); // MATLAB linspace
+
+  //! Construct a vector linearly interpolating from \c d1 to \c d2,
+  //  like MATLAB linspace does.
+  GslVector(const BaseEnvironment& env, double d1, double d2, const Map& map);
 
   //! Construct a vector, with length the same as \c v, with evenly spaced numbers from \c start to \c end, inclusive
   GslVector(const GslVector&         v, double start, double end);
+
+  //! Construct a vector equal to \c y
   GslVector(const GslVector&         y);
 
   //! Destructor

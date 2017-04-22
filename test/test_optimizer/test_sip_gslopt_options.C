@@ -22,7 +22,7 @@ public:
 
   virtual double actualValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const {
-    return std::exp(this->actualValue(domainVector, domainDirection,
+    return std::exp(this->lnValue(domainVector, domainDirection,
           gradVector, hessianMatrix, hessianEffect));
   }
 
@@ -63,6 +63,7 @@ int main(int argc, char ** argv) {
   QUESO::UniformVectorRV<QUESO::GslVector, QUESO::GslMatrix> prior("", domain);
 
   Likelihood<QUESO::GslVector, QUESO::GslMatrix> likelihood("", domain);
+  likelihood.setFiniteDifferenceStepSize(1e-4);
 
   QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix> posterior("",
       domain);

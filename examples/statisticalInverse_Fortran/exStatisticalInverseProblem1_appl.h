@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -28,7 +28,6 @@
 
 #include <exStatisticalInverseProblem1_likelihood.h>
 
-#include <queso/GenericScalarFunction.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/CovCond.h>
 
@@ -86,16 +85,11 @@ uqAppl(const QUESO::BaseEnvironment& env)
   P_M* covMatrix        = paramSpace.newMatrix();
   QUESO::CovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
 
-  likelihoodRoutine_DataType<P_V,P_M> likelihoodRoutine_Data;
-  likelihoodRoutine_Data.paramMeans        = &paramMeans;
-  likelihoodRoutine_Data.matrix            = covMatrixInverse;
-  likelihoodRoutine_Data.applyMatrixInvert = false;
+  Likelihood<> likelihood("like_", paramDomain);
+  likelihood.paramMeans        = &paramMeans;
+  likelihood.matrix            = covMatrixInverse;
+  likelihood.applyMatrixInvert = false;
 
-  QUESO::GenericScalarFunction<P_V,P_M> likelihoodFunctionObj("like_",
-                                                              paramDomain,
-                                                              likelihoodRoutine<P_V,P_M>,
-                                                              (void *) &likelihoodRoutine_Data,
-                                                              true); // the routine computes [ln(function)]
 
   //******************************************************
   // Step 4 of 5: Instantiate the inverse problem
@@ -114,7 +108,7 @@ uqAppl(const QUESO::BaseEnvironment& env)
   QUESO::StatisticalInverseProblem<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
                                                NULL,
                                                priorRv,
-                                               likelihoodFunctionObj,
+                                               likelihood,
                                                postRv);
 
   //******************************************************

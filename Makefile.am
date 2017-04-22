@@ -3,7 +3,7 @@ ACLOCAL_AMFLAGS  = -I m4 -I m4/common
 EXTRA_DIST       = $(DX_CONFIG) QUESO_users_manual.pdf CHANGES AUTHORS COPYING LICENSE
 
 # Build in these directories:
-SUBDIRS          = inc/queso src/contrib/ANN src examples test/gsl_tests test doxygen
+SUBDIRS = inc/queso src/contrib/ANN src examples src/contrib/ANN/test test doxygen
 
 # Doxygen support
 
@@ -171,14 +171,19 @@ DISTCLEANFILES += aminclude.am
 DISTCLEANFILES += config_queso.h
 
 CLEANFILES =
+
+#---------------------------------
+# Embedded license header support
+#---------------------------------
+# Since we don't distribute the lic_utils, check and make sure it's there.
+# This way, we won't run this on distributed tarballs, only on the repos clones
 if QUESO_LICENSESTAMPEXISTS
-CLEANFILES += src/.license.stamp
-CLEANFILES += test/.license.stamp
-CLEANFILES += test/gsl_tests/.license.stamp
-CLEANFILES += test/t01_valid_cycle/.license.stamp
-CLEANFILES += test/t02_sip_sfp/.license.stamp
-CLEANFILES += test/t03_sequence/.license.stamp
-CLEANFILES += test/t04_bimodal/.license.stamp
+BUILT_SOURCES = .license.stamp
+.license.stamp: $(top_srcdir)/LICENSE
+	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
+	echo 'updated source license headers' >$@
+
+CLEANFILES += .license.stamp
 endif
 
 # Required for AX_AM_MACROS

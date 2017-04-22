@@ -2,7 +2,10 @@ AM_CPPFLAGS = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS += $(BOOST_CPPFLAGS)
 AM_CPPFLAGS += $(GSL_CFLAGS)
+
+if HAVE_ANN
 AM_CPPFLAGS += $(ANN_CFLAGS)
+endif
 
 if GRVY_ENABLED
   AM_CPPFLAGS += $(GRVY_CFLAGS)
@@ -30,8 +33,12 @@ libqueso_includedir  = $(prefix)/include/queso
 libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GSL_LIBS)
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
-libqueso_la_LDFLAGS += $(ANN_LIBS)
 libqueso_la_LDFLAGS += $(HDF5_LIBS)
+libqueso_la_LIBADD   =  # Empty.  Append below.
+
+if HAVE_ANN
+libqueso_la_LIBADD += contrib/ANN/libANN.la
+endif
 
 if GRVY_ENABLED
   libqueso_la_LDFLAGS += $(GRVY_LIBS)
@@ -62,9 +69,11 @@ libqueso_la_SOURCES += core/src/EnvironmentOptions.C
 libqueso_la_SOURCES += core/src/RngBase.C
 libqueso_la_SOURCES += core/src/RngGsl.C
 libqueso_la_SOURCES += core/src/RngBoost.C
+libqueso_la_SOURCES += core/src/RngCXX11.C
 libqueso_la_SOURCES += core/src/BasicPdfsBase.C
 libqueso_la_SOURCES += core/src/BasicPdfsGsl.C
 libqueso_la_SOURCES += core/src/BasicPdfsBoost.C
+libqueso_la_SOURCES += core/src/BasicPdfsCXX11.C
 libqueso_la_SOURCES += core/src/Vector.C
 libqueso_la_SOURCES += core/src/Matrix.C
 libqueso_la_SOURCES += core/src/TeuchosVector.C
@@ -123,6 +132,9 @@ libqueso_la_SOURCES += misc/src/AsciiTable.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDTables.C
 libqueso_la_SOURCES += misc/src/ArrayOfOneDGrids.C
 libqueso_la_SOURCES += misc/src/StreamUtilities.C
+libqueso_la_SOURCES += misc/src/MonteCarloQuadrature.C
+libqueso_la_SOURCES += misc/src/MultiDimensionalIndexing.C
+libqueso_la_SOURCES += misc/src/TensorProductQuadrature.C
 
 # Sources from misc/src withn gsl conditional
 
@@ -176,7 +188,6 @@ libqueso_la_SOURCES += stats/src/StatisticalInverseProblemOptions.C
 libqueso_la_SOURCES += stats/src/StatisticalForwardProblem.C
 libqueso_la_SOURCES += stats/src/StatisticalInverseProblem.C
 libqueso_la_SOURCES += stats/src/StatisticalForwardProblemOptions.C
-libqueso_la_SOURCES += stats/src/InfoTheory.C
 libqueso_la_SOURCES += stats/src/JointPdf.C
 libqueso_la_SOURCES += stats/src/BayesianJointPdf.C
 libqueso_la_SOURCES += stats/src/BetaJointPdf.C
@@ -242,7 +253,7 @@ libqueso_la_SOURCES += stats/src/JeffreysVectorRV.C
 libqueso_la_SOURCES += stats/src/LogNormalVectorRV.C
 libqueso_la_SOURCES += stats/src/UniformVectorRV.C
 libqueso_la_SOURCES += stats/src/WignerVectorRV.C
-libqueso_la_SOURCES += stats/src/GaussianLikelihood.C
+libqueso_la_SOURCES += stats/src/LikelihoodBase.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodScalarCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodDiagonalCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodFullCovariance.C
@@ -256,30 +267,12 @@ libqueso_la_SOURCES += stats/src/MetropolisAdjustedLangevinTK.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateData.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateDataSet.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBase.C
-libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateHelper.C
 libqueso_la_SOURCES += surrogates/src/LinearLagrangeInterpolationSurrogate.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateBuilder.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOBase.C
 libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOASCII.C
 
 # Sources from gp/src
-
-libqueso_la_SOURCES += gp/src/ExperimentModel.C
-libqueso_la_SOURCES += gp/src/ExperimentModelOptions.C
-libqueso_la_SOURCES += gp/src/ExperimentStorage.C
-libqueso_la_SOURCES += gp/src/GpmsaComputerModel.C
-libqueso_la_SOURCES += gp/src/GpmsaComputerModelOptions.C
-libqueso_la_SOURCES += gp/src/SimulationModelOptions.C
-libqueso_la_SOURCES += gp/src/GcmExperimentInfo.C
-libqueso_la_SOURCES += gp/src/GcmJointInfo.C
-libqueso_la_SOURCES += gp/src/GcmJointTildeInfo.C
-libqueso_la_SOURCES += gp/src/GcmSimulationInfo.C
-libqueso_la_SOURCES += gp/src/GcmSimulationTildeInfo.C
-libqueso_la_SOURCES += gp/src/GcmTotalInfo.C
-libqueso_la_SOURCES += gp/src/GcmZInfo.C
-libqueso_la_SOURCES += gp/src/GcmZTildeInfo.C
-libqueso_la_SOURCES += gp/src/SimulationModel.C
-libqueso_la_SOURCES += gp/src/SimulationStorage.C
 libqueso_la_SOURCES += gp/src/GPMSA.C
 libqueso_la_SOURCES += gp/src/GPMSAOptions.C
 
@@ -293,9 +286,11 @@ libqueso_include_HEADERS += core/inc/EnvironmentOptions.h
 libqueso_include_HEADERS += core/inc/RngBase.h
 libqueso_include_HEADERS += core/inc/RngGsl.h
 libqueso_include_HEADERS += core/inc/RngBoost.h
+libqueso_include_HEADERS += core/inc/RngCXX11.h
 libqueso_include_HEADERS += core/inc/BasicPdfsBase.h
 libqueso_include_HEADERS += core/inc/BasicPdfsGsl.h
 libqueso_include_HEADERS += core/inc/BasicPdfsBoost.h
+libqueso_include_HEADERS += core/inc/BasicPdfsCXX11.h
 libqueso_include_HEADERS += core/inc/GslMatrix.h
 libqueso_include_HEADERS += core/inc/GslVector.h
 libqueso_include_HEADERS += core/inc/TeuchosMatrix.h
@@ -341,6 +336,7 @@ libqueso_include_HEADERS += core/inc/SharedPtr.h
 
 # Headers to install from misc/inc
 
+libqueso_include_HEADERS += misc/inc/BaseQuadrature.h
 libqueso_include_HEADERS += misc/inc/1D1DFunction.h
 libqueso_include_HEADERS += misc/inc/1DQuadrature.h
 libqueso_include_HEADERS += misc/inc/2dArrayOfStuff.h
@@ -355,6 +351,10 @@ libqueso_include_HEADERS += misc/inc/UniformOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StdOneDGrid.h
 libqueso_include_HEADERS += misc/inc/StreamUtilities.h
 libqueso_include_HEADERS += misc/inc/math_macros.h
+libqueso_include_HEADERS += misc/inc/MultiDQuadratureBase.h
+libqueso_include_HEADERS += misc/inc/MonteCarloQuadrature.h
+libqueso_include_HEADERS += misc/inc/MultiDimensionalIndexing.h
+libqueso_include_HEADERS += misc/inc/TensorProductQuadrature.h
 
 # Headers to install from basic/inc
 
@@ -452,6 +452,7 @@ libqueso_include_HEADERS += stats/inc/LogNormalVectorRV.h
 libqueso_include_HEADERS += stats/inc/UniformVectorRV.h
 libqueso_include_HEADERS += stats/inc/WignerVectorRV.h
 libqueso_include_HEADERS += stats/inc/InfoTheory.h
+libqueso_include_HEADERS += stats/inc/InfoTheory_impl.h
 libqueso_include_HEADERS += stats/inc/ScalarCovarianceFunction.h
 libqueso_include_HEADERS += stats/inc/ExponentialScalarCovarianceFunction.h
 libqueso_include_HEADERS += stats/inc/GenericScalarCovarianceFunction.h
@@ -460,7 +461,7 @@ libqueso_include_HEADERS += stats/inc/ExponentialMatrixCovarianceFunction.h
 libqueso_include_HEADERS += stats/inc/GenericMatrixCovarianceFunction.h
 libqueso_include_HEADERS += stats/inc/ScalarGaussianRandomField.h
 libqueso_include_HEADERS += stats/inc/VectorGaussianRandomField.h
-libqueso_include_HEADERS += stats/inc/GaussianLikelihood.h
+libqueso_include_HEADERS += stats/inc/LikelihoodBase.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodScalarCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodDiagonalCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodFullCovariance.h
@@ -475,7 +476,6 @@ libqueso_include_HEADERS += surrogates/inc/SurrogateBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateData.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateDataSet.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBase.h
-libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateHelper.h
 libqueso_include_HEADERS += surrogates/inc/LinearLagrangeInterpolationSurrogate.h
 libqueso_include_HEADERS += surrogates/inc/SurrogateBuilderBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateBuilder.h
@@ -483,23 +483,6 @@ libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOBase.h
 libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOASCII.h
 
 # Headers to install from gp/inc
-
-libqueso_include_HEADERS += gp/inc/ExperimentModel.h
-libqueso_include_HEADERS += gp/inc/ExperimentModelOptions.h
-libqueso_include_HEADERS += gp/inc/ExperimentStorage.h
-libqueso_include_HEADERS += gp/inc/GcmExperimentInfo.h
-libqueso_include_HEADERS += gp/inc/GcmJointInfo.h
-libqueso_include_HEADERS += gp/inc/GcmJointTildeInfo.h
-libqueso_include_HEADERS += gp/inc/GcmSimulationInfo.h
-libqueso_include_HEADERS += gp/inc/GcmSimulationTildeInfo.h
-libqueso_include_HEADERS += gp/inc/GcmTotalInfo.h
-libqueso_include_HEADERS += gp/inc/GcmZInfo.h
-libqueso_include_HEADERS += gp/inc/GcmZTildeInfo.h
-libqueso_include_HEADERS += gp/inc/GpmsaComputerModel.h
-libqueso_include_HEADERS += gp/inc/GpmsaComputerModelOptions.h
-libqueso_include_HEADERS += gp/inc/SimulationModel.h
-libqueso_include_HEADERS += gp/inc/SimulationModelOptions.h
-libqueso_include_HEADERS += gp/inc/SimulationStorage.h
 libqueso_include_HEADERS += gp/inc/GPMSA.h
 libqueso_include_HEADERS += gp/inc/GPMSAOptions.h
 
@@ -526,15 +509,4 @@ queso_version_DEPENDENCIES = libqueso.la
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
-endif
-
-#---------------------------------
-# Embedded license header support
-#---------------------------------
-
-if QUESO_LICENSESTAMPEXISTS
-BUILT_SOURCES += .license.stamp
-.license.stamp: $(top_srcdir)/LICENSE
-	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
-	echo 'updated source license headers' >$@
 endif

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <sstream>
+
 #include <queso/1DQuadrature.h>
 
 namespace QUESO {
@@ -33,12 +35,10 @@ Base1DQuadrature::Base1DQuadrature(
   double minDomainValue,
   double maxDomainValue,
   unsigned int order)
-  :
+  : BaseQuadrature(),
   m_minDomainValue(minDomainValue),
   m_maxDomainValue(maxDomainValue),
-  m_order         (order),
-  m_positions     (0),
-  m_weights       (0)
+  m_order         (order)
 {
   queso_require_less_msg(m_minDomainValue, m_maxDomainValue, "min >= max");
 
@@ -69,20 +69,6 @@ Base1DQuadrature::order() const
   return m_order;
 }
 
-const std::vector<double>&
-Base1DQuadrature::positions() const
-{
-  queso_require_not_equal_to_msg(m_positions.size(), 0, "size = 0");
-  return m_positions;
-}
-
-const std::vector<double>&
-Base1DQuadrature::weights() const
-{
-  queso_require_not_equal_to_msg(m_weights.size(), 0, "size = 0");
-  return m_weights;
-}
-
 //*****************************************************
 // Generic 1D quadrature class
 //*****************************************************
@@ -104,12 +90,6 @@ Generic1DQuadrature::Generic1DQuadrature(
 
 Generic1DQuadrature::~Generic1DQuadrature()
 {
-}
-
-void
-Generic1DQuadrature::dumbRoutine() const
-{
-  return;
 }
 
 //*****************************************************
@@ -416,12 +396,6 @@ UniformLegendre1DQuadrature::~UniformLegendre1DQuadrature()
 {
 }
 
-void
-UniformLegendre1DQuadrature::dumbRoutine() const
-{
-  return;
-}
-
 //*****************************************************
 // GaussianHermite 1D quadrature class
 //*****************************************************
@@ -459,10 +433,10 @@ GaussianHermite1DQuadrature::GaussianHermite1DQuadrature(
     break;
 
     case 3:
-      m_weights  [0] =  sqrt(M_PI)/4./(3.-sqrt(6.));
-      m_weights  [1] =  sqrt(M_PI)/4./(3.+sqrt(6.));
-      m_weights  [2] =  sqrt(M_PI)/4./(3.+sqrt(6.));
-      m_weights  [3] =  sqrt(M_PI)/4./(3.-sqrt(6.));
+      m_weights  [0] =  sqrt(M_PI)/4./(3.+sqrt(6.));
+      m_weights  [1] =  sqrt(M_PI)/4./(3.-sqrt(6.));
+      m_weights  [2] =  sqrt(M_PI)/4./(3.-sqrt(6.));
+      m_weights  [3] =  sqrt(M_PI)/4./(3.+sqrt(6.));
 
       m_positions[0] = -sqrt(1.5+sqrt(1.5));
       m_positions[1] = -sqrt(1.5-sqrt(1.5));
@@ -629,26 +603,17 @@ GaussianHermite1DQuadrature::GaussianHermite1DQuadrature(
     break;
 
     default:
-      std::cerr << "In GaussianHermite1DQuadrature::constructor()"
-                << ": m_order = " << m_order
-                << std::endl;
-      queso_error_msg("order not supported");
+      std::stringstream ss;
+      ss << "In GaussianHermite1DQuadrature::constructor()"
+         << ": m_order = " << m_order
+         << std::endl;
+      queso_error_msg(ss.str());
     break;
-  }
-  for (unsigned int j = 0; j < (m_order+1); ++j) {
-    m_weights  [j] *= sqrt(2.);
-    m_positions[j] *= sqrt(2.);
   }
 }
 
 GaussianHermite1DQuadrature::~GaussianHermite1DQuadrature()
 {
-}
-
-void
-GaussianHermite1DQuadrature::dumbRoutine() const
-{
-  return;
 }
 
 //*****************************************************
@@ -680,12 +645,6 @@ WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature(
 
 WignerInverseChebyshev1st1DQuadrature::~WignerInverseChebyshev1st1DQuadrature()
 {
-}
-
-void
-WignerInverseChebyshev1st1DQuadrature::dumbRoutine() const
-{
-  return;
 }
 
 //*****************************************************
@@ -720,12 +679,6 @@ WignerChebyshev2nd1DQuadrature::WignerChebyshev2nd1DQuadrature(
 
 WignerChebyshev2nd1DQuadrature::~WignerChebyshev2nd1DQuadrature()
 {
-}
-
-void
-WignerChebyshev2nd1DQuadrature::dumbRoutine() const
-{
-  return;
 }
 
 }  // End namespace QUESO

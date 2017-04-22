@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -30,6 +30,11 @@
 #include <queso/SampledScalarCdf.h>
 #include <queso/OneDGrid.h>
 
+#ifdef QUESO_HAS_TRILINOS
+#include <Epetra_MpiComm.h>
+#include <Epetra_SerialComm.h>
+#endif
+
 namespace QUESO {
 
 // Constructor for a given inputMap and inputRowSize.
@@ -49,22 +54,6 @@ DistArray<T>::DistArray(const Map& inputMap, const int inputRowSize)
     m_elements[i].resize(m_rowSize);
   }
 #endif
-}
-
-// Copy constructor
-template<typename T>
-DistArray<T>::DistArray(const DistArray<T>& src)
-  : m_Map(src.m_Map)
-#ifdef QUESO_HAS_TRILINOS
-  ,
-  m_epetraDistArray(NULL)
-#endif
-{
-#ifdef QUESO_HAS_TRILINOS
-#else
-  m_elements.clear();
-#endif
-  this->copy(src);
 }
 
 // Destructor
@@ -87,14 +76,6 @@ template<typename T>
 DistArray<T>&
 DistArray<T>::operator=(const DistArray<T>& rhs)
 {
-#ifdef QUESO_HAS_TRILINOS
-#else
-  for (int i = 0; i < m_Map.NumGlobalElements(); ++i) {
-    m_elements[i].clear();
-  }
-  m_elements.clear();
-#endif
-  this->copy(rhs);
   return *this;
 }
 
@@ -152,14 +133,6 @@ DistArray<T>::RowSize() const
 #else
   return m_rowSize;
 #endif
-}
-
-// For some reason, we need to implement copy() otherwise the link stage during
-// `make distcheck` fails.  Building manually from the tarball works fine even
-// without copy() implemented.  Weirdness++.  -- Damon
-template<typename T> void DistArray<T>::copy(const DistArray<T>& src)
-{
-  queso_not_implemented();
 }
 
 // I/O methods

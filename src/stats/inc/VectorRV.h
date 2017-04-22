@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -33,7 +33,6 @@
 #include <queso/VectorCdf.h>
 #include <queso/VectorMdf.h>
 #include <queso/SequenceOfVectors.h>
-#include <queso/InfoTheory.h>
 
 namespace QUESO {
 
@@ -76,6 +75,9 @@ public:
 
   //! Posterior Density Function of the vector RV; access to private attribute m_pdf.
   const   BaseJointPdf      <V,M>& pdf       () const;
+
+  //! Returns true iff this RV has the ability to produce realizations (samples)
+          bool                  has_realizer () const;
 
   //! Finds a realization (sample) of the PDF of this vector RV; access to private attribute m_realizer.
   const   BaseVectorRealizer<V,M>& realizer  () const;

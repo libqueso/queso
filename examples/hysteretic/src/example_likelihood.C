@@ -33,24 +33,15 @@
 #include <example_likelihood.h>
 #include <example_hyst.h>
 
-double likelihoodRoutine(
-  const QUESO::GslVector& paramValues,
-  const QUESO::GslVector* paramDirection,
-  const void*             functionDataPtr,
-  QUESO::GslVector*       gradVector,
-  QUESO::GslMatrix*       hessianMatrix,
-  QUESO::GslVector*       hessianEffect)
+template <class V, class M>
+double
+Likelihood<V, M>::lnValue(const V & paramValues) const
 {
   const QUESO::BaseEnvironment& env = paramValues.env();
   UQ_FATAL_TEST_MACRO(paramValues.sizeLocal() != 15,
                       env.fullRank(),
                       "example_likelihood()",
                       "invalid parameter size");
-
-  const std::vector<std::vector<double>* >&
-    floor = ((likelihoodRoutine_DataType *) functionDataPtr)->floor;
-  const std::vector<double>&
-    accel = ((likelihoodRoutine_DataType *) functionDataPtr)->accel;
 
   unsigned int numFloors    = floor.size();
   unsigned int numTimeSteps = accel.size();
@@ -136,3 +127,5 @@ double likelihoodRoutine(
   double result = -0.5*((double) numFloors)*((double) numTimeSteps)*log(2.*M_PI*sigmaSq) - 0.5*sum/sigmaSq;
   return result;
 }
+
+template class Likelihood<QUESO::GslVector, QUESO::GslMatrix>;

@@ -57,6 +57,7 @@ int main(int argc, char ** argv) {
   QUESO::UniformVectorRV<QUESO::GslVector, QUESO::GslMatrix> prior("", domain);
 
   Likelihood<QUESO::GslVector, QUESO::GslMatrix> likelihood("", domain);
+  likelihood.setFiniteDifferenceStepSize(1e-4);
 
   QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix> posterior("",
       domain);

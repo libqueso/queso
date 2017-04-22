@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -162,28 +162,27 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
   m_lastChainSize             (0),
-  m_lastMean                  (NULL),
-  m_lastAdaptedCovMatrix      (NULL),
+  m_lastMean                  (),
+  m_lastAdaptedCovMatrix      (),
   m_numPositionsNotSubWritten (0),
-  m_optionsObj                (alternativeOptionsValues),
+  m_optionsObj                (),
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
   m_initialLogLikelihoodValue (0.),
-  m_userDidNotProvideOptions(false)
+  m_userDidNotProvideOptions(false),
+  m_latestDirtyCovMatrixIteration(0)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
   }
-  // If NULL, we create one
-  if (m_optionsObj == NULL) {
-    MhOptionsValues * tempOptions = new MhOptionsValues(&m_env, prefix);
 
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
-
-    // We set this flag so we don't free something the user created
-    m_userDidNotProvideOptions = true;
+  // If user provided options, copy their object
+  if (alternativeOptionsValues != NULL) {
+    m_optionsObj.reset(new MhOptionsValues(*alternativeOptionsValues));
+  }
+  else {
+    // Otherwise, we create one with the default
+    m_optionsObj.reset(new MhOptionsValues(&m_env, prefix));
   }
 
   if (m_optionsObj->m_help != "") {
@@ -217,6 +216,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
                             << std::endl;
   }
 }
+
 template<class P_V,class P_M>
 MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   /*! Prefix                     */ const char*                         prefix,
@@ -244,28 +244,27 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
   m_lastChainSize             (0),
-  m_lastMean                  (NULL),
-  m_lastAdaptedCovMatrix      (NULL),
+  m_lastMean                  (),
+  m_lastAdaptedCovMatrix      (),
   m_numPositionsNotSubWritten (0),
-  m_optionsObj                (alternativeOptionsValues),
+  m_optionsObj                (),
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
   m_initialLogLikelihoodValue (initialLogLikelihood),
-  m_userDidNotProvideOptions(false)
+  m_userDidNotProvideOptions(false),
+  m_latestDirtyCovMatrixIteration(0)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
   }
 
-  // If NULL, we create one
-  if (m_optionsObj == NULL) {
-    MhOptionsValues * tempOptions = new MhOptionsValues(&m_env, prefix);
-
-    // We did this dance because scanOptionsValues is not a const method, but
-    // m_optionsObj is a pointer to const
-    m_optionsObj = tempOptions;
-
-    m_userDidNotProvideOptions = true;
+  // If user provided options, copy their object
+  if (alternativeOptionsValues != NULL) {
+    m_optionsObj.reset(new MhOptionsValues(*alternativeOptionsValues));
+  }
+  else {
+    // Otherwise we create one
+    m_optionsObj.reset(new MhOptionsValues(&m_env, prefix));
   }
 
   if (m_optionsObj->m_help != "") {
@@ -324,12 +323,13 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
   m_lastChainSize             (0),
-  m_lastMean                  (NULL),
-  m_lastAdaptedCovMatrix      (NULL),
+  m_lastMean                  (),
+  m_lastAdaptedCovMatrix      (),
   m_computeInitialPriorAndLikelihoodValues(true),
   m_initialLogPriorValue      (0.),
   m_initialLogLikelihoodValue (0.),
-  m_userDidNotProvideOptions(true)
+  m_userDidNotProvideOptions(true),
+  m_latestDirtyCovMatrixIteration(0)
 {
   // We do this dance because one of the MetropolisHastingsSGOptions
   // constructors takes one of the old-style MLSamplingLevelOptions options
@@ -338,8 +338,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   // We do a copy and then pull out the raw values from m_ov.  We also need it
   // as a member (m_oldOptions) because otherwise m_ov will die when the
   // MetropolisHastingsSGOptions instance dies.
-  m_oldOptions = new MetropolisHastingsSGOptions(mlOptions);
-  m_optionsObj = &(m_oldOptions->m_ov);
+  m_oldOptions.reset(new MetropolisHastingsSGOptions(mlOptions));
+  m_optionsObj.reset(new MhOptionsValues(m_oldOptions->m_ov));
 
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -391,12 +391,13 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_logTargets                (0),//0.),
   m_alphaQuotients            (0),//0.),
   m_lastChainSize             (0),
-  m_lastMean                  (NULL),
-  m_lastAdaptedCovMatrix      (NULL),
+  m_lastMean                  (),
+  m_lastAdaptedCovMatrix      (),
   m_computeInitialPriorAndLikelihoodValues(false),
   m_initialLogPriorValue      (initialLogPrior),
   m_initialLogLikelihoodValue (initialLogLikelihood),
-  m_userDidNotProvideOptions(true)
+  m_userDidNotProvideOptions(true),
+  m_latestDirtyCovMatrixIteration(0)
 {
   // We do this dance because one of the MetropolisHastingsSGOptions
   // constructors takes one of the old-style MLSamplingLevelOptions options
@@ -405,8 +406,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   // We do a copy and then pull out the raw values from m_ov.  We also need it
   // as a member (m_oldOptions) because otherwise m_ov will die when the
   // MetropolisHastingsSGOptions instance dies.
-  m_oldOptions = new MetropolisHastingsSGOptions(mlOptions);
-  m_optionsObj = &(m_oldOptions->m_ov);
+  m_oldOptions.reset(new MetropolisHastingsSGOptions(mlOptions));
+  m_optionsObj.reset(new MhOptionsValues(m_oldOptions->m_ov));
 
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -440,8 +441,6 @@ MetropolisHastingsSG<P_V,P_M>::~MetropolisHastingsSG()
   //                          << std::endl;
   //}
 
-  if (m_lastAdaptedCovMatrix) delete m_lastAdaptedCovMatrix;
-  if (m_lastMean)             delete m_lastMean;
   m_lastChainSize             = 0;
   m_rawChainInfo.reset();
   m_alphaQuotients.clear();
@@ -451,15 +450,6 @@ MetropolisHastingsSG<P_V,P_M>::~MetropolisHastingsSG()
   m_positionIdForDebugging = 0;
   m_stageIdForDebugging    = 0;
   m_idsOfUniquePositions.clear();
-
-  if (m_targetPdfSynchronizer) delete m_targetPdfSynchronizer;
-
-  // Only delete if the user didn't provide the options
-  // I.e., if the user created their options object, then they are resonsible
-  // for freeing it.
-  if (m_optionsObj && m_userDidNotProvideOptions) {
-    delete m_optionsObj;
-  }
 
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::destructor()"
@@ -675,9 +665,9 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
   const P_V& _lastTKPosition         = m_tk->preComputingPosition(        tkStageIds[inputSize-1]);
   const P_V& _lastBackwardTKPosition = m_tk->preComputingPosition(backwardTKStageIds[inputSize-1]);
 
-  double numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(_lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+  double numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(_lastBackwardTKPosition);
 
-  double denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(_lastTKPosition,NULL,NULL,NULL,NULL);
+  double denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(_lastTKPosition);
   if ((m_env.subDisplayFile()                   ) &&
       (m_env.displayVerbosity() >= 10           ) &&
       (m_optionsObj->m_totallyMute == false)) {
@@ -705,9 +695,9 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
             tkStageIdsLess1.pop_back();
     backwardTKStageIdsLess1.pop_back();
 
-    numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(lastBackwardTKPosition,NULL,NULL,NULL,NULL);
+    numContrib = m_tk->rv(backwardTKStageIdsLess1).pdf().lnValue(lastBackwardTKPosition);
 
-    denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(lastTKPosition,NULL,NULL,NULL,NULL);
+    denContrib = m_tk->rv(tkStageIdsLess1).pdf().lnValue(lastTKPosition);
     if ((m_env.subDisplayFile()                   ) &&
         (m_env.displayVerbosity() >= 10           ) &&
         (m_optionsObj->m_totallyMute == false)) {
@@ -1422,7 +1412,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       iRC = gettimeofday(&timevalTarget, NULL);
       queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
     }
-    logTarget = m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment // KEY
+    logTarget = m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,&logPrior,&logLikelihood); // Might demand parallel environment // KEY
     if (m_optionsObj->m_rawChainMeasureRunTimes) {
       m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
     }
@@ -1548,10 +1538,6 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
                                                 NULL,
-                                                NULL,
-                                                NULL,
-                                                NULL,
-                                                NULL,
                                                 NULL);
     if (aux) {}; // just to remove compiler warning
     for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
@@ -1669,7 +1655,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         iRC = gettimeofday(&timevalTarget, NULL);
         queso_require_equal_to_msg(iRC, 0, "gettimeofday called failed");
       }
-      logTarget = m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
+      logTarget = m_targetPdfSynchronizer->callFunction(&tmpVecValues,&logPrior,&logLikelihood); // Might demand parallel environment
       if (m_optionsObj->m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
       m_rawChainInfo.numTargetCalls++;
       if ((m_env.subDisplayFile()                   ) &&
@@ -1857,6 +1843,21 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       }
     }
 
+    // Possibly user-overridden to implement strange things, but we allow it.
+    if (positionId % m_optionsObj->m_updateInterval == 0) {
+      m_tk->updateTK();
+    }
+
+    // If the user dirtied the cov matrix, keep track of the latest iteration
+    // number it happened at.
+    if (m_tk->covMatrixIsDirty()) {
+      m_latestDirtyCovMatrixIteration = positionId;
+
+      // Clean the covariance matrix so that the last dirty iteration tracker
+      // doesn't get wiped in the next iteration.
+      m_tk->cleanCovMatrix();
+    }
+
     //****************************************************
     // Point 5/6 of logic for new position
     // Adaptive Metropolis calculation
@@ -1906,10 +1907,6 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
-                                                NULL,
-                                                NULL,
-                                                NULL,
-                                                NULL,
                                                 NULL,
                                                 NULL);
     if (aux) {}; // just to remove compiler warning
@@ -2007,15 +2004,36 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
   else if (positionId == m_optionsObj->m_amInitialNonAdaptInterval) {
     idOfFirstPositionInSubChain = 0;
     partialChain.resizeSequence(m_optionsObj->m_amInitialNonAdaptInterval+1);
-    m_lastMean             = m_vectorSpace.newVector();
-    m_lastAdaptedCovMatrix = m_vectorSpace.newMatrix();
+    m_lastMean.reset(m_vectorSpace.newVector());
+    m_lastAdaptedCovMatrix.reset(m_vectorSpace.newMatrix());
     printAdaptedMatrix = true;
   }
   else {
     unsigned int interval = positionId - m_optionsObj->m_amInitialNonAdaptInterval;
     if ((interval % m_optionsObj->m_amAdaptInterval) == 0) {
-      idOfFirstPositionInSubChain = positionId - m_optionsObj->m_amAdaptInterval;
-      partialChain.resizeSequence(m_optionsObj->m_amAdaptInterval);
+
+      // If the user has set the proposal cov matrix to 'dirty', already
+      // recorded the positionId at which that happened in m_latestDirtyCovMatrixIteration
+      //
+      // If the user didn't dirty it, we're good.
+      if (m_latestDirtyCovMatrixIteration > 0) {
+        m_lastMean->cwSet(0.0);
+        m_lastAdaptedCovMatrix->cwSet(0.0);
+
+        // We'll adapt over the states from when the user dirtied the matrix
+        // until the current one
+        unsigned int iter_diff = positionId - m_latestDirtyCovMatrixIteration;
+        idOfFirstPositionInSubChain = iter_diff;
+        partialChain.resizeSequence(iter_diff);
+
+        // Finally set the latest dirty iteration back to zero.  If the user
+        // sets the dirty flag again, then this will change.
+        m_latestDirtyCovMatrixIteration = 0;
+      }
+      else {
+        idOfFirstPositionInSubChain = positionId - m_optionsObj->m_amAdaptInterval;
+        partialChain.resizeSequence(m_optionsObj->m_amAdaptInterval);
+      }
 
       if (m_optionsObj->m_amAdaptedMatricesDataOutputPeriod > 0) {
         if ((interval % m_optionsObj->m_amAdaptedMatricesDataOutputPeriod) == 0) {
@@ -2042,7 +2060,7 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
 
     // Transform to the space without boundaries.  This is the space
     // where the proposal distribution is Gaussian
-    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
+    if (this->m_optionsObj->m_tk == "logit_random_walk") {
       // Only do this when we don't use the Hessian (this may change in
       // future, but transformToGaussianSpace() is only implemented in
       // TransformedScaledCovMatrixTKGroup
@@ -2226,12 +2244,16 @@ MetropolisHastingsSG<P_V, P_M>::adapt(unsigned int positionId,
     }
 
     // Transform the proposal covariance matrix if we have Logit transforms
-    // turned on
-    if (this->m_optionsObj->m_algorithm == "logit_random_walk") {
+    // turned on.
+    //
+    // This logic should really be done inside the kernel itself
+    if (this->m_optionsObj->m_tk == "logit_random_walk") {
       (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
-    else if (this->m_optionsObj->m_algorithm == "random_walk") {
+    else {
+      // Assume that if we're not doing a logit transform, we're doing a random
+      // something sensible
       (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk.get()))
         ->updateLawCovMatrix(tmpMatrix);
     }
@@ -2379,7 +2401,7 @@ MetropolisHastingsSG<P_V, P_M>::delayedRejection(unsigned int positionId,
         iRC = gettimeofday(&timevalTarget, NULL);
         queso_require_equal_to_msg(iRC, 0, "gettimeofday call failed");
       }
-      logTarget = m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
+      logTarget = m_targetPdfSynchronizer->callFunction(&tmpVecValues,&logPrior,&logLikelihood); // Might demand parallel environment
       if (m_optionsObj->m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
       m_rawChainInfo.numTargetCalls++;
       if ((m_env.subDisplayFile()                   ) &&

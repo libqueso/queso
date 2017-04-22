@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -29,15 +29,14 @@
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
 #include <queso/MpiComm.h>
+#include <queso/ScopedPtr.h>
+
 #ifdef QUESO_HAS_HDF5
 #include <hdf5.h>
 #endif
 #include <iostream>
 #include <fstream>
 
-#include <queso/ScopedPtr.h>
-#include <queso/RngBase.h>
-#include <queso/BasicPdfsBase.h>
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 // Forward declarations
@@ -55,6 +54,8 @@ namespace QUESO {
 class GetPot;
 class EnvironmentOptions;
 class EnvOptionsValues;
+class BasicPdfsBase;
+class RngBase;
 
 
   /*! queso_terminate_handler
@@ -216,31 +217,103 @@ public:
   //! Returns whether the full environment class is ready (constructor has successfully been called).
   bool    fullEnvIsReady() const;
 
-  //! Returns the process world rank.
+  //! Returns the same thing as fullRank()
+  /*!
+   * This is the same thing as fullRank(), since QUESO's 'world' communicator
+   * is not MPI_COMM_WORLD, but the communicator that user passed to it when
+   * creating the environment.
+   */
   int     worldRank     () const;
 
-  //! Returns the process full rank.
+  //! Returns the rank of the MPI process in QUESO's full communicator
+  /*!
+   * Returns the rank of the MPI process in the communicator returned by
+   * fullComm().
+   *
+   * See fullComm() for what the full communicator is.
+   */
   int     fullRank      () const;
 
-  //! Access function for MpiComm full communicator.
+  //! Access function for the communicator that was passed to QUESO's environment
+  /*!
+   * The 'full' communicator is the MPI communicator that the user passed when
+   * creating the QUESO FullEnvironment.  This is usually MPI_COMM_WORLD, but
+   * the user is permitted to pass any MPI communicator smaller than
+   * MPI_COMM_WORLD.
+   */
   const MpiComm&   fullComm      () const;
 
   //! Access function for sub-group.
   RawType_MPI_Group     subGroup      () const;
 
-  //! Access function for sub-rank.
+  //! Returns the rank of the MPI process in the sub-communicator subComm()
+  /*!
+   * Example, if the calling MPI process has fullRank() equal to 3, the size of
+   * fullComm() is 6, and the user asked for two sub-environments, then this
+   * method will return 0. Here's why.
+   *
+   * fullComm() has MPI processes with these ranks:
+   * 0 1 2 3 4 5
+   *
+   * QUESO divides the first three (ranks 0, 1, 2) of these into a
+   * sub-communicator for sub-environment 0.  Inside the sub-communicator their
+   * ranks are 0, 1, 2, respectively.
+   *
+   * QUESO divides the second three (ranks 3, 4, 5) of these into a
+   * sub-communicator for sub-environment 1.  Inside the sub-communicator their
+   * ranks are 0, 1, 2, respectively.
+   *
+   * It should be clear, now, that if fullRank() is 3 then subRank() is 0.
+   */
   int     subRank       () const;
 
-  //! Access function for MpiComm sub communicator.
+  //! Access function for each sub-environment's communicator.
+  /*!
+   * Let's say QUESO was passed a fullComm() communicator of size N.  The ranks
+   * of each process in this communicator are:
+   *
+   * 0 1 2 ... N-2 N-1
+   *
+   * If the user asks for M sub-environments (chains) then, assuming M divides
+   * N, QUESO partitions the processes in the fullComm() communicator
+   * into M sub-communicators like so:
+   *
+   * Sub-environment 0 contains processes with fullRank()
+   * 0 1 ... M-1
+   *
+   * Sub-environment 1 contains processes with fullRank()
+   * M M+1 ... 2M-1
+   *
+   * et cetera
+   *
+   * Sub-environment M-1 contains processes with fullRank()
+   * N-M N-M+1 ... N-1
+   *
+   * subComm() returns the sub-communicator corresponding to the
+   * sub-environment the calling MPI process belongs to.  For example, if I am
+   * an MPI process calling this function and I live in sub-environment \c k,
+   * then this method returns the sub-communicator for sub-environment k.
+   */
   const MpiComm&   subComm       () const;
 
   //! Access function for MpiComm self-communicator.
+  /*!
+   * This communicator is exactly MPI_COMM_SELF.
+   */
   const MpiComm&   selfComm      () const;
 
   //! Returns the process inter0 rank.
   int     inter0Rank    () const;
 
-  //! Access function for MpiComm inter0-communicator.
+  //! Access function for MpiComm communicator for processes with subRank() 0
+  /*
+   * This communicator contains all the processes that have subRank() equal to
+   * 0.
+   *
+   * Their corresponding fullRank() values will be 0, M, 2M, ..., N-M,
+   * where M is the number of sub-environments the user asked for and N is the
+   * size of fullComm().
+   */
   const MpiComm&   inter0Comm    () const;
 
   //! Access function for m_subDisplayFile (displays file on stream).
@@ -330,21 +403,21 @@ public:
 
   //! Opens an output file for each sub-environment that was chosen to send data to the file.
   bool    openOutputFile(const std::string& fileName, const std::string& fileType,
-			 const std::set<unsigned int>& allowedSubEnvIds, bool writeOver,
-			 FilePtrSetStruct& filePtrSet) const;
+                         const std::set<unsigned int>& allowedSubEnvIds, bool writeOver,
+                         FilePtrSetStruct& filePtrSet) const;
 
   //! Opens a unified output file, that will contain data from all sub-environments.
   bool    openUnifiedOutputFile (const std::string& fileName, const std::string& fileType,
-				 bool writeOver, FilePtrSetStruct& filePtrSet) const;
+                                 bool writeOver, FilePtrSetStruct& filePtrSet) const;
 
   //! Opens an input file.
   bool    openInputFile (const std::string& fileName, const std::string& fileType,
-			 const std::set<unsigned int>& allowedSubEnvIds,
-			 FilePtrSetStruct& filePtrSet) const;
+                         const std::set<unsigned int>& allowedSubEnvIds,
+                         FilePtrSetStruct& filePtrSet) const;
 
   //! Opens the unified input file.
   bool    openUnifiedInputFile  (const std::string& fileName, const std::string& fileType,
-				 FilePtrSetStruct& filePtrSet) const;
+                                 FilePtrSetStruct& filePtrSet) const;
 
   //! Closes the file.
   void    closeFile     (FilePtrSetStruct& filePtrSet, const std::string& fileType) const;
@@ -363,43 +436,43 @@ public:
 
   //@}
 protected:
-  bool       		     m_fullEnvIsReady;
-  int 	     		     m_worldRank;
+  bool m_fullEnvIsReady;
+  int m_worldRank;
 
-  MpiComm*    	     m_fullComm;
-  int                        m_fullRank;
-  int                        m_fullCommSize;
-  RawType_MPI_Group        m_fullGroup;
+  ScopedPtr<MpiComm>::Type m_fullComm;
+  int m_fullRank;
+  int m_fullCommSize;
+  RawType_MPI_Group m_fullGroup;
 
-  std::string		     m_optionsInputFileName;
-  mutable bool       	     m_optionsInputFileAccessState; // Yes, 'mutable'
+  std::string m_optionsInputFileName;
+  mutable bool m_optionsInputFileAccessState; // Yes, 'mutable'
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
-  boost::program_options::options_description*   m_allOptionsDesc;
-  boost::program_options::variables_map* 	     m_allOptionsMap;
+  ScopedPtr<boost::program_options::options_description>::Type m_allOptionsDesc;
+  ScopedPtr<boost::program_options::variables_map>::Type m_allOptionsMap;
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
   ScopedPtr<GetPot>::Type m_input;
 
-  unsigned int               m_subId;
-  std::string 		     m_subIdString;
-  RawType_MPI_Group        m_subGroup;
-  MpiComm*            m_subComm;
-  int			     m_subRank;
-  int			     m_subCommSize;
+  unsigned int m_subId;
+  std::string m_subIdString;
+  RawType_MPI_Group m_subGroup;
+  ScopedPtr<MpiComm>::Type m_subComm;
+  int m_subRank;
+  int m_subCommSize;
 
-  MpiComm*            m_selfComm;
+  ScopedPtr<MpiComm>::Type m_selfComm;
 
-  RawType_MPI_Group        m_inter0Group;
-  MpiComm*            m_inter0Comm;
-  int	                     m_inter0Rank;
-  int                        m_inter0CommSize;
+  RawType_MPI_Group m_inter0Group;
+  ScopedPtr<MpiComm>::Type m_inter0Comm;
+  int m_inter0Rank;
+  int m_inter0CommSize;
 
-  mutable std::ofstream*     m_subDisplayFile;
-  RngBase*    	     m_rngObject;
-  BasicPdfsBase*      m_basicPdfs;
-  struct timeval             m_timevalBegin;
-  mutable bool       	     m_exceptionalCircumstance;
+  mutable ScopedPtr<std::ofstream>::Type m_subDisplayFile;
+  ScopedPtr<RngBase>::Type m_rngObject;
+  ScopedPtr<BasicPdfsBase>::Type m_basicPdfs;
+  struct timeval m_timevalBegin;
+  mutable bool m_exceptionalCircumstance;
 
-  EnvOptionsValues * m_optionsObj;
+  ScopedPtr<EnvOptionsValues>::Type m_optionsObj;
 };
 
 //*****************************************************
@@ -469,22 +542,22 @@ public:
   //! @name I/O methods
   //@{
   //! Sends the environment options to the stream.
-  void	print       (std::ostream& os) const;
+  void        print       (std::ostream& os) const;
   //@}
 
 private:
 #ifdef QUESO_HAS_MPI
   //! Named constructor backend for multiple constructor overloads
-  void	construct(RawType_MPI_Comm inputComm,
+  void        construct(RawType_MPI_Comm inputComm,
                   const char *prefix);
 #endif
 
   //! Named constructor backend for multiple constructor overloads
-  void	construct(const char *prefix);
+  void        construct(const char *prefix);
 
   //! Checks the options input file and reads the options.
-  void	readOptionsInputFile();
-  //void	queso_terminate_handler();
+  void        readOptionsInputFile();
+  //void        queso_terminate_handler();
 
 };
 

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -34,6 +34,7 @@
 #include <queso/VectorRV.h>
 #include <queso/ScalarFunction.h>
 #include <queso/GPMSA.h>
+#include <queso/ScopedPtr.h>
 
 namespace QUESO {
 
@@ -87,12 +88,22 @@ public:
  //! @name Constructor/Destructor methods
  //@{
  //! Constructor.
- /*! Requirements: 1) the image set of the vector random variable 'priorRv', 2) the domain set of
- * the likelihood function 'likelihoodFunction' and 3) the image set of the vector random variable
- * 'postRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied,
- * the constructor then reads input options that begin with the string '\<prefix\>ip_'. If no
- * options input file is provided, the construction assigns \c alternativeOptionsValues to the
- * options of the SIP.*/
+ /*!
+  * Requirements:
+  *   -# the image set of the vector random variable 'priorRv',
+  *   -# the domain set of the likelihood function 'likelihoodFunction', and
+  *   -# the image set of the vector random variable 'postRv' should belong to
+  *      vector spaces of equal dimensions.
+  *
+  * If \c alternativeOptionsValues is NULL and an input file is specified, the
+  * constructor reads input options that begin with the string '\<prefix\>ip_'.
+  *
+  * If \c alternativeOptionsValues is not NULL, the input file is ignored and
+  * construction copies the object pointed to by \c alternativeOptionsValues
+  * to and stores the copy internally.  Users may delete the object poined to
+  * by \c alternativeOptionsValues.  Users cannot change the options object
+  * after StatisticalInverseProblem has been constructed.
+  */
   StatisticalInverseProblem(const char*                               prefix,
                                    const SipOptionsValues*            alternativeOptionsValues, // dakota
                                    const BaseVectorRV      <P_V,P_M>& priorRv,
@@ -102,15 +113,19 @@ public:
   //! Constructor for statistical inverse problems to be sovled using GPMSA
   /*!
    * Requirements:
-   *   1) the factory for the GPMSA object
-   *   2) the image set of the vector random variable \c postRv (obtainable via
+   *   -# the factory for the GPMSA object
+   *   -# the image set of the vector random variable \c postRv (obtainable via
    *      GaussianProcessFactory::prior method) should be equal to the full
    *      prior image set (including all the hyperparameters)
    *
-   * If the requirements are satisfied, the constructor then reads input
-   * options that begin with the string '\<prefix\>ip_'.  If no options input
-   * file is provided, the construction assigns \c alternativeOptionsValues to
-   * the options of the statistical inverse problem.
+   * If \c alternativeOptionsValues is NULL and an input file is specified, the
+   * constructor reads input options that begin with the string '\<prefix\>ip_'.
+   *
+   * If \c alternativeOptionsValues is not NULL, the input file is ignored and
+   * construction copies the object pointed to by \c alternativeOptionsValues
+   * to and stores the copy internally.  Users may delete the object poined to
+   * by \c alternativeOptionsValues.  Users cannot change the options object
+   * after StatisticalInverseProblem has been constructed.
    */
   StatisticalInverseProblem(const char * prefix,
                             const SipOptionsValues * alternativeOptionsValues,
@@ -156,8 +171,35 @@ public:
    * procedure, the result of which will be used as the seed for the chain.
    */
   void solveWithBayesMetropolisHastings(const MhOptionsValues* alternativeOptionsValues, // dakota
-					const P_V&                    initialValues,
-					const P_M*                    initialProposalCovMatrix);
+                                        const P_V&                    initialValues,
+                                        const P_M*                    initialProposalCovMatrix);
+
+  //! Solves the problem via Bayes formula and a Metropolis-Hastings algorithm.
+  /*!
+   * This calls
+   * solveWithBayesMetropolisHastings(const MhOptionsValues *, const P_V &,
+   * P_M *);
+   * with the prior variance as the proposal covariance matrix in the third
+   * argument.
+   */
+  void solveWithBayesMetropolisHastings(const MhOptionsValues * alternativeOptionsValues,
+                                        const P_V & initialValues);
+
+  //! Solves the problem via Bayes formula and a Metropolis-Hastings algorithm.
+  /*!
+   * This calls
+   * solveWithBayesMetropolisHastings(const MhOptionsValues *, const P_V &);
+   * with the prior mean as the initial point in the second argument.
+   */
+  void solveWithBayesMetropolisHastings(const MhOptionsValues * alternativeOptionsValues);
+
+  //! Solves the problem via Bayes formula and a Metropolis-Hastings algorithm.
+  /*!
+   * This calls
+   * solveWithBayesMetropolisHastings(const MhOptionsValues *);
+   * with NULL as the options object.  Options are read from the input file.
+   */
+  void solveWithBayesMetropolisHastings();
 
   //! Seeds the chain with the result of a deterministic optimisation
   /*!
@@ -219,28 +261,26 @@ private:
   const BaseScalarFunction  <P_V,P_M>&   m_likelihoodFunction;
         GenericVectorRV     <P_V,P_M>&   m_postRv;
 
-        VectorSet           <P_V,P_M>*   m_solutionDomain;
-        BaseJointPdf        <P_V,P_M>*   m_solutionPdf;
-        BaseVectorMdf       <P_V,P_M>*   m_subSolutionMdf;
-        BaseVectorCdf       <P_V,P_M>*   m_subSolutionCdf;
-        BaseVectorRealizer  <P_V,P_M>*   m_solutionRealizer;
+  typename ScopedPtr<VectorSet           <P_V,P_M> >::Type m_solutionDomain;
+  typename ScopedPtr<BaseJointPdf        <P_V,P_M> >::Type m_solutionPdf;
+  typename ScopedPtr<BaseVectorMdf       <P_V,P_M> >::Type m_subSolutionMdf;
+  typename ScopedPtr<BaseVectorCdf       <P_V,P_M> >::Type m_subSolutionCdf;
+  typename ScopedPtr<BaseVectorRealizer  <P_V,P_M> >::Type m_solutionRealizer;
 
-        MetropolisHastingsSG<P_V,P_M>*   m_mhSeqGenerator;
-        MLSampling          <P_V,P_M>*   m_mlSampler;
-        BaseVectorSequence  <P_V,P_M>*   m_chain;
-        ScalarSequence      <double>*    m_logLikelihoodValues;
-        ScalarSequence      <double>*    m_logTargetValues;
+  typename ScopedPtr<MetropolisHastingsSG<P_V,P_M> >::Type m_mhSeqGenerator;
+  typename ScopedPtr<MLSampling          <P_V,P_M> >::Type m_mlSampler;
+  typename ScopedPtr<BaseVectorSequence  <P_V,P_M> >::Type m_chain;
+  ScopedPtr<ScalarSequence<double> >::Type m_logLikelihoodValues;
+  ScopedPtr<ScalarSequence<double> >::Type m_logTargetValues;
 
-        const SipOptionsValues * m_optionsObj;
+  ScopedPtr<const SipOptionsValues>::Type m_optionsObj;
 
-        bool                              m_seedWithMAPEstimator;
+  bool m_seedWithMAPEstimator;
 
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-        ArrayOfOneDGrids    <P_V,P_M>*   m_subMdfGrids;
-        ArrayOfOneDTables   <P_V,P_M>*   m_subMdfValues;
+  typename ScopedPtr<ArrayOfOneDGrids    <P_V,P_M> > m_subMdfGrids;
+  typename ScopedPtr<ArrayOfOneDTables   <P_V,P_M> > m_subMdfValues;
 #endif
-
-  bool m_userDidNotProvideOptions;
 };
 
 }  // End namespace QUESO

@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -53,6 +53,9 @@
 
 // Use GSL inline functions
 #define HAVE_INLINE
+
+// So we don't clash with other getpots
+#define GETPOT_NAMESPACE QUESO
 
 // And only do GSL range-checking if we're really debugging
 #ifndef DEBUG

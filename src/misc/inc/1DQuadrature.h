@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -25,6 +25,7 @@
 #ifndef UQ_1D_1D_QUADRATURE_H
 #define UQ_1D_1D_QUADRATURE_H
 
+#include <queso/BaseQuadrature.h>
 #include <queso/Environment.h>
 #include <queso/Defines.h>
 #include <vector>
@@ -33,7 +34,7 @@
 
 namespace QUESO {
 
-/*!\file uqBase1DQuadrature.h
+/*!\file 1DQuadrature.h
  * \brief One-dimensional quadrature rules (numerical integration) class. */
 
 //*****************************************************
@@ -44,8 +45,8 @@ namespace QUESO {
 
     Base class for numerical integration via quadrature rules of one-dimensional functions.
 */
-class
-Base1DQuadrature {
+class Base1DQuadrature : public BaseQuadrature
+{
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -53,8 +54,9 @@ public:
   Base1DQuadrature(double minDomainValue,
 			  double maxDomainValue,
 			  unsigned int order);
-  //! Virtual destructor.
-  virtual ~Base1DQuadrature();
+
+  //! Pure virtual destructor, forcing this to be an abstract object.
+  virtual ~Base1DQuadrature() =0;
   //@}
 
   //! @name Mathematical  methods
@@ -69,13 +71,9 @@ public:
   unsigned int               order         () const;
 
   //! Array of the positions for the numerical integration.
-  const std::vector<double>& positions     () const;
-
-  //! Array of the weights used in the numerical integration.
-  const std::vector<double>& weights       () const;
-
-  //! A bogus method.
-  virtual  void                       dumbRoutine   () const = 0;
+  const std::vector<double> & positions() const
+  { queso_assert(!m_positions.empty());
+    return m_positions; }
   //@}
 
 protected:
@@ -83,7 +81,6 @@ protected:
   double              m_maxDomainValue;
   unsigned int        m_order;
   std::vector<double> m_positions;
-  std::vector<double> m_weights;
 };
 
 //*****************************************************
@@ -108,17 +105,6 @@ public:
   ~Generic1DQuadrature();
  //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! Bogus routine.
-  void dumbRoutine() const;
-  //@}
-protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 };
 
 //*****************************************************
@@ -178,17 +164,6 @@ public:
   ~UniformLegendre1DQuadrature();
   //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! A bogus method.
-  void dumbRoutine() const;
-  //@}
-protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 };
 
 //*****************************************************
@@ -231,17 +206,7 @@ public:
   ~GaussianHermite1DQuadrature();
   //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! A bogus method.
-  void dumbRoutine() const;
-  //@}
 protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 
   double m_mean;
   double m_stddev;
@@ -280,17 +245,6 @@ public:
   ~WignerInverseChebyshev1st1DQuadrature();
   //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! A bogus method.
-  void dumbRoutine() const;
-  //@}
-protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 };
 
 //*****************************************************
@@ -327,17 +281,6 @@ public:
   ~WignerChebyshev2nd1DQuadrature();
   //@}
 
-  //! @name Mathematical  methods
-  //@{
-  //! Bogus routine.
-  void dumbRoutine() const;
-  //@}
-protected:
-  using Base1DQuadrature::m_minDomainValue;
-  using Base1DQuadrature::m_maxDomainValue;
-  using Base1DQuadrature::m_order;
-  using Base1DQuadrature::m_positions;
-  using Base1DQuadrature::m_weights;
 };
 
 }  // End namespace QUESO

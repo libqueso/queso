@@ -4,7 +4,7 @@
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
-// Copyright (C) 2008-2015 The PECOS Development Team
+// Copyright (C) 2008-2017 The PECOS Development Team
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the Version 2.1 GNU Lesser General
@@ -28,6 +28,7 @@
 
 #include <queso/Defines.h>
 #include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
+#include <queso/InfoTheory_impl.h>
 
 namespace QUESO {
 
@@ -91,6 +92,13 @@ BaseVectorRV<V,M>::pdf() const
   queso_require_msg(m_pdf, "m_pdf is NULL");
 
   return *m_pdf;
+}
+//---------------------------------------------------
+template<class V, class M>
+bool
+BaseVectorRV<V,M>::has_realizer() const
+{
+  return (m_realizer != NULL);
 }
 //---------------------------------------------------
 template<class V, class M>
