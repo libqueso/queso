@@ -31,12 +31,8 @@
 #include <queso/MpiComm.h>
 #include <queso/ScopedPtr.h>
 
-#ifdef QUESO_HAS_HDF5
-#include <hdf5.h>
-#endif
 #include <iostream>
 #include <fstream>
-
 
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
 // Forward declarations
@@ -56,41 +52,16 @@ class EnvironmentOptions;
 class EnvOptionsValues;
 class BasicPdfsBase;
 class RngBase;
+class FilePtrSetStruct;
 
 
-  /*! queso_terminate_handler
-   *  \brief Function for unhandled exceptions in Queso
-   *
-   *  This function deals with unhandled exceptions encountered in Queso.
-   *  It provides a call to MPI_abort using the global communicator.
-   */
-  void queso_terminate_handler();
-
-/*! \struct FilePtrSetStruct
- *  \brief Struct for handling data input and output from files.
+/*! queso_terminate_handler
+ *  \brief Function for unhandled exceptions in Queso
  *
- *  This struct deals with data input and output from files.
- *  It encapsulates the input/output stream class std:: fstream.
+ *  This function deals with unhandled exceptions encountered in Queso.
+ *  It provides a call to MPI_abort using the global communicator.
  */
-
-//!
-struct FilePtrSetStruct {
-
-  //! Struct constructor
-  FilePtrSetStruct();
-
-  //! Destructor
-  ~FilePtrSetStruct();
-
-  //! Provides a stream interface to write data to files.
-  std::ofstream* ofsVar;
-
-  //! Provides a stream interface to read data from files.
-  std::ifstream* ifsVar;
-#ifdef QUESO_HAS_HDF5
-  hid_t  h5Var;
-#endif
-};
+void queso_terminate_handler();
 
 //------------------------------------------------------------------------
 // Library versioning routines: we include them in a QUESO namespace
@@ -99,8 +70,8 @@ struct FilePtrSetStruct {
 // QUESO MPI environment.
 //------------------------------------------------------------------------
 
-  void QUESO_version_print       (std::ostream &os);
-  int  QUESO_get_numeric_version ();
+void QUESO_version_print       (std::ostream &os);
+int  QUESO_get_numeric_version ();
 
 //*****************************************************
 // Base class
@@ -193,7 +164,6 @@ a boolean, is set to 1 (the default value is 0);
     For instance, if 'm_subDisplayFileName' is 'pROblem_775_' then a node of sub rank 0 in sub environment 17
     will write a message to the file 'pROblem_775_sub17.txt'.
 */
-
 
 class BaseEnvironment {
 public:

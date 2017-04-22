@@ -28,6 +28,7 @@
 
 #include <queso/TeuchosVector.h>
 #include <queso/RngBase.h>
+#include "core/inc/FilePtr.h"
 
 namespace QUESO {
 

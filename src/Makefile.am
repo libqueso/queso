@@ -65,6 +65,7 @@ endif
 libqueso_la_SOURCES =
 libqueso_la_SOURCES += core/src/Defines.C
 libqueso_la_SOURCES += core/src/Environment.C
+libqueso_la_SOURCES += core/inc/FilePtr.h  # Not installed
 libqueso_la_SOURCES += core/src/EnvironmentOptions.C
 libqueso_la_SOURCES += core/src/RngBase.C
 libqueso_la_SOURCES += core/src/RngGsl.C

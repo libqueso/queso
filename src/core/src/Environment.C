@@ -39,6 +39,10 @@
 #include <queso/BasicPdfsBoost.h>
 #include <queso/BasicPdfsCXX11.h>
 #include <queso/Miscellaneous.h>
+
+// Local includes
+#include "core/inc/FilePtr.h"
+
 #include <sys/time.h>
 #ifdef HAVE_GRVY
 #include <grvy.h>

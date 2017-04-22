@@ -25,6 +25,7 @@
 #include <queso/Defines.h>
 #include <queso/GslVector.h>
 #include <queso/RngBase.h>
+#include "core/inc/FilePtr.h"
 #include <algorithm>
 #include <gsl/gsl_sort_vector.h>
 #include <cmath>
