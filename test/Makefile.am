@@ -352,6 +352,7 @@ EXTRA_DIST += test_gpmsa/test_gpmsa_samples_diff.sh
 EXTRA_DIST += test_gpmsa/test_autoscaled.sh
 EXTRA_DIST += test_gpmsa/test_gpmsa_vector_samples.m
 EXTRA_DIST += test_gpmsa/test_gpmsa_autoscaled_samples.m
+EXTRA_DIST += test_gpmsa/gpmsa_autoscaled_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt
