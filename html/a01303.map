@@ -1,8 +1,0 @@
-<map id="QUESO::MpiComm" name="QUESO::MpiComm">
-<area shape="rect" id="node2" href="$a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="169,147,343,173"/>
-<area shape="rect" id="node5" href="$a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="281,245,457,272"/>
-<area shape="rect" id="node3" href="$a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="169,5,329,32"/>
-<area shape="rect" id="node4" href="$a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="354,5,480,32"/>
-<area shape="rect" id="node6" href="$a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="445,139,624,181"/>
-<area shape="rect" id="node7" href="$a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="505,5,719,32"/>
-</map>

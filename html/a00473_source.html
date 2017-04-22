@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/misc/inc/Fft.h Source File</title>
+<title>queso-0.56.2: src/misc/src/OneDGrid.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_b78c18289fd7719ff0daf45dba9bb4e6.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_4a3d6721aef5231a3f41ae337e19a0ed.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Fft.h</div>  </div>
+<div class="title">OneDGrid.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00473.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,66 +75,71 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_FFT_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_FFT_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;complex&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">/* If the function to be transformed is not</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">    harmonically related to the sampling frequency, the response of an FFT looks like a sinc</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">    function (although the integrated power is still correct). Aliasing (also known as leakage)</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">    can be reduced by apodization using an apodization function. However, aliasing reduction</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">    is at the expense of broadening the spectral response.*/</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="a00085.html">   66</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00085.html">Fft</a></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/OneDGrid.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00040.html#a83cc4075f64e729df5ab6dbbe992c9fb">   30</a></span>&#160;<a class="code" href="a00040.html#a83cc4075f64e729df5ab6dbbe992c9fb">BaseOneDGrid&lt;T&gt;::BaseOneDGrid</a>(</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00036.html">BaseEnvironment</a>&amp; env,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                   prefix)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  :</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  m_env   (env),</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  m_prefix((std::string)(prefix)+<span class="stringliteral">&quot;grid&quot;</span>)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00040.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00040.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    *<a class="code" href="a00040.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering BaseOneDGrid&lt;T&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00040.html#af5fa59e47fae9f6195b00e5bec8310f8">m_prefix</a></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00040.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00040.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00040.html#a668a0033829b907fac9e13466419b7b1">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving BaseOneDGrid&lt;T&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00040.html#af5fa59e47fae9f6195b00e5bec8310f8">m_prefix</a></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00040.html#ae19c9434ea06d92100e8d49686e354e2">   51</a></span>&#160;<a class="code" href="a00040.html#ae19c9434ea06d92100e8d49686e354e2">BaseOneDGrid&lt;T&gt;::~BaseOneDGrid</a>()</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00040.html#af72394608d602022a6cff06018a5df22">   57</a></span>&#160;<a class="code" href="a00040.html#af72394608d602022a6cff06018a5df22">BaseOneDGrid&lt;T&gt;::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">// Print values *of* grid points</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  os &lt;&lt; m_prefix &lt;&lt; <span class="stringliteral">&quot;_sub&quot;</span> &lt;&lt; m_env.subIdString() &lt;&lt; <span class="stringliteral">&quot; = zeros(&quot;</span> &lt;&lt; this-&gt;<a class="code" href="a00674.html#a533f41b58c01b7a3acb23dcfd25142a7">size</a>()</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>                                                      &lt;&lt; 1</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;);&quot;</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;     &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  os &lt;&lt; m_prefix &lt;&lt; <span class="stringliteral">&quot;_sub&quot;</span> &lt;&lt; m_env.subIdString() &lt;&lt; <span class="stringliteral">&quot; = [&quot;</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; this-&gt;<a class="code" href="a00674.html#a533f41b58c01b7a3acb23dcfd25142a7">size</a>(); ++j) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    os &lt;&lt; (*this)[j] &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  os &lt;&lt; <span class="stringliteral">&quot;];&quot;</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;     &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="a00085.html#a04fa27a65066c50e029c842fa1e3fe78">Fft</a>(<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; env);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <a class="code" href="a00085.html#a3dac972e69f606d201dee17db1e9216b">~Fft</a>();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00085.html#a416c250a17337415b02e6545ed622476">forward</a>(<span class="keyword">const</span> std::vector&lt;T&gt;&amp;                     data,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                        fftSize,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                     std::vector&lt;std::complex&lt;double&gt; &gt;&amp; result);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00085.html#a2e1faedd41887115b032b0b45d1f8f58">inverse</a>(<span class="keyword">const</span> std::vector&lt;T&gt;&amp;                     data,</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                        fftSize,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                     std::vector&lt;std::complex&lt;double&gt; &gt;&amp; result);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">//void allocTables(unsigned int fftSize);</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">//void freeTables ();</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="a00085.html#a47bda8b9417d43d94b14d0721b6189e2">  113</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; <a class="code" href="a00085.html#a47bda8b9417d43d94b14d0721b6189e2">m_env</a>;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="comment">//unsigned int               m_fftSize;</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="comment">//gsl_fft_real_workspace*    m_realWkSpace;</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="comment">//gsl_fft_real_wavetable*    m_realWvTable;</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="comment">//gsl_fft_complex_workspace* m_complexWkSpace;</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="comment">//gsl_fft_complex_wavetable* m_complexWvTable;</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;};</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif // UQ_FFT_H</span></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00085_html_a2e1faedd41887115b032b0b45d1f8f58"><div class="ttname"><a href="a00085.html#a2e1faedd41887115b032b0b45d1f8f58">QUESO::Fft::inverse</a></div><div class="ttdeci">void inverse(const std::vector&lt; T &gt; &amp;data, unsigned int fftSize, std::vector&lt; std::complex&lt; double &gt; &gt; &amp;result)</div><div class="ttdoc">Calculates the inverse Fourier transform for real and complex data. </div></div>
-<div class="ttc" id="a00085_html_a47bda8b9417d43d94b14d0721b6189e2"><div class="ttname"><a href="a00085.html#a47bda8b9417d43d94b14d0721b6189e2">QUESO::Fft::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00473_source.html#l00113">Fft.h:113</a></div></div>
-<div class="ttc" id="a00085_html_a3dac972e69f606d201dee17db1e9216b"><div class="ttname"><a href="a00085.html#a3dac972e69f606d201dee17db1e9216b">QUESO::Fft::~Fft</a></div><div class="ttdeci">~Fft()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00488_source.html#l00038">Fft.C:38</a></div></div>
-<div class="ttc" id="a00085_html_a04fa27a65066c50e029c842fa1e3fe78"><div class="ttname"><a href="a00085.html#a04fa27a65066c50e029c842fa1e3fe78">QUESO::Fft::Fft</a></div><div class="ttdeci">Fft(const BaseEnvironment &amp;env)</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00488_source.html#l00031">Fft.C:31</a></div></div>
-<div class="ttc" id="a00085_html_a416c250a17337415b02e6545ed622476"><div class="ttname"><a href="a00085.html#a416c250a17337415b02e6545ed622476">QUESO::Fft::forward</a></div><div class="ttdeci">void forward(const std::vector&lt; T &gt; &amp;data, unsigned int fftSize, std::vector&lt; std::complex&lt; double &gt; &gt; &amp;result)</div><div class="ttdoc">Calculates the forward Fourier transform (for real data. TODO: complex data). </div></div>
-<div class="ttc" id="a00085_html"><div class="ttname"><a href="a00085.html">QUESO::Fft</a></div><div class="ttdoc">Class for a Fast Fourier Transform (FFT) algorithm. </div><div class="ttdef"><b>Definition:</b> <a href="a00473_source.html#l00066">Fft.h:66</a></div></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00040.html">QUESO::BaseOneDGrid&lt;double&gt;</a>;</div>
+<div class="ttc" id="a00674_html_a533f41b58c01b7a3acb23dcfd25142a7"><div class="ttname"><a href="a00674.html#a533f41b58c01b7a3acb23dcfd25142a7">QUESO::size</a></div><div class="ttdeci">unsigned int size</div><div class="ttdef"><b>Definition:</b> <a href="a00635_source.html#l00122">StatisticalForwardProblemOptions.C:122</a></div></div>
+<div class="ttc" id="a00040_html_ae19c9434ea06d92100e8d49686e354e2"><div class="ttname"><a href="a00040.html#ae19c9434ea06d92100e8d49686e354e2">QUESO::BaseOneDGrid::~BaseOneDGrid</a></div><div class="ttdeci">virtual ~BaseOneDGrid()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00473_source.html#l00051">OneDGrid.C:51</a></div></div>
+<div class="ttc" id="a00040_html_af72394608d602022a6cff06018a5df22"><div class="ttname"><a href="a00040.html#af72394608d602022a6cff06018a5df22">QUESO::BaseOneDGrid::print</a></div><div class="ttdeci">void print(std::ostream &amp;ofsvar) const </div><div class="ttdoc">Prints the values of the grid points. </div><div class="ttdef"><b>Definition:</b> <a href="a00473_source.html#l00057">OneDGrid.C:57</a></div></div>
+<div class="ttc" id="a00040_html"><div class="ttname"><a href="a00040.html">QUESO::BaseOneDGrid</a></div><div class="ttdoc">Base class for accommodating one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00455_source.html#l00046">OneDGrid.h:46</a></div></div>
+<div class="ttc" id="a00040_html_a83cc4075f64e729df5ab6dbbe992c9fb"><div class="ttname"><a href="a00040.html#a83cc4075f64e729df5ab6dbbe992c9fb">QUESO::BaseOneDGrid::BaseOneDGrid</a></div><div class="ttdeci">BaseOneDGrid(const BaseEnvironment &amp;env, const char *prefix)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00473_source.html#l00030">OneDGrid.C:30</a></div></div>
+<div class="ttc" id="a00040_html_af5fa59e47fae9f6195b00e5bec8310f8"><div class="ttname"><a href="a00040.html#af5fa59e47fae9f6195b00e5bec8310f8">QUESO::BaseOneDGrid::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00455_source.html#l00083">OneDGrid.h:83</a></div></div>
+<div class="ttc" id="a00036_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00320">Environment.C:320</a></div></div>
+<div class="ttc" id="a00036_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00450">Environment.C:450</a></div></div>
+<div class="ttc" id="a00040_html_a668a0033829b907fac9e13466419b7b1"><div class="ttname"><a href="a00040.html#a668a0033829b907fac9e13466419b7b1">QUESO::BaseOneDGrid::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00455_source.html#l00082">OneDGrid.h:82</a></div></div>
+<div class="ttc" id="a00036_html"><div class="ttname"><a href="a00036.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00198">Environment.h:198</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

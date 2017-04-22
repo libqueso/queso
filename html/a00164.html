@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: QUESO::LinearLagrangeInterpolationSurrogate&lt; V, M &gt; Class Template Reference</title>
+<title>queso-0.56.2: QUESO::Matrix Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -45,146 +45,181 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00690.html">QUESO</a></li><li class="navelem"><a class="el" href="a00164.html">LinearLagrangeInterpolationSurrogate</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00674.html">QUESO</a></li><li class="navelem"><a class="el" href="a00164.html">Matrix</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="a01718.html">List of all members</a>  </div>
+<a href="a00862.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::LinearLagrangeInterpolationSurrogate&lt; V, M &gt; Class Template Reference</div>  </div>
+<div class="title">QUESO::Matrix Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Linear Lagrange interpolation surrogate.  
+<p>Class for matrix operations (virtual).  
  <a href="a00164.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00677_source.html">LinearLagrangeInterpolationSurrogate.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00372_source.html">Matrix.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::LinearLagrangeInterpolationSurrogate&lt; V, M &gt;:</div>
+Inheritance diagram for QUESO::Matrix:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01719.png" border="0" usemap="#_q_u_e_s_o_1_1_linear_lagrange_interpolation_surrogate_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_linear_lagrange_interpolation_surrogate_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_linear_lagrange_interpolation_surrogate_3_01_v_00_01_m_01_4_inherit__map">
-<area shape="rect" id="node2" href="a00144.html" title="Base class for interpolation&#45;based surrogates. " alt="" coords="21,81,221,122"/><area shape="rect" id="node3" href="a00225.html" title="Base class for surrogates of models. " alt="" coords="27,5,216,32"/></map>
+<div class="center"><img src="a00863.png" border="0" usemap="#_q_u_e_s_o_1_1_matrix_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_matrix_inherit__map" id="_q_u_e_s_o_1_1_matrix_inherit__map">
+<area shape="rect" id="node2" href="a00123.html" title="Class for representing block matrices using GSL library. " alt="" coords="5,80,171,107"/><area shape="rect" id="node3" href="a00124.html" title="Class for matrix operations using GSL library. " alt="" coords="195,80,329,107"/><area shape="rect" id="node4" href="a00227.html" title="Class for matrix operations using Teuchos (Trilinos). " alt="" coords="354,80,517,107"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for QUESO::LinearLagrangeInterpolationSurrogate&lt; V, M &gt;:</div>
+Collaboration diagram for QUESO::Matrix:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01720.png" border="0" usemap="#_q_u_e_s_o_1_1_linear_lagrange_interpolation_surrogate_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_linear_lagrange_interpolation_surrogate_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_linear_lagrange_interpolation_surrogate_3_01_v_00_01_m_01_4_coll__map">
-<area shape="rect" id="node2" href="a00144.html" title="Base class for interpolation&#45;based surrogates. " alt="" coords="21,81,221,122"/><area shape="rect" id="node3" href="a00225.html" title="Base class for surrogates of models. " alt="" coords="27,5,216,32"/></map>
+<div class="center"><img src="a00864.png" border="0" usemap="#_q_u_e_s_o_1_1_matrix_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_matrix_coll__map" id="_q_u_e_s_o_1_1_matrix_coll__map">
+<area shape="rect" id="node2" href="a00036.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="397,251,579,277"/><area shape="rect" id="node12" href="a00179.html" title="The QUESO MPI Communicator Class. " alt="" coords="672,284,811,311"/><area shape="rect" id="node3" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::RngBase \&gt;" alt="" coords="22,5,221,46"/><area shape="rect" id="node4" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::MpiComm \&gt;" alt="" coords="22,83,221,125"/><area shape="rect" id="node5" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::variables_map \&gt;" alt="" coords="6,149,237,190"/><area shape="rect" id="node6" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::EnvOptionsValues \&gt;" alt="" coords="22,214,221,255"/><area shape="rect" id="node7" href="a00206.html" title="QUESO::ScopedPtr\&lt; GetPot \&gt;" alt="" coords="19,280,223,307"/><area shape="rect" id="node8" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::BasicPdfsBase \&gt;" alt="" coords="22,331,221,373"/><area shape="rect" id="node9" href="a00206.html" title="QUESO::ScopedPtr\&lt; std\l::ofstream \&gt;" alt="" coords="37,397,206,438"/><area shape="rect" id="node10" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::options\l_description \&gt;" alt="" coords="30,463,213,519"/><area shape="rect" id="node11" href="a00162.html" title="A class for partitioning vectors and matrices. " alt="" coords="942,284,1045,311"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4f1152d104164db1be57ff8c098baa71"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a4f1152d104164db1be57ff8c098baa71">LinearLagrangeInterpolationSurrogate</a> (const <a class="el" href="a00146.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp;data)</td></tr>
-<tr class="memdesc:a4f1152d104164db1be57ff8c098baa71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a4f1152d104164db1be57ff8c098baa71">More...</a><br/></td></tr>
-<tr class="separator:a4f1152d104164db1be57ff8c098baa71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab328f3f7e68db75d4ff3fe393504d0da"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#ab328f3f7e68db75d4ff3fe393504d0da">~LinearLagrangeInterpolationSurrogate</a> ()</td></tr>
-<tr class="separator:ab328f3f7e68db75d4ff3fe393504d0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ee3f5a8590cc565003d930e1c6a2517"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a0ee3f5a8590cc565003d930e1c6a2517">evaluate</a> (const V &amp;domainVector) const </td></tr>
-<tr class="memdesc:a0ee3f5a8590cc565003d930e1c6a2517"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates value of the interpolant for the given domainVector.  <a href="#a0ee3f5a8590cc565003d930e1c6a2517">More...</a><br/></td></tr>
-<tr class="separator:a0ee3f5a8590cc565003d930e1c6a2517"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afebd6ba0f69d6963690b33ee6033b682"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#afebd6ba0f69d6963690b33ee6033b682">n_coeffs</a> () const </td></tr>
-<tr class="memdesc:afebd6ba0f69d6963690b33ee6033b682"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of coeffs for interpolating.  <a href="#afebd6ba0f69d6963690b33ee6033b682">More...</a><br/></td></tr>
-<tr class="separator:afebd6ba0f69d6963690b33ee6033b682"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00144"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00144')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00144.html">QUESO::InterpolationSurrogateBase&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a00d3b5021c4c2c4fa3ece226623c3ad2 inherit pub_methods_a00144"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00144.html#a00d3b5021c4c2c4fa3ece226623c3ad2">InterpolationSurrogateBase</a> (const <a class="el" href="a00146.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp;data)</td></tr>
-<tr class="memdesc:a00d3b5021c4c2c4fa3ece226623c3ad2 inherit pub_methods_a00144"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a00d3b5021c4c2c4fa3ece226623c3ad2">More...</a><br/></td></tr>
-<tr class="separator:a00d3b5021c4c2c4fa3ece226623c3ad2 inherit pub_methods_a00144"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa993220c35f76b9cd76da35c64e9ee42 inherit pub_methods_a00144"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00144.html#aa993220c35f76b9cd76da35c64e9ee42">~InterpolationSurrogateBase</a> ()</td></tr>
-<tr class="separator:aa993220c35f76b9cd76da35c64e9ee42 inherit pub_methods_a00144"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00225"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00225')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00225.html">QUESO::SurrogateBase&lt; V &gt;</a></td></tr>
-<tr class="memitem:a008309a6a70a58c60c59ed35777ed9e0 inherit pub_methods_a00225"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00225.html#a008309a6a70a58c60c59ed35777ed9e0">SurrogateBase</a> ()</td></tr>
-<tr class="separator:a008309a6a70a58c60c59ed35777ed9e0 inherit pub_methods_a00225"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af342cf4a55221355d63d3f9227d29b08 inherit pub_methods_a00225"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00225.html#af342cf4a55221355d63d3f9227d29b08">~SurrogateBase</a> ()</td></tr>
-<tr class="separator:af342cf4a55221355d63d3f9227d29b08 inherit pub_methods_a00225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
+<tr class="memitem:a324053bbe984f4549f7b31f0d1aae8b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a324053bbe984f4549f7b31f0d1aae8b1">Matrix</a> (const <a class="el" href="a00036.html">BaseEnvironment</a> &amp;<a class="el" href="a00164.html#a1eefeca9f35200e8275fb0fdfa0c8684">env</a>, const <a class="el" href="a00162.html">Map</a> &amp;<a class="el" href="a00164.html#ae01c72255466cd95201bb4c7f07e1b83">map</a>)</td></tr>
+<tr class="memdesc:a324053bbe984f4549f7b31f0d1aae8b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaped constructor.  <a href="#a324053bbe984f4549f7b31f0d1aae8b1">More...</a><br/></td></tr>
+<tr class="separator:a324053bbe984f4549f7b31f0d1aae8b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a161398a2cf0c9a626651f59f5bd9ae59"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a161398a2cf0c9a626651f59f5bd9ae59">~Matrix</a> ()</td></tr>
+<tr class="memdesc:a161398a2cf0c9a626651f59f5bd9ae59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual Destructor.  <a href="#a161398a2cf0c9a626651f59f5bd9ae59">More...</a><br/></td></tr>
+<tr class="separator:a161398a2cf0c9a626651f59f5bd9ae59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Environment and Map methods</div></td></tr>
+<tr class="memitem:a1eefeca9f35200e8275fb0fdfa0c8684"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00036.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a1eefeca9f35200e8275fb0fdfa0c8684">env</a> () const </td></tr>
+<tr class="separator:a1eefeca9f35200e8275fb0fdfa0c8684"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae01c72255466cd95201bb4c7f07e1b83"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00162.html">Map</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#ae01c72255466cd95201bb4c7f07e1b83">map</a> () const </td></tr>
+<tr class="separator:ae01c72255466cd95201bb4c7f07e1b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d7310149ecf33ca68c5ef7a815093db"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a7d7310149ecf33ca68c5ef7a815093db">numOfProcsForStorage</a> () const </td></tr>
+<tr class="separator:a7d7310149ecf33ca68c5ef7a815093db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Attribute methods</div></td></tr>
+<tr class="memitem:ac5b08947e3a1830180ab32739f236d0c"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#ac5b08947e3a1830180ab32739f236d0c">numRowsLocal</a> () const =0</td></tr>
+<tr class="memdesc:ac5b08947e3a1830180ab32739f236d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of rows local of the matrix.  <a href="#ac5b08947e3a1830180ab32739f236d0c">More...</a><br/></td></tr>
+<tr class="separator:ac5b08947e3a1830180ab32739f236d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda1fae13ff41264a11510f633d972be"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#acda1fae13ff41264a11510f633d972be">numRowsGlobal</a> () const =0</td></tr>
+<tr class="memdesc:acda1fae13ff41264a11510f633d972be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of rows global of the matrix.  <a href="#acda1fae13ff41264a11510f633d972be">More...</a><br/></td></tr>
+<tr class="separator:acda1fae13ff41264a11510f633d972be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3fadd056ae487979e8748844269497b"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#ae3fadd056ae487979e8748844269497b">numCols</a> () const =0</td></tr>
+<tr class="memdesc:ae3fadd056ae487979e8748844269497b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of columns local of the matrix.  <a href="#ae3fadd056ae487979e8748844269497b">More...</a><br/></td></tr>
+<tr class="separator:ae3fadd056ae487979e8748844269497b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Mathematical methods</div></td></tr>
+<tr class="memitem:a23f2bee051f28ed10bf9b0b72d701f2e"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a23f2bee051f28ed10bf9b0b72d701f2e">chol</a> ()=0</td></tr>
+<tr class="memdesc:a23f2bee051f28ed10bf9b0b72d701f2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs Cholesky factorization of the matrix.  <a href="#a23f2bee051f28ed10bf9b0b72d701f2e">More...</a><br/></td></tr>
+<tr class="separator:a23f2bee051f28ed10bf9b0b72d701f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Get/Set methods</div></td></tr>
+<tr class="memitem:a11cb54db37379985df41e44e410e857f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a11cb54db37379985df41e44e410e857f">zeroLower</a> (bool includeDiagonal=false)=0</td></tr>
+<tr class="memdesc:a11cb54db37379985df41e44e410e857f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets to zero all the elements bellow (including or not) the diagonal of the matrix.  <a href="#a11cb54db37379985df41e44e410e857f">More...</a><br/></td></tr>
+<tr class="separator:a11cb54db37379985df41e44e410e857f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c2624bc26684a9a119252fcc0401871"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a0c2624bc26684a9a119252fcc0401871">zeroUpper</a> (bool includeDiagonal=false)=0</td></tr>
+<tr class="memdesc:a0c2624bc26684a9a119252fcc0401871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets to zero all the elements above (including or not) the diagonal of the matrix.  <a href="#a0c2624bc26684a9a119252fcc0401871">More...</a><br/></td></tr>
+<tr class="separator:a0c2624bc26684a9a119252fcc0401871"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">I/O and Miscellaneous methods</div></td></tr>
+<tr class="memitem:ae2a1ec7b27cc8ae0ffb7a5c91bfec8fc"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#ae2a1ec7b27cc8ae0ffb7a5c91bfec8fc">print</a> (std::ostream &amp;os) const =0</td></tr>
+<tr class="memdesc:ae2a1ec7b27cc8ae0ffb7a5c91bfec8fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print this matrix.  <a href="#ae2a1ec7b27cc8ae0ffb7a5c91bfec8fc">More...</a><br/></td></tr>
+<tr class="separator:ae2a1ec7b27cc8ae0ffb7a5c91bfec8fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f48b60a98b211770f92d42441f51c35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a1f48b60a98b211770f92d42441f51c35">setPrintHorizontally</a> (bool value) const </td></tr>
+<tr class="memdesc:a1f48b60a98b211770f92d42441f51c35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the matrix should be printed horizontally.  <a href="#a1f48b60a98b211770f92d42441f51c35">More...</a><br/></td></tr>
+<tr class="separator:a1f48b60a98b211770f92d42441f51c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b6bdbf50356e19e845d6134ce435ef0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a4b6bdbf50356e19e845d6134ce435ef0">getPrintHorizontally</a> () const </td></tr>
+<tr class="memdesc:a4b6bdbf50356e19e845d6134ce435ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if matrix will be is printed horizontally.  <a href="#a4b6bdbf50356e19e845d6134ce435ef0">More...</a><br/></td></tr>
+<tr class="separator:a4b6bdbf50356e19e845d6134ce435ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fa94aaee496541e72d527b98af57bae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a0fa94aaee496541e72d527b98af57bae">setInDebugMode</a> (bool value) const </td></tr>
+<tr class="memdesc:a0fa94aaee496541e72d527b98af57bae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether <a class="el" href="a00674.html">QUESO</a> will run through this class in debug mode.  <a href="#a0fa94aaee496541e72d527b98af57bae">More...</a><br/></td></tr>
+<tr class="separator:a0fa94aaee496541e72d527b98af57bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad714793ba87347d88f19b79231405182"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#ad714793ba87347d88f19b79231405182">getInDebugMode</a> () const </td></tr>
+<tr class="memdesc:ad714793ba87347d88f19b79231405182"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if <a class="el" href="a00674.html">QUESO</a> will run through this class in debug mode.  <a href="#ad714793ba87347d88f19b79231405182">More...</a><br/></td></tr>
+<tr class="separator:ad714793ba87347d88f19b79231405182"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa36b692e66fbedcc8fb4af9498255b22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#aa36b692e66fbedcc8fb4af9498255b22">compute_interval_indices</a> (const V &amp;domainVector, std::vector&lt; unsigned int &gt; &amp;indices) const </td></tr>
-<tr class="memdesc:aa36b692e66fbedcc8fb4af9498255b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to get lower bound indices for each dimension.  <a href="#aa36b692e66fbedcc8fb4af9498255b22">More...</a><br/></td></tr>
-<tr class="separator:aa36b692e66fbedcc8fb4af9498255b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad6abf565d0996abfcb7b77b785cad40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#aad6abf565d0996abfcb7b77b785cad40">compute_interval_values</a> (const std::vector&lt; unsigned int &gt; &amp;indices, std::vector&lt; double &gt; &amp;x_min, std::vector&lt; double &gt; &amp;x_max, std::vector&lt; double &gt; &amp;values) const </td></tr>
-<tr class="memdesc:aad6abf565d0996abfcb7b77b785cad40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to populate bounding values for the intervals in each dimension.  <a href="#aad6abf565d0996abfcb7b77b785cad40">More...</a><br/></td></tr>
-<tr class="separator:aad6abf565d0996abfcb7b77b785cad40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9af6a0dc8344714bc920c465c800aec4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a9af6a0dc8344714bc920c465c800aec4">eval_interpolant</a> (const std::vector&lt; double &gt; &amp;x_min, const std::vector&lt; double &gt; &amp;x_max, const std::vector&lt; double &gt; &amp;values, const V &amp;domainVector) const </td></tr>
-<tr class="memdesc:a9af6a0dc8344714bc920c465c800aec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate multidimensional linear Lagrange interpolant.  <a href="#a9af6a0dc8344714bc920c465c800aec4">More...</a><br/></td></tr>
-<tr class="separator:a9af6a0dc8344714bc920c465c800aec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b6985deba9550f64fa0d81df0001dc2"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a9b6985deba9550f64fa0d81df0001dc2">coordsToSingle</a> (const std::vector&lt; unsigned int &gt; &amp;indices) const </td></tr>
-<tr class="memdesc:a9b6985deba9550f64fa0d81df0001dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert local indices to single "global" index.  <a href="#a9b6985deba9550f64fa0d81df0001dc2">More...</a><br/></td></tr>
-<tr class="separator:a9b6985deba9550f64fa0d81df0001dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19a3a94363d5a7d03445da44bf0449a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a19a3a94363d5a7d03445da44bf0449a1">singleToCoords</a> (unsigned int global, std::vector&lt; unsigned int &gt; &amp;indices) const </td></tr>
-<tr class="memdesc:a19a3a94363d5a7d03445da44bf0449a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverse of map computed in coordsToSingle.  <a href="#a19a3a94363d5a7d03445da44bf0449a1">More...</a><br/></td></tr>
-<tr class="separator:a19a3a94363d5a7d03445da44bf0449a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab63b8990c31b42d3e3c1cb03e39d6bb7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#ab63b8990c31b42d3e3c1cb03e39d6bb7">tensor_product_lagrange</a> (const std::vector&lt; double &gt; &amp;x_min, const std::vector&lt; double &gt; &amp;x_max, const std::vector&lt; unsigned int &gt; &amp;indices, const V &amp;domainVector) const </td></tr>
-<tr class="memdesc:ab63b8990c31b42d3e3c1cb03e39d6bb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute multidimensional Lagrange polynomial as tensor product of 1D polynomials.  <a href="#ab63b8990c31b42d3e3c1cb03e39d6bb7">More...</a><br/></td></tr>
-<tr class="separator:ab63b8990c31b42d3e3c1cb03e39d6bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04e316834a5e021d1231a20881849e10"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a04e316834a5e021d1231a20881849e10">lagrange_poly</a> (double x0, double x1, double x, unsigned int index) const </td></tr>
-<tr class="memdesc:a04e316834a5e021d1231a20881849e10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate a 1-D Lagrange polynomial at point x.  <a href="#a04e316834a5e021d1231a20881849e10">More...</a><br/></td></tr>
-<tr class="separator:a04e316834a5e021d1231a20881849e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a643225869ea7f8371aa638619b8c8990"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a643225869ea7f8371aa638619b8c8990">base_copy</a> (const <a class="el" href="a00164.html">Matrix</a> &amp;src)</td></tr>
+<tr class="memdesc:a643225869ea7f8371aa638619b8c8990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies base data from matrix <code>src</code> to <code>this</code> matrix.  <a href="#a643225869ea7f8371aa638619b8c8990">More...</a><br/></td></tr>
+<tr class="separator:a643225869ea7f8371aa638619b8c8990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a247fb0fc0b87fecdee054bb4660b68e8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00036.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a></td></tr>
+<tr class="memdesc:a247fb0fc0b87fecdee054bb4660b68e8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00674.html">QUESO</a> environment variable.  <a href="#a247fb0fc0b87fecdee054bb4660b68e8">More...</a><br/></td></tr>
+<tr class="separator:a247fb0fc0b87fecdee054bb4660b68e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95e307c6e1263d505af0a43c35f81a8b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00162.html">Map</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a95e307c6e1263d505af0a43c35f81a8b">m_map</a></td></tr>
+<tr class="memdesc:a95e307c6e1263d505af0a43c35f81a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping variable.  <a href="#a95e307c6e1263d505af0a43c35f81a8b">More...</a><br/></td></tr>
+<tr class="separator:a95e307c6e1263d505af0a43c35f81a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb42d344c0b2859c3b4a4f5a3dd7875f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00162.html">Map</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#adb42d344c0b2859c3b4a4f5a3dd7875f">m_map</a></td></tr>
+<tr class="memdesc:adb42d344c0b2859c3b4a4f5a3dd7875f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping variable.  <a href="#adb42d344c0b2859c3b4a4f5a3dd7875f">More...</a><br/></td></tr>
+<tr class="separator:adb42d344c0b2859c3b4a4f5a3dd7875f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebf5e44b149cf1454b2e12995d9f8b6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#aebf5e44b149cf1454b2e12995d9f8b6b">m_printHorizontally</a></td></tr>
+<tr class="memdesc:aebf5e44b149cf1454b2e12995d9f8b6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag for either or not print this matrix.  <a href="#aebf5e44b149cf1454b2e12995d9f8b6b">More...</a><br/></td></tr>
+<tr class="separator:aebf5e44b149cf1454b2e12995d9f8b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3384d3fc1a1058fce9191b0d74653911"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a3384d3fc1a1058fce9191b0d74653911">m_inDebugMode</a></td></tr>
+<tr class="memdesc:a3384d3fc1a1058fce9191b0d74653911"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag for either or not <a class="el" href="a00674.html">QUESO</a> is in debug mode.  <a href="#a3384d3fc1a1058fce9191b0d74653911">More...</a><br/></td></tr>
+<tr class="separator:a3384d3fc1a1058fce9191b0d74653911"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a25d9db9f926eeebdd20dc375185d87f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a25d9db9f926eeebdd20dc375185d87f8">LinearLagrangeInterpolationSurrogate</a> ()</td></tr>
-<tr class="separator:a25d9db9f926eeebdd20dc375185d87f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_a00144"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00144')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00144.html">QUESO::InterpolationSurrogateBase&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a849caf0fc4f3846233255047bc5f8525 inherit pro_attribs_a00144"><td class="memItemLeft" align="right" valign="top">const <br class="typebreak"/>
-<a class="el" href="a00146.html">InterpolationSurrogateData</a>&lt; V, <br class="typebreak"/>
-M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a></td></tr>
-<tr class="separator:a849caf0fc4f3846233255047bc5f8525 inherit pro_attribs_a00144"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e0493d6ef72c190a7026e1a505488a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html#a2e0493d6ef72c190a7026e1a505488a6">Matrix</a> ()</td></tr>
+<tr class="memdesc:a2e0493d6ef72c190a7026e1a505488a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a2e0493d6ef72c190a7026e1a505488a6">More...</a><br/></td></tr>
+<tr class="separator:a2e0493d6ef72c190a7026e1a505488a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class V = GslVector, class M = GslMatrix&gt;<br/>
-class QUESO::LinearLagrangeInterpolationSurrogate&lt; V, M &gt;</h3>
+<div class="textblock"><p>Class for matrix operations (virtual). </p>
+<p>Base matrix class. The matrix class is an abstract class designed to be used as a base class for different matrix implementations (all actual matrix classes in <a class="el" href="a00674.html">QUESO</a>). </p>
 
-<p>Linear Lagrange interpolation surrogate. </p>
-<p>Aribritary dimension linear Lagrange interpolant. Uses a structured grid to interpolate values given by data passed to the constructor. </p>
-
-<p>Definition at line <a class="el" href="a00677_source.html#l00044">44</a> of file <a class="el" href="a00677_source.html">LinearLagrangeInterpolationSurrogate.h</a>.</p>
+<p>Definition at line <a class="el" href="a00372_source.html#l00046">46</a> of file <a class="el" href="a00372_source.html">Matrix.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a4f1152d104164db1be57ff8c098baa71"></a>
+<a class="anchor" id="a324053bbe984f4549f7b31f0d1aae8b1"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::<a class="el" href="a00164.html">LinearLagrangeInterpolationSurrogate</a> </td>
+          <td class="memname">QUESO::Matrix::Matrix </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00146.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>data</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="a00036.html">BaseEnvironment</a> &amp;&#160;</td>
+          <td class="paramname"><em>env</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="a00162.html">Map</a> &amp;&#160;</td>
+          <td class="paramname"><em>map</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
-<p>The data object should be already fully populated when constructing this object. The user can directly set values or use the <a class="el" href="a00145.html" title="Build interpolation-based surrogate. ">InterpolationSurrogateBuilder</a> object to populate the data. </p>
+<p>Shaped constructor. </p>
 
-<p>Definition at line <a class="el" href="a00687_source.html#l00037">37</a> of file <a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    : InterpolationSurrogateBase&lt;V,M&gt;(data)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  {}</div>
+<p>Definition at line <a class="el" href="a00421_source.html#l00031">31</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  :</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <a class="code" href="a00164.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>              (<a class="code" href="a00164.html#a1eefeca9f35200e8275fb0fdfa0c8684">env</a>),</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="a00164.html#a95e307c6e1263d505af0a43c35f81a8b">m_map</a>              (<a class="code" href="a00164.html#ae01c72255466cd95201bb4c7f07e1b83">map</a>),</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00164.html#aebf5e44b149cf1454b2e12995d9f8b6b">m_printHorizontally</a>(<span class="keyword">true</span>),</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="a00164.html#a3384d3fc1a1058fce9191b0d74653911">m_inDebugMode</a>      (<span class="keyword">false</span>)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
+<div class="ttc" id="a00164_html_aebf5e44b149cf1454b2e12995d9f8b6b"><div class="ttname"><a href="a00164.html#aebf5e44b149cf1454b2e12995d9f8b6b">QUESO::Matrix::m_printHorizontally</a></div><div class="ttdeci">bool m_printHorizontally</div><div class="ttdoc">Flag for either or not print this matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00131">Matrix.h:131</a></div></div>
+<div class="ttc" id="a00164_html_a95e307c6e1263d505af0a43c35f81a8b"><div class="ttname"><a href="a00164.html#a95e307c6e1263d505af0a43c35f81a8b">QUESO::Matrix::m_map</a></div><div class="ttdeci">const Map m_map</div><div class="ttdoc">Mapping variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00121">Matrix.h:121</a></div></div>
+<div class="ttc" id="a00164_html_a3384d3fc1a1058fce9191b0d74653911"><div class="ttname"><a href="a00164.html#a3384d3fc1a1058fce9191b0d74653911">QUESO::Matrix::m_inDebugMode</a></div><div class="ttdeci">bool m_inDebugMode</div><div class="ttdoc">Flag for either or not QUESO is in debug mode. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00134">Matrix.h:134</a></div></div>
+<div class="ttc" id="a00164_html_ae01c72255466cd95201bb4c7f07e1b83"><div class="ttname"><a href="a00164.html#ae01c72255466cd95201bb4c7f07e1b83">QUESO::Matrix::map</a></div><div class="ttdeci">const Map &amp; map() const </div><div class="ttdef"><b>Definition:</b> <a href="a00421_source.html#l00054">Matrix.C:54</a></div></div>
+<div class="ttc" id="a00164_html_a1eefeca9f35200e8275fb0fdfa0c8684"><div class="ttname"><a href="a00164.html#a1eefeca9f35200e8275fb0fdfa0c8684">QUESO::Matrix::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdef"><b>Definition:</b> <a href="a00421_source.html#l00047">Matrix.C:47</a></div></div>
+<div class="ttc" id="a00164_html_a247fb0fc0b87fecdee054bb4660b68e8"><div class="ttname"><a href="a00164.html#a247fb0fc0b87fecdee054bb4660b68e8">QUESO::Matrix::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdoc">QUESO environment variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00116">Matrix.h:116</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ab328f3f7e68db75d4ff3fe393504d0da"></a>
+<a class="anchor" id="a161398a2cf0c9a626651f59f5bd9ae59"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::~<a class="el" href="a00164.html">LinearLagrangeInterpolationSurrogate</a> </td>
+          <td class="memname">QUESO::Matrix::~Matrix </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -192,27 +227,28 @@ template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00677_source.html#l00054">54</a> of file <a class="el" href="a00677_source.html">LinearLagrangeInterpolationSurrogate.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{};</div>
+<p>Virtual Destructor. </p>
+
+<p>Definition at line <a class="el" href="a00421_source.html#l00041">41</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a25d9db9f926eeebdd20dc375185d87f8"></a>
+<a class="anchor" id="a2e0493d6ef72c190a7026e1a505488a6"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::<a class="el" href="a00164.html">LinearLagrangeInterpolationSurrogate</a> </td>
+          <td class="memname">QUESO::Matrix::Matrix </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -225,447 +261,190 @@ template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Default constructor. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aa36b692e66fbedcc8fb4af9498255b22"></a>
+<a class="anchor" id="a643225869ea7f8371aa638619b8c8990"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::compute_interval_indices </td>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::Matrix::base_copy </td>
           <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>domainVector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const <a class="el" href="a00164.html">Matrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::vector&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>indices</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Helper function to get lower bound indices for each dimension. </p>
-<p>domainVector contains the current value at which want want to interpolate. We use that to figure out the bounding values in each dimension. Then we populate indices with the lower index. </p>
+<p>Copies base data from matrix <code>src</code> to <code>this</code> matrix. </p>
 
-<p>Definition at line <a class="el" href="a00687_source.html#l00066">66</a> of file <a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a>.</p>
+<p>Definition at line <a class="el" href="a00421_source.html#l00099">99</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
 
-<p>References <a class="el" href="a00340_source.html#l00135">queso_assert_equal_to</a>, and <a class="el" href="a00340_source.html#l00141">queso_assert_less</a>.</p>
-<div class="fragment"><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( domainVector.sizeGlobal(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( indices.size(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim(); d++ )</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">double</span> spacing = this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.spacing(d);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        indices[d] = std::floor( (domainVector[d] - this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.x_min(d))/spacing );</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="comment">// Index should be less than the number of point along this dimension</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="a00340.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a>( indices[d], this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.get_n_points()[d] );</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
-<div class="ttc" id="a00340_html_a67de25b43faabd8d10a0827676e54a49"><div class="ttname"><a href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a></div><div class="ttdeci">#define queso_assert_equal_to(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00135">asserts.h:135</a></div></div>
-<div class="ttc" id="a00340_html_a02c59e9150c230713f39314a442e2768"><div class="ttname"><a href="a00340.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a></div><div class="ttdeci">#define queso_assert_less(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00141">asserts.h:141</a></div></div>
-<div class="ttc" id="a00144_html_a849caf0fc4f3846233255047bc5f8525"><div class="ttname"><a href="a00144.html#a849caf0fc4f3846233255047bc5f8525">QUESO::InterpolationSurrogateBase::m_data</a></div><div class="ttdeci">const InterpolationSurrogateData&lt; V, M &gt; &amp; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00670_source.html#l00062">InterpolationSurrogateBase.h:62</a></div></div>
+<p>References <a class="el" href="a00372_source.html#l00134">m_inDebugMode</a>, and <a class="el" href="a00372_source.html#l00131">m_printHorizontally</a>.</p>
+
+<p>Referenced by <a class="el" href="a00409_source.html#l00138">QUESO::GslMatrix::GslMatrix()</a>, and <a class="el" href="a00431_source.html#l00150">QUESO::TeuchosMatrix::TeuchosMatrix()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">//m_env = src.env;</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="comment">//m_map = src.map;</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <a class="code" href="a00164.html#aebf5e44b149cf1454b2e12995d9f8b6b">m_printHorizontally</a> = src.m_printHorizontally;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <a class="code" href="a00164.html#a3384d3fc1a1058fce9191b0d74653911">m_inDebugMode</a>       = src.m_inDebugMode;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
+<div class="ttc" id="a00164_html_aebf5e44b149cf1454b2e12995d9f8b6b"><div class="ttname"><a href="a00164.html#aebf5e44b149cf1454b2e12995d9f8b6b">QUESO::Matrix::m_printHorizontally</a></div><div class="ttdeci">bool m_printHorizontally</div><div class="ttdoc">Flag for either or not print this matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00131">Matrix.h:131</a></div></div>
+<div class="ttc" id="a00164_html_a3384d3fc1a1058fce9191b0d74653911"><div class="ttname"><a href="a00164.html#a3384d3fc1a1058fce9191b0d74653911">QUESO::Matrix::m_inDebugMode</a></div><div class="ttdeci">bool m_inDebugMode</div><div class="ttdoc">Flag for either or not QUESO is in debug mode. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00134">Matrix.h:134</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aad6abf565d0996abfcb7b77b785cad40"></a>
+<a class="anchor" id="a23f2bee051f28ed10bf9b0b72d701f2e"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::compute_interval_values </td>
+          <td class="memname">virtual int QUESO::Matrix::chol </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>indices</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>x_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>x_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>values</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Helper function to populate bounding values for the intervals in each dimension. </p>
-<p>By convention, it is assumed that the indices vector contains the lower bound index. See compute_interval_indices. </p>
+<p>Performs Cholesky factorization of the matrix. </p>
 
-<p>Definition at line <a class="el" href="a00687_source.html#l00083">83</a> of file <a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a>.</p>
+<p>Implemented in <a class="el" href="a00124.html#a6b623c4d564b327adf2a51138ad91372">QUESO::GslMatrix</a>, <a class="el" href="a00227.html#a8bac5523896601fdd26325250a4d732d">QUESO::TeuchosMatrix</a>, and <a class="el" href="a00123.html#a4e059f020a04c07d252118596d1a47f7">QUESO::GslBlockMatrix</a>.</p>
 
-<p>References <a class="el" href="a00684_source.html#l00034">QUESO::InterpolationSurrogateHelper::coordToGlobal()</a>, <a class="el" href="a00340_source.html#l00135">queso_assert_equal_to</a>, and <a class="el" href="a00340_source.html#l00053">queso_error</a>.</p>
-<div class="fragment"><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( x_min.size(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( x_max.size(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( values.size(), this-&gt;<a class="code" href="a00164.html#afebd6ba0f69d6963690b33ee6033b682">n_coeffs</a>() );</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( indices.size(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// First, use the lower bound (global) indices to populate x_min, x_max</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim(); d++ )</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        x_min[d] = this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.get_x( d, indices[d] );</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        x_max[d] = x_min[d] + this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.spacing( d );</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="comment">// Now populate the values.</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    std::vector&lt;unsigned int&gt; local_indices(this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim());</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    std::vector&lt;unsigned int&gt; global_indices(this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim());</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0 ; n &lt; this-&gt;<a class="code" href="a00164.html#afebd6ba0f69d6963690b33ee6033b682">n_coeffs</a>(); n++ )</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="comment">// Figure out local indices (each coordinate is 0 or 1)</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        this-&gt;<a class="code" href="a00164.html#a19a3a94363d5a7d03445da44bf0449a1">singleToCoords</a>(n,local_indices);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="comment">/* For each dimension, if the local index is 0, use the lower</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">           bound of the global index. If the local index is 1, use the</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">           &quot;upper&quot; global index.</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">           In 2-D:</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">           The lower left corner of the element will have local_indices = [0,0];</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">           Then, global_indices = [ indices[0], indices[1] ];</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">           The upper right corner will have local_indices = [1,1];</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">           Then, global_indices = [ indices[0]+1, indices[1]+1 ]; */</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim(); d++ )</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;          {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <span class="keywordflow">if</span>( local_indices[d] == 0 )</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;              global_indices[d] = indices[d];</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>( local_indices[d] == 1 )</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;              global_indices[d] = indices[d]+1;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="comment">// This shouldn&#39;t happen</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;              <a class="code" href="a00340.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>();</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;          }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="comment">/* Now that we have the global indices for each coordinate,</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">           we get the &quot;global&quot; index. This is the index into the global</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">           values array */</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> global = <a class="code" href="a00148.html#a0249e2c31d66a94d7575e3bfaf2e5bef">InterpolationSurrogateHelper::coordToGlobal</a>( global_indices, this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.get_n_points() );</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        values[n] = this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.get_value(global);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      }</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  }</div>
-<div class="ttc" id="a00148_html_a0249e2c31d66a94d7575e3bfaf2e5bef"><div class="ttname"><a href="a00148.html#a0249e2c31d66a94d7575e3bfaf2e5bef">QUESO::InterpolationSurrogateHelper::coordToGlobal</a></div><div class="ttdeci">static unsigned int coordToGlobal(const std::vector&lt; unsigned int &gt; &amp;coord_indices, const std::vector&lt; unsigned int &gt; &amp;n_points)</div><div class="ttdoc">Map coordinate indices to a singal global index. </div><div class="ttdef"><b>Definition:</b> <a href="a00684_source.html#l00034">InterpolationSurrogateHelper.C:34</a></div></div>
-<div class="ttc" id="a00340_html_a0af4fa8de607265fa3e7413ba0475a18"><div class="ttname"><a href="a00340.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a></div><div class="ttdeci">#define queso_error()</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00053">asserts.h:53</a></div></div>
-<div class="ttc" id="a00340_html_a67de25b43faabd8d10a0827676e54a49"><div class="ttname"><a href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a></div><div class="ttdeci">#define queso_assert_equal_to(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00135">asserts.h:135</a></div></div>
-<div class="ttc" id="a00164_html_a19a3a94363d5a7d03445da44bf0449a1"><div class="ttname"><a href="a00164.html#a19a3a94363d5a7d03445da44bf0449a1">QUESO::LinearLagrangeInterpolationSurrogate::singleToCoords</a></div><div class="ttdeci">void singleToCoords(unsigned int global, std::vector&lt; unsigned int &gt; &amp;indices) const </div><div class="ttdoc">Inverse of map computed in coordsToSingle. </div><div class="ttdef"><b>Definition:</b> <a href="a00687_source.html#l00177">LinearLagrangeInterpolationSurrogate.C:177</a></div></div>
-<div class="ttc" id="a00164_html_afebd6ba0f69d6963690b33ee6033b682"><div class="ttname"><a href="a00164.html#afebd6ba0f69d6963690b33ee6033b682">QUESO::LinearLagrangeInterpolationSurrogate::n_coeffs</a></div><div class="ttdeci">unsigned int n_coeffs() const </div><div class="ttdoc">The number of coeffs for interpolating. </div><div class="ttdef"><b>Definition:</b> <a href="a00677_source.html#l00060">LinearLagrangeInterpolationSurrogate.h:60</a></div></div>
-<div class="ttc" id="a00144_html_a849caf0fc4f3846233255047bc5f8525"><div class="ttname"><a href="a00144.html#a849caf0fc4f3846233255047bc5f8525">QUESO::InterpolationSurrogateBase::m_data</a></div><div class="ttdeci">const InterpolationSurrogateData&lt; V, M &gt; &amp; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00670_source.html#l00062">InterpolationSurrogateBase.h:62</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a9b6985deba9550f64fa0d81df0001dc2"></a>
+<a class="anchor" id="a1eefeca9f35200e8275fb0fdfa0c8684"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::coordsToSingle </td>
+          <td class="memname">const <a class="el" href="a00036.html">BaseEnvironment</a> &amp; QUESO::Matrix::env </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>indices</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Convert local indices to single "global" index. </p>
-<p>This is for handling the local ordering of an arbitrary dimensional linear Lagrange elements. The function will look like <img class="formulaInl" alt="$ \sum_{ijkl...} f_{ijkl...} N_{ijkl...} $" src="form_169.png"/> so we want a convenient way to map <img class="formulaInl" alt="$ ijkl... $" src="form_170.png"/> to a single integer. Then, we can order all our data this way and easily index into it. We can do this since each of <img class="formulaInl" alt="$ ijkl... $" src="form_170.png"/> is either 0 or 1. </p>
+<p>Definition at line <a class="el" href="a00421_source.html#l00047">47</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
 
-<p>Definition at line <a class="el" href="a00687_source.html#l00166">166</a> of file <a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a>.</p>
+<p>References <a class="el" href="a00372_source.html#l00116">m_env</a>.</p>
 
-<p>References <a class="el" href="a00684_source.html#l00034">QUESO::InterpolationSurrogateHelper::coordToGlobal()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> local_dim = 2;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    std::vector&lt;unsigned int&gt; n_points( this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim(), local_dim );</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="comment">/* We&#39;re abusing this function as it does what we need to with local_dim = 2</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">       for all entries of n_points. */</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="a00148.html#a0249e2c31d66a94d7575e3bfaf2e5bef">InterpolationSurrogateHelper::coordToGlobal</a>( indices, n_points );</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  }</div>
-<div class="ttc" id="a00148_html_a0249e2c31d66a94d7575e3bfaf2e5bef"><div class="ttname"><a href="a00148.html#a0249e2c31d66a94d7575e3bfaf2e5bef">QUESO::InterpolationSurrogateHelper::coordToGlobal</a></div><div class="ttdeci">static unsigned int coordToGlobal(const std::vector&lt; unsigned int &gt; &amp;coord_indices, const std::vector&lt; unsigned int &gt; &amp;n_points)</div><div class="ttdoc">Map coordinate indices to a singal global index. </div><div class="ttdef"><b>Definition:</b> <a href="a00684_source.html#l00034">InterpolationSurrogateHelper.C:34</a></div></div>
-<div class="ttc" id="a00144_html_a849caf0fc4f3846233255047bc5f8525"><div class="ttname"><a href="a00144.html#a849caf0fc4f3846233255047bc5f8525">QUESO::InterpolationSurrogateBase::m_data</a></div><div class="ttdeci">const InterpolationSurrogateData&lt; V, M &gt; &amp; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00670_source.html#l00062">InterpolationSurrogateBase.h:62</a></div></div>
+<p>Referenced by <a class="el" href="a00409_source.html#l01698">QUESO::GslMatrix::mpiSum()</a>, and <a class="el" href="a00409_source.html#l01994">QUESO::operator*()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00164.html#a247fb0fc0b87fecdee054bb4660b68e8">m_env</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<div class="ttc" id="a00164_html_a247fb0fc0b87fecdee054bb4660b68e8"><div class="ttname"><a href="a00164.html#a247fb0fc0b87fecdee054bb4660b68e8">QUESO::Matrix::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdoc">QUESO environment variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00116">Matrix.h:116</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a9af6a0dc8344714bc920c465c800aec4"></a>
+<a class="anchor" id="ad714793ba87347d88f19b79231405182"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::eval_interpolant </td>
+          <td class="memname">bool QUESO::Matrix::getInDebugMode </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>x_min</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>x_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>values</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>domainVector</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Evaluate multidimensional linear Lagrange interpolant. </p>
-<p>This is just a tensor product of one-dimensional interpolants </p>
-
-<p>Definition at line <a class="el" href="a00687_source.html#l00139">139</a> of file <a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a>.</p>
-
-<p>References <a class="el" href="a00340_source.html#l00135">queso_assert_equal_to</a>.</p>
-<div class="fragment"><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  {</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( x_min.size(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( x_max.size(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( values.size(), this-&gt;<a class="code" href="a00164.html#afebd6ba0f69d6963690b33ee6033b682">n_coeffs</a>() );</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( domainVector.sizeGlobal(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordtype">double</span> interp_value = 0.0;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    std::vector&lt;unsigned int&gt; indices( this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; this-&gt;<a class="code" href="a00164.html#afebd6ba0f69d6963690b33ee6033b682">n_coeffs</a>(); n++ )</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;      {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        this-&gt;<a class="code" href="a00164.html#a19a3a94363d5a7d03445da44bf0449a1">singleToCoords</a>( n, indices );</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordtype">double</span> shape_fn = this-&gt;<a class="code" href="a00164.html#ab63b8990c31b42d3e3c1cb03e39d6bb7">tensor_product_lagrange</a>( x_min, x_max, indices, domainVector );</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        interp_value += values[n]*shape_fn;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordflow">return</span> interp_value;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  }</div>
-<div class="ttc" id="a00164_html_ab63b8990c31b42d3e3c1cb03e39d6bb7"><div class="ttname"><a href="a00164.html#ab63b8990c31b42d3e3c1cb03e39d6bb7">QUESO::LinearLagrangeInterpolationSurrogate::tensor_product_lagrange</a></div><div class="ttdeci">double tensor_product_lagrange(const std::vector&lt; double &gt; &amp;x_min, const std::vector&lt; double &gt; &amp;x_max, const std::vector&lt; unsigned int &gt; &amp;indices, const V &amp;domainVector) const </div><div class="ttdoc">Compute multidimensional Lagrange polynomial as tensor product of 1D polynomials. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00687_source.html#l00188">LinearLagrangeInterpolationSurrogate.C:188</a></div></div>
-<div class="ttc" id="a00340_html_a67de25b43faabd8d10a0827676e54a49"><div class="ttname"><a href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a></div><div class="ttdeci">#define queso_assert_equal_to(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00135">asserts.h:135</a></div></div>
-<div class="ttc" id="a00164_html_a19a3a94363d5a7d03445da44bf0449a1"><div class="ttname"><a href="a00164.html#a19a3a94363d5a7d03445da44bf0449a1">QUESO::LinearLagrangeInterpolationSurrogate::singleToCoords</a></div><div class="ttdeci">void singleToCoords(unsigned int global, std::vector&lt; unsigned int &gt; &amp;indices) const </div><div class="ttdoc">Inverse of map computed in coordsToSingle. </div><div class="ttdef"><b>Definition:</b> <a href="a00687_source.html#l00177">LinearLagrangeInterpolationSurrogate.C:177</a></div></div>
-<div class="ttc" id="a00164_html_afebd6ba0f69d6963690b33ee6033b682"><div class="ttname"><a href="a00164.html#afebd6ba0f69d6963690b33ee6033b682">QUESO::LinearLagrangeInterpolationSurrogate::n_coeffs</a></div><div class="ttdeci">unsigned int n_coeffs() const </div><div class="ttdoc">The number of coeffs for interpolating. </div><div class="ttdef"><b>Definition:</b> <a href="a00677_source.html#l00060">LinearLagrangeInterpolationSurrogate.h:60</a></div></div>
-<div class="ttc" id="a00144_html_a849caf0fc4f3846233255047bc5f8525"><div class="ttname"><a href="a00144.html#a849caf0fc4f3846233255047bc5f8525">QUESO::InterpolationSurrogateBase::m_data</a></div><div class="ttdeci">const InterpolationSurrogateData&lt; V, M &gt; &amp; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00670_source.html#l00062">InterpolationSurrogateBase.h:62</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a0ee3f5a8590cc565003d930e1c6a2517"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::evaluate </td>
-          <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>domainVector</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Evaluates value of the interpolant for the given domainVector. </p>
+<p>Checks if <a class="el" href="a00674.html">QUESO</a> will run through this class in debug mode. </p>
 
-<p>Implements <a class="el" href="a00225.html#a8891c061c8186f23f89318211ba81ecc">QUESO::SurrogateBase&lt; V &gt;</a>.</p>
+<p>Definition at line <a class="el" href="a00421_source.html#l00092">92</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
 
-<p>Definition at line <a class="el" href="a00687_source.html#l00042">42</a> of file <a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">/* Populate indices. These are the lower bound global indices for the</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">       &quot;element&quot; containing the domainVector */</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    std::vector&lt;unsigned int&gt; indices(this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim());</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    this-&gt;<a class="code" href="a00164.html#aa36b692e66fbedcc8fb4af9498255b22">compute_interval_indices</a>(domainVector, indices);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// lower bound coordinates</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    std::vector&lt;double&gt; x_min(this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim());</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// upper bound coordinates</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    std::vector&lt;double&gt; x_max(this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim());</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// Function value at each of the &quot;nodes&quot; for the &quot;element&quot;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    std::vector&lt;double&gt; values(this-&gt;<a class="code" href="a00164.html#afebd6ba0f69d6963690b33ee6033b682">n_coeffs</a>());</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">// Use the indices to populate the x_min, etc. structures</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    this-&gt;<a class="code" href="a00164.html#aad6abf565d0996abfcb7b77b785cad40">compute_interval_values</a>( indices, x_min, x_max, values );</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// Now evaluate the interpolant</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00164.html#a9af6a0dc8344714bc920c465c800aec4">eval_interpolant</a>( x_min, x_max, values, domainVector );</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  }</div>
-<div class="ttc" id="a00164_html_aa36b692e66fbedcc8fb4af9498255b22"><div class="ttname"><a href="a00164.html#aa36b692e66fbedcc8fb4af9498255b22">QUESO::LinearLagrangeInterpolationSurrogate::compute_interval_indices</a></div><div class="ttdeci">void compute_interval_indices(const V &amp;domainVector, std::vector&lt; unsigned int &gt; &amp;indices) const </div><div class="ttdoc">Helper function to get lower bound indices for each dimension. </div><div class="ttdef"><b>Definition:</b> <a href="a00687_source.html#l00066">LinearLagrangeInterpolationSurrogate.C:66</a></div></div>
-<div class="ttc" id="a00164_html_a9af6a0dc8344714bc920c465c800aec4"><div class="ttname"><a href="a00164.html#a9af6a0dc8344714bc920c465c800aec4">QUESO::LinearLagrangeInterpolationSurrogate::eval_interpolant</a></div><div class="ttdeci">double eval_interpolant(const std::vector&lt; double &gt; &amp;x_min, const std::vector&lt; double &gt; &amp;x_max, const std::vector&lt; double &gt; &amp;values, const V &amp;domainVector) const </div><div class="ttdoc">Evaluate multidimensional linear Lagrange interpolant. </div><div class="ttdef"><b>Definition:</b> <a href="a00687_source.html#l00139">LinearLagrangeInterpolationSurrogate.C:139</a></div></div>
-<div class="ttc" id="a00164_html_aad6abf565d0996abfcb7b77b785cad40"><div class="ttname"><a href="a00164.html#aad6abf565d0996abfcb7b77b785cad40">QUESO::LinearLagrangeInterpolationSurrogate::compute_interval_values</a></div><div class="ttdeci">void compute_interval_values(const std::vector&lt; unsigned int &gt; &amp;indices, std::vector&lt; double &gt; &amp;x_min, std::vector&lt; double &gt; &amp;x_max, std::vector&lt; double &gt; &amp;values) const </div><div class="ttdoc">Helper function to populate bounding values for the intervals in each dimension. </div><div class="ttdef"><b>Definition:</b> <a href="a00687_source.html#l00083">LinearLagrangeInterpolationSurrogate.C:83</a></div></div>
-<div class="ttc" id="a00164_html_afebd6ba0f69d6963690b33ee6033b682"><div class="ttname"><a href="a00164.html#afebd6ba0f69d6963690b33ee6033b682">QUESO::LinearLagrangeInterpolationSurrogate::n_coeffs</a></div><div class="ttdeci">unsigned int n_coeffs() const </div><div class="ttdoc">The number of coeffs for interpolating. </div><div class="ttdef"><b>Definition:</b> <a href="a00677_source.html#l00060">LinearLagrangeInterpolationSurrogate.h:60</a></div></div>
-<div class="ttc" id="a00144_html_a849caf0fc4f3846233255047bc5f8525"><div class="ttname"><a href="a00144.html#a849caf0fc4f3846233255047bc5f8525">QUESO::InterpolationSurrogateBase::m_data</a></div><div class="ttdeci">const InterpolationSurrogateData&lt; V, M &gt; &amp; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00670_source.html#l00062">InterpolationSurrogateBase.h:62</a></div></div>
+<p>References <a class="el" href="a00372_source.html#l00134">m_inDebugMode</a>.</p>
+<div class="fragment"><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;{</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00164.html#a3384d3fc1a1058fce9191b0d74653911">m_inDebugMode</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
+<div class="ttc" id="a00164_html_a3384d3fc1a1058fce9191b0d74653911"><div class="ttname"><a href="a00164.html#a3384d3fc1a1058fce9191b0d74653911">QUESO::Matrix::m_inDebugMode</a></div><div class="ttdeci">bool m_inDebugMode</div><div class="ttdoc">Flag for either or not QUESO is in debug mode. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00134">Matrix.h:134</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a04e316834a5e021d1231a20881849e10"></a>
+<a class="anchor" id="a4b6bdbf50356e19e845d6134ce435ef0"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::lagrange_poly </td>
+          <td class="memname">bool QUESO::Matrix::getPrintHorizontally </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>x0</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>x1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>index</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Evaluate a 1-D Lagrange polynomial at point x. </p>
-<p>index tells us which of the two Lagrange functions to use. index must be 0 or 1. </p>
+<p>Checks if matrix will be is printed horizontally. </p>
 
-<p>Definition at line <a class="el" href="a00687_source.html#l00209">209</a> of file <a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a>.</p>
+<p>Definition at line <a class="el" href="a00421_source.html#l00077">77</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
 
-<p>References <a class="el" href="a00340_source.html#l00132">queso_assert</a>, <a class="el" href="a00340_source.html#l00150">queso_assert_greater_equal</a>, and <a class="el" href="a00340_source.html#l00147">queso_assert_less_equal</a>.</p>
-<div class="fragment"><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  {</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="comment">// Make sure we&#39;re trying to interpolate between the given points</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <a class="code" href="a00340.html#a73fd5305f6bc49b50fa21d9d9742a157">queso_assert_less_equal</a>( x, x1 );</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <a class="code" href="a00340.html#a71e713c1171a8e48e343937f4e877e93">queso_assert_greater_equal</a>( x, x0 );</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="comment">// Make sure index is either 0 or 1</span></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <a class="code" href="a00340.html#a95f9887ed9b637efb5b71f1df7d6bc4d">queso_assert</a>( (index == 0) || (index == 1) );</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordtype">double</span> value = 0.0;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">if</span>( index == 0 )</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      value = (x-x1)/(x0-x1);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;      value = (x-x0)/(x1-x0);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  }</div>
-<div class="ttc" id="a00340_html_a73fd5305f6bc49b50fa21d9d9742a157"><div class="ttname"><a href="a00340.html#a73fd5305f6bc49b50fa21d9d9742a157">queso_assert_less_equal</a></div><div class="ttdeci">#define queso_assert_less_equal(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00147">asserts.h:147</a></div></div>
-<div class="ttc" id="a00340_html_a71e713c1171a8e48e343937f4e877e93"><div class="ttname"><a href="a00340.html#a71e713c1171a8e48e343937f4e877e93">queso_assert_greater_equal</a></div><div class="ttdeci">#define queso_assert_greater_equal(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00150">asserts.h:150</a></div></div>
-<div class="ttc" id="a00340_html_a95f9887ed9b637efb5b71f1df7d6bc4d"><div class="ttname"><a href="a00340.html#a95f9887ed9b637efb5b71f1df7d6bc4d">queso_assert</a></div><div class="ttdeci">#define queso_assert(asserted)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00132">asserts.h:132</a></div></div>
+<p>References <a class="el" href="a00372_source.html#l00131">m_printHorizontally</a>.</p>
+<div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00164.html#aebf5e44b149cf1454b2e12995d9f8b6b">m_printHorizontally</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
+<div class="ttc" id="a00164_html_aebf5e44b149cf1454b2e12995d9f8b6b"><div class="ttname"><a href="a00164.html#aebf5e44b149cf1454b2e12995d9f8b6b">QUESO::Matrix::m_printHorizontally</a></div><div class="ttdeci">bool m_printHorizontally</div><div class="ttdoc">Flag for either or not print this matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00131">Matrix.h:131</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="afebd6ba0f69d6963690b33ee6033b682"></a>
+<a class="anchor" id="ae01c72255466cd95201bb4c7f07e1b83"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00162.html">Map</a> &amp; QUESO::Matrix::map </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00421_source.html#l00054">54</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
+
+<p>References <a class="el" href="a00372_source.html#l00121">m_map</a>.</p>
+
+<p>Referenced by <a class="el" href="a00431_source.html#l02015">QUESO::TeuchosMatrix::internalSvd()</a>, <a class="el" href="a00409_source.html#l00532">QUESO::GslMatrix::internalSvd()</a>, <a class="el" href="a00409_source.html#l01994">QUESO::operator*()</a>, <a class="el" href="a00431_source.html#l00735">QUESO::TeuchosMatrix::svdSolve()</a>, <a class="el" href="a00409_source.html#l00487">QUESO::GslMatrix::svdSolve()</a>, and <a class="el" href="a00409_source.html#l00693">QUESO::GslMatrix::transpose()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00164.html#a95e307c6e1263d505af0a43c35f81a8b">m_map</a>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="comment">//return (const Map&amp;) (m_mat-&gt;Map());</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="ttc" id="a00164_html_a95e307c6e1263d505af0a43c35f81a8b"><div class="ttname"><a href="a00164.html#a95e307c6e1263d505af0a43c35f81a8b">QUESO::Matrix::m_map</a></div><div class="ttdeci">const Map m_map</div><div class="ttdoc">Mapping variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00121">Matrix.h:121</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ae3fadd056ae487979e8748844269497b"></a>
+<div class="memitem">
+<div class="memproto">
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::n_coeffs </td>
+          <td class="memname">virtual unsigned int QUESO::Matrix::numCols </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -673,46 +452,246 @@ template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>The number of coeffs for interpolating. </p>
+<p>Returns the number of columns local of the matrix. </p>
 
-<p>Definition at line <a class="el" href="a00677_source.html#l00060">60</a> of file <a class="el" href="a00677_source.html">LinearLagrangeInterpolationSurrogate.h</a>.</p>
+<p>Implemented in <a class="el" href="a00124.html#ad5005f168fe030468e834776afb1859b">QUESO::GslMatrix</a>, <a class="el" href="a00227.html#a6e3aa20d8c618718a9fa9cc56ff65b9f">QUESO::TeuchosMatrix</a>, and <a class="el" href="a00123.html#adf40ac42a23c600f46444e5a317b2f9c">QUESO::GslBlockMatrix</a>.</p>
 
-<p>References <a class="el" href="a00670_source.html#l00062">QUESO::InterpolationSurrogateBase&lt; V, M &gt;::m_data</a>.</p>
-<div class="fragment"><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    { <span class="keywordflow">return</span> std::pow( 2, this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() ); };</div>
-<div class="ttc" id="a00144_html_a849caf0fc4f3846233255047bc5f8525"><div class="ttname"><a href="a00144.html#a849caf0fc4f3846233255047bc5f8525">QUESO::InterpolationSurrogateBase::m_data</a></div><div class="ttdeci">const InterpolationSurrogateData&lt; V, M &gt; &amp; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00670_source.html#l00062">InterpolationSurrogateBase.h:62</a></div></div>
+</div>
+</div>
+<a class="anchor" id="a7d7310149ecf33ca68c5ef7a815093db"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int QUESO::Matrix::numOfProcsForStorage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00421_source.html#l00062">62</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
+
+<p>References <a class="el" href="a00420_source.html#l00131">QUESO::Map::Comm()</a>, <a class="el" href="a00372_source.html#l00121">m_map</a>, and <a class="el" href="a00422_source.html#l00133">QUESO::MpiComm::NumProc()</a>.</p>
+
+<p>Referenced by <a class="el" href="a00431_source.html#l01751">QUESO::TeuchosMatrix::subReadContents()</a>, <a class="el" href="a00409_source.html#l01841">QUESO::GslMatrix::subReadContents()</a>, <a class="el" href="a00431_source.html#l01885">QUESO::TeuchosMatrix::subWriteContents()</a>, and <a class="el" href="a00409_source.html#l01801">QUESO::GslMatrix::subWriteContents()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00164.html#a95e307c6e1263d505af0a43c35f81a8b">m_map</a>.<a class="code" href="a00162.html#aab4fc9911156b61c51f905849e3c9856">Comm</a>().<a class="code" href="a00179.html#aa780721ae0fdeabc5a15e04cb0cad964">NumProc</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="ttc" id="a00164_html_a95e307c6e1263d505af0a43c35f81a8b"><div class="ttname"><a href="a00164.html#a95e307c6e1263d505af0a43c35f81a8b">QUESO::Matrix::m_map</a></div><div class="ttdeci">const Map m_map</div><div class="ttdoc">Mapping variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00121">Matrix.h:121</a></div></div>
+<div class="ttc" id="a00162_html_aab4fc9911156b61c51f905849e3c9856"><div class="ttname"><a href="a00162.html#aab4fc9911156b61c51f905849e3c9856">QUESO::Map::Comm</a></div><div class="ttdeci">const MpiComm &amp; Comm() const </div><div class="ttdoc">Access function for MpiComm communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00131">Map.C:131</a></div></div>
+<div class="ttc" id="a00179_html_aa780721ae0fdeabc5a15e04cb0cad964"><div class="ttname"><a href="a00179.html#aa780721ae0fdeabc5a15e04cb0cad964">QUESO::MpiComm::NumProc</a></div><div class="ttdeci">int NumProc() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00133">MpiComm.C:133</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a19a3a94363d5a7d03445da44bf0449a1"></a>
+<a class="anchor" id="acda1fae13ff41264a11510f633d972be"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::singleToCoords </td>
+          <td class="memname">virtual unsigned int QUESO::Matrix::numRowsGlobal </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>global</em>, </td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of rows global of the matrix. </p>
+
+<p>Implemented in <a class="el" href="a00124.html#ac97f38374fae17c60dd508f0a246496a">QUESO::GslMatrix</a>, <a class="el" href="a00227.html#a2e0cc4998dfb5c3d3de7efaec012b87f">QUESO::TeuchosMatrix</a>, and <a class="el" href="a00123.html#aff3ceb080aeb936e36d9eb7cab2b8068">QUESO::GslBlockMatrix</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac5b08947e3a1830180ab32739f236d0c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
         <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>indices</em>&#160;</td>
+          <td class="memname">virtual unsigned int QUESO::Matrix::numRowsLocal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of rows local of the matrix. </p>
+
+<p>Implemented in <a class="el" href="a00124.html#ab5ec937a9fd439eef1a87e12c0dbccb4">QUESO::GslMatrix</a>, <a class="el" href="a00227.html#a78a5b262967d31e6171aadd292e77395">QUESO::TeuchosMatrix</a>, and <a class="el" href="a00123.html#a37c63ed8b18585d58c626f49c0849ca7">QUESO::GslBlockMatrix</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae2a1ec7b27cc8ae0ffb7a5c91bfec8fc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
         <tr>
+          <td class="memname">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::Matrix::print </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print this matrix. </p>
+
+<p>Implemented in <a class="el" href="a00124.html#a4f5f3689f1c013fa9042ea0177d8b020">QUESO::GslMatrix</a>, <a class="el" href="a00227.html#a3f1a1e4d74f39bcef06cd1fc91a58656">QUESO::TeuchosMatrix</a>, and <a class="el" href="a00123.html#aa752584b62c19653b35c50874ff402c2">QUESO::GslBlockMatrix</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0fa94aaee496541e72d527b98af57bae"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::Matrix::setInDebugMode </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines whether <a class="el" href="a00674.html">QUESO</a> will run through this class in debug mode. </p>
+
+<p>Definition at line <a class="el" href="a00421_source.html#l00084">84</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
+
+<p>References <a class="el" href="a00372_source.html#l00134">m_inDebugMode</a>.</p>
+<div class="fragment"><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;{</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="a00164.html#a3384d3fc1a1058fce9191b0d74653911">m_inDebugMode</a> = value;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="ttc" id="a00164_html_a3384d3fc1a1058fce9191b0d74653911"><div class="ttname"><a href="a00164.html#a3384d3fc1a1058fce9191b0d74653911">QUESO::Matrix::m_inDebugMode</a></div><div class="ttdeci">bool m_inDebugMode</div><div class="ttdoc">Flag for either or not QUESO is in debug mode. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00134">Matrix.h:134</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a1f48b60a98b211770f92d42441f51c35"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::Matrix::setPrintHorizontally </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines whether the matrix should be printed horizontally. </p>
+
+<p>Definition at line <a class="el" href="a00421_source.html#l00069">69</a> of file <a class="el" href="a00421_source.html">Matrix.C</a>.</p>
+
+<p>References <a class="el" href="a00372_source.html#l00131">m_printHorizontally</a>.</p>
+<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="a00164.html#aebf5e44b149cf1454b2e12995d9f8b6b">m_printHorizontally</a> = value;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<div class="ttc" id="a00164_html_aebf5e44b149cf1454b2e12995d9f8b6b"><div class="ttname"><a href="a00164.html#aebf5e44b149cf1454b2e12995d9f8b6b">QUESO::Matrix::m_printHorizontally</a></div><div class="ttdeci">bool m_printHorizontally</div><div class="ttdoc">Flag for either or not print this matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00131">Matrix.h:131</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a11cb54db37379985df41e44e410e857f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::Matrix::zeroLower </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>includeDiagonal</em> = <code>false</code></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets to zero all the elements bellow (including or not) the diagonal of the matrix. </p>
+
+<p>Implemented in <a class="el" href="a00124.html#a16df37ab8ed83c20524bc846307af3da">QUESO::GslMatrix</a>, <a class="el" href="a00227.html#ab7c5e29da5ac4d1e82015cf91171d4c0">QUESO::TeuchosMatrix</a>, and <a class="el" href="a00123.html#a7ddb5948caf244e1063b21c430b4721b">QUESO::GslBlockMatrix</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0c2624bc26684a9a119252fcc0401871"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::Matrix::zeroUpper </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>includeDiagonal</em> = <code>false</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets to zero all the elements above (including or not) the diagonal of the matrix. </p>
+
+<p>Implemented in <a class="el" href="a00124.html#a339544c96dcdc176cc629fc326762832">QUESO::GslMatrix</a>, <a class="el" href="a00227.html#ad4ebc8fd7d602eaa7178819d92e86556">QUESO::TeuchosMatrix</a>, and <a class="el" href="a00123.html#a9490f3cefc7f10d701fe5cd45f297396">QUESO::GslBlockMatrix</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a247fb0fc0b87fecdee054bb4660b68e8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00036.html">BaseEnvironment</a>&amp; QUESO::Matrix::m_env</td>
         </tr>
       </table>
   </td>
@@ -722,61 +701,49 @@ template&lt;class V , class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Inverse of map computed in coordsToSingle. </p>
+<p><a class="el" href="a00674.html">QUESO</a> environment variable. </p>
 
-<p>Definition at line <a class="el" href="a00687_source.html#l00177">177</a> of file <a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a>.</p>
+<p>Definition at line <a class="el" href="a00372_source.html#l00116">116</a> of file <a class="el" href="a00372_source.html">Matrix.h</a>.</p>
 
-<p>References <a class="el" href="a00684_source.html#l00068">QUESO::InterpolationSurrogateHelper::globalToCoord()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  {</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> local_dim = 2;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    std::vector&lt;unsigned int&gt; n_points( this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim(), local_dim );</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="comment">/* We&#39;re abusing this function as it does what we need to with local_dim = 2</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">       for all entries of n_points. */</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="a00148.html#a80a0ec679c1ef8a72d6182e23e751213">InterpolationSurrogateHelper::globalToCoord</a>( global, n_points, indices );</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  }</div>
-<div class="ttc" id="a00148_html_a80a0ec679c1ef8a72d6182e23e751213"><div class="ttname"><a href="a00148.html#a80a0ec679c1ef8a72d6182e23e751213">QUESO::InterpolationSurrogateHelper::globalToCoord</a></div><div class="ttdeci">static void globalToCoord(unsigned int global, const std::vector&lt; unsigned int &gt; &amp;n_points, std::vector&lt; unsigned int &gt; &amp;coord_indices)</div><div class="ttdoc">Inverse of coordToGlobal map. </div><div class="ttdef"><b>Definition:</b> <a href="a00684_source.html#l00068">InterpolationSurrogateHelper.C:68</a></div></div>
-<div class="ttc" id="a00144_html_a849caf0fc4f3846233255047bc5f8525"><div class="ttname"><a href="a00144.html#a849caf0fc4f3846233255047bc5f8525">QUESO::InterpolationSurrogateBase::m_data</a></div><div class="ttdeci">const InterpolationSurrogateData&lt; V, M &gt; &amp; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00670_source.html#l00062">InterpolationSurrogateBase.h:62</a></div></div>
-</div><!-- fragment -->
+<p>Referenced by <a class="el" href="a00431_source.html#l00568">QUESO::TeuchosMatrix::chol()</a>, <a class="el" href="a00409_source.html#l00408">QUESO::GslMatrix::chol()</a>, <a class="el" href="a00431_source.html#l00442">QUESO::TeuchosMatrix::determinant()</a>, <a class="el" href="a00409_source.html#l01038">QUESO::GslMatrix::determinant()</a>, <a class="el" href="a00421_source.html#l00047">env()</a>, <a class="el" href="a00409_source.html#l01651">QUESO::GslMatrix::getColumn()</a>, <a class="el" href="a00431_source.html#l01242">QUESO::TeuchosMatrix::getColumn()</a>, <a class="el" href="a00409_source.html#l01638">QUESO::GslMatrix::getRow()</a>, <a class="el" href="a00431_source.html#l01289">QUESO::TeuchosMatrix::getRow()</a>, <a class="el" href="a00408_source.html#l00029">QUESO::GslBlockMatrix::GslBlockMatrix()</a>, <a class="el" href="a00431_source.html#l02015">QUESO::TeuchosMatrix::internalSvd()</a>, <a class="el" href="a00409_source.html#l00532">QUESO::GslMatrix::internalSvd()</a>, <a class="el" href="a00431_source.html#l00392">QUESO::TeuchosMatrix::inverse()</a>, <a class="el" href="a00409_source.html#l00713">QUESO::GslMatrix::inverse()</a>, <a class="el" href="a00431_source.html#l00778">QUESO::TeuchosMatrix::invertMultiply()</a>, <a class="el" href="a00409_source.html#l01222">QUESO::GslMatrix::invertMultiply()</a>, <a class="el" href="a00431_source.html#l00928">QUESO::TeuchosMatrix::invertMultiplyForceLU()</a>, <a class="el" href="a00409_source.html#l01373">QUESO::GslMatrix::invertMultiplyForceLU()</a>, <a class="el" href="a00409_source.html#l01446">QUESO::GslMatrix::largestEigen()</a>, <a class="el" href="a00431_source.html#l00491">QUESO::TeuchosMatrix::lnDeterminant()</a>, <a class="el" href="a00409_source.html#l01079">QUESO::GslMatrix::lnDeterminant()</a>, <a class="el" href="a00431_source.html#l00765">QUESO::TeuchosMatrix::multiply()</a>, <a class="el" href="a00409_source.html#l01155">QUESO::GslMatrix::multiply()</a>, <a class="el" href="a00431_source.html#l00335">QUESO::TeuchosMatrix::rank()</a>, <a class="el" href="a00409_source.html#l01120">QUESO::GslMatrix::rank()</a>, <a class="el" href="a00409_source.html#l01515">QUESO::GslMatrix::smallestEigen()</a>, <a class="el" href="a00431_source.html#l01751">QUESO::TeuchosMatrix::subReadContents()</a>, <a class="el" href="a00409_source.html#l01841">QUESO::GslMatrix::subReadContents()</a>, <a class="el" href="a00431_source.html#l01885">QUESO::TeuchosMatrix::subWriteContents()</a>, <a class="el" href="a00409_source.html#l01801">QUESO::GslMatrix::subWriteContents()</a>, <a class="el" href="a00431_source.html#l00667">QUESO::TeuchosMatrix::svdSolve()</a>, <a class="el" href="a00409_source.html#l00456">QUESO::GslMatrix::svdSolve()</a>, <a class="el" href="a00431_source.html#l00372">QUESO::TeuchosMatrix::transpose()</a>, and <a class="el" href="a00409_source.html#l00693">QUESO::GslMatrix::transpose()</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="ab63b8990c31b42d3e3c1cb03e39d6bb7"></a>
+<a class="anchor" id="a3384d3fc1a1058fce9191b0d74653911"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="a00164.html">QUESO::LinearLagrangeInterpolationSurrogate</a>&lt; V, M &gt;::tensor_product_lagrange </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>x_min</em>, </td>
+          <td class="memname">bool QUESO::Matrix::m_inDebugMode</td>
         </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flag for either or not <a class="el" href="a00674.html">QUESO</a> is in debug mode. </p>
+
+<p>Definition at line <a class="el" href="a00372_source.html#l00134">134</a> of file <a class="el" href="a00372_source.html">Matrix.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00421_source.html#l00099">base_copy()</a>, <a class="el" href="a00421_source.html#l00092">getInDebugMode()</a>, <a class="el" href="a00431_source.html#l00791">QUESO::TeuchosMatrix::invertMultiply()</a>, <a class="el" href="a00409_source.html#l01234">QUESO::GslMatrix::invertMultiply()</a>, and <a class="el" href="a00421_source.html#l00084">setInDebugMode()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a95e307c6e1263d505af0a43c35f81a8b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
         <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>x_max</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>indices</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>domainVector</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="memname">const <a class="el" href="a00162.html">Map</a> QUESO::Matrix::m_map</td>
         </tr>
       </table>
   </td>
@@ -786,40 +753,71 @@ template&lt;class V , class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Compute multidimensional Lagrange polynomial as tensor product of 1D polynomials. </p>
-<p><img class="formulaInl" alt="$ N_{ijkl...} (\xi, \eta, \zeta,...) = N_i(\eta) N_j(\eta) N_k(\zeta) ... $" src="form_171.png"/> The indices vector contains the i,j,k,... values </p>
+<p>Mapping variable. </p>
 
-<p>Definition at line <a class="el" href="a00687_source.html#l00188">188</a> of file <a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a>.</p>
+<p>Definition at line <a class="el" href="a00372_source.html#l00121">121</a> of file <a class="el" href="a00372_source.html">Matrix.h</a>.</p>
 
-<p>References <a class="el" href="a00340_source.html#l00135">queso_assert_equal_to</a>.</p>
-<div class="fragment"><div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  {</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( x_min.size(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( x_max.size(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( indices.size(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>( domainVector.sizeGlobal(), this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim() );</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keywordtype">double</span> value = 1.0;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; this-&gt;<a class="code" href="a00144.html#a849caf0fc4f3846233255047bc5f8525">m_data</a>.dim(); d++ )</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      {</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        value *= this-&gt;<a class="code" href="a00164.html#a04e316834a5e021d1231a20881849e10">lagrange_poly</a>( x_min[d], x_max[d], domainVector[d], indices[d] );</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      }</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  }</div>
-<div class="ttc" id="a00164_html_a04e316834a5e021d1231a20881849e10"><div class="ttname"><a href="a00164.html#a04e316834a5e021d1231a20881849e10">QUESO::LinearLagrangeInterpolationSurrogate::lagrange_poly</a></div><div class="ttdeci">double lagrange_poly(double x0, double x1, double x, unsigned int index) const </div><div class="ttdoc">Evaluate a 1-D Lagrange polynomial at point x. </div><div class="ttdef"><b>Definition:</b> <a href="a00687_source.html#l00209">LinearLagrangeInterpolationSurrogate.C:209</a></div></div>
-<div class="ttc" id="a00340_html_a67de25b43faabd8d10a0827676e54a49"><div class="ttname"><a href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a></div><div class="ttdeci">#define queso_assert_equal_to(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00135">asserts.h:135</a></div></div>
-<div class="ttc" id="a00144_html_a849caf0fc4f3846233255047bc5f8525"><div class="ttname"><a href="a00144.html#a849caf0fc4f3846233255047bc5f8525">QUESO::InterpolationSurrogateBase::m_data</a></div><div class="ttdeci">const InterpolationSurrogateData&lt; V, M &gt; &amp; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00670_source.html#l00062">InterpolationSurrogateBase.h:62</a></div></div>
-</div><!-- fragment -->
+<p>Referenced by <a class="el" href="a00431_source.html#l00442">QUESO::TeuchosMatrix::determinant()</a>, <a class="el" href="a00409_source.html#l01038">QUESO::GslMatrix::determinant()</a>, <a class="el" href="a00409_source.html#l01651">QUESO::GslMatrix::getColumn()</a>, <a class="el" href="a00431_source.html#l01242">QUESO::TeuchosMatrix::getColumn()</a>, <a class="el" href="a00409_source.html#l01638">QUESO::GslMatrix::getRow()</a>, <a class="el" href="a00431_source.html#l01289">QUESO::TeuchosMatrix::getRow()</a>, <a class="el" href="a00431_source.html#l00392">QUESO::TeuchosMatrix::inverse()</a>, <a class="el" href="a00409_source.html#l00713">QUESO::GslMatrix::inverse()</a>, <a class="el" href="a00431_source.html#l00778">QUESO::TeuchosMatrix::invertMultiply()</a>, <a class="el" href="a00409_source.html#l01222">QUESO::GslMatrix::invertMultiply()</a>, <a class="el" href="a00431_source.html#l00928">QUESO::TeuchosMatrix::invertMultiplyForceLU()</a>, <a class="el" href="a00409_source.html#l01373">QUESO::GslMatrix::invertMultiplyForceLU()</a>, <a class="el" href="a00409_source.html#l01446">QUESO::GslMatrix::largestEigen()</a>, <a class="el" href="a00431_source.html#l00491">QUESO::TeuchosMatrix::lnDeterminant()</a>, <a class="el" href="a00409_source.html#l01079">QUESO::GslMatrix::lnDeterminant()</a>, <a class="el" href="a00421_source.html#l00054">map()</a>, <a class="el" href="a00431_source.html#l00765">QUESO::TeuchosMatrix::multiply()</a>, <a class="el" href="a00409_source.html#l01155">QUESO::GslMatrix::multiply()</a>, <a class="el" href="a00421_source.html#l00062">numOfProcsForStorage()</a>, <a class="el" href="a00409_source.html#l01515">QUESO::GslMatrix::smallestEigen()</a>, and <a class="el" href="a00431_source.html#l00372">QUESO::TeuchosMatrix::transpose()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adb42d344c0b2859c3b4a4f5a3dd7875f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00162.html">Map</a>&amp; QUESO::Matrix::m_map</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mapping variable. </p>
+
+<p>Definition at line <a class="el" href="a00372_source.html#l00126">126</a> of file <a class="el" href="a00372_source.html">Matrix.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aebf5e44b149cf1454b2e12995d9f8b6b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool QUESO::Matrix::m_printHorizontally</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flag for either or not print this matrix. </p>
+
+<p>Definition at line <a class="el" href="a00372_source.html#l00131">131</a> of file <a class="el" href="a00372_source.html">Matrix.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00421_source.html#l00099">base_copy()</a>, <a class="el" href="a00421_source.html#l00077">getPrintHorizontally()</a>, <a class="el" href="a00431_source.html#l01721">QUESO::TeuchosMatrix::print()</a>, <a class="el" href="a00409_source.html#l01772">QUESO::GslMatrix::print()</a>, and <a class="el" href="a00421_source.html#l00069">setPrintHorizontally()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/surrogates/inc/<a class="el" href="a00677_source.html">LinearLagrangeInterpolationSurrogate.h</a></li>
-<li>src/surrogates/src/<a class="el" href="a00687_source.html">LinearLagrangeInterpolationSurrogate.C</a></li>
+<li>src/core/inc/<a class="el" href="a00372_source.html">Matrix.h</a></li>
+<li>src/core/src/<a class="el" href="a00421_source.html">Matrix.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:16 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:51 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -1,2 +1,3 @@
-<map id="src/basic/inc/VectorSequence.h" name="src/basic/inc/VectorSequence.h">
+<map id="SequenceStatisticalOptions" name="SequenceStatisticalOptions">
+<area shape="rect" id="node2" href="$a00215.html" title="A templated class that stores default statistical options for a sequence of vectors, e.g. a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence. " alt="" coords="35,5,157,32"/>
 </map>

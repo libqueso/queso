@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/BasicPdfsBase.h Source File</title>
+<title>queso-0.56.2: src/core/inc/AlgorithmFactory.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">BasicPdfsBase.h</div>  </div>
+<div class="title">AlgorithmFactory.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00342.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,45 +75,107 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_BASIC_PDFS_BASE_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_BASIC_PDFS_BASE_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_ALGORITHM_FACTORY_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_ALGORITHM_FACTORY_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00052.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00052.html">BasicPdfsBase</a></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="a00052.html#a2ca589bc1e025d7e84a0b029b4c610a1">BasicPdfsBase</a>(<span class="keywordtype">int</span> worldRank);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Factory.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/Algorithm.h&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>QUESO</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="a00011.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00011.html">AlgorithmFactory</a> : <span class="keyword">public</span> <a class="code" href="a00082.html">Factory</a>&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00011.html#a05fb01ea7c3ea0239daded71fd2bb69a">   48</a></span>&#160;  <a class="code" href="a00011.html#a05fb01ea7c3ea0239daded71fd2bb69a">AlgorithmFactory</a>(<span class="keyword">const</span> std::string &amp; name)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    : <a class="code" href="a00082.html">Factory</a>&lt;<a class="code" href="a00010.html">Algorithm</a>&lt;<a class="code" href="a00126.html">GslVector</a>, <a class="code" href="a00124.html">GslMatrix</a>&gt; &gt;(name)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  {}</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00052.html#a4e0421cd14da7b04d4242318c7de5ece">~BasicPdfsBase</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00052.html#a7a4df6a4b2147eeca4efb22db0ae1b8b">betaPdfActualValue</a> (<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00052.html#ae5c0c0a14b0f5b89f64e0cd9c0a1b9fd">gammaPdfActualValue</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> a,     <span class="keywordtype">double</span> b   ) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00052.html#a67e06f7bb30579581db1a7b9b3507d1c">   65</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="a00052.html#a67e06f7bb30579581db1a7b9b3507d1c">m_worldRank</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00011.html#a3403ec05fed50512930a20df99c0e3dc">   55</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00011.html#a3403ec05fed50512930a20df99c0e3dc">~AlgorithmFactory</a>() {}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00011.html#a50e34f23bd1e702bdf0c29e9fa0305c3">   57</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00011.html#a50e34f23bd1e702bdf0c29e9fa0305c3">set_environment</a>(<span class="keyword">const</span> <a class="code" href="a00036.html">BaseEnvironment</a> &amp; env)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">m_env</a> = &amp;env;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="a00011.html#a40cd12ce1a1230bbf4a3e729476de813">   62</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00011.html#a40cd12ce1a1230bbf4a3e729476de813">set_tk</a>(<span class="keyword">const</span> <a class="code" href="a00046.html">BaseTKGroup&lt;GslVector, GslMatrix&gt;</a> &amp; tk)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">m_tk</a> = &amp;tk;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="a00052.html#a2ca589bc1e025d7e84a0b029b4c610a1">BasicPdfsBase</a>();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;};</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif // UQ_BASIC_PDFS_BASE_H</span></div>
-<div class="ttc" id="a00052_html_a4e0421cd14da7b04d4242318c7de5ece"><div class="ttname"><a href="a00052.html#a4e0421cd14da7b04d4242318c7de5ece">QUESO::BasicPdfsBase::~BasicPdfsBase</a></div><div class="ttdeci">virtual ~BasicPdfsBase()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00039">BasicPdfsBase.C:39</a></div></div>
-<div class="ttc" id="a00052_html_ae5c0c0a14b0f5b89f64e0cd9c0a1b9fd"><div class="ttname"><a href="a00052.html#ae5c0c0a14b0f5b89f64e0cd9c0a1b9fd">QUESO::BasicPdfsBase::gammaPdfActualValue</a></div><div class="ttdeci">virtual double gammaPdfActualValue(double x, double a, double b) const =0</div><div class="ttdoc">TODO: Actual value of the Gamma PDF (calculated via either Boost or GSL libraries). See template specialization. </div></div>
-<div class="ttc" id="a00052_html_a7a4df6a4b2147eeca4efb22db0ae1b8b"><div class="ttname"><a href="a00052.html#a7a4df6a4b2147eeca4efb22db0ae1b8b">QUESO::BasicPdfsBase::betaPdfActualValue</a></div><div class="ttdeci">virtual double betaPdfActualValue(double x, double alpha, double beta) const =0</div><div class="ttdoc">TODO: Actual value of the Beta PDF (calculated via either Boost or GSL libraries). See template specialization. </div></div>
-<div class="ttc" id="a00052_html"><div class="ttname"><a href="a00052.html">QUESO::BasicPdfsBase</a></div><div class="ttdoc">TODO: Base class for basic PDFs (via either GSL or Boost). </div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00044">BasicPdfsBase.h:44</a></div></div>
-<div class="ttc" id="a00052_html_a2ca589bc1e025d7e84a0b029b4c610a1"><div class="ttname"><a href="a00052.html#a2ca589bc1e025d7e84a0b029b4c610a1">QUESO::BasicPdfsBase::BasicPdfsBase</a></div><div class="ttdeci">BasicPdfsBase()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00029">BasicPdfsBase.C:29</a></div></div>
-<div class="ttc" id="a00052_html_a67e06f7bb30579581db1a7b9b3507d1c"><div class="ttname"><a href="a00052.html#a67e06f7bb30579581db1a7b9b3507d1c">QUESO::BasicPdfsBase::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00065">BasicPdfsBase.h:65</a></div></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00212.html">SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt;</a> &gt;::Type <a class="code" href="a00011.html#ad80b6a79cf9888684ed9252ebeb3d1e7">build_algorithm</a>() = 0;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">   70</a></span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="a00036.html">BaseEnvironment</a> * <a class="code" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">m_env</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">   71</a></span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="a00046.html">BaseTKGroup&lt;GslVector, GslMatrix&gt;</a> * <a class="code" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">m_tk</a>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00212.html">SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt;</a> &gt;::Type <a class="code" href="a00011.html#a54772a660e78fbe4f9d2eadb90239bfa">create</a>();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<a class="code" href="a00212.html">SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt;</a> &gt;::Type</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00011.html#a54772a660e78fbe4f9d2eadb90239bfa">   83</a></span>&#160;<a class="code" href="a00011.html#a54772a660e78fbe4f9d2eadb90239bfa">AlgorithmFactory::create</a>()</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  queso_require_msg(<a class="code" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">m_env</a>, <span class="stringliteral">&quot;ERROR: must call set_environment() before building alg!&quot;</span>);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  queso_require_msg(<a class="code" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">m_tk</a>, <span class="stringliteral">&quot;ERROR: must call set_tk() before building alg!&quot;</span>);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <a class="code" href="a00212.html">SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt;</a> &gt;::Type new_alg = this-&gt;<a class="code" href="a00011.html#ad80b6a79cf9888684ed9252ebeb3d1e7">build_algorithm</a>();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  queso_assert(new_alg);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordflow">return</span> new_alg;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> DerivedAlgorithm&gt;</div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="a00012.html">  101</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00012.html">AlgorithmFactoryImp</a> : <span class="keyword">public</span> <a class="code" href="a00011.html">AlgorithmFactory</a></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="a00012.html#a7951001eaac91bd6fae0b52765208323">  104</a></span>&#160;  <a class="code" href="a00012.html#a7951001eaac91bd6fae0b52765208323">AlgorithmFactoryImp</a>(<span class="keyword">const</span> std::string &amp; name)</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    : <a class="code" href="a00011.html">AlgorithmFactory</a>(name)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  {}</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="a00012.html#a6c469de6c32878ba2f0f5fe34b3f1bfa">  108</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00012.html#a6c469de6c32878ba2f0f5fe34b3f1bfa">~AlgorithmFactoryImp</a>() {}</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="a00012.html#a98919d573e99954714065c6788d252a2">  111</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00212.html">SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt;</a> &gt;::Type <a class="code" href="a00012.html#a98919d573e99954714065c6788d252a2">build_algorithm</a>()</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <a class="code" href="a00212.html">SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt;</a> &gt;::Type new_alg;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    new_alg.reset(<span class="keyword">new</span> DerivedAlgorithm(*(this-&gt;<a class="code" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">m_env</a>), *(this-&gt;<a class="code" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">m_tk</a>)));</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">return</span> new_alg;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;};</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;} <span class="comment">// namespace QUESO</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif // QUESO_ALGORITHM_FACTORY_H</span></div>
+<div class="ttc" id="a00124_html"><div class="ttname"><a href="a00124.html">QUESO::GslMatrix</a></div><div class="ttdoc">Class for matrix operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00360_source.html#l00049">GslMatrix.h:49</a></div></div>
+<div class="ttc" id="a00010_html"><div class="ttname"><a href="a00010.html">QUESO::Algorithm</a></div><div class="ttdef"><b>Definition:</b> <a href="a00479_source.html#l00035">Algorithm.h:35</a></div></div>
+<div class="ttc" id="a00011_html_a54772a660e78fbe4f9d2eadb90239bfa"><div class="ttname"><a href="a00011.html#a54772a660e78fbe4f9d2eadb90239bfa">QUESO::AlgorithmFactory::create</a></div><div class="ttdeci">virtual SharedPtr&lt; Algorithm&lt; GslVector, GslMatrix &gt; &gt;::Type create()</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00083">AlgorithmFactory.h:83</a></div></div>
+<div class="ttc" id="a00011_html_a3403ec05fed50512930a20df99c0e3dc"><div class="ttname"><a href="a00011.html#a3403ec05fed50512930a20df99c0e3dc">QUESO::AlgorithmFactory::~AlgorithmFactory</a></div><div class="ttdeci">virtual ~AlgorithmFactory()</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00055">AlgorithmFactory.h:55</a></div></div>
+<div class="ttc" id="a00011_html_a40cd12ce1a1230bbf4a3e729476de813"><div class="ttname"><a href="a00011.html#a40cd12ce1a1230bbf4a3e729476de813">QUESO::AlgorithmFactory::set_tk</a></div><div class="ttdeci">static void set_tk(const BaseTKGroup&lt; GslVector, GslMatrix &gt; &amp;tk)</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00062">AlgorithmFactory.h:62</a></div></div>
+<div class="ttc" id="a00012_html_a7951001eaac91bd6fae0b52765208323"><div class="ttname"><a href="a00012.html#a7951001eaac91bd6fae0b52765208323">QUESO::AlgorithmFactoryImp::AlgorithmFactoryImp</a></div><div class="ttdeci">AlgorithmFactoryImp(const std::string &amp;name)</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00104">AlgorithmFactory.h:104</a></div></div>
+<div class="ttc" id="a00011_html_a7c09ddf5b6b0fe08ec364c4807d57360"><div class="ttname"><a href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">QUESO::AlgorithmFactory::m_tk</a></div><div class="ttdeci">static const BaseTKGroup&lt; GslVector, GslMatrix &gt; * m_tk</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00071">AlgorithmFactory.h:71</a></div></div>
+<div class="ttc" id="a00012_html_a98919d573e99954714065c6788d252a2"><div class="ttname"><a href="a00012.html#a98919d573e99954714065c6788d252a2">QUESO::AlgorithmFactoryImp::build_algorithm</a></div><div class="ttdeci">virtual SharedPtr&lt; Algorithm&lt; GslVector, GslMatrix &gt; &gt;::Type build_algorithm()</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00111">AlgorithmFactory.h:111</a></div></div>
+<div class="ttc" id="a00082_html"><div class="ttname"><a href="a00082.html">QUESO::Factory</a></div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00043">Factory.h:43</a></div></div>
+<div class="ttc" id="a00011_html_ad80b6a79cf9888684ed9252ebeb3d1e7"><div class="ttname"><a href="a00011.html#ad80b6a79cf9888684ed9252ebeb3d1e7">QUESO::AlgorithmFactory::build_algorithm</a></div><div class="ttdeci">virtual SharedPtr&lt; Algorithm&lt; GslVector, GslMatrix &gt; &gt;::Type build_algorithm()=0</div></div>
+<div class="ttc" id="a00011_html_a05fb01ea7c3ea0239daded71fd2bb69a"><div class="ttname"><a href="a00011.html#a05fb01ea7c3ea0239daded71fd2bb69a">QUESO::AlgorithmFactory::AlgorithmFactory</a></div><div class="ttdeci">AlgorithmFactory(const std::string &amp;name)</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00048">AlgorithmFactory.h:48</a></div></div>
+<div class="ttc" id="a00126_html"><div class="ttname"><a href="a00126.html">QUESO::GslVector</a></div><div class="ttdoc">Class for vector operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00362_source.html#l00049">GslVector.h:49</a></div></div>
+<div class="ttc" id="a00012_html"><div class="ttname"><a href="a00012.html">QUESO::AlgorithmFactoryImp</a></div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00101">AlgorithmFactory.h:101</a></div></div>
+<div class="ttc" id="a00212_html"><div class="ttname"><a href="a00212.html">QUESO::SharedPtr</a></div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00067">SharedPtr.h:67</a></div></div>
+<div class="ttc" id="a00012_html_a6c469de6c32878ba2f0f5fe34b3f1bfa"><div class="ttname"><a href="a00012.html#a6c469de6c32878ba2f0f5fe34b3f1bfa">QUESO::AlgorithmFactoryImp::~AlgorithmFactoryImp</a></div><div class="ttdeci">virtual ~AlgorithmFactoryImp()</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00108">AlgorithmFactory.h:108</a></div></div>
+<div class="ttc" id="a00046_html"><div class="ttname"><a href="a00046.html">QUESO::BaseTKGroup</a></div><div class="ttdoc">This base class allows the representation of a transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00479_source.html#l00032">Algorithm.h:32</a></div></div>
+<div class="ttc" id="a00011_html"><div class="ttname"><a href="a00011.html">QUESO::AlgorithmFactory</a></div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00042">AlgorithmFactory.h:42</a></div></div>
+<div class="ttc" id="a00011_html_a50e34f23bd1e702bdf0c29e9fa0305c3"><div class="ttname"><a href="a00011.html#a50e34f23bd1e702bdf0c29e9fa0305c3">QUESO::AlgorithmFactory::set_environment</a></div><div class="ttdeci">static void set_environment(const BaseEnvironment &amp;env)</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00057">AlgorithmFactory.h:57</a></div></div>
+<div class="ttc" id="a00011_html_abf293c33d2fb0e5f17c8f2e6c95d9aa3"><div class="ttname"><a href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">QUESO::AlgorithmFactory::m_env</a></div><div class="ttdeci">static const BaseEnvironment * m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00070">AlgorithmFactory.h:70</a></div></div>
+<div class="ttc" id="a00036_html"><div class="ttname"><a href="a00036.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00198">Environment.h:198</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

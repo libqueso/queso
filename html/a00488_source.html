@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/misc/src/Fft.C Source File</title>
+<title>queso-0.56.2: src/stats/inc/ExponentialScalarCovarianceFunction.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_4a3d6721aef5231a3f41ae337e19a0ed.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_46dc4440eb70d1f1c8f4a63e21a98f76.html">stats</a></li><li class="navelem"><a class="el" href="dir_0f21e708b746168b296493cf5f1407d8.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Fft.C</div>  </div>
+<div class="title">ExponentialScalarCovarianceFunction.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00488.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,33 +75,62 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/Fft.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Constructor-------------------------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00085.html#a04fa27a65066c50e029c842fa1e3fe78">   31</a></span>&#160;<a class="code" href="a00085.html#a04fa27a65066c50e029c842fa1e3fe78">Fft&lt;T&gt;::Fft</a>(<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; env)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  :</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  m_env(env)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Destructor--------------------------------------------</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00085.html#a3dac972e69f606d201dee17db1e9216b">   38</a></span>&#160;<a class="code" href="a00085.html#a3dac972e69f606d201dee17db1e9216b">Fft&lt;T&gt;::~Fft</a>()</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00085.html">QUESO::Fft&lt;double&gt;</a>;</div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00085_html_a3dac972e69f606d201dee17db1e9216b"><div class="ttname"><a href="a00085.html#a3dac972e69f606d201dee17db1e9216b">QUESO::Fft::~Fft</a></div><div class="ttdeci">~Fft()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00488_source.html#l00038">Fft.C:38</a></div></div>
-<div class="ttc" id="a00085_html_a04fa27a65066c50e029c842fa1e3fe78"><div class="ttname"><a href="a00085.html#a04fa27a65066c50e029c842fa1e3fe78">QUESO::Fft::Fft</a></div><div class="ttdeci">Fft(const BaseEnvironment &amp;env)</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00488_source.html#l00031">Fft.C:31</a></div></div>
-<div class="ttc" id="a00085_html"><div class="ttname"><a href="a00085.html">QUESO::Fft&lt; double &gt;</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_EXP_SCALAR_COVARIANCE_FUNCTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_EXP_SCALAR_COVARIANCE_FUNCTION_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarCovarianceFunction.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Exponential class</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00081.html">   52</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00081.html">ExponentialScalarCovarianceFunction</a> : <span class="keyword">public</span> <a class="code" href="a00044.html">BaseScalarCovarianceFunction</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00081.html#a2b0393d92cd21365c2d76d250007ea9a">ExponentialScalarCovarianceFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;               <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00044.html#a703aa6a8e475adaface0ec514b48a5bc">basicDomainSet</a>,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;               <span class="keywordtype">double</span>                       sigma,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;               <span class="keywordtype">double</span>                       a);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00081.html#ac3eb24d0980491bd3e5bc718d304789c">~ExponentialScalarCovarianceFunction</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00081.html#ad65cfe1440c9045718bc57827d6fb551">value</a>(<span class="keyword">const</span> V&amp; domainVector1, <span class="keyword">const</span> V&amp; domainVector2) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00044.html">BaseScalarCovarianceFunction&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00044.html">BaseScalarCovarianceFunction&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00044.html">BaseScalarCovarianceFunction&lt;V,M&gt;::m_basicDomainSet</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="a00081.html#aece243cd9fbe9bdd7720b422c2f7513a">   79</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00081.html#aece243cd9fbe9bdd7720b422c2f7513a">m_sigma</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="a00081.html#a16940568b7c22abb6caf31ccfb505c16">   80</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00081.html#a16940568b7c22abb6caf31ccfb505c16">m_a</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif // UQ_EXP_SCALAR_COVARIANCE_FUNCTION_H</span></div>
+<div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">QUESO::BaseScalarCovarianceFunction</a></div><div class="ttdoc">A templated (base) class to accommodate scalar covariance functions (of random variables). </div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00053">ScalarCovarianceFunction.h:53</a></div></div>
+<div class="ttc" id="a00044_html_a703aa6a8e475adaface0ec514b48a5bc"><div class="ttname"><a href="a00044.html#a703aa6a8e475adaface0ec514b48a5bc">QUESO::BaseScalarCovarianceFunction::basicDomainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; basicDomainSet() const </div><div class="ttdoc">Domain set; access to private attribute m_basicDomainSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00630_source.html#l00070">ScalarCovarianceFunction.C:70</a></div></div>
+<div class="ttc" id="a00081_html_aece243cd9fbe9bdd7720b422c2f7513a"><div class="ttname"><a href="a00081.html#aece243cd9fbe9bdd7720b422c2f7513a">QUESO::ExponentialScalarCovarianceFunction::m_sigma</a></div><div class="ttdeci">double m_sigma</div><div class="ttdef"><b>Definition:</b> <a href="a00488_source.html#l00079">ExponentialScalarCovarianceFunction.h:79</a></div></div>
+<div class="ttc" id="a00081_html"><div class="ttname"><a href="a00081.html">QUESO::ExponentialScalarCovarianceFunction</a></div><div class="ttdoc">A class for exponential covariances. </div><div class="ttdef"><b>Definition:</b> <a href="a00488_source.html#l00052">ExponentialScalarCovarianceFunction.h:52</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00081_html_a16940568b7c22abb6caf31ccfb505c16"><div class="ttname"><a href="a00081.html#a16940568b7c22abb6caf31ccfb505c16">QUESO::ExponentialScalarCovarianceFunction::m_a</a></div><div class="ttdeci">double m_a</div><div class="ttdef"><b>Definition:</b> <a href="a00488_source.html#l00080">ExponentialScalarCovarianceFunction.h:80</a></div></div>
+<div class="ttc" id="a00081_html_ad65cfe1440c9045718bc57827d6fb551"><div class="ttname"><a href="a00081.html#ad65cfe1440c9045718bc57827d6fb551">QUESO::ExponentialScalarCovarianceFunction::value</a></div><div class="ttdeci">double value(const V &amp;domainVector1, const V &amp;domainVector2) const </div><div class="ttdoc">Calculates the value of the exponential covariance function. </div><div class="ttdef"><b>Definition:</b> <a href="a00576_source.html#l00072">ExponentialScalarCovarianceFunction.C:72</a></div></div>
+<div class="ttc" id="a00081_html_a2b0393d92cd21365c2d76d250007ea9a"><div class="ttname"><a href="a00081.html#a2b0393d92cd21365c2d76d250007ea9a">QUESO::ExponentialScalarCovarianceFunction::ExponentialScalarCovarianceFunction</a></div><div class="ttdeci">ExponentialScalarCovarianceFunction(const char *prefix, const VectorSet&lt; V, M &gt; &amp;basicDomainSet, double sigma, double a)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00576_source.html#l00031">ExponentialScalarCovarianceFunction.C:31</a></div></div>
+<div class="ttc" id="a00081_html_ac3eb24d0980491bd3e5bc718d304789c"><div class="ttname"><a href="a00081.html#ac3eb24d0980491bd3e5bc718d304789c">QUESO::ExponentialScalarCovarianceFunction::~ExponentialScalarCovarianceFunction</a></div><div class="ttdeci">virtual ~ExponentialScalarCovarianceFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00576_source.html#l00055">ExponentialScalarCovarianceFunction.C:55</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

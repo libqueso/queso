@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/BoostInputOptionsParser.h Source File</title>
+<title>queso-0.56.2: src/core/inc/BaseInputOptionsParser.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">BoostInputOptionsParser.h</div>  </div>
+<div class="title">BaseInputOptionsParser.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00345.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -74,85 +74,29 @@
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifndef DISABLE_BOOST_PROGRAM_OPTIONS</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef UQ_BOOST_INPUT_OPTIONS_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_BOOST_INPUT_OPTIONS_H</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/ScopedPtr.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/BaseInputOptionsParser.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00688.html">   33</a></span>&#160;<span class="keyword">namespace </span>boost</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00689.html">   35</a></span>&#160;  <span class="keyword">namespace </span>program_options</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">class </span>options_description;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">class </span>variables_map;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_BASE_INPUT_OPTIONS_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_BASE_INPUT_OPTIONS_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00037.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00037.html">BaseInputOptionsParser</a></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="a00037.html#a6221c1fa63072271320083ff0734b680">BaseInputOptionsParser</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00037.html#a26f3af2bd82a27bf735cc15af0c08cad">~BaseInputOptionsParser</a>();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;};</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00060.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00060.html">BoostInputOptionsParser</a> : <span class="keyword">public</span> <a class="code" href="a00037.html">BaseInputOptionsParser</a></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="a00060.html#ab800fbdd51b9f9d9f70ae39de4ff23e2">BoostInputOptionsParser</a>(<span class="keyword">const</span> std::string &amp; filename);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00060.html#ab800fbdd51b9f9d9f70ae39de4ff23e2">BoostInputOptionsParser</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00060.html#aed9b4f740edb64ec66ac1f0b9c59aa0c">~BoostInputOptionsParser</a>();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00060.html#a144aff755573bf83e09838a56fcd3019">scanInputFile</a>();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00060.html#ad909cd012af0bfbfb5afb6a417e5d108">registerOption</a>(std::string name, T defaultValue, std::string description);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00060.html#ad909cd012af0bfbfb5afb6a417e5d108">registerOption</a>(std::string name, std::string description);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00060.html#a772fb7333f7b2d9c4858d73125f62ef4">getOption</a>(std::string &amp; name, T &amp; value);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">friend</span> std::ostream &amp; <a class="code" href="a00060.html#a10039331fc41f11a277b4ea9f2f0e511">operator&lt;&lt;</a>(std::ostream &amp; os,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00060.html">BoostInputOptionsParser</a> &amp; parser);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="comment">// Needs to be a copy, not a reference; we don&#39;t want to force users</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">// to keep their strings around and non-temporary, and we don&#39;t have</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="comment">// a non-temporary &quot;&quot; string for internal use.</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="a00060.html#a4fc03761a65b68560cca3f1a660b2567">   94</a></span>&#160;  <span class="keyword">const</span> std::string <a class="code" href="a00060.html#a4fc03761a65b68560cca3f1a660b2567">m_filename</a>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="a00060.html#a4f8eff2f2a0a3a6b022999835f194d3a">   96</a></span>&#160;  ScopedPtr&lt;boost::program_options::options_description&gt;::Type <a class="code" href="a00060.html#a4f8eff2f2a0a3a6b022999835f194d3a">m_optionsDescription</a>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="a00060.html#a93f34247badabcd897e3f43d39fddc74">   97</a></span>&#160;  ScopedPtr&lt;boost::program_options::variables_map&gt;::Type <a class="code" href="a00060.html#a93f34247badabcd897e3f43d39fddc74">m_optionsMap</a>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="a00060.html#adddd328ea776462f23d9d3e5c731ae32">  100</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="a00060.html#adddd328ea776462f23d9d3e5c731ae32">m_scannedInputFile</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#endif  // UQ_BOOST_INPUT_OPTIONS_H</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif  // DISABLE_BOOST_PROGRAM_OPTIONS</span></div>
-<div class="ttc" id="a00060_html_a4f8eff2f2a0a3a6b022999835f194d3a"><div class="ttname"><a href="a00060.html#a4f8eff2f2a0a3a6b022999835f194d3a">QUESO::BoostInputOptionsParser::m_optionsDescription</a></div><div class="ttdeci">ScopedPtr&lt; boost::program_options::options_description &gt;::Type m_optionsDescription</div><div class="ttdef"><b>Definition:</b> <a href="a00345_source.html#l00096">BoostInputOptionsParser.h:96</a></div></div>
-<div class="ttc" id="a00060_html_adddd328ea776462f23d9d3e5c731ae32"><div class="ttname"><a href="a00060.html#adddd328ea776462f23d9d3e5c731ae32">QUESO::BoostInputOptionsParser::m_scannedInputFile</a></div><div class="ttdeci">bool m_scannedInputFile</div><div class="ttdef"><b>Definition:</b> <a href="a00345_source.html#l00100">BoostInputOptionsParser.h:100</a></div></div>
-<div class="ttc" id="a00060_html_aed9b4f740edb64ec66ac1f0b9c59aa0c"><div class="ttname"><a href="a00060.html#aed9b4f740edb64ec66ac1f0b9c59aa0c">QUESO::BoostInputOptionsParser::~BoostInputOptionsParser</a></div><div class="ttdeci">virtual ~BoostInputOptionsParser()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00054">BoostInputOptionsParser.C:54</a></div></div>
-<div class="ttc" id="a00060_html_a10039331fc41f11a277b4ea9f2f0e511"><div class="ttname"><a href="a00060.html#a10039331fc41f11a277b4ea9f2f0e511">QUESO::BoostInputOptionsParser::operator&lt;&lt;</a></div><div class="ttdeci">friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const BoostInputOptionsParser &amp;parser)</div><div class="ttdoc">Helpful stream operator for printing the parser state. </div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00154">BoostInputOptionsParser.C:154</a></div></div>
-<div class="ttc" id="a00060_html_a772fb7333f7b2d9c4858d73125f62ef4"><div class="ttname"><a href="a00060.html#a772fb7333f7b2d9c4858d73125f62ef4">QUESO::BoostInputOptionsParser::getOption</a></div><div class="ttdeci">void getOption(std::string &amp;name, T &amp;value)</div><div class="ttdoc">Get option name from the parser and set value to the parsed value. </div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00106">BoostInputOptionsParser.C:106</a></div></div>
-<div class="ttc" id="a00060_html_a93f34247badabcd897e3f43d39fddc74"><div class="ttname"><a href="a00060.html#a93f34247badabcd897e3f43d39fddc74">QUESO::BoostInputOptionsParser::m_optionsMap</a></div><div class="ttdeci">ScopedPtr&lt; boost::program_options::variables_map &gt;::Type m_optionsMap</div><div class="ttdef"><b>Definition:</b> <a href="a00345_source.html#l00097">BoostInputOptionsParser.h:97</a></div></div>
-<div class="ttc" id="a00060_html_ab800fbdd51b9f9d9f70ae39de4ff23e2"><div class="ttname"><a href="a00060.html#ab800fbdd51b9f9d9f70ae39de4ff23e2">QUESO::BoostInputOptionsParser::BoostInputOptionsParser</a></div><div class="ttdeci">BoostInputOptionsParser()</div><div class="ttdoc">Default constructor that sets m_filename to &amp;quot;&amp;quot;. </div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00044">BoostInputOptionsParser.C:44</a></div></div>
-<div class="ttc" id="a00060_html_a144aff755573bf83e09838a56fcd3019"><div class="ttname"><a href="a00060.html#a144aff755573bf83e09838a56fcd3019">QUESO::BoostInputOptionsParser::scanInputFile</a></div><div class="ttdeci">void scanInputFile()</div><div class="ttdoc">This is the method that parses the input file. </div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00061">BoostInputOptionsParser.C:61</a></div></div>
-<div class="ttc" id="a00037_html"><div class="ttname"><a href="a00037.html">QUESO::BaseInputOptionsParser</a></div><div class="ttdef"><b>Definition:</b> <a href="a00341_source.html#l00030">BaseInputOptionsParser.h:30</a></div></div>
-<div class="ttc" id="a00060_html_ad909cd012af0bfbfb5afb6a417e5d108"><div class="ttname"><a href="a00060.html#ad909cd012af0bfbfb5afb6a417e5d108">QUESO::BoostInputOptionsParser::registerOption</a></div><div class="ttdeci">void registerOption(std::string name, T defaultValue, std::string description)</div><div class="ttdoc">Call this to register an option with the parser. </div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00085">BoostInputOptionsParser.C:85</a></div></div>
-<div class="ttc" id="a00060_html"><div class="ttname"><a href="a00060.html">QUESO::BoostInputOptionsParser</a></div><div class="ttdef"><b>Definition:</b> <a href="a00345_source.html#l00044">BoostInputOptionsParser.h:44</a></div></div>
-<div class="ttc" id="a00060_html_a4fc03761a65b68560cca3f1a660b2567"><div class="ttname"><a href="a00060.html#a4fc03761a65b68560cca3f1a660b2567">QUESO::BoostInputOptionsParser::m_filename</a></div><div class="ttdeci">const std::string m_filename</div><div class="ttdef"><b>Definition:</b> <a href="a00345_source.html#l00094">BoostInputOptionsParser.h:94</a></div></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif  // UQ_BASE_INPUT_OPTIONS_H</span></div>
+<div class="ttc" id="a00037_html_a6221c1fa63072271320083ff0734b680"><div class="ttname"><a href="a00037.html#a6221c1fa63072271320083ff0734b680">QUESO::BaseInputOptionsParser::BaseInputOptionsParser</a></div><div class="ttdeci">BaseInputOptionsParser()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00396_source.html#l00030">BaseInputOptionsParser.C:30</a></div></div>
+<div class="ttc" id="a00037_html"><div class="ttname"><a href="a00037.html">QUESO::BaseInputOptionsParser</a></div><div class="ttdef"><b>Definition:</b> <a href="a00345_source.html#l00030">BaseInputOptionsParser.h:30</a></div></div>
+<div class="ttc" id="a00037_html_a26f3af2bd82a27bf735cc15af0c08cad"><div class="ttname"><a href="a00037.html#a26f3af2bd82a27bf735cc15af0c08cad">QUESO::BaseInputOptionsParser::~BaseInputOptionsParser</a></div><div class="ttdeci">virtual ~BaseInputOptionsParser()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00396_source.html#l00035">BaseInputOptionsParser.C:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

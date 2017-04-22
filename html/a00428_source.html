@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/src/Vector.C Source File</title>
+<title>queso-0.56.2: src/core/src/RngBoost.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Vector.C</div>  </div>
+<div class="title">RngBoost.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00428.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,115 +75,90 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/Vector.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/RngBoost.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;boost/random.hpp&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;boost/math/distributions.hpp&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Shaped constructor --------------------------------</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00243.html#a5fab5c1c4620c66c756615296b975505">   31</a></span>&#160;<a class="code" href="a00243.html#aff103391923777d30d67f3d89706278b">Vector::Vector</a>(<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; env, <span class="keyword">const</span> <a class="code" href="a00170.html">Map</a>&amp; map)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  :</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  m_env              (env),</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  m_map              (map),</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  m_printHorizontally(true),</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  m_printScientific  (false) <span class="comment">// for compatibility with previous regression tests</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00191.html#a8d2d2582ba8c3c892e0e20798730f0a9">   33</a></span>&#160;<a class="code" href="a00191.html#ab95981fa2be4fb685bdcdb5c1c11a28e">RngBoost::RngBoost</a>(<span class="keywordtype">int</span> seed, <span class="keywordtype">int</span> worldRank)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00190.html">RngBase</a>(seed,worldRank)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="comment">//m_rng(seed)</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">//std::cout &lt;&lt; &quot;Entering Vector::constructor(env,map)&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="comment">//std::cout &lt;&lt; &quot;In Vector::constructor(env,map)&quot; // mox</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="comment">//          &lt;&lt; &quot;, m_map.NumMyElements() = &quot; &lt;&lt; m_map.NumMyElements()</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="comment">//          &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">//std::cout &lt;&lt; &quot;Leaving Vector::constructor(env,map)&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00243.html#a65d54b3eb14bbf47ba9a47dea27a103a">   48</a></span>&#160;<a class="code" href="a00243.html#a65d54b3eb14bbf47ba9a47dea27a103a">Vector::~Vector</a>()</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00191.html#a94c246d855ea22332b0dafc0891e328f">resetSeed</a>(seed);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//TODO Find a suitable test for here; Kemelli todo</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//                       m_worldRank,</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//                       &quot;RngBoos::constructor()&quot;,</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//                       &quot;Kemelli todo: boost rng&quot;);</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00191.html#a96ffa32ae3700ca164db8799d32b19ca">   47</a></span>&#160;<a class="code" href="a00191.html#a96ffa32ae3700ca164db8799d32b19ca">RngBoost::~RngBoost</a>()</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">//this function does nothing</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// Environment and Map methods ----------------------</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00243.html#a2e2952dab0554fedd8dc9a2543715745">   54</a></span>&#160;<a class="code" href="a00243.html#a2e2952dab0554fedd8dc9a2543715745">Vector::env</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00243.html#ae7615172bb1e54339151d3f3d71a0344">m_env</a>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">const</span> <a class="code" href="a00170.html">Map</a>&amp;</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="a00243.html#a0cbedc1f6e24c0ad3b688d201fd649a4">   61</a></span>&#160;<a class="code" href="a00243.html#a0cbedc1f6e24c0ad3b688d201fd649a4">Vector::map</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00243.html#aa99c771bc8d1aafff7277ed8f7fbd157">m_map</a>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="a00243.html#a4dab068a8b5cedef00b8520c4e106a2b">   68</a></span>&#160;<a class="code" href="a00243.html#a4dab068a8b5cedef00b8520c4e106a2b">Vector::numOfProcsForStorage</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00243.html#aa99c771bc8d1aafff7277ed8f7fbd157">m_map</a>.<a class="code" href="a00170.html#aab4fc9911156b61c51f905849e3c9856">Comm</a>().<a class="code" href="a00186.html#aa780721ae0fdeabc5a15e04cb0cad964">NumProc</a>();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">// I/O and Miscellaneous methods --------------------</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00243.html#a993054e464a2626c35667c7c97bc9051">   75</a></span>&#160;<a class="code" href="a00243.html#a993054e464a2626c35667c7c97bc9051">Vector::setPrintHorizontally</a>(<span class="keywordtype">bool</span> value)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="a00243.html#a6bc4326d0e4f44f015bf2e30c7ee620d">m_printHorizontally</a> = value;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00243.html#abd1a972dac88eb02a6de8ec36d04a3ea">   82</a></span>&#160;<a class="code" href="a00243.html#abd1a972dac88eb02a6de8ec36d04a3ea">Vector::getPrintHorizontally</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00243.html#a6bc4326d0e4f44f015bf2e30c7ee620d">m_printHorizontally</a>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="a00243.html#a7ac1d907a63659233d0fe24b3abafe68">   88</a></span>&#160;<a class="code" href="a00243.html#a7ac1d907a63659233d0fe24b3abafe68">Vector::setPrintScientific</a>(<span class="keywordtype">bool</span> value)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <a class="code" href="a00243.html#a55d8e946571a9491a028ecb9a8a992a4">m_printScientific</a> = value;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00243.html#a22b34a6d1ca3acce56054b5145bd83fe">   95</a></span>&#160;<a class="code" href="a00243.html#a22b34a6d1ca3acce56054b5145bd83fe">Vector::getPrintScientific</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00243.html#a55d8e946571a9491a028ecb9a8a992a4">m_printScientific</a>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="a00243.html#a00bd28ae4edb8f2d06359e3e95d67dc4">  101</a></span>&#160;<a class="code" href="a00243.html#a00bd28ae4edb8f2d06359e3e95d67dc4">Vector::base_copy</a>(<span class="keyword">const</span> <a class="code" href="a00243.html">Vector</a>&amp; src)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="comment">//m_env               = src.env;</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">//m_map               = src.map; // prudenci 2010-06-17</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <a class="code" href="a00243.html#a6bc4326d0e4f44f015bf2e30c7ee620d">m_printHorizontally</a> = src.<a class="code" href="a00243.html#a6bc4326d0e4f44f015bf2e30c7ee620d">m_printHorizontally</a>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <a class="code" href="a00243.html#a55d8e946571a9491a028ecb9a8a992a4">m_printScientific</a>   = src.<a class="code" href="a00243.html#a55d8e946571a9491a028ecb9a8a992a4">m_printScientific</a>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00186_html_aa780721ae0fdeabc5a15e04cb0cad964"><div class="ttname"><a href="a00186.html#aa780721ae0fdeabc5a15e04cb0cad964">QUESO::MpiComm::NumProc</a></div><div class="ttdeci">int NumProc() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00413_source.html#l00123">MpiComm.C:123</a></div></div>
-<div class="ttc" id="a00243_html_aa99c771bc8d1aafff7277ed8f7fbd157"><div class="ttname"><a href="a00243.html#aa99c771bc8d1aafff7277ed8f7fbd157">QUESO::Vector::m_map</a></div><div class="ttdeci">const Map &amp; m_map</div><div class="ttdoc">Mapping variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00386_source.html#l00126">Vector.h:126</a></div></div>
-<div class="ttc" id="a00243_html_a0cbedc1f6e24c0ad3b688d201fd649a4"><div class="ttname"><a href="a00243.html#a0cbedc1f6e24c0ad3b688d201fd649a4">QUESO::Vector::map</a></div><div class="ttdeci">const Map &amp; map() const </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00061">Vector.C:61</a></div></div>
-<div class="ttc" id="a00243_html_a4dab068a8b5cedef00b8520c4e106a2b"><div class="ttname"><a href="a00243.html#a4dab068a8b5cedef00b8520c4e106a2b">QUESO::Vector::numOfProcsForStorage</a></div><div class="ttdeci">unsigned int numOfProcsForStorage() const </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00068">Vector.C:68</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00243_html_abd1a972dac88eb02a6de8ec36d04a3ea"><div class="ttname"><a href="a00243.html#abd1a972dac88eb02a6de8ec36d04a3ea">QUESO::Vector::getPrintHorizontally</a></div><div class="ttdeci">bool getPrintHorizontally() const </div><div class="ttdoc">Checks if vector is printed horizontally. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00082">Vector.C:82</a></div></div>
-<div class="ttc" id="a00243_html"><div class="ttname"><a href="a00243.html">QUESO::Vector</a></div><div class="ttdoc">Class for vector operations (virtual). </div><div class="ttdef"><b>Definition:</b> <a href="a00386_source.html#l00047">Vector.h:47</a></div></div>
-<div class="ttc" id="a00243_html_a2e2952dab0554fedd8dc9a2543715745"><div class="ttname"><a href="a00243.html#a2e2952dab0554fedd8dc9a2543715745">QUESO::Vector::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00054">Vector.C:54</a></div></div>
-<div class="ttc" id="a00170_html"><div class="ttname"><a href="a00170.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00366_source.html#l00049">Map.h:49</a></div></div>
-<div class="ttc" id="a00243_html_ae7615172bb1e54339151d3f3d71a0344"><div class="ttname"><a href="a00243.html#ae7615172bb1e54339151d3f3d71a0344">QUESO::Vector::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdoc">Environment variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00386_source.html#l00117">Vector.h:117</a></div></div>
-<div class="ttc" id="a00243_html_aff103391923777d30d67f3d89706278b"><div class="ttname"><a href="a00243.html#aff103391923777d30d67f3d89706278b">QUESO::Vector::Vector</a></div><div class="ttdeci">Vector()</div><div class="ttdoc">Default Constructor. </div></div>
-<div class="ttc" id="a00243_html_a6bc4326d0e4f44f015bf2e30c7ee620d"><div class="ttname"><a href="a00243.html#a6bc4326d0e4f44f015bf2e30c7ee620d">QUESO::Vector::m_printHorizontally</a></div><div class="ttdeci">bool m_printHorizontally</div><div class="ttdoc">Flag for either or not print this matrix horizontally. </div><div class="ttdef"><b>Definition:</b> <a href="a00386_source.html#l00130">Vector.h:130</a></div></div>
-<div class="ttc" id="a00243_html_a65d54b3eb14bbf47ba9a47dea27a103a"><div class="ttname"><a href="a00243.html#a65d54b3eb14bbf47ba9a47dea27a103a">QUESO::Vector::~Vector</a></div><div class="ttdeci">virtual ~Vector()</div><div class="ttdoc">Virtual Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00048">Vector.C:48</a></div></div>
-<div class="ttc" id="a00243_html_a00bd28ae4edb8f2d06359e3e95d67dc4"><div class="ttname"><a href="a00243.html#a00bd28ae4edb8f2d06359e3e95d67dc4">QUESO::Vector::base_copy</a></div><div class="ttdeci">virtual void base_copy(const Vector &amp;src)</div><div class="ttdoc">Copies base data from vector src to this vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00101">Vector.C:101</a></div></div>
-<div class="ttc" id="a00243_html_a22b34a6d1ca3acce56054b5145bd83fe"><div class="ttname"><a href="a00243.html#a22b34a6d1ca3acce56054b5145bd83fe">QUESO::Vector::getPrintScientific</a></div><div class="ttdeci">bool getPrintScientific() const </div><div class="ttdoc">Checks if the vector should be printed in Scientific Notation. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00095">Vector.C:95</a></div></div>
-<div class="ttc" id="a00243_html_a993054e464a2626c35667c7c97bc9051"><div class="ttname"><a href="a00243.html#a993054e464a2626c35667c7c97bc9051">QUESO::Vector::setPrintHorizontally</a></div><div class="ttdeci">void setPrintHorizontally(bool value) const </div><div class="ttdoc">Determines whether vector should be printed horizontally. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00075">Vector.C:75</a></div></div>
-<div class="ttc" id="a00170_html_aab4fc9911156b61c51f905849e3c9856"><div class="ttname"><a href="a00170.html#aab4fc9911156b61c51f905849e3c9856">QUESO::Map::Comm</a></div><div class="ttdeci">const MpiComm &amp; Comm() const </div><div class="ttdoc">Access function for MpiComm communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00411_source.html#l00131">Map.C:131</a></div></div>
-<div class="ttc" id="a00243_html_a7ac1d907a63659233d0fe24b3abafe68"><div class="ttname"><a href="a00243.html#a7ac1d907a63659233d0fe24b3abafe68">QUESO::Vector::setPrintScientific</a></div><div class="ttdeci">void setPrintScientific(bool value) const </div><div class="ttdoc">Determines whether vector should be printed in Scientific Notation. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00088">Vector.C:88</a></div></div>
-<div class="ttc" id="a00243_html_a55d8e946571a9491a028ecb9a8a992a4"><div class="ttname"><a href="a00243.html#a55d8e946571a9491a028ecb9a8a992a4">QUESO::Vector::m_printScientific</a></div><div class="ttdeci">bool m_printScientific</div><div class="ttdoc">Flag for either or not print this matrix in scientific notation. </div><div class="ttdef"><b>Definition:</b> <a href="a00386_source.html#l00133">Vector.h:133</a></div></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// Sampling methods ---------------------------------</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00191.html#a94c246d855ea22332b0dafc0891e328f">   54</a></span>&#160;<a class="code" href="a00191.html#a94c246d855ea22332b0dafc0891e328f">RngBoost::resetSeed</a>(<span class="keywordtype">int</span> newSeed)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00191.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>.seed(newSeed);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="a00191.html#aad1548eec706aeb6580af163bd80e0a9">   63</a></span>&#160;<a class="code" href="a00191.html#aad1548eec706aeb6580af163bd80e0a9">RngBoost::uniformSample</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00191.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordflow">return</span> zeroone();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="a00191.html#a9d33a495101b353e267ea7d3a6df361f">   71</a></span>&#160;<a class="code" href="a00191.html#a9d33a495101b353e267ea7d3a6df361f">RngBoost::gaussianSample</a>(<span class="keywordtype">double</span> stdDev)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">double</span> mean = 0.; <span class="comment">//it will be added conveniently later</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00191.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  boost::math::normal_distribution&lt;double&gt;  gaussian_dist(mean, stdDev);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> quantile(gaussian_dist, zeroone());</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00191.html#ab859b0ff1e728c6a65c2aef62afe028e">   81</a></span>&#160;<a class="code" href="a00191.html#ab859b0ff1e728c6a65c2aef62afe028e">RngBoost::betaSample</a>(<span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00191.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  boost::math::beta_distribution&lt;double&gt; beta_dist(alpha, beta);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordflow">return</span> quantile(beta_dist, zeroone());</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="a00191.html#ae4fcb113ba19dbec7684f41c3aebf4e7">   90</a></span>&#160;<a class="code" href="a00191.html#ae4fcb113ba19dbec7684f41c3aebf4e7">RngBoost::gammaSample</a>(<span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">static</span> boost::uniform_01&lt;boost::mt19937&gt; zeroone(<a class="code" href="a00191.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  boost::math::gamma_distribution&lt;double&gt;  gamma_dist(a,b);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">return</span> quantile(gamma_dist, zeroone());</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00191_html_ab95981fa2be4fb685bdcdb5c1c11a28e"><div class="ttname"><a href="a00191.html#ab95981fa2be4fb685bdcdb5c1c11a28e">QUESO::RngBoost::RngBoost</a></div><div class="ttdeci">RngBoost()</div><div class="ttdoc">Default Constructor: it should not be used. </div></div>
+<div class="ttc" id="a00190_html"><div class="ttname"><a href="a00190.html">QUESO::RngBase</a></div><div class="ttdoc">Class for random number generation (base class for either GSL or Boost RNG). </div><div class="ttdef"><b>Definition:</b> <a href="a00379_source.html#l00045">RngBase.h:45</a></div></div>
+<div class="ttc" id="a00191_html_ab859b0ff1e728c6a65c2aef62afe028e"><div class="ttname"><a href="a00191.html#ab859b0ff1e728c6a65c2aef62afe028e">QUESO::RngBoost::betaSample</a></div><div class="ttdeci">double betaSample(double alpha, double beta) const </div><div class="ttdoc">Samples a value from a Beta distribution. Support: [0,1]. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00081">RngBoost.C:81</a></div></div>
+<div class="ttc" id="a00191_html_ae4fcb113ba19dbec7684f41c3aebf4e7"><div class="ttname"><a href="a00191.html#ae4fcb113ba19dbec7684f41c3aebf4e7">QUESO::RngBoost::gammaSample</a></div><div class="ttdeci">double gammaSample(double a, double b) const </div><div class="ttdoc">Samples a value from a Gamma distribution. Support: [0,infinity). </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00090">RngBoost.C:90</a></div></div>
+<div class="ttc" id="a00191_html_a96ffa32ae3700ca164db8799d32b19ca"><div class="ttname"><a href="a00191.html#a96ffa32ae3700ca164db8799d32b19ca">QUESO::RngBoost::~RngBoost</a></div><div class="ttdeci">~RngBoost()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00047">RngBoost.C:47</a></div></div>
+<div class="ttc" id="a00191_html_a9d33a495101b353e267ea7d3a6df361f"><div class="ttname"><a href="a00191.html#a9d33a495101b353e267ea7d3a6df361f">QUESO::RngBoost::gaussianSample</a></div><div class="ttdeci">double gaussianSample(double stdDev) const </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00071">RngBoost.C:71</a></div></div>
+<div class="ttc" id="a00191_html_aef65914cae8b11e345bfb082db616f0e"><div class="ttname"><a href="a00191.html#aef65914cae8b11e345bfb082db616f0e">QUESO::RngBoost::m_rng</a></div><div class="ttdeci">boost::mt19937 m_rng</div><div class="ttdoc">Random number generator from class boost::mt19937. </div><div class="ttdef"><b>Definition:</b> <a href="a00380_source.html#l00109">RngBoost.h:109</a></div></div>
+<div class="ttc" id="a00191_html_a94c246d855ea22332b0dafc0891e328f"><div class="ttname"><a href="a00191.html#a94c246d855ea22332b0dafc0891e328f">QUESO::RngBoost::resetSeed</a></div><div class="ttdeci">void resetSeed(int newSeed)</div><div class="ttdoc">Resets the seed with value newSeed. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00054">RngBoost.C:54</a></div></div>
+<div class="ttc" id="a00191_html_aad1548eec706aeb6580af163bd80e0a9"><div class="ttname"><a href="a00191.html#aad1548eec706aeb6580af163bd80e0a9">QUESO::RngBoost::uniformSample</a></div><div class="ttdeci">double uniformSample() const </div><div class="ttdoc">Samples a value from a uniform distribution. Support: [0,1] or [a,b]. </div><div class="ttdef"><b>Definition:</b> <a href="a00428_source.html#l00063">RngBoost.C:63</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

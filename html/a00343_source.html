@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/BasicPdfsBoost.h Source File</title>
+<title>queso-0.56.2: src/core/inc/AlgorithmFactoryInitializer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">BasicPdfsBoost.h</div>  </div>
+<div class="title">AlgorithmFactoryInitializer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00343.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,42 +75,28 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_BASIC_PDFS_BOOST_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_BASIC_PDFS_BOOST_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_ALGORITHM_FACTORY_INITIALIZER_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_ALGORITHM_FACTORY_INITIALIZER_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/BasicPdfsBase.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="a00053.html">   43</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00053.html">BasicPdfsBoost</a> : <span class="keyword">public</span> <a class="code" href="a00052.html">BasicPdfsBase</a></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="a00053.html#a7ba56f194cdce87c7ef247457a5ed4a6">BasicPdfsBoost</a>(<span class="keywordtype">int</span> worldRank);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; <a class="code" href="a00053.html#a0d1bc5ab5bdffb0870031746ebe37a94">~BasicPdfsBoost</a>();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00053.html#a1fb018d87021cb4af85289102c7fddcb">betaPdfActualValue</a> (<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00053.html#aabf856ea8be88e4fda2b378e91eee922">gammaPdfActualValue</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> a,     <span class="keywordtype">double</span> b   ) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <a class="code" href="a00053.html#a7ba56f194cdce87c7ef247457a5ed4a6">BasicPdfsBoost</a>();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;};</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif // UQ_BASIC_PDFS_BOOST_H</span></div>
-<div class="ttc" id="a00053_html_a1fb018d87021cb4af85289102c7fddcb"><div class="ttname"><a href="a00053.html#a1fb018d87021cb4af85289102c7fddcb">QUESO::BasicPdfsBoost::betaPdfActualValue</a></div><div class="ttdeci">double betaPdfActualValue(double x, double alpha, double beta) const </div><div class="ttdoc">TODO: Actual value of the Beta PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00044">BasicPdfsBoost.C:44</a></div></div>
-<div class="ttc" id="a00053_html_a0d1bc5ab5bdffb0870031746ebe37a94"><div class="ttname"><a href="a00053.html#a0d1bc5ab5bdffb0870031746ebe37a94">QUESO::BasicPdfsBoost::~BasicPdfsBoost</a></div><div class="ttdeci">~BasicPdfsBoost()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00037">BasicPdfsBoost.C:37</a></div></div>
-<div class="ttc" id="a00053_html_aabf856ea8be88e4fda2b378e91eee922"><div class="ttname"><a href="a00053.html#aabf856ea8be88e4fda2b378e91eee922">QUESO::BasicPdfsBoost::gammaPdfActualValue</a></div><div class="ttdeci">double gammaPdfActualValue(double x, double a, double b) const </div><div class="ttdoc">TODO: Actual value of the Gamma PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00051">BasicPdfsBoost.C:51</a></div></div>
-<div class="ttc" id="a00053_html_a7ba56f194cdce87c7ef247457a5ed4a6"><div class="ttname"><a href="a00053.html#a7ba56f194cdce87c7ef247457a5ed4a6">QUESO::BasicPdfsBoost::BasicPdfsBoost</a></div><div class="ttdeci">BasicPdfsBoost()</div><div class="ttdoc">Default constructor. </div></div>
-<div class="ttc" id="a00052_html"><div class="ttname"><a href="a00052.html">QUESO::BasicPdfsBase</a></div><div class="ttdoc">TODO: Base class for basic PDFs (via either GSL or Boost). </div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00044">BasicPdfsBase.h:44</a></div></div>
-<div class="ttc" id="a00053_html"><div class="ttname"><a href="a00053.html">QUESO::BasicPdfsBoost</a></div><div class="ttdoc">TODO: Base class for basic PDFs using Boost library. </div><div class="ttdef"><b>Definition:</b> <a href="a00343_source.html#l00043">BasicPdfsBoost.h:43</a></div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00013.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00013.html">AlgorithmFactoryInitializer</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="a00013.html#af602dd08899d3afeb3a6c969b0202c4a">AlgorithmFactoryInitializer</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00013.html#a0c18e9e5425bda62d6090d1971484329">~AlgorithmFactoryInitializer</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;};</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;} <span class="comment">// namespace QUESO</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif  // QUESO_ALGORITHM_FACTORY_INITIALIZER_H</span></div>
+<div class="ttc" id="a00013_html_a0c18e9e5425bda62d6090d1971484329"><div class="ttname"><a href="a00013.html#a0c18e9e5425bda62d6090d1971484329">QUESO::AlgorithmFactoryInitializer::~AlgorithmFactoryInitializer</a></div><div class="ttdeci">virtual ~AlgorithmFactoryInitializer()</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00039">AlgorithmFactoryInitializer.C:39</a></div></div>
+<div class="ttc" id="a00013_html_af602dd08899d3afeb3a6c969b0202c4a"><div class="ttname"><a href="a00013.html#af602dd08899d3afeb3a6c969b0202c4a">QUESO::AlgorithmFactoryInitializer::AlgorithmFactoryInitializer</a></div><div class="ttdeci">AlgorithmFactoryInitializer()</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00031">AlgorithmFactoryInitializer.C:31</a></div></div>
+<div class="ttc" id="a00013_html"><div class="ttname"><a href="a00013.html">QUESO::AlgorithmFactoryInitializer</a></div><div class="ttdef"><b>Definition:</b> <a href="a00343_source.html#l00031">AlgorithmFactoryInitializer.h:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

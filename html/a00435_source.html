@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/gp/inc/GcmJointTildeInfo.h Source File</title>
+<title>queso-0.56.2: src/core/src/Vector.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_b4cf28f9c7017ae598e01d89fd5623b0.html">gp</a></li><li class="navelem"><a class="el" href="dir_ce64702489dbb32a8d0ac93a35e853be.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_637b9fe55c797d9c55ffa9eb30124a86.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GcmJointTildeInfo.h</div>  </div>
+<div class="title">Vector.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00435.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,65 +75,115 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GCM_JOINT_TILDE_INFO_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GCM_JOINT_TILDE_INFO_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GpmsaComputerModelOptions.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/GcmExperimentInfo.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/GcmJointInfo.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class </span>S_V = GslVector, <span class="keyword">class </span>S_M = GslMatrix, <span class="keyword">class </span>D_V = GslVector,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">class </span>D_M = GslMatrix, <span class="keyword">class </span>P_V = GslVector, <span class="keyword">class </span>P_M = GslMatrix,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">class </span>Q_V = GslVector, <span class="keyword">class </span>Q_M = GslMatrix&gt;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="a00111.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00111.html">GcmJointTildeInfo</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00111.html#af4c7a3de593428f25209681c30fd8a14">GcmJointTildeInfo</a>(<span class="keyword">const</span> <a class="code" href="a00131.html">GpmsaComputerModelOptions</a>&amp;                     gcmOptionsObj,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                           <span class="keyword">const</span> <a class="code" href="a00109.html">GcmExperimentInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M&gt;</a>&amp;    e,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                           <span class="keyword">const</span> <a class="code" href="a00110.html">GcmJointInfo&lt;S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M&gt;</a>&amp; jj);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; <a class="code" href="a00111.html#a3bc077e389cc250896cd43b1908b7610">~GcmJointTildeInfo</a>();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00111.html#aa3ac21f3176f49d0fd994d7af7a240f2">   48</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp;     <a class="code" href="a00111.html#aa3ac21f3176f49d0fd994d7af7a240f2">m_env</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00111.html#ab12a2d3b360bb8945ecdf88f16081a2a">   49</a></span>&#160;        D_M                         <a class="code" href="a00111.html#ab12a2d3b360bb8945ecdf88f16081a2a">m_Bmat_tilde</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="a00111.html#a81ccfae9f02f44f2d79b032694ef3084">   50</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                <a class="code" href="a00111.html#a81ccfae9f02f44f2d79b032694ef3084">m_Bmat_tilde_rank</a>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00111.html#a7a6ff744777e5fd4ee04c25e850fec7b">   51</a></span>&#160;        <a class="code" href="a00247.html">VectorSpace&lt;D_V,D_M&gt;</a> <a class="code" href="a00111.html#a7a6ff744777e5fd4ee04c25e850fec7b">m_vu_tilde_space</a>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00111.html#a71fdeb509b89176152970e8559c22ba9">   52</a></span>&#160;        D_M                         <a class="code" href="a00111.html#a71fdeb509b89176152970e8559c22ba9">m_Lbmat</a>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00111.html#a30eefa5d1fe98bc5a693f09b99a05233">   53</a></span>&#160;        D_M                         <a class="code" href="a00111.html#a30eefa5d1fe98bc5a693f09b99a05233">m_Btildet_Wy_Btilde</a>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00111.html#a7d4d56781b57d9474f7a2b6af60d31af">   54</a></span>&#160;        D_M                         <a class="code" href="a00111.html#a7d4d56781b57d9474f7a2b6af60d31af">m_Btildet_Wy_Btilde_inv</a>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00111.html#afd49d0600ccd23ebd6a8a4521d2a60c5">   55</a></span>&#160;        D_V                         <a class="code" href="a00111.html#afd49d0600ccd23ebd6a8a4521d2a60c5">m_Zvec_tilde_hat_vu</a>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00111.html#a155d9569609523ee78fae35603e2f74d">   56</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                <a class="code" href="a00111.html#a155d9569609523ee78fae35603e2f74d">m_a_y_modifier_tilde</a>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00111.html#ac5fc1d80d41cba1a8e382e4b6afe4720">   57</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                <a class="code" href="a00111.html#ac5fc1d80d41cba1a8e382e4b6afe4720">m_b_y_modifier_tilde</a>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif // UQ_GCM_JOINT_TILDE_INFO_H</span></div>
-<div class="ttc" id="a00110_html"><div class="ttname"><a href="a00110.html">QUESO::GcmJointInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="a00434_source.html#l00039">GcmJointInfo.h:39</a></div></div>
-<div class="ttc" id="a00111_html_a7a6ff744777e5fd4ee04c25e850fec7b"><div class="ttname"><a href="a00111.html#a7a6ff744777e5fd4ee04c25e850fec7b">QUESO::GcmJointTildeInfo::m_vu_tilde_space</a></div><div class="ttdeci">VectorSpace&lt; D_V, D_M &gt; m_vu_tilde_space</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00051">GcmJointTildeInfo.h:51</a></div></div>
-<div class="ttc" id="a00111_html_ac5fc1d80d41cba1a8e382e4b6afe4720"><div class="ttname"><a href="a00111.html#ac5fc1d80d41cba1a8e382e4b6afe4720">QUESO::GcmJointTildeInfo::m_b_y_modifier_tilde</a></div><div class="ttdeci">unsigned int m_b_y_modifier_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00057">GcmJointTildeInfo.h:57</a></div></div>
-<div class="ttc" id="a00111_html_aa3ac21f3176f49d0fd994d7af7a240f2"><div class="ttname"><a href="a00111.html#aa3ac21f3176f49d0fd994d7af7a240f2">QUESO::GcmJointTildeInfo::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00048">GcmJointTildeInfo.h:48</a></div></div>
-<div class="ttc" id="a00247_html"><div class="ttname"><a href="a00247.html">QUESO::VectorSpace&lt; D_V, D_M &gt;</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00111_html_a155d9569609523ee78fae35603e2f74d"><div class="ttname"><a href="a00111.html#a155d9569609523ee78fae35603e2f74d">QUESO::GcmJointTildeInfo::m_a_y_modifier_tilde</a></div><div class="ttdeci">unsigned int m_a_y_modifier_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00056">GcmJointTildeInfo.h:56</a></div></div>
-<div class="ttc" id="a00111_html_a3bc077e389cc250896cd43b1908b7610"><div class="ttname"><a href="a00111.html#a3bc077e389cc250896cd43b1908b7610">QUESO::GcmJointTildeInfo::~GcmJointTildeInfo</a></div><div class="ttdeci">~GcmJointTildeInfo()</div><div class="ttdef"><b>Definition:</b> <a href="a00453_source.html#l00348">GcmJointTildeInfo.C:348</a></div></div>
-<div class="ttc" id="a00111_html_a30eefa5d1fe98bc5a693f09b99a05233"><div class="ttname"><a href="a00111.html#a30eefa5d1fe98bc5a693f09b99a05233">QUESO::GcmJointTildeInfo::m_Btildet_Wy_Btilde</a></div><div class="ttdeci">D_M m_Btildet_Wy_Btilde</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00053">GcmJointTildeInfo.h:53</a></div></div>
-<div class="ttc" id="a00111_html_af4c7a3de593428f25209681c30fd8a14"><div class="ttname"><a href="a00111.html#af4c7a3de593428f25209681c30fd8a14">QUESO::GcmJointTildeInfo::GcmJointTildeInfo</a></div><div class="ttdeci">GcmJointTildeInfo(const GpmsaComputerModelOptions &amp;gcmOptionsObj, const GcmExperimentInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M &gt; &amp;e, const GcmJointInfo&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt; &amp;jj)</div><div class="ttdef"><b>Definition:</b> <a href="a00453_source.html#l00032">GcmJointTildeInfo.C:32</a></div></div>
-<div class="ttc" id="a00109_html"><div class="ttname"><a href="a00109.html">QUESO::GcmExperimentInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00041">GcmExperimentInfo.h:41</a></div></div>
-<div class="ttc" id="a00111_html_a71fdeb509b89176152970e8559c22ba9"><div class="ttname"><a href="a00111.html#a71fdeb509b89176152970e8559c22ba9">QUESO::GcmJointTildeInfo::m_Lbmat</a></div><div class="ttdeci">D_M m_Lbmat</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00052">GcmJointTildeInfo.h:52</a></div></div>
-<div class="ttc" id="a00111_html_a7d4d56781b57d9474f7a2b6af60d31af"><div class="ttname"><a href="a00111.html#a7d4d56781b57d9474f7a2b6af60d31af">QUESO::GcmJointTildeInfo::m_Btildet_Wy_Btilde_inv</a></div><div class="ttdeci">D_M m_Btildet_Wy_Btilde_inv</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00054">GcmJointTildeInfo.h:54</a></div></div>
-<div class="ttc" id="a00111_html"><div class="ttname"><a href="a00111.html">QUESO::GcmJointTildeInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00040">GcmJointTildeInfo.h:40</a></div></div>
-<div class="ttc" id="a00131_html"><div class="ttname"><a href="a00131.html">QUESO::GpmsaComputerModelOptions</a></div><div class="ttdef"><b>Definition:</b> <a href="a00443_source.html#l00140">GpmsaComputerModelOptions.h:140</a></div></div>
-<div class="ttc" id="a00111_html_a81ccfae9f02f44f2d79b032694ef3084"><div class="ttname"><a href="a00111.html#a81ccfae9f02f44f2d79b032694ef3084">QUESO::GcmJointTildeInfo::m_Bmat_tilde_rank</a></div><div class="ttdeci">unsigned int m_Bmat_tilde_rank</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00050">GcmJointTildeInfo.h:50</a></div></div>
-<div class="ttc" id="a00111_html_ab12a2d3b360bb8945ecdf88f16081a2a"><div class="ttname"><a href="a00111.html#ab12a2d3b360bb8945ecdf88f16081a2a">QUESO::GcmJointTildeInfo::m_Bmat_tilde</a></div><div class="ttdeci">D_M m_Bmat_tilde</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00049">GcmJointTildeInfo.h:49</a></div></div>
-<div class="ttc" id="a00111_html_afd49d0600ccd23ebd6a8a4521d2a60c5"><div class="ttname"><a href="a00111.html#afd49d0600ccd23ebd6a8a4521d2a60c5">QUESO::GcmJointTildeInfo::m_Zvec_tilde_hat_vu</a></div><div class="ttdeci">D_V m_Zvec_tilde_hat_vu</div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00055">GcmJointTildeInfo.h:55</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/Vector.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Shaped constructor --------------------------------</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00246.html#a5fab5c1c4620c66c756615296b975505">   31</a></span>&#160;<a class="code" href="a00246.html#aff103391923777d30d67f3d89706278b">Vector::Vector</a>(<span class="keyword">const</span> <a class="code" href="a00036.html">BaseEnvironment</a>&amp; env, <span class="keyword">const</span> <a class="code" href="a00162.html">Map</a>&amp; map)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  :</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  m_env              (env),</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  m_map              (map),</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  m_printHorizontally(true),</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  m_printScientific  (false) <span class="comment">// for compatibility with previous regression tests</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">//std::cout &lt;&lt; &quot;Entering Vector::constructor(env,map)&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="comment">//std::cout &lt;&lt; &quot;In Vector::constructor(env,map)&quot; // mox</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="comment">//          &lt;&lt; &quot;, m_map.NumMyElements() = &quot; &lt;&lt; m_map.NumMyElements()</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="comment">//          &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">//std::cout &lt;&lt; &quot;Leaving Vector::constructor(env,map)&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00246.html#a65d54b3eb14bbf47ba9a47dea27a103a">   48</a></span>&#160;<a class="code" href="a00246.html#a65d54b3eb14bbf47ba9a47dea27a103a">Vector::~Vector</a>()</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// Environment and Map methods ----------------------</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">const</span> <a class="code" href="a00036.html">BaseEnvironment</a>&amp;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00246.html#a2e2952dab0554fedd8dc9a2543715745">   54</a></span>&#160;<a class="code" href="a00246.html#a2e2952dab0554fedd8dc9a2543715745">Vector::env</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00246.html#ae7615172bb1e54339151d3f3d71a0344">m_env</a>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">const</span> <a class="code" href="a00162.html">Map</a>&amp;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="a00246.html#a0cbedc1f6e24c0ad3b688d201fd649a4">   61</a></span>&#160;<a class="code" href="a00246.html#a0cbedc1f6e24c0ad3b688d201fd649a4">Vector::map</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00246.html#aa7ebfaf1884091a007d91224dcce11ab">m_map</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="a00246.html#a4dab068a8b5cedef00b8520c4e106a2b">   68</a></span>&#160;<a class="code" href="a00246.html#a4dab068a8b5cedef00b8520c4e106a2b">Vector::numOfProcsForStorage</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00246.html#aa7ebfaf1884091a007d91224dcce11ab">m_map</a>.<a class="code" href="a00162.html#aab4fc9911156b61c51f905849e3c9856">Comm</a>().<a class="code" href="a00179.html#aa780721ae0fdeabc5a15e04cb0cad964">NumProc</a>();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">// I/O and Miscellaneous methods --------------------</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00246.html#a993054e464a2626c35667c7c97bc9051">   75</a></span>&#160;<a class="code" href="a00246.html#a993054e464a2626c35667c7c97bc9051">Vector::setPrintHorizontally</a>(<span class="keywordtype">bool</span> value)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="a00246.html#a6bc4326d0e4f44f015bf2e30c7ee620d">m_printHorizontally</a> = value;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00246.html#abd1a972dac88eb02a6de8ec36d04a3ea">   82</a></span>&#160;<a class="code" href="a00246.html#abd1a972dac88eb02a6de8ec36d04a3ea">Vector::getPrintHorizontally</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00246.html#a6bc4326d0e4f44f015bf2e30c7ee620d">m_printHorizontally</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="a00246.html#a7ac1d907a63659233d0fe24b3abafe68">   88</a></span>&#160;<a class="code" href="a00246.html#a7ac1d907a63659233d0fe24b3abafe68">Vector::setPrintScientific</a>(<span class="keywordtype">bool</span> value)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <a class="code" href="a00246.html#a55d8e946571a9491a028ecb9a8a992a4">m_printScientific</a> = value;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00246.html#a22b34a6d1ca3acce56054b5145bd83fe">   95</a></span>&#160;<a class="code" href="a00246.html#a22b34a6d1ca3acce56054b5145bd83fe">Vector::getPrintScientific</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00246.html#a55d8e946571a9491a028ecb9a8a992a4">m_printScientific</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="a00246.html#a00bd28ae4edb8f2d06359e3e95d67dc4">  101</a></span>&#160;<a class="code" href="a00246.html#a00bd28ae4edb8f2d06359e3e95d67dc4">Vector::base_copy</a>(<span class="keyword">const</span> <a class="code" href="a00246.html">Vector</a>&amp; src)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="comment">//m_env               = src.env;</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">//m_map               = src.map; // prudenci 2010-06-17</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <a class="code" href="a00246.html#a6bc4326d0e4f44f015bf2e30c7ee620d">m_printHorizontally</a> = src.<a class="code" href="a00246.html#a6bc4326d0e4f44f015bf2e30c7ee620d">m_printHorizontally</a>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <a class="code" href="a00246.html#a55d8e946571a9491a028ecb9a8a992a4">m_printScientific</a>   = src.<a class="code" href="a00246.html#a55d8e946571a9491a028ecb9a8a992a4">m_printScientific</a>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00246_html_aff103391923777d30d67f3d89706278b"><div class="ttname"><a href="a00246.html#aff103391923777d30d67f3d89706278b">QUESO::Vector::Vector</a></div><div class="ttdeci">Vector()</div><div class="ttdoc">Default Constructor. </div></div>
+<div class="ttc" id="a00246_html_a65d54b3eb14bbf47ba9a47dea27a103a"><div class="ttname"><a href="a00246.html#a65d54b3eb14bbf47ba9a47dea27a103a">QUESO::Vector::~Vector</a></div><div class="ttdeci">virtual ~Vector()</div><div class="ttdoc">Virtual Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00048">Vector.C:48</a></div></div>
+<div class="ttc" id="a00246_html_ae7615172bb1e54339151d3f3d71a0344"><div class="ttname"><a href="a00246.html#ae7615172bb1e54339151d3f3d71a0344">QUESO::Vector::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdoc">Environment variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00393_source.html#l00117">Vector.h:117</a></div></div>
+<div class="ttc" id="a00246_html_a00bd28ae4edb8f2d06359e3e95d67dc4"><div class="ttname"><a href="a00246.html#a00bd28ae4edb8f2d06359e3e95d67dc4">QUESO::Vector::base_copy</a></div><div class="ttdeci">virtual void base_copy(const Vector &amp;src)</div><div class="ttdoc">Copies base data from vector src to this vector. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00101">Vector.C:101</a></div></div>
+<div class="ttc" id="a00246_html_a6bc4326d0e4f44f015bf2e30c7ee620d"><div class="ttname"><a href="a00246.html#a6bc4326d0e4f44f015bf2e30c7ee620d">QUESO::Vector::m_printHorizontally</a></div><div class="ttdeci">bool m_printHorizontally</div><div class="ttdoc">Flag for either or not print this matrix horizontally. </div><div class="ttdef"><b>Definition:</b> <a href="a00393_source.html#l00130">Vector.h:130</a></div></div>
+<div class="ttc" id="a00162_html"><div class="ttname"><a href="a00162.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00049">Map.h:49</a></div></div>
+<div class="ttc" id="a00246_html_a7ac1d907a63659233d0fe24b3abafe68"><div class="ttname"><a href="a00246.html#a7ac1d907a63659233d0fe24b3abafe68">QUESO::Vector::setPrintScientific</a></div><div class="ttdeci">void setPrintScientific(bool value) const </div><div class="ttdoc">Determines whether vector should be printed in Scientific Notation. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00088">Vector.C:88</a></div></div>
+<div class="ttc" id="a00246_html_a55d8e946571a9491a028ecb9a8a992a4"><div class="ttname"><a href="a00246.html#a55d8e946571a9491a028ecb9a8a992a4">QUESO::Vector::m_printScientific</a></div><div class="ttdeci">bool m_printScientific</div><div class="ttdoc">Flag for either or not print this matrix in scientific notation. </div><div class="ttdef"><b>Definition:</b> <a href="a00393_source.html#l00133">Vector.h:133</a></div></div>
+<div class="ttc" id="a00246_html_a22b34a6d1ca3acce56054b5145bd83fe"><div class="ttname"><a href="a00246.html#a22b34a6d1ca3acce56054b5145bd83fe">QUESO::Vector::getPrintScientific</a></div><div class="ttdeci">bool getPrintScientific() const </div><div class="ttdoc">Checks if the vector should be printed in Scientific Notation. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00095">Vector.C:95</a></div></div>
+<div class="ttc" id="a00246_html_a993054e464a2626c35667c7c97bc9051"><div class="ttname"><a href="a00246.html#a993054e464a2626c35667c7c97bc9051">QUESO::Vector::setPrintHorizontally</a></div><div class="ttdeci">void setPrintHorizontally(bool value) const </div><div class="ttdoc">Determines whether vector should be printed horizontally. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00075">Vector.C:75</a></div></div>
+<div class="ttc" id="a00246_html_a0cbedc1f6e24c0ad3b688d201fd649a4"><div class="ttname"><a href="a00246.html#a0cbedc1f6e24c0ad3b688d201fd649a4">QUESO::Vector::map</a></div><div class="ttdeci">const Map &amp; map() const </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00061">Vector.C:61</a></div></div>
+<div class="ttc" id="a00246_html"><div class="ttname"><a href="a00246.html">QUESO::Vector</a></div><div class="ttdoc">Class for vector operations (virtual). </div><div class="ttdef"><b>Definition:</b> <a href="a00393_source.html#l00047">Vector.h:47</a></div></div>
+<div class="ttc" id="a00162_html_aab4fc9911156b61c51f905849e3c9856"><div class="ttname"><a href="a00162.html#aab4fc9911156b61c51f905849e3c9856">QUESO::Map::Comm</a></div><div class="ttdeci">const MpiComm &amp; Comm() const </div><div class="ttdoc">Access function for MpiComm communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00131">Map.C:131</a></div></div>
+<div class="ttc" id="a00246_html_a4dab068a8b5cedef00b8520c4e106a2b"><div class="ttname"><a href="a00246.html#a4dab068a8b5cedef00b8520c4e106a2b">QUESO::Vector::numOfProcsForStorage</a></div><div class="ttdeci">unsigned int numOfProcsForStorage() const </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00068">Vector.C:68</a></div></div>
+<div class="ttc" id="a00246_html_a2e2952dab0554fedd8dc9a2543715745"><div class="ttname"><a href="a00246.html#a2e2952dab0554fedd8dc9a2543715745">QUESO::Vector::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00054">Vector.C:54</a></div></div>
+<div class="ttc" id="a00179_html_aa780721ae0fdeabc5a15e04cb0cad964"><div class="ttname"><a href="a00179.html#aa780721ae0fdeabc5a15e04cb0cad964">QUESO::MpiComm::NumProc</a></div><div class="ttdeci">int NumProc() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00133">MpiComm.C:133</a></div></div>
+<div class="ttc" id="a00246_html_aa7ebfaf1884091a007d91224dcce11ab"><div class="ttname"><a href="a00246.html#aa7ebfaf1884091a007d91224dcce11ab">QUESO::Vector::m_map</a></div><div class="ttdeci">const Map m_map</div><div class="ttdoc">Mapping variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00393_source.html#l00122">Vector.h:122</a></div></div>
+<div class="ttc" id="a00246_html_abd1a972dac88eb02a6de8ec36d04a3ea"><div class="ttname"><a href="a00246.html#abd1a972dac88eb02a6de8ec36d04a3ea">QUESO::Vector::getPrintHorizontally</a></div><div class="ttdeci">bool getPrintHorizontally() const </div><div class="ttdoc">Checks if vector is printed horizontally. </div><div class="ttdef"><b>Definition:</b> <a href="a00435_source.html#l00082">Vector.C:82</a></div></div>
+<div class="ttc" id="a00036_html"><div class="ttname"><a href="a00036.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00198">Environment.h:198</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

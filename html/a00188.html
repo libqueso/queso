@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: QUESO::OperatorBase Class Reference</title>
+<title>queso-0.56.2: ANNpr_queue::pq_node Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -45,230 +45,67 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00690.html">QUESO</a></li><li class="navelem"><a class="el" href="a00188.html">OperatorBase</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00026.html">ANNpr_queue</a></li><li class="navelem"><a class="el" href="a00188.html">pq_node</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="a01304.html">List of all members</a>  </div>
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="a00708.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::OperatorBase Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">ANNpr_queue::pq_node Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Abstract base class for operator objects. Operators are assumed to be symmetric and positive-definite.  
- <a href="a00188.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="a00369_source.html">OperatorBase.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ae16245b5e46e01ff81121cca14190e7f"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00188.html#ae16245b5e46e01ff81121cca14190e7f">get_eigenvalue</a> (unsigned int i) const =0</td></tr>
-<tr class="memdesc:ae16245b5e46e01ff81121cca14190e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return eigenvalue <code>i</code>.  <a href="#ae16245b5e46e01ff81121cca14190e7f">More...</a><br/></td></tr>
-<tr class="separator:ae16245b5e46e01ff81121cca14190e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a598da528247dcaec786eee415664d42e"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00188.html#a598da528247dcaec786eee415664d42e">get_inverted_eigenvalue</a> (unsigned int i) const =0</td></tr>
-<tr class="memdesc:a598da528247dcaec786eee415664d42e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the reciprocal of eigenvalue <code>i</code>.  <a href="#a598da528247dcaec786eee415664d42e">More...</a><br/></td></tr>
-<tr class="separator:a598da528247dcaec786eee415664d42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a610fc538c34726a001d49c138a17817e"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00188.html#a610fc538c34726a001d49c138a17817e">get_num_converged</a> () const =0</td></tr>
-<tr class="memdesc:a610fc538c34726a001d49c138a17817e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of converged eigenpairs.  <a href="#a610fc538c34726a001d49c138a17817e">More...</a><br/></td></tr>
-<tr class="separator:a610fc538c34726a001d49c138a17817e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e4e66c8db558de7445d89810aaaf0e0"><td class="memItemLeft" align="right" valign="top">virtual SharedPtr<br class="typebreak"/>
-&lt; <a class="el" href="a00092.html">FunctionBase</a> &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00188.html#a7e4e66c8db558de7445d89810aaaf0e0">inverse_kl_transform</a> (std::vector&lt; double &gt; &amp;xi, double alpha) const =0</td></tr>
-<tr class="memdesc:a7e4e66c8db558de7445d89810aaaf0e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given coefficients <code>xi</code>, computes the Karhunen-Loeve transform.  <a href="#a7e4e66c8db558de7445d89810aaaf0e0">More...</a><br/></td></tr>
-<tr class="separator:a7e4e66c8db558de7445d89810aaaf0e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:ae9f848c2418f2dca590175a53be0b250"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00188.html#ae9f848c2418f2dca590175a53be0b250">OperatorBase</a> ()</td></tr>
-<tr class="memdesc:ae9f848c2418f2dca590175a53be0b250"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#ae9f848c2418f2dca590175a53be0b250">More...</a><br/></td></tr>
-<tr class="separator:ae9f848c2418f2dca590175a53be0b250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2869fcba07398fa247c0095f3e5f272d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00188.html#a2869fcba07398fa247c0095f3e5f272d">~OperatorBase</a> ()</td></tr>
-<tr class="memdesc:a2869fcba07398fa247c0095f3e5f272d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a2869fcba07398fa247c0095f3e5f272d">More...</a><br/></td></tr>
-<tr class="separator:a2869fcba07398fa247c0095f3e5f272d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a320dd10cf722157d3b335f84807a7bab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00335.html#a4f3250dcb9a07c4b44eec3de958c8a68">PQkey</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00188.html#a320dd10cf722157d3b335f84807a7bab">key</a></td></tr>
+<tr class="separator:a320dd10cf722157d3b335f84807a7bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d68afd877b07688ca0d92a458089f59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00335.html#a67e38939e5afb9f1663d563a6047825d">PQinfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00188.html#a2d68afd877b07688ca0d92a458089f59">info</a></td></tr>
+<tr class="separator:a2d68afd877b07688ca0d92a458089f59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Abstract base class for operator objects. Operators are assumed to be symmetric and positive-definite. </p>
-
-<p>Definition at line <a class="el" href="a00369_source.html#l00045">45</a> of file <a class="el" href="a00369_source.html">OperatorBase.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ae9f848c2418f2dca590175a53be0b250"></a>
+<div class="textblock">
+<p>Definition at line <a class="el" href="a00335_source.html#l00056">56</a> of file <a class="el" href="a00335_source.html">pr_queue.h</a>.</p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a2d68afd877b07688ca0d92a458089f59"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::OperatorBase::OperatorBase </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname"><a class="el" href="a00335.html#a67e38939e5afb9f1663d563a6047825d">PQinfo</a> ANNpr_queue::pq_node::info</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
+<p>Definition at line <a class="el" href="a00335_source.html#l00058">58</a> of file <a class="el" href="a00335_source.html">pr_queue.h</a>.</p>
 
-<p>Definition at line <a class="el" href="a00414_source.html#l00030">30</a> of file <a class="el" href="a00414_source.html">OperatorBase.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
-</div><!-- fragment -->
+<p>Referenced by <a class="el" href="a00335_source.html#l00102">ANNpr_queue::extr_min()</a>, and <a class="el" href="a00335_source.html#l00084">ANNpr_queue::insert()</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="a2869fcba07398fa247c0095f3e5f272d"></a>
+<a class="anchor" id="a320dd10cf722157d3b335f84807a7bab"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::OperatorBase::~OperatorBase </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname"><a class="el" href="a00335.html#a4f3250dcb9a07c4b44eec3de958c8a68">PQkey</a> ANNpr_queue::pq_node::key</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Destructor. </p>
+<p>Definition at line <a class="el" href="a00335_source.html#l00057">57</a> of file <a class="el" href="a00335_source.html">pr_queue.h</a>.</p>
 
-<p>Definition at line <a class="el" href="a00414_source.html#l00034">34</a> of file <a class="el" href="a00414_source.html">OperatorBase.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ae16245b5e46e01ff81121cca14190e7f"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual double QUESO::OperatorBase::get_eigenvalue </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return eigenvalue <code>i</code>. </p>
-<p>You can store them however you want, but having some kind of order to them is useful for <code>InfiniteDimensionalMeasure</code> </p>
-
-<p>Referenced by <a class="el" href="a00403_source.html#l00071">QUESO::InfiniteDimensionalGaussian::get_kl_coefficient()</a>.</p>
+<p>Referenced by <a class="el" href="a00335_source.html#l00102">ANNpr_queue::extr_min()</a>, and <a class="el" href="a00335_source.html#l00084">ANNpr_queue::insert()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a598da528247dcaec786eee415664d42e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual double QUESO::OperatorBase::get_inverted_eigenvalue </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return the reciprocal of eigenvalue <code>i</code>. </p>
-
-</div>
-</div>
-<a class="anchor" id="a610fc538c34726a001d49c138a17817e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual unsigned int QUESO::OperatorBase::get_num_converged </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return the number of converged eigenpairs. </p>
-
-<p>Referenced by <a class="el" href="a00403_source.html#l00057">QUESO::InfiniteDimensionalGaussian::draw()</a>, and <a class="el" href="a00403_source.html#l00037">QUESO::InfiniteDimensionalGaussian::InfiniteDimensionalGaussian()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7e4e66c8db558de7445d89810aaaf0e0"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual SharedPtr&lt;<a class="el" href="a00092.html">FunctionBase</a>&gt;::Type QUESO::OperatorBase::inverse_kl_transform </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>xi</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>alpha</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Given coefficients <code>xi</code>, computes the Karhunen-Loeve transform. </p>
-<p>This transform goes from coefficient space to physical space using <code>this</code> as the precision operator:   / pow(, <code>alpha</code> / 2.0) (x) where the lambda are eigenvalues of the precision operator, <code>this</code>, and the (x) are eigenfunctions of the precision operator, <code>this</code> </p>
-
-<p>Referenced by <a class="el" href="a00403_source.html#l00057">QUESO::InfiniteDimensionalGaussian::draw()</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/core/inc/<a class="el" href="a00369_source.html">OperatorBase.h</a></li>
-<li>src/core/src/<a class="el" href="a00414_source.html">OperatorBase.C</a></li>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/contrib/ANN/src/<a class="el" href="a00335_source.html">pr_queue.h</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:13 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

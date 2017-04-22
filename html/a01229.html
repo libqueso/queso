@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: Member List</title>
+<title>queso-0.56.2: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -45,26 +45,46 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00690.html">QUESO</a></li><li class="navelem"><a class="el" href="a00052.html">BasicPdfsBase</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00674.html">QUESO</a></li><li class="navelem"><a class="el" href="a00239.html">UniformJointPdf</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">QUESO::BasicPdfsBase Member List</div>  </div>
+<div class="title">QUESO::UniformJointPdf&lt; V, M &gt; Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="a00052.html">QUESO::BasicPdfsBase</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="a00239.html">QUESO::UniformJointPdf&lt; V, M &gt;</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="a00052.html#acf3bfe40802cd488d9d01077a7d15e55">BasicPdfsBase</a>(int worldRank)</td><td class="entry"><a class="el" href="a00052.html">QUESO::BasicPdfsBase</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="a00052.html#a2ca589bc1e025d7e84a0b029b4c610a1">BasicPdfsBase</a>()</td><td class="entry"><a class="el" href="a00052.html">QUESO::BasicPdfsBase</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00052.html#a7a4df6a4b2147eeca4efb22db0ae1b8b">betaPdfActualValue</a>(double x, double alpha, double beta) const =0</td><td class="entry"><a class="el" href="a00052.html">QUESO::BasicPdfsBase</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00052.html#ae5c0c0a14b0f5b89f64e0cd9c0a1b9fd">gammaPdfActualValue</a>(double x, double a, double b) const =0</td><td class="entry"><a class="el" href="a00052.html">QUESO::BasicPdfsBase</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00052.html#a67e06f7bb30579581db1a7b9b3507d1c">m_worldRank</a></td><td class="entry"><a class="el" href="a00052.html">QUESO::BasicPdfsBase</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00052.html#a4e0421cd14da7b04d4242318c7de5ece">~BasicPdfsBase</a>()</td><td class="entry"><a class="el" href="a00052.html">QUESO::BasicPdfsBase</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00239.html#a358ffa410284ed3e40435439c1c8bbc3">actualValue</a>(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td><td class="entry"><a class="el" href="a00239.html">QUESO::UniformJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00038.html#ae1f0870366a17d71e05a2f84ec49e06e">BaseJointPdf</a>(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet)</td><td class="entry"><a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00045.html#a68ab7c82be7eba7bd5d51ce8d85c65f0">BaseScalarFunction</a>(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet)</td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00038.html#a7b7bdd13d2de51198bf75d522e02545b">commonComputeLogOfNormalizationFactor</a>(unsigned int numSamples, bool updateFactorInternally) const </td><td class="entry"><a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00239.html#a7104edeec3bc1a45f4c8a805cdfde170">computeLogOfNormalizationFactor</a>(unsigned int numSamples, bool updateFactorInternally) const </td><td class="entry"><a class="el" href="a00239.html">QUESO::UniformJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00239.html#ad84108ef50f33d95694ed3a66a869eff">distributionMean</a>(V &amp;meanVector) const </td><td class="entry"><a class="el" href="a00239.html">QUESO::UniformJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00239.html#aaedd4f36797f8c0df3eb55cb2d2bb7c3">distributionVariance</a>(M &amp;covMatrix) const </td><td class="entry"><a class="el" href="a00239.html">QUESO::UniformJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00045.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>() const </td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00239.html#a80858abd7ca07ed42b9e9f0e4c92b3d2">lnValue</a>(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td><td class="entry"><a class="el" href="a00239.html">QUESO::UniformJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00045.html#a44b779dfc5d1846a0241096e45fca9fc">QUESO::BaseJointPdf::lnValue</a>(const V &amp;domainVector) const </td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00045.html#a272b3b71d905255d982d3ca200db0e3a">QUESO::BaseJointPdf::lnValue</a>(const V &amp;domainVector, V &amp;gradVector) const </td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00045.html#a015f020372d54a21a6f8ddf7045ee086">QUESO::BaseJointPdf::lnValue</a>(const V &amp;domainVector, V &amp;gradVector, const V &amp;domainDirection, V &amp;hessianEffect) const </td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00045.html#ab81be32259b9764250660a035439fda8">m_domainSet</a></td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00045.html#adf44141aeb765d97613286f88f235f04">m_env</a></td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00038.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a></td><td class="entry"><a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00038.html#a138c99bcef7a67077d9612bddfdcb896">m_normalizationStyle</a></td><td class="entry"><a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00045.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00038.html#a90529e743c0930dd5d93ed02b97ff633">print</a>(std::ostream &amp;os) const </td><td class="entry"><a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00045.html#ad33395fcce3f671919b3477c8f885483">setFiniteDifferenceStepSize</a>(double fdStepSize)</td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00045.html#a7c2de2f41bf333aad23a4bc1e2a3b703">setFiniteDifferenceStepSize</a>(unsigned int i, double fdStepSize)</td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00038.html#a2903b3f031e68907fe7422fedc83e5dc">setLogOfNormalizationFactor</a>(double value) const </td><td class="entry"><a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00038.html#ab11f1d096f82cc7857cefe1b92f6b28e">setNormalizationStyle</a>(unsigned int value) const </td><td class="entry"><a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00239.html#a2322d8b9485f1d5fad00083fa5ef46a2">UniformJointPdf</a>(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet)</td><td class="entry"><a class="el" href="a00239.html">QUESO::UniformJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00038.html#a9f41f5dc30ddfd59e149c3a748898553">~BaseJointPdf</a>()</td><td class="entry"><a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00045.html#a6f96de783e174cfe84682766f5957969">~BaseScalarFunction</a>()</td><td class="entry"><a class="el" href="a00045.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00239.html#a8061747b487d8686414b614e7bdc0369">~UniformJointPdf</a>()</td><td class="entry"><a class="el" href="a00239.html">QUESO::UniformJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:13 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:53 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

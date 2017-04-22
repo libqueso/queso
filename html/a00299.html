@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/basic/src/VectorSequence.C File Reference</title>
+<title>queso-0.56.2: src/basic/src/TeuchosVectorSpace.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,86 +48,22 @@
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">VectorSequence.C File Reference</div>  </div>
+<div class="title">TeuchosVectorSpace.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/VectorSequence.h&gt;</code><br/>
-<code>#include &lt;queso/GslVector.h&gt;</code><br/>
-<code>#include &lt;queso/GslMatrix.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for VectorSequence.C:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00734.png" border="0" usemap="#src_2basic_2src_2_vector_sequence_8_c" alt=""/></div>
-<map name="src_2basic_2src_2_vector_sequence_8_c" id="src_2basic_2src_2_vector_sequence_8_c">
-</map>
-</div>
-</div>
+
 <p><a href="a00299_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ae194d12af9b08b130faf542b9b9ffe9b"><td class="memTemplParams" colspan="2">template&lt;class P_V , class P_M , class Q_V , class Q_M &gt; </td></tr>
-<tr class="memitem:ae194d12af9b08b130faf542b9b9ffe9b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00690.html#ae194d12af9b08b130faf542b9b9ffe9b">QUESO::ComputeCovCorrMatricesBetweenVectorSequences</a> (const BaseVectorSequence&lt; P_V, P_M &gt; &amp;subPSeq, const BaseVectorSequence&lt; Q_V, Q_M &gt; &amp;subQSeq, unsigned int subNumSamples, P_M &amp;pqCovMatrix, P_M &amp;pqCorrMatrix)</td></tr>
-<tr class="separator:ae194d12af9b08b130faf542b9b9ffe9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aecab31ab77cd6b5c1c2ea18857131551"><td class="memItemLeft" align="right" valign="top">template <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00299.html#aecab31ab77cd6b5c1c2ea18857131551">QUESO::ComputeCovCorrMatricesBetweenVectorSequences&lt; QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix &gt;</a> (<a class="el" href="a00051.html">QUESO::BaseVectorSequence</a>&lt; <a class="el" href="a00138.html">QUESO::GslVector</a>, <a class="el" href="a00136.html">QUESO::GslMatrix</a> &gt; const &amp;, <a class="el" href="a00051.html">QUESO::BaseVectorSequence</a>&lt; <a class="el" href="a00138.html">QUESO::GslVector</a>, <a class="el" href="a00136.html">QUESO::GslMatrix</a> &gt; const &amp;, unsigned int, <a class="el" href="a00136.html">QUESO::GslMatrix</a> &amp;, <a class="el" href="a00136.html">QUESO::GslMatrix</a> &amp;)</td></tr>
-<tr class="separator:aecab31ab77cd6b5c1c2ea18857131551"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aecab31ab77cd6b5c1c2ea18857131551"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">template <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00690.html#ae194d12af9b08b130faf542b9b9ffe9b">QUESO::ComputeCovCorrMatricesBetweenVectorSequences</a>&lt; <a class="el" href="a00138.html">QUESO::GslVector</a>, <a class="el" href="a00136.html">QUESO::GslMatrix</a>, <a class="el" href="a00138.html">QUESO::GslVector</a>, <a class="el" href="a00136.html">QUESO::GslMatrix</a> &gt; </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00051.html">QUESO::BaseVectorSequence</a>&lt; <a class="el" href="a00138.html">QUESO::GslVector</a>, <a class="el" href="a00136.html">QUESO::GslMatrix</a> &gt; const &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00051.html">QUESO::BaseVectorSequence</a>&lt; <a class="el" href="a00138.html">QUESO::GslVector</a>, <a class="el" href="a00136.html">QUESO::GslMatrix</a> &gt; const &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>int</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00136.html">QUESO::GslMatrix</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00136.html">QUESO::GslMatrix</a> &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/basic/inc/GenericVectorFunction.h Source File</title>
+<title>queso-0.56.2: src/basic/inc/ConstantVectorFunction.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GenericVectorFunction.h</div>  </div>
+<div class="title">ConstantVectorFunction.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00266.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,8 +75,8 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GENERIC_VECTOR_FUNCTION_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GENERIC_VECTOR_FUNCTION_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_CONSTANT_VECTOR_FUNCTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_CONSTANT_VECTOR_FUNCTION_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/DistArray.h&gt;</span></div>
@@ -88,69 +88,53 @@
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslVector;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V = GslVector, <span class="keyword">class</span> P_M = GslMatrix, <span class="keyword">class</span> Q_V = GslVector, <span class="keyword">class</span> Q_M = GslMatrix&gt;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00125.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00125.html">GenericVectorFunction</a> : <span class="keyword">public</span> <a class="code" href="a00047.html">BaseVectorFunction</a>&lt;P_V,P_M,Q_V,Q_M&gt; {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Constant class</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V = GslVector, <span class="keyword">class</span> P_M = GslMatrix, <span class="keyword">class</span> Q_V = GslVector ,<span class="keyword">class</span> Q_M = GslMatrix&gt;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00071.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00071.html">ConstantVectorFunction</a> : <span class="keyword">public</span> <a class="code" href="a00048.html">BaseVectorFunction</a>&lt;P_V,P_M,Q_V,Q_M&gt; {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00125.html#a7225557182bd694de55618dff4322d3a">GenericVectorFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                      prefix,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                               <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; <a class="code" href="a00047.html#af77b709d473f253e5c56aa620d5f3cb0">domainSet</a>,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                               <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;Q_V,Q_M&gt;</a>&amp; <a class="code" href="a00047.html#aa3a070a86f7099f53a669f1aab547619">imageSet</a>,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                               <span class="keywordtype">void</span> (*routinePtr)(<span class="keyword">const</span> P_V&amp;                    domainVector,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                                  <span class="keyword">const</span> P_V*                    domainDirection,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                                  <span class="keyword">const</span> <span class="keywordtype">void</span>*                   functionDataPtr,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                                                        Q_V&amp;                    imageVector,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                                                        <a class="code" href="a00072.html">DistArray&lt;P_V*&gt;</a>* gradVectors,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                                                        <a class="code" href="a00072.html">DistArray&lt;P_M*&gt;</a>* hessianMatrices,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                                                        <a class="code" href="a00072.html">DistArray&lt;P_V*&gt;</a>* hessianEffects),</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                               <span class="keyword">const</span> <span class="keywordtype">void</span>* functionDataPtr);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00125.html#ab125a1b6d18f7912e70d19bd80f72175">~GenericVectorFunction</a>();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00125.html#afcc099493262b90cdace65f24bb6b98d">compute</a>  (<span class="keyword">const</span> P_V&amp;                    domainVector,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                 <span class="keyword">const</span> P_V*                    domainDirection,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                       Q_V&amp;                    imageVector,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                       <a class="code" href="a00072.html">DistArray&lt;P_V*&gt;</a>* gradVectors,     <span class="comment">// Yes, &#39;P_V&#39;</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                       <a class="code" href="a00072.html">DistArray&lt;P_M*&gt;</a>* hessianMatrices, <span class="comment">// Yes, &#39;P_M&#39;</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                       <a class="code" href="a00072.html">DistArray&lt;P_V*&gt;</a>* hessianEffects) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00071.html#a71f9a54dfabba7ae9b8c0f5f90b3d528">ConstantVectorFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                      prefix,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; <a class="code" href="a00048.html#af77b709d473f253e5c56aa620d5f3cb0">domainSet</a>,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;Q_V,Q_M&gt;</a>&amp; <a class="code" href="a00048.html#aa3a070a86f7099f53a669f1aab547619">imageSet</a>,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                <span class="keyword">const</span> Q_V&amp;                       constantImageVector);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00071.html#a3be303448d27a3a98910f575a8a9876c">~ConstantVectorFunction</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00071.html#a22d15ef82a6284e234364a9f5c176a89">compute</a>  (<span class="keyword">const</span> P_V&amp;                    domainVector,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                 <span class="keyword">const</span> P_V*                    domainDirection,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                       Q_V&amp;                    imageVector,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                       <a class="code" href="a00075.html">DistArray&lt;P_V*&gt;</a>* gradVectors,     <span class="comment">// Yes, &#39;P_V&#39;</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                       <a class="code" href="a00075.html">DistArray&lt;P_M*&gt;</a>* hessianMatrices, <span class="comment">// Yes, &#39;P_M&#39;</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                       <a class="code" href="a00075.html">DistArray&lt;P_V*&gt;</a>* hessianEffects) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00071.html#a7d2befbf254e81916fc1e39ffaebd756">   74</a></span>&#160;  <span class="keyword">const</span> Q_V* <a class="code" href="a00071.html#a7d2befbf254e81916fc1e39ffaebd756">m_constantImageVector</a>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00048.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00048.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00048.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_domainSet</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00048.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_imageSet</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="a00125.html#a1671b1c8c0d4eed14d203823af685a09">   88</a></span>&#160;  <a class="code" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> (*<a class="code" href="a00125.html#a1671b1c8c0d4eed14d203823af685a09">m_routinePtr</a>)(<span class="keyword">const</span> P_V&amp;                    domainVector,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                       <span class="keyword">const</span> P_V*                    domainDirection,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                       <span class="keyword">const</span> <span class="keywordtype">void</span>*                   functionDataPtr,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                             Q_V&amp;                    imageVector,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                             <a class="code" href="a00072.html">DistArray&lt;P_V*&gt;</a>* gradVectors,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                             <a class="code" href="a00072.html">DistArray&lt;P_M*&gt;</a>* hessianMatrices,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                             <a class="code" href="a00072.html">DistArray&lt;P_V*&gt;</a>* hessianEffects);</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00125.html#a85df3216795107b164913ad339f0f813">   95</a></span>&#160;  <span class="keyword">const</span> <span class="keywordtype">void</span>* <a class="code" href="a00125.html#a85df3216795107b164913ad339f0f813">m_routineDataPtr</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_domainSet</a>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_imageSet</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#endif // UQ_GENERIC_VECTOR_FUNCTION_H</span></div>
-<div class="ttc" id="a00125_html_a7225557182bd694de55618dff4322d3a"><div class="ttname"><a href="a00125.html#a7225557182bd694de55618dff4322d3a">QUESO::GenericVectorFunction::GenericVectorFunction</a></div><div class="ttdeci">GenericVectorFunction(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;domainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet, void(*routinePtr)(const P_V &amp;domainVector, const P_V *domainDirection, const void *functionDataPtr, Q_V &amp;imageVector, DistArray&lt; P_V * &gt; *gradVectors, DistArray&lt; P_M * &gt; *hessianMatrices, DistArray&lt; P_V * &gt; *hessianEffects), const void *functionDataPtr)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00033">GenericVectorFunction.C:33</a></div></div>
-<div class="ttc" id="a00047_html"><div class="ttname"><a href="a00047.html">QUESO::BaseVectorFunction</a></div><div class="ttdoc">A templated (base) class for handling vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00274_source.html#l00050">VectorFunction.h:50</a></div></div>
-<div class="ttc" id="a00125_html_afcc099493262b90cdace65f24bb6b98d"><div class="ttname"><a href="a00125.html#afcc099493262b90cdace65f24bb6b98d">QUESO::GenericVectorFunction::compute</a></div><div class="ttdeci">void compute(const P_V &amp;domainVector, const P_V *domainDirection, Q_V &amp;imageVector, DistArray&lt; P_V * &gt; *gradVectors, DistArray&lt; P_M * &gt; *hessianMatrices, DistArray&lt; P_V * &gt; *hessianEffects) const </div><div class="ttdoc">Calls the protected member *m_routinePtr(), in order to calculate the image vector imageVector...</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00063">GenericVectorFunction.C:63</a></div></div>
-<div class="ttc" id="a00125_html_ab125a1b6d18f7912e70d19bd80f72175"><div class="ttname"><a href="a00125.html#ab125a1b6d18f7912e70d19bd80f72175">QUESO::GenericVectorFunction::~GenericVectorFunction</a></div><div class="ttdeci">virtual ~GenericVectorFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00056">GenericVectorFunction.C:56</a></div></div>
-<div class="ttc" id="a00125_html_a85df3216795107b164913ad339f0f813"><div class="ttname"><a href="a00125.html#a85df3216795107b164913ad339f0f813">QUESO::GenericVectorFunction::m_routineDataPtr</a></div><div class="ttdeci">const void * m_routineDataPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00266_source.html#l00095">GenericVectorFunction.h:95</a></div></div>
-<div class="ttc" id="a00246_html"><div class="ttname"><a href="a00246.html">QUESO::VectorSet&lt; P_V, P_M &gt;</a></div></div>
-<div class="ttc" id="a00308_html_a3b083519fd2b41d83363afcfd5ebad9d"><div class="ttname"><a href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a></div><div class="ttdeci">if the work is an executable linked with the with the complete machine readable work that uses the as object code and or source so that the user can modify the Library and then relink to produce a modified executable containing the modified rather than copying library functions into the if the user installs as long as the modified version is interface compatible with the version that the work was made with c Accompany the work with a written valid for at least three to give the same user the materials specified in for a charge no more than the cost of performing this distribution d If distribution of the work is made by offering access to copy from a designated offer equivalent access to copy the above specified materials from the same place e Verify that the user has already received a copy of these materials or that you have already sent this user a copy For an the required form of the work that uses the Library must include any data and utility programs needed for reproducing the executable from it as a special the materials to be distributed need not include anything that is normally and so on of the operating system on which the executable unless that component itself accompanies the executable It may happen that this requirement contradicts the license restrictions of other proprietary libraries that do not normally accompany the operating system Such a contradiction means you cannot use both them and the Library together in an executable that you distribute You may place library facilities that are a work based on the Library side by side in a single library together with other library facilities not covered by this and distribute such a combined provided that the separate distribution of the work based on the Library and of the other library facilities is otherwise and provided that you do these two uncombined with any other library facilities This must be distributed under the terms of the Sections above b Give prominent notice with the combined library of the fact that part of it is a work based on the and explaining where to find the accompanying uncombined form of the same work You may not link or distribute the Library except as expressly provided under this License Any attempt otherwise to link or distribute the Library is void</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00320">License.txt:320</a></div></div>
-<div class="ttc" id="a00125_html"><div class="ttname"><a href="a00125.html">QUESO::GenericVectorFunction</a></div><div class="ttdoc">A class for handling generic vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00266_source.html#l00047">GenericVectorFunction.h:47</a></div></div>
-<div class="ttc" id="a00072_html"><div class="ttname"><a href="a00072.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00347_source.html#l00056">DistArray.h:56</a></div></div>
-<div class="ttc" id="a00125_html_a1671b1c8c0d4eed14d203823af685a09"><div class="ttname"><a href="a00125.html#a1671b1c8c0d4eed14d203823af685a09">QUESO::GenericVectorFunction::m_routinePtr</a></div><div class="ttdeci">void(* m_routinePtr)(const P_V &amp;domainVector, const P_V *domainDirection, const void *functionDataPtr, Q_V &amp;imageVector, DistArray&lt; P_V * &gt; *gradVectors, DistArray&lt; P_M * &gt; *hessianMatrices, DistArray&lt; P_V * &gt; *hessianEffects)</div><div class="ttdoc">Routine defining a vector-valued function. </div><div class="ttdef"><b>Definition:</b> <a href="a00266_source.html#l00088">GenericVectorFunction.h:88</a></div></div>
-<div class="ttc" id="a00047_html_aa3a070a86f7099f53a669f1aab547619"><div class="ttname"><a href="a00047.html#aa3a070a86f7099f53a669f1aab547619">QUESO::BaseVectorFunction::imageSet</a></div><div class="ttdeci">const VectorSet&lt; Q_V, Q_M &gt; &amp; imageSet() const </div><div class="ttdoc">Access to the protected attribute m_imageSet: image set of the vector function/ It is an instance of ...</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00062">VectorFunction.C:62</a></div></div>
-<div class="ttc" id="a00047_html_af77b709d473f253e5c56aa620d5f3cb0"><div class="ttname"><a href="a00047.html#af77b709d473f253e5c56aa620d5f3cb0">QUESO::BaseVectorFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; P_V, P_M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the vector function. It is an instance o...</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00054">VectorFunction.C:54</a></div></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif // UQ_CONSTANT_VECTOR_FUNCTION_H</span></div>
+<div class="ttc" id="a00048_html_aa3a070a86f7099f53a669f1aab547619"><div class="ttname"><a href="a00048.html#aa3a070a86f7099f53a669f1aab547619">QUESO::BaseVectorFunction::imageSet</a></div><div class="ttdeci">const VectorSet&lt; Q_V, Q_M &gt; &amp; imageSet() const </div><div class="ttdoc">Access to the protected attribute m_imageSet: image set of the vector function/ It is an instance of ...</div><div class="ttdef"><b>Definition:</b> <a href="a00300_source.html#l00062">VectorFunction.C:62</a></div></div>
+<div class="ttc" id="a00071_html_a3be303448d27a3a98910f575a8a9876c"><div class="ttname"><a href="a00071.html#a3be303448d27a3a98910f575a8a9876c">QUESO::ConstantVectorFunction::~ConstantVectorFunction</a></div><div class="ttdeci">virtual ~ConstantVectorFunction()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00049">ConstantVectorFunction.C:49</a></div></div>
+<div class="ttc" id="a00071_html_a7d2befbf254e81916fc1e39ffaebd756"><div class="ttname"><a href="a00071.html#a7d2befbf254e81916fc1e39ffaebd756">QUESO::ConstantVectorFunction::m_constantImageVector</a></div><div class="ttdeci">const Q_V * m_constantImageVector</div><div class="ttdef"><b>Definition:</b> <a href="a00266_source.html#l00074">ConstantVectorFunction.h:74</a></div></div>
+<div class="ttc" id="a00075_html"><div class="ttname"><a href="a00075.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00056">DistArray.h:56</a></div></div>
+<div class="ttc" id="a00071_html_a71f9a54dfabba7ae9b8c0f5f90b3d528"><div class="ttname"><a href="a00071.html#a71f9a54dfabba7ae9b8c0f5f90b3d528">QUESO::ConstantVectorFunction::ConstantVectorFunction</a></div><div class="ttdeci">ConstantVectorFunction(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;domainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet, const Q_V &amp;constantImageVector)</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00033">ConstantVectorFunction.C:33</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet&lt; P_V, P_M &gt;</a></div></div>
+<div class="ttc" id="a00048_html_af77b709d473f253e5c56aa620d5f3cb0"><div class="ttname"><a href="a00048.html#af77b709d473f253e5c56aa620d5f3cb0">QUESO::BaseVectorFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; P_V, P_M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the vector function. It is an instance o...</div><div class="ttdef"><b>Definition:</b> <a href="a00300_source.html#l00054">VectorFunction.C:54</a></div></div>
+<div class="ttc" id="a00048_html"><div class="ttname"><a href="a00048.html">QUESO::BaseVectorFunction</a></div><div class="ttdoc">A templated (base) class for handling vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00050">VectorFunction.h:50</a></div></div>
+<div class="ttc" id="a00071_html_a22d15ef82a6284e234364a9f5c176a89"><div class="ttname"><a href="a00071.html#a22d15ef82a6284e234364a9f5c176a89">QUESO::ConstantVectorFunction::compute</a></div><div class="ttdeci">void compute(const P_V &amp;domainVector, const P_V *domainDirection, Q_V &amp;imageVector, DistArray&lt; P_V * &gt; *gradVectors, DistArray&lt; P_M * &gt; *hessianMatrices, DistArray&lt; P_V * &gt; *hessianEffects) const </div><div class="ttdoc">Calculates the image vector: assigns to the protected attribute m_constantImageVector the value of th...</div><div class="ttdef"><b>Definition:</b> <a href="a00287_source.html#l00057">ConstantVectorFunction.C:57</a></div></div>
+<div class="ttc" id="a00071_html"><div class="ttname"><a href="a00071.html">QUESO::ConstantVectorFunction</a></div><div class="ttdoc">A class for handling vector functions which image is constant. </div><div class="ttdef"><b>Definition:</b> <a href="a00266_source.html#l00049">ConstantVectorFunction.h:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:09 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:46 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

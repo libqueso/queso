@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/RngGsl.h Source File</title>
+<title>queso-0.56.2: src/core/inc/OptimizerMonitor.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">RngGsl.h</div>  </div>
+<div class="title">OptimizerMonitor.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00376.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,76 +75,74 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_RNG_GSL_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_RNG_GSL_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_OPTIMIZER_MONITOR_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_OPTIMIZER_MONITOR_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/RngBase.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;gsl/gsl_rng.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> <a class="code" href="a00376.html#aaedcdd15e9f5b131033de5fca9b4faa7">gsl_rng_default_seed</a>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">class </span>BaseEnvironment;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00184.html">   36</a></span>&#160;  <span class="keyword">class </span><a class="code" href="a00184.html">OptimizerMonitor</a></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="a00184.html#af410f10bf0a08688797820b7409ed9a4">OptimizerMonitor</a>( <span class="keyword">const</span> <a class="code" href="a00036.html">BaseEnvironment</a>&amp; env, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_iters = 100 );</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="a00184.html#a9598b08479dc941ee342a1973e3544f1">~OptimizerMonitor</a>();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00198.html">   51</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00198.html">RngGsl</a> : <span class="keyword">public</span> <a class="code" href="a00195.html">RngBase</a></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="comment">/* Uses GSL with the generator of type: gsl_rng_ranlxd2. This is the second, of a total of three</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">   luxury random numbers, all an extension of a second-generation version of the ranlux algorithm of</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">   Lüscher. The period of the generator is about 10^171. The algorithm has mathematically proven</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">   properties and can provide truly decorrelated numbers at a known level of randomness. The higher</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">   luxury levels provide increased decorrelation between samples as an additional safety margin.*/</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="a00198.html#a47f994ab64fed4bbd1e3726d409d7f3d">RngGsl</a>(<span class="keywordtype">int</span> <a class="code" href="a00195.html#a3094da86084e56faaae9325f1117f9a3">seed</a>, <span class="keywordtype">int</span> worldRank);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; <a class="code" href="a00198.html#a201a5c5a0805c8de61110736fef85b7d">~RngGsl</a>();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">void</span>     <a class="code" href="a00198.html#a95e515676ae7b503bd3b72eea7432598">resetSeed</a>     (<span class="keywordtype">int</span> newSeed);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00198.html#a903f2db902f287a0d7d85f68d95d7225">uniformSample</a> ()                          <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00184.html#ab22352864f5b814c41e7faa26e4e815c">set_display_output</a>( <span class="keywordtype">bool</span> enable_output, <span class="keywordtype">bool</span> print_xmin );</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00184.html#a983780b8d56263da2616b7a5aaea3d55">append</a>( std::vector&lt;double&gt;&amp; x_min, <span class="keywordtype">double</span> objective, <span class="keywordtype">double</span> norm );</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00184.html#a63055f66b67ccce3366e4d1d73469395">reset</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00184.html#a2537f02d9f0aba65b352efbb6cf3c21a">print</a>( std::ostream&amp; output, <span class="keywordtype">bool</span> print_xmin = <span class="keyword">false</span> ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00184.html#aaf287f2f11d69258832f2b884ecdc886">   75</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="a00036.html">BaseEnvironment</a>&amp; <a class="code" href="a00184.html#aaf287f2f11d69258832f2b884ecdc886">m_env</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00184.html#a7e9ebefbc74538272c7e8993f8970d72">   77</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="a00184.html#a7e9ebefbc74538272c7e8993f8970d72">m_display_conv</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00184.html#acd3e9ae818e82af894cebd0fba681f3f">   78</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="a00184.html#acd3e9ae818e82af894cebd0fba681f3f">m_print_xmin</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="a00184.html#ad751b5fa114dfd743309276230d0fe2a">   80</a></span>&#160;    std::vector&lt;std::vector&lt;double&gt; &gt; <a class="code" href="a00184.html#ad751b5fa114dfd743309276230d0fe2a">m_minimizer_hist</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00184.html#a946b348ed297ce8a5f32cdabdaca54f4">   81</a></span>&#160;    std::vector&lt;double&gt; <a class="code" href="a00184.html#a946b348ed297ce8a5f32cdabdaca54f4">m_objective_hist</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00184.html#aa321ff2a1f1a4af3965e1341ec2225e3">   82</a></span>&#160;    std::vector&lt;double&gt; <a class="code" href="a00184.html#aa321ff2a1f1a4af3965e1341ec2225e3">m_norm_hist</a>;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00198.html#a4ebf1a75b394d2a650c1742c132b00c4">gaussianSample</a>(<span class="keywordtype">double</span> stdDev)             <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00184.html#a726b0a5557d308b3078e5eb3013a7236">print_header</a>( std::ostream&amp; output, <span class="keywordtype">bool</span> print_xmin ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00184.html#a19991944635b5001daf8d5fdf600ef00">print_iteration</a>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> iter, std::ostream&amp; output,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                          <span class="keywordtype">bool</span> print_xmin ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  };</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;} <span class="comment">// end namespace QUESO</span></div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00198.html#a4cfa51656336eadbd137c7698e5f1b59">betaSample</a>    (<span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00198.html#a18017f2291ad584f169a7efc7ca5dd32">gammaSample</a>   (<span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b)        <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keyword">const</span> gsl_rng* <a class="code" href="a00198.html#a1a67001d7a3616dd68e8fc5a691da5d8">rng</a>           () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <a class="code" href="a00198.html#a47f994ab64fed4bbd1e3726d409d7f3d">RngGsl</a>();</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="a00198.html#a48893d570695ebf59f8b96e28b9739b1">  113</a></span>&#160;  gsl_rng* <a class="code" href="a00198.html#a48893d570695ebf59f8b96e28b9739b1">m_rng</a>;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;};</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#endif // UQ_RNG_GSL_H</span></div>
-<div class="ttc" id="a00198_html_a903f2db902f287a0d7d85f68d95d7225"><div class="ttname"><a href="a00198.html#a903f2db902f287a0d7d85f68d95d7225">QUESO::RngGsl::uniformSample</a></div><div class="ttdeci">double uniformSample() const </div><div class="ttdoc">Samples a value from a uniform distribution. Support: [0,1] or [a,b]. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00075">RngGsl.C:75</a></div></div>
-<div class="ttc" id="a00198_html_a48893d570695ebf59f8b96e28b9739b1"><div class="ttname"><a href="a00198.html#a48893d570695ebf59f8b96e28b9739b1">QUESO::RngGsl::m_rng</a></div><div class="ttdeci">gsl_rng * m_rng</div><div class="ttdoc">GSL random number generator. </div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00113">RngGsl.h:113</a></div></div>
-<div class="ttc" id="a00198_html_a4cfa51656336eadbd137c7698e5f1b59"><div class="ttname"><a href="a00198.html#a4cfa51656336eadbd137c7698e5f1b59">QUESO::RngGsl::betaSample</a></div><div class="ttdeci">double betaSample(double alpha, double beta) const </div><div class="ttdoc">Samples a value from a Beta distribution. Support: [0,1]. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00089">RngGsl.C:89</a></div></div>
-<div class="ttc" id="a00195_html"><div class="ttname"><a href="a00195.html">QUESO::RngBase</a></div><div class="ttdoc">Class for random number generation (base class for either GSL or Boost RNG). </div><div class="ttdef"><b>Definition:</b> <a href="a00374_source.html#l00045">RngBase.h:45</a></div></div>
-<div class="ttc" id="a00198_html_a1a67001d7a3616dd68e8fc5a691da5d8"><div class="ttname"><a href="a00198.html#a1a67001d7a3616dd68e8fc5a691da5d8">QUESO::RngGsl::rng</a></div><div class="ttdeci">const gsl_rng * rng() const </div><div class="ttdoc">GSL random number generator. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00102">RngGsl.C:102</a></div></div>
-<div class="ttc" id="a00198_html_a201a5c5a0805c8de61110736fef85b7d"><div class="ttname"><a href="a00198.html#a201a5c5a0805c8de61110736fef85b7d">QUESO::RngGsl::~RngGsl</a></div><div class="ttdeci">~RngGsl()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00055">RngGsl.C:55</a></div></div>
-<div class="ttc" id="a00376_html_aaedcdd15e9f5b131033de5fca9b4faa7"><div class="ttname"><a href="a00376.html#aaedcdd15e9f5b131033de5fca9b4faa7">gsl_rng_default_seed</a></div><div class="ttdeci">unsigned long int gsl_rng_default_seed</div></div>
-<div class="ttc" id="a00198_html_a4ebf1a75b394d2a650c1742c132b00c4"><div class="ttname"><a href="a00198.html#a4ebf1a75b394d2a650c1742c132b00c4">QUESO::RngGsl::gaussianSample</a></div><div class="ttdeci">double gaussianSample(double stdDev) const </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00082">RngGsl.C:82</a></div></div>
-<div class="ttc" id="a00198_html_a47f994ab64fed4bbd1e3726d409d7f3d"><div class="ttname"><a href="a00198.html#a47f994ab64fed4bbd1e3726d409d7f3d">QUESO::RngGsl::RngGsl</a></div><div class="ttdeci">RngGsl()</div><div class="ttdoc">Default Constructor: it should not be used. </div></div>
-<div class="ttc" id="a00198_html"><div class="ttname"><a href="a00198.html">QUESO::RngGsl</a></div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00051">RngGsl.h:51</a></div></div>
-<div class="ttc" id="a00195_html_a3094da86084e56faaae9325f1117f9a3"><div class="ttname"><a href="a00195.html#a3094da86084e56faaae9325f1117f9a3">QUESO::RngBase::seed</a></div><div class="ttdeci">int seed() const </div><div class="ttdoc">Sets the seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00418_source.html#l00042">RngBase.C:42</a></div></div>
-<div class="ttc" id="a00198_html_a95e515676ae7b503bd3b72eea7432598"><div class="ttname"><a href="a00198.html#a95e515676ae7b503bd3b72eea7432598">QUESO::RngGsl::resetSeed</a></div><div class="ttdeci">void resetSeed(int newSeed)</div><div class="ttdoc">Resets the seed with value newSeed. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00062">RngGsl.C:62</a></div></div>
-<div class="ttc" id="a00198_html_a18017f2291ad584f169a7efc7ca5dd32"><div class="ttname"><a href="a00198.html#a18017f2291ad584f169a7efc7ca5dd32">QUESO::RngGsl::gammaSample</a></div><div class="ttdeci">double gammaSample(double a, double b) const </div><div class="ttdoc">Samples a value from a Gamma distribution. Support: [0,infinity). </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00096">RngGsl.C:96</a></div></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif // UQ_OPTIMIZER_MONITOR_H</span></div>
+<div class="ttc" id="a00184_html_a983780b8d56263da2616b7a5aaea3d55"><div class="ttname"><a href="a00184.html#a983780b8d56263da2616b7a5aaea3d55">QUESO::OptimizerMonitor::append</a></div><div class="ttdeci">void append(std::vector&lt; double &gt; &amp;x_min, double objective, double norm)</div><div class="ttdoc">Add current value of minimizer, objective, and error norm. </div><div class="ttdef"><b>Definition:</b> <a href="a00425_source.html#l00053">OptimizerMonitor.C:53</a></div></div>
+<div class="ttc" id="a00184_html_aaf287f2f11d69258832f2b884ecdc886"><div class="ttname"><a href="a00184.html#aaf287f2f11d69258832f2b884ecdc886">QUESO::OptimizerMonitor::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00075">OptimizerMonitor.h:75</a></div></div>
+<div class="ttc" id="a00184_html_aa321ff2a1f1a4af3965e1341ec2225e3"><div class="ttname"><a href="a00184.html#aa321ff2a1f1a4af3965e1341ec2225e3">QUESO::OptimizerMonitor::m_norm_hist</a></div><div class="ttdeci">std::vector&lt; double &gt; m_norm_hist</div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00082">OptimizerMonitor.h:82</a></div></div>
+<div class="ttc" id="a00184_html_a726b0a5557d308b3078e5eb3013a7236"><div class="ttname"><a href="a00184.html#a726b0a5557d308b3078e5eb3013a7236">QUESO::OptimizerMonitor::print_header</a></div><div class="ttdeci">void print_header(std::ostream &amp;output, bool print_xmin) const </div><div class="ttdef"><b>Definition:</b> <a href="a00425_source.html#l00076">OptimizerMonitor.C:76</a></div></div>
+<div class="ttc" id="a00184_html"><div class="ttname"><a href="a00184.html">QUESO::OptimizerMonitor</a></div><div class="ttdoc">Object to monitor convergence of optimizers. </div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00036">OptimizerMonitor.h:36</a></div></div>
+<div class="ttc" id="a00184_html_a19991944635b5001daf8d5fdf600ef00"><div class="ttname"><a href="a00184.html#a19991944635b5001daf8d5fdf600ef00">QUESO::OptimizerMonitor::print_iteration</a></div><div class="ttdeci">void print_iteration(unsigned int iter, std::ostream &amp;output, bool print_xmin) const </div><div class="ttdef"><b>Definition:</b> <a href="a00425_source.html#l00106">OptimizerMonitor.C:106</a></div></div>
+<div class="ttc" id="a00184_html_acd3e9ae818e82af894cebd0fba681f3f"><div class="ttname"><a href="a00184.html#acd3e9ae818e82af894cebd0fba681f3f">QUESO::OptimizerMonitor::m_print_xmin</a></div><div class="ttdeci">bool m_print_xmin</div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00078">OptimizerMonitor.h:78</a></div></div>
+<div class="ttc" id="a00184_html_a63055f66b67ccce3366e4d1d73469395"><div class="ttname"><a href="a00184.html#a63055f66b67ccce3366e4d1d73469395">QUESO::OptimizerMonitor::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Clears internal datastructures and resets display variables to false. </div><div class="ttdef"><b>Definition:</b> <a href="a00425_source.html#l00137">OptimizerMonitor.C:137</a></div></div>
+<div class="ttc" id="a00184_html_a946b348ed297ce8a5f32cdabdaca54f4"><div class="ttname"><a href="a00184.html#a946b348ed297ce8a5f32cdabdaca54f4">QUESO::OptimizerMonitor::m_objective_hist</a></div><div class="ttdeci">std::vector&lt; double &gt; m_objective_hist</div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00081">OptimizerMonitor.h:81</a></div></div>
+<div class="ttc" id="a00184_html_ab22352864f5b814c41e7faa26e4e815c"><div class="ttname"><a href="a00184.html#ab22352864f5b814c41e7faa26e4e815c">QUESO::OptimizerMonitor::set_display_output</a></div><div class="ttdeci">void set_display_output(bool enable_output, bool print_xmin)</div><div class="ttdoc">Enabling output to std::cout everytime append is called. </div><div class="ttdef"><b>Definition:</b> <a href="a00425_source.html#l00047">OptimizerMonitor.C:47</a></div></div>
+<div class="ttc" id="a00184_html_ad751b5fa114dfd743309276230d0fe2a"><div class="ttname"><a href="a00184.html#ad751b5fa114dfd743309276230d0fe2a">QUESO::OptimizerMonitor::m_minimizer_hist</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; double &gt; &gt; m_minimizer_hist</div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00080">OptimizerMonitor.h:80</a></div></div>
+<div class="ttc" id="a00184_html_a2537f02d9f0aba65b352efbb6cf3c21a"><div class="ttname"><a href="a00184.html#a2537f02d9f0aba65b352efbb6cf3c21a">QUESO::OptimizerMonitor::print</a></div><div class="ttdeci">void print(std::ostream &amp;output, bool print_xmin=false) const </div><div class="ttdoc">Prints entire convergence history. </div><div class="ttdef"><b>Definition:</b> <a href="a00425_source.html#l00147">OptimizerMonitor.C:147</a></div></div>
+<div class="ttc" id="a00184_html_a7e9ebefbc74538272c7e8993f8970d72"><div class="ttname"><a href="a00184.html#a7e9ebefbc74538272c7e8993f8970d72">QUESO::OptimizerMonitor::m_display_conv</a></div><div class="ttdeci">bool m_display_conv</div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00077">OptimizerMonitor.h:77</a></div></div>
+<div class="ttc" id="a00184_html_af410f10bf0a08688797820b7409ed9a4"><div class="ttname"><a href="a00184.html#af410f10bf0a08688797820b7409ed9a4">QUESO::OptimizerMonitor::OptimizerMonitor</a></div><div class="ttdeci">OptimizerMonitor(const BaseEnvironment &amp;env, unsigned int n_iters=100)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00425_source.html#l00034">OptimizerMonitor.C:34</a></div></div>
+<div class="ttc" id="a00184_html_a9598b08479dc941ee342a1973e3544f1"><div class="ttname"><a href="a00184.html#a9598b08479dc941ee342a1973e3544f1">QUESO::OptimizerMonitor::~OptimizerMonitor</a></div><div class="ttdeci">~OptimizerMonitor()</div><div class="ttdef"><b>Definition:</b> <a href="a00425_source.html#l00044">OptimizerMonitor.C:44</a></div></div>
+<div class="ttc" id="a00036_html"><div class="ttname"><a href="a00036.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00198">Environment.h:198</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

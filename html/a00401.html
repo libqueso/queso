@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/src/GslOptimizer.C File Reference</title>
+<title>queso-0.56.2: src/core/src/BoostInputOptionsParser.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -51,45 +51,34 @@
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">GslOptimizer.C File Reference</div>  </div>
+<div class="title">BoostInputOptionsParser.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;iostream&gt;</code><br/>
-<code>#include &lt;queso/Defines.h&gt;</code><br/>
-<code>#include &lt;queso/GslVector.h&gt;</code><br/>
-<code>#include &lt;queso/VectorSpace.h&gt;</code><br/>
-<code>#include &lt;queso/ScalarFunction.h&gt;</code><br/>
-<code>#include &lt;queso/GslOptimizer.h&gt;</code><br/>
-<code>#include &lt;queso/OptimizerMonitor.h&gt;</code><br/>
-<code>#include &lt;gsl/gsl_multimin.h&gt;</code><br/>
-<code>#include &lt;gsl/gsl_blas.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for GslOptimizer.C:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00845.png" border="0" usemap="#src_2core_2src_2_gsl_optimizer_8_c" alt=""/></div>
-<map name="src_2core_2src_2_gsl_optimizer_8_c" id="src_2core_2src_2_gsl_optimizer_8_c">
-</map>
-</div>
-</div>
+
 <p><a href="a00401_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a41729b1987bfaf3172e9ea79913876dd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a41729b1987bfaf3172e9ea79913876dd">QUESO::c_evaluate</a> (const gsl_vector *x, <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *context)</td></tr>
-<tr class="separator:a41729b1987bfaf3172e9ea79913876dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e69e6940dbc0ea35bbb5eb085163177"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a9e69e6940dbc0ea35bbb5eb085163177">QUESO::c_evaluate_derivative</a> (const gsl_vector *x, <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *context, gsl_vector *derivative)</td></tr>
-<tr class="separator:a9e69e6940dbc0ea35bbb5eb085163177"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadca5d879e57d8f597a440c33950256e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#aadca5d879e57d8f597a440c33950256e">QUESO::c_evaluate_with_derivative</a> (const gsl_vector *x, <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> *context, double *f, gsl_vector *derivative)</td></tr>
-<tr class="separator:aadca5d879e57d8f597a440c33950256e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4b8bcb5f2db3fede5da1011670efdab"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:ad4b8bcb5f2db3fede5da1011670efdab"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00674.html#ad4b8bcb5f2db3fede5da1011670efdab">QUESO::BoostInputOptionsParser::getOption&lt; std::vector&lt; double, std::allocator&lt; double &gt; &gt; &gt;</a> (const std::string &amp;name, std::vector&lt; double, std::allocator&lt; double &gt; &gt; &amp;value) const </td></tr>
+<tr class="separator:ad4b8bcb5f2db3fede5da1011670efdab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b797675e032523d9a3b0c522cd1dd7f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a5b797675e032523d9a3b0c522cd1dd7f">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const BoostInputOptionsParser &amp;parser)</td></tr>
+<tr class="separator:a5b797675e032523d9a3b0c522cd1dd7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6586404b9aaecb60440afd4032523927"><td class="memItemLeft" align="right" valign="top">template <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a6586404b9aaecb60440afd4032523927">QUESO::BoostInputOptionsParser::registerOption&lt; std::string &gt;</a> (const std::string &amp;, const std::string &amp;, const std::string &amp;)</td></tr>
+<tr class="separator:a6586404b9aaecb60440afd4032523927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa17bf55f6c3293fd5f7a16427aa550b0"><td class="memItemLeft" align="right" valign="top">template <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#aa17bf55f6c3293fd5f7a16427aa550b0">QUESO::BoostInputOptionsParser::getOption&lt; std::string &gt;</a> (const std::string &amp;, std::string &amp;) const </td></tr>
+<tr class="separator:aa17bf55f6c3293fd5f7a16427aa550b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa621d7f21bb9c8cef5d6bcd5ac8231be"><td class="memItemLeft" align="right" valign="top">template <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#aa621d7f21bb9c8cef5d6bcd5ac8231be">QUESO::BoostInputOptionsParser::getOption&lt; std::vector&lt; unsigned int, std::allocator&lt; unsigned int &gt; &gt; &gt;</a> (const std::string &amp;, std::vector&lt; unsigned int, std::allocator&lt; unsigned int &gt; &gt; &amp;) const </td></tr>
+<tr class="separator:aa621d7f21bb9c8cef5d6bcd5ac8231be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

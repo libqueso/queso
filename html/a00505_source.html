@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/inc/ExponentialScalarCovarianceFunction.h Source File</title>
+<title>queso-0.56.2: src/stats/inc/GenericMatrixCovarianceFunction.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ExponentialScalarCovarianceFunction.h</div>  </div>
+<div class="title">GenericMatrixCovarianceFunction.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00505.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,10 +75,10 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_EXP_SCALAR_COVARIANCE_FUNCTION_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_EXP_SCALAR_COVARIANCE_FUNCTION_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GENERIC_MATRIX_COVARIANCE_FUNCTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GENERIC_MATRIX_COVARIANCE_FUNCTION_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarCovarianceFunction.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/MatrixCovarianceFunction.h&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
@@ -89,48 +89,50 @@
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Exponential class</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Generic class</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00082.html">   52</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00082.html">ExponentialScalarCovarianceFunction</a> : <span class="keyword">public</span> <a class="code" href="a00043.html">BaseScalarCovarianceFunction</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00082.html#a2b0393d92cd21365c2d76d250007ea9a">ExponentialScalarCovarianceFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;               <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00043.html#a703aa6a8e475adaface0ec514b48a5bc">basicDomainSet</a>,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;               <span class="keywordtype">double</span>                       sigma,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;               <span class="keywordtype">double</span>                       a);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V = GslVector, <span class="keyword">class</span> P_M = GslMatrix, <span class="keyword">class</span> Q_V = GslVector, <span class="keyword">class</span> Q_M = GslMatrix&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00111.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00111.html">GenericMatrixCovarianceFunction</a> : <span class="keyword">public</span> <a class="code" href="a00039.html">BaseMatrixCovarianceFunction</a>&lt;P_V,P_M,Q_V,Q_M&gt; {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="a00111.html#ade7c8ddfe0c9cfbf1ac3d3233249e0f7">GenericMatrixCovarianceFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                      prefix,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;           <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; <a class="code" href="a00039.html#a6ce876e4dae5ab4b165ac100e310dd45">basicDomainSet</a>,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;           <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;Q_V,Q_M&gt;</a>&amp; imageSet,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;           <span class="keywordtype">void</span> (*covRoutinePtr)(<span class="keyword">const</span> P_V&amp; positionVector1, <span class="keyword">const</span> P_V&amp; positionVector2, <span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr, Q_M&amp; imageMatrix),</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;           <span class="keyword">const</span> <span class="keywordtype">void</span>*                      routinesDataPtr);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00111.html#a148ab4380b8d299c5418b333a80c5039">~GenericMatrixCovarianceFunction</a>();</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00082.html#ac3eb24d0980491bd3e5bc718d304789c">~ExponentialScalarCovarianceFunction</a>();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00111.html#ad1dc99df94d6fb77aa658fda06fd832d">covMatrix</a>(<span class="keyword">const</span> P_V&amp; positionVector1, <span class="keyword">const</span> P_V&amp; positionVector2, Q_M&amp; imageMatrix) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00082.html#ad65cfe1440c9045718bc57827d6fb551">value</a>(<span class="keyword">const</span> V&amp; domainVector1, <span class="keyword">const</span> V&amp; domainVector2) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00043.html">BaseScalarCovarianceFunction&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00043.html">BaseScalarCovarianceFunction&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00043.html">BaseScalarCovarianceFunction&lt;V,M&gt;::m_basicDomainSet</a>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00039.html">BaseMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00039.html">BaseMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00039.html">BaseMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_basicDomainSet</a>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00039.html">BaseMatrixCovarianceFunction&lt;P_V,P_M,Q_V,Q_M&gt;::m_imageSet</a>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00111.html#a6841d2f9abbc3c31e0809c18d790777c">   75</a></span>&#160;  <a class="code" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> (*<a class="code" href="a00111.html#a6841d2f9abbc3c31e0809c18d790777c">m_covRoutinePtr</a>)(<span class="keyword">const</span> P_V&amp; positionVector1, <span class="keyword">const</span> P_V&amp; positionVector2, <span class="keyword">const</span> <span class="keywordtype">void</span>* routineDataPtr, Q_M&amp; imageMatrix);</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00111.html#a54dbb7157e6a1be651d6467a00d6a8cd">   76</a></span>&#160;  <span class="keyword">const</span> <span class="keywordtype">void</span>* <a class="code" href="a00111.html#a54dbb7157e6a1be651d6467a00d6a8cd">m_routineDataPtr</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="a00082.html#aece243cd9fbe9bdd7720b422c2f7513a">   79</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00082.html#aece243cd9fbe9bdd7720b422c2f7513a">m_sigma</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="a00082.html#a16940568b7c22abb6caf31ccfb505c16">   80</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00082.html#a16940568b7c22abb6caf31ccfb505c16">m_a</a>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif // UQ_EXP_SCALAR_COVARIANCE_FUNCTION_H</span></div>
-<div class="ttc" id="a00082_html_ad65cfe1440c9045718bc57827d6fb551"><div class="ttname"><a href="a00082.html#ad65cfe1440c9045718bc57827d6fb551">QUESO::ExponentialScalarCovarianceFunction::value</a></div><div class="ttdeci">double value(const V &amp;domainVector1, const V &amp;domainVector2) const </div><div class="ttdoc">Calculates the value of the exponential covariance function. </div><div class="ttdef"><b>Definition:</b> <a href="a00592_source.html#l00072">ExponentialScalarCovarianceFunction.C:72</a></div></div>
-<div class="ttc" id="a00043_html_a703aa6a8e475adaface0ec514b48a5bc"><div class="ttname"><a href="a00043.html#a703aa6a8e475adaface0ec514b48a5bc">QUESO::BaseScalarCovarianceFunction::basicDomainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; basicDomainSet() const </div><div class="ttdoc">Domain set; access to private attribute m_basicDomainSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00647_source.html#l00070">ScalarCovarianceFunction.C:70</a></div></div>
-<div class="ttc" id="a00082_html"><div class="ttname"><a href="a00082.html">QUESO::ExponentialScalarCovarianceFunction</a></div><div class="ttdoc">A class for exponential covariances. </div><div class="ttdef"><b>Definition:</b> <a href="a00505_source.html#l00052">ExponentialScalarCovarianceFunction.h:52</a></div></div>
-<div class="ttc" id="a00043_html"><div class="ttname"><a href="a00043.html">QUESO::BaseScalarCovarianceFunction</a></div><div class="ttdoc">A templated (base) class to accommodate scalar covariance functions (of random variables). </div><div class="ttdef"><b>Definition:</b> <a href="a00560_source.html#l00053">ScalarCovarianceFunction.h:53</a></div></div>
-<div class="ttc" id="a00082_html_ac3eb24d0980491bd3e5bc718d304789c"><div class="ttname"><a href="a00082.html#ac3eb24d0980491bd3e5bc718d304789c">QUESO::ExponentialScalarCovarianceFunction::~ExponentialScalarCovarianceFunction</a></div><div class="ttdeci">virtual ~ExponentialScalarCovarianceFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00592_source.html#l00055">ExponentialScalarCovarianceFunction.C:55</a></div></div>
-<div class="ttc" id="a00246_html"><div class="ttname"><a href="a00246.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00082_html_a16940568b7c22abb6caf31ccfb505c16"><div class="ttname"><a href="a00082.html#a16940568b7c22abb6caf31ccfb505c16">QUESO::ExponentialScalarCovarianceFunction::m_a</a></div><div class="ttdeci">double m_a</div><div class="ttdef"><b>Definition:</b> <a href="a00505_source.html#l00080">ExponentialScalarCovarianceFunction.h:80</a></div></div>
-<div class="ttc" id="a00082_html_aece243cd9fbe9bdd7720b422c2f7513a"><div class="ttname"><a href="a00082.html#aece243cd9fbe9bdd7720b422c2f7513a">QUESO::ExponentialScalarCovarianceFunction::m_sigma</a></div><div class="ttdeci">double m_sigma</div><div class="ttdef"><b>Definition:</b> <a href="a00505_source.html#l00079">ExponentialScalarCovarianceFunction.h:79</a></div></div>
-<div class="ttc" id="a00082_html_a2b0393d92cd21365c2d76d250007ea9a"><div class="ttname"><a href="a00082.html#a2b0393d92cd21365c2d76d250007ea9a">QUESO::ExponentialScalarCovarianceFunction::ExponentialScalarCovarianceFunction</a></div><div class="ttdeci">ExponentialScalarCovarianceFunction(const char *prefix, const VectorSet&lt; V, M &gt; &amp;basicDomainSet, double sigma, double a)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00592_source.html#l00031">ExponentialScalarCovarianceFunction.C:31</a></div></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif // UQ_GENERIC_MATRIX_COVARIANCE_FUNCTION_H</span></div>
+<div class="ttc" id="a00311_html_a3b083519fd2b41d83363afcfd5ebad9d"><div class="ttname"><a href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a></div><div class="ttdeci">if the work is an executable linked with the with the complete machine readable work that uses the as object code and or source so that the user can modify the Library and then relink to produce a modified executable containing the modified rather than copying library functions into the if the user installs as long as the modified version is interface compatible with the version that the work was made with c Accompany the work with a written valid for at least three to give the same user the materials specified in for a charge no more than the cost of performing this distribution d If distribution of the work is made by offering access to copy from a designated offer equivalent access to copy the above specified materials from the same place e Verify that the user has already received a copy of these materials or that you have already sent this user a copy For an the required form of the work that uses the Library must include any data and utility programs needed for reproducing the executable from it as a special the materials to be distributed need not include anything that is normally and so on of the operating system on which the executable unless that component itself accompanies the executable It may happen that this requirement contradicts the license restrictions of other proprietary libraries that do not normally accompany the operating system Such a contradiction means you cannot use both them and the Library together in an executable that you distribute You may place library facilities that are a work based on the Library side by side in a single library together with other library facilities not covered by this and distribute such a combined provided that the separate distribution of the work based on the Library and of the other library facilities is otherwise and provided that you do these two uncombined with any other library facilities This must be distributed under the terms of the Sections above b Give prominent notice with the combined library of the fact that part of it is a work based on the and explaining where to find the accompanying uncombined form of the same work You may not link or distribute the Library except as expressly provided under this License Any attempt otherwise to link or distribute the Library is void</div><div class="ttdef"><b>Definition:</b> <a href="a00311_source.html#l00320">License.txt:320</a></div></div>
+<div class="ttc" id="a00039_html"><div class="ttname"><a href="a00039.html">QUESO::BaseMatrixCovarianceFunction</a></div><div class="ttdoc">A templated (base) class to accommodate covariance matrix of (random) vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00057">MatrixCovarianceFunction.h:57</a></div></div>
+<div class="ttc" id="a00111_html_a54dbb7157e6a1be651d6467a00d6a8cd"><div class="ttname"><a href="a00111.html#a54dbb7157e6a1be651d6467a00d6a8cd">QUESO::GenericMatrixCovarianceFunction::m_routineDataPtr</a></div><div class="ttdeci">const void * m_routineDataPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00505_source.html#l00076">GenericMatrixCovarianceFunction.h:76</a></div></div>
+<div class="ttc" id="a00111_html_a6841d2f9abbc3c31e0809c18d790777c"><div class="ttname"><a href="a00111.html#a6841d2f9abbc3c31e0809c18d790777c">QUESO::GenericMatrixCovarianceFunction::m_covRoutinePtr</a></div><div class="ttdeci">void(* m_covRoutinePtr)(const P_V &amp;positionVector1, const P_V &amp;positionVector2, const void *routineDataPtr, Q_M &amp;imageMatrix)</div><div class="ttdef"><b>Definition:</b> <a href="a00505_source.html#l00075">GenericMatrixCovarianceFunction.h:75</a></div></div>
+<div class="ttc" id="a00111_html_ade7c8ddfe0c9cfbf1ac3d3233249e0f7"><div class="ttname"><a href="a00111.html#ade7c8ddfe0c9cfbf1ac3d3233249e0f7">QUESO::GenericMatrixCovarianceFunction::GenericMatrixCovarianceFunction</a></div><div class="ttdeci">GenericMatrixCovarianceFunction(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;basicDomainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet, void(*covRoutinePtr)(const P_V &amp;positionVector1, const P_V &amp;positionVector2, const void *routineDataPtr, Q_M &amp;imageMatrix), const void *routinesDataPtr)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00593_source.html#l00032">GenericMatrixCovarianceFunction.C:32</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet&lt; P_V, P_M &gt;</a></div></div>
+<div class="ttc" id="a00111_html_a148ab4380b8d299c5418b333a80c5039"><div class="ttname"><a href="a00111.html#a148ab4380b8d299c5418b333a80c5039">QUESO::GenericMatrixCovarianceFunction::~GenericMatrixCovarianceFunction</a></div><div class="ttdeci">virtual ~GenericMatrixCovarianceFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00593_source.html#l00057">GenericMatrixCovarianceFunction.C:57</a></div></div>
+<div class="ttc" id="a00111_html"><div class="ttname"><a href="a00111.html">QUESO::GenericMatrixCovarianceFunction</a></div><div class="ttdoc">A class for generic covariance matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00505_source.html#l00048">GenericMatrixCovarianceFunction.h:48</a></div></div>
+<div class="ttc" id="a00111_html_ad1dc99df94d6fb77aa658fda06fd832d"><div class="ttname"><a href="a00111.html#ad1dc99df94d6fb77aa658fda06fd832d">QUESO::GenericMatrixCovarianceFunction::covMatrix</a></div><div class="ttdeci">void covMatrix(const P_V &amp;positionVector1, const P_V &amp;positionVector2, Q_M &amp;imageMatrix) const </div><div class="ttdoc">Calculates the value of the generic covariance matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00593_source.html#l00074">GenericMatrixCovarianceFunction.C:74</a></div></div>
+<div class="ttc" id="a00039_html_a6ce876e4dae5ab4b165ac100e310dd45"><div class="ttname"><a href="a00039.html#a6ce876e4dae5ab4b165ac100e310dd45">QUESO::BaseMatrixCovarianceFunction::basicDomainSet</a></div><div class="ttdeci">const VectorSet&lt; P_V, P_M &gt; &amp; basicDomainSet() const </div><div class="ttdoc">Domain set; access to private attribute m_basicDomainSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00615_source.html#l00072">MatrixCovarianceFunction.C:72</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

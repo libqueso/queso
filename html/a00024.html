@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: ANNpointSet Class Reference</title>
+<title>queso-0.56.2: ANNorthRect Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -47,41 +47,40 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="a01155.html">List of all members</a>  </div>
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="a00703.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ANNpointSet Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">ANNorthRect Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="a00305_source.html">ANN.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for ANNpointSet:</div>
-<div class="dyncontent">
-<div class="center"><img src="a01156.png" border="0" usemap="#_a_n_npoint_set_inherit__map" alt="Inheritance graph"/></div>
-<map name="_a_n_npoint_set_inherit__map" id="_a_n_npoint_set_inherit__map">
-<area shape="rect" id="node2" href="a00015.html" title="ANNbruteForce" alt="" coords="5,80,115,107"/><area shape="rect" id="node3" href="a00019.html" title="ANNkd_tree" alt="" coords="139,80,231,107"/><area shape="rect" id="node4" href="a00014.html" title="ANNbd_tree" alt="" coords="139,155,231,181"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<p><code>#include &lt;<a class="el" href="a00310_source.html">ANNx.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a22d90676e746e4d4d45215a879068d03"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#a22d90676e746e4d4d45215a879068d03">~ANNpointSet</a> ()</td></tr>
-<tr class="separator:a22d90676e746e4d4d45215a879068d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbbdd0587a0bcd655a1b8d353fde0800"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#acbbdd0587a0bcd655a1b8d353fde0800">annkSearch</a> (<a class="el" href="a00305.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> q, int <a class="el" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, <a class="el" href="a00305.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a> nn_idx, <a class="el" href="a00305.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a> dd, double <a class="el" href="a00310.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>=0.0)=0</td></tr>
-<tr class="separator:acbbdd0587a0bcd655a1b8d353fde0800"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab83304c25c29458433b06457a5eb944"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#aab83304c25c29458433b06457a5eb944">annkFRSearch</a> (<a class="el" href="a00305.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> q, <a class="el" href="a00305.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a> sqRad, int <a class="el" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>=0, <a class="el" href="a00305.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a> nn_idx=NULL, <a class="el" href="a00305.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a> dd=NULL, double <a class="el" href="a00310.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>=0.0)=0</td></tr>
-<tr class="separator:aab83304c25c29458433b06457a5eb944"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5c31c17581ec593d31ceeb12adb1728"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#af5c31c17581ec593d31ceeb12adb1728">theDim</a> ()=0</td></tr>
-<tr class="separator:af5c31c17581ec593d31ceeb12adb1728"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15b2fefca5fecd901ac637dfad13251b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#a15b2fefca5fecd901ac637dfad13251b">nPoints</a> ()=0</td></tr>
-<tr class="separator:a15b2fefca5fecd901ac637dfad13251b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab791b3d9247afc32521ddcb61f27f6a2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00305.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#ab791b3d9247afc32521ddcb61f27f6a2">thePoints</a> ()=0</td></tr>
-<tr class="separator:ab791b3d9247afc32521ddcb61f27f6a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac86848d598da232b8bb8090bd0031709"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#ac86848d598da232b8bb8090bd0031709">ANNorthRect</a> (int dd, <a class="el" href="a00308.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> l=0, <a class="el" href="a00308.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a> h=0)</td></tr>
+<tr class="separator:ac86848d598da232b8bb8090bd0031709"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72c07c1a8c6e0678beda1c5c4c6181ce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#a72c07c1a8c6e0678beda1c5c4c6181ce">ANNorthRect</a> (int dd, const <a class="el" href="a00024.html">ANNorthRect</a> &amp;r)</td></tr>
+<tr class="separator:a72c07c1a8c6e0678beda1c5c4c6181ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7613b1a0dde31435d04c2003eac0cb3c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#a7613b1a0dde31435d04c2003eac0cb3c">ANNorthRect</a> (int dd, <a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> l, <a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> h)</td></tr>
+<tr class="separator:a7613b1a0dde31435d04c2003eac0cb3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad742c51c91601dbf517a0e59356e96b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#ad742c51c91601dbf517a0e59356e96b8">~ANNorthRect</a> ()</td></tr>
+<tr class="separator:ad742c51c91601dbf517a0e59356e96b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11201db5ee69e87633d5a6e38ef60111"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#a11201db5ee69e87633d5a6e38ef60111">inside</a> (int <a class="el" href="a00337.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>, <a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> p)</td></tr>
+<tr class="separator:a11201db5ee69e87633d5a6e38ef60111"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:af8c0d718f4c7b98b2e437235da2c9de0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">lo</a></td></tr>
+<tr class="separator:af8c0d718f4c7b98b2e437235da2c9de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4183b43fb488ab030f6f5ed2e81e3578"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">hi</a></td></tr>
+<tr class="separator:a4183b43fb488ab030f6f5ed2e81e3578"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00305_source.html#l00491">491</a> of file <a class="el" href="a00305_source.html">ANN.h</a>.</p>
+<p>Definition at line <a class="el" href="a00310_source.html#l00091">91</a> of file <a class="el" href="a00310_source.html">ANNx.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a22d90676e746e4d4d45215a879068d03"></a>
+<a class="anchor" id="ac86848d598da232b8bb8090bd0031709"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -89,121 +88,22 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual ANNpointSet::~ANNpointSet </td>
+          <td class="memname">ANNorthRect::ANNorthRect </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00305_source.html#l00493">493</a> of file <a class="el" href="a00305_source.html">ANN.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;{}                      <span class="comment">// virtual distructor</span></div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aab83304c25c29458433b06457a5eb944"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual int ANNpointSet::annkFRSearch </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00305.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
-          <td class="paramname"><em>q</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00305.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>&#160;</td>
-          <td class="paramname"><em>sqRad</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>k</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00305.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>&#160;</td>
-          <td class="paramname"><em>nn_idx</em> = <code>NULL</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00305.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a>&#160;</td>
-          <td class="paramname"><em>dd</em> = <code>NULL</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>eps</em> = <code>0.0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implemented in <a class="el" href="a00019.html#a9f98ea5b23ad8957fbea661014d25889">ANNkd_tree</a>, and <a class="el" href="a00015.html#a2b72f0687a5fc325471213b1b42f932f">ANNbruteForce</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acbbdd0587a0bcd655a1b8d353fde0800"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> ANNpointSet::annkSearch </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00305.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
-          <td class="paramname"><em>q</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>k</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00305.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>&#160;</td>
-          <td class="paramname"><em>nn_idx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00305.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a>&#160;</td>
           <td class="paramname"><em>dd</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>eps</em> = <code>0.0</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00308.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>&#160;</td>
+          <td class="paramname"><em>l</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00308.html#ab066cd4e4fffad67a16b64d9a28a86e4">ANNcoord</a>&#160;</td>
+          <td class="paramname"><em>h</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -213,16 +113,22 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="a00019.html#a2a0fa2889c23a34773dc054c7769b3c6">ANNkd_tree</a>, and <a class="el" href="a00015.html#ac18a8d4dd4550a8336228d0d219cbc18">ANNbruteForce</a>.</p>
+<p>Definition at line <a class="el" href="a00310_source.html#l00096">96</a> of file <a class="el" href="a00310_source.html">ANNx.h</a>.</p>
 
+<p>References <a class="el" href="a00314_source.html#l00110">annAllocPt()</a>, <a class="el" href="a00310_source.html#l00094">hi</a>, and <a class="el" href="a00310_source.html#l00093">lo</a>.</p>
+<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        {  <a class="code" href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">lo</a> = <a class="code" href="a00308.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a>(dd, l);  <a class="code" href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">hi</a> = <a class="code" href="a00308.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a>(dd, h); }</div>
+<div class="ttc" id="a00024_html_af8c0d718f4c7b98b2e437235da2c9de0"><div class="ttname"><a href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">ANNorthRect::lo</a></div><div class="ttdeci">ANNpoint lo</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00093">ANNx.h:93</a></div></div>
+<div class="ttc" id="a00024_html_a4183b43fb488ab030f6f5ed2e81e3578"><div class="ttname"><a href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">ANNorthRect::hi</a></div><div class="ttdeci">ANNpoint hi</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00094">ANNx.h:94</a></div></div>
+<div class="ttc" id="a00308_html_a479fe2e8e10f09a57c69f70dcd239f9a"><div class="ttname"><a href="a00308.html#a479fe2e8e10f09a57c69f70dcd239f9a">annAllocPt</a></div><div class="ttdeci">DLL_API ANNpoint annAllocPt(int dim, ANNcoord c=0)</div><div class="ttdef"><b>Definition:</b> <a href="a00314_source.html#l00110">ANN.cpp:110</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a15b2fefca5fecd901ac637dfad13251b"></a>
+<a class="anchor" id="a72c07c1a8c6e0678beda1c5c4c6181ce"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -230,24 +136,41 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int ANNpointSet::nPoints </td>
+          <td class="memname">ANNorthRect::ANNorthRect </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="a00024.html">ANNorthRect</a> &amp;&#160;</td>
+          <td class="paramname"><em>r</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="a00019.html#a7acce8e5f6bbbe1e3c9e7f503e70d19d">ANNkd_tree</a>, and <a class="el" href="a00015.html#acbf6eef7ce9c6999435c62f678afaba4">ANNbruteForce</a>.</p>
+<p>Definition at line <a class="el" href="a00310_source.html#l00102">102</a> of file <a class="el" href="a00310_source.html">ANNx.h</a>.</p>
 
+<p>References <a class="el" href="a00314_source.html#l00140">annCopyPt()</a>, <a class="el" href="a00310_source.html#l00094">hi</a>, and <a class="el" href="a00310_source.html#l00093">lo</a>.</p>
+<div class="fragment"><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {  <a class="code" href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">lo</a> = <a class="code" href="a00308.html#a4d699aa9bd46a0c0bf91c25252da80e0">annCopyPt</a>(dd, r.<a class="code" href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">lo</a>);  <a class="code" href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">hi</a> = <a class="code" href="a00308.html#a4d699aa9bd46a0c0bf91c25252da80e0">annCopyPt</a>(dd, r.<a class="code" href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">hi</a>);  }</div>
+<div class="ttc" id="a00024_html_af8c0d718f4c7b98b2e437235da2c9de0"><div class="ttname"><a href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">ANNorthRect::lo</a></div><div class="ttdeci">ANNpoint lo</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00093">ANNx.h:93</a></div></div>
+<div class="ttc" id="a00024_html_a4183b43fb488ab030f6f5ed2e81e3578"><div class="ttname"><a href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">ANNorthRect::hi</a></div><div class="ttdeci">ANNpoint hi</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00094">ANNx.h:94</a></div></div>
+<div class="ttc" id="a00308_html_a4d699aa9bd46a0c0bf91c25252da80e0"><div class="ttname"><a href="a00308.html#a4d699aa9bd46a0c0bf91c25252da80e0">annCopyPt</a></div><div class="ttdeci">DLL_API ANNpoint annCopyPt(int dim, ANNpoint source)</div><div class="ttdef"><b>Definition:</b> <a href="a00314_source.html#l00140">ANN.cpp:140</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="af5c31c17581ec593d31ceeb12adb1728"></a>
+<a class="anchor" id="a7613b1a0dde31435d04c2003eac0cb3c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -255,24 +178,47 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int ANNpointSet::theDim </td>
+          <td class="memname">ANNorthRect::ANNorthRect </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
+          <td class="paramname"><em>l</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
+          <td class="paramname"><em>h</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="a00019.html#a200c6e8c2d9ea1d9afbdec893c41edb2">ANNkd_tree</a>, and <a class="el" href="a00015.html#ad7894b12b925b0c3bbeb57d5ba260285">ANNbruteForce</a>.</p>
+<p>Definition at line <a class="el" href="a00310_source.html#l00107">107</a> of file <a class="el" href="a00310_source.html">ANNx.h</a>.</p>
 
+<p>References <a class="el" href="a00314_source.html#l00140">annCopyPt()</a>, <a class="el" href="a00310_source.html#l00094">hi</a>, and <a class="el" href="a00310_source.html#l00093">lo</a>.</p>
+<div class="fragment"><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        {  <a class="code" href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">lo</a> = <a class="code" href="a00308.html#a4d699aa9bd46a0c0bf91c25252da80e0">annCopyPt</a>(dd, l);  <a class="code" href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">hi</a> = <a class="code" href="a00308.html#a4d699aa9bd46a0c0bf91c25252da80e0">annCopyPt</a>(dd, h);  }</div>
+<div class="ttc" id="a00024_html_af8c0d718f4c7b98b2e437235da2c9de0"><div class="ttname"><a href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">ANNorthRect::lo</a></div><div class="ttdeci">ANNpoint lo</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00093">ANNx.h:93</a></div></div>
+<div class="ttc" id="a00024_html_a4183b43fb488ab030f6f5ed2e81e3578"><div class="ttname"><a href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">ANNorthRect::hi</a></div><div class="ttdeci">ANNpoint hi</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00094">ANNx.h:94</a></div></div>
+<div class="ttc" id="a00308_html_a4d699aa9bd46a0c0bf91c25252da80e0"><div class="ttname"><a href="a00308.html#a4d699aa9bd46a0c0bf91c25252da80e0">annCopyPt</a></div><div class="ttdeci">DLL_API ANNpoint annCopyPt(int dim, ANNpoint source)</div><div class="ttdef"><b>Definition:</b> <a href="a00314_source.html#l00140">ANN.cpp:140</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ab791b3d9247afc32521ddcb61f27f6a2"></a>
+<a class="anchor" id="ad742c51c91601dbf517a0e59356e96b8"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -280,7 +226,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="a00305.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> ANNpointSet::thePoints </td>
+          <td class="memname">ANNorthRect::~ANNorthRect </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -288,21 +234,105 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="a00019.html#a927be6420bd73db85ad8e356b462ec1b">ANNkd_tree</a>, and <a class="el" href="a00015.html#a97a436f7288964a2f7cb84ce3d056350">ANNbruteForce</a>.</p>
+<p>Definition at line <a class="el" href="a00310_source.html#l00113">113</a> of file <a class="el" href="a00310_source.html">ANNx.h</a>.</p>
+
+<p>References <a class="el" href="a00314_source.html#l00127">annDeallocPt()</a>, <a class="el" href="a00310_source.html#l00094">hi</a>, and <a class="el" href="a00310_source.html#l00093">lo</a>.</p>
+<div class="fragment"><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    {  <a class="code" href="a00308.html#a85f3fafa513eee017f525ad74a82cf10">annDeallocPt</a>(<a class="code" href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">lo</a>);  <a class="code" href="a00308.html#a85f3fafa513eee017f525ad74a82cf10">annDeallocPt</a>(<a class="code" href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">hi</a>);  }</div>
+<div class="ttc" id="a00024_html_af8c0d718f4c7b98b2e437235da2c9de0"><div class="ttname"><a href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">ANNorthRect::lo</a></div><div class="ttdeci">ANNpoint lo</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00093">ANNx.h:93</a></div></div>
+<div class="ttc" id="a00024_html_a4183b43fb488ab030f6f5ed2e81e3578"><div class="ttname"><a href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">ANNorthRect::hi</a></div><div class="ttdeci">ANNpoint hi</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00094">ANNx.h:94</a></div></div>
+<div class="ttc" id="a00308_html_a85f3fafa513eee017f525ad74a82cf10"><div class="ttname"><a href="a00308.html#a85f3fafa513eee017f525ad74a82cf10">annDeallocPt</a></div><div class="ttdeci">DLL_API void annDeallocPt(ANNpoint &amp;p)</div><div class="ttdef"><b>Definition:</b> <a href="a00314_source.html#l00127">ANN.cpp:127</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a11201db5ee69e87633d5a6e38ef60111"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00308.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a> ANNorthRect::inside </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00314_source.html#l00157">157</a> of file <a class="el" href="a00314_source.html">ANN.cpp</a>.</p>
+
+<p>References <a class="el" href="a00308_source.html#l00132">ANNfalse</a>, <a class="el" href="a00308_source.html#l00132">ANNtrue</a>, and <a class="el" href="a00306_source.html#l00081">dim</a>.</p>
+
+<p>Referenced by <a class="el" href="a00332_source.html#l00332">annBoxSplit()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;{</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>; i++) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="keywordflow">if</span> (p[i] &lt; <a class="code" href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">lo</a>[i] || p[i] &gt; <a class="code" href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">hi</a>[i]) <span class="keywordflow">return</span> <a class="code" href="a00308.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="a00308.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;}</div>
+<div class="ttc" id="a00024_html_af8c0d718f4c7b98b2e437235da2c9de0"><div class="ttname"><a href="a00024.html#af8c0d718f4c7b98b2e437235da2c9de0">ANNorthRect::lo</a></div><div class="ttdeci">ANNpoint lo</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00093">ANNx.h:93</a></div></div>
+<div class="ttc" id="a00024_html_a4183b43fb488ab030f6f5ed2e81e3578"><div class="ttname"><a href="a00024.html#a4183b43fb488ab030f6f5ed2e81e3578">ANNorthRect::hi</a></div><div class="ttdeci">ANNpoint hi</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00094">ANNx.h:94</a></div></div>
+<div class="ttc" id="a00306_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00308_html_ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1"><div class="ttname"><a href="a00308.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a></div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00132">ANN.h:132</a></div></div>
+<div class="ttc" id="a00308_html_ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474"><div class="ttname"><a href="a00308.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a></div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00132">ANN.h:132</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a4183b43fb488ab030f6f5ed2e81e3578"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> ANNorthRect::hi</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00310_source.html#l00094">94</a> of file <a class="el" href="a00310_source.html">ANNx.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00332_source.html#l00052">annAspectRatio()</a>, <a class="el" href="a00314_source.html#l00148">annAssignRect()</a>, <a class="el" href="a00318_source.html#l00116">ANNbd_tree::ANNbd_tree()</a>, <a class="el" href="a00332_source.html#l00426">annBnds2Box()</a>, <a class="el" href="a00332_source.html#l00384">annBox2Bnds()</a>, <a class="el" href="a00332_source.html#l00092">annEnclCube()</a>, <a class="el" href="a00332_source.html#l00073">annEnclRect()</a>, <a class="el" href="a00330_source.html#l00368">ANNkd_tree::ANNkd_tree()</a>, <a class="el" href="a00310_source.html#l00096">ANNorthRect()</a>, <a class="el" href="a00328_source.html#l00243">fair_split()</a>, <a class="el" href="a00330_source.html#l00160">ANNkd_split::getStats()</a>, <a class="el" href="a00328_source.html#l00076">midpt_split()</a>, <a class="el" href="a00306_source.html#l00332">overlap()</a>, <a class="el" href="a00306_source.html#l00514">readANN()</a>, <a class="el" href="a00306_source.html#l00377">recReadTree()</a>, <a class="el" href="a00328_source.html#l00346">sl_fair_split()</a>, <a class="el" href="a00328_source.html#l00146">sl_midpt_split()</a>, <a class="el" href="a00318_source.html#l00181">trySimpleShrink()</a>, <a class="el" href="a00306_source.html#l00277">writeBox()</a>, and <a class="el" href="a00310_source.html#l00113">~ANNorthRect()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/contrib/ANN/include/ANN/<a class="el" href="a00305_source.html">ANN.h</a></li>
+<a class="anchor" id="af8c0d718f4c7b98b2e437235da2c9de0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> ANNorthRect::lo</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00310_source.html#l00093">93</a> of file <a class="el" href="a00310_source.html">ANNx.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00332_source.html#l00052">annAspectRatio()</a>, <a class="el" href="a00314_source.html#l00148">annAssignRect()</a>, <a class="el" href="a00318_source.html#l00116">ANNbd_tree::ANNbd_tree()</a>, <a class="el" href="a00332_source.html#l00426">annBnds2Box()</a>, <a class="el" href="a00332_source.html#l00384">annBox2Bnds()</a>, <a class="el" href="a00332_source.html#l00092">annEnclCube()</a>, <a class="el" href="a00332_source.html#l00073">annEnclRect()</a>, <a class="el" href="a00330_source.html#l00368">ANNkd_tree::ANNkd_tree()</a>, <a class="el" href="a00310_source.html#l00096">ANNorthRect()</a>, <a class="el" href="a00328_source.html#l00243">fair_split()</a>, <a class="el" href="a00330_source.html#l00160">ANNkd_split::getStats()</a>, <a class="el" href="a00328_source.html#l00076">midpt_split()</a>, <a class="el" href="a00306_source.html#l00332">overlap()</a>, <a class="el" href="a00306_source.html#l00514">readANN()</a>, <a class="el" href="a00306_source.html#l00377">recReadTree()</a>, <a class="el" href="a00328_source.html#l00346">sl_fair_split()</a>, <a class="el" href="a00328_source.html#l00146">sl_midpt_split()</a>, <a class="el" href="a00318_source.html#l00181">trySimpleShrink()</a>, <a class="el" href="a00306_source.html#l00277">writeBox()</a>, <a class="el" href="a00306_source.html#l00308">writeCaption()</a>, and <a class="el" href="a00310_source.html#l00113">~ANNorthRect()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/contrib/ANN/include/ANN/<a class="el" href="a00310_source.html">ANNx.h</a></li>
+<li>src/contrib/ANN/src/<a class="el" href="a00314_source.html">ANN.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

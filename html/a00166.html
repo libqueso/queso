@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: QUESO::LogNormalJointPdf&lt; V, M &gt; Class Template Reference</title>
+<title>queso-0.56.2: QUESO::MetropolisAdjustedLangevinTK&lt; V, M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -45,140 +45,153 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00690.html">QUESO</a></li><li class="navelem"><a class="el" href="a00166.html">LogNormalJointPdf</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00674.html">QUESO</a></li><li class="navelem"><a class="el" href="a00166.html">MetropolisAdjustedLangevinTK</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a01583.html">List of all members</a>  </div>
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="a01154.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::LogNormalJointPdf&lt; V, M &gt; Class Template Reference</div>  </div>
+<div class="title">QUESO::MetropolisAdjustedLangevinTK&lt; V, M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A class for handling Log-Normal joint PDFs.  
+<p>This class allows the representation of the MALA transition kernel with a scaled covariance matrix for the purposes of delayed rejection.  
  <a href="a00166.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00541_source.html">LogNormalJointPdf.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00530_source.html">MetropolisAdjustedLangevinTK.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::LogNormalJointPdf&lt; V, M &gt;:</div>
+Inheritance diagram for QUESO::MetropolisAdjustedLangevinTK&lt; V, M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01584.png" border="0" usemap="#_q_u_e_s_o_1_1_log_normal_joint_pdf_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_log_normal_joint_pdf_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_log_normal_joint_pdf_3_01_v_00_01_m_01_4_inherit__map">
-<area shape="rect" id="node2" href="a00038.html" title="A templated (base) class for handling joint PDFs. " alt="" coords="25,97,175,138"/><area shape="rect" id="node3" href="a00044.html" title="A templated (base) class for handling scalar functions. " alt="" coords="5,6,195,47"/></map>
+<div class="center"><img src="a01155.png" border="0" usemap="#_q_u_e_s_o_1_1_metropolis_adjusted_langevin_t_k_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_metropolis_adjusted_langevin_t_k_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_metropolis_adjusted_langevin_t_k_3_01_v_00_01_m_01_4_inherit__map">
+<area shape="rect" id="node2" href="a00046.html" title="This base class allows the representation of a transition kernel. " alt="" coords="20,6,180,47"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for QUESO::LogNormalJointPdf&lt; V, M &gt;:</div>
+Collaboration diagram for QUESO::MetropolisAdjustedLangevinTK&lt; V, M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01585.png" border="0" usemap="#_q_u_e_s_o_1_1_log_normal_joint_pdf_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_log_normal_joint_pdf_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_log_normal_joint_pdf_3_01_v_00_01_m_01_4_coll__map">
-<area shape="rect" id="node2" href="a00038.html" title="A templated (base) class for handling joint PDFs. " alt="" coords="305,339,455,381"/><area shape="rect" id="node3" href="a00044.html" title="A templated (base) class for handling scalar functions. " alt="" coords="285,246,475,287"/><area shape="rect" id="node4" href="a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="298,104,472,131"/><area shape="rect" id="node7" href="a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="83,253,260,280"/><area shape="rect" id="node10" href="a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="500,253,633,280"/><area shape="rect" id="node5" href="a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="274,5,435,32"/><area shape="rect" id="node6" href="a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="459,5,585,32"/><area shape="rect" id="node8" href="a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="22,97,201,138"/><area shape="rect" id="node9" href="a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,5,219,32"/></map>
+<div class="center"><img src="a01156.png" border="0" usemap="#_q_u_e_s_o_1_1_metropolis_adjusted_langevin_t_k_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_metropolis_adjusted_langevin_t_k_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_metropolis_adjusted_langevin_t_k_3_01_v_00_01_m_01_4_coll__map">
+<area shape="rect" id="node2" href="a00046.html" title="This base class allows the representation of a transition kernel. " alt="" coords="949,235,1109,277"/><area shape="rect" id="node3" href="a00076.html" title="This class sets up the environment underlying the use of the QUESO library by an executable. " alt="" coords="629,215,819,241"/><area shape="rect" id="node4" href="a00036.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="397,251,579,277"/><area shape="rect" id="node5" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::RngBase \&gt;" alt="" coords="22,5,221,46"/><area shape="rect" id="node6" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::MpiComm \&gt;" alt="" coords="22,83,221,125"/><area shape="rect" id="node7" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::variables_map \&gt;" alt="" coords="6,149,237,190"/><area shape="rect" id="node8" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::EnvOptionsValues \&gt;" alt="" coords="22,214,221,255"/><area shape="rect" id="node9" href="a00206.html" title="QUESO::ScopedPtr\&lt; GetPot \&gt;" alt="" coords="19,280,223,307"/><area shape="rect" id="node10" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::BasicPdfsBase \&gt;" alt="" coords="22,331,221,373"/><area shape="rect" id="node11" href="a00206.html" title="QUESO::ScopedPtr\&lt; std\l::ofstream \&gt;" alt="" coords="37,397,206,438"/><area shape="rect" id="node12" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::options\l_description \&gt;" alt="" coords="30,463,213,519"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:ac8a9ad5414281317dfe22731c672a9ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#ac8a9ad5414281317dfe22731c672a9ca">LogNormalJointPdf</a> (const char *prefix, const <a class="el" href="a00246.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00044.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>, const V &amp;<a class="el" href="a00166.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>, const V &amp;<a class="el" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>)</td></tr>
-<tr class="memdesc:ac8a9ad5414281317dfe22731c672a9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#ac8a9ad5414281317dfe22731c672a9ca">More...</a><br/></td></tr>
-<tr class="separator:ac8a9ad5414281317dfe22731c672a9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abba5c75de7f88fcf51e56aec03f35ffc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#abba5c75de7f88fcf51e56aec03f35ffc">~LogNormalJointPdf</a> ()</td></tr>
-<tr class="memdesc:abba5c75de7f88fcf51e56aec03f35ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#abba5c75de7f88fcf51e56aec03f35ffc">More...</a><br/></td></tr>
-<tr class="separator:abba5c75de7f88fcf51e56aec03f35ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Math methods</div></td></tr>
-<tr class="memitem:a87729cb9d59b73baefcbecb03e753cb9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a87729cb9d59b73baefcbecb03e753cb9">actualValue</a> (const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td></tr>
-<tr class="memdesc:a87729cb9d59b73baefcbecb03e753cb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actual value of the Log-Normal PDF (scalar function).  <a href="#a87729cb9d59b73baefcbecb03e753cb9">More...</a><br/></td></tr>
-<tr class="separator:a87729cb9d59b73baefcbecb03e753cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c31e89ee4abe8f1747e50c8d472a94d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a9c31e89ee4abe8f1747e50c8d472a94d">lnValue</a> (const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td></tr>
-<tr class="memdesc:a9c31e89ee4abe8f1747e50c8d472a94d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logarithm of the value of the Log-Normal PDF (scalar function).  <a href="#a9c31e89ee4abe8f1747e50c8d472a94d">More...</a><br/></td></tr>
-<tr class="separator:a9c31e89ee4abe8f1747e50c8d472a94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6edaae85df12c4a8700c4574e354cc96"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a6edaae85df12c4a8700c4574e354cc96">distributionMean</a> (V &amp;meanVector) const </td></tr>
-<tr class="memdesc:a6edaae85df12c4a8700c4574e354cc96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mean value of the underlying random variable.  <a href="#a6edaae85df12c4a8700c4574e354cc96">More...</a><br/></td></tr>
-<tr class="separator:a6edaae85df12c4a8700c4574e354cc96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab406596d98802a477221c0e896568161"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#ab406596d98802a477221c0e896568161">distributionVariance</a> (M &amp;covMatrix) const </td></tr>
-<tr class="memdesc:ab406596d98802a477221c0e896568161"><td class="mdescLeft">&#160;</td><td class="mdescRight">Covariance matrix of the underlying random variable.  <a href="#ab406596d98802a477221c0e896568161">More...</a><br/></td></tr>
-<tr class="separator:ab406596d98802a477221c0e896568161"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a373e37c21ce8acf05fe72f4ec9deef9c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a373e37c21ce8acf05fe72f4ec9deef9c">computeLogOfNormalizationFactor</a> (unsigned int numSamples, bool updateFactorInternally) const </td></tr>
-<tr class="memdesc:a373e37c21ce8acf05fe72f4ec9deef9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the logarithm of the normalization factor.  <a href="#a373e37c21ce8acf05fe72f4ec9deef9c">More...</a><br/></td></tr>
-<tr class="separator:a373e37c21ce8acf05fe72f4ec9deef9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ca856981ab03d0c84d19715da581c83"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a> () const </td></tr>
-<tr class="memdesc:a2ca856981ab03d0c84d19715da581c83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the vector of mean values and private attribute: m_lawExpVector.  <a href="#a2ca856981ab03d0c84d19715da581c83">More...</a><br/></td></tr>
-<tr class="separator:a2ca856981ab03d0c84d19715da581c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa9f7634ae6e54973cfe14463740171e"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a> () const </td></tr>
-<tr class="memdesc:afa9f7634ae6e54973cfe14463740171e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the vector of variance values and private attribute: m_lawVarVector.  <a href="#afa9f7634ae6e54973cfe14463740171e">More...</a><br/></td></tr>
-<tr class="separator:afa9f7634ae6e54973cfe14463740171e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00038"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00038')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:ae1f0870366a17d71e05a2f84ec49e06e inherit pub_methods_a00038"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ae1f0870366a17d71e05a2f84ec49e06e">BaseJointPdf</a> (const char *prefix, const <a class="el" href="a00246.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00044.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>)</td></tr>
-<tr class="memdesc:ae1f0870366a17d71e05a2f84ec49e06e inherit pub_methods_a00038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ae1f0870366a17d71e05a2f84ec49e06e">More...</a><br/></td></tr>
-<tr class="separator:ae1f0870366a17d71e05a2f84ec49e06e inherit pub_methods_a00038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f41f5dc30ddfd59e149c3a748898553 inherit pub_methods_a00038"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#a9f41f5dc30ddfd59e149c3a748898553">~BaseJointPdf</a> ()</td></tr>
-<tr class="memdesc:a9f41f5dc30ddfd59e149c3a748898553 inherit pub_methods_a00038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a9f41f5dc30ddfd59e149c3a748898553">More...</a><br/></td></tr>
-<tr class="separator:a9f41f5dc30ddfd59e149c3a748898553 inherit pub_methods_a00038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab11f1d096f82cc7857cefe1b92f6b28e inherit pub_methods_a00038"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ab11f1d096f82cc7857cefe1b92f6b28e">setNormalizationStyle</a> (unsigned int value) const </td></tr>
-<tr class="separator:ab11f1d096f82cc7857cefe1b92f6b28e inherit pub_methods_a00038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2903b3f031e68907fe7422fedc83e5dc inherit pub_methods_a00038"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#a2903b3f031e68907fe7422fedc83e5dc">setLogOfNormalizationFactor</a> (double value) const </td></tr>
-<tr class="memdesc:a2903b3f031e68907fe7422fedc83e5dc inherit pub_methods_a00038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a logarithmic value to be used in the normalization factor (stored in the protected attribute m_normalizationStyle.)  <a href="#a2903b3f031e68907fe7422fedc83e5dc">More...</a><br/></td></tr>
-<tr class="separator:a2903b3f031e68907fe7422fedc83e5dc inherit pub_methods_a00038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90529e743c0930dd5d93ed02b97ff633 inherit pub_methods_a00038"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#a90529e743c0930dd5d93ed02b97ff633">print</a> (std::ostream &amp;os) const </td></tr>
-<tr class="memdesc:a90529e743c0930dd5d93ed02b97ff633 inherit pub_methods_a00038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print method. Non-pure for backwards compatibility.  <a href="#a90529e743c0930dd5d93ed02b97ff633">More...</a><br/></td></tr>
-<tr class="separator:a90529e743c0930dd5d93ed02b97ff633 inherit pub_methods_a00038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00044"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00044')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00044.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a68ab7c82be7eba7bd5d51ce8d85c65f0 inherit pub_methods_a00044"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#a68ab7c82be7eba7bd5d51ce8d85c65f0">BaseScalarFunction</a> (const char *prefix, const <a class="el" href="a00246.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00044.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>)</td></tr>
-<tr class="memdesc:a68ab7c82be7eba7bd5d51ce8d85c65f0 inherit pub_methods_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a68ab7c82be7eba7bd5d51ce8d85c65f0">More...</a><br/></td></tr>
-<tr class="separator:a68ab7c82be7eba7bd5d51ce8d85c65f0 inherit pub_methods_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f96de783e174cfe84682766f5957969 inherit pub_methods_a00044"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#a6f96de783e174cfe84682766f5957969">~BaseScalarFunction</a> ()</td></tr>
-<tr class="memdesc:a6f96de783e174cfe84682766f5957969 inherit pub_methods_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a6f96de783e174cfe84682766f5957969">More...</a><br/></td></tr>
-<tr class="separator:a6f96de783e174cfe84682766f5957969 inherit pub_methods_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0937628825249dd36ded3ce0c7959ac inherit pub_methods_a00044"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00246.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a> () const </td></tr>
-<tr class="memdesc:ad0937628825249dd36ded3ce0c7959ac inherit pub_methods_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the protected attribute <code>m_domainSet:</code> domain set of the scalar function.  <a href="#ad0937628825249dd36ded3ce0c7959ac">More...</a><br/></td></tr>
-<tr class="separator:ad0937628825249dd36ded3ce0c7959ac inherit pub_methods_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29d210e7b0d14c5d916e81262bdac71d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a29d210e7b0d14c5d916e81262bdac71d">MetropolisAdjustedLangevinTK</a> (const char *prefix, const <a class="el" href="a00057.html">BayesianJointPdf</a>&lt; V, M &gt; &amp;targetPdf, const std::vector&lt; double &gt; &amp;scales, const M &amp;covMatrix)</td></tr>
+<tr class="memdesc:a29d210e7b0d14c5d916e81262bdac71d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a29d210e7b0d14c5d916e81262bdac71d">More...</a><br/></td></tr>
+<tr class="separator:a29d210e7b0d14c5d916e81262bdac71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef0a790b46ffc6398de4bfb57b1c50de"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#aef0a790b46ffc6398de4bfb57b1c50de">~MetropolisAdjustedLangevinTK</a> ()</td></tr>
+<tr class="memdesc:aef0a790b46ffc6398de4bfb57b1c50de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#aef0a790b46ffc6398de4bfb57b1c50de">More...</a><br/></td></tr>
+<tr class="separator:aef0a790b46ffc6398de4bfb57b1c50de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Statistical/Mathematical methods</div></td></tr>
+<tr class="memitem:a6eb9b14dc5f3a1ce0cc8cf6f8015246f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a6eb9b14dc5f3a1ce0cc8cf6f8015246f">symmetric</a> () const </td></tr>
+<tr class="memdesc:a6eb9b14dc5f3a1ce0cc8cf6f8015246f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the matrix is symmetric. Always 'true'.  <a href="#a6eb9b14dc5f3a1ce0cc8cf6f8015246f">More...</a><br/></td></tr>
+<tr class="separator:a6eb9b14dc5f3a1ce0cc8cf6f8015246f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91bbf445f7e8ab8eb61d6abd8376c897"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00107.html">GaussianVectorRV</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a91bbf445f7e8ab8eb61d6abd8376c897">rv</a> (unsigned int stageId) const </td></tr>
+<tr class="memdesc:a91bbf445f7e8ab8eb61d6abd8376c897"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gaussian increment property to construct a transition kernel.  <a href="#a91bbf445f7e8ab8eb61d6abd8376c897">More...</a><br/></td></tr>
+<tr class="separator:a91bbf445f7e8ab8eb61d6abd8376c897"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6a227ec1834e5126a607f7de4bb4adc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00107.html">GaussianVectorRV</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#ad6a227ec1834e5126a607f7de4bb4adc">rv</a> (const std::vector&lt; unsigned int &gt; &amp;stageIds)</td></tr>
+<tr class="memdesc:ad6a227ec1834e5126a607f7de4bb4adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gaussian increment property to construct a transition kernel.  <a href="#ad6a227ec1834e5126a607f7de4bb4adc">More...</a><br/></td></tr>
+<tr class="separator:ad6a227ec1834e5126a607f7de4bb4adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae55b1cddf663c33208ea7b6f3627fcdf"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="a00107.html">GaussianVectorRV</a><br class="typebreak"/>
+&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#ae55b1cddf663c33208ea7b6f3627fcdf">rv</a> (const V &amp;position) const </td></tr>
+<tr class="memdesc:ae55b1cddf663c33208ea7b6f3627fcdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs transition kernel pdf based on internal <code>m_stageId</code> variable.  <a href="#ae55b1cddf663c33208ea7b6f3627fcdf">More...</a><br/></td></tr>
+<tr class="separator:ae55b1cddf663c33208ea7b6f3627fcdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61d1bcabb95a8bfd0e14a4fbaea0c431"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a61d1bcabb95a8bfd0e14a4fbaea0c431">updateLawCovMatrix</a> (const M &amp;covMatrix)</td></tr>
+<tr class="memdesc:a61d1bcabb95a8bfd0e14a4fbaea0c431"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales the covariance matrix.  <a href="#a61d1bcabb95a8bfd0e14a4fbaea0c431">More...</a><br/></td></tr>
+<tr class="separator:a61d1bcabb95a8bfd0e14a4fbaea0c431"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Misc methods</div></td></tr>
+<tr class="memitem:adcf7dfbebf3c70f638532bc81cad7be9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#adcf7dfbebf3c70f638532bc81cad7be9">setPreComputingPosition</a> (const V &amp;position, unsigned int stageId)</td></tr>
+<tr class="memdesc:adcf7dfbebf3c70f638532bc81cad7be9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the pre-computing positions <code>m_preComputingPositions</code>[stageId] with a new vector of size <code>position</code>.  <a href="#adcf7dfbebf3c70f638532bc81cad7be9">More...</a><br/></td></tr>
+<tr class="separator:adcf7dfbebf3c70f638532bc81cad7be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a864c0a9eb60b7525ed8ffa15e01a7f67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a864c0a9eb60b7525ed8ffa15e01a7f67">clearPreComputingPositions</a> ()</td></tr>
+<tr class="memdesc:a864c0a9eb60b7525ed8ffa15e01a7f67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the pre-computing positions <code>m_preComputingPositions</code>[stageId].  <a href="#a864c0a9eb60b7525ed8ffa15e01a7f67">More...</a><br/></td></tr>
+<tr class="separator:a864c0a9eb60b7525ed8ffa15e01a7f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6659874567179019e4b686094eb1d8b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a6659874567179019e4b686094eb1d8b6">covMatrixIsDirty</a> ()</td></tr>
+<tr class="separator:a6659874567179019e4b686094eb1d8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b92d5ce14b32cfffab0aeafba12ad79"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a2b92d5ce14b32cfffab0aeafba12ad79">cleanCovMatrix</a> ()</td></tr>
+<tr class="separator:a2b92d5ce14b32cfffab0aeafba12ad79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">I/O methods</div></td></tr>
+<tr class="memitem:a50a89c8c545155bc5396d1850c6b444c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a50a89c8c545155bc5396d1850c6b444c">print</a> (std::ostream &amp;os) const </td></tr>
+<tr class="memdesc:a50a89c8c545155bc5396d1850c6b444c"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Prints the transition kernel.  <a href="#a50a89c8c545155bc5396d1850c6b444c">More...</a><br/></td></tr>
+<tr class="separator:a50a89c8c545155bc5396d1850c6b444c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00046"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00046')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00046.html">QUESO::BaseTKGroup&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:ad4274236f2092a7307f4d5e4b0a480ee inherit pub_methods_a00046"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ad4274236f2092a7307f4d5e4b0a480ee">BaseTKGroup</a> ()</td></tr>
+<tr class="memdesc:ad4274236f2092a7307f4d5e4b0a480ee inherit pub_methods_a00046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ad4274236f2092a7307f4d5e4b0a480ee">More...</a><br/></td></tr>
+<tr class="separator:ad4274236f2092a7307f4d5e4b0a480ee inherit pub_methods_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94df2ec2ed0f8e3b8073df873f5bd0c9 inherit pub_methods_a00046"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a94df2ec2ed0f8e3b8073df873f5bd0c9">BaseTKGroup</a> (const char *prefix, const <a class="el" href="a00250.html">VectorSpace</a>&lt; V, M &gt; &amp;vectorSpace, const std::vector&lt; double &gt; &amp;scales)</td></tr>
+<tr class="memdesc:a94df2ec2ed0f8e3b8073df873f5bd0c9 inherit pub_methods_a00046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a94df2ec2ed0f8e3b8073df873f5bd0c9">More...</a><br/></td></tr>
+<tr class="separator:a94df2ec2ed0f8e3b8073df873f5bd0c9 inherit pub_methods_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40fbcbbaf7977a83d38d76e1ef23f13f inherit pub_methods_a00046"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a40fbcbbaf7977a83d38d76e1ef23f13f">~BaseTKGroup</a> ()</td></tr>
+<tr class="memdesc:a40fbcbbaf7977a83d38d76e1ef23f13f inherit pub_methods_a00046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a40fbcbbaf7977a83d38d76e1ef23f13f">More...</a><br/></td></tr>
+<tr class="separator:a40fbcbbaf7977a83d38d76e1ef23f13f inherit pub_methods_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac71535d0b77dfdd1419ff2dbf5d6d037 inherit pub_methods_a00046"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00036.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ac71535d0b77dfdd1419ff2dbf5d6d037">env</a> () const </td></tr>
+<tr class="memdesc:ac71535d0b77dfdd1419ff2dbf5d6d037 inherit pub_methods_a00046"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00674.html">QUESO</a>'s environment.  <a href="#ac71535d0b77dfdd1419ff2dbf5d6d037">More...</a><br/></td></tr>
+<tr class="separator:ac71535d0b77dfdd1419ff2dbf5d6d037 inherit pub_methods_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa864c6cc07327a698f91cef72cdc35aa inherit pub_methods_a00046"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#aa864c6cc07327a698f91cef72cdc35aa">preComputingPosition</a> (unsigned int stageId) const </td></tr>
+<tr class="memdesc:aa864c6cc07327a698f91cef72cdc35aa inherit pub_methods_a00046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre-computing position; access to protected attribute *m_preComputingPositions[stageId].  <a href="#aa864c6cc07327a698f91cef72cdc35aa">More...</a><br/></td></tr>
+<tr class="separator:aa864c6cc07327a698f91cef72cdc35aa inherit pub_methods_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59827ef3a9eb8f95ccfe4ac78af83f11 inherit pub_methods_a00046"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a59827ef3a9eb8f95ccfe4ac78af83f11">set_dr_stage</a> (unsigned int stageId)</td></tr>
+<tr class="memdesc:a59827ef3a9eb8f95ccfe4ac78af83f11 inherit pub_methods_a00046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does nothing. Subclasses may re-implement. Returns the current stage id.  <a href="#a59827ef3a9eb8f95ccfe4ac78af83f11">More...</a><br/></td></tr>
+<tr class="separator:a59827ef3a9eb8f95ccfe4ac78af83f11 inherit pub_methods_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59fd7e26dfc2f02137c862544bf5fa08 inherit pub_methods_a00046"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a59fd7e26dfc2f02137c862544bf5fa08">updateTK</a> ()</td></tr>
+<tr class="separator:a59fd7e26dfc2f02137c862544bf5fa08 inherit pub_methods_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a1373e1737c3198b852fab05c77abea35"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a></td></tr>
-<tr class="separator:a1373e1737c3198b852fab05c77abea35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb84bcddf99dc15b4432baac0fc29122"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#abb84bcddf99dc15b4432baac0fc29122">m_lawVarVector</a></td></tr>
-<tr class="separator:abb84bcddf99dc15b4432baac0fc29122"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c85380b9a7c7ab746b2c8cc9c9cf5ee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">m_diagonalCovMatrix</a></td></tr>
-<tr class="separator:a8c85380b9a7c7ab746b2c8cc9c9cf5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00038"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00038')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a138c99bcef7a67077d9612bddfdcb896 inherit pro_attribs_a00038"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#a138c99bcef7a67077d9612bddfdcb896">m_normalizationStyle</a></td></tr>
-<tr class="separator:a138c99bcef7a67077d9612bddfdcb896 inherit pro_attribs_a00038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae82d4191f17af8c7a26226d127bc7850 inherit pro_attribs_a00038"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a></td></tr>
-<tr class="separator:ae82d4191f17af8c7a26226d127bc7850 inherit pro_attribs_a00038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00044"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00044')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00044.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:adf44141aeb765d97613286f88f235f04 inherit pro_attribs_a00044"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00035.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a></td></tr>
-<tr class="separator:adf44141aeb765d97613286f88f235f04 inherit pro_attribs_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e81dc902aca6a546877da99b2f4a169 inherit pro_attribs_a00044"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></td></tr>
-<tr class="separator:a6e81dc902aca6a546877da99b2f4a169 inherit pro_attribs_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab81be32259b9764250660a035439fda8 inherit pro_attribs_a00044"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00246.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00044.html#ab81be32259b9764250660a035439fda8">m_domainSet</a></td></tr>
-<tr class="memdesc:ab81be32259b9764250660a035439fda8 inherit pro_attribs_a00044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Domain set of the scalar function.  <a href="#ab81be32259b9764250660a035439fda8">More...</a><br/></td></tr>
-<tr class="separator:ab81be32259b9764250660a035439fda8 inherit pro_attribs_a00044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a1bd127b5299f12fdf329f816b18eb307"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a1bd127b5299f12fdf329f816b18eb307">setRVsWithZeroMean</a> ()</td></tr>
+<tr class="memdesc:a1bd127b5299f12fdf329f816b18eb307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mean of the RVs to zero.  <a href="#a1bd127b5299f12fdf329f816b18eb307">More...</a><br/></td></tr>
+<tr class="separator:a1bd127b5299f12fdf329f816b18eb307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a826c3eb99ec687d012d9ce8a5961c954"><td class="memItemLeft" align="right" valign="top">M&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a826c3eb99ec687d012d9ce8a5961c954">m_originalCovMatrix</a></td></tr>
+<tr class="separator:a826c3eb99ec687d012d9ce8a5961c954"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fe5b4afa5393117f25cd4a6be4b9973"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00057.html">BayesianJointPdf</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a1fe5b4afa5393117f25cd4a6be4b9973">m_targetPdf</a></td></tr>
+<tr class="separator:a1fe5b4afa5393117f25cd4a6be4b9973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9954cadc78a66beb57491f16301d013d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00166.html#a9954cadc78a66beb57491f16301d013d">m_time_step</a></td></tr>
+<tr class="separator:a9954cadc78a66beb57491f16301d013d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_a00038"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_a00038')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="a00038.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td></tr>
-<tr class="memitem:a7b7bdd13d2de51198bf75d522e02545b inherit pro_methods_a00038"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html#a7b7bdd13d2de51198bf75d522e02545b">commonComputeLogOfNormalizationFactor</a> (unsigned int numSamples, bool updateFactorInternally) const </td></tr>
-<tr class="memdesc:a7b7bdd13d2de51198bf75d522e02545b inherit pro_methods_a00038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common method (to the derived classes) to compute the logarithm of the normalization factor.  <a href="#a7b7bdd13d2de51198bf75d522e02545b">More...</a><br/></td></tr>
-<tr class="separator:a7b7bdd13d2de51198bf75d522e02545b inherit pro_methods_a00038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_a00046"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00046')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00046.html">QUESO::BaseTKGroup&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:a41a8a2d2fde3c1994d3a542ccf9a194e inherit pro_attribs_a00046"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00076.html">EmptyEnvironment</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a41a8a2d2fde3c1994d3a542ccf9a194e">m_emptyEnv</a></td></tr>
+<tr class="separator:a41a8a2d2fde3c1994d3a542ccf9a194e inherit pro_attribs_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bce5e8aa5c844d4332a0e73cf00a1f9 inherit pro_attribs_a00046"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00036.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a></td></tr>
+<tr class="separator:a2bce5e8aa5c844d4332a0e73cf00a1f9 inherit pro_attribs_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c77e4969de60624dba1049cf44a1ab6 inherit pro_attribs_a00046"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a7c77e4969de60624dba1049cf44a1ab6">m_prefix</a></td></tr>
+<tr class="separator:a7c77e4969de60624dba1049cf44a1ab6 inherit pro_attribs_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9930bbda0f3d9368653fb0577b89ec33 inherit pro_attribs_a00046"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00250.html">VectorSpace</a>&lt; V, M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a9930bbda0f3d9368653fb0577b89ec33">m_vectorSpace</a></td></tr>
+<tr class="separator:a9930bbda0f3d9368653fb0577b89ec33 inherit pro_attribs_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad36d4dc6f4812e3e10d8090f0dbb9e40 inherit pro_attribs_a00046"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a></td></tr>
+<tr class="separator:ad36d4dc6f4812e3e10d8090f0dbb9e40 inherit pro_attribs_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93d7fe55e30a7c6f209b01cb8a67e322 inherit pro_attribs_a00046"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const V * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a></td></tr>
+<tr class="separator:a93d7fe55e30a7c6f209b01cb8a67e322 inherit pro_attribs_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e19b94025277f2422d6739eaf1312e5 inherit pro_attribs_a00046"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="a00051.html">BaseVectorRV</a>&lt; V, <br class="typebreak"/>
+M &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a></td></tr>
+<tr class="separator:a7e19b94025277f2422d6739eaf1312e5 inherit pro_attribs_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6aac5c67c594c11019e3362786f0ea3 inherit pro_attribs_a00046"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#ae6aac5c67c594c11019e3362786f0ea3">m_stageId</a></td></tr>
+<tr class="separator:ae6aac5c67c594c11019e3362786f0ea3 inherit pro_attribs_a00046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class V = GslVector, class M = GslMatrix&gt;<br/>
-class QUESO::LogNormalJointPdf&lt; V, M &gt;</h3>
+class QUESO::MetropolisAdjustedLangevinTK&lt; V, M &gt;</h3>
 
-<p>A class for handling Log-Normal joint PDFs. </p>
-<p>This class allows the mathematical definition of a Log-Normal Joint PDF. </p>
+<p>This class allows the representation of the MALA transition kernel with a scaled covariance matrix for the purposes of delayed rejection. </p>
 
-<p>Definition at line <a class="el" href="a00541_source.html#l00050">50</a> of file <a class="el" href="a00541_source.html">LogNormalJointPdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00530_source.html#l00043">43</a> of file <a class="el" href="a00530_source.html">MetropolisAdjustedLangevinTK.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ac8a9ad5414281317dfe22731c672a9ca"></a>
+<a class="anchor" id="a29d210e7b0d14c5d916e81262bdac71d"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::<a class="el" href="a00166.html">LogNormalJointPdf</a> </td>
+          <td class="memname"><a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::<a class="el" href="a00166.html">MetropolisAdjustedLangevinTK</a> </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>prefix</em>, </td>
@@ -186,20 +199,20 @@ template&lt;class V , class M &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00246.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>domainSet</em>, </td>
+          <td class="paramtype">const <a class="el" href="a00057.html">BayesianJointPdf</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>targetPdf</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>lawExpVector</em>, </td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>scales</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>lawVarVector</em>&#160;</td>
+          <td class="paramtype">const M &amp;&#160;</td>
+          <td class="paramname"><em>covMatrix</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -209,59 +222,59 @@ template&lt;class V , class M &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
-<p>Constructs a new object of the class, given a prefix and the domain of the PDF, a vector of mean values, <code>lawExpVector</code>, and a vector of covariance values <code>lawVarVector</code> (an alternative representation for a diagonal covariance matrix). </p>
+<p>Default constructor. </p>
 
-<p>Definition at line <a class="el" href="a00628_source.html#l00033">33</a> of file <a class="el" href="a00628_source.html">LogNormalJointPdf.C</a>.</p>
+<p>Definition at line <a class="el" href="a00616_source.html#l00034">34</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
 
-<p>References <a class="el" href="a00395_source.html#l00449">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00628_source.html#l00074">QUESO::LogNormalJointPdf&lt; V, M &gt;::lawExpVector()</a>, <a class="el" href="a00628_source.html#l00081">QUESO::LogNormalJointPdf&lt; V, M &gt;::lawVarVector()</a>, <a class="el" href="a00269_source.html#l00080">QUESO::BaseScalarFunction&lt; V, M &gt;::m_env</a>, <a class="el" href="a00269_source.html#l00081">QUESO::BaseScalarFunction&lt; V, M &gt;::m_prefix</a>, and <a class="el" href="a00395_source.html#l00320">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  :</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  BaseJointPdf&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;gau&quot;</span>).c_str(),<a class="code" href="a00044.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00166.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a>     (<span class="keyword">new</span> V(<a class="code" href="a00166.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>)),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00166.html#abb84bcddf99dc15b4432baac0fc29122">m_lawVarVector</a>     (<span class="keyword">new</span> V(<a class="code" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>)),</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="a00166.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">m_diagonalCovMatrix</a>(<span class="keyword">true</span>)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    *<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering LogNormalJointPdf&lt;V,M&gt;::constructor() [1]&quot;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00044.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                            &lt;&lt; std::endl;</div>
+<p>References <a class="el" href="a00404_source.html#l00450">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00553_source.html#l00128">QUESO::BaseTKGroup&lt; V, M &gt;::m_env</a>, <a class="el" href="a00530_source.html#l00109">QUESO::MetropolisAdjustedLangevinTK&lt; V, M &gt;::m_originalCovMatrix</a>, <a class="el" href="a00553_source.html#l00132">QUESO::BaseTKGroup&lt; V, M &gt;::m_preComputingPositions</a>, <a class="el" href="a00553_source.html#l00133">QUESO::BaseTKGroup&lt; V, M &gt;::m_rvs</a>, <a class="el" href="a00553_source.html#l00131">QUESO::BaseTKGroup&lt; V, M &gt;::m_scales</a>, <a class="el" href="a00616_source.html#l00230">QUESO::MetropolisAdjustedLangevinTK&lt; V, M &gt;::setRVsWithZeroMean()</a>, and <a class="el" href="a00404_source.html#l00320">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  :</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  BaseTKGroup&lt;V, M&gt;(prefix, targetPdf.domainSet().vectorSpace(), scales),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00166.html#a826c3eb99ec687d012d9ce8a5961c954">m_originalCovMatrix</a>(covMatrix),</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="a00166.html#a1fe5b4afa5393117f25cd4a6be4b9973">m_targetPdf</a>(targetPdf),</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00166.html#a9954cadc78a66beb57491f16301d013d">m_time_step</a>(1.0)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering MetropolisAdjustedLangevinTK&lt;V, M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                           &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 55)) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    *<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In LogNormalJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                          <span class="comment">//&lt;&lt; &quot;, prefix = &quot;     &lt;&lt; m_prefix</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: meanVector = &quot;</span> &lt;&lt; this-&gt;<a class="code" href="a00166.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>()</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;, Variances = &quot;</span>  &lt;&lt; this-&gt;<a class="code" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>()</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    *<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving LogNormalJointPdf&lt;V,M&gt;::constructor() [1]&quot;</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00044.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="ttc" id="a00035_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00320">Environment.C:320</a></div></div>
-<div class="ttc" id="a00166_html_a2ca856981ab03d0c84d19715da581c83"><div class="ttname"><a href="a00166.html#a2ca856981ab03d0c84d19715da581c83">QUESO::LogNormalJointPdf::lawExpVector</a></div><div class="ttdeci">const V &amp; lawExpVector() const </div><div class="ttdoc">Access to the vector of mean values and private attribute: m_lawExpVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00074">LogNormalJointPdf.C:74</a></div></div>
-<div class="ttc" id="a00166_html_a8c85380b9a7c7ab746b2c8cc9c9cf5ee"><div class="ttname"><a href="a00166.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">QUESO::LogNormalJointPdf::m_diagonalCovMatrix</a></div><div class="ttdeci">bool m_diagonalCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00103">LogNormalJointPdf.h:103</a></div></div>
-<div class="ttc" id="a00035_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00449">Environment.C:449</a></div></div>
-<div class="ttc" id="a00044_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00044.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00080">ScalarFunction.h:80</a></div></div>
-<div class="ttc" id="a00044_html_a6e81dc902aca6a546877da99b2f4a169"><div class="ttname"><a href="a00044.html#a6e81dc902aca6a546877da99b2f4a169">QUESO::BaseScalarFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00081">ScalarFunction.h:81</a></div></div>
-<div class="ttc" id="a00166_html_afa9f7634ae6e54973cfe14463740171e"><div class="ttname"><a href="a00166.html#afa9f7634ae6e54973cfe14463740171e">QUESO::LogNormalJointPdf::lawVarVector</a></div><div class="ttdeci">const V &amp; lawVarVector() const </div><div class="ttdoc">Access to the vector of variance values and private attribute: m_lawVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00081">LogNormalJointPdf.C:81</a></div></div>
-<div class="ttc" id="a00044_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00044.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00050">ScalarFunction.C:50</a></div></div>
-<div class="ttc" id="a00166_html_abb84bcddf99dc15b4432baac0fc29122"><div class="ttname"><a href="a00166.html#abb84bcddf99dc15b4432baac0fc29122">QUESO::LogNormalJointPdf::m_lawVarVector</a></div><div class="ttdeci">V * m_lawVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00102">LogNormalJointPdf.h:102</a></div></div>
-<div class="ttc" id="a00166_html_a1373e1737c3198b852fab05c77abea35"><div class="ttname"><a href="a00166.html#a1373e1737c3198b852fab05c77abea35">QUESO::LogNormalJointPdf::m_lawExpVector</a></div><div class="ttdeci">V * m_lawExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00101">LogNormalJointPdf.h:101</a></div></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In MetropolisAdjustedLangevinTK&lt;V, M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: m_scales.size() = &quot;</span>                &lt;&lt; <a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>.size()</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;, m_preComputingPositions.size() = &quot;</span> &lt;&lt; <a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>.size()</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;, m_rvs.size() = &quot;</span>                   &lt;&lt; <a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>.size()</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;, m_originalCovMatrix = &quot;</span>            &lt;&lt; <a class="code" href="a00166.html#a826c3eb99ec687d012d9ce8a5961c954">m_originalCovMatrix</a></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00166.html#a1bd127b5299f12fdf329f816b18eb307">setRVsWithZeroMean</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving MetropolisAdjustedLangevinTK&lt;V, M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="ttc" id="a00046_html_a93d7fe55e30a7c6f209b01cb8a67e322"><div class="ttname"><a href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">QUESO::BaseTKGroup::m_preComputingPositions</a></div><div class="ttdeci">std::vector&lt; const V * &gt; m_preComputingPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00132">TKGroup.h:132</a></div></div>
+<div class="ttc" id="a00046_html_a7e19b94025277f2422d6739eaf1312e5"><div class="ttname"><a href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">QUESO::BaseTKGroup::m_rvs</a></div><div class="ttdeci">std::vector&lt; BaseVectorRV&lt; V, M &gt; * &gt; m_rvs</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00133">TKGroup.h:133</a></div></div>
+<div class="ttc" id="a00046_html_ad36d4dc6f4812e3e10d8090f0dbb9e40"><div class="ttname"><a href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">QUESO::BaseTKGroup::m_scales</a></div><div class="ttdeci">std::vector&lt; double &gt; m_scales</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00131">TKGroup.h:131</a></div></div>
+<div class="ttc" id="a00046_html_a2bce5e8aa5c844d4332a0e73cf00a1f9"><div class="ttname"><a href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">QUESO::BaseTKGroup::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00128">TKGroup.h:128</a></div></div>
+<div class="ttc" id="a00166_html_a826c3eb99ec687d012d9ce8a5961c954"><div class="ttname"><a href="a00166.html#a826c3eb99ec687d012d9ce8a5961c954">QUESO::MetropolisAdjustedLangevinTK::m_originalCovMatrix</a></div><div class="ttdeci">M m_originalCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00530_source.html#l00109">MetropolisAdjustedLangevinTK.h:109</a></div></div>
+<div class="ttc" id="a00166_html_a1fe5b4afa5393117f25cd4a6be4b9973"><div class="ttname"><a href="a00166.html#a1fe5b4afa5393117f25cd4a6be4b9973">QUESO::MetropolisAdjustedLangevinTK::m_targetPdf</a></div><div class="ttdeci">const BayesianJointPdf&lt; V, M &gt; &amp; m_targetPdf</div><div class="ttdef"><b>Definition:</b> <a href="a00530_source.html#l00111">MetropolisAdjustedLangevinTK.h:111</a></div></div>
+<div class="ttc" id="a00166_html_a1bd127b5299f12fdf329f816b18eb307"><div class="ttname"><a href="a00166.html#a1bd127b5299f12fdf329f816b18eb307">QUESO::MetropolisAdjustedLangevinTK::setRVsWithZeroMean</a></div><div class="ttdeci">void setRVsWithZeroMean()</div><div class="ttdoc">Sets the mean of the RVs to zero. </div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00230">MetropolisAdjustedLangevinTK.C:230</a></div></div>
+<div class="ttc" id="a00036_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00320">Environment.C:320</a></div></div>
+<div class="ttc" id="a00036_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00450">Environment.C:450</a></div></div>
+<div class="ttc" id="a00166_html_a9954cadc78a66beb57491f16301d013d"><div class="ttname"><a href="a00166.html#a9954cadc78a66beb57491f16301d013d">QUESO::MetropolisAdjustedLangevinTK::m_time_step</a></div><div class="ttdeci">double m_time_step</div><div class="ttdef"><b>Definition:</b> <a href="a00530_source.html#l00113">MetropolisAdjustedLangevinTK.h:113</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="abba5c75de7f88fcf51e56aec03f35ffc"></a>
+<a class="anchor" id="aef0a790b46ffc6398de4bfb57b1c50de"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::~<a class="el" href="a00166.html">LogNormalJointPdf</a> </td>
+          <td class="memname"><a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::~<a class="el" href="a00166.html">MetropolisAdjustedLangevinTK</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -271,18 +284,46 @@ template&lt;class V , class M &gt; </div>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="a00628_source.html#l00066">66</a> of file <a class="el" href="a00628_source.html">LogNormalJointPdf.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00166.html#abb84bcddf99dc15b4432baac0fc29122">m_lawVarVector</a>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00166.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a>;</div>
+<p>Definition at line <a class="el" href="a00616_source.html#l00068">68</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
-<div class="ttc" id="a00166_html_abb84bcddf99dc15b4432baac0fc29122"><div class="ttname"><a href="a00166.html#abb84bcddf99dc15b4432baac0fc29122">QUESO::LogNormalJointPdf::m_lawVarVector</a></div><div class="ttdeci">V * m_lawVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00102">LogNormalJointPdf.h:102</a></div></div>
-<div class="ttc" id="a00166_html_a1373e1737c3198b852fab05c77abea35"><div class="ttname"><a href="a00166.html#a1373e1737c3198b852fab05c77abea35">QUESO::LogNormalJointPdf::m_lawExpVector</a></div><div class="ttdeci">V * m_lawExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00101">LogNormalJointPdf.h:101</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a87729cb9d59b73baefcbecb03e753cb9"></a>
+<a class="anchor" id="a2b92d5ce14b32cfffab0aeafba12ad79"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::cleanCovMatrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Performs whatever cleanup is needed (usually just resetting an internal bool flag) after the covariance matrix was modified.</p>
+<p>After this method is called, covMatrixIsDirty should return <code>true</code>. </p>
+
+<p>Implements <a class="el" href="a00046.html#ac3c45a0e86c7a7744a28dbc38159e523">QUESO::BaseTKGroup&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00530_source.html#l00090">90</a> of file <a class="el" href="a00530_source.html">MetropolisAdjustedLangevinTK.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;{ }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a864c0a9eb60b7525ed8ffa15e01a7f67"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -292,39 +333,10 @@ template&lt;class V , class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::actualValue </td>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::clearPreComputingPositions </td>
           <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>domainVector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">const V *&#160;</td>
-          <td class="paramname"><em>domainDirection</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">V *&#160;</td>
-          <td class="paramname"><em>gradVector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">M *&#160;</td>
-          <td class="paramname"><em>hessianMatrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">V *&#160;</td>
-          <td class="paramname"><em>hessianEffect</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -334,71 +346,53 @@ template&lt;class V , class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Actual value of the Log-Normal PDF (scalar function). </p>
-<p>This method calls <a class="el" href="a00166.html#a9c31e89ee4abe8f1747e50c8d472a94d" title="Logarithm of the value of the Log-Normal PDF (scalar function). ">lnValue()</a> and applies the exponential to its result. </p>
+<p>Clears the pre-computing positions <code>m_preComputingPositions</code>[stageId]. </p>
 
-<p>Implements <a class="el" href="a00038.html#a3c367a0cc3fb707a136c5df47dd414c1">QUESO::BaseJointPdf&lt; V, M &gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="a00046.html#adb4decb4e8f01dce2ae4d5a3333c74f8">QUESO::BaseTKGroup&lt; V, M &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="a00628_source.html#l00088">88</a> of file <a class="el" href="a00628_source.html">LogNormalJointPdf.C</a>.</p>
+<p>Definition at line <a class="el" href="a00616_source.html#l00223">223</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
 
-<p>References <a class="el" href="a00340_source.html#l00073">queso_require_equal_to_msg</a>, and <a class="el" href="a00340_source.html#l00069">queso_require_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;{</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 55)) {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    *<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering LogNormalJointPdf&lt;V,M&gt;::actualValue()&quot;</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, meanVector = &quot;</span>               &lt;&lt; *<a class="code" href="a00166.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span>             &lt;&lt; domainVector</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, domainVector.sizeLocal() = &quot;</span> &lt;&lt; domainVector.sizeLocal()</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, this-&gt;m_domainSet.vectorSpace().dimLocal() = &quot;</span> &lt;&lt; this-&gt;<a class="code" href="a00044.html#ab81be32259b9764250660a035439fda8">m_domainSet</a>.vectorSpace().dimLocal()</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <a class="code" href="a00340.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(domainVector.sizeLocal(), this-&gt;<a class="code" href="a00044.html#ab81be32259b9764250660a035439fda8">m_domainSet</a>.vectorSpace().dimLocal(), <span class="stringliteral">&quot;invalid input&quot;</span>);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!(hessianMatrix || hessianEffect), <span class="stringliteral">&quot;incomplete code for gradVector, hessianMatrix and hessianEffect calculations&quot;</span>);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordtype">double</span> returnValue = 0.;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  V zeroVector(domainVector);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  zeroVector.cwSet(0.);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keywordflow">if</span> (domainVector.atLeastOneComponentSmallerOrEqualThan(zeroVector)) {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="comment">// What should the gradient be here?</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    returnValue = 0.;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (this-&gt;<a class="code" href="a00044.html#ab81be32259b9764250660a035439fda8">m_domainSet</a>.contains(domainVector) == <span class="keyword">false</span>) {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">// What should the gradient be here?</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    returnValue = 0.;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">// Already normalised</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    returnValue = std::exp(this-&gt;<a class="code" href="a00166.html#a9c31e89ee4abe8f1747e50c8d472a94d">lnValue</a>(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">if</span> (gradVector) {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      (*gradVector) *= returnValue;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 55)) {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    *<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving LogNormalJointPdf&lt;V,M&gt;::actualValue()&quot;</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, meanVector = &quot;</span>   &lt;&lt; *<a class="code" href="a00166.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, returnValue = &quot;</span>  &lt;&lt; returnValue</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  }</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="keywordflow">return</span> returnValue;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
-<div class="ttc" id="a00035_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00320">Environment.C:320</a></div></div>
-<div class="ttc" id="a00166_html_a9c31e89ee4abe8f1747e50c8d472a94d"><div class="ttname"><a href="a00166.html#a9c31e89ee4abe8f1747e50c8d472a94d">QUESO::LogNormalJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the Log-Normal PDF (scalar function). </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00142">LogNormalJointPdf.C:142</a></div></div>
-<div class="ttc" id="a00340_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00340.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00073">asserts.h:73</a></div></div>
-<div class="ttc" id="a00044_html_ab81be32259b9764250660a035439fda8"><div class="ttname"><a href="a00044.html#ab81be32259b9764250660a035439fda8">QUESO::BaseScalarFunction::m_domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_domainSet</div><div class="ttdoc">Domain set of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00084">ScalarFunction.h:84</a></div></div>
-<div class="ttc" id="a00035_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00449">Environment.C:449</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
-<div class="ttc" id="a00044_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00044.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00080">ScalarFunction.h:80</a></div></div>
-<div class="ttc" id="a00166_html_a1373e1737c3198b852fab05c77abea35"><div class="ttname"><a href="a00166.html#a1373e1737c3198b852fab05c77abea35">QUESO::LogNormalJointPdf::m_lawExpVector</a></div><div class="ttdeci">V * m_lawExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00101">LogNormalJointPdf.h:101</a></div></div>
+<p>References <a class="el" href="a00639_source.html#l00111">QUESO::BaseTKGroup&lt; V, M &gt;::clearPreComputingPositions()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;{</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <a class="code" href="a00046.html#adb4decb4e8f01dce2ae4d5a3333c74f8">BaseTKGroup&lt;V, M&gt;::clearPreComputingPositions</a>();</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;}</div>
+<div class="ttc" id="a00046_html_adb4decb4e8f01dce2ae4d5a3333c74f8"><div class="ttname"><a href="a00046.html#adb4decb4e8f01dce2ae4d5a3333c74f8">QUESO::BaseTKGroup::clearPreComputingPositions</a></div><div class="ttdeci">virtual void clearPreComputingPositions()</div><div class="ttdoc">Clears the pre-computing positions m_preComputingPositions[stageId]. </div><div class="ttdef"><b>Definition:</b> <a href="a00639_source.html#l00111">TKGroup.C:111</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a373e37c21ce8acf05fe72f4ec9deef9c"></a>
+<a class="anchor" id="a6659874567179019e4b686094eb1d8b6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::covMatrixIsDirty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method determines whether or not the user has 'dirtied' the covariance matrix, thereby necessitating an AM reset.</p>
+<p>Should return true if the cov matrix was modified in such a way to affect the Adaptive Metropolis sample covariance calculation. </p>
+
+<p>Implements <a class="el" href="a00046.html#adf342c8e474d6b038741cd0266ec9fb0">QUESO::BaseTKGroup&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00530_source.html#l00089">89</a> of file <a class="el" href="a00530_source.html">MetropolisAdjustedLangevinTK.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a50a89c8c545155bc5396d1850c6b444c"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -408,76 +402,49 @@ template&lt;class V , class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::computeLogOfNormalizationFactor </td>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::print </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>TODO: Prints the transition kernel. </p>
+<dl class="todo"><dt><b><a class="el" href="a00676.html#_todo000043">Todo:</a></b></dt><dd>: implement me! </dd></dl>
+
+<p>Reimplemented from <a class="el" href="a00046.html#ad6f7aa1ed1f75476b46333847e5086ba">QUESO::BaseTKGroup&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00616_source.html#l00247">247</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
+
+<p>References <a class="el" href="a00639_source.html#l00133">QUESO::BaseTKGroup&lt; V, M &gt;::print()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;{</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  <a class="code" href="a00046.html#ad6f7aa1ed1f75476b46333847e5086ba">BaseTKGroup&lt;V, M&gt;::print</a>(os);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;}</div>
+<div class="ttc" id="a00046_html_ad6f7aa1ed1f75476b46333847e5086ba"><div class="ttname"><a href="a00046.html#ad6f7aa1ed1f75476b46333847e5086ba">QUESO::BaseTKGroup::print</a></div><div class="ttdeci">virtual void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00639_source.html#l00133">TKGroup.C:133</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a91bbf445f7e8ab8eb61d6abd8376c897"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00107.html">GaussianVectorRV</a>&lt; V, M &gt; &amp; <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::rv </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>numSamples</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>updateFactorInternally</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes the logarithm of the normalization factor. </p>
-<p>This routine calls <a class="el" href="a00038.html#a7b7bdd13d2de51198bf75d522e02545b" title="Common method (to the derived classes) to compute the logarithm of the normalization factor...">BaseJointPdf::commonComputeLogOfNormalizationFactor()</a>. </p>
-
-<p>Implements <a class="el" href="a00038.html#a99d8ab490b093abffd6068b6ea5263bb">QUESO::BaseJointPdf&lt; V, M &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00628_source.html#l00261">261</a> of file <a class="el" href="a00628_source.html">LogNormalJointPdf.C</a>.</p>
-
-<p>References <a class="el" href="a00627_source.html#l00115">QUESO::BaseJointPdf&lt; V, M &gt;::commonComputeLogOfNormalizationFactor()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;{</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <span class="keywordtype">double</span> value = 0.;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2)) {</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    *<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering LogNormalJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  }</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  value = <a class="code" href="a00038.html#a7b7bdd13d2de51198bf75d522e02545b">BaseJointPdf&lt;V,M&gt;::commonComputeLogOfNormalizationFactor</a>(numSamples, updateFactorInternally);</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2)) {</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    *<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving LogNormalJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, m_logOfNormalizationFactor = &quot;</span> &lt;&lt; <a class="code" href="a00038.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  }</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;}</div>
-<div class="ttc" id="a00035_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00320">Environment.C:320</a></div></div>
-<div class="ttc" id="a00038_html_a7b7bdd13d2de51198bf75d522e02545b"><div class="ttname"><a href="a00038.html#a7b7bdd13d2de51198bf75d522e02545b">QUESO::BaseJointPdf::commonComputeLogOfNormalizationFactor</a></div><div class="ttdeci">double commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Common method (to the derived classes) to compute the logarithm of the normalization factor...</div><div class="ttdef"><b>Definition:</b> <a href="a00627_source.html#l00115">JointPdf.C:115</a></div></div>
-<div class="ttc" id="a00035_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00449">Environment.C:449</a></div></div>
-<div class="ttc" id="a00038_html_ae82d4191f17af8c7a26226d127bc7850"><div class="ttname"><a href="a00038.html#ae82d4191f17af8c7a26226d127bc7850">QUESO::BaseJointPdf::m_logOfNormalizationFactor</a></div><div class="ttdeci">double m_logOfNormalizationFactor</div><div class="ttdef"><b>Definition:</b> <a href="a00540_source.html#l00125">JointPdf.h:125</a></div></div>
-<div class="ttc" id="a00044_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00044.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00080">ScalarFunction.h:80</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a6edaae85df12c4a8700c4574e354cc96"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::distributionMean </td>
-          <td>(</td>
-          <td class="paramtype">V &amp;&#160;</td>
-          <td class="paramname"><em>meanVector</em></td><td>)</td>
+          <td class="paramname"><em>stageId</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -488,153 +455,43 @@ template&lt;class V , class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Mean value of the underlying random variable. </p>
+<p>Gaussian increment property to construct a transition kernel. </p>
 
-<p>Reimplemented from <a class="el" href="a00038.html#a471bddbda83859d5a2b0dd60d011f68f">QUESO::BaseJointPdf&lt; V, M &gt;</a>.</p>
+<p>Implements <a class="el" href="a00046.html#accf41e1baaa3709afacf1af8f66dd021">QUESO::BaseTKGroup&lt; V, M &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="a00628_source.html#l00215">215</a> of file <a class="el" href="a00628_source.html">LogNormalJointPdf.C</a>.</p>
+<p>Definition at line <a class="el" href="a00616_source.html#l00081">81</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
 
-<p>References <a class="el" href="a00340_source.html#l00135">queso_assert_equal_to</a>, and <a class="el" href="a00340_source.html#l00047">queso_error_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;{</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  <span class="comment">// FIXME - this is the mean of a non-truncated lognormal</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <span class="comment">// distribution, and doesn&#39;t take into account a limited domainSet.</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00166.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">m_diagonalCovMatrix</a>) {</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_params = meanVector.sizeLocal();</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a> (n_params, this-&gt;<a class="code" href="a00166.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>().sizeLocal());</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; n_params; ++i) {</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;      meanVector[i] = std::exp(this-&gt;<a class="code" href="a00166.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>()[i] + 0.5*this-&gt;<a class="code" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>()[i]);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    }</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  }</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <a class="code" href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;situation with a non-diagonal covariance matrix makes no sense&quot;</span>);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  }</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;}</div>
-<div class="ttc" id="a00166_html_a2ca856981ab03d0c84d19715da581c83"><div class="ttname"><a href="a00166.html#a2ca856981ab03d0c84d19715da581c83">QUESO::LogNormalJointPdf::lawExpVector</a></div><div class="ttdeci">const V &amp; lawExpVector() const </div><div class="ttdoc">Access to the vector of mean values and private attribute: m_lawExpVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00074">LogNormalJointPdf.C:74</a></div></div>
-<div class="ttc" id="a00166_html_a8c85380b9a7c7ab746b2c8cc9c9cf5ee"><div class="ttname"><a href="a00166.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">QUESO::LogNormalJointPdf::m_diagonalCovMatrix</a></div><div class="ttdeci">bool m_diagonalCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00103">LogNormalJointPdf.h:103</a></div></div>
-<div class="ttc" id="a00340_html_a67de25b43faabd8d10a0827676e54a49"><div class="ttname"><a href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a></div><div class="ttdeci">#define queso_assert_equal_to(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00135">asserts.h:135</a></div></div>
-<div class="ttc" id="a00166_html_afa9f7634ae6e54973cfe14463740171e"><div class="ttname"><a href="a00166.html#afa9f7634ae6e54973cfe14463740171e">QUESO::LogNormalJointPdf::lawVarVector</a></div><div class="ttdeci">const V &amp; lawVarVector() const </div><div class="ttdoc">Access to the vector of variance values and private attribute: m_lawVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00081">LogNormalJointPdf.C:81</a></div></div>
-<div class="ttc" id="a00340_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00047">asserts.h:47</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="ab406596d98802a477221c0e896568161"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::distributionVariance </td>
-          <td>(</td>
-          <td class="paramtype">M &amp;&#160;</td>
-          <td class="paramname"><em>covMatrix</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Covariance matrix of the underlying random variable. </p>
-
-<p>Reimplemented from <a class="el" href="a00038.html#a7f3872013746bd498258c3b7b24c211c">QUESO::BaseJointPdf&lt; V, M &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00628_source.html#l00235">235</a> of file <a class="el" href="a00628_source.html">LogNormalJointPdf.C</a>.</p>
-
-<p>References <a class="el" href="a00340_source.html#l00135">queso_assert_equal_to</a>, and <a class="el" href="a00340_source.html#l00047">queso_error_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;{</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  <span class="comment">// FIXME - this is the variance of a non-truncated lognormal</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <span class="comment">// distribution, and doesn&#39;t take into account a limited domainSet.</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00166.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">m_diagonalCovMatrix</a>) {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_params = this-&gt;<a class="code" href="a00166.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>().sizeLocal();</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a> (n_params, this-&gt;<a class="code" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>().sizeLocal());</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a> (n_params, covMatrix.numCols());</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <a class="code" href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a> (covMatrix.numCols(), covMatrix.numRowsGlobal());</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    covMatrix.zeroLower();</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    covMatrix.zeroUpper();</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; n_params; ++i) {</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      covMatrix(i,i) = (std::exp(this-&gt;<a class="code" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>()[i]) - 1) *</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                       std::exp(2*this-&gt;<a class="code" href="a00166.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>()[i] + this-&gt;<a class="code" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>()[i]);</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    }</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  }</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <a class="code" href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;situation with a non-diagonal covariance matrix makes no sense&quot;</span>);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  }</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;}</div>
-<div class="ttc" id="a00166_html_a2ca856981ab03d0c84d19715da581c83"><div class="ttname"><a href="a00166.html#a2ca856981ab03d0c84d19715da581c83">QUESO::LogNormalJointPdf::lawExpVector</a></div><div class="ttdeci">const V &amp; lawExpVector() const </div><div class="ttdoc">Access to the vector of mean values and private attribute: m_lawExpVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00074">LogNormalJointPdf.C:74</a></div></div>
-<div class="ttc" id="a00166_html_a8c85380b9a7c7ab746b2c8cc9c9cf5ee"><div class="ttname"><a href="a00166.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">QUESO::LogNormalJointPdf::m_diagonalCovMatrix</a></div><div class="ttdeci">bool m_diagonalCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00103">LogNormalJointPdf.h:103</a></div></div>
-<div class="ttc" id="a00340_html_a67de25b43faabd8d10a0827676e54a49"><div class="ttname"><a href="a00340.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a></div><div class="ttdeci">#define queso_assert_equal_to(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00135">asserts.h:135</a></div></div>
-<div class="ttc" id="a00166_html_afa9f7634ae6e54973cfe14463740171e"><div class="ttname"><a href="a00166.html#afa9f7634ae6e54973cfe14463740171e">QUESO::LogNormalJointPdf::lawVarVector</a></div><div class="ttdeci">const V &amp; lawVarVector() const </div><div class="ttdoc">Access to the vector of variance values and private attribute: m_lawVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00081">LogNormalJointPdf.C:81</a></div></div>
-<div class="ttc" id="a00340_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00047">asserts.h:47</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a2ca856981ab03d0c84d19715da581c83"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const V &amp; <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::lawExpVector </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Access to the vector of mean values and private attribute: m_lawExpVector. </p>
-
-<p>Definition at line <a class="el" href="a00628_source.html#l00074">74</a> of file <a class="el" href="a00628_source.html">LogNormalJointPdf.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00628_source.html#l00033">QUESO::LogNormalJointPdf&lt; V, M &gt;::LogNormalJointPdf()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00166.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="ttc" id="a00166_html_a1373e1737c3198b852fab05c77abea35"><div class="ttname"><a href="a00166.html#a1373e1737c3198b852fab05c77abea35">QUESO::LogNormalJointPdf::m_lawExpVector</a></div><div class="ttdeci">V * m_lawExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00101">LogNormalJointPdf.h:101</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="afa9f7634ae6e54973cfe14463740171e"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const V &amp; <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::lawVarVector </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Access to the vector of variance values and private attribute: m_lawVarVector. </p>
-
-<p>Definition at line <a class="el" href="a00628_source.html#l00081">81</a> of file <a class="el" href="a00628_source.html">LogNormalJointPdf.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00628_source.html#l00033">QUESO::LogNormalJointPdf&lt; V, M &gt;::LogNormalJointPdf()</a>.</p>
+<p>References <a class="el" href="a00591_source.html#l00151">QUESO::GaussianVectorRV&lt; V, M &gt;::updateLawExpVector()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00166.html#abb84bcddf99dc15b4432baac0fc29122">m_lawVarVector</a>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="ttc" id="a00166_html_abb84bcddf99dc15b4432baac0fc29122"><div class="ttname"><a href="a00166.html#abb84bcddf99dc15b4432baac0fc29122">QUESO::LogNormalJointPdf::m_lawVarVector</a></div><div class="ttdeci">V * m_lawVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00102">LogNormalJointPdf.h:102</a></div></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  queso_require_not_equal_to(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>.size(), 0);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  queso_require(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[0]);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  queso_require_greater(<a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>.size(), stageId);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  queso_require(<a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>[stageId]);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()        ) &amp;&amp;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      (<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 10)) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In MetropolisAdjustedLangevinTK&lt;V, M&gt;::rv1()&quot;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, stageId = &quot;</span> &lt;&lt; stageId</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: about to call m_rvs[0]-&gt;updateLawExpVector()&quot;</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, vector = &quot;</span> &lt;&lt; *<a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>[stageId] <span class="comment">// FIX ME: might demand parallelism</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  GaussianVectorRV&lt;V, M&gt; * gaussian_rv = <span class="keyword">dynamic_cast&lt;</span>GaussianVectorRV&lt;V, M&gt; * <span class="keyword">&gt;</span>(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[0]);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  gaussian_rv-&gt;updateLawExpVector(*<a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>[stageId]);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">return</span> (*gaussian_rv);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
+<div class="ttc" id="a00046_html_a93d7fe55e30a7c6f209b01cb8a67e322"><div class="ttname"><a href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">QUESO::BaseTKGroup::m_preComputingPositions</a></div><div class="ttdeci">std::vector&lt; const V * &gt; m_preComputingPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00132">TKGroup.h:132</a></div></div>
+<div class="ttc" id="a00046_html_a7e19b94025277f2422d6739eaf1312e5"><div class="ttname"><a href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">QUESO::BaseTKGroup::m_rvs</a></div><div class="ttdeci">std::vector&lt; BaseVectorRV&lt; V, M &gt; * &gt; m_rvs</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00133">TKGroup.h:133</a></div></div>
+<div class="ttc" id="a00046_html_a2bce5e8aa5c844d4332a0e73cf00a1f9"><div class="ttname"><a href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">QUESO::BaseTKGroup::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00128">TKGroup.h:128</a></div></div>
+<div class="ttc" id="a00036_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00320">Environment.C:320</a></div></div>
+<div class="ttc" id="a00036_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00450">Environment.C:450</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a9c31e89ee4abe8f1747e50c8d472a94d"></a>
+<a class="anchor" id="ad6a227ec1834e5126a607f7de4bb4adc"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -644,39 +501,72 @@ template&lt;class V , class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::lnValue </td>
+          <td class="memname">const <a class="el" href="a00107.html">GaussianVectorRV</a>&lt; V, M &gt; &amp; <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::rv </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>stageIds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gaussian increment property to construct a transition kernel. </p>
+
+<p>Implements <a class="el" href="a00046.html#aa07cabead2c6dbc195fdcbd2e7cad361">QUESO::BaseTKGroup&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00616_source.html#l00106">106</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
+
+<p>References <a class="el" href="a00591_source.html#l00151">QUESO::GaussianVectorRV&lt; V, M &gt;::updateLawExpVector()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;{</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  queso_require_greater_equal(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>.size(), stageIds.size());</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  queso_require(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[stageIds.size()-1]);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  queso_require_greater(<a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>.size(), stageIds[0]);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  queso_require(<a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>[stageIds[0]]);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()        ) &amp;&amp;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      (<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 10)) {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In MetropolisAdjustedLangevinTK&lt;V, M&gt;::rv2()&quot;</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, stageIds.size() = &quot;</span> &lt;&lt; stageIds.size()</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, stageIds[0] = &quot;</span>     &lt;&lt; stageIds[0]</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: about to call m_rvs[stageIds.size()-1]-&gt;updateLawExpVector()&quot;</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, vector = &quot;</span> &lt;&lt; *<a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>[stageIds[0]] <span class="comment">// FIX ME: might demand parallelism</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  GaussianVectorRV&lt;V, M&gt; * gaussian_rv = <span class="keyword">dynamic_cast&lt;</span>GaussianVectorRV&lt;V, M&gt; * <span class="keyword">&gt;</span>(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[stageIds.size()-1]);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  gaussian_rv-&gt;updateLawExpVector(*<a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>[stageIds[0]]);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keywordflow">return</span> (*gaussian_rv);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}</div>
+<div class="ttc" id="a00046_html_a93d7fe55e30a7c6f209b01cb8a67e322"><div class="ttname"><a href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">QUESO::BaseTKGroup::m_preComputingPositions</a></div><div class="ttdeci">std::vector&lt; const V * &gt; m_preComputingPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00132">TKGroup.h:132</a></div></div>
+<div class="ttc" id="a00046_html_a7e19b94025277f2422d6739eaf1312e5"><div class="ttname"><a href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">QUESO::BaseTKGroup::m_rvs</a></div><div class="ttdeci">std::vector&lt; BaseVectorRV&lt; V, M &gt; * &gt; m_rvs</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00133">TKGroup.h:133</a></div></div>
+<div class="ttc" id="a00046_html_a2bce5e8aa5c844d4332a0e73cf00a1f9"><div class="ttname"><a href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">QUESO::BaseTKGroup::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00128">TKGroup.h:128</a></div></div>
+<div class="ttc" id="a00036_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00320">Environment.C:320</a></div></div>
+<div class="ttc" id="a00036_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00450">Environment.C:450</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ae55b1cddf663c33208ea7b6f3627fcdf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00107.html">GaussianVectorRV</a>&lt; V, M &gt; &amp; <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::rv </td>
           <td>(</td>
           <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>domainVector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const V *&#160;</td>
-          <td class="paramname"><em>domainDirection</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">V *&#160;</td>
-          <td class="paramname"><em>gradVector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">M *&#160;</td>
-          <td class="paramname"><em>hessianMatrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">V *&#160;</td>
-          <td class="paramname"><em>hessianEffect</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -686,177 +576,347 @@ template&lt;class V , class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Logarithm of the value of the Log-Normal PDF (scalar function). </p>
-<p>The logarithm of the value of the Log-Normal density of diagonal covariance matrix (sigma^2) comes from the summation: </p>
-<p class="formulaDsp">
-<img class="formulaDsp" alt="\[ lnValue =- \sum_i \frac{1}{domainVector_i * \sqrt{2 \pi * lawVarVector_i}} exp(-\frac{(\ln( domainVector_i) - lawExpVector_i)^2}{2 lawVarVector_i}) \]" src="form_134.png"/>
-</p>
-<p> as long as <img class="formulaInl" alt="$ domainVector_i > 0 $" src="form_135.png"/> for all <img class="formulaInl" alt="$ i $" src="form_43.png"/>. </p>
+<p>Constructs transition kernel pdf based on internal <code>m_stageId</code> variable. </p>
 
-<p>Implements <a class="el" href="a00038.html#aaeb1d91fd791399a502f451b07bb1bfe">QUESO::BaseJointPdf&lt; V, M &gt;</a>.</p>
+<p>Implements <a class="el" href="a00046.html#a9dbaaa25eabab44d014cfbd4730dec8a">QUESO::BaseTKGroup&lt; V, M &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="a00628_source.html#l00142">142</a> of file <a class="el" href="a00628_source.html">LogNormalJointPdf.C</a>.</p>
+<p>Definition at line <a class="el" href="a00616_source.html#l00132">132</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
 
-<p>References <a class="el" href="a00340_source.html#l00047">queso_error_msg</a>, and <a class="el" href="a00340_source.html#l00069">queso_require_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;{</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 55)) {</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    *<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering LogNormalJointPdf&lt;V,M&gt;::lnValue()&quot;</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, meanVector = &quot;</span>   &lt;&lt; *<a class="code" href="a00166.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  }</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!(domainDirection || hessianMatrix || hessianEffect), <span class="stringliteral">&quot;incomplete code for gradVector, hessianMatrix and hessianEffect calculations&quot;</span>);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="keywordtype">double</span> returnValue = 0.;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  V zeroVector(domainVector);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  zeroVector.cwSet(0.);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="keywordflow">if</span> (domainVector.atLeastOneComponentSmallerOrEqualThan(zeroVector)) {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="comment">// What should the gradient be here?</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    returnValue = -INFINITY;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (this-&gt;<a class="code" href="a00044.html#ab81be32259b9764250660a035439fda8">m_domainSet</a>.contains(domainVector) == <span class="keyword">false</span>) {</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="comment">// What should the gradient be here?</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    returnValue = -INFINITY;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  }</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00166.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">m_diagonalCovMatrix</a>) {</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      V diffVec(zeroVector);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; domainVector.sizeLocal(); ++i) {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        diffVec[i] = std::log(domainVector[i]) - this-&gt;<a class="code" href="a00166.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>()[i];</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="comment">// Compute the gradient of log of the PDF</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="comment">// The log of a log normal pdf is:</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="comment">// f(x) = -log(x \sigma sqrt(2 \pi)) - ((log(x) - \mu)^2 / (2 \sigma^2))</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="comment">// Therefore</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="comment">// \frac{df}{dx}(x) = -1/x - (log(x) - \mu) / (x \sigma^2)</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keywordflow">if</span> (gradVector) {</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;          (*gradVector)[i] = -(1.0 / domainVector[i]) -</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            diffVec[i] / (domainVector[i] * this-&gt;<a class="code" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>()[i]);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      }</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;      returnValue = ((diffVec*diffVec)/this-&gt;<a class="code" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>()).sumOfComponents();</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;      returnValue *= -0.5;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; domainVector.sizeLocal(); ++i) {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        returnValue -= std::log(domainVector[i]);</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00038.html#a138c99bcef7a67077d9612bddfdcb896">m_normalizationStyle</a> == 0) {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;          returnValue -= std::log(std::sqrt(2. * M_PI * this-&gt;<a class="code" href="a00166.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>()[i])); <span class="comment">// Contribution of 1/(x\sqrt{2\pi\sigma^2})</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        }</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;      }</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    }</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      <a class="code" href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;situation with a non-diagonal covariance matrix makes no sense&quot;</span>);</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    }</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    returnValue += <a class="code" href="a00038.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a>;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  }</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 55)) {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    *<a class="code" href="a00044.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving LogNormalJointPdf&lt;V,M&gt;::lnValue()&quot;</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, meanVector = &quot;</span>   &lt;&lt; *<a class="code" href="a00166.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: domainVector = &quot;</span> &lt;&lt; domainVector</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, returnValue = &quot;</span>  &lt;&lt; returnValue</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  }</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="keywordflow">return</span> returnValue;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;}</div>
-<div class="ttc" id="a00035_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00320">Environment.C:320</a></div></div>
-<div class="ttc" id="a00166_html_a2ca856981ab03d0c84d19715da581c83"><div class="ttname"><a href="a00166.html#a2ca856981ab03d0c84d19715da581c83">QUESO::LogNormalJointPdf::lawExpVector</a></div><div class="ttdeci">const V &amp; lawExpVector() const </div><div class="ttdoc">Access to the vector of mean values and private attribute: m_lawExpVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00074">LogNormalJointPdf.C:74</a></div></div>
-<div class="ttc" id="a00166_html_a8c85380b9a7c7ab746b2c8cc9c9cf5ee"><div class="ttname"><a href="a00166.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">QUESO::LogNormalJointPdf::m_diagonalCovMatrix</a></div><div class="ttdeci">bool m_diagonalCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00103">LogNormalJointPdf.h:103</a></div></div>
-<div class="ttc" id="a00044_html_ab81be32259b9764250660a035439fda8"><div class="ttname"><a href="a00044.html#ab81be32259b9764250660a035439fda8">QUESO::BaseScalarFunction::m_domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_domainSet</div><div class="ttdoc">Domain set of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00084">ScalarFunction.h:84</a></div></div>
-<div class="ttc" id="a00038_html_a138c99bcef7a67077d9612bddfdcb896"><div class="ttname"><a href="a00038.html#a138c99bcef7a67077d9612bddfdcb896">QUESO::BaseJointPdf::m_normalizationStyle</a></div><div class="ttdeci">unsigned int m_normalizationStyle</div><div class="ttdef"><b>Definition:</b> <a href="a00540_source.html#l00124">JointPdf.h:124</a></div></div>
-<div class="ttc" id="a00035_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00449">Environment.C:449</a></div></div>
-<div class="ttc" id="a00038_html_ae82d4191f17af8c7a26226d127bc7850"><div class="ttname"><a href="a00038.html#ae82d4191f17af8c7a26226d127bc7850">QUESO::BaseJointPdf::m_logOfNormalizationFactor</a></div><div class="ttdeci">double m_logOfNormalizationFactor</div><div class="ttdef"><b>Definition:</b> <a href="a00540_source.html#l00125">JointPdf.h:125</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
-<div class="ttc" id="a00044_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00044.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00080">ScalarFunction.h:80</a></div></div>
-<div class="ttc" id="a00166_html_afa9f7634ae6e54973cfe14463740171e"><div class="ttname"><a href="a00166.html#afa9f7634ae6e54973cfe14463740171e">QUESO::LogNormalJointPdf::lawVarVector</a></div><div class="ttdeci">const V &amp; lawVarVector() const </div><div class="ttdoc">Access to the vector of variance values and private attribute: m_lawVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00628_source.html#l00081">LogNormalJointPdf.C:81</a></div></div>
-<div class="ttc" id="a00340_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00047">asserts.h:47</a></div></div>
-<div class="ttc" id="a00166_html_a1373e1737c3198b852fab05c77abea35"><div class="ttname"><a href="a00166.html#a1373e1737c3198b852fab05c77abea35">QUESO::LogNormalJointPdf::m_lawExpVector</a></div><div class="ttdeci">V * m_lawExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00541_source.html#l00101">LogNormalJointPdf.h:101</a></div></div>
+<p>References <a class="el" href="a00591_source.html#l00151">QUESO::GaussianVectorRV&lt; V, M &gt;::updateLawExpVector()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;{</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  queso_require_not_equal_to(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>.size(), 0);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  queso_require(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[0]);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  GaussianVectorRV&lt;V, M&gt; * gaussian_rv = <span class="keyword">dynamic_cast&lt;</span>GaussianVectorRV&lt;V, M&gt; * <span class="keyword">&gt;</span>(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[this-&gt;<a class="code" href="a00046.html#ae6aac5c67c594c11019e3362786f0ea3">m_stageId</a>]);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="comment">// &#39;position&#39; is a position in the chain?  Hopefully?  Anyway, assume it&#39;s a</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="comment">// position in the chain and then that means we need to modify it slightly so</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="comment">// to get the transition distribution for the next state in the chain.</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  V grad(this-&gt;<a class="code" href="a00166.html#a1fe5b4afa5393117f25cd4a6be4b9973">m_targetPdf</a>.domainSet().vectorSpace().zeroVector());</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="comment">// Get the gradient of the log-posterior.  This is so inefficient it&#39;s</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="comment">// painful.  We should be caching the gradient evaluations.</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  this-&gt;<a class="code" href="a00166.html#a1fe5b4afa5393117f25cd4a6be4b9973">m_targetPdf</a>.lnValue(position, grad);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <span class="comment">// Euler time-step</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  grad *= 0.5 * this-&gt;<a class="code" href="a00166.html#a9954cadc78a66beb57491f16301d013d">m_time_step</a>;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="comment">// Add on current position</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  grad += position;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="comment">// Update the mean of the transition kernel.  The vector gets copied, so</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="comment">// we&#39;re ok.</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  gaussian_rv-&gt;updateLawExpVector(grad);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="keywordflow">return</span> (*gaussian_rv);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;}</div>
+<div class="ttc" id="a00046_html_a7e19b94025277f2422d6739eaf1312e5"><div class="ttname"><a href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">QUESO::BaseTKGroup::m_rvs</a></div><div class="ttdeci">std::vector&lt; BaseVectorRV&lt; V, M &gt; * &gt; m_rvs</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00133">TKGroup.h:133</a></div></div>
+<div class="ttc" id="a00046_html_ae6aac5c67c594c11019e3362786f0ea3"><div class="ttname"><a href="a00046.html#ae6aac5c67c594c11019e3362786f0ea3">QUESO::BaseTKGroup::m_stageId</a></div><div class="ttdeci">unsigned int m_stageId</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00134">TKGroup.h:134</a></div></div>
+<div class="ttc" id="a00166_html_a1fe5b4afa5393117f25cd4a6be4b9973"><div class="ttname"><a href="a00166.html#a1fe5b4afa5393117f25cd4a6be4b9973">QUESO::MetropolisAdjustedLangevinTK::m_targetPdf</a></div><div class="ttdeci">const BayesianJointPdf&lt; V, M &gt; &amp; m_targetPdf</div><div class="ttdef"><b>Definition:</b> <a href="a00530_source.html#l00111">MetropolisAdjustedLangevinTK.h:111</a></div></div>
+<div class="ttc" id="a00166_html_a9954cadc78a66beb57491f16301d013d"><div class="ttname"><a href="a00166.html#a9954cadc78a66beb57491f16301d013d">QUESO::MetropolisAdjustedLangevinTK::m_time_step</a></div><div class="ttdeci">double m_time_step</div><div class="ttdef"><b>Definition:</b> <a href="a00530_source.html#l00113">MetropolisAdjustedLangevinTK.h:113</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="adcf7dfbebf3c70f638532bc81cad7be9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::setPreComputingPosition </td>
+          <td>(</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>stageId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the pre-computing positions <code>m_preComputingPositions</code>[stageId] with a new vector of size <code>position</code>. </p>
+
+<p>Reimplemented from <a class="el" href="a00046.html#acd1efb5b2ae3eb4f1130fa37201545d8">QUESO::BaseTKGroup&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00616_source.html#l00185">185</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
+
+<p>References <a class="el" href="a00581_source.html#l00369">QUESO::GaussianJointPdf&lt; V, M &gt;::lawCovMatrix()</a>, and <a class="el" href="a00639_source.html#l00098">QUESO::BaseTKGroup&lt; V, M &gt;::setPreComputingPosition()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;{</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering MetropolisAdjustedLangevinTK&lt;V, M&gt;::setPreComputingPosition()&quot;</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: position = &quot;</span> &lt;&lt; position</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;, stageId = &quot;</span>  &lt;&lt; stageId</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  }</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  <a class="code" href="a00046.html#acd1efb5b2ae3eb4f1130fa37201545d8">BaseTKGroup&lt;V, M&gt;::setPreComputingPosition</a>(position, stageId);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In MetropolisAdjustedLangevinTK&lt;V, M&gt;::setPreComputingPosition()&quot;</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;, position = &quot;</span>        &lt;&lt; position</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;, stageId = &quot;</span>         &lt;&lt; stageId</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: preComputingPos = &quot;</span> &lt;&lt; *<a class="code" href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">m_preComputingPositions</a>[stageId];</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keywordflow">if</span> (stageId &lt; <a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>.size()) {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;, factor = &quot;</span> &lt;&lt; 1./<a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>[stageId]/<a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>[stageId];</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    }</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keywordflow">if</span> (stageId &lt; <a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>.size()) {</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;      <span class="keyword">const</span> GaussianJointPdf&lt;V, M&gt;* pdfPtr = <span class="keyword">dynamic_cast&lt;</span> <span class="keyword">const </span>GaussianJointPdf&lt;V, M&gt;* <span class="keyword">&gt;</span>(&amp;(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[stageId]-&gt;pdf()));</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;      *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;, rvCov = &quot;</span> &lt;&lt; pdfPtr-&gt;lawCovMatrix(); <span class="comment">// FIX ME: might demand parallelism</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    }</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  }</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving MetropolisAdjustedLangevinTK&lt;V, M&gt;::setPreComputingPosition()&quot;</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: position = &quot;</span> &lt;&lt; position</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;, stageId = &quot;</span>  &lt;&lt; stageId</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  }</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;}</div>
+<div class="ttc" id="a00046_html_a93d7fe55e30a7c6f209b01cb8a67e322"><div class="ttname"><a href="a00046.html#a93d7fe55e30a7c6f209b01cb8a67e322">QUESO::BaseTKGroup::m_preComputingPositions</a></div><div class="ttdeci">std::vector&lt; const V * &gt; m_preComputingPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00132">TKGroup.h:132</a></div></div>
+<div class="ttc" id="a00046_html_a7e19b94025277f2422d6739eaf1312e5"><div class="ttname"><a href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">QUESO::BaseTKGroup::m_rvs</a></div><div class="ttdeci">std::vector&lt; BaseVectorRV&lt; V, M &gt; * &gt; m_rvs</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00133">TKGroup.h:133</a></div></div>
+<div class="ttc" id="a00046_html_ad36d4dc6f4812e3e10d8090f0dbb9e40"><div class="ttname"><a href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">QUESO::BaseTKGroup::m_scales</a></div><div class="ttdeci">std::vector&lt; double &gt; m_scales</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00131">TKGroup.h:131</a></div></div>
+<div class="ttc" id="a00046_html_a2bce5e8aa5c844d4332a0e73cf00a1f9"><div class="ttname"><a href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">QUESO::BaseTKGroup::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00128">TKGroup.h:128</a></div></div>
+<div class="ttc" id="a00036_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00320">Environment.C:320</a></div></div>
+<div class="ttc" id="a00036_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00450">Environment.C:450</a></div></div>
+<div class="ttc" id="a00046_html_acd1efb5b2ae3eb4f1130fa37201545d8"><div class="ttname"><a href="a00046.html#acd1efb5b2ae3eb4f1130fa37201545d8">QUESO::BaseTKGroup::setPreComputingPosition</a></div><div class="ttdeci">virtual bool setPreComputingPosition(const V &amp;position, unsigned int stageId)</div><div class="ttdoc">Sets the pre-computing positions m_preComputingPositions[stageId] with a new vector of size position...</div><div class="ttdef"><b>Definition:</b> <a href="a00639_source.html#l00098">TKGroup.C:98</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a1bd127b5299f12fdf329f816b18eb307"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::setRVsWithZeroMean </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the mean of the RVs to zero. </p>
+
+<p>Definition at line <a class="el" href="a00616_source.html#l00230">230</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
+
+<p>Referenced by <a class="el" href="a00616_source.html#l00034">QUESO::MetropolisAdjustedLangevinTK&lt; V, M &gt;::MetropolisAdjustedLangevinTK()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;{</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  queso_require_not_equal_to(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>.size(), 0);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  queso_require_equal_to(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>.size(), <a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>.size());</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>.size(); ++i) {</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordtype">double</span> factor = 1./<a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>[i]/<a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>[i];</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    queso_require(!(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[i]));</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[i] = <span class="keyword">new</span> GaussianVectorRV&lt;V, M&gt;(<a class="code" href="a00046.html#a7c77e4969de60624dba1049cf44a1ab6">m_prefix</a>.c_str(),</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                                         *<a class="code" href="a00046.html#a9930bbda0f3d9368653fb0577b89ec33">m_vectorSpace</a>,</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                                         <a class="code" href="a00046.html#a9930bbda0f3d9368653fb0577b89ec33">m_vectorSpace</a>-&gt;zeroVector(),</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                                         factor*<a class="code" href="a00166.html#a9954cadc78a66beb57491f16301d013d">m_time_step</a>*<a class="code" href="a00166.html#a826c3eb99ec687d012d9ce8a5961c954">m_originalCovMatrix</a>);</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  }</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;}</div>
+<div class="ttc" id="a00046_html_a7e19b94025277f2422d6739eaf1312e5"><div class="ttname"><a href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">QUESO::BaseTKGroup::m_rvs</a></div><div class="ttdeci">std::vector&lt; BaseVectorRV&lt; V, M &gt; * &gt; m_rvs</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00133">TKGroup.h:133</a></div></div>
+<div class="ttc" id="a00046_html_ad36d4dc6f4812e3e10d8090f0dbb9e40"><div class="ttname"><a href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">QUESO::BaseTKGroup::m_scales</a></div><div class="ttdeci">std::vector&lt; double &gt; m_scales</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00131">TKGroup.h:131</a></div></div>
+<div class="ttc" id="a00166_html_a826c3eb99ec687d012d9ce8a5961c954"><div class="ttname"><a href="a00166.html#a826c3eb99ec687d012d9ce8a5961c954">QUESO::MetropolisAdjustedLangevinTK::m_originalCovMatrix</a></div><div class="ttdeci">M m_originalCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00530_source.html#l00109">MetropolisAdjustedLangevinTK.h:109</a></div></div>
+<div class="ttc" id="a00046_html_a9930bbda0f3d9368653fb0577b89ec33"><div class="ttname"><a href="a00046.html#a9930bbda0f3d9368653fb0577b89ec33">QUESO::BaseTKGroup::m_vectorSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; * m_vectorSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00130">TKGroup.h:130</a></div></div>
+<div class="ttc" id="a00046_html_a7c77e4969de60624dba1049cf44a1ab6"><div class="ttname"><a href="a00046.html#a7c77e4969de60624dba1049cf44a1ab6">QUESO::BaseTKGroup::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00129">TKGroup.h:129</a></div></div>
+<div class="ttc" id="a00166_html_a9954cadc78a66beb57491f16301d013d"><div class="ttname"><a href="a00166.html#a9954cadc78a66beb57491f16301d013d">QUESO::MetropolisAdjustedLangevinTK::m_time_step</a></div><div class="ttdeci">double m_time_step</div><div class="ttdef"><b>Definition:</b> <a href="a00530_source.html#l00113">MetropolisAdjustedLangevinTK.h:113</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6eb9b14dc5f3a1ce0cc8cf6f8015246f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::symmetric </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not the matrix is symmetric. Always 'true'. </p>
+<dl class="todo"><dt><b><a class="el" href="a00676.html#_todo000042">Todo:</a></b></dt><dd>: It only returns 'true', thus a test for its symmetricity must be included. </dd></dl>
+
+<p>Implements <a class="el" href="a00046.html#ad0130349060d50b985c83b6bb1abc58e">QUESO::BaseTKGroup&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00616_source.html#l00074">74</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a61d1bcabb95a8bfd0e14a4fbaea0c431"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::updateLawCovMatrix </td>
+          <td>(</td>
+          <td class="paramtype">const M &amp;&#160;</td>
+          <td class="paramname"><em>covMatrix</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scales the covariance matrix. </p>
+<p>The covariance matrix is scaled by a factor of <img class="formulaInl" alt="$ 1/scales^2 $" src="form_152.png"/>. </p>
+
+<p>Definition at line <a class="el" href="a00616_source.html#l00164">164</a> of file <a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;{</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>.size(); ++i) {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordtype">double</span> factor = 1./<a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>[i]/<a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>[i];</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordflow">if</span> ((<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()        ) &amp;&amp;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        (<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 10)) {</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      *<a class="code" href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In MetropolisAdjustedLangevinTK&lt;V, M&gt;::updateLawCovMatrix()&quot;</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_scales.size() = &quot;</span> &lt;&lt; <a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>.size()</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, i = &quot;</span>               &lt;&lt; i</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, m_scales[i] = &quot;</span>     &lt;&lt; <a class="code" href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">m_scales</a>[i]</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, factor = &quot;</span>          &lt;&lt; factor</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;: about to call m_rvs[i]-&gt;updateLawCovMatrix()&quot;</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;, covMatrix = \n&quot;</span> &lt;&lt; factor*covMatrix <span class="comment">// FIX ME: might demand parallelism</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keyword">dynamic_cast&lt;</span>GaussianVectorRV&lt;V, M&gt; * <span class="keyword">&gt;</span>(<a class="code" href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">m_rvs</a>[i])-&gt;<a class="code" href="a00166.html#a61d1bcabb95a8bfd0e14a4fbaea0c431">updateLawCovMatrix</a>(factor*<a class="code" href="a00166.html#a9954cadc78a66beb57491f16301d013d">m_time_step</a>*covMatrix);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;}</div>
+<div class="ttc" id="a00046_html_a7e19b94025277f2422d6739eaf1312e5"><div class="ttname"><a href="a00046.html#a7e19b94025277f2422d6739eaf1312e5">QUESO::BaseTKGroup::m_rvs</a></div><div class="ttdeci">std::vector&lt; BaseVectorRV&lt; V, M &gt; * &gt; m_rvs</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00133">TKGroup.h:133</a></div></div>
+<div class="ttc" id="a00046_html_ad36d4dc6f4812e3e10d8090f0dbb9e40"><div class="ttname"><a href="a00046.html#ad36d4dc6f4812e3e10d8090f0dbb9e40">QUESO::BaseTKGroup::m_scales</a></div><div class="ttdeci">std::vector&lt; double &gt; m_scales</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00131">TKGroup.h:131</a></div></div>
+<div class="ttc" id="a00166_html_a61d1bcabb95a8bfd0e14a4fbaea0c431"><div class="ttname"><a href="a00166.html#a61d1bcabb95a8bfd0e14a4fbaea0c431">QUESO::MetropolisAdjustedLangevinTK::updateLawCovMatrix</a></div><div class="ttdeci">void updateLawCovMatrix(const M &amp;covMatrix)</div><div class="ttdoc">Scales the covariance matrix. </div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00164">MetropolisAdjustedLangevinTK.C:164</a></div></div>
+<div class="ttc" id="a00046_html_a2bce5e8aa5c844d4332a0e73cf00a1f9"><div class="ttname"><a href="a00046.html#a2bce5e8aa5c844d4332a0e73cf00a1f9">QUESO::BaseTKGroup::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00553_source.html#l00128">TKGroup.h:128</a></div></div>
+<div class="ttc" id="a00036_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00320">Environment.C:320</a></div></div>
+<div class="ttc" id="a00036_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00450">Environment.C:450</a></div></div>
+<div class="ttc" id="a00166_html_a9954cadc78a66beb57491f16301d013d"><div class="ttname"><a href="a00166.html#a9954cadc78a66beb57491f16301d013d">QUESO::MetropolisAdjustedLangevinTK::m_time_step</a></div><div class="ttdeci">double m_time_step</div><div class="ttdef"><b>Definition:</b> <a href="a00530_source.html#l00113">MetropolisAdjustedLangevinTK.h:113</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a8c85380b9a7c7ab746b2c8cc9c9cf5ee"></a>
+<a class="anchor" id="a826c3eb99ec687d012d9ce8a5961c954"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
+template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::m_diagonalCovMatrix</td>
+          <td class="memname">M <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::m_originalCovMatrix</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00541_source.html#l00103">103</a> of file <a class="el" href="a00541_source.html">LogNormalJointPdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00530_source.html#l00109">109</a> of file <a class="el" href="a00530_source.html">MetropolisAdjustedLangevinTK.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00616_source.html#l00034">QUESO::MetropolisAdjustedLangevinTK&lt; V, M &gt;::MetropolisAdjustedLangevinTK()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a1373e1737c3198b852fab05c77abea35"></a>
+<a class="anchor" id="a1fe5b4afa5393117f25cd4a6be4b9973"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
+template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">V* <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::m_lawExpVector</td>
+          <td class="memname">const <a class="el" href="a00057.html">BayesianJointPdf</a>&lt;V, M&gt;&amp; <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::m_targetPdf</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00541_source.html#l00101">101</a> of file <a class="el" href="a00541_source.html">LogNormalJointPdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00530_source.html#l00111">111</a> of file <a class="el" href="a00530_source.html">MetropolisAdjustedLangevinTK.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="abb84bcddf99dc15b4432baac0fc29122"></a>
+<a class="anchor" id="a9954cadc78a66beb57491f16301d013d"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
+template&lt;class V  = GslVector, class M  = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">V* <a class="el" href="a00166.html">QUESO::LogNormalJointPdf</a>&lt; V, M &gt;::m_lawVarVector</td>
+          <td class="memname">double <a class="el" href="a00166.html">QUESO::MetropolisAdjustedLangevinTK</a>&lt; V, M &gt;::m_time_step</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00541_source.html#l00102">102</a> of file <a class="el" href="a00541_source.html">LogNormalJointPdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00530_source.html#l00113">113</a> of file <a class="el" href="a00530_source.html">MetropolisAdjustedLangevinTK.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/stats/inc/<a class="el" href="a00541_source.html">LogNormalJointPdf.h</a></li>
-<li>src/stats/src/<a class="el" href="a00628_source.html">LogNormalJointPdf.C</a></li>
+<li>src/stats/inc/<a class="el" href="a00530_source.html">MetropolisAdjustedLangevinTK.h</a></li>
+<li>src/stats/src/<a class="el" href="a00616_source.html">MetropolisAdjustedLangevinTK.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:15 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:52 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

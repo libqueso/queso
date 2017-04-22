@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: QUESO::SampledScalarCdf&lt; T &gt; Class Template Reference</title>
+<title>queso-0.56.2: QUESO::ScalarFunctionSynchronizer&lt; V, M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -45,131 +45,87 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00690.html">QUESO</a></li><li class="navelem"><a class="el" href="a00201.html">SampledScalarCdf</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00674.html">QUESO</a></li><li class="navelem"><a class="el" href="a00201.html">ScalarFunctionSynchronizer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a01629.html">List of all members</a>  </div>
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="a00749.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::SampledScalarCdf&lt; T &gt; Class Template Reference</div>  </div>
+<div class="title">QUESO::ScalarFunctionSynchronizer&lt; V, M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A class for handling sampled CDFs.  
+<p>A templated class for synchronizing the calls of scalar functions (<a class="el" href="a00045.html" title="A templated (base) class for handling scalar functions. ">BaseScalarFunction</a> and derived classes).  
  <a href="a00201.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00556_source.html">SampledScalarCdf.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00273_source.html">ScalarFunctionSynchronizer.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::SampledScalarCdf&lt; T &gt;:</div>
+Collaboration diagram for QUESO::ScalarFunctionSynchronizer&lt; V, M &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01630.png" border="0" usemap="#_q_u_e_s_o_1_1_sampled_scalar_cdf_3_01_t_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_sampled_scalar_cdf_3_01_t_01_4_inherit__map" id="_q_u_e_s_o_1_1_sampled_scalar_cdf_3_01_t_01_4_inherit__map">
-<area shape="rect" id="node2" href="a00042.html" title="A templated (base) class for handling CDFs. " alt="" coords="15,5,205,32"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for QUESO::SampledScalarCdf&lt; T &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="a01631.png" border="0" usemap="#_q_u_e_s_o_1_1_sampled_scalar_cdf_3_01_t_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_sampled_scalar_cdf_3_01_t_01_4_coll__map" id="_q_u_e_s_o_1_1_sampled_scalar_cdf_3_01_t_01_4_coll__map">
-<area shape="rect" id="node2" href="a00042.html" title="A templated (base) class for handling CDFs. " alt="" coords="285,245,475,272"/><area shape="rect" id="node3" href="a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="298,104,472,131"/><area shape="rect" id="node6" href="a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="83,245,260,272"/><area shape="rect" id="node9" href="a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="500,245,633,272"/><area shape="rect" id="node4" href="a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="274,5,435,32"/><area shape="rect" id="node5" href="a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="459,5,585,32"/><area shape="rect" id="node7" href="a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="22,97,201,138"/><area shape="rect" id="node8" href="a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,5,219,32"/></map>
+<div class="center"><img src="a00750.png" border="0" usemap="#_q_u_e_s_o_1_1_scalar_function_synchronizer_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_scalar_function_synchronizer_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_scalar_function_synchronizer_3_01_v_00_01_m_01_4_coll__map">
+<area shape="rect" id="node2" href="a00036.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="397,251,579,277"/><area shape="rect" id="node3" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::RngBase \&gt;" alt="" coords="22,5,221,46"/><area shape="rect" id="node4" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::MpiComm \&gt;" alt="" coords="22,83,221,125"/><area shape="rect" id="node5" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::variables_map \&gt;" alt="" coords="6,149,237,190"/><area shape="rect" id="node6" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::EnvOptionsValues \&gt;" alt="" coords="22,214,221,255"/><area shape="rect" id="node7" href="a00206.html" title="QUESO::ScopedPtr\&lt; GetPot \&gt;" alt="" coords="19,280,223,307"/><area shape="rect" id="node8" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::BasicPdfsBase \&gt;" alt="" coords="22,331,221,373"/><area shape="rect" id="node9" href="a00206.html" title="QUESO::ScopedPtr\&lt; std\l::ofstream \&gt;" alt="" coords="37,397,206,438"/><area shape="rect" id="node10" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::options\l_description \&gt;" alt="" coords="30,463,213,519"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:aa1b09a58b4afb1b8c1c822dd4575faad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#aa1b09a58b4afb1b8c1c822dd4575faad">SampledScalarCdf</a> (const <a class="el" href="a00035.html">BaseEnvironment</a> &amp;<a class="el" href="a00042.html#a70c89dd2ad294be170338a283fc58ff3">env</a>, const char *<a class="el" href="a00042.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>, const <a class="el" href="a00040.html">BaseOneDGrid</a>&lt; T &gt; &amp;cdfGrid, const std::vector&lt; double &gt; &amp;cdfValues)</td></tr>
-<tr class="memdesc:aa1b09a58b4afb1b8c1c822dd4575faad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#aa1b09a58b4afb1b8c1c822dd4575faad">More...</a><br/></td></tr>
-<tr class="separator:aa1b09a58b4afb1b8c1c822dd4575faad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2b5a724fcecef81ef74f8d52b021fcb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#ae2b5a724fcecef81ef74f8d52b021fcb">~SampledScalarCdf</a> ()</td></tr>
-<tr class="memdesc:ae2b5a724fcecef81ef74f8d52b021fcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ae2b5a724fcecef81ef74f8d52b021fcb">More...</a><br/></td></tr>
-<tr class="separator:ae2b5a724fcecef81ef74f8d52b021fcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab016c60ae0ab70f4406fefeb50405acf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#ab016c60ae0ab70f4406fefeb50405acf">ScalarFunctionSynchronizer</a> (const <a class="el" href="a00045.html">BaseScalarFunction</a>&lt; V, M &gt; &amp;inputFunction, const V &amp;auxVec)</td></tr>
+<tr class="memdesc:ab016c60ae0ab70f4406fefeb50405acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ab016c60ae0ab70f4406fefeb50405acf">More...</a><br/></td></tr>
+<tr class="separator:ab016c60ae0ab70f4406fefeb50405acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1">~ScalarFunctionSynchronizer</a> ()</td></tr>
+<tr class="memdesc:a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1">More...</a><br/></td></tr>
+<tr class="separator:a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Mathematical methods</div></td></tr>
-<tr class="memitem:a3eb93ff8c14d2b66bf692033a2a3b8b6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#a3eb93ff8c14d2b66bf692033a2a3b8b6">value</a> (T paramValue) const </td></tr>
-<tr class="memdesc:a3eb93ff8c14d2b66bf692033a2a3b8b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the CDF at <code>paramValue</code>.  <a href="#a3eb93ff8c14d2b66bf692033a2a3b8b6">More...</a><br/></td></tr>
-<tr class="separator:a3eb93ff8c14d2b66bf692033a2a3b8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a685b0c343b3ab320680c132c836fb1da"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#a685b0c343b3ab320680c132c836fb1da">inverse</a> (double cdfValue) const </td></tr>
-<tr class="memdesc:a685b0c343b3ab320680c132c836fb1da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position of a given value of CDF.  <a href="#a685b0c343b3ab320680c132c836fb1da">More...</a><br/></td></tr>
-<tr class="separator:a685b0c343b3ab320680c132c836fb1da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1d99d5dcc9dc79b50501caf80154c39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#ab1d99d5dcc9dc79b50501caf80154c39">getSupport</a> (T &amp;minHorizontal, T &amp;maxHorizontal) const </td></tr>
-<tr class="memdesc:ab1d99d5dcc9dc79b50501caf80154c39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the support (image) of the CDF between two horizontal values (domain).  <a href="#ab1d99d5dcc9dc79b50501caf80154c39">More...</a><br/></td></tr>
-<tr class="separator:ab1d99d5dcc9dc79b50501caf80154c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">I/O methods</div></td></tr>
-<tr class="memitem:a1ae05088dd70e2432a52577ba6dca468"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#a1ae05088dd70e2432a52577ba6dca468">print</a> (std::ostream &amp;os) const </td></tr>
-<tr class="memdesc:a1ae05088dd70e2432a52577ba6dca468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the CDF (values of the grid points and of the CDF at such grid points).  <a href="#a1ae05088dd70e2432a52577ba6dca468">More...</a><br/></td></tr>
-<tr class="separator:a1ae05088dd70e2432a52577ba6dca468"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af597534e752c2974448d7fd071266c59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#af597534e752c2974448d7fd071266c59">subWriteContents</a> (const std::string &amp;varNamePrefix, const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds) const </td></tr>
-<tr class="memdesc:af597534e752c2974448d7fd071266c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the CDF of an allowed sub-environment to a file.  <a href="#af597534e752c2974448d7fd071266c59">More...</a><br/></td></tr>
-<tr class="separator:af597534e752c2974448d7fd071266c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00042"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00042')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00042.html">QUESO::BaseScalarCdf&lt; T &gt;</a></td></tr>
-<tr class="memitem:a4604dee9fe730564c52d8d925bc69b94 inherit pub_methods_a00042"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#a4604dee9fe730564c52d8d925bc69b94">BaseScalarCdf</a> (const <a class="el" href="a00035.html">BaseEnvironment</a> &amp;<a class="el" href="a00042.html#a70c89dd2ad294be170338a283fc58ff3">env</a>, const char *<a class="el" href="a00042.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>)</td></tr>
-<tr class="memdesc:a4604dee9fe730564c52d8d925bc69b94 inherit pub_methods_a00042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a4604dee9fe730564c52d8d925bc69b94">More...</a><br/></td></tr>
-<tr class="separator:a4604dee9fe730564c52d8d925bc69b94 inherit pub_methods_a00042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7bd0ba0d3719853cc24a2e12f126600 inherit pub_methods_a00042"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#aa7bd0ba0d3719853cc24a2e12f126600">~BaseScalarCdf</a> ()</td></tr>
-<tr class="memdesc:aa7bd0ba0d3719853cc24a2e12f126600 inherit pub_methods_a00042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#aa7bd0ba0d3719853cc24a2e12f126600">More...</a><br/></td></tr>
-<tr class="separator:aa7bd0ba0d3719853cc24a2e12f126600 inherit pub_methods_a00042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70c89dd2ad294be170338a283fc58ff3 inherit pub_methods_a00042"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00035.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#a70c89dd2ad294be170338a283fc58ff3">env</a> () const </td></tr>
-<tr class="memdesc:a70c89dd2ad294be170338a283fc58ff3 inherit pub_methods_a00042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Environment. Access to private attribute m_env.  <a href="#a70c89dd2ad294be170338a283fc58ff3">More...</a><br/></td></tr>
-<tr class="separator:a70c89dd2ad294be170338a283fc58ff3 inherit pub_methods_a00042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafb3eaf3bf1d7269073e9c77bd8c766d inherit pub_methods_a00042"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a> () const </td></tr>
-<tr class="memdesc:aafb3eaf3bf1d7269073e9c77bd8c766d inherit pub_methods_a00042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to private attribute m_prefix.  <a href="#aafb3eaf3bf1d7269073e9c77bd8c766d">More...</a><br/></td></tr>
-<tr class="separator:aafb3eaf3bf1d7269073e9c77bd8c766d inherit pub_methods_a00042"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4618272a8d897dc064a42510039cefcc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00249.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#a4618272a8d897dc064a42510039cefcc">domainSet</a> () const </td></tr>
+<tr class="memdesc:a4618272a8d897dc064a42510039cefcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the domain set of the scalar function which will be synchronized.  <a href="#a4618272a8d897dc064a42510039cefcc">More...</a><br/></td></tr>
+<tr class="separator:a4618272a8d897dc064a42510039cefcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Sync method</div></td></tr>
+<tr class="memitem:adcdc70486ac64c11d0e505c4fb590a6b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#adcdc70486ac64c11d0e505c4fb590a6b">callFunction</a> (const V *vecValues, const V *vecDirection, V *gradVector, M *hessianMatrix, V *hessianEffect, double *extraOutput1, double *extraOutput2) const </td></tr>
+<tr class="memdesc:adcdc70486ac64c11d0e505c4fb590a6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the scalar function which will be synchronized.  <a href="#adcdc70486ac64c11d0e505c4fb590a6b">More...</a><br/></td></tr>
+<tr class="separator:adcdc70486ac64c11d0e505c4fb590a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a377da84423af894682285c30ab2d2141"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#a377da84423af894682285c30ab2d2141">callFunction</a> (const V *vecValues, double *extraOutput1, double *extraOutput2) const </td></tr>
+<tr class="separator:a377da84423af894682285c30ab2d2141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a58d6744bac9ce8d906839bf381517f4a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00040.html">BaseOneDGrid</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a></td></tr>
-<tr class="separator:a58d6744bac9ce8d906839bf381517f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8cf649637f31cc75c9f676d5927c10f"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a></td></tr>
-<tr class="separator:ab8cf649637f31cc75c9f676d5927c10f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00042"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00042')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00042.html">QUESO::BaseScalarCdf&lt; T &gt;</a></td></tr>
-<tr class="memitem:a3caa986ae1ccef96a28b0365fb88c86c inherit pro_attribs_a00042"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00035.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a></td></tr>
-<tr class="separator:a3caa986ae1ccef96a28b0365fb88c86c inherit pro_attribs_a00042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66c2a1bcf0ac517013e7857c3533a187 inherit pro_attribs_a00042"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a></td></tr>
-<tr class="separator:a66c2a1bcf0ac517013e7857c3533a187 inherit pro_attribs_a00042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab54be9623cddb0671db458d05d63f0a7 inherit pro_attribs_a00042"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#ab54be9623cddb0671db458d05d63f0a7">m_minHorizontal</a></td></tr>
-<tr class="separator:ab54be9623cddb0671db458d05d63f0a7 inherit pro_attribs_a00042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33beb9b7e610a4fe1458080593982d2e inherit pro_attribs_a00042"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00042.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a></td></tr>
-<tr class="separator:a33beb9b7e610a4fe1458080593982d2e inherit pro_attribs_a00042"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:aa77a3d3b53267ef7c731836faaa082fb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00036.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a></td></tr>
+<tr class="separator:aa77a3d3b53267ef7c731836faaa082fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b24acdd3185e57cae74e6d5aedb90bf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00045.html">BaseScalarFunction</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a></td></tr>
+<tr class="separator:a6b24acdd3185e57cae74e6d5aedb90bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e17d294521cd22b297374ae2ff7f463"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00057.html">BayesianJointPdf</a>&lt; V, M &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a></td></tr>
+<tr class="separator:a0e17d294521cd22b297374ae2ff7f463"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbd43aee6de557012924f3e18660a4f3"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a></td></tr>
+<tr class="separator:adbd43aee6de557012924f3e18660a4f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class T&gt;<br/>
-class QUESO::SampledScalarCdf&lt; T &gt;</h3>
+<div class="textblock"><h3>template&lt;class V = GslVector, class M = GslMatrix&gt;<br/>
+class QUESO::ScalarFunctionSynchronizer&lt; V, M &gt;</h3>
 
-<p>A class for handling sampled CDFs. </p>
-<p>This class implements a sampled cumulative distribution function (CDF), given the grid points where it will be sampled and its resulting values. </p>
+<p>A templated class for synchronizing the calls of scalar functions (<a class="el" href="a00045.html" title="A templated (base) class for handling scalar functions. ">BaseScalarFunction</a> and derived classes). </p>
+<p>This class creates a synchronization point among processes which call scalar functions. This means that all processes must reach a point in their code before they can all begin executing again. </p>
 
-<p>Definition at line <a class="el" href="a00556_source.html#l00046">46</a> of file <a class="el" href="a00556_source.html">SampledScalarCdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00273_source.html#l00049">49</a> of file <a class="el" href="a00273_source.html">ScalarFunctionSynchronizer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa1b09a58b4afb1b8c1c822dd4575faad"></a>
+<a class="anchor" id="ab016c60ae0ab70f4406fefeb50405acf"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V, class M&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00201.html">QUESO::SampledScalarCdf</a>&lt; T &gt;::<a class="el" href="a00201.html">SampledScalarCdf</a> </td>
+          <td class="memname"><a class="el" href="a00201.html">QUESO::ScalarFunctionSynchronizer</a>&lt; V, M &gt;::<a class="el" href="a00201.html">ScalarFunctionSynchronizer</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00035.html">BaseEnvironment</a> &amp;&#160;</td>
-          <td class="paramname"><em>env</em>, </td>
+          <td class="paramtype">const <a class="el" href="a00045.html">BaseScalarFunction</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputFunction</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>prefix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00040.html">BaseOneDGrid</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>cdfGrid</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>cdfValues</em>&#160;</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>auxVec</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -180,52 +136,29 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Instantiates an object of the class given a prefix, the environment, the grid points where it will be sampled/evaluated and its resulting values. </p>
 
-<p>Definition at line <a class="el" href="a00643_source.html#l00031">31</a> of file <a class="el" href="a00643_source.html">SampledScalarCdf.C</a>.</p>
-
-<p>References <a class="el" href="a00395_source.html#l00449">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00559_source.html#l00099">QUESO::BaseScalarCdf&lt; T &gt;::m_env</a>, <a class="el" href="a00559_source.html#l00100">QUESO::BaseScalarCdf&lt; T &gt;::m_prefix</a>, and <a class="el" href="a00395_source.html#l00320">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  BaseScalarCdf&lt;T&gt;(<a class="code" href="a00042.html#a70c89dd2ad294be170338a283fc58ff3">env</a>,((std::string)(<a class="code" href="a00042.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>)+<span class="stringliteral">&quot;&quot;</span>).c_str()),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>              (cdfGrid  ),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>            (cdfValues)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    *<a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering SampledScalarCdf&lt;T&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00042.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">//for (unsigned int i = 0; i &lt; m_cdfValues.size(); ++i) {</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">//  m_sortedCdfValues[i] = m_cdfValues[i];</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">//}</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">//std::sort(m_sortedCdfValues.begin(), m_sortedCdfValues.end());</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    *<a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving SampledScalarCdf&lt;T&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00042.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="ttc" id="a00042_html_a70c89dd2ad294be170338a283fc58ff3"><div class="ttname"><a href="a00042.html#a70c89dd2ad294be170338a283fc58ff3">QUESO::BaseScalarCdf::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Environment. Access to private attribute m_env. </div><div class="ttdef"><b>Definition:</b> <a href="a00646_source.html#l00060">ScalarCdf.C:60</a></div></div>
-<div class="ttc" id="a00042_html_a66c2a1bcf0ac517013e7857c3533a187"><div class="ttname"><a href="a00042.html#a66c2a1bcf0ac517013e7857c3533a187">QUESO::BaseScalarCdf::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00100">ScalarCdf.h:100</a></div></div>
-<div class="ttc" id="a00035_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00320">Environment.C:320</a></div></div>
-<div class="ttc" id="a00042_html_aafb3eaf3bf1d7269073e9c77bd8c766d"><div class="ttname"><a href="a00042.html#aafb3eaf3bf1d7269073e9c77bd8c766d">QUESO::BaseScalarCdf::prefix</a></div><div class="ttdeci">const std::string &amp; prefix() const </div><div class="ttdoc">Access to private attribute m_prefix. </div><div class="ttdef"><b>Definition:</b> <a href="a00646_source.html#l00067">ScalarCdf.C:67</a></div></div>
-<div class="ttc" id="a00035_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00449">Environment.C:449</a></div></div>
-<div class="ttc" id="a00201_html_ab8cf649637f31cc75c9f676d5927c10f"><div class="ttname"><a href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">QUESO::SampledScalarCdf::m_cdfValues</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; m_cdfValues</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00093">SampledScalarCdf.h:93</a></div></div>
-<div class="ttc" id="a00042_html_a3caa986ae1ccef96a28b0365fb88c86c"><div class="ttname"><a href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">QUESO::BaseScalarCdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00099">ScalarCdf.h:99</a></div></div>
-<div class="ttc" id="a00201_html_a58d6744bac9ce8d906839bf381517f4a"><div class="ttname"><a href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">QUESO::SampledScalarCdf::m_cdfGrid</a></div><div class="ttdeci">const BaseOneDGrid&lt; T &gt; &amp; m_cdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00092">SampledScalarCdf.h:92</a></div></div>
+<p>Definition at line <a class="el" href="a00295_source.html#l00037">37</a> of file <a class="el" href="a00295_source.html">ScalarFunctionSynchronizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  : <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>(inputFunction.domainSet().env()),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a>(inputFunction),</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>(<span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>BayesianJointPdf&lt;V,M&gt;* <span class="keyword">&gt;</span>(&amp;<a class="code" href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a>)),</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>(auxVec)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="ttc" id="a00201_html_a6b24acdd3185e57cae74e6d5aedb90bf"><div class="ttname"><a href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">QUESO::ScalarFunctionSynchronizer::m_scalarFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; V, M &gt; &amp; m_scalarFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00087">ScalarFunctionSynchronizer.h:87</a></div></div>
+<div class="ttc" id="a00201_html_aa77a3d3b53267ef7c731836faaa082fb"><div class="ttname"><a href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">QUESO::ScalarFunctionSynchronizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00086">ScalarFunctionSynchronizer.h:86</a></div></div>
+<div class="ttc" id="a00201_html_adbd43aee6de557012924f3e18660a4f3"><div class="ttname"><a href="a00201.html#adbd43aee6de557012924f3e18660a4f3">QUESO::ScalarFunctionSynchronizer::m_auxVec</a></div><div class="ttdeci">const V &amp; m_auxVec</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00089">ScalarFunctionSynchronizer.h:89</a></div></div>
+<div class="ttc" id="a00201_html_a0e17d294521cd22b297374ae2ff7f463"><div class="ttname"><a href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">QUESO::ScalarFunctionSynchronizer::m_bayesianJointPdfPtr</a></div><div class="ttdeci">const BayesianJointPdf&lt; V, M &gt; * m_bayesianJointPdfPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00088">ScalarFunctionSynchronizer.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ae2b5a724fcecef81ef74f8d52b021fcb"></a>
+<a class="anchor" id="a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00201.html">QUESO::SampledScalarCdf</a>&lt; T &gt;::~<a class="el" href="a00201.html">SampledScalarCdf</a> </td>
+          <td class="memname"><a class="el" href="a00201.html">QUESO::ScalarFunctionSynchronizer</a>&lt; V, M &gt;::~<a class="el" href="a00201.html">ScalarFunctionSynchronizer</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -235,33 +168,60 @@ template&lt;class T &gt; </div>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="a00643_source.html#l00060">60</a> of file <a class="el" href="a00643_source.html">SampledScalarCdf.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00295_source.html#l00049">49</a> of file <a class="el" href="a00295_source.html">ScalarFunctionSynchronizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ab1d99d5dcc9dc79b50501caf80154c39"></a>
+<a class="anchor" id="adcdc70486ac64c11d0e505c4fb590a6b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;class V, class M&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00201.html">QUESO::SampledScalarCdf</a>&lt; T &gt;::getSupport </td>
+          <td class="memname">double <a class="el" href="a00201.html">QUESO::ScalarFunctionSynchronizer</a>&lt; V, M &gt;::callFunction </td>
           <td>(</td>
-          <td class="paramtype">T &amp;&#160;</td>
-          <td class="paramname"><em>minHorizontal</em>, </td>
+          <td class="paramtype">const V *&#160;</td>
+          <td class="paramname"><em>vecValues</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T &amp;&#160;</td>
-          <td class="paramname"><em>maxHorizontal</em>&#160;</td>
+          <td class="paramtype">const V *&#160;</td>
+          <td class="paramname"><em>vecDirection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">V *&#160;</td>
+          <td class="paramname"><em>gradVector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">M *&#160;</td>
+          <td class="paramname"><em>hessianMatrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">V *&#160;</td>
+          <td class="paramname"><em>hessianEffect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>extraOutput1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>extraOutput2</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -269,240 +229,236 @@ template&lt;class T &gt; </div>
           <td></td><td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Returns the support (image) of the CDF between two horizontal values (domain). </p>
+<p>Calls the scalar function which will be synchronized. </p>
+<p>This procedure forms a barrier, and no processes in the communicator can pass the barrier until all of them call the function. </p>
 
-<p>Implements <a class="el" href="a00042.html#a9684b285f88be8c2bafe4d2abd8a7447">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00643_source.html#l00153">153</a> of file <a class="el" href="a00643_source.html">SampledScalarCdf.C</a>.</p>
-
-<p>References <a class="el" href="a00340_source.html#l00073">queso_require_equal_to_msg</a>, <a class="el" href="a00340_source.html#l00069">queso_require_msg</a>, and <a class="el" href="a00340_source.html#l00074">queso_require_not_equal_to_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;{</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00042.html#ab54be9623cddb0671db458d05d63f0a7">m_minHorizontal</a> == -INFINITY) ||</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      (<a class="code" href="a00042.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a> ==  INFINITY)) {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!((<a class="code" href="a00042.html#ab54be9623cddb0671db458d05d63f0a7">m_minHorizontal</a> != -INFINITY) || (<a class="code" href="a00042.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a> != INFINITY)), <span class="stringliteral">&quot;unexpected values of m_minHorizontal and/or m_maxHorizontal&quot;</span>);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> iMax = <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>.size();</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; iMax; ++i) {</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[i] &gt; 0.) {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">if</span> (i &gt; 0) --i;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <a class="code" href="a00042.html#ab54be9623cddb0671db458d05d63f0a7">m_minHorizontal</a> = <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[i];</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      }</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <a class="code" href="a00340.html#ae5d1ae7a9426ab91c69d53b051eb0cb3">queso_require_not_equal_to_msg</a>(<a class="code" href="a00042.html#ab54be9623cddb0671db458d05d63f0a7">m_minHorizontal</a>, -INFINITY, <span class="stringliteral">&quot;unexpected value for m_minHorizontal&quot;</span>);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">if</span> (iMax == 1) {</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      <a class="code" href="a00340.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[iMax - 1], 1., <span class="stringliteral">&quot;unexpected value for case &#39;iMax = 1&#39;&quot;</span>);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <a class="code" href="a00042.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a> = <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[iMax-1];</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    }</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; iMax; ++i) {</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[iMax-1-i] &lt; 1.) {</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keywordflow">if</span> (i &gt; 0) --i;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <a class="code" href="a00042.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a> = <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[iMax-1-i];</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;      }</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    }</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <a class="code" href="a00340.html#ae5d1ae7a9426ab91c69d53b051eb0cb3">queso_require_not_equal_to_msg</a>(<a class="code" href="a00042.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a>, INFINITY, <span class="stringliteral">&quot;unexpected value for m_maxHorizontal&quot;</span>);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  }</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  minHorizontal = <a class="code" href="a00042.html#ab54be9623cddb0671db458d05d63f0a7">m_minHorizontal</a>;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  maxHorizontal = <a class="code" href="a00042.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a>;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;}</div>
-<div class="ttc" id="a00340_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00340.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00073">asserts.h:73</a></div></div>
-<div class="ttc" id="a00042_html_ab54be9623cddb0671db458d05d63f0a7"><div class="ttname"><a href="a00042.html#ab54be9623cddb0671db458d05d63f0a7">QUESO::BaseScalarCdf::m_minHorizontal</a></div><div class="ttdeci">T m_minHorizontal</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00101">ScalarCdf.h:101</a></div></div>
-<div class="ttc" id="a00042_html_a33beb9b7e610a4fe1458080593982d2e"><div class="ttname"><a href="a00042.html#a33beb9b7e610a4fe1458080593982d2e">QUESO::BaseScalarCdf::m_maxHorizontal</a></div><div class="ttdeci">T m_maxHorizontal</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00102">ScalarCdf.h:102</a></div></div>
-<div class="ttc" id="a00340_html_ae5d1ae7a9426ab91c69d53b051eb0cb3"><div class="ttname"><a href="a00340.html#ae5d1ae7a9426ab91c69d53b051eb0cb3">queso_require_not_equal_to_msg</a></div><div class="ttdeci">#define queso_require_not_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00074">asserts.h:74</a></div></div>
-<div class="ttc" id="a00201_html_ab8cf649637f31cc75c9f676d5927c10f"><div class="ttname"><a href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">QUESO::SampledScalarCdf::m_cdfValues</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; m_cdfValues</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00093">SampledScalarCdf.h:93</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
-<div class="ttc" id="a00201_html_a58d6744bac9ce8d906839bf381517f4a"><div class="ttname"><a href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">QUESO::SampledScalarCdf::m_cdfGrid</a></div><div class="ttdeci">const BaseOneDGrid&lt; T &gt; &amp; m_cdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00092">SampledScalarCdf.h:92</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a685b0c343b3ab320680c132c836fb1da"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T <a class="el" href="a00201.html">QUESO::SampledScalarCdf</a>&lt; T &gt;::inverse </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>cdfValue</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the position of a given value of CDF. </p>
-
-<p>Implements <a class="el" href="a00042.html#a3e1778c76a557716e74b5fc11604dd75">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00643_source.html#l00102">102</a> of file <a class="el" href="a00643_source.html">SampledScalarCdf.C</a>.</p>
-
-<p>References <a class="el" href="a00310_source.html#l00053">k</a>, <a class="el" href="a00340_source.html#l00047">queso_error_msg</a>, and <a class="el" href="a00340_source.html#l00069">queso_require_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;{</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">//*m_env.subDisplayFile() &lt;&lt; &quot;In SampledScalarCdf::inverse(): cdfValue = &quot; &lt;&lt; cdfValue</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="comment">//                       &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!((cdfValue &lt; 0.) || (1. &lt; cdfValue)), <span class="stringliteral">&quot;invalid cdfValue&quot;</span>);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">double</span> result = 0.;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>.size()-1;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">bool</span> searchPosition = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordflow">do</span> {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">if</span> (cdfValue == <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[i]) {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      <span class="keywordflow">while</span> ((0 &lt; i) &amp;&amp; (cdfValue == <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[i-1])) --i;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      result = <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[i];</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      searchPosition = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    }</div>
+<p>Definition at line <a class="el" href="a00295_source.html#l00062">62</a> of file <a class="el" href="a00295_source.html">ScalarFunctionSynchronizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">double</span> result = 0.;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#ac0345f57e31ef7833e379ed972bd094d">numSubEnvironments</a>() &lt; (<span class="keywordtype">unsigned</span> int) <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a0b0779b41ff304058856e97e1d16b4d4">fullComm</a>().<a class="code" href="a00179.html#aa780721ae0fdeabc5a15e04cb0cad964">NumProc</a>()) &amp;&amp;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      (<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>.numOfProcsForStorage() == 1                                  )) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">bool</span> stayInRoutine = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">do</span> {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      <span class="keyword">const</span> V* internalValues    = NULL;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keyword">const</span> V* internalDirection = NULL;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            V* internalGrad      = NULL;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            M* internalHessian   = NULL;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            V* internalEffect    = NULL;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="comment">// Broadcast 1 of 3</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment"></span>      <span class="comment">// bufferChar[0] = &#39;0&#39; or &#39;1&#39; (vecValues     is NULL or not)</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="comment">// bufferChar[1] = &#39;0&#39; or &#39;1&#39; (vecDirection  is NULL or not)</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="comment">// bufferChar[2] = &#39;0&#39; or &#39;1&#39; (gradVector    is NULL or not)</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="comment">// bufferChar[3] = &#39;0&#39; or &#39;1&#39; (hessianMatrix is NULL or not)</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="comment">// bufferChar[4] = &#39;0&#39; or &#39;1&#39; (hessianEffect is NULL or not)</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      std::vector&lt;char&gt; bufferChar(5,<span class="charliteral">&#39;0&#39;</span>);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() == 0) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        internalValues    = vecValues;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        internalDirection = vecDirection;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        internalGrad      = gradVector;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        internalHessian   = hessianMatrix;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        internalEffect    = hessianEffect;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">if</span> (internalValues    != NULL) bufferChar[0] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordflow">if</span> (internalDirection != NULL) bufferChar[1] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">if</span> (internalGrad      != NULL) bufferChar[2] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">if</span> (internalHessian   != NULL) bufferChar[3] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordflow">if</span> (internalEffect    != NULL) bufferChar[4] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a6f73891de4668c325277ddaa799cf808">syncPrintDebugMsg</a>(<span class="stringliteral">&quot;In ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction(), just before char Bcast()&quot;</span>,3,3000000);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="comment">//if (m_env.subId() != 0) while (true) sleep(1);</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      <span class="keywordtype">int</span> count = (int) bufferChar.size();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#abd6af8db8b0c7fd2f5b62e26477a9537">Bcast</a>((<span class="keywordtype">void</span> *) &amp;bufferChar[0], count, RawValue_MPI_CHAR, 0,</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                            <span class="stringliteral">&quot;ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction()&quot;</span>,</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                            <span class="stringliteral">&quot;failed broadcast 1 of 3&quot;</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a6f73891de4668c325277ddaa799cf808">syncPrintDebugMsg</a>(<span class="stringliteral">&quot;In ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction(), just after char Bcast()&quot;</span>,3,3000000);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="comment">//std::cout &lt;&lt; &quot;char contents = &quot; &lt;&lt; bufferChar[0] &lt;&lt; &quot; &quot; &lt;&lt; bufferChar[1] &lt;&lt; &quot; &quot; &lt;&lt; bufferChar[2] &lt;&lt; &quot; &quot; &lt;&lt; bufferChar[3] &lt;&lt; &quot; &quot; &lt;&lt; bufferChar[4]</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="comment">//          &lt;&lt; std::endl;</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordflow">if</span> (cdfValue == <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[j]) {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      <span class="keywordflow">while</span> ((0 &lt; j) &amp;&amp; (cdfValue == <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[j-1])) --j;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      result = <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[j];</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      searchPosition = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">if</span> ((j-i) &lt;= 0) {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <a class="code" href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;invalid pair of values &#39;i&#39; and &#39;j&#39;&quot;</span>);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((j-i) == 1) {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      <span class="keywordtype">double</span> ratio = (cdfValue-<a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[i])/(<a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[j]-<a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[i]);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      result = (1.-ratio)*<a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[i] + ratio*<a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[j];</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      searchPosition = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;      <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>= (<span class="keywordtype">unsigned</span> int) ((i+j)*.5);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;      <span class="keywordflow">if</span> (cdfValue &lt; <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[k]) {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        j = <a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      }</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (cdfValue == <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[k]) {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keywordflow">while</span> ((0 &lt; k) &amp;&amp; (cdfValue == <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[k-1])) --<a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        result = <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[<a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>];</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        searchPosition = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        i = <a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    }</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  } <span class="keywordflow">while</span> (searchPosition);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
-<div class="ttc" id="a00310_html_ab66ed8e0098c0a86b458672a55a9cca9"><div class="ttname"><a href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00053">ann_sample.cpp:53</a></div></div>
-<div class="ttc" id="a00201_html_ab8cf649637f31cc75c9f676d5927c10f"><div class="ttname"><a href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">QUESO::SampledScalarCdf::m_cdfValues</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; m_cdfValues</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00093">SampledScalarCdf.h:93</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
-<div class="ttc" id="a00340_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00047">asserts.h:47</a></div></div>
-<div class="ttc" id="a00201_html_a58d6744bac9ce8d906839bf381517f4a"><div class="ttname"><a href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">QUESO::SampledScalarCdf::m_cdfGrid</a></div><div class="ttdeci">const BaseOneDGrid&lt; T &gt; &amp; m_cdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00092">SampledScalarCdf.h:92</a></div></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <span class="keywordflow">if</span> (bufferChar[0] == <span class="charliteral">&#39;1&#39;</span>) {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="comment">// Broadcast 2 of 3</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="comment">// bufferDouble[0...] = contents for (eventual) vecValues</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        std::vector&lt;double&gt; bufferDouble(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>.sizeLocal(),0.);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() == 0) {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;          <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; internalValues-&gt;sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            bufferDouble[i] = (*internalValues)[i];</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;          }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="comment">//m_env.fullComm().Barrier();</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="comment">//for (int i = 0; i &lt; m_env.fullComm().NumProc(); ++i) {</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="comment">//  if (i == m_env.fullRank()) {</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="comment">//    std::cout &lt;&lt; &quot; In ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction(), just before double Bcast()&quot;</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="comment">//              &lt;&lt; &quot;: fullRank &quot;       &lt;&lt; m_env.fullRank()</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="comment">//              &lt;&lt; &quot;, subEnvironment &quot; &lt;&lt; m_env.subId()</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="comment">//              &lt;&lt; &quot;, subRank &quot;        &lt;&lt; m_env.subRank()</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="comment">//              &lt;&lt; &quot;: buffer related to first double Bcast() is ready to be broadcasted&quot;</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="comment">//              &lt;&lt; &quot; and has size &quot;      &lt;&lt; bufferDouble.size()</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="comment">//              &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="comment">//    if (m_env.subRank() == 0) {</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="comment">//      std::cout &lt;&lt; &quot;Buffer contents are&quot;;</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="comment">//      for (unsigned int i = 0; i &lt; bufferDouble.size(); ++i) {</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="comment">//        std::cout &lt;&lt; &quot; &quot; &lt;&lt; bufferDouble[i];</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="comment">//    }</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <span class="comment">//      std::cout &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="comment">//    }</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="comment">//  }</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="comment">//  m_env.fullComm().Barrier();</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="comment">//}</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="comment">//if (m_env.fullRank() == 0) std::cout &lt;&lt; &quot;Sleeping 3 seconds...&quot;</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        <span class="comment">//                                 &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="comment">//sleep(3);</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        count = (int) bufferDouble.size();</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#abd6af8db8b0c7fd2f5b62e26477a9537">Bcast</a>((<span class="keywordtype">void</span> *) &amp;bufferDouble[0], count, RawValue_MPI_DOUBLE, 0,</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                              <span class="stringliteral">&quot;ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction()&quot;</span>,</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                              <span class="stringliteral">&quot;failed broadcast 2 of 3&quot;</span>);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() != 0) {</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;          V tmpVec(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;          <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; tmpVec.sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            tmpVec[i] = bufferDouble[i];</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;          }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;          internalValues = <span class="keyword">new</span> V(tmpVec);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;          <span class="comment">//if (vecValues) *vecValues = tmpVec; // prudencio 2010-08-01</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        }</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordflow">if</span> (bufferChar[1] == <span class="charliteral">&#39;1&#39;</span>) {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;          <span class="comment">// Broadcast 3 of 3</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment"></span>          <span class="comment">// bufferDouble[0...] = contents for (eventual) vecDirection</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;          <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() == 0) {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; internalDirection-&gt;sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;              bufferDouble[i] = (*internalDirection)[i];</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;          }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;          count = (int) bufferDouble.size();</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;          <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#abd6af8db8b0c7fd2f5b62e26477a9537">Bcast</a>((<span class="keywordtype">void</span> *) &amp;bufferDouble[0], count, RawValue_MPI_DOUBLE, 0,</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                                <span class="stringliteral">&quot;ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction()&quot;</span>,</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                                <span class="stringliteral">&quot;failed broadcast 3 of 3&quot;</span>);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;          <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() != 0) {</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            V tmpVec(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; tmpVec.sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;              tmpVec[i] = bufferDouble[i];</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            }</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            internalDirection = <span class="keyword">new</span> V(tmpVec);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;          }</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        }</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="comment">// All processors now call &#39;scalarFunction()&#39;</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment"></span>        <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() != 0) {</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;          <span class="keywordflow">if</span> (bufferChar[2] == <span class="charliteral">&#39;1&#39;</span>) internalGrad    = <span class="keyword">new</span> V(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;          <span class="keywordflow">if</span> (bufferChar[3] == <span class="charliteral">&#39;1&#39;</span>) internalHessian = <span class="keyword">new</span> M(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;          <span class="keywordflow">if</span> (bufferChar[4] == <span class="charliteral">&#39;1&#39;</span>) internalEffect  = <span class="keyword">new</span> V(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a6f73891de4668c325277ddaa799cf808">syncPrintDebugMsg</a>(<span class="stringliteral">&quot;In ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction(), just before actual lnValue()&quot;</span>,3,3000000);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        result = <a class="code" href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a>.lnValue(*internalValues,   <span class="comment">// input</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                                          internalDirection, <span class="comment">// input</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                                          internalGrad,    <span class="comment">// output</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                                          internalHessian, <span class="comment">// output</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                                          internalEffect); <span class="comment">// output</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <span class="keywordflow">if</span> (extraOutput1) {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;          <span class="keywordflow">if</span> (<a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>) {</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            *extraOutput1 = <a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>-&gt;lastComputedLogPrior();</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;          }</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        }</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="keywordflow">if</span> (extraOutput2) {</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;          <span class="keywordflow">if</span> (<a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>) {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            *extraOutput2 = <a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>-&gt;lastComputedLogLikelihood();</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;          }</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        }</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      } <span class="comment">// if (bufferChar[0] == &#39;1&#39;)</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;      <span class="comment">// Prepare to exit routine or to stay in it</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment"></span>      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() == 0) {</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        stayInRoutine = <span class="keyword">false</span>; <span class="comment">// Always for processor 0</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;      }</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;      <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="keywordflow">if</span> (internalValues    != NULL) <span class="keyword">delete</span> internalValues;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keywordflow">if</span> (internalDirection != NULL) <span class="keyword">delete</span> internalDirection;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="keywordflow">if</span> (internalGrad      != NULL) <span class="keyword">delete</span> internalGrad;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">if</span> (internalHessian   != NULL) <span class="keyword">delete</span> internalHessian;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <span class="keywordflow">if</span> (internalEffect    != NULL) <span class="keyword">delete</span> internalEffect;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        stayInRoutine = (vecValues == NULL) &amp;&amp; (bufferChar[0] == <span class="charliteral">&#39;1&#39;</span>);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <span class="comment">//if (!stayInRoutine) std::cout &lt;&lt; &quot;Fullrank &quot; &lt;&lt; m_env.fullRank() &lt;&lt; &quot; is leaving scalarFunctionSync()&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;      }</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    } <span class="keywordflow">while</span> (stayInRoutine);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  }</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    queso_require_msg(vecValues, <span class="stringliteral">&quot;vecValues should not be NULL&quot;</span>);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    result = <a class="code" href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a>.lnValue(*vecValues,</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                                      vecDirection,</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                                      gradVector,</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                                      hessianMatrix,</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                                      hessianEffect);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordflow">if</span> (extraOutput1) {</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>) {</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        *extraOutput1 = <a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>-&gt;lastComputedLogPrior();</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      }</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    }</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keywordflow">if</span> (extraOutput2) {</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>) {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        *extraOutput2 = <a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>-&gt;lastComputedLogLikelihood();</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;      }</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    }</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;}</div>
+<div class="ttc" id="a00201_html_a6b24acdd3185e57cae74e6d5aedb90bf"><div class="ttname"><a href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">QUESO::ScalarFunctionSynchronizer::m_scalarFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; V, M &gt; &amp; m_scalarFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00087">ScalarFunctionSynchronizer.h:87</a></div></div>
+<div class="ttc" id="a00201_html_aa77a3d3b53267ef7c731836faaa082fb"><div class="ttname"><a href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">QUESO::ScalarFunctionSynchronizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00086">ScalarFunctionSynchronizer.h:86</a></div></div>
+<div class="ttc" id="a00036_html_affe39f53e3d5d678842413370af09145"><div class="ttname"><a href="a00036.html#affe39f53e3d5d678842413370af09145">QUESO::BaseEnvironment::subComm</a></div><div class="ttdeci">const MpiComm &amp; subComm() const </div><div class="ttdoc">Access function for each sub-environment&amp;#39;s communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00293">Environment.C:293</a></div></div>
+<div class="ttc" id="a00179_html_a6f73891de4668c325277ddaa799cf808"><div class="ttname"><a href="a00179.html#a6f73891de4668c325277ddaa799cf808">QUESO::MpiComm::syncPrintDebugMsg</a></div><div class="ttdeci">void syncPrintDebugMsg(const char *msg, unsigned int msgVerbosity, unsigned int numUSecs) const </div><div class="ttdoc">Synchronizes all the processes and print debug message. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00333">MpiComm.C:333</a></div></div>
+<div class="ttc" id="a00201_html_adbd43aee6de557012924f3e18660a4f3"><div class="ttname"><a href="a00201.html#adbd43aee6de557012924f3e18660a4f3">QUESO::ScalarFunctionSynchronizer::m_auxVec</a></div><div class="ttdeci">const V &amp; m_auxVec</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00089">ScalarFunctionSynchronizer.h:89</a></div></div>
+<div class="ttc" id="a00179_html_a4059971c30e023b272fccaa6aa00c426"><div class="ttname"><a href="a00179.html#a4059971c30e023b272fccaa6aa00c426">QUESO::MpiComm::Barrier</a></div><div class="ttdeci">void Barrier() const </div><div class="ttdoc">Pause every process in *this communicator until all the processes reach this point. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00174">MpiComm.C:174</a></div></div>
+<div class="ttc" id="a00036_html_a172d52f993f1322ed45aaddf71518dbb"><div class="ttname"><a href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">QUESO::BaseEnvironment::subRank</a></div><div class="ttdeci">int subRank() const </div><div class="ttdoc">Returns the rank of the MPI process in the sub-communicator subComm() </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00287">Environment.C:287</a></div></div>
+<div class="ttc" id="a00201_html_a0e17d294521cd22b297374ae2ff7f463"><div class="ttname"><a href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">QUESO::ScalarFunctionSynchronizer::m_bayesianJointPdfPtr</a></div><div class="ttdeci">const BayesianJointPdf&lt; V, M &gt; * m_bayesianJointPdfPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00088">ScalarFunctionSynchronizer.h:88</a></div></div>
+<div class="ttc" id="a00179_html_aa780721ae0fdeabc5a15e04cb0cad964"><div class="ttname"><a href="a00179.html#aa780721ae0fdeabc5a15e04cb0cad964">QUESO::MpiComm::NumProc</a></div><div class="ttdeci">int NumProc() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00133">MpiComm.C:133</a></div></div>
+<div class="ttc" id="a00179_html_abd6af8db8b0c7fd2f5b62e26477a9537"><div class="ttname"><a href="a00179.html#abd6af8db8b0c7fd2f5b62e26477a9537">QUESO::MpiComm::Bcast</a></div><div class="ttdeci">void Bcast(void *buffer, int count, RawType_MPI_Datatype datatype, int root, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Broadcast values from the root process to the slave processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00191">MpiComm.C:191</a></div></div>
+<div class="ttc" id="a00036_html_a0b0779b41ff304058856e97e1d16b4d4"><div class="ttname"><a href="a00036.html#a0b0779b41ff304058856e97e1d16b4d4">QUESO::BaseEnvironment::fullComm</a></div><div class="ttdeci">const MpiComm &amp; fullComm() const </div><div class="ttdoc">Access function for the communicator that was passed to QUESO&amp;#39;s environment. </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00274">Environment.C:274</a></div></div>
+<div class="ttc" id="a00036_html_ac0345f57e31ef7833e379ed972bd094d"><div class="ttname"><a href="a00036.html#ac0345f57e31ef7833e379ed972bd094d">QUESO::BaseEnvironment::numSubEnvironments</a></div><div class="ttdeci">unsigned int numSubEnvironments() const </div><div class="ttdoc">Access function to the number of sub-environments. </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00335">Environment.C:335</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a1ae05088dd70e2432a52577ba6dca468"></a>
+<a class="anchor" id="a377da84423af894682285c30ab2d2141"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;class V, class M&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00201.html">QUESO::SampledScalarCdf</a>&lt; T &gt;::print </td>
+          <td class="memname">double <a class="el" href="a00201.html">QUESO::ScalarFunctionSynchronizer</a>&lt; V, M &gt;::callFunction </td>
           <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Prints the CDF (values of the grid points and of the CDF at such grid points). </p>
-
-<p>Implements <a class="el" href="a00042.html#a131a7c148188f3f70c2db44cc1a93bc8">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00643_source.html#l00194">194</a> of file <a class="el" href="a00643_source.html">SampledScalarCdf.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;{</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="comment">// Print values *of* grid points</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  os &lt;&lt; <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="comment">// Print *cdf* values *at* grid points</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  os &lt;&lt; <a class="code" href="a00042.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a> &lt;&lt; <span class="stringliteral">&quot;values_sub&quot;</span> &lt;&lt; <a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a73f7849acdd5d5ba15a3094fe18f258f">subIdString</a>() &lt;&lt; <span class="stringliteral">&quot; = zeros(&quot;</span> &lt;&lt; <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>.size()</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>                                                            &lt;&lt; 1</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;);&quot;</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;     &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  os &lt;&lt; <a class="code" href="a00042.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a> &lt;&lt; <span class="stringliteral">&quot;values_sub&quot;</span> &lt;&lt; <a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a73f7849acdd5d5ba15a3094fe18f258f">subIdString</a>() &lt;&lt; <span class="stringliteral">&quot; = [&quot;</span>;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>.size(); ++j) {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    os &lt;&lt; <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[j] &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  }</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  os &lt;&lt; <span class="stringliteral">&quot;];&quot;</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;     &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;}</div>
-<div class="ttc" id="a00042_html_a66c2a1bcf0ac517013e7857c3533a187"><div class="ttname"><a href="a00042.html#a66c2a1bcf0ac517013e7857c3533a187">QUESO::BaseScalarCdf::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00100">ScalarCdf.h:100</a></div></div>
-<div class="ttc" id="a00035_html_a73f7849acdd5d5ba15a3094fe18f258f"><div class="ttname"><a href="a00035.html#a73f7849acdd5d5ba15a3094fe18f258f">QUESO::BaseEnvironment::subIdString</a></div><div class="ttdeci">const std::string &amp; subIdString() const </div><div class="ttdoc">Access to the attribute m_subIdString; which stores the string for the sub-environment, and it will be used, for instance, to create the output files for each sub-environment. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00347">Environment.C:347</a></div></div>
-<div class="ttc" id="a00201_html_ab8cf649637f31cc75c9f676d5927c10f"><div class="ttname"><a href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">QUESO::SampledScalarCdf::m_cdfValues</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; m_cdfValues</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00093">SampledScalarCdf.h:93</a></div></div>
-<div class="ttc" id="a00042_html_a3caa986ae1ccef96a28b0365fb88c86c"><div class="ttname"><a href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">QUESO::BaseScalarCdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00099">ScalarCdf.h:99</a></div></div>
-<div class="ttc" id="a00201_html_a58d6744bac9ce8d906839bf381517f4a"><div class="ttname"><a href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">QUESO::SampledScalarCdf::m_cdfGrid</a></div><div class="ttdeci">const BaseOneDGrid&lt; T &gt; &amp; m_cdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00092">SampledScalarCdf.h:92</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="af597534e752c2974448d7fd071266c59"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00201.html">QUESO::SampledScalarCdf</a>&lt; T &gt;::subWriteContents </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>varNamePrefix</em>, </td>
+          <td class="paramtype">const V *&#160;</td>
+          <td class="paramname"><em>vecValues</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>fileName</em>, </td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>extraOutput1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>fileType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::set&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>allowedSubEnvIds</em>&#160;</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>extraOutput2</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -510,208 +466,327 @@ template&lt;class T &gt; </div>
           <td></td><td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Writes the CDF of an allowed sub-environment to a file. </p>
-<p>It will write the data in Octave/Matlab compatible format. </p>
-
-<p>Reimplemented from <a class="el" href="a00042.html#abdd6c6f5f8f028a6ffd30168885b6338">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00643_source.html#l00216">216</a> of file <a class="el" href="a00643_source.html">SampledScalarCdf.C</a>.</p>
-
-<p>References <a class="el" href="a00348_source.html#l00085">QUESO::FilePtrSetStruct::ofsVar</a>, and <a class="el" href="a00340_source.html#l00078">queso_require_greater_equal_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;{</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <a class="code" href="a00340.html#ac1ccb5a9313d762500e14d0ec5f57dfe">queso_require_greater_equal_msg</a>(<a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>(), 0, <span class="stringliteral">&quot;unexpected subRank&quot;</span>);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  FilePtrSetStruct filePtrSet;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#ab8fe853074f12ea34e18724119a2fc75">openOutputFile</a>(fileName,</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                           fileType, <span class="comment">// &quot;m or hdf&quot;</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                           allowedSubEnvIds,</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                           <span class="keyword">false</span>,</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                           filePtrSet)) {</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="comment">// Grid</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    *filePtrSet.ofsVar &lt;&lt; varNamePrefix &lt;&lt; <span class="stringliteral">&quot;grid_sub&quot;</span> &lt;&lt; <a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a73f7849acdd5d5ba15a3094fe18f258f">subIdString</a>() &lt;&lt; <span class="stringliteral">&quot; = zeros(&quot;</span> &lt;&lt; <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>.size()</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                       &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>                                                               &lt;&lt; 1</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                       &lt;&lt; <span class="stringliteral">&quot;);&quot;</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                       &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    *filePtrSet.ofsVar &lt;&lt; varNamePrefix &lt;&lt; <span class="stringliteral">&quot;grid_sub&quot;</span> &lt;&lt; <a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a73f7849acdd5d5ba15a3094fe18f258f">subIdString</a>() &lt;&lt; <span class="stringliteral">&quot; = [&quot;</span>;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> savedPrecision = filePtrSet.ofsVar-&gt;precision();</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    filePtrSet.ofsVar-&gt;precision(16);</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>.size(); ++j) {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      *filePtrSet.ofsVar &lt;&lt; <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[j] &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    }</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    filePtrSet.ofsVar-&gt;precision(savedPrecision);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    *filePtrSet.ofsVar &lt;&lt; <span class="stringliteral">&quot;];\n&quot;</span>;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="comment">// Values</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    *filePtrSet.ofsVar &lt;&lt; varNamePrefix &lt;&lt; <span class="stringliteral">&quot;values_sub&quot;</span> &lt;&lt; <a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a73f7849acdd5d5ba15a3094fe18f258f">subIdString</a>() &lt;&lt; <span class="stringliteral">&quot; = zeros(&quot;</span> &lt;&lt; <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>.size()</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                       &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>                                                                 &lt;&lt; 1</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                       &lt;&lt; <span class="stringliteral">&quot;);&quot;</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                       &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    *filePtrSet.ofsVar &lt;&lt; varNamePrefix &lt;&lt; <span class="stringliteral">&quot;values_sub&quot;</span> &lt;&lt; <a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a73f7849acdd5d5ba15a3094fe18f258f">subIdString</a>() &lt;&lt; <span class="stringliteral">&quot; = [&quot;</span>;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    savedPrecision = filePtrSet.ofsVar-&gt;precision();</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    filePtrSet.ofsVar-&gt;precision(16);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>.size(); ++j) {</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;      *filePtrSet.ofsVar &lt;&lt; <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[j] &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    }</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    filePtrSet.ofsVar-&gt;precision(savedPrecision);</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    *filePtrSet.ofsVar &lt;&lt; <span class="stringliteral">&quot;];\n&quot;</span>;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="comment">// Close file</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#ab712bff194ddd91459d4ea8715c77e8b">closeFile</a>(filePtrSet,fileType);</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  }</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;}</div>
-<div class="ttc" id="a00340_html_ac1ccb5a9313d762500e14d0ec5f57dfe"><div class="ttname"><a href="a00340.html#ac1ccb5a9313d762500e14d0ec5f57dfe">queso_require_greater_equal_msg</a></div><div class="ttdeci">#define queso_require_greater_equal_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00078">asserts.h:78</a></div></div>
-<div class="ttc" id="a00035_html_a172d52f993f1322ed45aaddf71518dbb"><div class="ttname"><a href="a00035.html#a172d52f993f1322ed45aaddf71518dbb">QUESO::BaseEnvironment::subRank</a></div><div class="ttdeci">int subRank() const </div><div class="ttdoc">Access function for sub-rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00287">Environment.C:287</a></div></div>
-<div class="ttc" id="a00035_html_a73f7849acdd5d5ba15a3094fe18f258f"><div class="ttname"><a href="a00035.html#a73f7849acdd5d5ba15a3094fe18f258f">QUESO::BaseEnvironment::subIdString</a></div><div class="ttdeci">const std::string &amp; subIdString() const </div><div class="ttdoc">Access to the attribute m_subIdString; which stores the string for the sub-environment, and it will be used, for instance, to create the output files for each sub-environment. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00347">Environment.C:347</a></div></div>
-<div class="ttc" id="a00035_html_ab712bff194ddd91459d4ea8715c77e8b"><div class="ttname"><a href="a00035.html#ab712bff194ddd91459d4ea8715c77e8b">QUESO::BaseEnvironment::closeFile</a></div><div class="ttdeci">void closeFile(FilePtrSetStruct &amp;filePtrSet, const std::string &amp;fileType) const </div><div class="ttdoc">Closes the file. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l01083">Environment.C:1083</a></div></div>
-<div class="ttc" id="a00035_html_ab8fe853074f12ea34e18724119a2fc75"><div class="ttname"><a href="a00035.html#ab8fe853074f12ea34e18724119a2fc75">QUESO::BaseEnvironment::openOutputFile</a></div><div class="ttdeci">bool openOutputFile(const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds, bool writeOver, FilePtrSetStruct &amp;filePtrSet) const </div><div class="ttdoc">Opens an output file for each sub-environment that was chosen to send data to the file...</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00520">Environment.C:520</a></div></div>
-<div class="ttc" id="a00201_html_ab8cf649637f31cc75c9f676d5927c10f"><div class="ttname"><a href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">QUESO::SampledScalarCdf::m_cdfValues</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; m_cdfValues</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00093">SampledScalarCdf.h:93</a></div></div>
-<div class="ttc" id="a00042_html_a3caa986ae1ccef96a28b0365fb88c86c"><div class="ttname"><a href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">QUESO::BaseScalarCdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00099">ScalarCdf.h:99</a></div></div>
-<div class="ttc" id="a00201_html_a58d6744bac9ce8d906839bf381517f4a"><div class="ttname"><a href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">QUESO::SampledScalarCdf::m_cdfGrid</a></div><div class="ttdeci">const BaseOneDGrid&lt; T &gt; &amp; m_cdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00092">SampledScalarCdf.h:92</a></div></div>
+<p>Definition at line <a class="el" href="a00295_source.html#l00268">268</a> of file <a class="el" href="a00295_source.html">ScalarFunctionSynchronizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;{</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  <span class="keywordtype">double</span> result = 0.;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#ac0345f57e31ef7833e379ed972bd094d">numSubEnvironments</a>() &lt; (<span class="keywordtype">unsigned</span> int) <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a0b0779b41ff304058856e97e1d16b4d4">fullComm</a>().<a class="code" href="a00179.html#aa780721ae0fdeabc5a15e04cb0cad964">NumProc</a>()) &amp;&amp;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;      (<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>.numOfProcsForStorage() == 1                                  )) {</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="keywordtype">bool</span> stayInRoutine = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keywordflow">do</span> {</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;      <span class="keyword">const</span> V* internalValues    = NULL;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;      <span class="keyword">const</span> V* internalDirection = NULL;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            V* internalGrad      = NULL;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            M* internalHessian   = NULL;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            V* internalEffect    = NULL;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;      <span class="comment">// Broadcast 1 of 3</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment"></span>      <span class="comment">// bufferChar[0] = &#39;0&#39; or &#39;1&#39; (vecValues     is NULL or not)</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      <span class="comment">// bufferChar[1] = &#39;0&#39; or &#39;1&#39; (vecDirection  is NULL or not)</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;      <span class="comment">// bufferChar[2] = &#39;0&#39; or &#39;1&#39; (gradVector    is NULL or not)</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;      <span class="comment">// bufferChar[3] = &#39;0&#39; or &#39;1&#39; (hessianMatrix is NULL or not)</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;      <span class="comment">// bufferChar[4] = &#39;0&#39; or &#39;1&#39; (hessianEffect is NULL or not)</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;      std::vector&lt;char&gt; bufferChar(5,<span class="charliteral">&#39;0&#39;</span>);</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() == 0) {</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        internalValues    = vecValues;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        <span class="keywordflow">if</span> (internalValues    != NULL) bufferChar[0] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        <span class="keywordflow">if</span> (internalDirection != NULL) bufferChar[1] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="keywordflow">if</span> (internalGrad      != NULL) bufferChar[2] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="keywordflow">if</span> (internalHessian   != NULL) bufferChar[3] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordflow">if</span> (internalEffect    != NULL) bufferChar[4] = <span class="charliteral">&#39;1&#39;</span>;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;      }</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;      <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a6f73891de4668c325277ddaa799cf808">syncPrintDebugMsg</a>(<span class="stringliteral">&quot;In ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction(), just before char Bcast()&quot;</span>,3,3000000);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;      <span class="comment">//if (m_env.subId() != 0) while (true) sleep(1);</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;      <span class="keywordtype">int</span> count = (int) bufferChar.size();</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#abd6af8db8b0c7fd2f5b62e26477a9537">Bcast</a>((<span class="keywordtype">void</span> *) &amp;bufferChar[0], count, RawValue_MPI_CHAR, 0,</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                            <span class="stringliteral">&quot;ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction()&quot;</span>,</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                            <span class="stringliteral">&quot;failed broadcast 1 of 3&quot;</span>);</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;      <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a6f73891de4668c325277ddaa799cf808">syncPrintDebugMsg</a>(<span class="stringliteral">&quot;In ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction(), just after char Bcast()&quot;</span>,3,3000000);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;      <span class="comment">//std::cout &lt;&lt; &quot;char contents = &quot; &lt;&lt; bufferChar[0] &lt;&lt; &quot; &quot; &lt;&lt; bufferChar[1] &lt;&lt; &quot; &quot; &lt;&lt; bufferChar[2] &lt;&lt; &quot; &quot; &lt;&lt; bufferChar[3] &lt;&lt; &quot; &quot; &lt;&lt; bufferChar[4]</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;      <span class="comment">//          &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;      <span class="keywordflow">if</span> (bufferChar[0] == <span class="charliteral">&#39;1&#39;</span>) {</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        <span class="comment">// Broadcast 2 of 3</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        <span class="comment">// bufferDouble[0...] = contents for (eventual) vecValues</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        std::vector&lt;double&gt; bufferDouble(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>.sizeLocal(),0.);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() == 0) {</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;          <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; internalValues-&gt;sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;            bufferDouble[i] = (*internalValues)[i];</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;          }</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        }</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="comment">//m_env.fullComm().Barrier();</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        <span class="comment">//for (int i = 0; i &lt; m_env.fullComm().NumProc(); ++i) {</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="comment">//  if (i == m_env.fullRank()) {</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="comment">//    std::cout &lt;&lt; &quot; In ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction(), just before double Bcast()&quot;</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="comment">//              &lt;&lt; &quot;: fullRank &quot;       &lt;&lt; m_env.fullRank()</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        <span class="comment">//              &lt;&lt; &quot;, subEnvironment &quot; &lt;&lt; m_env.subId()</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="comment">//              &lt;&lt; &quot;, subRank &quot;        &lt;&lt; m_env.subRank()</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="comment">//              &lt;&lt; &quot;: buffer related to first double Bcast() is ready to be broadcasted&quot;</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="comment">//              &lt;&lt; &quot; and has size &quot;      &lt;&lt; bufferDouble.size()</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="comment">//              &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="comment">//    if (m_env.subRank() == 0) {</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;  <span class="comment">//      std::cout &lt;&lt; &quot;Buffer contents are&quot;;</span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <span class="comment">//      for (unsigned int i = 0; i &lt; bufferDouble.size(); ++i) {</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;  <span class="comment">//        std::cout &lt;&lt; &quot; &quot; &lt;&lt; bufferDouble[i];</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        <span class="comment">//    }</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;  <span class="comment">//      std::cout &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="comment">//    }</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        <span class="comment">//  }</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        <span class="comment">//  m_env.fullComm().Barrier();</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        <span class="comment">//}</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        <span class="comment">//if (m_env.fullRank() == 0) std::cout &lt;&lt; &quot;Sleeping 3 seconds...&quot;</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="comment">//                                 &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        <span class="comment">//sleep(3);</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        count = (int) bufferDouble.size();</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#abd6af8db8b0c7fd2f5b62e26477a9537">Bcast</a>((<span class="keywordtype">void</span> *) &amp;bufferDouble[0], count, RawValue_MPI_DOUBLE, 0,</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                              <span class="stringliteral">&quot;ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction()&quot;</span>,</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;                              <span class="stringliteral">&quot;failed broadcast 2 of 3&quot;</span>);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() != 0) {</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;          V tmpVec(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;          <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; tmpVec.sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            tmpVec[i] = bufferDouble[i];</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;          }</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;          internalValues = <span class="keyword">new</span> V(tmpVec);</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;          <span class="comment">//if (vecValues) *vecValues = tmpVec; // prudencio 2010-08-01</span></div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        }</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keywordflow">if</span> (bufferChar[1] == <span class="charliteral">&#39;1&#39;</span>) {</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;          <span class="comment">// Broadcast 3 of 3</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="comment"></span>          <span class="comment">// bufferDouble[0...] = contents for (eventual) vecDirection</span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;          <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() == 0) {</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; internalDirection-&gt;sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;              bufferDouble[i] = (*internalDirection)[i];</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            }</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;          }</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;          count = (int) bufferDouble.size();</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;          <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#abd6af8db8b0c7fd2f5b62e26477a9537">Bcast</a>((<span class="keywordtype">void</span> *) &amp;bufferDouble[0], count, RawValue_MPI_DOUBLE, 0,</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                                <span class="stringliteral">&quot;ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction()&quot;</span>,</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                                <span class="stringliteral">&quot;failed broadcast 3 of 3&quot;</span>);</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;          <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() != 0) {</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;            V tmpVec(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; tmpVec.sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;              tmpVec[i] = bufferDouble[i];</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            }</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;            internalDirection = <span class="keyword">new</span> V(tmpVec);</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;          }</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        }</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <span class="comment">// All processors now call &#39;scalarFunction()&#39;</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="comment"></span>        <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() != 0) {</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;          <span class="keywordflow">if</span> (bufferChar[2] == <span class="charliteral">&#39;1&#39;</span>) internalGrad    = <span class="keyword">new</span> V(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;          <span class="keywordflow">if</span> (bufferChar[3] == <span class="charliteral">&#39;1&#39;</span>) internalHessian = <span class="keyword">new</span> M(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;          <span class="keywordflow">if</span> (bufferChar[4] == <span class="charliteral">&#39;1&#39;</span>) internalEffect  = <span class="keyword">new</span> V(<a class="code" href="a00201.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>);</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        }</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a6f73891de4668c325277ddaa799cf808">syncPrintDebugMsg</a>(<span class="stringliteral">&quot;In ScalarFunctionSynchronizer&lt;V,M&gt;::callFunction(), just before actual lnValue()&quot;</span>,3,3000000);</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        result = <a class="code" href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a>.lnValue(*internalValues);</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        <span class="keywordflow">if</span> (extraOutput1) {</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;          <span class="keywordflow">if</span> (<a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>) {</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;            *extraOutput1 = <a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>-&gt;lastComputedLogPrior();</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;          }</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        }</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        <span class="keywordflow">if</span> (extraOutput2) {</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;          <span class="keywordflow">if</span> (<a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>) {</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;            *extraOutput2 = <a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>-&gt;lastComputedLogLikelihood();</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;          }</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        }</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;      } <span class="comment">// if (bufferChar[0] == &#39;1&#39;)</span></div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;      <span class="comment">// Prepare to exit routine or to stay in it</span></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;<span class="comment"></span>      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a>() == 0) {</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        stayInRoutine = <span class="keyword">false</span>; <span class="comment">// Always for processor 0</span></div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;      }</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;      <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        <span class="keywordflow">if</span> (internalValues    != NULL) <span class="keyword">delete</span> internalValues;</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        <span class="keywordflow">if</span> (internalDirection != NULL) <span class="keyword">delete</span> internalDirection;</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;        <span class="keywordflow">if</span> (internalGrad      != NULL) <span class="keyword">delete</span> internalGrad;</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        <span class="keywordflow">if</span> (internalHessian   != NULL) <span class="keyword">delete</span> internalHessian;</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        <span class="keywordflow">if</span> (internalEffect    != NULL) <span class="keyword">delete</span> internalEffect;</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        stayInRoutine = (vecValues == NULL) &amp;&amp; (bufferChar[0] == <span class="charliteral">&#39;1&#39;</span>);</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;        <span class="comment">//if (!stayInRoutine) std::cout &lt;&lt; &quot;Fullrank &quot; &lt;&lt; m_env.fullRank() &lt;&lt; &quot; is leaving scalarFunctionSync()&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;      }</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    } <span class="keywordflow">while</span> (stayInRoutine);</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;  }</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;  <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    queso_require_msg(vecValues, <span class="stringliteral">&quot;vecValues should not be NULL&quot;</span>);</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    <a class="code" href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>.<a class="code" href="a00036.html#affe39f53e3d5d678842413370af09145">subComm</a>().<a class="code" href="a00179.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    result = <a class="code" href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a>.lnValue(*vecValues);</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    <span class="keywordflow">if</span> (extraOutput1) {</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>) {</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        *extraOutput1 = <a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>-&gt;lastComputedLogPrior();</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;      }</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    }</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    <span class="keywordflow">if</span> (extraOutput2) {</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>) {</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        *extraOutput2 = <a class="code" href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>-&gt;lastComputedLogLikelihood();</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;      }</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    }</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;  }</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;}</div>
+<div class="ttc" id="a00201_html_a6b24acdd3185e57cae74e6d5aedb90bf"><div class="ttname"><a href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">QUESO::ScalarFunctionSynchronizer::m_scalarFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; V, M &gt; &amp; m_scalarFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00087">ScalarFunctionSynchronizer.h:87</a></div></div>
+<div class="ttc" id="a00201_html_aa77a3d3b53267ef7c731836faaa082fb"><div class="ttname"><a href="a00201.html#aa77a3d3b53267ef7c731836faaa082fb">QUESO::ScalarFunctionSynchronizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00086">ScalarFunctionSynchronizer.h:86</a></div></div>
+<div class="ttc" id="a00036_html_affe39f53e3d5d678842413370af09145"><div class="ttname"><a href="a00036.html#affe39f53e3d5d678842413370af09145">QUESO::BaseEnvironment::subComm</a></div><div class="ttdeci">const MpiComm &amp; subComm() const </div><div class="ttdoc">Access function for each sub-environment&amp;#39;s communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00293">Environment.C:293</a></div></div>
+<div class="ttc" id="a00179_html_a6f73891de4668c325277ddaa799cf808"><div class="ttname"><a href="a00179.html#a6f73891de4668c325277ddaa799cf808">QUESO::MpiComm::syncPrintDebugMsg</a></div><div class="ttdeci">void syncPrintDebugMsg(const char *msg, unsigned int msgVerbosity, unsigned int numUSecs) const </div><div class="ttdoc">Synchronizes all the processes and print debug message. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00333">MpiComm.C:333</a></div></div>
+<div class="ttc" id="a00201_html_adbd43aee6de557012924f3e18660a4f3"><div class="ttname"><a href="a00201.html#adbd43aee6de557012924f3e18660a4f3">QUESO::ScalarFunctionSynchronizer::m_auxVec</a></div><div class="ttdeci">const V &amp; m_auxVec</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00089">ScalarFunctionSynchronizer.h:89</a></div></div>
+<div class="ttc" id="a00179_html_a4059971c30e023b272fccaa6aa00c426"><div class="ttname"><a href="a00179.html#a4059971c30e023b272fccaa6aa00c426">QUESO::MpiComm::Barrier</a></div><div class="ttdeci">void Barrier() const </div><div class="ttdoc">Pause every process in *this communicator until all the processes reach this point. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00174">MpiComm.C:174</a></div></div>
+<div class="ttc" id="a00036_html_a172d52f993f1322ed45aaddf71518dbb"><div class="ttname"><a href="a00036.html#a172d52f993f1322ed45aaddf71518dbb">QUESO::BaseEnvironment::subRank</a></div><div class="ttdeci">int subRank() const </div><div class="ttdoc">Returns the rank of the MPI process in the sub-communicator subComm() </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00287">Environment.C:287</a></div></div>
+<div class="ttc" id="a00201_html_a0e17d294521cd22b297374ae2ff7f463"><div class="ttname"><a href="a00201.html#a0e17d294521cd22b297374ae2ff7f463">QUESO::ScalarFunctionSynchronizer::m_bayesianJointPdfPtr</a></div><div class="ttdeci">const BayesianJointPdf&lt; V, M &gt; * m_bayesianJointPdfPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00088">ScalarFunctionSynchronizer.h:88</a></div></div>
+<div class="ttc" id="a00179_html_aa780721ae0fdeabc5a15e04cb0cad964"><div class="ttname"><a href="a00179.html#aa780721ae0fdeabc5a15e04cb0cad964">QUESO::MpiComm::NumProc</a></div><div class="ttdeci">int NumProc() const </div><div class="ttdoc">Returns total number of processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00133">MpiComm.C:133</a></div></div>
+<div class="ttc" id="a00179_html_abd6af8db8b0c7fd2f5b62e26477a9537"><div class="ttname"><a href="a00179.html#abd6af8db8b0c7fd2f5b62e26477a9537">QUESO::MpiComm::Bcast</a></div><div class="ttdeci">void Bcast(void *buffer, int count, RawType_MPI_Datatype datatype, int root, const char *whereMsg, const char *whatMsg) const </div><div class="ttdoc">Broadcast values from the root process to the slave processes. </div><div class="ttdef"><b>Definition:</b> <a href="a00422_source.html#l00191">MpiComm.C:191</a></div></div>
+<div class="ttc" id="a00036_html_a0b0779b41ff304058856e97e1d16b4d4"><div class="ttname"><a href="a00036.html#a0b0779b41ff304058856e97e1d16b4d4">QUESO::BaseEnvironment::fullComm</a></div><div class="ttdeci">const MpiComm &amp; fullComm() const </div><div class="ttdoc">Access function for the communicator that was passed to QUESO&amp;#39;s environment. </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00274">Environment.C:274</a></div></div>
+<div class="ttc" id="a00036_html_ac0345f57e31ef7833e379ed972bd094d"><div class="ttname"><a href="a00036.html#ac0345f57e31ef7833e379ed972bd094d">QUESO::BaseEnvironment::numSubEnvironments</a></div><div class="ttdeci">unsigned int numSubEnvironments() const </div><div class="ttdoc">Access function to the number of sub-environments. </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00335">Environment.C:335</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a3eb93ff8c14d2b66bf692033a2a3b8b6"></a>
+<a class="anchor" id="a4618272a8d897dc064a42510039cefcc"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="a00201.html">QUESO::SampledScalarCdf</a>&lt; T &gt;::value </td>
+          <td class="memname">const <a class="el" href="a00249.html">VectorSet</a>&lt; V, M &gt; &amp; <a class="el" href="a00201.html">QUESO::ScalarFunctionSynchronizer</a>&lt; V, M &gt;::domainSet </td>
           <td>(</td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>paramValue</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Returns the value of the CDF at <code>paramValue</code>. </p>
+<p>Access to the domain set of the scalar function which will be synchronized. </p>
 
-<p>Implements <a class="el" href="a00042.html#a887af6d62eb04f2bf3b58c12e586f20b">QUESO::BaseScalarCdf&lt; T &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00643_source.html#l00066">66</a> of file <a class="el" href="a00643_source.html">SampledScalarCdf.C</a>.</p>
-
-<p>References <a class="el" href="a00340_source.html#l00078">queso_require_greater_equal_msg</a>, and <a class="el" href="a00340_source.html#l00075">queso_require_less_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">double</span> result = 0.;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">if</span> (paramValue &lt;= <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[0]) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    result = 0.;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[<a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>.size()-1] &lt;= paramValue) {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    result = 1.;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> intervalId = <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>.findIntervalId(paramValue);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="a00340.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(intervalId, (<a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>.size()-1), <span class="stringliteral">&quot;invalid intervalId&quot;</span>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">double</span> intervalLen = <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[intervalId+1] - <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>[intervalId];</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">double</span> ratio = (paramValue - m_cdfGrid[intervalId])/intervalLen;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#if 0</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor"></span>    *<a class="code" href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In SampledScalarCdf::value()&quot;</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: paramValue = &quot;</span>              &lt;&lt; paramValue</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, intervalId = &quot;</span>              &lt;&lt; intervalId</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, cdfGrid.size() = &quot;</span>          &lt;&lt; m_cdfGrid.size()</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, m_cdfGrid[intervalId] = &quot;</span>   &lt;&lt; m_cdfGrid[intervalId]</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, m_cdfGrid[intervalId+1] = &quot;</span> &lt;&lt; m_cdfGrid[intervalId+1]</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, intervalLen = &quot;</span>             &lt;&lt; intervalLen</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, ratio = &quot;</span>                   &lt;&lt; ratio</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor"></span>    <a class="code" href="a00340.html#ac1ccb5a9313d762500e14d0ec5f57dfe">queso_require_greater_equal_msg</a>(ratio, 0., <span class="stringliteral">&quot;invalid ratio&quot;</span>);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    result = (1.-ratio)*<a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[intervalId] + ratio*<a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>[intervalId+1];</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
-<div class="ttc" id="a00035_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00320">Environment.C:320</a></div></div>
-<div class="ttc" id="a00340_html_ac1ccb5a9313d762500e14d0ec5f57dfe"><div class="ttname"><a href="a00340.html#ac1ccb5a9313d762500e14d0ec5f57dfe">queso_require_greater_equal_msg</a></div><div class="ttdeci">#define queso_require_greater_equal_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00078">asserts.h:78</a></div></div>
-<div class="ttc" id="a00340_html_a9fbd2830796070462f06425899f3d6d5"><div class="ttname"><a href="a00340.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a></div><div class="ttdeci">#define queso_require_less_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00075">asserts.h:75</a></div></div>
-<div class="ttc" id="a00201_html_ab8cf649637f31cc75c9f676d5927c10f"><div class="ttname"><a href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">QUESO::SampledScalarCdf::m_cdfValues</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; m_cdfValues</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00093">SampledScalarCdf.h:93</a></div></div>
-<div class="ttc" id="a00042_html_a3caa986ae1ccef96a28b0365fb88c86c"><div class="ttname"><a href="a00042.html#a3caa986ae1ccef96a28b0365fb88c86c">QUESO::BaseScalarCdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00099">ScalarCdf.h:99</a></div></div>
-<div class="ttc" id="a00201_html_a58d6744bac9ce8d906839bf381517f4a"><div class="ttname"><a href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">QUESO::SampledScalarCdf::m_cdfGrid</a></div><div class="ttdeci">const BaseOneDGrid&lt; T &gt; &amp; m_cdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00092">SampledScalarCdf.h:92</a></div></div>
+<p>Definition at line <a class="el" href="a00295_source.html#l00055">55</a> of file <a class="el" href="a00295_source.html">ScalarFunctionSynchronizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a>.domainSet();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="ttc" id="a00201_html_a6b24acdd3185e57cae74e6d5aedb90bf"><div class="ttname"><a href="a00201.html#a6b24acdd3185e57cae74e6d5aedb90bf">QUESO::ScalarFunctionSynchronizer::m_scalarFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; V, M &gt; &amp; m_scalarFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00087">ScalarFunctionSynchronizer.h:87</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a58d6744bac9ce8d906839bf381517f4a"></a>
+<a class="anchor" id="adbd43aee6de557012924f3e18660a4f3"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T&gt; </div>
+template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00040.html">BaseOneDGrid</a>&lt;T&gt;&amp; <a class="el" href="a00201.html">QUESO::SampledScalarCdf</a>&lt; T &gt;::m_cdfGrid</td>
+          <td class="memname">const V&amp; <a class="el" href="a00201.html">QUESO::ScalarFunctionSynchronizer</a>&lt; V, M &gt;::m_auxVec</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00556_source.html#l00092">92</a> of file <a class="el" href="a00556_source.html">SampledScalarCdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00273_source.html#l00089">89</a> of file <a class="el" href="a00273_source.html">ScalarFunctionSynchronizer.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab8cf649637f31cc75c9f676d5927c10f"></a>
+<a class="anchor" id="a0e17d294521cd22b297374ae2ff7f463"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T&gt; </div>
+template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt;double&gt;&amp; <a class="el" href="a00201.html">QUESO::SampledScalarCdf</a>&lt; T &gt;::m_cdfValues</td>
+          <td class="memname">const <a class="el" href="a00057.html">BayesianJointPdf</a>&lt;V,M&gt;* <a class="el" href="a00201.html">QUESO::ScalarFunctionSynchronizer</a>&lt; V, M &gt;::m_bayesianJointPdfPtr</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00556_source.html#l00093">93</a> of file <a class="el" href="a00556_source.html">SampledScalarCdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00273_source.html#l00088">88</a> of file <a class="el" href="a00273_source.html">ScalarFunctionSynchronizer.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa77a3d3b53267ef7c731836faaa082fb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00036.html">BaseEnvironment</a>&amp; <a class="el" href="a00201.html">QUESO::ScalarFunctionSynchronizer</a>&lt; V, M &gt;::m_env</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00273_source.html#l00086">86</a> of file <a class="el" href="a00273_source.html">ScalarFunctionSynchronizer.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6b24acdd3185e57cae74e6d5aedb90bf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00045.html">BaseScalarFunction</a>&lt;V,M&gt;&amp; <a class="el" href="a00201.html">QUESO::ScalarFunctionSynchronizer</a>&lt; V, M &gt;::m_scalarFunction</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00273_source.html#l00087">87</a> of file <a class="el" href="a00273_source.html">ScalarFunctionSynchronizer.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/stats/inc/<a class="el" href="a00556_source.html">SampledScalarCdf.h</a></li>
-<li>src/stats/src/<a class="el" href="a00643_source.html">SampledScalarCdf.C</a></li>
+<li>src/basic/inc/<a class="el" href="a00273_source.html">ScalarFunctionSynchronizer.h</a></li>
+<li>src/basic/src/<a class="el" href="a00295_source.html">ScalarFunctionSynchronizer.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:15 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:50 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

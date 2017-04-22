@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/src/BetaVectorRealizer.C Source File</title>
+<title>queso-0.56.2: src/stats/src/GaussianLikelihoodFullCovarianceRandomCoefficient.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">BetaVectorRealizer.C</div>  </div>
+<div class="title">GaussianLikelihoodFullCovarianceRandomCoefficient.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00586.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,68 +75,78 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/BetaVectorRealizer.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/GaussianLikelihoodFullCovarianceRandomCoefficient.h&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00058.html#a476e76c89f2f6706989943596d9158ae">   35</a></span>&#160;<a class="code" href="a00058.html#a476e76c89f2f6706989943596d9158ae">BetaVectorRealizer&lt;V,M&gt;::BetaVectorRealizer</a>(</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;V,M&gt;</a>&amp; unifiedImageSet,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">const</span> V&amp;                     alpha,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">const</span> V&amp;                     beta)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  :</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00049.html">BaseVectorRealizer</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;gen&quot;</span>).c_str(),unifiedImageSet,std::numeric_limits&lt;unsigned int&gt;::max()),</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  m_alpha(alpha),</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  m_beta (beta)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    *<a class="code" href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering BetaVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00049.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    *<a class="code" href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving BetaVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00049.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="a00058.html#aaa4a00655b79a138fa28cea29a91a91f">   59</a></span>&#160;<a class="code" href="a00058.html#aaa4a00655b79a138fa28cea29a91a91f">BetaVectorRealizer&lt;V,M&gt;::~BetaVectorRealizer</a>()</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// Realization-related methods----------------------</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00058.html#a75659aac16145ad3e770e852500ee7f2">   65</a></span>&#160;<a class="code" href="a00058.html#a75659aac16145ad3e770e852500ee7f2">BetaVectorRealizer&lt;V,M&gt;::realization</a>(V&amp; nextValues)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  nextValues.cwSetBeta(m_alpha,m_beta);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00102.html#afabc4545138e8cbba6cef989a74bf7a3">   34</a></span>&#160;<a class="code" href="a00102.html#afabc4545138e8cbba6cef989a74bf7a3">GaussianLikelihoodFullCovarianceRandomCoefficient&lt;V, M&gt;::GaussianLikelihoodFullCovarianceRandomCoefficient</a>(</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> * prefix, <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V, M&gt;</a> &amp; domainSet,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">const</span> V &amp; observations, <span class="keyword">const</span> M &amp; covariance)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  : <a class="code" href="a00154.html">LikelihoodBase</a>&lt;V, M&gt;(prefix, domainSet, observations),</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    m_covariance(covariance)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">if</span> (covariance.numRowsLocal() != observations.sizeLocal()) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    queso_error_msg(<span class="stringliteral">&quot;Covariance matrix not same size as observation vector&quot;</span>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00102.html#a5c655fd386c954e1c62466c45096ab9d">   46</a></span>&#160;<a class="code" href="a00102.html#a5c655fd386c954e1c62466c45096ab9d">GaussianLikelihoodFullCovarianceRandomCoefficient&lt;V, M&gt;::~GaussianLikelihoodFullCovarianceRandomCoefficient</a>()</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00102.html#acee818a4093085c046114a51073a4d5f">   52</a></span>&#160;<a class="code" href="a00102.html#acee818a4093085c046114a51073a4d5f">GaussianLikelihoodFullCovarianceRandomCoefficient&lt;V, M&gt;::lnValue</a>(<span class="keyword">const</span> V &amp; domainVector)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  V modelOutput(this-&gt;m_observations, 0, 0);  <span class="comment">// At least it&#39;s not a copy</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  V weightedMisfit(this-&gt;m_observations, 0, 0);  <span class="comment">// At least it&#39;s not a copy</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  this-&gt;evaluateModel(domainVector, modelOutput);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="comment">// Compute misfit G(x) - y</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  modelOutput -= this-&gt;m_observations;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="comment">// Solve \Sigma u = G(x) - y for u</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  this-&gt;m_covariance.invertMultiply(modelOutput, weightedMisfit);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">// Compute (G(x) - y)^T \Sigma^{-1} (G(x) - y)</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  modelOutput *= weightedMisfit;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">// This is square of 2-norm</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">double</span> norm2_squared = modelOutput.sumOfComponents();</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00058.html">QUESO::BetaVectorRealizer&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00035_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00320">Environment.C:320</a></div></div>
-<div class="ttc" id="a00049_html_acde246c52f82d8ed687d91cfac14c29c"><div class="ttname"><a href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">QUESO::BaseVectorRealizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00578_source.html#l00077">VectorRealizer.h:77</a></div></div>
-<div class="ttc" id="a00058_html_a476e76c89f2f6706989943596d9158ae"><div class="ttname"><a href="a00058.html#a476e76c89f2f6706989943596d9158ae">QUESO::BetaVectorRealizer::BetaVectorRealizer</a></div><div class="ttdeci">BetaVectorRealizer(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet, const V &amp;alpha, const V &amp;beta)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00586_source.html#l00035">BetaVectorRealizer.C:35</a></div></div>
-<div class="ttc" id="a00058_html"><div class="ttname"><a href="a00058.html">QUESO::BetaVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from a Beta probability density distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00499_source.html#l00049">BetaVectorRealizer.h:49</a></div></div>
-<div class="ttc" id="a00049_html_ac5559b6921816ccaed7afc2d342c2a32"><div class="ttname"><a href="a00049.html#ac5559b6921816ccaed7afc2d342c2a32">QUESO::BaseVectorRealizer::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00578_source.html#l00078">VectorRealizer.h:78</a></div></div>
-<div class="ttc" id="a00246_html"><div class="ttname"><a href="a00246.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00058_html_a75659aac16145ad3e770e852500ee7f2"><div class="ttname"><a href="a00058.html#a75659aac16145ad3e770e852500ee7f2">QUESO::BetaVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdoc">Draws a realization. </div><div class="ttdef"><b>Definition:</b> <a href="a00586_source.html#l00065">BetaVectorRealizer.C:65</a></div></div>
-<div class="ttc" id="a00049_html"><div class="ttname"><a href="a00049.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00578_source.html#l00049">VectorRealizer.h:49</a></div></div>
-<div class="ttc" id="a00035_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00449">Environment.C:449</a></div></div>
-<div class="ttc" id="a00058_html_aaa4a00655b79a138fa28cea29a91a91f"><div class="ttname"><a href="a00058.html#aaa4a00655b79a138fa28cea29a91a91f">QUESO::BetaVectorRealizer::~BetaVectorRealizer</a></div><div class="ttdeci">~BetaVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00586_source.html#l00059">BetaVectorRealizer.C:59</a></div></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// Get the determinant of the covariance matrix |\Sigma|</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">double</span> deter_cov = this-&gt;m_covariance.determinant();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  deter_cov = std::sqrt(deter_cov);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">// Set the right hyperparameter coefficient</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// The last element of domainVector is the multiplicative coefficient of the</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">// covariance matrix</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">double</span> cov_coeff = domainVector[domainVector.sizeLocal()-1];</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  cov_coeff = std::pow(std::sqrt(cov_coeff), this-&gt;m_observations.sizeLocal());</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">return</span> -0.5 * norm2_squared / cov_coeff - std::log(cov_coeff * deter_cov);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00102.html">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00102_html_acee818a4093085c046114a51073a4d5f"><div class="ttname"><a href="a00102.html#acee818a4093085c046114a51073a4d5f">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient::lnValue</a></div><div class="ttdeci">virtual double lnValue(const V &amp;domainVector) const </div><div class="ttdoc">Logarithm of the value of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00586_source.html#l00052">GaussianLikelihoodFullCovarianceRandomCoefficient.C:52</a></div></div>
+<div class="ttc" id="a00102_html_a5c655fd386c954e1c62466c45096ab9d"><div class="ttname"><a href="a00102.html#a5c655fd386c954e1c62466c45096ab9d">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient::~GaussianLikelihoodFullCovarianceRandomCoefficient</a></div><div class="ttdeci">virtual ~GaussianLikelihoodFullCovarianceRandomCoefficient()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00586_source.html#l00046">GaussianLikelihoodFullCovarianceRandomCoefficient.C:46</a></div></div>
+<div class="ttc" id="a00102_html_afabc4545138e8cbba6cef989a74bf7a3"><div class="ttname"><a href="a00102.html#afabc4545138e8cbba6cef989a74bf7a3">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient::GaussianLikelihoodFullCovarianceRandomCoefficient</a></div><div class="ttdeci">GaussianLikelihoodFullCovarianceRandomCoefficient(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;observations, const M &amp;covariance)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00586_source.html#l00034">GaussianLikelihoodFullCovarianceRandomCoefficient.C:34</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00154_html"><div class="ttname"><a href="a00154.html">QUESO::LikelihoodBase</a></div><div class="ttdoc">Base class for canned Gaussian likelihoods. </div><div class="ttdef"><b>Definition:</b> <a href="a00524_source.html#l00049">LikelihoodBase.h:49</a></div></div>
+<div class="ttc" id="a00102_html"><div class="ttname"><a href="a00102.html">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient</a></div><div class="ttdoc">A class that represents a Gaussian likelihood with full covariance and random coefficient. </div><div class="ttdef"><b>Definition:</b> <a href="a00498_source.html#l00048">GaussianLikelihoodFullCovarianceRandomCoefficient.h:48</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

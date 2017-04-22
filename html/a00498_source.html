@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/inc/BetaJointPdf.h Source File</title>
+<title>queso-0.56.2: src/stats/inc/GaussianLikelihoodFullCovarianceRandomCoefficient.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">BetaJointPdf.h</div>  </div>
+<div class="title">GaussianLikelihoodFullCovarianceRandomCoefficient.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00498.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,76 +75,47 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_BETA_JOINT_PROB_DENSITY_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_BETA_JOINT_PROB_DENSITY_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GAUSSIAN_LIKELIHOOD_FULL_COV_RAND_COEFF_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GAUSSIAN_LIKELIHOOD_FULL_COV_RAND_COEFF_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/LikelihoodBase.h&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/JointPdf.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarFunction.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/BoxSubset.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00057.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00057.html">BetaJointPdf</a> : <span class="keyword">public</span> <a class="code" href="a00038.html">BaseJointPdf</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00102.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00102.html">GaussianLikelihoodFullCovarianceRandomCoefficient</a> : <span class="keyword">public</span> <a class="code" href="a00154.html">LikelihoodBase</a>&lt;V, M&gt; {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="a00057.html#a82b8baf377f485ac028207983a73618e">BetaJointPdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                      <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00044.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                      <span class="keyword">const</span> V&amp;                     alpha,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                      <span class="keyword">const</span> V&amp;                     beta);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; <a class="code" href="a00057.html#aaa4264f75e61e066b44ab545a3d1ae39">~BetaJointPdf</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00057.html#a14909bee55e4d764be71e7a313716d9b">actualValue</a>(<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="a00102.html#afabc4545138e8cbba6cef989a74bf7a3">GaussianLikelihoodFullCovarianceRandomCoefficient</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * prefix,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V, M&gt;</a> &amp; <a class="code" href="a00045.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>, <span class="keyword">const</span> V &amp; observations,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keyword">const</span> M &amp; covariance);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00102.html#a5c655fd386c954e1c62466c45096ab9d">~GaussianLikelihoodFullCovarianceRandomCoefficient</a>();</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00057.html#a713d655107dd51eac9d1c19630359a06">lnValue</a>    (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span>   <a class="code" href="a00057.html#a0fac6990ad68517dc57841aa8b7dce2b">distributionMean</a> (V &amp; meanVector) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span>   <a class="code" href="a00057.html#a74adf631962123e9c18a61ad4e036edd">distributionVariance</a> (M &amp; covMatrix) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00057.html#aaa67d058285caffa8dcb0235fbaf7726">computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00044.html">BaseScalarFunction&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00044.html">BaseScalarFunction&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00044.html">BaseScalarFunction&lt;V,M&gt;::m_domainSet</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00038.html">BaseJointPdf&lt;V,M&gt;::m_normalizationStyle</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00038.html">BaseJointPdf&lt;V,M&gt;::m_logOfNormalizationFactor</a>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00057.html#aaed2224330514a2b04d0b2924b7f9f49">   92</a></span>&#160;  V <a class="code" href="a00057.html#aaed2224330514a2b04d0b2924b7f9f49">m_alpha</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00057.html#a71e4c9d34bc0732044efd7b30dea2841">   93</a></span>&#160;  V <a class="code" href="a00057.html#a71e4c9d34bc0732044efd7b30dea2841">m_beta</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif // UQ_BETA_JOINT_PROB_DENSITY_H</span></div>
-<div class="ttc" id="a00057_html_a71e4c9d34bc0732044efd7b30dea2841"><div class="ttname"><a href="a00057.html#a71e4c9d34bc0732044efd7b30dea2841">QUESO::BetaJointPdf::m_beta</a></div><div class="ttdeci">V m_beta</div><div class="ttdef"><b>Definition:</b> <a href="a00498_source.html#l00093">BetaJointPdf.h:93</a></div></div>
-<div class="ttc" id="a00057_html_aaed2224330514a2b04d0b2924b7f9f49"><div class="ttname"><a href="a00057.html#aaed2224330514a2b04d0b2924b7f9f49">QUESO::BetaJointPdf::m_alpha</a></div><div class="ttdeci">V m_alpha</div><div class="ttdef"><b>Definition:</b> <a href="a00498_source.html#l00092">BetaJointPdf.h:92</a></div></div>
-<div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00051">ScalarFunction.h:51</a></div></div>
-<div class="ttc" id="a00057_html_a14909bee55e4d764be71e7a313716d9b"><div class="ttname"><a href="a00057.html#a14909bee55e4d764be71e7a313716d9b">QUESO::BetaJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the Beta PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00585_source.html#l00063">BetaJointPdf.C:63</a></div></div>
-<div class="ttc" id="a00057_html_a0fac6990ad68517dc57841aa8b7dce2b"><div class="ttname"><a href="a00057.html#a0fac6990ad68517dc57841aa8b7dce2b">QUESO::BetaJointPdf::distributionMean</a></div><div class="ttdeci">virtual void distributionMean(V &amp;meanVector) const </div><div class="ttdoc">Mean value of the underlying random variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00585_source.html#l00137">BetaJointPdf.C:137</a></div></div>
-<div class="ttc" id="a00057_html_a82b8baf377f485ac028207983a73618e"><div class="ttname"><a href="a00057.html#a82b8baf377f485ac028207983a73618e">QUESO::BetaJointPdf::BetaJointPdf</a></div><div class="ttdeci">BetaJointPdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;alpha, const V &amp;beta)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00585_source.html#l00033">BetaJointPdf.C:33</a></div></div>
-<div class="ttc" id="a00038_html"><div class="ttname"><a href="a00038.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00540_source.html#l00055">JointPdf.h:55</a></div></div>
-<div class="ttc" id="a00057_html_a713d655107dd51eac9d1c19630359a06"><div class="ttname"><a href="a00057.html#a713d655107dd51eac9d1c19630359a06">QUESO::BetaJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the Beta PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00585_source.html#l00090">BetaJointPdf.C:90</a></div></div>
-<div class="ttc" id="a00057_html_aaa67d058285caffa8dcb0235fbaf7726"><div class="ttname"><a href="a00057.html#aaa67d058285caffa8dcb0235fbaf7726">QUESO::BetaJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00585_source.html#l00169">BetaJointPdf.C:169</a></div></div>
-<div class="ttc" id="a00246_html"><div class="ttname"><a href="a00246.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00057_html_aaa4264f75e61e066b44ab545a3d1ae39"><div class="ttname"><a href="a00057.html#aaa4264f75e61e066b44ab545a3d1ae39">QUESO::BetaJointPdf::~BetaJointPdf</a></div><div class="ttdeci">~BetaJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00585_source.html#l00057">BetaJointPdf.C:57</a></div></div>
-<div class="ttc" id="a00057_html"><div class="ttname"><a href="a00057.html">QUESO::BetaJointPdf</a></div><div class="ttdoc">A class for handling Beta joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00498_source.html#l00047">BetaJointPdf.h:47</a></div></div>
-<div class="ttc" id="a00057_html_a74adf631962123e9c18a61ad4e036edd"><div class="ttname"><a href="a00057.html#a74adf631962123e9c18a61ad4e036edd">QUESO::BetaJointPdf::distributionVariance</a></div><div class="ttdeci">virtual void distributionVariance(M &amp;covMatrix) const </div><div class="ttdoc">Covariance matrix of the underlying random variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00585_source.html#l00149">BetaJointPdf.C:149</a></div></div>
-<div class="ttc" id="a00044_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00044.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00050">ScalarFunction.C:50</a></div></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00102.html#acee818a4093085c046114a51073a4d5f">lnValue</a>(<span class="keyword">const</span> V &amp; domainVector) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00102.html#a4deadf594afced3bfac0c02e2631451e">   74</a></span>&#160;  <span class="keyword">const</span> M &amp; <a class="code" href="a00102.html#a4deadf594afced3bfac0c02e2631451e">m_covariance</a>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;};</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif  // UQ_GAUSSIAN_LIKELIHOOD_FULL_COV_RAND_COEFF_H</span></div>
+<div class="ttc" id="a00102_html_acee818a4093085c046114a51073a4d5f"><div class="ttname"><a href="a00102.html#acee818a4093085c046114a51073a4d5f">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient::lnValue</a></div><div class="ttdeci">virtual double lnValue(const V &amp;domainVector) const </div><div class="ttdoc">Logarithm of the value of the scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00586_source.html#l00052">GaussianLikelihoodFullCovarianceRandomCoefficient.C:52</a></div></div>
+<div class="ttc" id="a00102_html_a5c655fd386c954e1c62466c45096ab9d"><div class="ttname"><a href="a00102.html#a5c655fd386c954e1c62466c45096ab9d">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient::~GaussianLikelihoodFullCovarianceRandomCoefficient</a></div><div class="ttdeci">virtual ~GaussianLikelihoodFullCovarianceRandomCoefficient()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00586_source.html#l00046">GaussianLikelihoodFullCovarianceRandomCoefficient.C:46</a></div></div>
+<div class="ttc" id="a00045_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00045.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00121">ScalarFunction.C:121</a></div></div>
+<div class="ttc" id="a00102_html_afabc4545138e8cbba6cef989a74bf7a3"><div class="ttname"><a href="a00102.html#afabc4545138e8cbba6cef989a74bf7a3">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient::GaussianLikelihoodFullCovarianceRandomCoefficient</a></div><div class="ttdeci">GaussianLikelihoodFullCovarianceRandomCoefficient(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;observations, const M &amp;covariance)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00586_source.html#l00034">GaussianLikelihoodFullCovarianceRandomCoefficient.C:34</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00102_html_a4deadf594afced3bfac0c02e2631451e"><div class="ttname"><a href="a00102.html#a4deadf594afced3bfac0c02e2631451e">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient::m_covariance</a></div><div class="ttdeci">const M &amp; m_covariance</div><div class="ttdef"><b>Definition:</b> <a href="a00498_source.html#l00074">GaussianLikelihoodFullCovarianceRandomCoefficient.h:74</a></div></div>
+<div class="ttc" id="a00154_html"><div class="ttname"><a href="a00154.html">QUESO::LikelihoodBase</a></div><div class="ttdoc">Base class for canned Gaussian likelihoods. </div><div class="ttdef"><b>Definition:</b> <a href="a00524_source.html#l00049">LikelihoodBase.h:49</a></div></div>
+<div class="ttc" id="a00102_html"><div class="ttname"><a href="a00102.html">QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient</a></div><div class="ttdoc">A class that represents a Gaussian likelihood with full covariance and random coefficient. </div><div class="ttdef"><b>Definition:</b> <a href="a00498_source.html#l00048">GaussianLikelihoodFullCovarianceRandomCoefficient.h:48</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

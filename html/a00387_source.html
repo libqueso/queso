@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/src/AlgorithmFactory.C Source File</title>
+<title>queso-0.56.2: src/core/inc/TKFactoryInitializer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_637b9fe55c797d9c55ffa9eb30124a86.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_8c6469bb17906efee6ca4d3fe37c75c7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">AlgorithmFactory.C</div>  </div>
+<div class="title">TKFactoryInitializer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00387.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,52 +75,28 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/AlgorithmFactory.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;std::map&lt;std::string, Factory&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt; *&gt; &amp;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00083.html#a0ab44556db729179eef68e574da4f242">   34</a></span>&#160;<a class="code" href="a00083.html">Factory&lt;Algorithm&lt;GslVector, GslMatrix&gt;</a> &gt;::factory_map()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">static</span> std::map&lt;std::string, Factory&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt; *&gt; _factory_map;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_TK_FACTORY_INITIALIZER_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_TK_FACTORY_INITIALIZER_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00229.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00229.html">TKFactoryInitializer</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="a00229.html#a1d427aa7e7fec9e2549f980fc00d377e">TKFactoryInitializer</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00229.html#aba5ce1ad7af4c90c349d0349f7db73c7">~TKFactoryInitializer</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;};</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">return</span> _factory_map;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// AlgorithmFactoryImp implementation</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> DerivedAlgorithm&gt;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt;::Type</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00012.html#af8f85c790ca2ae146f4160aab95d6465">   44</a></span>&#160;<a class="code" href="a00012.html#af8f85c790ca2ae146f4160aab95d6465">AlgorithmFactoryImp&lt;DerivedAlgorithm&gt;::build_algorithm</a>()</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt;::Type new_alg;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  new_alg.reset(<span class="keyword">new</span> DerivedAlgorithm(*(this-&gt;m_env), *(this-&gt;m_tk)));</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">return</span> new_alg;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a> * <a class="code" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">AlgorithmFactory::m_env</a> = NULL;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">const</span> <a class="code" href="a00045.html">BaseTKGroup&lt;GslVector, GslMatrix&gt;</a> * <a class="code" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">AlgorithmFactory::m_tk</a> = NULL;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Register with the factory</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<a class="code" href="a00012.html">AlgorithmFactoryImp&lt;Algorithm&lt;GslVector, GslMatrix&gt;</a> &gt; <a class="code" href="a00690.html#a789ba03d7644ff6400aae57954b3d75c">random_walk_alg</a>(<span class="stringliteral">&quot;random_walk&quot;</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<a class="code" href="a00012.html">AlgorithmFactoryImp&lt;Algorithm&lt;GslVector, GslMatrix&gt;</a> &gt; <a class="code" href="a00690.html#addb01d39ea0e17674dbb56a194a4a201">logit_random_walk_alg</a>(<span class="stringliteral">&quot;logit_random_walk&quot;</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;} <span class="comment">// namespace QUESO</span></div>
-<div class="ttc" id="a00690_html_a789ba03d7644ff6400aae57954b3d75c"><div class="ttname"><a href="a00690.html#a789ba03d7644ff6400aae57954b3d75c">QUESO::random_walk_alg</a></div><div class="ttdeci">AlgorithmFactoryImp&lt; Algorithm&lt; GslVector, GslMatrix &gt; &gt; random_walk_alg(&quot;random_walk&quot;)</div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00011_html_a7c09ddf5b6b0fe08ec364c4807d57360"><div class="ttname"><a href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">QUESO::AlgorithmFactory::m_tk</a></div><div class="ttdeci">static const BaseTKGroup&lt; GslVector, GslMatrix &gt; * m_tk</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00071">AlgorithmFactory.h:71</a></div></div>
-<div class="ttc" id="a00690_html_addb01d39ea0e17674dbb56a194a4a201"><div class="ttname"><a href="a00690.html#addb01d39ea0e17674dbb56a194a4a201">QUESO::logit_random_walk_alg</a></div><div class="ttdeci">AlgorithmFactoryImp&lt; Algorithm&lt; GslVector, GslMatrix &gt; &gt; logit_random_walk_alg(&quot;logit_random_walk&quot;)</div></div>
-<div class="ttc" id="a00012_html"><div class="ttname"><a href="a00012.html">QUESO::AlgorithmFactoryImp</a></div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00101">AlgorithmFactory.h:101</a></div></div>
-<div class="ttc" id="a00083_html"><div class="ttname"><a href="a00083.html">QUESO::Factory</a></div><div class="ttdef"><b>Definition:</b> <a href="a00351_source.html#l00043">Factory.h:43</a></div></div>
-<div class="ttc" id="a00045_html"><div class="ttname"><a href="a00045.html">QUESO::BaseTKGroup</a></div><div class="ttdoc">This base class allows the representation of a transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00496_source.html#l00032">Algorithm.h:32</a></div></div>
-<div class="ttc" id="a00012_html_af8f85c790ca2ae146f4160aab95d6465"><div class="ttname"><a href="a00012.html#af8f85c790ca2ae146f4160aab95d6465">QUESO::AlgorithmFactoryImp::build_algorithm</a></div><div class="ttdeci">virtual SharedPtr&lt; Algorithm&lt; GslVector, GslMatrix &gt; &gt;::Type build_algorithm()</div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00044">AlgorithmFactory.C:44</a></div></div>
-<div class="ttc" id="a00011_html_abf293c33d2fb0e5f17c8f2e6c95d9aa3"><div class="ttname"><a href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">QUESO::AlgorithmFactory::m_env</a></div><div class="ttdeci">static const BaseEnvironment * m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00070">AlgorithmFactory.h:70</a></div></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;} <span class="comment">// namespace QUESO</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif  // QUESO_TK_FACTORY_INITIALIZER_H</span></div>
+<div class="ttc" id="a00229_html_a1d427aa7e7fec9e2549f980fc00d377e"><div class="ttname"><a href="a00229.html#a1d427aa7e7fec9e2549f980fc00d377e">QUESO::TKFactoryInitializer::TKFactoryInitializer</a></div><div class="ttdeci">TKFactoryInitializer()</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00039">TKFactoryInitializer.C:39</a></div></div>
+<div class="ttc" id="a00229_html"><div class="ttname"><a href="a00229.html">QUESO::TKFactoryInitializer</a></div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00031">TKFactoryInitializer.h:31</a></div></div>
+<div class="ttc" id="a00229_html_aba5ce1ad7af4c90c349d0349f7db73c7"><div class="ttname"><a href="a00229.html#aba5ce1ad7af4c90c349d0349f7db73c7">QUESO::TKFactoryInitializer::~TKFactoryInitializer</a></div><div class="ttdeci">virtual ~TKFactoryInitializer()</div><div class="ttdef"><b>Definition:</b> <a href="a00433_source.html#l00048">TKFactoryInitializer.C:48</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

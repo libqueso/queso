@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/AlgorithmFactory.h Source File</title>
+<title>queso-0.56.2: src/contrib/ANN/test/rand.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,134 +43,167 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_8c6469bb17906efee6ca4d3fe37c75c7.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_5ebf0f177932fe2ba181ddb3e6398119.html">contrib</a></li><li class="navelem"><a class="el" href="dir_67b7d72f59e2a5482e20d8653f81e008.html">ANN</a></li><li class="navelem"><a class="el" href="dir_6af914bded9bee188a168b4fe4a4d194.html">test</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">AlgorithmFactory.h</div>  </div>
+<div class="title">rand.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00339.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor,</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_ALGORITHM_FACTORY_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_ALGORITHM_FACTORY_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Factory.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/Algorithm.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>QUESO</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="a00011.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00011.html">AlgorithmFactory</a> : <span class="keyword">public</span> <a class="code" href="a00083.html">Factory</a>&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00011.html#a05fb01ea7c3ea0239daded71fd2bb69a">   48</a></span>&#160;  <a class="code" href="a00011.html#a05fb01ea7c3ea0239daded71fd2bb69a">AlgorithmFactory</a>(<span class="keyword">const</span> std::string &amp; name)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    : <a class="code" href="a00083.html">Factory</a>&lt;<a class="code" href="a00010.html">Algorithm</a>&lt;<a class="code" href="a00138.html">GslVector</a>, <a class="code" href="a00136.html">GslMatrix</a>&gt; &gt;(name)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  {}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00011.html#a3403ec05fed50512930a20df99c0e3dc">   55</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00011.html#a3403ec05fed50512930a20df99c0e3dc">~AlgorithmFactory</a>() {}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00011.html#a50e34f23bd1e702bdf0c29e9fa0305c3">   57</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00011.html#a50e34f23bd1e702bdf0c29e9fa0305c3">set_environment</a>(<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a> &amp; env)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">m_env</a> = &amp;env;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="a00011.html#a40cd12ce1a1230bbf4a3e729476de813">   62</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00011.html#a40cd12ce1a1230bbf4a3e729476de813">set_tk</a>(<span class="keyword">const</span> <a class="code" href="a00045.html">BaseTKGroup&lt;GslVector, GslMatrix&gt;</a> &amp; tk)</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">m_tk</a> = &amp;tk;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
+<a href="a00339.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//      File:                   rand.h</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//      Programmer:             Sunil Arya and David Mount</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//      Description:    Basic include file for random point generators</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">//      Last modified:  08/04/06 (Version 1.1.1)</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (c) 1997-2005 University of Maryland and Sunil Arya and</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// David Mount.  All Rights Reserved.</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// This software and related documentation is part of the Approximate</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Nearest Neighbor Library (ANN).  This software is provided under</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// the provisions of the Lesser GNU Public License (LGPL).  See the</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// file ../ReadMe.txt for further information.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// The University of Maryland (U.M.) and the authors make no</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// representations about the suitability or fitness of this software for</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// any purpose.  It is provided &quot;as is&quot; without express or implied</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// warranty.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// History:</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//      Revision 0.1  03/04/98</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//              Initial release</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//      Revision 1.0  04/01/05</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//              Added annClusOrthFlats distribution</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">//              Changed procedure names to avoid namespace conflicts</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//              Added annClusFlats distribution</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">//      Revision 1.1.1  08/04/06</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">//              Added planted distribution</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifndef rand_H</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define rand_H</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//      Basic includes</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span>                                              <span class="comment">// standard includes (rand/random)</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span>                                                <span class="comment">// math routines</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="a00308.html">ANN/ANN.h</a>&gt;</span>                                    <span class="comment">// basic ANN includes</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//      Although random/srandom is a more reliable random number generator,</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//      many systems do not have it.  If it is not available, set the</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//      preprocessor symbol ANN_NO_RANDOM, and this will substitute the use</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">//      of rand/srand for them.</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#ifdef ANN_NO_RANDOM                                    // for systems not having random()</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span><span class="preprocessor">  #define ANN_RAND              rand</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span><span class="preprocessor">  #define ANN_SRAND             srand</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor"></span><span class="preprocessor">  #define ANN_RAND_MAX  RAND_MAX</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else                                                                   // otherwise use rand()</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span><span class="preprocessor">  #define ANN_RAND              random</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor"></span><span class="preprocessor">  #define ANN_SRAND             srandom</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor"></span><span class="preprocessor">  #define ANN_RAND_MAX  2147483647UL            // 2**{31} - 1</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor"></span>  <span class="comment">// #define ANN_RAND_MAX       1073741824UL            // 2**{30}</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">//      Globals</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">extern</span>  <span class="keywordtype">int</span>             <a class="code" href="a00338.html#ae8843fe482ba826ec5b56d5b6b4d72bc">annIdum</a>;                                <span class="comment">// random number seed</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">//      External entry points</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">//----------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">virtual</span> SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt;::Type <a class="code" href="a00011.html#ad80b6a79cf9888684ed9252ebeb3d1e7">build_algorithm</a>() = 0;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">   70</a></span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a> * <a class="code" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">m_env</a>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">   71</a></span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="a00045.html">BaseTKGroup&lt;GslVector, GslMatrix&gt;</a> * <a class="code" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">m_tk</a>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">virtual</span> SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt;::Type <a class="code" href="a00011.html#a54772a660e78fbe4f9d2eadb90239bfa">create</a>();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt;::Type</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00011.html#a54772a660e78fbe4f9d2eadb90239bfa">   83</a></span>&#160;<a class="code" href="a00011.html#a54772a660e78fbe4f9d2eadb90239bfa">AlgorithmFactory::create</a>()</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(<a class="code" href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">m_env</a>, <span class="stringliteral">&quot;ERROR: must call set_environment() before building alg!&quot;</span>);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(<a class="code" href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">m_tk</a>, <span class="stringliteral">&quot;ERROR: must call set_tk() before building alg!&quot;</span>);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt;::Type new_alg = this-&gt;<a class="code" href="a00011.html#ad80b6a79cf9888684ed9252ebeb3d1e7">build_algorithm</a>();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <a class="code" href="a00340.html#a95f9887ed9b637efb5b71f1df7d6bc4d">queso_assert</a>(new_alg);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordflow">return</span> new_alg;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00338.html#a540e51fd43b975b1bf5d2189274004cd">annUniformPts</a>(                             <span class="comment">// uniform distribution</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   pa,                     <span class="comment">// point array (modified)</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordtype">int</span>                             n,                      <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>);           <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00338.html#ab4674f5c19c4f1f21c8c6c769c981fbe">annGaussPts</a>(                               <span class="comment">// Gaussian distribution</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   pa,                     <span class="comment">// point array (modified)</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">int</span>                             n,                      <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,            <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordtype">double</span>                  <a class="code" href="a00337.html#a2976da2f4cfad54a418dff74a0094ebe">std_dev</a>);       <span class="comment">// standard deviation</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00338.html#a6e7a4bc2721b0072c402d1f972b73803">annCoGaussPts</a>(                             <span class="comment">// correlated-Gaussian distribution</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   pa,                     <span class="comment">// point array (modified)</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">int</span>                             n,                      <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,            <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordtype">double</span>                  correlation);   <span class="comment">// correlation</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00338.html#ac2220ea8ee08992452c086877db419a9">annLaplacePts</a>(                             <span class="comment">// Laplacian distribution</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   pa,                     <span class="comment">// point array (modified)</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordtype">int</span>                             n,                      <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>);           <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00338.html#a0cd055d33236798806cf92c242af0bbc">annCoLaplacePts</a>(                   <span class="comment">// correlated-Laplacian distribution</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   pa,                     <span class="comment">// point array (modified)</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordtype">int</span>                             n,                      <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,            <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordtype">double</span>                  correlation);   <span class="comment">// correlation</span></div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> DerivedAlgorithm&gt;</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="a00012.html">  101</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00012.html">AlgorithmFactoryImp</a> : <span class="keyword">public</span> <a class="code" href="a00011.html">AlgorithmFactory</a></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="a00012.html#a7951001eaac91bd6fae0b52765208323">  104</a></span>&#160;  <a class="code" href="a00012.html#a7951001eaac91bd6fae0b52765208323">AlgorithmFactoryImp</a>(<span class="keyword">const</span> std::string &amp; name)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    : <a class="code" href="a00011.html">AlgorithmFactory</a>(name)</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  {}</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="a00012.html#a6c469de6c32878ba2f0f5fe34b3f1bfa">  108</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00012.html#a6c469de6c32878ba2f0f5fe34b3f1bfa">~AlgorithmFactoryImp</a>() {}</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keyword">virtual</span> SharedPtr&lt;Algorithm&lt;GslVector, GslMatrix&gt; &gt;::Type <a class="code" href="a00012.html#af8f85c790ca2ae146f4160aab95d6465">build_algorithm</a>();</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;};</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;} <span class="comment">// namespace QUESO</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif // QUESO_ALGORITHM_FACTORY_H</span></div>
-<div class="ttc" id="a00010_html"><div class="ttname"><a href="a00010.html">QUESO::Algorithm</a></div><div class="ttdef"><b>Definition:</b> <a href="a00496_source.html#l00035">Algorithm.h:35</a></div></div>
-<div class="ttc" id="a00011_html_a54772a660e78fbe4f9d2eadb90239bfa"><div class="ttname"><a href="a00011.html#a54772a660e78fbe4f9d2eadb90239bfa">QUESO::AlgorithmFactory::create</a></div><div class="ttdeci">virtual SharedPtr&lt; Algorithm&lt; GslVector, GslMatrix &gt; &gt;::Type create()</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00083">AlgorithmFactory.h:83</a></div></div>
-<div class="ttc" id="a00011_html_a3403ec05fed50512930a20df99c0e3dc"><div class="ttname"><a href="a00011.html#a3403ec05fed50512930a20df99c0e3dc">QUESO::AlgorithmFactory::~AlgorithmFactory</a></div><div class="ttdeci">virtual ~AlgorithmFactory()</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00055">AlgorithmFactory.h:55</a></div></div>
-<div class="ttc" id="a00011_html_a40cd12ce1a1230bbf4a3e729476de813"><div class="ttname"><a href="a00011.html#a40cd12ce1a1230bbf4a3e729476de813">QUESO::AlgorithmFactory::set_tk</a></div><div class="ttdeci">static void set_tk(const BaseTKGroup&lt; GslVector, GslMatrix &gt; &amp;tk)</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00062">AlgorithmFactory.h:62</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00012_html_a7951001eaac91bd6fae0b52765208323"><div class="ttname"><a href="a00012.html#a7951001eaac91bd6fae0b52765208323">QUESO::AlgorithmFactoryImp::AlgorithmFactoryImp</a></div><div class="ttdeci">AlgorithmFactoryImp(const std::string &amp;name)</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00104">AlgorithmFactory.h:104</a></div></div>
-<div class="ttc" id="a00011_html_a7c09ddf5b6b0fe08ec364c4807d57360"><div class="ttname"><a href="a00011.html#a7c09ddf5b6b0fe08ec364c4807d57360">QUESO::AlgorithmFactory::m_tk</a></div><div class="ttdeci">static const BaseTKGroup&lt; GslVector, GslMatrix &gt; * m_tk</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00071">AlgorithmFactory.h:71</a></div></div>
-<div class="ttc" id="a00011_html_ad80b6a79cf9888684ed9252ebeb3d1e7"><div class="ttname"><a href="a00011.html#ad80b6a79cf9888684ed9252ebeb3d1e7">QUESO::AlgorithmFactory::build_algorithm</a></div><div class="ttdeci">virtual SharedPtr&lt; Algorithm&lt; GslVector, GslMatrix &gt; &gt;::Type build_algorithm()=0</div></div>
-<div class="ttc" id="a00011_html_a05fb01ea7c3ea0239daded71fd2bb69a"><div class="ttname"><a href="a00011.html#a05fb01ea7c3ea0239daded71fd2bb69a">QUESO::AlgorithmFactory::AlgorithmFactory</a></div><div class="ttdeci">AlgorithmFactory(const std::string &amp;name)</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00048">AlgorithmFactory.h:48</a></div></div>
-<div class="ttc" id="a00138_html"><div class="ttname"><a href="a00138.html">QUESO::GslVector</a></div><div class="ttdoc">Class for vector operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00357_source.html#l00049">GslVector.h:49</a></div></div>
-<div class="ttc" id="a00012_html"><div class="ttname"><a href="a00012.html">QUESO::AlgorithmFactoryImp</a></div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00101">AlgorithmFactory.h:101</a></div></div>
-<div class="ttc" id="a00012_html_a6c469de6c32878ba2f0f5fe34b3f1bfa"><div class="ttname"><a href="a00012.html#a6c469de6c32878ba2f0f5fe34b3f1bfa">QUESO::AlgorithmFactoryImp::~AlgorithmFactoryImp</a></div><div class="ttdeci">virtual ~AlgorithmFactoryImp()</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00108">AlgorithmFactory.h:108</a></div></div>
-<div class="ttc" id="a00083_html"><div class="ttname"><a href="a00083.html">QUESO::Factory</a></div><div class="ttdef"><b>Definition:</b> <a href="a00351_source.html#l00043">Factory.h:43</a></div></div>
-<div class="ttc" id="a00340_html_a95f9887ed9b637efb5b71f1df7d6bc4d"><div class="ttname"><a href="a00340.html#a95f9887ed9b637efb5b71f1df7d6bc4d">queso_assert</a></div><div class="ttdeci">#define queso_assert(asserted)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00132">asserts.h:132</a></div></div>
-<div class="ttc" id="a00011_html"><div class="ttname"><a href="a00011.html">QUESO::AlgorithmFactory</a></div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00042">AlgorithmFactory.h:42</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
-<div class="ttc" id="a00045_html"><div class="ttname"><a href="a00045.html">QUESO::BaseTKGroup</a></div><div class="ttdoc">This base class allows the representation of a transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00496_source.html#l00032">Algorithm.h:32</a></div></div>
-<div class="ttc" id="a00011_html_a50e34f23bd1e702bdf0c29e9fa0305c3"><div class="ttname"><a href="a00011.html#a50e34f23bd1e702bdf0c29e9fa0305c3">QUESO::AlgorithmFactory::set_environment</a></div><div class="ttdeci">static void set_environment(const BaseEnvironment &amp;env)</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00057">AlgorithmFactory.h:57</a></div></div>
-<div class="ttc" id="a00012_html_af8f85c790ca2ae146f4160aab95d6465"><div class="ttname"><a href="a00012.html#af8f85c790ca2ae146f4160aab95d6465">QUESO::AlgorithmFactoryImp::build_algorithm</a></div><div class="ttdeci">virtual SharedPtr&lt; Algorithm&lt; GslVector, GslMatrix &gt; &gt;::Type build_algorithm()</div><div class="ttdef"><b>Definition:</b> <a href="a00387_source.html#l00044">AlgorithmFactory.C:44</a></div></div>
-<div class="ttc" id="a00011_html_abf293c33d2fb0e5f17c8f2e6c95d9aa3"><div class="ttname"><a href="a00011.html#abf293c33d2fb0e5f17c8f2e6c95d9aa3">QUESO::AlgorithmFactory::m_env</a></div><div class="ttdeci">static const BaseEnvironment * m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00339_source.html#l00070">AlgorithmFactory.h:70</a></div></div>
-<div class="ttc" id="a00136_html"><div class="ttname"><a href="a00136.html">QUESO::GslMatrix</a></div><div class="ttdoc">Class for matrix operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00355_source.html#l00049">GslMatrix.h:49</a></div></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00338.html#a68c754b3ef7ffcc9c9c91d27d1061d08">annClusGaussPts</a>(                   <span class="comment">// clustered-Gaussian distribution</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   pa,                     <span class="comment">// point array (modified)</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordtype">int</span>                             n,                      <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,            <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordtype">int</span>                             n_clus,         <span class="comment">// number of colors (clusters)</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="a00308.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a>                 <a class="code" href="a00337.html#ac7772da3eb92b98bea52107de142dc85">new_clust</a>,      <span class="comment">// generate new cluster centers</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordtype">double</span>                  <a class="code" href="a00337.html#a2976da2f4cfad54a418dff74a0094ebe">std_dev</a>);       <span class="comment">// standard deviation within clusters</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00338.html#addd81805ca1c7146b17cc4f89742fbd4">annClusOrthFlats</a>(          <span class="comment">// clustered along orthogonal flats</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   pa,                     <span class="comment">// point array (modified)</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordtype">int</span>                             n,                      <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,            <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordtype">int</span>                             n_clus,         <span class="comment">// number of colors</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <a class="code" href="a00308.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a>                 <a class="code" href="a00337.html#ac7772da3eb92b98bea52107de142dc85">new_clust</a>,      <span class="comment">// generate new clusters.</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordtype">double</span>                  <a class="code" href="a00337.html#a2976da2f4cfad54a418dff74a0094ebe">std_dev</a>,        <span class="comment">// standard deviation within clusters</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00337.html#a26fe12f37cc7899be8f2e112dc652e47">max_dim</a>);       <span class="comment">// maximum dimension of the flats</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00338.html#a3bdf55c4d3f13f8ec0753c4c1d60807a">annClusEllipsoids</a>(                 <span class="comment">// clustered around ellipsoids</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   pa,                     <span class="comment">// point array (modified)</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordtype">int</span>                             n,                      <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,            <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordtype">int</span>                             n_clus,         <span class="comment">// number of colors</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <a class="code" href="a00308.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a>                 <a class="code" href="a00337.html#ac7772da3eb92b98bea52107de142dc85">new_clust</a>,      <span class="comment">// generate new clusters.</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keywordtype">double</span>                  std_dev_small,  <span class="comment">// small standard deviation</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordtype">double</span>                  <a class="code" href="a00337.html#ad43ddee0ede448da2f7972732881f03c">std_dev_lo</a>,     <span class="comment">// low standard deviation for ellipses</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordtype">double</span>                  <a class="code" href="a00337.html#ae349ce0a00dbf1de739f0d77fc2c1fd3">std_dev_hi</a>,     <span class="comment">// high standard deviation for ellipses</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00337.html#a26fe12f37cc7899be8f2e112dc652e47">max_dim</a>);       <span class="comment">// maximum dimension of the flats</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00338.html#ab9dd0157378d38e396988b4faf1f5e42">annPlanted</a>(                                <span class="comment">// planted nearest neighbors</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   pa,                     <span class="comment">// point array (modified)</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordtype">int</span>                             n,                      <span class="comment">// number of points</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordtype">int</span>                             <a class="code" href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a>,            <span class="comment">// dimension</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <a class="code" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>   src,            <span class="comment">// source point array</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordtype">int</span>                             n_src,          <span class="comment">// source size</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordtype">double</span>                  <a class="code" href="a00337.html#a2976da2f4cfad54a418dff74a0094ebe">std_dev</a>);       <span class="comment">// standard deviation about source</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="a00338_html_ae8843fe482ba826ec5b56d5b6b4d72bc"><div class="ttname"><a href="a00338.html#ae8843fe482ba826ec5b56d5b6b4d72bc">annIdum</a></div><div class="ttdeci">int annIdum</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00042">rand.cpp:42</a></div></div>
+<div class="ttc" id="a00338_html_ab4674f5c19c4f1f21c8c6c769c981fbe"><div class="ttname"><a href="a00338.html#ab4674f5c19c4f1f21c8c6c769c981fbe">annGaussPts</a></div><div class="ttdeci">void annGaussPts(ANNpointArray pa, int n, int dim, double std_dev)</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00214">rand.cpp:214</a></div></div>
+<div class="ttc" id="a00338_html_a540e51fd43b975b1bf5d2189274004cd"><div class="ttname"><a href="a00338.html#a540e51fd43b975b1bf5d2189274004cd">annUniformPts</a></div><div class="ttdeci">void annUniformPts(ANNpointArray pa, int n, int dim)</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00196">rand.cpp:196</a></div></div>
+<div class="ttc" id="a00337_html_ae349ce0a00dbf1de739f0d77fc2c1fd3"><div class="ttname"><a href="a00337.html#ae349ce0a00dbf1de739f0d77fc2c1fd3">std_dev_hi</a></div><div class="ttdeci">double std_dev_hi</div><div class="ttdef"><b>Definition:</b> <a href="a00337_source.html#l00482">ann_test.cpp:482</a></div></div>
+<div class="ttc" id="a00338_html_a3bdf55c4d3f13f8ec0753c4c1d60807a"><div class="ttname"><a href="a00338.html#a3bdf55c4d3f13f8ec0753c4c1d60807a">annClusEllipsoids</a></div><div class="ttdeci">void annClusEllipsoids(ANNpointArray pa, int n, int dim, int n_clus, ANNbool new_clust, double std_dev_small, double std_dev_lo, double std_dev_hi, int max_dim)</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00503">rand.cpp:503</a></div></div>
+<div class="ttc" id="a00338_html_a6e7a4bc2721b0072c402d1f972b73803"><div class="ttname"><a href="a00338.html#a6e7a4bc2721b0072c402d1f972b73803">annCoGaussPts</a></div><div class="ttdeci">void annCoGaussPts(ANNpointArray pa, int n, int dim, double correlation)</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00250">rand.cpp:250</a></div></div>
+<div class="ttc" id="a00308_html_ae5927710e8251aa54f5b820eca160f2c"><div class="ttname"><a href="a00308.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a></div><div class="ttdeci">ANNbool</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00132">ANN.h:132</a></div></div>
+<div class="ttc" id="a00338_html_ab9dd0157378d38e396988b4faf1f5e42"><div class="ttname"><a href="a00338.html#ab9dd0157378d38e396988b4faf1f5e42">annPlanted</a></div><div class="ttdeci">void annPlanted(ANNpointArray pa, int n, int dim, ANNpointArray src, int n_src, double std_dev)</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00580">rand.cpp:580</a></div></div>
+<div class="ttc" id="a00337_html_ad43ddee0ede448da2f7972732881f03c"><div class="ttname"><a href="a00337.html#ad43ddee0ede448da2f7972732881f03c">std_dev_lo</a></div><div class="ttdeci">double std_dev_lo</div><div class="ttdef"><b>Definition:</b> <a href="a00337_source.html#l00481">ann_test.cpp:481</a></div></div>
+<div class="ttc" id="a00308_html_a402299ac00a81ad80f09a0eb84ba4059"><div class="ttname"><a href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a></div><div class="ttdeci">ANNpoint * ANNpointArray</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00376">ANN.h:376</a></div></div>
+<div class="ttc" id="a00338_html_a68c754b3ef7ffcc9c9c91d27d1061d08"><div class="ttname"><a href="a00338.html#a68c754b3ef7ffcc9c9c91d27d1061d08">annClusGaussPts</a></div><div class="ttdeci">void annClusGaussPts(ANNpointArray pa, int n, int dim, int n_clus, ANNbool new_clust, double std_dev)</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00314">rand.cpp:314</a></div></div>
+<div class="ttc" id="a00306_html_a70b5e28b5bc3d1b63a7435c5fe50b837"><div class="ttname"><a href="a00306.html#a70b5e28b5bc3d1b63a7435c5fe50b837">dim</a></div><div class="ttdeci">int dim</div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00081">ann2fig.cpp:81</a></div></div>
+<div class="ttc" id="a00308_html"><div class="ttname"><a href="a00308.html">ANN.h</a></div></div>
+<div class="ttc" id="a00337_html_a26fe12f37cc7899be8f2e112dc652e47"><div class="ttname"><a href="a00337.html#a26fe12f37cc7899be8f2e112dc652e47">max_dim</a></div><div class="ttdeci">int max_dim</div><div class="ttdef"><b>Definition:</b> <a href="a00337_source.html#l00477">ann_test.cpp:477</a></div></div>
+<div class="ttc" id="a00337_html_a2976da2f4cfad54a418dff74a0094ebe"><div class="ttname"><a href="a00337.html#a2976da2f4cfad54a418dff74a0094ebe">std_dev</a></div><div class="ttdeci">double std_dev</div><div class="ttdef"><b>Definition:</b> <a href="a00337_source.html#l00480">ann_test.cpp:480</a></div></div>
+<div class="ttc" id="a00338_html_a0cd055d33236798806cf92c242af0bbc"><div class="ttname"><a href="a00338.html#a0cd055d33236798806cf92c242af0bbc">annCoLaplacePts</a></div><div class="ttdeci">void annCoLaplacePts(ANNpointArray pa, int n, int dim, double correlation)</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00273">rand.cpp:273</a></div></div>
+<div class="ttc" id="a00338_html_addd81805ca1c7146b17cc4f89742fbd4"><div class="ttname"><a href="a00338.html#addd81805ca1c7146b17cc4f89742fbd4">annClusOrthFlats</a></div><div class="ttdeci">void annClusOrthFlats(ANNpointArray pa, int n, int dim, int n_clus, ANNbool new_clust, double std_dev, int max_dim)</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00408">rand.cpp:408</a></div></div>
+<div class="ttc" id="a00338_html_ac2220ea8ee08992452c086877db419a9"><div class="ttname"><a href="a00338.html#ac2220ea8ee08992452c086877db419a9">annLaplacePts</a></div><div class="ttdeci">void annLaplacePts(ANNpointArray pa, int n, int dim)</div><div class="ttdef"><b>Definition:</b> <a href="a00338_source.html#l00232">rand.cpp:232</a></div></div>
+<div class="ttc" id="a00337_html_ac7772da3eb92b98bea52107de142dc85"><div class="ttname"><a href="a00337.html#ac7772da3eb92b98bea52107de142dc85">new_clust</a></div><div class="ttdeci">ANNbool new_clust</div><div class="ttdef"><b>Definition:</b> <a href="a00337_source.html#l00476">ann_test.cpp:476</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

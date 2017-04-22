@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: QUESO::ArrayOfOneDGrids&lt; V, M &gt; Class Template Reference</title>
+<title>queso-0.56.2: ANNsampStat Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,494 +43,316 @@
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="a00690.html">QUESO</a></li><li class="navelem"><a class="el" href="a00027.html">ArrayOfOneDGrids</a></li>  </ul>
-</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="a01435.html">List of all members</a>  </div>
+<a href="a00709.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::ArrayOfOneDGrids&lt; V, M &gt; Class Template Reference</div>  </div>
+<div class="title">ANNsampStat Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Class to accommodate arrays of one-dimensional grid.  
- <a href="a00027.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for QUESO::ArrayOfOneDGrids&lt; V, M &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="a01436.png" border="0" usemap="#_q_u_e_s_o_1_1_array_of_one_d_grids_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_array_of_one_d_grids_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_array_of_one_d_grids_3_01_v_00_01_m_01_4_coll__map">
-<area shape="rect" id="node2" href="a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="347,147,522,173"/><area shape="rect" id="node5" href="a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="667,57,845,84"/><area shape="rect" id="node8" href="a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="689,208,823,235"/><area shape="rect" id="node3" href="a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="31,121,193,148"/><area shape="rect" id="node4" href="a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="49,172,175,199"/><area shape="rect" id="node6" href="a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="345,5,525,46"/><area shape="rect" id="node7" href="a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,12,219,39"/><area shape="rect" id="node10" href="a00170.html" title="A class for partitioning vectors and matrices. " alt="" coords="976,208,1075,235"/><area shape="rect" id="node9" href="a00072.html" title="QUESO::DistArray\&lt; QUESO\l::BaseOneDGrid\&lt; double \&gt; * \&gt;" alt="" coords="1171,198,1365,239"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<p><code>#include &lt;<a class="el" href="a00309_source.html">ANNperf.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:afac2d38cfd5e69c4e7cd7744308063af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#afac2d38cfd5e69c4e7cd7744308063af">ArrayOfOneDGrids</a> (const char *prefix, const <a class="el" href="a00247.html">VectorSpace</a>&lt; V, M &gt; &amp;<a class="el" href="a00027.html#a07aee362e04f713c139730c991de9baa">rowSpace</a>)</td></tr>
-<tr class="memdesc:afac2d38cfd5e69c4e7cd7744308063af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#afac2d38cfd5e69c4e7cd7744308063af">More...</a><br/></td></tr>
-<tr class="separator:afac2d38cfd5e69c4e7cd7744308063af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4580db34a8438863e75c40cd47e9c8d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a4580db34a8438863e75c40cd47e9c8d4">~ArrayOfOneDGrids</a> ()</td></tr>
-<tr class="memdesc:a4580db34a8438863e75c40cd47e9c8d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a4580db34a8438863e75c40cd47e9c8d4">More...</a><br/></td></tr>
-<tr class="separator:a4580db34a8438863e75c40cd47e9c8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Property methods</div></td></tr>
-<tr class="memitem:a07aee362e04f713c139730c991de9baa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00247.html">VectorSpace</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a07aee362e04f713c139730c991de9baa">rowSpace</a> () const </td></tr>
-<tr class="memdesc:a07aee362e04f713c139730c991de9baa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the (vector) space to which the row belongs to.  <a href="#a07aee362e04f713c139730c991de9baa">More...</a><br/></td></tr>
-<tr class="separator:a07aee362e04f713c139730c991de9baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2035c97cda24870644070eae0f8ecfae"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a2035c97cda24870644070eae0f8ecfae">sizes</a> () const </td></tr>
-<tr class="memdesc:a2035c97cda24870644070eae0f8ecfae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array with the sizes of the grids.  <a href="#a2035c97cda24870644070eae0f8ecfae">More...</a><br/></td></tr>
-<tr class="separator:a2035c97cda24870644070eae0f8ecfae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9230fc37403bb00ecd27ad842eb01c2b"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a9230fc37403bb00ecd27ad842eb01c2b">minPositions</a> () const </td></tr>
-<tr class="memdesc:a9230fc37403bb00ecd27ad842eb01c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array with the minimum position of each grid.  <a href="#a9230fc37403bb00ecd27ad842eb01c2b">More...</a><br/></td></tr>
-<tr class="separator:a9230fc37403bb00ecd27ad842eb01c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a958f92e18bcab93e1866ec67b18e408b"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a958f92e18bcab93e1866ec67b18e408b">maxPositions</a> () const </td></tr>
-<tr class="memdesc:a958f92e18bcab93e1866ec67b18e408b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array with the maximum position of each grid.  <a href="#a958f92e18bcab93e1866ec67b18e408b">More...</a><br/></td></tr>
-<tr class="separator:a958f92e18bcab93e1866ec67b18e408b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Math methods</div></td></tr>
-<tr class="memitem:a143a91500dd5cbc18dd9f8ec912f21d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a143a91500dd5cbc18dd9f8ec912f21d1">setUniformGrids</a> (const V &amp;sizesVec, const V &amp;minPositionsVec, const V &amp;maxPositionsVec)</td></tr>
-<tr class="memdesc:a143a91500dd5cbc18dd9f8ec912f21d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an array of uniform grids.  <a href="#a143a91500dd5cbc18dd9f8ec912f21d1">More...</a><br/></td></tr>
-<tr class="separator:a143a91500dd5cbc18dd9f8ec912f21d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Accessor methods</div></td></tr>
-<tr class="memitem:a1e09877a9c5e712a03812163f628685b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00040.html">BaseOneDGrid</a>&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a1e09877a9c5e712a03812163f628685b">grid</a> (unsigned int rowId) const </td></tr>
-<tr class="memdesc:a1e09877a9c5e712a03812163f628685b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the grid stored in the <code>rowId</code>-th position of the array of grids.  <a href="#a1e09877a9c5e712a03812163f628685b">More...</a><br/></td></tr>
-<tr class="separator:a1e09877a9c5e712a03812163f628685b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bd02812439e763a28a538554c5cbc41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a3bd02812439e763a28a538554c5cbc41">reset</a> ()</td></tr>
+<tr class="separator:a3bd02812439e763a28a538554c5cbc41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f19db1ce9dfe4c28e24aa5165948254"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a9f19db1ce9dfe4c28e24aa5165948254">ANNsampStat</a> ()</td></tr>
+<tr class="separator:a9f19db1ce9dfe4c28e24aa5165948254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2213787291e70f24c873e2483c3ea0da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a2213787291e70f24c873e2483c3ea0da">operator+=</a> (double x)</td></tr>
+<tr class="separator:a2213787291e70f24c873e2483c3ea0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ba7393a26ec5760b4e5efbc2fd6cf50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a4ba7393a26ec5760b4e5efbc2fd6cf50">samples</a> ()</td></tr>
+<tr class="separator:a4ba7393a26ec5760b4e5efbc2fd6cf50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a160bb296a7529384af88731b45b2cfcf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a160bb296a7529384af88731b45b2cfcf">mean</a> ()</td></tr>
+<tr class="separator:a160bb296a7529384af88731b45b2cfcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5f55b125a8f8b510ede9b92d394ff71"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#aa5f55b125a8f8b510ede9b92d394ff71">stdDev</a> ()</td></tr>
+<tr class="separator:aa5f55b125a8f8b510ede9b92d394ff71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b9978f9a76c46b3b0794e5887eb6cb1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a6b9978f9a76c46b3b0794e5887eb6cb1">min</a> ()</td></tr>
+<tr class="separator:a6b9978f9a76c46b3b0794e5887eb6cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad42511f02ba75bc3c1021724ba11d2ee"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ad42511f02ba75bc3c1021724ba11d2ee">max</a> ()</td></tr>
+<tr class="separator:ad42511f02ba75bc3c1021724ba11d2ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:abe7ada351d4ab3d04987f52cfedb419c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00035.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#abe7ada351d4ab3d04987f52cfedb419c">m_env</a></td></tr>
-<tr class="separator:abe7ada351d4ab3d04987f52cfedb419c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9f51dffdcb939ac6b85d700a60fe167"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ae9f51dffdcb939ac6b85d700a60fe167">m_prefix</a></td></tr>
-<tr class="separator:ae9f51dffdcb939ac6b85d700a60fe167"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8f8d1a3e1d4f6213cf64698f95d34da"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00247.html">VectorSpace</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">m_rowSpace</a></td></tr>
-<tr class="separator:af8f8d1a3e1d4f6213cf64698f95d34da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cdfeb23fce031448906cef8d15fd407"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00072.html">DistArray</a>&lt; <a class="el" href="a00040.html">BaseOneDGrid</a><br class="typebreak"/>
-&lt; double &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a></td></tr>
-<tr class="separator:a0cdfeb23fce031448906cef8d15fd407"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2164bf692a8fed51b630a114824ffa7"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a></td></tr>
-<tr class="separator:ae2164bf692a8fed51b630a114824ffa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaca722e41b97a006385c588ea888f7d9"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a></td></tr>
-<tr class="separator:aaca722e41b97a006385c588ea888f7d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8deeecb4b58f401acdc1fd101d6b5f42"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a></td></tr>
-<tr class="separator:a8deeecb4b58f401acdc1fd101d6b5f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-I/O methods</h2></td></tr>
-<tr class="memitem:a2c9eb92727869d6f985ed01c4a6d833d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a2c9eb92727869d6f985ed01c4a6d833d">print</a> (std::ostream &amp;os) const </td></tr>
-<tr class="memdesc:a2c9eb92727869d6f985ed01c4a6d833d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the values of the array of grids (points).  <a href="#a2c9eb92727869d6f985ed01c4a6d833d">More...</a><br/></td></tr>
-<tr class="separator:a2c9eb92727869d6f985ed01c4a6d833d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1bc76a10219d37cae967bf8f6d9859a"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#af1bc76a10219d37cae967bf8f6d9859a">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="a00027.html">ArrayOfOneDGrids</a>&lt; V, M &gt; &amp;obj)</td></tr>
-<tr class="separator:af1bc76a10219d37cae967bf8f6d9859a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a214c592fbbdf98714583c74501b8a637"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a214c592fbbdf98714583c74501b8a637">n</a></td></tr>
+<tr class="separator:a214c592fbbdf98714583c74501b8a637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41c4fd9c20bb36f3ce57fd00e517d1e7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a></td></tr>
+<tr class="separator:a41c4fd9c20bb36f3ce57fd00e517d1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7270d792a062a06dea51370f51b074f5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#a7270d792a062a06dea51370f51b074f5">sum2</a></td></tr>
+<tr class="separator:a7270d792a062a06dea51370f51b074f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2872786f4a4d6a38ebfb9586abe9147"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a></td></tr>
+<tr class="separator:ab2872786f4a4d6a38ebfb9586abe9147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7a6f8d44ecd769972ca3f2ba99cc3ea"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00027.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a></td></tr>
+<tr class="separator:aa7a6f8d44ecd769972ca3f2ba99cc3ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class V = GslVector, class M = GslMatrix&gt;<br/>
-class QUESO::ArrayOfOneDGrids&lt; V, M &gt;</h3>
-
-<p>Class to accommodate arrays of one-dimensional grid. </p>
-<p>Arrays of one-dimensional grids are necessary in the calculation, for instance, of CDFs and MDF of vector functions (refer to <a class="el" href="a00046.html" title="A templated (base) class for handling CDFs of vector functions. ">BaseVectorCdf</a>, <a class="el" href="a00048.html" title="A templated (base) class for handling MDFs of vector functions. ">BaseVectorMdf</a>, and derived classes). </p>
-
-<p>Definition at line <a class="el" href="a00469_source.html#l00047">47</a> of file <a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>.</p>
+<div class="textblock">
+<p>Definition at line <a class="el" href="a00309_source.html#l00085">85</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="afac2d38cfd5e69c4e7cd7744308063af"></a>
+<a class="anchor" id="a9f19db1ce9dfe4c28e24aa5165948254"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::<a class="el" href="a00027.html">ArrayOfOneDGrids</a> </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>prefix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00247.html">VectorSpace</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>rowSpace</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Default constructor. </p>
-
-<p>Definition at line <a class="el" href="a00483_source.html#l00035">35</a> of file <a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a>.</p>
-
-<p>References <a class="el" href="a00469_source.html#l00107">QUESO::ArrayOfOneDGrids&lt; V, M &gt;::m_oneDGrids</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  :</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00027.html#abe7ada351d4ab3d04987f52cfedb419c">m_env</a>         (<a class="code" href="a00027.html#a07aee362e04f713c139730c991de9baa">rowSpace</a>.env()    ),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00027.html#ae9f51dffdcb939ac6b85d700a60fe167">m_prefix</a>      ((std::string)(prefix)+<span class="stringliteral">&quot;&quot;</span>),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">m_rowSpace</a>    (<a class="code" href="a00027.html#a07aee362e04f713c139730c991de9baa">rowSpace</a>          ),</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>   (<a class="code" href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">m_rowSpace</a>.map(),1),</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>       (NULL),</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a>(NULL),</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a>(NULL)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; (<span class="keywordtype">unsigned</span> int) <a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>.MyLength(); ++i) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>(i,0) = NULL;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
-<div class="ttc" id="a00027_html_abe7ada351d4ab3d04987f52cfedb419c"><div class="ttname"><a href="a00027.html#abe7ada351d4ab3d04987f52cfedb419c">QUESO::ArrayOfOneDGrids::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00104">ArrayOfOneDGrids.h:104</a></div></div>
-<div class="ttc" id="a00027_html_aaca722e41b97a006385c588ea888f7d9"><div class="ttname"><a href="a00027.html#aaca722e41b97a006385c588ea888f7d9">QUESO::ArrayOfOneDGrids::m_minPositions</a></div><div class="ttdeci">V * m_minPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00110">ArrayOfOneDGrids.h:110</a></div></div>
-<div class="ttc" id="a00027_html_ae9f51dffdcb939ac6b85d700a60fe167"><div class="ttname"><a href="a00027.html#ae9f51dffdcb939ac6b85d700a60fe167">QUESO::ArrayOfOneDGrids::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00105">ArrayOfOneDGrids.h:105</a></div></div>
-<div class="ttc" id="a00027_html_a07aee362e04f713c139730c991de9baa"><div class="ttname"><a href="a00027.html#a07aee362e04f713c139730c991de9baa">QUESO::ArrayOfOneDGrids::rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; rowSpace() const </div><div class="ttdoc">Returns the (vector) space to which the row belongs to. </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00068">ArrayOfOneDGrids.C:68</a></div></div>
-<div class="ttc" id="a00027_html_a0cdfeb23fce031448906cef8d15fd407"><div class="ttname"><a href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">QUESO::ArrayOfOneDGrids::m_oneDGrids</a></div><div class="ttdeci">DistArray&lt; BaseOneDGrid&lt; double &gt; * &gt; m_oneDGrids</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00107">ArrayOfOneDGrids.h:107</a></div></div>
-<div class="ttc" id="a00027_html_a8deeecb4b58f401acdc1fd101d6b5f42"><div class="ttname"><a href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">QUESO::ArrayOfOneDGrids::m_maxPositions</a></div><div class="ttdeci">V * m_maxPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00111">ArrayOfOneDGrids.h:111</a></div></div>
-<div class="ttc" id="a00027_html_af8f8d1a3e1d4f6213cf64698f95d34da"><div class="ttname"><a href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">QUESO::ArrayOfOneDGrids::m_rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; m_rowSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00106">ArrayOfOneDGrids.h:106</a></div></div>
-<div class="ttc" id="a00027_html_ae2164bf692a8fed51b630a114824ffa7"><div class="ttname"><a href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">QUESO::ArrayOfOneDGrids::m_sizes</a></div><div class="ttdeci">V * m_sizes</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00109">ArrayOfOneDGrids.h:109</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a4580db34a8438863e75c40cd47e9c8d4"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::~<a class="el" href="a00027.html">ArrayOfOneDGrids</a> </td>
+          <td class="memname">ANNsampStat::ANNsampStat </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Destructor. </p>
-
-<p>Definition at line <a class="el" href="a00483_source.html#l00054">54</a> of file <a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a>) <span class="keyword">delete</span> <a class="code" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a>) <span class="keyword">delete</span> <a class="code" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>       ) <span class="keyword">delete</span> <a class="code" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; (<span class="keywordtype">unsigned</span> int) <a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>.MyLength(); ++i) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>(i,0)) <span class="keyword">delete</span> <a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>(i,0);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="ttc" id="a00027_html_aaca722e41b97a006385c588ea888f7d9"><div class="ttname"><a href="a00027.html#aaca722e41b97a006385c588ea888f7d9">QUESO::ArrayOfOneDGrids::m_minPositions</a></div><div class="ttdeci">V * m_minPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00110">ArrayOfOneDGrids.h:110</a></div></div>
-<div class="ttc" id="a00027_html_a0cdfeb23fce031448906cef8d15fd407"><div class="ttname"><a href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">QUESO::ArrayOfOneDGrids::m_oneDGrids</a></div><div class="ttdeci">DistArray&lt; BaseOneDGrid&lt; double &gt; * &gt; m_oneDGrids</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00107">ArrayOfOneDGrids.h:107</a></div></div>
-<div class="ttc" id="a00027_html_a8deeecb4b58f401acdc1fd101d6b5f42"><div class="ttname"><a href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">QUESO::ArrayOfOneDGrids::m_maxPositions</a></div><div class="ttdeci">V * m_maxPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00111">ArrayOfOneDGrids.h:111</a></div></div>
-<div class="ttc" id="a00027_html_ae2164bf692a8fed51b630a114824ffa7"><div class="ttname"><a href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">QUESO::ArrayOfOneDGrids::m_sizes</a></div><div class="ttdeci">V * m_sizes</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00109">ArrayOfOneDGrids.h:109</a></div></div>
+<p>Definition at line <a class="el" href="a00309_source.html#l00099">99</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{ <a class="code" href="a00027.html#a3bd02812439e763a28a538554c5cbc41">reset</a>(); }            <span class="comment">// constructor</span></div>
+<div class="ttc" id="a00027_html_a3bd02812439e763a28a538554c5cbc41"><div class="ttname"><a href="a00027.html#a3bd02812439e763a28a538554c5cbc41">ANNsampStat::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00091">ANNperf.h:91</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a1e09877a9c5e712a03812163f628685b"></a>
+<a class="anchor" id="ad42511f02ba75bc3c1021724ba11d2ee"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00040.html">BaseOneDGrid</a>&lt; double &gt; &amp; <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::grid </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>rowId</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the grid stored in the <code>rowId</code>-th position of the array of grids. </p>
-
-<p>Definition at line <a class="el" href="a00483_source.html#l00131">131</a> of file <a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a>.</p>
-
-<p>References <a class="el" href="a00340_source.html#l00075">queso_require_less_msg</a>.</p>
-
-<p>Referenced by <a class="el" href="a00644_source.html#l00031">QUESO::SampledVectorCdf&lt; V, M &gt;::SampledVectorCdf()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;{</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <a class="code" href="a00340.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a>(rowId, <a class="code" href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">m_rowSpace</a>.dimLocal(), <span class="stringliteral">&quot;rowId is out of range&quot;</span>);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  ArrayOfOneDGrids&lt;V,M&gt;* tmp = <span class="keyword">const_cast&lt;</span>ArrayOfOneDGrids&lt;V,M&gt;*<span class="keyword">&gt;</span>(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="keywordflow">return</span> *(tmp-&gt;m_oneDGrids(rowId,0));</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
-<div class="ttc" id="a00340_html_a9fbd2830796070462f06425899f3d6d5"><div class="ttname"><a href="a00340.html#a9fbd2830796070462f06425899f3d6d5">queso_require_less_msg</a></div><div class="ttdeci">#define queso_require_less_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00075">asserts.h:75</a></div></div>
-<div class="ttc" id="a00027_html_af8f8d1a3e1d4f6213cf64698f95d34da"><div class="ttname"><a href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">QUESO::ArrayOfOneDGrids::m_rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; m_rowSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00106">ArrayOfOneDGrids.h:106</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a958f92e18bcab93e1866ec67b18e408b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const V &amp; <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::maxPositions </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns an array with the maximum position of each grid. </p>
-
-<p>Definition at line <a class="el" href="a00483_source.html#l00093">93</a> of file <a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a>.</p>
-
-<p>References <a class="el" href="a00340_source.html#l00069">queso_require_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;{</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(<a class="code" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a>, <span class="stringliteral">&quot;maxPositions is still NULL&quot;</span>);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
-<div class="ttc" id="a00027_html_a8deeecb4b58f401acdc1fd101d6b5f42"><div class="ttname"><a href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">QUESO::ArrayOfOneDGrids::m_maxPositions</a></div><div class="ttdeci">V * m_maxPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00111">ArrayOfOneDGrids.h:111</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a9230fc37403bb00ecd27ad842eb01c2b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const V &amp; <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::minPositions </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns an array with the minimum position of each grid. </p>
-
-<p>Definition at line <a class="el" href="a00483_source.html#l00084">84</a> of file <a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a>.</p>
-
-<p>References <a class="el" href="a00340_source.html#l00069">queso_require_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;{</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(<a class="code" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a>, <span class="stringliteral">&quot;minPositions is still NULL&quot;</span>);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
-<div class="ttc" id="a00027_html_aaca722e41b97a006385c588ea888f7d9"><div class="ttname"><a href="a00027.html#aaca722e41b97a006385c588ea888f7d9">QUESO::ArrayOfOneDGrids::m_minPositions</a></div><div class="ttdeci">V * m_minPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00110">ArrayOfOneDGrids.h:110</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a2c9eb92727869d6f985ed01c4a6d833d"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::print </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints the values of the array of grids (points). </p>
-
-<p>Definition at line <a class="el" href="a00483_source.html#l00142">142</a> of file <a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a>.</p>
-
-<p>References <a class="el" href="a00469_source.html#l00107">QUESO::ArrayOfOneDGrids&lt; V, M &gt;::m_oneDGrids</a>.</p>
-<div class="fragment"><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;{</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  ArrayOfOneDGrids&lt;V,M&gt;* tmp = <span class="keyword">const_cast&lt;</span>ArrayOfOneDGrids&lt;V,M&gt;*<span class="keyword">&gt;</span>(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; (<span class="keywordtype">unsigned</span> int) <a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>.MyLength(); ++i) {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    os &lt;&lt; *(tmp-&gt;m_oneDGrids(i,0))</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;       &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  }</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;}</div>
-<div class="ttc" id="a00027_html_a0cdfeb23fce031448906cef8d15fd407"><div class="ttname"><a href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">QUESO::ArrayOfOneDGrids::m_oneDGrids</a></div><div class="ttdeci">DistArray&lt; BaseOneDGrid&lt; double &gt; * &gt; m_oneDGrids</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00107">ArrayOfOneDGrids.h:107</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a07aee362e04f713c139730c991de9baa"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00247.html">VectorSpace</a>&lt; V, M &gt; &amp; <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::rowSpace </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the (vector) space to which the row belongs to. </p>
-
-<p>Definition at line <a class="el" href="a00483_source.html#l00068">68</a> of file <a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">m_rowSpace</a>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
-<div class="ttc" id="a00027_html_af8f8d1a3e1d4f6213cf64698f95d34da"><div class="ttname"><a href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">QUESO::ArrayOfOneDGrids::m_rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; m_rowSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00106">ArrayOfOneDGrids.h:106</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a143a91500dd5cbc18dd9f8ec912f21d1"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::setUniformGrids </td>
-          <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>sizesVec</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>minPositionsVec</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>maxPositionsVec</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets an array of uniform grids. </p>
-
-<p>Definition at line <a class="el" href="a00483_source.html#l00102">102</a> of file <a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a>.</p>
-
-<p>Referenced by <a class="el" href="a00294_source.html#l00227">QUESO::SequenceOfVectors&lt; V, M &gt;::subUniformlySampledCdf()</a>, and <a class="el" href="a00294_source.html#l00262">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedUniformlySampledCdf()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;{</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>        == NULL) <a class="code" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>        = <span class="keyword">new</span> V(sizesVec);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordflow">else</span>                       *<a class="code" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>        = sizesVec;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a> == NULL) <a class="code" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a> = <span class="keyword">new</span> V(minPositionsVec);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordflow">else</span>                       *<a class="code" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a> = minPositionsVec;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a> == NULL) <a class="code" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a> = <span class="keyword">new</span> V(maxPositionsVec);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keywordflow">else</span>                       *<a class="code" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a> = maxPositionsVec;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keywordtype">char</span> strI[65];</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; (<span class="keywordtype">unsigned</span> int) <a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>.MyLength(); ++i) {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    sprintf(strI,<span class="stringliteral">&quot;%u_&quot;</span>,i);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>(i,0) = <span class="keyword">new</span> UniformOneDGrid&lt;double&gt;(<a class="code" href="a00027.html#abe7ada351d4ab3d04987f52cfedb419c">m_env</a>,</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                                                          (<a class="code" href="a00027.html#ae9f51dffdcb939ac6b85d700a60fe167">m_prefix</a>+strI).c_str(),</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                                                          (<span class="keywordtype">unsigned</span> int) sizesVec[i],</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                                                          minPositionsVec[i],</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                                                          maxPositionsVec[i]);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
-<div class="ttc" id="a00027_html_abe7ada351d4ab3d04987f52cfedb419c"><div class="ttname"><a href="a00027.html#abe7ada351d4ab3d04987f52cfedb419c">QUESO::ArrayOfOneDGrids::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00104">ArrayOfOneDGrids.h:104</a></div></div>
-<div class="ttc" id="a00027_html_aaca722e41b97a006385c588ea888f7d9"><div class="ttname"><a href="a00027.html#aaca722e41b97a006385c588ea888f7d9">QUESO::ArrayOfOneDGrids::m_minPositions</a></div><div class="ttdeci">V * m_minPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00110">ArrayOfOneDGrids.h:110</a></div></div>
-<div class="ttc" id="a00027_html_ae9f51dffdcb939ac6b85d700a60fe167"><div class="ttname"><a href="a00027.html#ae9f51dffdcb939ac6b85d700a60fe167">QUESO::ArrayOfOneDGrids::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00105">ArrayOfOneDGrids.h:105</a></div></div>
-<div class="ttc" id="a00027_html_a0cdfeb23fce031448906cef8d15fd407"><div class="ttname"><a href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">QUESO::ArrayOfOneDGrids::m_oneDGrids</a></div><div class="ttdeci">DistArray&lt; BaseOneDGrid&lt; double &gt; * &gt; m_oneDGrids</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00107">ArrayOfOneDGrids.h:107</a></div></div>
-<div class="ttc" id="a00027_html_a8deeecb4b58f401acdc1fd101d6b5f42"><div class="ttname"><a href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">QUESO::ArrayOfOneDGrids::m_maxPositions</a></div><div class="ttdeci">V * m_maxPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00111">ArrayOfOneDGrids.h:111</a></div></div>
-<div class="ttc" id="a00027_html_ae2164bf692a8fed51b630a114824ffa7"><div class="ttname"><a href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">QUESO::ArrayOfOneDGrids::m_sizes</a></div><div class="ttdeci">V * m_sizes</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00109">ArrayOfOneDGrids.h:109</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a2035c97cda24870644070eae0f8ecfae"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const V &amp; <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::sizes </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns an array with the sizes of the grids. </p>
-
-<p>Definition at line <a class="el" href="a00483_source.html#l00075">75</a> of file <a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a>.</p>
-
-<p>References <a class="el" href="a00340_source.html#l00069">queso_require_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;{</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(<a class="code" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>, <span class="stringliteral">&quot;sizes is still NULL&quot;</span>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
-<div class="ttc" id="a00027_html_ae2164bf692a8fed51b630a114824ffa7"><div class="ttname"><a href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">QUESO::ArrayOfOneDGrids::m_sizes</a></div><div class="ttdeci">V * m_sizes</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00109">ArrayOfOneDGrids.h:109</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a class="anchor" id="af1bc76a10219d37cae967bf8f6d9859a"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td class="memname">double ANNsampStat::max </td>
           <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="a00027.html">ArrayOfOneDGrids</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>obj</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00469_source.html#l00095">95</a> of file <a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    obj.print(os);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
+<p>Definition at line <a class="el" href="a00309_source.html#l00116">116</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00334_source.html#l00107">print_one_stat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="a00027.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a>; } <span class="comment">// maximum</span></div>
+<div class="ttc" id="a00027_html_aa7a6f8d44ecd769972ca3f2ba99cc3ea"><div class="ttname"><a href="a00027.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">ANNsampStat::maxVal</a></div><div class="ttdeci">double maxVal</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00089">ANNperf.h:89</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a160bb296a7529384af88731b45b2cfcf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ANNsampStat::mean </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00309_source.html#l00110">110</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00334_source.html#l00107">print_one_stat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a>/<a class="code" href="a00027.html#a214c592fbbdf98714583c74501b8a637">n</a>; } <span class="comment">// mean</span></div>
+<div class="ttc" id="a00027_html_a41c4fd9c20bb36f3ce57fd00e517d1e7"><div class="ttname"><a href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">ANNsampStat::sum</a></div><div class="ttdeci">double sum</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00087">ANNperf.h:87</a></div></div>
+<div class="ttc" id="a00027_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00027.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00086">ANNperf.h:86</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6b9978f9a76c46b3b0794e5887eb6cb1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ANNsampStat::min </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00309_source.html#l00115">115</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00334_source.html#l00107">print_one_stat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="a00027.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a>; } <span class="comment">// minimum</span></div>
+<div class="ttc" id="a00027_html_ab2872786f4a4d6a38ebfb9586abe9147"><div class="ttname"><a href="a00027.html#ab2872786f4a4d6a38ebfb9586abe9147">ANNsampStat::minVal</a></div><div class="ttdeci">double minVal</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00089">ANNperf.h:89</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a2213787291e70f24c873e2483c3ea0da"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> ANNsampStat::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00309_source.html#l00101">101</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <a class="code" href="a00027.html#a214c592fbbdf98714583c74501b8a637">n</a>++;  <a class="code" href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a> += x;  <a class="code" href="a00027.html#a7270d792a062a06dea51370f51b074f5">sum2</a> += x*x;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                <span class="keywordflow">if</span> (x &lt; <a class="code" href="a00027.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a>) <a class="code" href="a00027.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a> = x;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                <span class="keywordflow">if</span> (x &gt; <a class="code" href="a00027.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a>) <a class="code" href="a00027.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a> = x;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
+<div class="ttc" id="a00027_html_a41c4fd9c20bb36f3ce57fd00e517d1e7"><div class="ttname"><a href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">ANNsampStat::sum</a></div><div class="ttdeci">double sum</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00087">ANNperf.h:87</a></div></div>
+<div class="ttc" id="a00027_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00027.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00086">ANNperf.h:86</a></div></div>
+<div class="ttc" id="a00027_html_a7270d792a062a06dea51370f51b074f5"><div class="ttname"><a href="a00027.html#a7270d792a062a06dea51370f51b074f5">ANNsampStat::sum2</a></div><div class="ttdeci">double sum2</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00088">ANNperf.h:88</a></div></div>
+<div class="ttc" id="a00027_html_aa7a6f8d44ecd769972ca3f2ba99cc3ea"><div class="ttname"><a href="a00027.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">ANNsampStat::maxVal</a></div><div class="ttdeci">double maxVal</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00089">ANNperf.h:89</a></div></div>
+<div class="ttc" id="a00027_html_ab2872786f4a4d6a38ebfb9586abe9147"><div class="ttname"><a href="a00027.html#ab2872786f4a4d6a38ebfb9586abe9147">ANNsampStat::minVal</a></div><div class="ttdeci">double minVal</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00089">ANNperf.h:89</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a3bd02812439e763a28a538554c5cbc41"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> ANNsampStat::reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00309_source.html#l00091">91</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
+
+<p>References <a class="el" href="a00308_source.html#l00114">ANN_DBL_MAX</a>.</p>
+
+<p>Referenced by <a class="el" href="a00334_source.html#l00071">annResetStats()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                <a class="code" href="a00027.html#a214c592fbbdf98714583c74501b8a637">n</a> = 0;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                <a class="code" href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a> = <a class="code" href="a00027.html#a7270d792a062a06dea51370f51b074f5">sum2</a> = 0;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                <a class="code" href="a00027.html#ab2872786f4a4d6a38ebfb9586abe9147">minVal</a> = <a class="code" href="a00308.html#a477b3fd2435613171740930b8e1925cf">ANN_DBL_MAX</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <a class="code" href="a00027.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">maxVal</a> = -<a class="code" href="a00308.html#a477b3fd2435613171740930b8e1925cf">ANN_DBL_MAX</a>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
+<div class="ttc" id="a00027_html_a41c4fd9c20bb36f3ce57fd00e517d1e7"><div class="ttname"><a href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">ANNsampStat::sum</a></div><div class="ttdeci">double sum</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00087">ANNperf.h:87</a></div></div>
+<div class="ttc" id="a00027_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00027.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00086">ANNperf.h:86</a></div></div>
+<div class="ttc" id="a00027_html_a7270d792a062a06dea51370f51b074f5"><div class="ttname"><a href="a00027.html#a7270d792a062a06dea51370f51b074f5">ANNsampStat::sum2</a></div><div class="ttdeci">double sum2</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00088">ANNperf.h:88</a></div></div>
+<div class="ttc" id="a00027_html_aa7a6f8d44ecd769972ca3f2ba99cc3ea"><div class="ttname"><a href="a00027.html#aa7a6f8d44ecd769972ca3f2ba99cc3ea">ANNsampStat::maxVal</a></div><div class="ttdeci">double maxVal</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00089">ANNperf.h:89</a></div></div>
+<div class="ttc" id="a00308_html_a477b3fd2435613171740930b8e1925cf"><div class="ttname"><a href="a00308.html#a477b3fd2435613171740930b8e1925cf">ANN_DBL_MAX</a></div><div class="ttdeci">const double ANN_DBL_MAX</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00114">ANN.h:114</a></div></div>
+<div class="ttc" id="a00027_html_ab2872786f4a4d6a38ebfb9586abe9147"><div class="ttname"><a href="a00027.html#ab2872786f4a4d6a38ebfb9586abe9147">ANNsampStat::minVal</a></div><div class="ttdeci">double minVal</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00089">ANNperf.h:89</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a4ba7393a26ec5760b4e5efbc2fd6cf50"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ANNsampStat::samples </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00309_source.html#l00108">108</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="a00027.html#a214c592fbbdf98714583c74501b8a637">n</a>; }           <span class="comment">// number of samples</span></div>
+<div class="ttc" id="a00027_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00027.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00086">ANNperf.h:86</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aa5f55b125a8f8b510ede9b92d394ff71"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ANNsampStat::stdDev </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00309_source.html#l00113">113</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00334_source.html#l00107">print_one_stat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;{ <span class="keywordflow">return</span> sqrt((<a class="code" href="a00027.html#a7270d792a062a06dea51370f51b074f5">sum2</a> - (<a class="code" href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a>*<a class="code" href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">sum</a>)/<a class="code" href="a00027.html#a214c592fbbdf98714583c74501b8a637">n</a>)/(<a class="code" href="a00027.html#a214c592fbbdf98714583c74501b8a637">n</a>-1));}</div>
+<div class="ttc" id="a00027_html_a41c4fd9c20bb36f3ce57fd00e517d1e7"><div class="ttname"><a href="a00027.html#a41c4fd9c20bb36f3ce57fd00e517d1e7">ANNsampStat::sum</a></div><div class="ttdeci">double sum</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00087">ANNperf.h:87</a></div></div>
+<div class="ttc" id="a00027_html_a214c592fbbdf98714583c74501b8a637"><div class="ttname"><a href="a00027.html#a214c592fbbdf98714583c74501b8a637">ANNsampStat::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00086">ANNperf.h:86</a></div></div>
+<div class="ttc" id="a00027_html_a7270d792a062a06dea51370f51b074f5"><div class="ttname"><a href="a00027.html#a7270d792a062a06dea51370f51b074f5">ANNsampStat::sum2</a></div><div class="ttdeci">double sum2</div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00088">ANNperf.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="abe7ada351d4ab3d04987f52cfedb419c"></a>
+<a class="anchor" id="aa7a6f8d44ecd769972ca3f2ba99cc3ea"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00035.html">BaseEnvironment</a>&amp; <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::m_env</td>
+          <td class="memname">double ANNsampStat::maxVal</td>
         </tr>
       </table>
   </td>
@@ -540,21 +362,19 @@ template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00469_source.html#l00104">104</a> of file <a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>.</p>
+<p>Definition at line <a class="el" href="a00309_source.html#l00089">89</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a8deeecb4b58f401acdc1fd101d6b5f42"></a>
+<a class="anchor" id="ab2872786f4a4d6a38ebfb9586abe9147"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">V* <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::m_maxPositions</td>
+          <td class="memname">double ANNsampStat::minVal</td>
         </tr>
       </table>
   </td>
@@ -564,21 +384,19 @@ template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00469_source.html#l00111">111</a> of file <a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>.</p>
+<p>Definition at line <a class="el" href="a00309_source.html#l00089">89</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aaca722e41b97a006385c588ea888f7d9"></a>
+<a class="anchor" id="a214c592fbbdf98714583c74501b8a637"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">V* <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::m_minPositions</td>
+          <td class="memname">int ANNsampStat::n</td>
         </tr>
       </table>
   </td>
@@ -588,21 +406,19 @@ template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00469_source.html#l00110">110</a> of file <a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>.</p>
+<p>Definition at line <a class="el" href="a00309_source.html#l00086">86</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0cdfeb23fce031448906cef8d15fd407"></a>
+<a class="anchor" id="a41c4fd9c20bb36f3ce57fd00e517d1e7"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00072.html">DistArray</a>&lt;<a class="el" href="a00040.html">BaseOneDGrid</a>&lt;double&gt;*&gt; <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::m_oneDGrids</td>
+          <td class="memname">double ANNsampStat::sum</td>
         </tr>
       </table>
   </td>
@@ -612,23 +428,19 @@ template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00469_source.html#l00107">107</a> of file <a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00483_source.html#l00035">QUESO::ArrayOfOneDGrids&lt; V, M &gt;::ArrayOfOneDGrids()</a>, and <a class="el" href="a00483_source.html#l00142">QUESO::ArrayOfOneDGrids&lt; V, M &gt;::print()</a>.</p>
+<p>Definition at line <a class="el" href="a00309_source.html#l00087">87</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae9f51dffdcb939ac6b85d700a60fe167"></a>
+<a class="anchor" id="a7270d792a062a06dea51370f51b074f5"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::m_prefix</td>
+          <td class="memname">double ANNsampStat::sum2</td>
         </tr>
       </table>
   </td>
@@ -638,65 +450,16 @@ template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00469_source.html#l00105">105</a> of file <a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>.</p>
+<p>Definition at line <a class="el" href="a00309_source.html#l00088">88</a> of file <a class="el" href="a00309_source.html">ANNperf.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af8f8d1a3e1d4f6213cf64698f95d34da"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00247.html">VectorSpace</a>&lt;V,M&gt;&amp; <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::m_rowSpace</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00469_source.html#l00106">106</a> of file <a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae2164bf692a8fed51b630a114824ffa7"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">V* <a class="el" href="a00027.html">QUESO::ArrayOfOneDGrids</a>&lt; V, M &gt;::m_sizes</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00469_source.html#l00109">109</a> of file <a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/misc/inc/<a class="el" href="a00469_source.html">ArrayOfOneDGrids.h</a></li>
-<li>src/misc/src/<a class="el" href="a00483_source.html">ArrayOfOneDGrids.C</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/contrib/ANN/include/ANN/<a class="el" href="a00309_source.html">ANNperf.h</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:14 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

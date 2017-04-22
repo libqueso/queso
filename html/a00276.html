@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/basic/inc/VectorSequence.h File Reference</title>
+<title>queso-0.56.2: src/basic/inc/SequenceStatisticalOptions.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -52,55 +52,82 @@
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">VectorSequence.h File Reference</div>  </div>
+<div class="title">SequenceStatisticalOptions.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A templated class for handling vector and arrays samples.  
+<p>A templated class that stores default statistical options.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;queso/VectorSpace.h&gt;</code><br/>
-<code>#include &lt;queso/BoxSubset.h&gt;</code><br/>
-<code>#include &lt;queso/ScalarSequence.h&gt;</code><br/>
-<code>#include &lt;queso/SequenceStatisticalOptions.h&gt;</code><br/>
-<code>#include &lt;queso/ArrayOfOneDGrids.h&gt;</code><br/>
-<code>#include &lt;queso/ArrayOfOneDTables.h&gt;</code><br/>
-<code>#include &lt;queso/2dArrayOfStuff.h&gt;</code><br/>
-<code>#include &lt;sys/time.h&gt;</code><br/>
-<code>#include &lt;fstream&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for VectorSequence.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00711.png" border="0" usemap="#src_2basic_2inc_2_vector_sequence_8h" alt=""/></div>
-<map name="src_2basic_2inc_2_vector_sequence_8h" id="src_2basic_2inc_2_vector_sequence_8h">
-</map>
-</div>
-</div>
+
 <p><a href="a00276_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00051.html">QUESO::BaseVectorSequence&lt; V, M &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for handling vector and array samples (sequence of vectors or arrays).  <a href="a00051.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html">SsOptionsValues</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A templated class that stores default statistical options for a sequence of vectors, e.g. a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence.  <a href="a00215.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00209.html">SequenceStatisticalOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A templated class that stores statistical options (optionally read from an input file)  <a href="a00209.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
+<tr class="memitem:a00670"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00670.html">boost</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00671"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00671.html">boost::program_options</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae194d12af9b08b130faf542b9b9ffe9b"><td class="memTemplParams" colspan="2">template&lt;class P_V , class P_M , class Q_V , class Q_M &gt; </td></tr>
-<tr class="memitem:ae194d12af9b08b130faf542b9b9ffe9b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00690.html#ae194d12af9b08b130faf542b9b9ffe9b">QUESO::ComputeCovCorrMatricesBetweenVectorSequences</a> (const BaseVectorSequence&lt; P_V, P_M &gt; &amp;subPSeq, const BaseVectorSequence&lt; Q_V, Q_M &gt; &amp;subQSeq, unsigned int subNumSamples, P_M &amp;pqCovMatrix, P_M &amp;pqCorrMatrix)</td></tr>
-<tr class="separator:ae194d12af9b08b130faf542b9b9ffe9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62ddbe8cb653106f909d0b2a6cc9c4b6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00276.html#a62ddbe8cb653106f909d0b2a6cc9c4b6">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="a00209.html">SequenceStatisticalOptions</a> &amp;obj)</td></tr>
+<tr class="separator:a62ddbe8cb653106f909d0b2a6cc9c4b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A templated class for handling vector and arrays samples. </p>
+<div class="textblock"><p>A templated class that stores default statistical options. </p>
 
-<p>Definition in file <a class="el" href="a00276_source.html">VectorSequence.h</a>.</p>
-</div></div><!-- contents -->
+<p>Definition in file <a class="el" href="a00276_source.html">SequenceStatisticalOptions.h</a>.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a62ddbe8cb653106f909d0b2a6cc9c4b6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00209.html">SequenceStatisticalOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>obj</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00298_source.html#l01457">1457</a> of file <a class="el" href="a00298_source.html">SequenceStatisticalOptions.C</a>.</p>
+
+<p>References <a class="el" href="a00298_source.html#l01395">SequenceStatisticalOptions::print()</a>.</p>
+<div class="fragment"><div class="line"><a name="l01458"></a><span class="lineno"> 1458</span>&#160;{</div>
+<div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160;  queso_deprecated();</div>
+<div class="line"><a name="l01460"></a><span class="lineno"> 1460</span>&#160;</div>
+<div class="line"><a name="l01461"></a><span class="lineno"> 1461</span>&#160;  obj.<a class="code" href="a00209.html#ad82e2783f38da04b73b70fbb8d0b5500">print</a>(os);</div>
+<div class="line"><a name="l01462"></a><span class="lineno"> 1462</span>&#160;</div>
+<div class="line"><a name="l01463"></a><span class="lineno"> 1463</span>&#160;  <span class="keywordflow">return</span> os;</div>
+<div class="line"><a name="l01464"></a><span class="lineno"> 1464</span>&#160;}</div>
+<div class="ttc" id="a00209_html_ad82e2783f38da04b73b70fbb8d0b5500"><div class="ttname"><a href="a00209.html#ad82e2783f38da04b73b70fbb8d0b5500">SequenceStatisticalOptions::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the initial discarded portion of the chain; and, optionally, other attributes of the chain...</div><div class="ttdef"><b>Definition:</b> <a href="a00298_source.html#l01395">SequenceStatisticalOptions.C:1395</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

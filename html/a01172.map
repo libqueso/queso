@@ -1,11 +1,28 @@
-<map id="QUESO::ConcatenationSubset&lt; V, M &gt;" name="QUESO::ConcatenationSubset&lt; V, M &gt;">
-<area shape="rect" id="node2" href="$a00248.html" title="A templated class for handling subsets. " alt="" coords="305,323,455,365"/>
-<area shape="rect" id="node3" href="$a00246.html" title="A templated class for handling sets. " alt="" coords="291,245,469,272"/>
-<area shape="rect" id="node4" href="$a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="298,104,472,131"/>
-<area shape="rect" id="node7" href="$a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="89,245,265,272"/>
-<area shape="rect" id="node10" href="$a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="493,245,627,272"/>
-<area shape="rect" id="node5" href="$a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="274,5,435,32"/>
-<area shape="rect" id="node6" href="$a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="459,5,585,32"/>
-<area shape="rect" id="node8" href="$a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="22,97,201,138"/>
-<area shape="rect" id="node9" href="$a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,5,219,32"/>
+<map id="QUESO::MLSampling&lt; P_V, P_M &gt;" name="QUESO::MLSampling&lt; P_V, P_M &gt;">
+<area shape="rect" id="node2" href="$a00036.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="425,336,607,363"/>
+<area shape="rect" id="node11" href="$a00045.html" title="QUESO::BaseScalarFunction\l\&lt; P_V, P_M \&gt;" alt="" coords="1123,725,1317,766"/>
+<area shape="rect" id="node13" href="$a00249.html" title="QUESO::VectorSet\&lt; P\l_V, P_M \&gt;" alt="" coords="741,541,899,582"/>
+<area shape="rect" id="node14" href="$a00174.html" title="This class provides options for the Multilevel sequence generator if no input file is available..." alt="" coords="723,61,917,88"/>
+<area shape="rect" id="node18" href="$a00047.html" title="QUESO::BaseVectorCdf\l\&lt; P_V, P_M \&gt;" alt="" coords="1137,338,1303,379"/>
+<area shape="rect" id="node19" href="$a00050.html" title="QUESO::BaseVectorRealizer\l\&lt; P_V, P_M \&gt;" alt="" coords="1123,598,1317,639"/>
+<area shape="rect" id="node17" href="$a00051.html" title="QUESO::BaseVectorRV\l\&lt; P_V, P_M \&gt;" alt="" coords="1448,403,1613,445"/>
+<area shape="rect" id="node20" href="$a00049.html" title="QUESO::BaseVectorMdf\l\&lt; P_V, P_M \&gt;" alt="" coords="1136,469,1304,510"/>
+<area shape="rect" id="node22" href="$a00045.html" title="A templated (base) class for handling scalar functions. " alt="" coords="723,401,917,442"/>
+<area shape="rect" id="node24" href="$a00249.html" title="A templated class for handling sets. " alt="" coords="941,229,1099,270"/>
+<area shape="rect" id="node27" href="$a00179.html" title="The QUESO MPI Communicator Class. " alt="" coords="751,185,889,212"/>
+<area shape="rect" id="node3" href="$a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::RngBase \&gt;" alt="" coords="22,394,221,435"/>
+<area shape="rect" id="node4" href="$a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::MpiComm \&gt;" alt="" coords="22,463,221,505"/>
+<area shape="rect" id="node5" href="$a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::variables_map \&gt;" alt="" coords="6,143,237,185"/>
+<area shape="rect" id="node15" href="$a00063.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="423,30,609,71"/>
+<area shape="rect" id="node6" href="$a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::EnvOptionsValues \&gt;" alt="" coords="22,529,221,570"/>
+<area shape="rect" id="node7" href="$a00206.html" title="QUESO::ScopedPtr\&lt; GetPot \&gt;" alt="" coords="19,212,223,239"/>
+<area shape="rect" id="node8" href="$a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::BasicPdfsBase \&gt;" alt="" coords="22,263,221,305"/>
+<area shape="rect" id="node9" href="$a00206.html" title="QUESO::ScopedPtr\&lt; std\l::ofstream \&gt;" alt="" coords="37,329,206,370"/>
+<area shape="rect" id="node10" href="$a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::options\l_description \&gt;" alt="" coords="30,59,213,115"/>
+<area shape="rect" id="node12" href="$a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::BoostInputOptionsParser \&gt;" alt="" coords="417,645,615,686"/>
+<area shape="rect" id="node16" href="$a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="11,5,231,32"/>
+<area shape="rect" id="node21" href="$a00038.html" title="QUESO::BaseJointPdf\l\&lt; P_V, P_M \&gt;" alt="" coords="1142,403,1298,445"/>
+<area shape="rect" id="node23" href="$a00250.html" title="QUESO::VectorSpace\l\&lt; P_V, P_M \&gt;" alt="" coords="1825,266,1978,307"/>
+<area shape="rect" id="node25" href="$a00075.html" title="QUESO::DistArray\&lt; std\l::string \&gt;" alt="" coords="1449,237,1612,278"/>
+<area shape="rect" id="node26" href="$a00162.html" title="A class for partitioning vectors and matrices. " alt="" coords="1169,184,1271,211"/>
 </map>

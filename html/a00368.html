@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/MpiComm.h File Reference</title>
+<title>queso-0.56.2: src/core/inc/LibMeshFunction.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -49,275 +49,37 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">MpiComm.h File Reference</div>  </div>
+<div class="title">LibMeshFunction.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>MPI Communicator Class.  
+<p>Function objects using <a class="el" href="a00673.html">libMesh</a> for the backend.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;queso/Defines.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for MpiComm.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00812.png" border="0" usemap="#src_2core_2inc_2_mpi_comm_8h" alt=""/></div>
-<map name="src_2core_2inc_2_mpi_comm_8h" id="src_2core_2inc_2_mpi_comm_8h">
-</map>
-</div>
-</div>
+
 <p><a href="a00368_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00069.html">QUESO::data_type</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00070.html">QUESO::DataType</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00217.html">QUESO::StandardType&lt; T &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00186.html">QUESO::MpiComm</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="a00690.html">QUESO</a> MPI Communicator Class.  <a href="a00186.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00151.html">QUESO::LibMeshFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function objects using <a class="el" href="a00673.html">libMesh</a> for the backend.  <a href="a00151.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
+<tr class="memitem:a00673"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00673.html">libMesh</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a30f232216ea0c6b51721e662e02668f4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#a30f232216ea0c6b51721e662e02668f4">RawValue_MPI_COMM_SELF</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a30f232216ea0c6b51721e662e02668f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a262b69101f0a1663523eb1ef1843ed0b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#a262b69101f0a1663523eb1ef1843ed0b">RawValue_MPI_ANY_SOURCE</a>&#160;&#160;&#160;-1</td></tr>
-<tr class="separator:a262b69101f0a1663523eb1ef1843ed0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae81a57f3cac29c0f9c656182d95b8af1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#ae81a57f3cac29c0f9c656182d95b8af1">RawValue_MPI_CHAR</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:ae81a57f3cac29c0f9c656182d95b8af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f067da7be967aa1ff144738cadd3e57"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#a1f067da7be967aa1ff144738cadd3e57">RawValue_MPI_INT</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:a1f067da7be967aa1ff144738cadd3e57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0f503bd9fecfe4e570ca3d15aaf2518"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#ad0f503bd9fecfe4e570ca3d15aaf2518">RawValue_MPI_DOUBLE</a>&#160;&#160;&#160;2</td></tr>
-<tr class="separator:ad0f503bd9fecfe4e570ca3d15aaf2518"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06cbfbc33436f6e0dc8a48ff3c49bdfc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#a06cbfbc33436f6e0dc8a48ff3c49bdfc">RawValue_MPI_UNSIGNED</a>&#160;&#160;&#160;3</td></tr>
-<tr class="separator:a06cbfbc33436f6e0dc8a48ff3c49bdfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e30f42fdac116861205e83e2aa18042"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#a8e30f42fdac116861205e83e2aa18042">RawValue_MPI_MIN</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a8e30f42fdac116861205e83e2aa18042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68f3ac7ff71a6504e236b0c95de78178"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#a68f3ac7ff71a6504e236b0c95de78178">RawValue_MPI_MAX</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:a68f3ac7ff71a6504e236b0c95de78178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbf78d291c032aa7f512bc566cee2bd1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#afbf78d291c032aa7f512bc566cee2bd1">RawValue_MPI_SUM</a>&#160;&#160;&#160;2</td></tr>
-<tr class="separator:afbf78d291c032aa7f512bc566cee2bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a359eb4a8cd52afe122f2a86b9fb145c8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00368.html#a359eb4a8cd52afe122f2a86b9fb145c8">QUESO_STANDARD_TYPE</a>(cxxtype, mpitype)</td></tr>
-<tr class="separator:a359eb4a8cd52afe122f2a86b9fb145c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:aa3aeb31f2c1693b8f0d9403675d5b805"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#aa3aeb31f2c1693b8f0d9403675d5b805">QUESO::RawType_MPI_Comm</a></td></tr>
-<tr class="separator:aa3aeb31f2c1693b8f0d9403675d5b805"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0b3b3f6c0a21b084ea4e021bf96429e"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#ab0b3b3f6c0a21b084ea4e021bf96429e">QUESO::RawType_MPI_Group</a></td></tr>
-<tr class="separator:ab0b3b3f6c0a21b084ea4e021bf96429e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a974e147ad875ce654b48aade7a1c39de"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a974e147ad875ce654b48aade7a1c39de">QUESO::RawType_MPI_Datatype</a></td></tr>
-<tr class="separator:a974e147ad875ce654b48aade7a1c39de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75bb589f75213c4ff7d02a6b7da5bbfc"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a75bb589f75213c4ff7d02a6b7da5bbfc">QUESO::RawType_MPI_Op</a></td></tr>
-<tr class="separator:a75bb589f75213c4ff7d02a6b7da5bbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89d6670b5a300a7fbbab7c0839c1534c"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a89d6670b5a300a7fbbab7c0839c1534c">QUESO::RawType_MPI_Status</a></td></tr>
-<tr class="separator:a89d6670b5a300a7fbbab7c0839c1534c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a8b76f48cc08fb011fb27746004776437"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a8b76f48cc08fb011fb27746004776437">QUESO::QUESO_STANDARD_TYPE</a> (char, MPI_CHAR)</td></tr>
-<tr class="separator:a8b76f48cc08fb011fb27746004776437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64edde0445268d888eb466196ae89581"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a64edde0445268d888eb466196ae89581">QUESO::QUESO_STANDARD_TYPE</a> (int, MPI_INT)</td></tr>
-<tr class="separator:a64edde0445268d888eb466196ae89581"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75623147a0c67c1b4ca64a569db91cc0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a75623147a0c67c1b4ca64a569db91cc0">QUESO::QUESO_STANDARD_TYPE</a> (unsigned int, MPI_UNSIGNED)</td></tr>
-<tr class="separator:a75623147a0c67c1b4ca64a569db91cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a924cb6caebb8bad257d154bbb46b6cca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a924cb6caebb8bad257d154bbb46b6cca">QUESO::QUESO_STANDARD_TYPE</a> (double, MPI_DOUBLE)</td></tr>
-<tr class="separator:a924cb6caebb8bad257d154bbb46b6cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>MPI Communicator Class. </p>
+<div class="textblock"><p>Function objects using <a class="el" href="a00673.html">libMesh</a> for the backend. </p>
 
-<p>Definition in file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a359eb4a8cd52afe122f2a86b9fb145c8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QUESO_STANDARD_TYPE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">cxxtype, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">mpitype&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">template</span>&lt;&gt;                                                    \</div>
-<div class="line">  class StandardType&lt;cxxtype&gt; : <span class="keyword">public</span> DataType                 \</div>
-<div class="line">  {                                                             \</div>
-<div class="line">  public:                                                       \</div>
-<div class="line">    explicit                                                    \</div>
-<div class="line">      StandardType(<span class="keyword">const</span> cxxtype* = NULL) : DataType() {}       \</div>
-<div class="line">  }</div>
-</div><!-- fragment -->
-<p>Definition at line <a class="el" href="a00368_source.html#l00173">173</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a262b69101f0a1663523eb1ef1843ed0b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RawValue_MPI_ANY_SOURCE&#160;&#160;&#160;-1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00368_source.html#l00064">64</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00293_source.html#l01891">QUESO::ScalarSequence&lt; T &gt;::unifiedSort()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae81a57f3cac29c0f9c656182d95b8af1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RawValue_MPI_CHAR&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00368_source.html#l00065">65</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00298_source.html#l00061">QUESO::VectorFunctionSynchronizer&lt; P_V, P_M, Q_V, Q_M &gt;::callFunction()</a>, <a class="el" href="a00292_source.html#l00062">QUESO::ScalarFunctionSynchronizer&lt; V, M &gt;::callFunction()</a>, and <a class="el" href="a00636_source.html#l00330">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareBalLinkedChains_inter0()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a30f232216ea0c6b51721e662e02668f4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RawValue_MPI_COMM_SELF&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00368_source.html#l00063">63</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad0f503bd9fecfe4e570ca3d15aaf2518"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RawValue_MPI_DOUBLE&#160;&#160;&#160;2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00368_source.html#l00067">67</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00298_source.html#l00061">QUESO::VectorFunctionSynchronizer&lt; P_V, P_M, Q_V, Q_M &gt;::callFunction()</a>, <a class="el" href="a00292_source.html#l00062">QUESO::ScalarFunctionSynchronizer&lt; V, M &gt;::callFunction()</a>, <a class="el" href="a00636_source.html#l00633">QUESO::MLSampling&lt; P_V, P_M &gt;::generateBalLinkedChains_all()</a>, <a class="el" href="a00636_source.html#l04030">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence()</a>, <a class="el" href="a00636_source.html#l00891">QUESO::MLSampling&lt; P_V, P_M &gt;::generateUnbLinkedChains_all()</a>, <a class="el" href="a00293_source.html#l00235">QUESO::ScalarSequence&lt; T &gt;::getUnifiedContentsAtProc0Only()</a>, <a class="el" href="a00490_source.html#l00479">QUESO::MiscCheckForSameValueInAllNodes()</a>, <a class="el" href="a00402_source.html#l00710">QUESO::GslVector::mpiAllQuantile()</a>, <a class="el" href="a00402_source.html#l00634">QUESO::GslVector::mpiBcast()</a>, <a class="el" href="a00636_source.html#l01788">QUESO::MLSampling&lt; P_V, P_M &gt;::mpiExchangePositions_inter0()</a>, <a class="el" href="a00293_source.html#l03265">QUESO::ScalarSequence&lt; T &gt;::parallelMerge()</a>, <a class="el" href="a00685_source.html#l00046">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;::read()</a>, <a class="el" href="a00636_source.html#l02118">QUESO::MLSampling&lt; P_V, P_M &gt;::restartML()</a>, <a class="el" href="a00682_source.html#l00119">QUESO::InterpolationSurrogateData&lt; V, M &gt;::sync_values()</a>, and <a class="el" href="a00293_source.html#l01891">QUESO::ScalarSequence&lt; T &gt;::unifiedSort()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1f067da7be967aa1ff144738cadd3e57"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RawValue_MPI_INT&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00368_source.html#l00066">66</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a68f3ac7ff71a6504e236b0c95de78178"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RawValue_MPI_MAX&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00368_source.html#l00070">70</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00636_source.html#l00633">QUESO::MLSampling&lt; P_V, P_M &gt;::generateBalLinkedChains_all()</a>, <a class="el" href="a00636_source.html#l04030">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence()</a>, <a class="el" href="a00636_source.html#l00891">QUESO::MLSampling&lt; P_V, P_M &gt;::generateUnbLinkedChains_all()</a>, <a class="el" href="a00636_source.html#l00330">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareBalLinkedChains_inter0()</a>, <a class="el" href="a00636_source.html#l00470">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareUnbLinkedChains_inter0()</a>, <a class="el" href="a00293_source.html#l01530">QUESO::ScalarSequence&lt; T &gt;::unifiedMinMaxExtra()</a>, and <a class="el" href="a00299_source.html#l00421">QUESO::BaseVectorSequence&lt; V, M &gt;::unifiedPositionsOfMaximum()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a8e30f42fdac116861205e83e2aa18042"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RawValue_MPI_MIN&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00368_source.html#l00069">69</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00636_source.html#l00633">QUESO::MLSampling&lt; P_V, P_M &gt;::generateBalLinkedChains_all()</a>, <a class="el" href="a00636_source.html#l04030">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence()</a>, <a class="el" href="a00636_source.html#l00891">QUESO::MLSampling&lt; P_V, P_M &gt;::generateUnbLinkedChains_all()</a>, <a class="el" href="a00636_source.html#l00330">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareBalLinkedChains_inter0()</a>, <a class="el" href="a00636_source.html#l00470">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareUnbLinkedChains_inter0()</a>, and <a class="el" href="a00293_source.html#l01530">QUESO::ScalarSequence&lt; T &gt;::unifiedMinMaxExtra()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="afbf78d291c032aa7f512bc566cee2bd1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RawValue_MPI_SUM&#160;&#160;&#160;2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00368_source.html#l00071">71</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00293_source.html#l04072">QUESO::ComputeCovCorrBetweenScalarSequences()</a>, <a class="el" href="a00299_source.html#l02774">QUESO::ComputeCovCorrMatricesBetweenVectorSequences()</a>, <a class="el" href="a00636_source.html#l00633">QUESO::MLSampling&lt; P_V, P_M &gt;::generateBalLinkedChains_all()</a>, <a class="el" href="a00636_source.html#l04030">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence()</a>, <a class="el" href="a00636_source.html#l02298">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Level0_all()</a>, <a class="el" href="a00636_source.html#l02445">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step01_inter0()</a>, <a class="el" href="a00636_source.html#l02623">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step03_inter0()</a>, <a class="el" href="a00636_source.html#l02927">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step04_inter0()</a>, <a class="el" href="a00636_source.html#l03235">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step09_all()</a>, <a class="el" href="a00636_source.html#l03819">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step11_inter0()</a>, <a class="el" href="a00636_source.html#l00891">QUESO::MLSampling&lt; P_V, P_M &gt;::generateUnbLinkedChains_all()</a>, <a class="el" href="a00490_source.html#l00479">QUESO::MiscCheckForSameValueInAllNodes()</a>, <a class="el" href="a00402_source.html#l00634">QUESO::GslVector::mpiBcast()</a>, <a class="el" href="a00634_source.html#l00124">QUESO::MHRawChainInfoStruct::mpiSum()</a>, <a class="el" href="a00400_source.html#l01698">QUESO::GslMatrix::mpiSum()</a>, <a class="el" href="a00636_source.html#l00470">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareUnbLinkedChains_inter0()</a>, <a class="el" href="a00293_source.html#l02340">QUESO::ScalarSequence&lt; T &gt;::unifiedGaussian1dKde()</a>, <a class="el" href="a00293_source.html#l01648">QUESO::ScalarSequence&lt; T &gt;::unifiedHistogram()</a>, <a class="el" href="a00293_source.html#l02108">QUESO::ScalarSequence&lt; T &gt;::unifiedInterQuantileRange()</a>, <a class="el" href="a00293_source.html#l00876">QUESO::ScalarSequence&lt; T &gt;::unifiedMeanExtra()</a>, <a class="el" href="a00293_source.html#l01245">QUESO::ScalarSequence&lt; T &gt;::unifiedPopulationVariance()</a>, <a class="el" href="a00299_source.html#l00421">QUESO::BaseVectorSequence&lt; V, M &gt;::unifiedPositionsOfMaximum()</a>, <a class="el" href="a00293_source.html#l01158">QUESO::ScalarSequence&lt; T &gt;::unifiedSampleStd()</a>, <a class="el" href="a00293_source.html#l01071">QUESO::ScalarSequence&lt; T &gt;::unifiedSampleVarianceExtra()</a>, <a class="el" href="a00293_source.html#l02239">QUESO::ScalarSequence&lt; T &gt;::unifiedScaleForKde()</a>, <a class="el" href="a00299_source.html#l00070">QUESO::BaseVectorSequence&lt; V, M &gt;::unifiedSequenceSize()</a>, <a class="el" href="a00293_source.html#l00143">QUESO::ScalarSequence&lt; T &gt;::unifiedSequenceSize()</a>, and <a class="el" href="a00293_source.html#l01891">QUESO::ScalarSequence&lt; T &gt;::unifiedSort()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a06cbfbc33436f6e0dc8a48ff3c49bdfc"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RawValue_MPI_UNSIGNED&#160;&#160;&#160;3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00368_source.html#l00068">68</a> of file <a class="el" href="a00368_source.html">MpiComm.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00636_source.html#l00149">QUESO::MLSampling&lt; P_V, P_M &gt;::decideOnBalancedChains_all()</a>, <a class="el" href="a00636_source.html#l00633">QUESO::MLSampling&lt; P_V, P_M &gt;::generateBalLinkedChains_all()</a>, <a class="el" href="a00636_source.html#l02491">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step02_inter0()</a>, <a class="el" href="a00636_source.html#l03235">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step09_all()</a>, <a class="el" href="a00636_source.html#l00891">QUESO::MLSampling&lt; P_V, P_M &gt;::generateUnbLinkedChains_all()</a>, <a class="el" href="a00293_source.html#l03265">QUESO::ScalarSequence&lt; T &gt;::parallelMerge()</a>, <a class="el" href="a00636_source.html#l00330">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareBalLinkedChains_inter0()</a>, <a class="el" href="a00636_source.html#l00470">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareUnbLinkedChains_inter0()</a>, <a class="el" href="a00685_source.html#l00046">QUESO::InterpolationSurrogateIOASCII&lt; V, M &gt;::read()</a>, <a class="el" href="a00636_source.html#l02118">QUESO::MLSampling&lt; P_V, P_M &gt;::restartML()</a>, and <a class="el" href="a00293_source.html#l01891">QUESO::ScalarSequence&lt; T &gt;::unifiedSort()</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<p>Definition in file <a class="el" href="a00368_source.html">LibMeshFunction.h</a>.</p>
+</div></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/gp/inc/GpmsaComputerModel.h File Reference</title>
+<title>queso-0.56.2: src/misc/inc/1DQuadrature.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,7 +43,7 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_b4cf28f9c7017ae598e01d89fd5623b0.html">gp</a></li><li class="navelem"><a class="el" href="dir_ce64702489dbb32a8d0ac93a35e853be.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_b78c18289fd7719ff0daf45dba9bb4e6.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -51,48 +51,48 @@
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">GpmsaComputerModel.h File Reference</div>  </div>
+<div class="title">1DQuadrature.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/GpmsaComputerModelOptions.h&gt;</code><br/>
-<code>#include &lt;queso/ExperimentStorage.h&gt;</code><br/>
-<code>#include &lt;queso/ExperimentModel.h&gt;</code><br/>
-<code>#include &lt;queso/SimulationStorage.h&gt;</code><br/>
-<code>#include &lt;queso/SimulationModel.h&gt;</code><br/>
-<code>#include &lt;queso/GcmSimulationInfo.h&gt;</code><br/>
-<code>#include &lt;queso/GcmExperimentInfo.h&gt;</code><br/>
-<code>#include &lt;queso/GcmJointInfo.h&gt;</code><br/>
-<code>#include &lt;queso/GcmZInfo.h&gt;</code><br/>
-<code>#include &lt;queso/GcmTotalInfo.h&gt;</code><br/>
-<code>#include &lt;queso/GcmSimulationTildeInfo.h&gt;</code><br/>
-<code>#include &lt;queso/GcmJointTildeInfo.h&gt;</code><br/>
-<code>#include &lt;queso/GcmZTildeInfo.h&gt;</code><br/>
-<code>#include &lt;queso/VectorRV.h&gt;</code><br/>
-<code>#include &lt;queso/InstantiateIntersection.h&gt;</code><br/>
-<code>#include &lt;queso/Miscellaneous.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for GpmsaComputerModel.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00886.png" border="0" usemap="#src_2gp_2inc_2_gpmsa_computer_model_8h" alt=""/></div>
-<map name="src_2gp_2inc_2_gpmsa_computer_model_8h" id="src_2gp_2inc_2_gpmsa_computer_model_8h">
-</map>
-</div>
-</div>
+
+<p>One-dimensional quadrature rules (numerical integration) class.  
+<a href="#details">More...</a></p>
+
 <p><a href="a00442_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00130.html">QUESO::GpmsaComputerModel&lt; S_V, S_M, D_V, D_M, P_V, P_M, Q_V, Q_M &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html">QUESO::Base1DQuadrature</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for one-dimensional quadrature rules (numerical integration of functions).  <a href="a00035.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html">QUESO::Generic1DQuadrature</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for one-dimensional generic quadrature rules (numerical integration of functions).  <a href="a00109.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00240.html">QUESO::UniformLegendre1DQuadrature</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for Legendre-Gauss quadrature rule for one-dimensional functions.  <a href="a00240.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00096.html">QUESO::GaussianHermite1DQuadrature</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for Hermite-Gauss quadrature rule for one-dimensional functions.  <a href="a00096.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00253.html">QUESO::WignerInverseChebyshev1st1DQuadrature</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for first type Chebyshev-Gauss quadrature rule for one-dimensional functions.  <a href="a00253.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00252.html">QUESO::WignerChebyshev2nd1DQuadrature</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for second type Chebyshev-Gauss quadrature rule for one-dimensional functions.  <a href="a00252.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>One-dimensional quadrature rules (numerical integration) class. </p>
+
+<p>Definition in file <a class="el" href="a00442_source.html">1DQuadrature.h</a>.</p>
+</div></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

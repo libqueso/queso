@@ -1,2 +1,3 @@
-<map id="src/gp/inc/GPMSA.h" name="src/gp/inc/GPMSA.h">
+<map id="QUESO::RngBoost" name="QUESO::RngBoost">
+<area shape="rect" id="node2" href="$a00190.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="7,5,139,32"/>
 </map>

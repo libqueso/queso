@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/inc/PoweredJointPdf.h Source File</title>
+<title>queso-0.56.2: src/stats/inc/UniformJointPdf.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">PoweredJointPdf.h</div>  </div>
+<div class="title">UniformJointPdf.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00555.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,8 +75,8 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_POWERED_JOINT_PROB_DENSITY_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_POWERED_JOINT_PROB_DENSITY_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_UNIFORM_JOINT_PROB_DENSITY_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_UNIFORM_JOINT_PROB_DENSITY_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
@@ -90,58 +90,54 @@
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">class </span>GslVector;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// Powered probability density class [PDF-08]</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="a00192.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00192.html">PoweredJointPdf</a> : <span class="keyword">public</span> <a class="code" href="a00038.html">BaseJointPdf</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="a00192.html#aaad4fce3dbea49b17af2ac3101e757c1">PoweredJointPdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                     prefix,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                         <span class="keyword">const</span> <a class="code" href="a00038.html">BaseJointPdf&lt;V,M&gt;</a>&amp; srcDensity,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                               <span class="keywordtype">double</span>                    exponent);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; <a class="code" href="a00192.html#abc4364733cade0f91fd9927e68d1fe85">~PoweredJointPdf</a>();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00239.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00239.html">UniformJointPdf</a> : <span class="keyword">public</span> <a class="code" href="a00038.html">BaseJointPdf</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00239.html#a2322d8b9485f1d5fad00083fa5ef46a2">UniformJointPdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                         <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00045.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; <a class="code" href="a00239.html#a8061747b487d8686414b614e7bdc0369">~UniformJointPdf</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00239.html#a358ffa410284ed3e40435439c1c8bbc3">actualValue</a>(<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00192.html#a916888a016a1cd9aea0a7789be0f6957">actualValue</a>          (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00239.html#a80858abd7ca07ed42b9e9f0e4c92b3d2">lnValue</a>    (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span>   <a class="code" href="a00239.html#ad84108ef50f33d95694ed3a66a869eff">distributionMean</a> (V &amp; meanVector) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00192.html#addcc8c32b3dc30d22fb1e4a8350a14e3">lnValue</a>              (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">void</span>   <a class="code" href="a00192.html#a306c48af4e2954a002f873e25b4c3499">setNormalizationStyle</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> value) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00192.html#ae4d7e2a318f317652ebbf926d8a3391c">computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00044.html">BaseScalarFunction&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00044.html">BaseScalarFunction&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00044.html">BaseScalarFunction&lt;V,M&gt;::m_domainSet</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00038.html">BaseJointPdf&lt;V,M&gt;::m_logOfNormalizationFactor</a>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00192.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">   92</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00038.html">BaseJointPdf&lt;V,M&gt;</a>&amp; <a class="code" href="a00192.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">m_srcDensity</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00192.html#a867f4a159b1bf2419ef049507306ce79">   93</a></span>&#160;  <span class="keywordtype">double</span>                          <a class="code" href="a00192.html#a867f4a159b1bf2419ef049507306ce79">m_exponent</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif // UQ_POWERED_JOINT_PROB_DENSITY_H</span></div>
-<div class="ttc" id="a00192_html_addcc8c32b3dc30d22fb1e4a8350a14e3"><div class="ttname"><a href="a00192.html#addcc8c32b3dc30d22fb1e4a8350a14e3">QUESO::PoweredJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the powered PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00642_source.html#l00110">PoweredJointPdf.C:110</a></div></div>
-<div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00051">ScalarFunction.h:51</a></div></div>
-<div class="ttc" id="a00192_html_a306c48af4e2954a002f873e25b4c3499"><div class="ttname"><a href="a00192.html#a306c48af4e2954a002f873e25b4c3499">QUESO::PoweredJointPdf::setNormalizationStyle</a></div><div class="ttdeci">void setNormalizationStyle(unsigned int value) const </div><div class="ttdoc">Sets a value to be used in the normalization style of the powered PDF (ie, protected attribute m_srcD...</div><div class="ttdef"><b>Definition:</b> <a href="a00642_source.html#l00068">PoweredJointPdf.C:68</a></div></div>
-<div class="ttc" id="a00192_html_a867f4a159b1bf2419ef049507306ce79"><div class="ttname"><a href="a00192.html#a867f4a159b1bf2419ef049507306ce79">QUESO::PoweredJointPdf::m_exponent</a></div><div class="ttdeci">double m_exponent</div><div class="ttdef"><b>Definition:</b> <a href="a00555_source.html#l00093">PoweredJointPdf.h:93</a></div></div>
-<div class="ttc" id="a00192_html_abc4364733cade0f91fd9927e68d1fe85"><div class="ttname"><a href="a00192.html#abc4364733cade0f91fd9927e68d1fe85">QUESO::PoweredJointPdf::~PoweredJointPdf</a></div><div class="ttdeci">~PoweredJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00642_source.html#l00062">PoweredJointPdf.C:62</a></div></div>
-<div class="ttc" id="a00038_html"><div class="ttname"><a href="a00038.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00540_source.html#l00055">JointPdf.h:55</a></div></div>
-<div class="ttc" id="a00192_html_a80cd4ecb6f5dc0e1f61d0317ef07a616"><div class="ttname"><a href="a00192.html#a80cd4ecb6f5dc0e1f61d0317ef07a616">QUESO::PoweredJointPdf::m_srcDensity</a></div><div class="ttdeci">const BaseJointPdf&lt; V, M &gt; &amp; m_srcDensity</div><div class="ttdef"><b>Definition:</b> <a href="a00555_source.html#l00092">PoweredJointPdf.h:92</a></div></div>
-<div class="ttc" id="a00192_html_aaad4fce3dbea49b17af2ac3101e757c1"><div class="ttname"><a href="a00192.html#aaad4fce3dbea49b17af2ac3101e757c1">QUESO::PoweredJointPdf::PoweredJointPdf</a></div><div class="ttdeci">PoweredJointPdf(const char *prefix, const BaseJointPdf&lt; V, M &gt; &amp;srcDensity, double exponent)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00642_source.html#l00033">PoweredJointPdf.C:33</a></div></div>
-<div class="ttc" id="a00192_html_a916888a016a1cd9aea0a7789be0f6957"><div class="ttname"><a href="a00192.html#a916888a016a1cd9aea0a7789be0f6957">QUESO::PoweredJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the powered PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00642_source.html#l00076">PoweredJointPdf.C:76</a></div></div>
-<div class="ttc" id="a00192_html"><div class="ttname"><a href="a00192.html">QUESO::PoweredJointPdf</a></div><div class="ttdoc">A class for handling a powered joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00555_source.html#l00050">PoweredJointPdf.h:50</a></div></div>
-<div class="ttc" id="a00192_html_ae4d7e2a318f317652ebbf926d8a3391c"><div class="ttname"><a href="a00192.html#ae4d7e2a318f317652ebbf926d8a3391c">QUESO::PoweredJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">TODO: Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00642_source.html#l00142">PoweredJointPdf.C:142</a></div></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span>   <a class="code" href="a00239.html#aaedd4f36797f8c0df3eb55cb2d2bb7c3">distributionVariance</a> (M &amp; covMatrix) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00239.html#a7104edeec3bc1a45f4c8a805cdfde170">computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00045.html">BaseScalarFunction&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00045.html">BaseScalarFunction&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00045.html">BaseScalarFunction&lt;V,M&gt;::m_domainSet</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00038.html">BaseJointPdf&lt;V,M&gt;::m_normalizationStyle</a>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00038.html">BaseJointPdf&lt;V,M&gt;::m_logOfNormalizationFactor</a>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif // UQ_UNIFORM_JOINT_PROB_DENSITY_H</span></div>
+<div class="ttc" id="a00239_html_ad84108ef50f33d95694ed3a66a869eff"><div class="ttname"><a href="a00239.html#ad84108ef50f33d95694ed3a66a869eff">QUESO::UniformJointPdf::distributionMean</a></div><div class="ttdeci">virtual void distributionMean(V &amp;meanVector) const </div><div class="ttdoc">Mean value of the underlying random variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00117">UniformJointPdf.C:117</a></div></div>
+<div class="ttc" id="a00239_html"><div class="ttname"><a href="a00239.html">QUESO::UniformJointPdf</a></div><div class="ttdoc">A class for handling uniform joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00555_source.html#l00047">UniformJointPdf.h:47</a></div></div>
+<div class="ttc" id="a00239_html_a7104edeec3bc1a45f4c8a805cdfde170"><div class="ttname"><a href="a00239.html#a7104edeec3bc1a45f4c8a805cdfde170">QUESO::UniformJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00131">UniformJointPdf.C:131</a></div></div>
+<div class="ttc" id="a00239_html_a8061747b487d8686414b614e7bdc0369"><div class="ttname"><a href="a00239.html#a8061747b487d8686414b614e7bdc0369">QUESO::UniformJointPdf::~UniformJointPdf</a></div><div class="ttdeci">~UniformJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00054">UniformJointPdf.C:54</a></div></div>
+<div class="ttc" id="a00239_html_a358ffa410284ed3e40435439c1c8bbc3"><div class="ttname"><a href="a00239.html#a358ffa410284ed3e40435439c1c8bbc3">QUESO::UniformJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the uniform PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00060">UniformJointPdf.C:60</a></div></div>
+<div class="ttc" id="a00038_html"><div class="ttname"><a href="a00038.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00523_source.html#l00055">JointPdf.h:55</a></div></div>
+<div class="ttc" id="a00045_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00045.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00121">ScalarFunction.C:121</a></div></div>
+<div class="ttc" id="a00239_html_a2322d8b9485f1d5fad00083fa5ef46a2"><div class="ttname"><a href="a00239.html#a2322d8b9485f1d5fad00083fa5ef46a2">QUESO::UniformJointPdf::UniformJointPdf</a></div><div class="ttdeci">UniformJointPdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00033">UniformJointPdf.C:33</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00239_html_a80858abd7ca07ed42b9e9f0e4c92b3d2"><div class="ttname"><a href="a00239.html#a80858abd7ca07ed42b9e9f0e4c92b3d2">QUESO::UniformJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the uniform PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00089">UniformJointPdf.C:89</a></div></div>
+<div class="ttc" id="a00045_html"><div class="ttname"><a href="a00045.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00272_source.html#l00052">ScalarFunction.h:52</a></div></div>
+<div class="ttc" id="a00239_html_aaedd4f36797f8c0df3eb55cb2d2bb7c3"><div class="ttname"><a href="a00239.html#aaedd4f36797f8c0df3eb55cb2d2bb7c3">QUESO::UniformJointPdf::distributionVariance</a></div><div class="ttdeci">virtual void distributionVariance(M &amp;covMatrix) const </div><div class="ttdoc">Covariance matrix of the underlying random variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00641_source.html#l00124">UniformJointPdf.C:124</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/misc/inc/ArrayOfOneDGrids.h Source File</title>
+<title>queso-0.56.2: src/misc/src/GslAsciiTable.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_b78c18289fd7719ff0daf45dba9bb4e6.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_4a3d6721aef5231a3f41ae337e19a0ed.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ArrayOfOneDGrids.h</div>  </div>
+<div class="title">GslAsciiTable.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00469.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,95 +75,23 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_ARRAY_OF_ONE_D_GRIDS_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ARRAY_OF_ONE_D_GRIDS_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/OneDGrid.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/AsciiTable.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;Map*</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00031.html#abb01e65369e9ad3e43e788d8ed2d2415">   31</a></span>&#160;<a class="code" href="a00031.html#aa42459bf69563f6606103c5f6da60a5a">AsciiTable&lt;class GslVector, class GslMatrix&gt;::newMap</a>()</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00162.html">Map</a>(m_numRows,0,m_env.selfComm());</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00027.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00027.html">ArrayOfOneDGrids</a></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="a00027.html#afac2d38cfd5e69c4e7cd7744308063af">ArrayOfOneDGrids</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* prefix, <span class="keyword">const</span> <a class="code" href="a00247.html">VectorSpace&lt;V,M&gt;</a>&amp; <a class="code" href="a00027.html#a07aee362e04f713c139730c991de9baa">rowSpace</a>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00027.html#a4580db34a8438863e75c40cd47e9c8d4">~ArrayOfOneDGrids</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00247.html">VectorSpace&lt;V,M&gt;</a>&amp;     <a class="code" href="a00027.html#a07aee362e04f713c139730c991de9baa">rowSpace</a>       () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">const</span> V&amp;  <a class="code" href="a00027.html#a2035c97cda24870644070eae0f8ecfae">sizes</a>          () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">const</span> V&amp;  <a class="code" href="a00027.html#a9230fc37403bb00ecd27ad842eb01c2b">minPositions</a>   () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">const</span> V&amp;  <a class="code" href="a00027.html#a958f92e18bcab93e1866ec67b18e408b">maxPositions</a>   () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">//  void      setGrid        (unsigned int                 rowId,</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">//                          BaseOneDGrid&lt;double&gt;&amp; oneDGrid);</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">void</span>      <a class="code" href="a00027.html#a143a91500dd5cbc18dd9f8ec912f21d1">setUniformGrids</a>(<span class="keyword">const</span> V&amp; sizesVec,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                            <span class="keyword">const</span> V&amp; minPositionsVec,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                            <span class="keyword">const</span> V&amp; maxPositionsVec);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00040.html">BaseOneDGrid&lt;double&gt;</a>&amp; <a class="code" href="a00027.html#a1e09877a9c5e712a03812163f628685b">grid</a>           (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rowId) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">void</span>      <a class="code" href="a00027.html#a2c9eb92727869d6f985ed01c4a6d833d">print</a>          (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00027.html#af1bc76a10219d37cae967bf8f6d9859a">   95</a></span>&#160;  <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="a00027.html#af1bc76a10219d37cae967bf8f6d9859a">operator&lt;&lt; </a>(std::ostream&amp; os,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00027.html">ArrayOfOneDGrids&lt;V,M&gt;</a>&amp; obj)</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    obj.<a class="code" href="a00027.html#a2c9eb92727869d6f985ed01c4a6d833d">print</a>(os);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="a00027.html#abe7ada351d4ab3d04987f52cfedb419c">  104</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp;                  <a class="code" href="a00027.html#abe7ada351d4ab3d04987f52cfedb419c">m_env</a>;</div>
-<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="a00027.html#ae9f51dffdcb939ac6b85d700a60fe167">  105</a></span>&#160;        std::string                              <a class="code" href="a00027.html#ae9f51dffdcb939ac6b85d700a60fe167">m_prefix</a>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">  106</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00247.html">VectorSpace&lt;V,M&gt;</a>&amp;                 <a class="code" href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">m_rowSpace</a>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">  107</a></span>&#160;  <a class="code" href="a00072.html">DistArray&lt;BaseOneDGrid&lt;double&gt;</a>*&gt; <a class="code" href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">m_oneDGrids</a>;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">  109</a></span>&#160;  V* <a class="code" href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">m_sizes</a>;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">  110</a></span>&#160;  V* <a class="code" href="a00027.html#aaca722e41b97a006385c588ea888f7d9">m_minPositions</a>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">  111</a></span>&#160;  V* <a class="code" href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">m_maxPositions</a>;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;};</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#endif // UQ_ARRAY_OF_ONE_D_GRIDS_H</span></div>
-<div class="ttc" id="a00027_html_af1bc76a10219d37cae967bf8f6d9859a"><div class="ttname"><a href="a00027.html#af1bc76a10219d37cae967bf8f6d9859a">QUESO::ArrayOfOneDGrids::operator&lt;&lt;</a></div><div class="ttdeci">friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const ArrayOfOneDGrids&lt; V, M &gt; &amp;obj)</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00095">ArrayOfOneDGrids.h:95</a></div></div>
-<div class="ttc" id="a00027_html"><div class="ttname"><a href="a00027.html">QUESO::ArrayOfOneDGrids</a></div><div class="ttdoc">Class to accommodate arrays of one-dimensional grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00047">ArrayOfOneDGrids.h:47</a></div></div>
-<div class="ttc" id="a00027_html_abe7ada351d4ab3d04987f52cfedb419c"><div class="ttname"><a href="a00027.html#abe7ada351d4ab3d04987f52cfedb419c">QUESO::ArrayOfOneDGrids::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00104">ArrayOfOneDGrids.h:104</a></div></div>
-<div class="ttc" id="a00027_html_aaca722e41b97a006385c588ea888f7d9"><div class="ttname"><a href="a00027.html#aaca722e41b97a006385c588ea888f7d9">QUESO::ArrayOfOneDGrids::m_minPositions</a></div><div class="ttdeci">V * m_minPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00110">ArrayOfOneDGrids.h:110</a></div></div>
-<div class="ttc" id="a00247_html"><div class="ttname"><a href="a00247.html">QUESO::VectorSpace</a></div><div class="ttdoc">A class representing a vector space. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00027_html_a958f92e18bcab93e1866ec67b18e408b"><div class="ttname"><a href="a00027.html#a958f92e18bcab93e1866ec67b18e408b">QUESO::ArrayOfOneDGrids::maxPositions</a></div><div class="ttdeci">const V &amp; maxPositions() const </div><div class="ttdoc">Returns an array with the maximum position of each grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00093">ArrayOfOneDGrids.C:93</a></div></div>
-<div class="ttc" id="a00027_html_ae9f51dffdcb939ac6b85d700a60fe167"><div class="ttname"><a href="a00027.html#ae9f51dffdcb939ac6b85d700a60fe167">QUESO::ArrayOfOneDGrids::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00105">ArrayOfOneDGrids.h:105</a></div></div>
-<div class="ttc" id="a00027_html_a2035c97cda24870644070eae0f8ecfae"><div class="ttname"><a href="a00027.html#a2035c97cda24870644070eae0f8ecfae">QUESO::ArrayOfOneDGrids::sizes</a></div><div class="ttdeci">const V &amp; sizes() const </div><div class="ttdoc">Returns an array with the sizes of the grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00075">ArrayOfOneDGrids.C:75</a></div></div>
-<div class="ttc" id="a00027_html_a07aee362e04f713c139730c991de9baa"><div class="ttname"><a href="a00027.html#a07aee362e04f713c139730c991de9baa">QUESO::ArrayOfOneDGrids::rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; rowSpace() const </div><div class="ttdoc">Returns the (vector) space to which the row belongs to. </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00068">ArrayOfOneDGrids.C:68</a></div></div>
-<div class="ttc" id="a00027_html_a0cdfeb23fce031448906cef8d15fd407"><div class="ttname"><a href="a00027.html#a0cdfeb23fce031448906cef8d15fd407">QUESO::ArrayOfOneDGrids::m_oneDGrids</a></div><div class="ttdeci">DistArray&lt; BaseOneDGrid&lt; double &gt; * &gt; m_oneDGrids</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00107">ArrayOfOneDGrids.h:107</a></div></div>
-<div class="ttc" id="a00027_html_a8deeecb4b58f401acdc1fd101d6b5f42"><div class="ttname"><a href="a00027.html#a8deeecb4b58f401acdc1fd101d6b5f42">QUESO::ArrayOfOneDGrids::m_maxPositions</a></div><div class="ttdeci">V * m_maxPositions</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00111">ArrayOfOneDGrids.h:111</a></div></div>
-<div class="ttc" id="a00027_html_a2c9eb92727869d6f985ed01c4a6d833d"><div class="ttname"><a href="a00027.html#a2c9eb92727869d6f985ed01c4a6d833d">QUESO::ArrayOfOneDGrids::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the values of the array of grids (points). </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00142">ArrayOfOneDGrids.C:142</a></div></div>
-<div class="ttc" id="a00027_html_af8f8d1a3e1d4f6213cf64698f95d34da"><div class="ttname"><a href="a00027.html#af8f8d1a3e1d4f6213cf64698f95d34da">QUESO::ArrayOfOneDGrids::m_rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; m_rowSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00106">ArrayOfOneDGrids.h:106</a></div></div>
-<div class="ttc" id="a00027_html_a9230fc37403bb00ecd27ad842eb01c2b"><div class="ttname"><a href="a00027.html#a9230fc37403bb00ecd27ad842eb01c2b">QUESO::ArrayOfOneDGrids::minPositions</a></div><div class="ttdeci">const V &amp; minPositions() const </div><div class="ttdoc">Returns an array with the minimum position of each grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00084">ArrayOfOneDGrids.C:84</a></div></div>
-<div class="ttc" id="a00027_html_afac2d38cfd5e69c4e7cd7744308063af"><div class="ttname"><a href="a00027.html#afac2d38cfd5e69c4e7cd7744308063af">QUESO::ArrayOfOneDGrids::ArrayOfOneDGrids</a></div><div class="ttdeci">ArrayOfOneDGrids(const char *prefix, const VectorSpace&lt; V, M &gt; &amp;rowSpace)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00035">ArrayOfOneDGrids.C:35</a></div></div>
-<div class="ttc" id="a00027_html_a143a91500dd5cbc18dd9f8ec912f21d1"><div class="ttname"><a href="a00027.html#a143a91500dd5cbc18dd9f8ec912f21d1">QUESO::ArrayOfOneDGrids::setUniformGrids</a></div><div class="ttdeci">void setUniformGrids(const V &amp;sizesVec, const V &amp;minPositionsVec, const V &amp;maxPositionsVec)</div><div class="ttdoc">Sets an array of uniform grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00102">ArrayOfOneDGrids.C:102</a></div></div>
-<div class="ttc" id="a00040_html"><div class="ttname"><a href="a00040.html">QUESO::BaseOneDGrid</a></div><div class="ttdoc">Base class for accommodating one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00046">OneDGrid.h:46</a></div></div>
-<div class="ttc" id="a00027_html_a1e09877a9c5e712a03812163f628685b"><div class="ttname"><a href="a00027.html#a1e09877a9c5e712a03812163f628685b">QUESO::ArrayOfOneDGrids::grid</a></div><div class="ttdeci">const BaseOneDGrid&lt; double &gt; &amp; grid(unsigned int rowId) const </div><div class="ttdoc">Returns the grid stored in the rowId-th position of the array of grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00131">ArrayOfOneDGrids.C:131</a></div></div>
-<div class="ttc" id="a00072_html"><div class="ttname"><a href="a00072.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00347_source.html#l00056">DistArray.h:56</a></div></div>
-<div class="ttc" id="a00027_html_ae2164bf692a8fed51b630a114824ffa7"><div class="ttname"><a href="a00027.html#ae2164bf692a8fed51b630a114824ffa7">QUESO::ArrayOfOneDGrids::m_sizes</a></div><div class="ttdeci">V * m_sizes</div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00109">ArrayOfOneDGrids.h:109</a></div></div>
-<div class="ttc" id="a00027_html_a4580db34a8438863e75c40cd47e9c8d4"><div class="ttname"><a href="a00027.html#a4580db34a8438863e75c40cd47e9c8d4">QUESO::ArrayOfOneDGrids::~ArrayOfOneDGrids</a></div><div class="ttdeci">~ArrayOfOneDGrids()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00483_source.html#l00054">ArrayOfOneDGrids.C:54</a></div></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00031_html_aa42459bf69563f6606103c5f6da60a5a"><div class="ttname"><a href="a00031.html#aa42459bf69563f6606103c5f6da60a5a">QUESO::AsciiTable::newMap</a></div><div class="ttdeci">Map * newMap()</div></div>
+<div class="ttc" id="a00162_html"><div class="ttname"><a href="a00162.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00049">Map.h:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/inc/BetaVectorRV.h Source File</title>
+<title>queso-0.56.2: src/stats/inc/GaussianVectorCdf.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">BetaVectorRV.h</div>  </div>
+<div class="title">GaussianVectorCdf.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00500.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,66 +75,75 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_BETA_VECTOR_RV_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_BETA_VECTOR_RV_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GAUSSIAN_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GAUSSIAN_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRV.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/JointPdf.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRealizer.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/VectorCdf.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/VectorMdf.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;queso/SequenceOfVectors.h&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;queso/InfoTheory.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorCdf.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/ArrayOfOneDGrids.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/ArrayOfOneDTables.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarCdf.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// Gaussian cumulative distribution function class</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// Beta class [RV-05]</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="a00059.html">   63</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00059.html">BetaVectorRV</a> : <span class="keyword">public</span> <a class="code" href="a00050.html">BaseVectorRV</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="a00059.html#a090eae9c454f4f68d536c2237e4bff03">BetaVectorRV</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                      <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00050.html#aa4dd2f036228eac1f945bacc7147a922">imageSet</a>,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                      <span class="keyword">const</span> V&amp;                     alpha,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                      <span class="keyword">const</span> V&amp;                     beta);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00059.html#a24d791770f3518157c00a36a3c421649">~BetaVectorRV</a>();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00104.html">   51</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00104.html">GaussianVectorCdf</a> : <span class="keyword">public</span> <a class="code" href="a00047.html">BaseVectorCdf</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="a00104.html#aeb3e7d0cc777d58fb93d046a9da12071">GaussianVectorCdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                           <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00047.html#aaf5088d3994606a9d449ccd414509709">pdfSupport</a>,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                           <span class="keyword">const</span> V&amp;                     domainExpectedValues,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                           <span class="keyword">const</span> V&amp;                     domainVarianceValues);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="a00104.html#aeb3e7d0cc777d58fb93d046a9da12071">GaussianVectorCdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                           <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; pdfSupport,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                           <span class="keyword">const</span> V&amp;                     domainExpectedValues,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                           <span class="keyword">const</span> M&amp;                     covMatrix);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// Destructor</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <a class="code" href="a00104.html#a086e92beba8cffc2d0c4822aad49dfac">~GaussianVectorCdf</a>();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00104.html#a369ca9e3dea35ddb4799a89db47b12d6">values</a>(<span class="keyword">const</span> V&amp; paramValues, V&amp; cdfVec) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00059.html#ae54ad1998b22aed2f5c8061cd1ad56e5">print</a>(std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRV&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRV&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRV&lt;V,M&gt;::m_imageSet</a>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRV&lt;V,M&gt;::m_pdf</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRV&lt;V,M&gt;::m_realizer</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRV&lt;V,M&gt;::m_subCdf</a>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRV&lt;V,M&gt;::m_unifiedCdf</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRV&lt;V,M&gt;::m_mdf</a>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00104.html#a9afe1cc5333789fb73974a0d17e7fc0c">print</a> (std::ostream&amp; os) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="a00104.html#a0b00fdc02b3e15cd81d215d5c01bbd1f">   91</a></span>&#160;  <span class="keyword">const</span> M*                         <a class="code" href="a00104.html#a0b00fdc02b3e15cd81d215d5c01bbd1f">m_covMatrix</a>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorCdf&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorCdf&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00047.html">BaseVectorCdf&lt;V,M&gt;::m_pdfSupport</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00104.html#a82118210a9047b9e9f393159d53d5a20">commonConstructor</a>();</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;};</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif // UQ_BETA_VECTOR_RV_H</span></div>
-<div class="ttc" id="a00059_html"><div class="ttname"><a href="a00059.html">QUESO::BetaVectorRV</a></div><div class="ttdoc">A class representing a vector RV constructed via Beta distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00500_source.html#l00063">BetaVectorRV.h:63</a></div></div>
-<div class="ttc" id="a00050_html"><div class="ttname"><a href="a00050.html">QUESO::BaseVectorRV</a></div><div class="ttdoc">A templated base class for handling vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00579_source.html#l00054">VectorRV.h:54</a></div></div>
-<div class="ttc" id="a00059_html_a24d791770f3518157c00a36a3c421649"><div class="ttname"><a href="a00059.html#a24d791770f3518157c00a36a3c421649">QUESO::BetaVectorRV::~BetaVectorRV</a></div><div class="ttdeci">virtual ~BetaVectorRV()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00587_source.html#l00096">BetaVectorRV.C:96</a></div></div>
-<div class="ttc" id="a00050_html_aa4dd2f036228eac1f945bacc7147a922"><div class="ttname"><a href="a00050.html#aa4dd2f036228eac1f945bacc7147a922">QUESO::BaseVectorRV::imageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; imageSet() const </div><div class="ttdoc">Image set of the vector RV; access to private attribute m_imageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00666_source.html#l00082">VectorRV.C:82</a></div></div>
-<div class="ttc" id="a00246_html"><div class="ttname"><a href="a00246.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00059_html_ae54ad1998b22aed2f5c8061cd1ad56e5"><div class="ttname"><a href="a00059.html#ae54ad1998b22aed2f5c8061cd1ad56e5">QUESO::BetaVectorRV::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00587_source.html#l00107">BetaVectorRV.C:107</a></div></div>
-<div class="ttc" id="a00059_html_a090eae9c454f4f68d536c2237e4bff03"><div class="ttname"><a href="a00059.html#a090eae9c454f4f68d536c2237e4bff03">QUESO::BetaVectorRV::BetaVectorRV</a></div><div class="ttdeci">BetaVectorRV(const char *prefix, const VectorSet&lt; V, M &gt; &amp;imageSet, const V &amp;alpha, const V &amp;beta)</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00587_source.html#l00036">BetaVectorRV.C:36</a></div></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif // UQ_GAUSSIAN_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
+<div class="ttc" id="a00104_html_a0b00fdc02b3e15cd81d215d5c01bbd1f"><div class="ttname"><a href="a00104.html#a0b00fdc02b3e15cd81d215d5c01bbd1f">QUESO::GaussianVectorCdf::m_covMatrix</a></div><div class="ttdeci">const M * m_covMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00500_source.html#l00091">GaussianVectorCdf.h:91</a></div></div>
+<div class="ttc" id="a00047_html"><div class="ttname"><a href="a00047.html">QUESO::BaseVectorCdf</a></div><div class="ttdoc">A templated (base) class for handling CDFs of vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00053">VectorCdf.h:53</a></div></div>
+<div class="ttc" id="a00104_html_a9afe1cc5333789fb73974a0d17e7fc0c"><div class="ttname"><a href="a00104.html#a9afe1cc5333789fb73974a0d17e7fc0c">QUESO::GaussianVectorCdf::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the vector CDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00588_source.html#l00098">GaussianVectorCdf.C:98</a></div></div>
+<div class="ttc" id="a00104_html_a369ca9e3dea35ddb4799a89db47b12d6"><div class="ttname"><a href="a00104.html#a369ca9e3dea35ddb4799a89db47b12d6">QUESO::GaussianVectorCdf::values</a></div><div class="ttdeci">void values(const V &amp;paramValues, V &amp;cdfVec) const </div><div class="ttdoc">TODO: Returns the values of the vector CDF at each element of paramValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00588_source.html#l00088">GaussianVectorCdf.C:88</a></div></div>
+<div class="ttc" id="a00104_html_a086e92beba8cffc2d0c4822aad49dfac"><div class="ttname"><a href="a00104.html#a086e92beba8cffc2d0c4822aad49dfac">QUESO::GaussianVectorCdf::~GaussianVectorCdf</a></div><div class="ttdeci">~GaussianVectorCdf()</div><div class="ttdef"><b>Definition:</b> <a href="a00588_source.html#l00081">GaussianVectorCdf.C:81</a></div></div>
+<div class="ttc" id="a00104_html_aeb3e7d0cc777d58fb93d046a9da12071"><div class="ttname"><a href="a00104.html#aeb3e7d0cc777d58fb93d046a9da12071">QUESO::GaussianVectorCdf::GaussianVectorCdf</a></div><div class="ttdeci">GaussianVectorCdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;pdfSupport, const V &amp;domainExpectedValues, const V &amp;domainVarianceValues)</div><div class="ttdoc">TODO: Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00588_source.html#l00031">GaussianVectorCdf.C:31</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00047_html_aaf5088d3994606a9d449ccd414509709"><div class="ttname"><a href="a00047.html#aaf5088d3994606a9d449ccd414509709">QUESO::BaseVectorCdf::pdfSupport</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; pdfSupport() const </div><div class="ttdoc">Returns the image set (support) of the PDF; access to protected attribute m_pdfSupport. </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00059">VectorCdf.C:59</a></div></div>
+<div class="ttc" id="a00104_html"><div class="ttname"><a href="a00104.html">QUESO::GaussianVectorCdf</a></div><div class="ttdoc">TODO: A class for handling Gaussian CDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00500_source.html#l00051">GaussianVectorCdf.h:51</a></div></div>
+<div class="ttc" id="a00104_html_a82118210a9047b9e9f393159d53d5a20"><div class="ttname"><a href="a00104.html#a82118210a9047b9e9f393159d53d5a20">QUESO::GaussianVectorCdf::commonConstructor</a></div><div class="ttdeci">void commonConstructor()</div><div class="ttdoc">A common constructor to be used both class constructors. </div><div class="ttdef"><b>Definition:</b> <a href="a00588_source.html#l00106">GaussianVectorCdf.C:106</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

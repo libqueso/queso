@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/src/SequentialVectorRealizer.C Source File</title>
+<title>queso-0.56.2: src/stats/src/WignerJointPdf.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">SequentialVectorRealizer.C</div>  </div>
+<div class="title">WignerJointPdf.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00650.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,80 +75,148 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/SequentialVectorRealizer.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/WignerJointPdf.h&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00210.html#a8a39a19e20c9f2e2521750b2c12f0ede">   33</a></span>&#160;<a class="code" href="a00210.html#a8a39a19e20c9f2e2521750b2c12f0ede">SequentialVectorRealizer&lt;V,M&gt;::SequentialVectorRealizer</a>(</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                           prefix,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00051.html">BaseVectorSequence&lt;V,M&gt;</a>&amp; chain)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00049.html">BaseVectorRealizer</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;seq&quot;</span>).c_str(),chain.unifiedBoxPlain(),chain.subSequenceSize()),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_chain                 (chain),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_currentChainPos       (0),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_unifiedSampleExpVector(new V(chain.unifiedMeanPlain()          )), <span class="comment">// IMPORTANT</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_unifiedSampleVarVector(new V(chain.unifiedSampleVariancePlain()))  <span class="comment">// IMPORTANT</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 0)) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In SequentialVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: m_chain.subSequenceSize() = &quot;</span> &lt;&lt; <a class="code" href="a00210.html#a4072619c7ef9d9f196bb0d70ec9e8479">m_chain</a>.subSequenceSize()</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00210.html#a8e982c9719fb7998601d79d76fea9d4a">   51</a></span>&#160;<a class="code" href="a00210.html#a8e982c9719fb7998601d79d76fea9d4a">SequentialVectorRealizer&lt;V,M&gt;::~SequentialVectorRealizer</a>()</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">delete</span> m_unifiedSampleVarVector;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">delete</span> m_unifiedSampleExpVector;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// Realization-related methods----------------------</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="a00210.html#a67050d12ad38147f9f0743a0e53011b2">   59</a></span>&#160;<a class="code" href="a00210.html#a67050d12ad38147f9f0743a0e53011b2">SequentialVectorRealizer&lt;V,M&gt;::realization</a>(V&amp; nextParamValues)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  m_chain.getPositionValues(m_currentChainPos++,nextParamValues);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">if</span> (m_currentChainPos &gt;= m_subPeriod) m_currentChainPos = 0;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">const</span> V&amp;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00210.html#ac7c24dd2a5663d245ba1e37556a68bce">   69</a></span>&#160;<a class="code" href="a00210.html#ac7c24dd2a5663d245ba1e37556a68bce">SequentialVectorRealizer&lt;V,M&gt;::unifiedSampleExpVector</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">return</span> *m_unifiedSampleExpVector;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">const</span> V&amp;</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00210.html#a79981fe171d8596d55172f5fa600ee29">   76</a></span>&#160;<a class="code" href="a00210.html#a79981fe171d8596d55172f5fa600ee29">SequentialVectorRealizer&lt;V,M&gt;::unifiedSampleVarVector</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">return</span> *m_unifiedSampleVarVector;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00210.html">QUESO::SequentialVectorRealizer&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00210_html"><div class="ttname"><a href="a00210.html">QUESO::SequentialVectorRealizer</a></div><div class="ttdoc">A class for handling sequential draws (sampling) from probability density distributions. </div><div class="ttdef"><b>Definition:</b> <a href="a00563_source.html#l00046">SequentialVectorRealizer.h:46</a></div></div>
-<div class="ttc" id="a00035_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00320">Environment.C:320</a></div></div>
-<div class="ttc" id="a00210_html_a67050d12ad38147f9f0743a0e53011b2"><div class="ttname"><a href="a00210.html#a67050d12ad38147f9f0743a0e53011b2">QUESO::SequentialVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdoc">Draws the next value from this chain (m_chain) and saves it in nextValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00059">SequentialVectorRealizer.C:59</a></div></div>
-<div class="ttc" id="a00210_html_a4072619c7ef9d9f196bb0d70ec9e8479"><div class="ttname"><a href="a00210.html#a4072619c7ef9d9f196bb0d70ec9e8479">QUESO::SequentialVectorRealizer::m_chain</a></div><div class="ttdeci">const BaseVectorSequence&lt; V, M &gt; &amp; m_chain</div><div class="ttdef"><b>Definition:</b> <a href="a00563_source.html#l00070">SequentialVectorRealizer.h:70</a></div></div>
-<div class="ttc" id="a00210_html_ac7c24dd2a5663d245ba1e37556a68bce"><div class="ttname"><a href="a00210.html#ac7c24dd2a5663d245ba1e37556a68bce">QUESO::SequentialVectorRealizer::unifiedSampleExpVector</a></div><div class="ttdeci">const V &amp; unifiedSampleExpVector() const </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00069">SequentialVectorRealizer.C:69</a></div></div>
-<div class="ttc" id="a00049_html_acde246c52f82d8ed687d91cfac14c29c"><div class="ttname"><a href="a00049.html#acde246c52f82d8ed687d91cfac14c29c">QUESO::BaseVectorRealizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00578_source.html#l00077">VectorRealizer.h:77</a></div></div>
-<div class="ttc" id="a00049_html"><div class="ttname"><a href="a00049.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00578_source.html#l00049">VectorRealizer.h:49</a></div></div>
-<div class="ttc" id="a00210_html_a8a39a19e20c9f2e2521750b2c12f0ede"><div class="ttname"><a href="a00210.html#a8a39a19e20c9f2e2521750b2c12f0ede">QUESO::SequentialVectorRealizer::SequentialVectorRealizer</a></div><div class="ttdeci">SequentialVectorRealizer(const char *prefix, const BaseVectorSequence&lt; V, M &gt; &amp;chain)</div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00033">SequentialVectorRealizer.C:33</a></div></div>
-<div class="ttc" id="a00035_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00449">Environment.C:449</a></div></div>
-<div class="ttc" id="a00210_html_a8e982c9719fb7998601d79d76fea9d4a"><div class="ttname"><a href="a00210.html#a8e982c9719fb7998601d79d76fea9d4a">QUESO::SequentialVectorRealizer::~SequentialVectorRealizer</a></div><div class="ttdeci">~SequentialVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00051">SequentialVectorRealizer.C:51</a></div></div>
-<div class="ttc" id="a00051_html"><div class="ttname"><a href="a00051.html">QUESO::BaseVectorSequence</a></div><div class="ttdoc">Base class for handling vector and array samples (sequence of vectors or arrays). ...</div><div class="ttdef"><b>Definition:</b> <a href="a00276_source.html#l00056">VectorSequence.h:56</a></div></div>
-<div class="ttc" id="a00210_html_a79981fe171d8596d55172f5fa600ee29"><div class="ttname"><a href="a00210.html#a79981fe171d8596d55172f5fa600ee29">QUESO::SequentialVectorRealizer::unifiedSampleVarVector</a></div><div class="ttdeci">const V &amp; unifiedSampleVarVector() const </div><div class="ttdoc">Returns the unified variance vector; access to private attribute m_unifiedSampleVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00076">SequentialVectorRealizer.C:76</a></div></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00254.html#a02a442c6808674aa589a872be23608f0">   33</a></span>&#160;<a class="code" href="a00254.html#a02a442c6808674aa589a872be23608f0">WignerJointPdf&lt;V,M&gt;::WignerJointPdf</a>(</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; domainSet,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> V&amp;                     centerPos,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordtype">double</span>                       radius)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  :</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00038.html">BaseJointPdf</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;uni&quot;</span>).c_str(),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;         domainSet),</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_centerPos(new V(centerPos)),</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  m_radius   (radius)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00045.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00045.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    *<a class="code" href="a00045.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering WignerJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00045.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  queso_require_greater_msg(<a class="code" href="a00254.html#a05e7841821be3fea3990e64f40af813d">m_radius</a>, 0., <span class="stringliteral">&quot;invalid radius&quot;</span>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00045.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00045.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    *<a class="code" href="a00045.html#adf44141aeb765d97613286f88f235f04">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving WignerJointPdf&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00045.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="a00254.html#ad3f8b515620fe416cf9f4b9f0b83ccdb">   60</a></span>&#160;<a class="code" href="a00254.html#ad3f8b515620fe416cf9f4b9f0b83ccdb">WignerJointPdf&lt;V,M&gt;::~WignerJointPdf</a>()</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">delete</span> m_centerPos;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// Math methods-------------------------------------</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="a00254.html#a48482e1e5b953cd0753bf0c39486a81f">   67</a></span>&#160;<a class="code" href="a00254.html#a48482e1e5b953cd0753bf0c39486a81f">WignerJointPdf&lt;V,M&gt;::actualValue</a>(</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">const</span> V&amp; domainVector,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">const</span> V* domainDirection,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        V* gradVector,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        M* hessianMatrix,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        V* hessianEffect)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <a class="code" href="a00674.html#ace699c1e7716717f330c783a58ebcd4f">queso_require_equal_to_msg</a>(domainVector.sizeLocal(), this-&gt;m_domainSet.vectorSpace().dimLocal(), <span class="stringliteral">&quot;invalid input&quot;</span>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">if</span> (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">if</span> (hessianMatrix) *hessianMatrix *= 0.;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">if</span> (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">double</span> returnValue = 0.;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">double</span> distanceRatio = (domainVector - *m_centerPos).norm2()/m_radius;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">if</span> (distanceRatio &lt; 1.) {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    returnValue = 2.*m_radius*m_radius*sqrt(1. - distanceRatio*distanceRatio)/M_PI;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  returnValue *= exp(m_logOfNormalizationFactor); <span class="comment">// [PDF-09]</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordflow">return</span> returnValue;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00254.html#a64afe5e7a7974fc91b4394e81ba4da55">   92</a></span>&#160;<a class="code" href="a00254.html#a64afe5e7a7974fc91b4394e81ba4da55">WignerJointPdf&lt;V,M&gt;::lnValue</a>(</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">const</span> V&amp; domainVector,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">const</span> V* domainDirection,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        V* gradVector,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        M* hessianMatrix,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        V* hessianEffect)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordflow">if</span> (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordflow">if</span> (hessianMatrix) *hessianMatrix *= 0.;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">if</span> (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="comment">// No need to add m_logOfNormalizationFactor because &#39;actualValue()&#39; is called [PDF-09]</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">return</span> log(this-&gt;actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="a00254.html#aa1033f21179d52cfb7e9aae1cef80e08">  109</a></span>&#160;<a class="code" href="a00254.html#aa1033f21179d52cfb7e9aae1cef80e08">WignerJointPdf&lt;V,M&gt;::distributionMean</a>(V&amp; meanVector)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  meanVector = *m_centerPos;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">//---------------------------------------------------</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="a00254.html#a3257a4e108b85a5d8661493904a9627a">  117</a></span>&#160;<a class="code" href="a00254.html#a3257a4e108b85a5d8661493904a9627a">WignerJointPdf&lt;V,M&gt;::distributionVariance</a>(M &amp; covMatrix)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  queso_not_implemented();</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="a00254.html#adbe13f31b4bdfbf6eb9b7ad57f9e71f0">  126</a></span>&#160;<a class="code" href="a00254.html#adbe13f31b4bdfbf6eb9b7ad57f9e71f0">WignerJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="keywordtype">double</span> value = 0.;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering WignerJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  }</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  value = <a class="code" href="a00038.html#a7b7bdd13d2de51198bf75d522e02545b">BaseJointPdf&lt;V,M&gt;::commonComputeLogOfNormalizationFactor</a>(numSamples, updateFactorInternally);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 2)) {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving WignerJointPdf&lt;V,M&gt;::computeLogOfNormalizationFactor()&quot;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;, m_logOfNormalizationFactor = &quot;</span> &lt;&lt; m_logOfNormalizationFactor</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="keywordflow">return</span> value;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;}</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00254.html">QUESO::WignerJointPdf&lt;QUESO::GslVector,QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00045_html_a6e81dc902aca6a546877da99b2f4a169"><div class="ttname"><a href="a00045.html#a6e81dc902aca6a546877da99b2f4a169">QUESO::BaseScalarFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00272_source.html#l00155">ScalarFunction.h:155</a></div></div>
+<div class="ttc" id="a00254_html_aa1033f21179d52cfb7e9aae1cef80e08"><div class="ttname"><a href="a00254.html#aa1033f21179d52cfb7e9aae1cef80e08">QUESO::WignerJointPdf::distributionMean</a></div><div class="ttdeci">virtual void distributionMean(V &amp;meanVector) const </div><div class="ttdoc">Mean value of the underlying random variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00109">WignerJointPdf.C:109</a></div></div>
+<div class="ttc" id="a00254_html_a02a442c6808674aa589a872be23608f0"><div class="ttname"><a href="a00254.html#a02a442c6808674aa589a872be23608f0">QUESO::WignerJointPdf::WignerJointPdf</a></div><div class="ttdeci">WignerJointPdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;centerPos, double radius)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00033">WignerJointPdf.C:33</a></div></div>
+<div class="ttc" id="a00045_html_adf44141aeb765d97613286f88f235f04"><div class="ttname"><a href="a00045.html#adf44141aeb765d97613286f88f235f04">QUESO::BaseScalarFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00272_source.html#l00154">ScalarFunction.h:154</a></div></div>
+<div class="ttc" id="a00038_html"><div class="ttname"><a href="a00038.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00523_source.html#l00055">JointPdf.h:55</a></div></div>
+<div class="ttc" id="a00254_html_a48482e1e5b953cd0753bf0c39486a81f"><div class="ttname"><a href="a00254.html#a48482e1e5b953cd0753bf0c39486a81f">QUESO::WignerJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the PDF (scalar function). </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00067">WignerJointPdf.C:67</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00254_html_ad3f8b515620fe416cf9f4b9f0b83ccdb"><div class="ttname"><a href="a00254.html#ad3f8b515620fe416cf9f4b9f0b83ccdb">QUESO::WignerJointPdf::~WignerJointPdf</a></div><div class="ttdeci">~WignerJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00060">WignerJointPdf.C:60</a></div></div>
+<div class="ttc" id="a00254_html"><div class="ttname"><a href="a00254.html">QUESO::WignerJointPdf</a></div><div class="ttdoc">A class for handling Wigner joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00564_source.html#l00047">WignerJointPdf.h:47</a></div></div>
+<div class="ttc" id="a00038_html_a7b7bdd13d2de51198bf75d522e02545b"><div class="ttname"><a href="a00038.html#a7b7bdd13d2de51198bf75d522e02545b">QUESO::BaseJointPdf::commonComputeLogOfNormalizationFactor</a></div><div class="ttdeci">double commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Common method (to the derived classes) to compute the logarithm of the normalization factor...</div><div class="ttdef"><b>Definition:</b> <a href="a00609_source.html#l00115">JointPdf.C:115</a></div></div>
+<div class="ttc" id="a00254_html_a64afe5e7a7974fc91b4394e81ba4da55"><div class="ttname"><a href="a00254.html#a64afe5e7a7974fc91b4394e81ba4da55">QUESO::WignerJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Computes the logarithm of the value of the function. </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00092">WignerJointPdf.C:92</a></div></div>
+<div class="ttc" id="a00254_html_adbe13f31b4bdfbf6eb9b7ad57f9e71f0"><div class="ttname"><a href="a00254.html#adbe13f31b4bdfbf6eb9b7ad57f9e71f0">QUESO::WignerJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00126">WignerJointPdf.C:126</a></div></div>
+<div class="ttc" id="a00674_html_ace699c1e7716717f330c783a58ebcd4f"><div class="ttname"><a href="a00674.html#ace699c1e7716717f330c783a58ebcd4f">QUESO::queso_require_equal_to_msg</a></div><div class="ttdeci">MonteCarloSGOptions::MonteCarloSGOptions(const BaseEnvironment &amp;env, const char *prefix, const McOptionsValues &amp;alternativeOptionsValues queso_require_equal_to_msg)(m_env.optionsInputFileName(), std::string(&quot;&quot;), std::string(&quot;this constructor is incompatible with the existence of an options input file&quot;))</div><div class="ttdef"><b>Definition:</b> <a href="a00624_source.html#l00460">MonteCarloSGOptions.C:460</a></div></div>
+<div class="ttc" id="a00036_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00320">Environment.C:320</a></div></div>
+<div class="ttc" id="a00036_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00450">Environment.C:450</a></div></div>
+<div class="ttc" id="a00254_html_a3257a4e108b85a5d8661493904a9627a"><div class="ttname"><a href="a00254.html#a3257a4e108b85a5d8661493904a9627a">QUESO::WignerJointPdf::distributionVariance</a></div><div class="ttdeci">virtual void distributionVariance(M &amp;covMatrix) const </div><div class="ttdoc">Covariance matrix of the underlying random variable. </div><div class="ttdef"><b>Definition:</b> <a href="a00650_source.html#l00117">WignerJointPdf.C:117</a></div></div>
+<div class="ttc" id="a00254_html_a05e7841821be3fea3990e64f40af813d"><div class="ttname"><a href="a00254.html#a05e7841821be3fea3990e64f40af813d">QUESO::WignerJointPdf::m_radius</a></div><div class="ttdeci">double m_radius</div><div class="ttdef"><b>Definition:</b> <a href="a00564_source.html#l00088">WignerJointPdf.h:88</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

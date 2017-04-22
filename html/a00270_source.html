@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/basic/inc/ScalarFunctionSynchronizer.h Source File</title>
+<title>queso-0.56.2: src/basic/inc/InstantiateIntersection.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ScalarFunctionSynchronizer.h</div>  </div>
+<div class="title">InstantiateIntersection.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00270.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,67 +75,29 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_SCALAR_FUNCTION_SYNCHRONIZER_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_SCALAR_FUNCTION_SYNCHRONIZER_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_INSTANTIATE_INTERSECTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_INSTANTIATE_INTERSECTION_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span>GslVector;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00055.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00055.html">BayesianJointPdf</a>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00204.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00204.html">ScalarFunctionSynchronizer</a></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="a00204.html#ab016c60ae0ab70f4406fefeb50405acf">ScalarFunctionSynchronizer</a>(<span class="keyword">const</span> <a class="code" href="a00044.html">BaseScalarFunction&lt;V,M&gt;</a>&amp; inputFunction,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                    <span class="keyword">const</span> V&amp;                              auxVec);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; <a class="code" href="a00204.html#a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1">~ScalarFunctionSynchronizer</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00204.html#a4618272a8d897dc064a42510039cefcc">domainSet</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00204.html#adcdc70486ac64c11d0e505c4fb590a6b">callFunction</a>(<span class="keyword">const</span> V* vecValues,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                      <span class="keyword">const</span> V* vecDirection,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                            V* gradVector,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                            M* hessianMatrix,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                            V* hessianEffect,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                            <span class="keywordtype">double</span>* extraOutput1,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                            <span class="keywordtype">double</span>* extraOutput2) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00204.html#aa77a3d3b53267ef7c731836faaa082fb">   82</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp;         <a class="code" href="a00204.html#aa77a3d3b53267ef7c731836faaa082fb">m_env</a>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00204.html#a6b24acdd3185e57cae74e6d5aedb90bf">   83</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00044.html">BaseScalarFunction&lt;V,M&gt;</a>&amp; <a class="code" href="a00204.html#a6b24acdd3185e57cae74e6d5aedb90bf">m_scalarFunction</a>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="a00204.html#a0e17d294521cd22b297374ae2ff7f463">   84</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00055.html">BayesianJointPdf&lt;V,M&gt;</a>*   <a class="code" href="a00204.html#a0e17d294521cd22b297374ae2ff7f463">m_bayesianJointPdfPtr</a>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="a00204.html#adbd43aee6de557012924f3e18660a4f3">   85</a></span>&#160;  <span class="keyword">const</span> V&amp;                              <a class="code" href="a00204.html#adbd43aee6de557012924f3e18660a4f3">m_auxVec</a>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;};</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif // UQ_SCALAR_FUNCTION_SYNCHRONIZER_H</span></div>
-<div class="ttc" id="a00204_html_adbd43aee6de557012924f3e18660a4f3"><div class="ttname"><a href="a00204.html#adbd43aee6de557012924f3e18660a4f3">QUESO::ScalarFunctionSynchronizer::m_auxVec</a></div><div class="ttdeci">const V &amp; m_auxVec</div><div class="ttdef"><b>Definition:</b> <a href="a00270_source.html#l00085">ScalarFunctionSynchronizer.h:85</a></div></div>
-<div class="ttc" id="a00204_html_a0e17d294521cd22b297374ae2ff7f463"><div class="ttname"><a href="a00204.html#a0e17d294521cd22b297374ae2ff7f463">QUESO::ScalarFunctionSynchronizer::m_bayesianJointPdfPtr</a></div><div class="ttdeci">const BayesianJointPdf&lt; V, M &gt; * m_bayesianJointPdfPtr</div><div class="ttdef"><b>Definition:</b> <a href="a00270_source.html#l00084">ScalarFunctionSynchronizer.h:84</a></div></div>
-<div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00051">ScalarFunction.h:51</a></div></div>
-<div class="ttc" id="a00204_html_a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1"><div class="ttname"><a href="a00204.html#a6ce2562f5d0ad7fe0d4e63dbe5a0e9f1">QUESO::ScalarFunctionSynchronizer::~ScalarFunctionSynchronizer</a></div><div class="ttdeci">~ScalarFunctionSynchronizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00049">ScalarFunctionSynchronizer.C:49</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00204_html_a4618272a8d897dc064a42510039cefcc"><div class="ttname"><a href="a00204.html#a4618272a8d897dc064a42510039cefcc">QUESO::ScalarFunctionSynchronizer::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the domain set of the scalar function which will be synchronized. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00055">ScalarFunctionSynchronizer.C:55</a></div></div>
-<div class="ttc" id="a00204_html_aa77a3d3b53267ef7c731836faaa082fb"><div class="ttname"><a href="a00204.html#aa77a3d3b53267ef7c731836faaa082fb">QUESO::ScalarFunctionSynchronizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00270_source.html#l00082">ScalarFunctionSynchronizer.h:82</a></div></div>
-<div class="ttc" id="a00055_html"><div class="ttname"><a href="a00055.html">QUESO::BayesianJointPdf</a></div><div class="ttdoc">A class for handling Bayesian joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00270_source.html#l00036">ScalarFunctionSynchronizer.h:36</a></div></div>
-<div class="ttc" id="a00204_html_adcdc70486ac64c11d0e505c4fb590a6b"><div class="ttname"><a href="a00204.html#adcdc70486ac64c11d0e505c4fb590a6b">QUESO::ScalarFunctionSynchronizer::callFunction</a></div><div class="ttdeci">double callFunction(const V *vecValues, const V *vecDirection, V *gradVector, M *hessianMatrix, V *hessianEffect, double *extraOutput1, double *extraOutput2) const </div><div class="ttdoc">Calls the scalar function which will be synchronized. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00062">ScalarFunctionSynchronizer.C:62</a></div></div>
-<div class="ttc" id="a00204_html_ab016c60ae0ab70f4406fefeb50405acf"><div class="ttname"><a href="a00204.html#ab016c60ae0ab70f4406fefeb50405acf">QUESO::ScalarFunctionSynchronizer::ScalarFunctionSynchronizer</a></div><div class="ttdeci">ScalarFunctionSynchronizer(const BaseScalarFunction&lt; V, M &gt; &amp;inputFunction, const V &amp;auxVec)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00037">ScalarFunctionSynchronizer.C:37</a></div></div>
-<div class="ttc" id="a00246_html"><div class="ttname"><a href="a00246.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00204_html_a6b24acdd3185e57cae74e6d5aedb90bf"><div class="ttname"><a href="a00204.html#a6b24acdd3185e57cae74e6d5aedb90bf">QUESO::ScalarFunctionSynchronizer::m_scalarFunction</a></div><div class="ttdeci">const BaseScalarFunction&lt; V, M &gt; &amp; m_scalarFunction</div><div class="ttdef"><b>Definition:</b> <a href="a00270_source.html#l00083">ScalarFunctionSynchronizer.h:83</a></div></div>
-<div class="ttc" id="a00204_html"><div class="ttname"><a href="a00204.html">QUESO::ScalarFunctionSynchronizer</a></div><div class="ttdoc">A templated class for synchronizing the calls of scalar functions (BaseScalarFunction and derived cla...</div><div class="ttdef"><b>Definition:</b> <a href="a00270_source.html#l00049">ScalarFunctionSynchronizer.h:49</a></div></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;VectorSet&lt;V,M&gt;* <a class="code" href="a00674.html#aa79046437ab085c5487ae16e9a0baeec">InstantiateIntersection</a>(<span class="keyword">const</span> VectorSet&lt;V,M&gt;&amp; domain1,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">const</span> VectorSet&lt;V,M&gt;&amp; domain2);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif // UQ_INSTANTIATE_INTERSECTION_H</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span></div>
+<div class="ttc" id="a00674_html_aa79046437ab085c5487ae16e9a0baeec"><div class="ttname"><a href="a00674.html#aa79046437ab085c5487ae16e9a0baeec">QUESO::InstantiateIntersection</a></div><div class="ttdeci">VectorSet&lt; V, M &gt; * InstantiateIntersection(const VectorSet&lt; V, M &gt; &amp;domain1, const VectorSet&lt; V, M &gt; &amp;domain2)</div><div class="ttdoc">This method calculates the intersection of domain1 and domain2. </div><div class="ttdef"><b>Definition:</b> <a href="a00292_source.html#l00037">InstantiateIntersection.C:37</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:09 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:46 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/InfiniteDimensionalGaussian.h Source File</title>
+<title>queso-0.56.2: src/core/inc/FunctionOperatorBuilder.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">InfiniteDimensionalGaussian.h</div>  </div>
+<div class="title">FunctionOperatorBuilder.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00358.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,74 +75,39 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_INFINITEDIMENSIONALGAUSSIAN_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_INFINITEDIMENSIONALGAUSSIAN_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_FUNCTIONOPERATORBUILDER_BASE_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_FUNCTIONOPERATORBUILDER_BASE_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/SharedPtr.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/InfiniteDimensionalMeasureBase.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/FunctionBase.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>FullEnvironment;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>OperatorBase;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00140.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00140.html">InfiniteDimensionalGaussian</a> : <span class="keyword">public</span> <a class="code" href="a00143.html">InfiniteDimensionalMeasureBase</a> {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00092.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00092.html">FunctionOperatorBuilder</a> {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="a00092.html#a3db017ee660ec6640e599b43271821c6">FunctionOperatorBuilder</a>();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="a00092.html#a4b9df10fdd2ea3ee094075866641b008">~FunctionOperatorBuilder</a>();</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00140.html#a3dbfc9028e821ebdee212bf60bf1cf35">InfiniteDimensionalGaussian</a>(<span class="keyword">const</span> <a class="code" href="a00089.html">FullEnvironment</a>&amp; <a class="code" href="a00140.html#a16bf46c24315506ddca4739b05579b92">env</a>,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00092.html">FunctionBase</a> &amp;<a class="code" href="a00140.html#a9d12c4e80eca7d797381c734d6d3476e">mean</a>, <span class="keyword">const</span> <a class="code" href="a00188.html">OperatorBase</a> &amp;<a class="code" href="a00140.html#af08c847ce01c948b60f72be309c60b37">precision</a>,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keywordtype">double</span> <a class="code" href="a00140.html#ab3d6cf41482750591ccd8bbe2426a98d">alpha</a>, <span class="keywordtype">double</span> <a class="code" href="a00140.html#a36618403cf2767efbde981a43b900a91">beta</a>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="a00140.html#aeb80c76a7c9540756a4e5c23e8b9a836">~InfiniteDimensionalGaussian</a>();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">virtual</span> SharedPtr&lt;FunctionBase&gt;::Type <a class="code" href="a00140.html#a05a476b7044e3fc4da548bd738fd1c39">draw</a>();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00140.html#a07eac1a9245e12bd3bc73ea65aac5ecf">get_kl_coefficient</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// Mean</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00140.html#a9d12c4e80eca7d797381c734d6d3476e">   75</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00092.html">FunctionBase</a> &amp; <a class="code" href="a00140.html#a9d12c4e80eca7d797381c734d6d3476e">mean</a>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="comment">// Precision -- I suppose you saw that one coming.</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00140.html#af08c847ce01c948b60f72be309c60b37">   78</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00188.html">OperatorBase</a> &amp; <a class="code" href="a00140.html#af08c847ce01c948b60f72be309c60b37">precision</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// QUESO environment</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00140.html#a16bf46c24315506ddca4739b05579b92">   81</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00089.html">FullEnvironment</a>&amp; <a class="code" href="a00140.html#a16bf46c24315506ddca4739b05579b92">env</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// Fractional power</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="a00140.html#ab3d6cf41482750591ccd8bbe2426a98d">   84</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00140.html#ab3d6cf41482750591ccd8bbe2426a98d">alpha</a>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="comment">// Multiplicative constant</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="a00140.html#a36618403cf2767efbde981a43b900a91">   87</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00140.html#a36618403cf2767efbde981a43b900a91">beta</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="comment">// The coefficients for the KL expansion</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="comment">// (not multiplied by the evals)</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="a00140.html#abf9b3d144b4804414f328fa3ccca924a">   91</a></span>&#160;  std::vector&lt;double&gt; <a class="code" href="a00140.html#abf9b3d144b4804414f328fa3ccca924a">coeffs</a>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;};</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif // QUESO_INFINITEDIMENSIONALGAUSSIAN_H</span></div>
-<div class="ttc" id="a00140_html_a36618403cf2767efbde981a43b900a91"><div class="ttname"><a href="a00140.html#a36618403cf2767efbde981a43b900a91">QUESO::InfiniteDimensionalGaussian::beta</a></div><div class="ttdeci">double beta</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00087">InfiniteDimensionalGaussian.h:87</a></div></div>
-<div class="ttc" id="a00140_html_a05a476b7044e3fc4da548bd738fd1c39"><div class="ttname"><a href="a00140.html#a05a476b7044e3fc4da548bd738fd1c39">QUESO::InfiniteDimensionalGaussian::draw</a></div><div class="ttdeci">virtual SharedPtr&lt; FunctionBase &gt;::Type draw()</div><div class="ttdoc">Draw from the measure, and then return a shared pointer to the draw. </div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00057">InfiniteDimensionalGaussian.C:57</a></div></div>
-<div class="ttc" id="a00188_html"><div class="ttname"><a href="a00188.html">QUESO::OperatorBase</a></div><div class="ttdoc">Abstract base class for operator objects. Operators are assumed to be symmetric and positive-definite...</div><div class="ttdef"><b>Definition:</b> <a href="a00369_source.html#l00045">OperatorBase.h:45</a></div></div>
-<div class="ttc" id="a00140_html_abf9b3d144b4804414f328fa3ccca924a"><div class="ttname"><a href="a00140.html#abf9b3d144b4804414f328fa3ccca924a">QUESO::InfiniteDimensionalGaussian::coeffs</a></div><div class="ttdeci">std::vector&lt; double &gt; coeffs</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00091">InfiniteDimensionalGaussian.h:91</a></div></div>
-<div class="ttc" id="a00143_html"><div class="ttname"><a href="a00143.html">QUESO::InfiniteDimensionalMeasureBase</a></div><div class="ttdoc">Abstract base class for infinite dimensional measures. </div><div class="ttdef"><b>Definition:</b> <a href="a00362_source.html#l00043">InfiniteDimensionalMeasureBase.h:43</a></div></div>
-<div class="ttc" id="a00140_html_aeb80c76a7c9540756a4e5c23e8b9a836"><div class="ttname"><a href="a00140.html#aeb80c76a7c9540756a4e5c23e8b9a836">QUESO::InfiniteDimensionalGaussian::~InfiniteDimensionalGaussian</a></div><div class="ttdeci">~InfiniteDimensionalGaussian()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00053">InfiniteDimensionalGaussian.C:53</a></div></div>
-<div class="ttc" id="a00140_html_a16bf46c24315506ddca4739b05579b92"><div class="ttname"><a href="a00140.html#a16bf46c24315506ddca4739b05579b92">QUESO::InfiniteDimensionalGaussian::env</a></div><div class="ttdeci">const FullEnvironment &amp; env</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00081">InfiniteDimensionalGaussian.h:81</a></div></div>
-<div class="ttc" id="a00140_html_af08c847ce01c948b60f72be309c60b37"><div class="ttname"><a href="a00140.html#af08c847ce01c948b60f72be309c60b37">QUESO::InfiniteDimensionalGaussian::precision</a></div><div class="ttdeci">const OperatorBase &amp; precision</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00078">InfiniteDimensionalGaussian.h:78</a></div></div>
-<div class="ttc" id="a00140_html"><div class="ttname"><a href="a00140.html">QUESO::InfiniteDimensionalGaussian</a></div><div class="ttdoc">Class defining infinite dimensional Gaussian measures. </div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00045">InfiniteDimensionalGaussian.h:45</a></div></div>
-<div class="ttc" id="a00089_html"><div class="ttname"><a href="a00089.html">QUESO::FullEnvironment</a></div><div class="ttdoc">This class sets up the full environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00435">Environment.h:435</a></div></div>
-<div class="ttc" id="a00140_html_a9d12c4e80eca7d797381c734d6d3476e"><div class="ttname"><a href="a00140.html#a9d12c4e80eca7d797381c734d6d3476e">QUESO::InfiniteDimensionalGaussian::mean</a></div><div class="ttdeci">const FunctionBase &amp; mean</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00075">InfiniteDimensionalGaussian.h:75</a></div></div>
-<div class="ttc" id="a00140_html_a3dbfc9028e821ebdee212bf60bf1cf35"><div class="ttname"><a href="a00140.html#a3dbfc9028e821ebdee212bf60bf1cf35">QUESO::InfiniteDimensionalGaussian::InfiniteDimensionalGaussian</a></div><div class="ttdeci">InfiniteDimensionalGaussian(const FullEnvironment &amp;env, const FunctionBase &amp;mean, const OperatorBase &amp;precision, double alpha, double beta)</div><div class="ttdoc">Construct a Gaussian with mean mean, precision operator precision. alpha controls regularity of draws...</div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00037">InfiniteDimensionalGaussian.C:37</a></div></div>
-<div class="ttc" id="a00092_html"><div class="ttname"><a href="a00092.html">QUESO::FunctionBase</a></div><div class="ttdoc">Abstract base class for function objects. </div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00047">FunctionBase.h:47</a></div></div>
-<div class="ttc" id="a00140_html_ab3d6cf41482750591ccd8bbe2426a98d"><div class="ttname"><a href="a00140.html#ab3d6cf41482750591ccd8bbe2426a98d">QUESO::InfiniteDimensionalGaussian::alpha</a></div><div class="ttdeci">double alpha</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00084">InfiniteDimensionalGaussian.h:84</a></div></div>
-<div class="ttc" id="a00140_html_a07eac1a9245e12bd3bc73ea65aac5ecf"><div class="ttname"><a href="a00140.html#a07eac1a9245e12bd3bc73ea65aac5ecf">QUESO::InfiniteDimensionalGaussian::get_kl_coefficient</a></div><div class="ttdeci">virtual double get_kl_coefficient(unsigned int i) const </div><div class="ttdoc">Return coefficient i of the KL expansion of the current draw. Must be called after draw() ...</div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00071">InfiniteDimensionalGaussian.C:71</a></div></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00092.html#a577f6065af0aefd7aa74595c6b00ef38">   51</a></span>&#160;  std::string <a class="code" href="a00092.html#a577f6065af0aefd7aa74595c6b00ef38">family</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00092.html#a433752867d11bca3f3bd7015e1a23e93">   54</a></span>&#160;  std::string <a class="code" href="a00092.html#a433752867d11bca3f3bd7015e1a23e93">order</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00092.html#a41ced477ecceabab7828ead4bd3e75aa">   57</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00092.html#a41ced477ecceabab7828ead4bd3e75aa">num_req_eigenpairs</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif // QUESO_FUNCTIONOPERATORBUILDER_BASE_H</span></div>
+<div class="ttc" id="a00092_html_a41ced477ecceabab7828ead4bd3e75aa"><div class="ttname"><a href="a00092.html#a41ced477ecceabab7828ead4bd3e75aa">QUESO::FunctionOperatorBuilder::num_req_eigenpairs</a></div><div class="ttdeci">unsigned int num_req_eigenpairs</div><div class="ttdoc">Number of eigenpairs to request when building an operator. Default is 0. </div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00057">FunctionOperatorBuilder.h:57</a></div></div>
+<div class="ttc" id="a00092_html_a3db017ee660ec6640e599b43271821c6"><div class="ttname"><a href="a00092.html#a3db017ee660ec6640e599b43271821c6">QUESO::FunctionOperatorBuilder::FunctionOperatorBuilder</a></div><div class="ttdeci">FunctionOperatorBuilder()</div><div class="ttdoc">Default constructor. Does nothing. </div><div class="ttdef"><b>Definition:</b> <a href="a00407_source.html#l00030">FunctionOperatorBuilder.C:30</a></div></div>
+<div class="ttc" id="a00092_html_a577f6065af0aefd7aa74595c6b00ef38"><div class="ttname"><a href="a00092.html#a577f6065af0aefd7aa74595c6b00ef38">QUESO::FunctionOperatorBuilder::family</a></div><div class="ttdeci">std::string family</div><div class="ttdoc">String to store the polynomial family to use. Default is &amp;quot;LAGRANGE&amp;quot;. </div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00051">FunctionOperatorBuilder.h:51</a></div></div>
+<div class="ttc" id="a00092_html_a4b9df10fdd2ea3ee094075866641b008"><div class="ttname"><a href="a00092.html#a4b9df10fdd2ea3ee094075866641b008">QUESO::FunctionOperatorBuilder::~FunctionOperatorBuilder</a></div><div class="ttdeci">~FunctionOperatorBuilder()</div><div class="ttdoc">Destructor. Does nothing. </div><div class="ttdef"><b>Definition:</b> <a href="a00407_source.html#l00037">FunctionOperatorBuilder.C:37</a></div></div>
+<div class="ttc" id="a00092_html_a433752867d11bca3f3bd7015e1a23e93"><div class="ttname"><a href="a00092.html#a433752867d11bca3f3bd7015e1a23e93">QUESO::FunctionOperatorBuilder::order</a></div><div class="ttdeci">std::string order</div><div class="ttdoc">String to store the polynomial order to use. Default is &amp;quot;FIRST&amp;quot;. </div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00054">FunctionOperatorBuilder.h:54</a></div></div>
+<div class="ttc" id="a00092_html"><div class="ttname"><a href="a00092.html">QUESO::FunctionOperatorBuilder</a></div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00039">FunctionOperatorBuilder.h:39</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

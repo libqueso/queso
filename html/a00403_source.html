@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/src/InfiniteDimensionalGaussian.C Source File</title>
+<title>queso-0.56.2: src/core/src/DistArray.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">InfiniteDimensionalGaussian.C</div>  </div>
+<div class="title">DistArray.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00403.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,81 +75,153 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/InfiniteDimensionalMeasureBase.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/InfiniteDimensionalGaussian.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/FunctionBase.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/OperatorBase.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="a00140.html#a3dbfc9028e821ebdee212bf60bf1cf35">   37</a></span>&#160;<a class="code" href="a00140.html#a3dbfc9028e821ebdee212bf60bf1cf35">InfiniteDimensionalGaussian::InfiniteDimensionalGaussian</a>(</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00089.html">FullEnvironment</a>&amp; env,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00092.html">FunctionBase</a> &amp; mean,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00188.html">OperatorBase</a> &amp; precision,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">double</span> alpha,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">double</span> beta)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  : <a class="code" href="a00143.html">InfiniteDimensionalMeasureBase</a>(),</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    mean(mean),</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    precision(precision),</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    env(env),</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    alpha(alpha),</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    beta(beta)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/asserts.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/DistArray.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarSequence.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/SampledScalarCdf.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/OneDGrid.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;Epetra_MpiComm.h&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;Epetra_SerialComm.h&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// Constructor for a given inputMap and inputRowSize.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<a class="code" href="a00075.html#a54e6413babda861c8bf5213888c9b9f0">DistArray&lt;T&gt;::DistArray</a>(<span class="keyword">const</span> Map&amp; inputMap, <span class="keyword">const</span> <span class="keywordtype">int</span> inputRowSize)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  : m_Map(inputMap),</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;#ifdef QUESO_HAS_TRILINOS</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  m_epetraDistArray(new EpetraExt::DistArray&lt;T&gt;(inputMap.epetraMap(),inputRowSize))</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;#else</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  m_rowSize(inputRowSize)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;#endif</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  this-&gt;<a class="code" href="a00140.html#abf9b3d144b4804414f328fa3ccca924a">coeffs</a>.resize(this-&gt;precision.<a class="code" href="a00188.html#a610fc538c34726a001d49c138a17817e">get_num_converged</a>(), 0.0);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00140.html#aeb80c76a7c9540756a4e5c23e8b9a836">   53</a></span>&#160;<a class="code" href="a00140.html#aeb80c76a7c9540756a4e5c23e8b9a836">InfiniteDimensionalGaussian::~InfiniteDimensionalGaussian</a>()</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00140.html#a05a476b7044e3fc4da548bd738fd1c39">   57</a></span>&#160;SharedPtr&lt;FunctionBase&gt;::Type <a class="code" href="a00140.html#a05a476b7044e3fc4da548bd738fd1c39">InfiniteDimensionalGaussian::draw</a>()</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordflow">for</span> (i = 0; i &lt; this-&gt;<a class="code" href="a00140.html#af08c847ce01c948b60f72be309c60b37">precision</a>.<a class="code" href="a00188.html#a610fc538c34726a001d49c138a17817e">get_num_converged</a>(); i++) {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    (this-&gt;<a class="code" href="a00140.html#abf9b3d144b4804414f328fa3ccca924a">coeffs</a>)[i] = <a class="code" href="a00140.html#a16bf46c24315506ddca4739b05579b92">env</a>.<a class="code" href="a00035.html#afc1f1258b770ac8e27cf308bbcd6a296">rngObject</a>()-&gt;<a class="code" href="a00195.html#a7be9cf40cc50b973ed8c2f594f402584">gaussianSample</a>(this-&gt;<a class="code" href="a00140.html#a36618403cf2767efbde981a43b900a91">beta</a>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#warning We never use the mean?</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;SharedPtr&lt;FunctionBase&gt;::Type f(this-&gt;<a class="code" href="a00140.html#af08c847ce01c948b60f72be309c60b37">precision</a>.<a class="code" href="a00188.html#a7e4e66c8db558de7445d89810aaaf0e0">inverse_kl_transform</a>(this-&gt;coeffs, this-&gt;alpha));</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">return</span> f;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="a00140.html#a07eac1a9245e12bd3bc73ea65aac5ecf">   71</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="a00140.html#a07eac1a9245e12bd3bc73ea65aac5ecf">InfiniteDimensionalGaussian::get_kl_coefficient</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// This is code repetition, but I&#39;m not quite sure this belongs</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">// in the operator class, because it&#39;s useful in the measure</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">return</span> (this-&gt;<a class="code" href="a00140.html#abf9b3d144b4804414f328fa3ccca924a">coeffs</a>)[i] / std::pow(this-&gt;<a class="code" href="a00140.html#af08c847ce01c948b60f72be309c60b37">precision</a>.<a class="code" href="a00188.html#ae16245b5e46e01ff81121cca14190e7f">get_eigenvalue</a>(i), this-&gt;<a class="code" href="a00140.html#ab3d6cf41482750591ccd8bbe2426a98d">alpha</a> / 2.0);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00140_html_a36618403cf2767efbde981a43b900a91"><div class="ttname"><a href="a00140.html#a36618403cf2767efbde981a43b900a91">QUESO::InfiniteDimensionalGaussian::beta</a></div><div class="ttdeci">double beta</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00087">InfiniteDimensionalGaussian.h:87</a></div></div>
-<div class="ttc" id="a00035_html_afc1f1258b770ac8e27cf308bbcd6a296"><div class="ttname"><a href="a00035.html#afc1f1258b770ac8e27cf308bbcd6a296">QUESO::BaseEnvironment::rngObject</a></div><div class="ttdeci">const RngBase * rngObject() const </div><div class="ttdoc">Access to the RNG object. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00470">Environment.C:470</a></div></div>
-<div class="ttc" id="a00188_html_a610fc538c34726a001d49c138a17817e"><div class="ttname"><a href="a00188.html#a610fc538c34726a001d49c138a17817e">QUESO::OperatorBase::get_num_converged</a></div><div class="ttdeci">virtual unsigned int get_num_converged() const =0</div><div class="ttdoc">Return the number of converged eigenpairs. </div></div>
-<div class="ttc" id="a00140_html_a05a476b7044e3fc4da548bd738fd1c39"><div class="ttname"><a href="a00140.html#a05a476b7044e3fc4da548bd738fd1c39">QUESO::InfiniteDimensionalGaussian::draw</a></div><div class="ttdeci">virtual SharedPtr&lt; FunctionBase &gt;::Type draw()</div><div class="ttdoc">Draw from the measure, and then return a shared pointer to the draw. </div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00057">InfiniteDimensionalGaussian.C:57</a></div></div>
-<div class="ttc" id="a00188_html"><div class="ttname"><a href="a00188.html">QUESO::OperatorBase</a></div><div class="ttdoc">Abstract base class for operator objects. Operators are assumed to be symmetric and positive-definite...</div><div class="ttdef"><b>Definition:</b> <a href="a00369_source.html#l00045">OperatorBase.h:45</a></div></div>
-<div class="ttc" id="a00140_html_abf9b3d144b4804414f328fa3ccca924a"><div class="ttname"><a href="a00140.html#abf9b3d144b4804414f328fa3ccca924a">QUESO::InfiniteDimensionalGaussian::coeffs</a></div><div class="ttdeci">std::vector&lt; double &gt; coeffs</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00091">InfiniteDimensionalGaussian.h:91</a></div></div>
-<div class="ttc" id="a00188_html_ae16245b5e46e01ff81121cca14190e7f"><div class="ttname"><a href="a00188.html#ae16245b5e46e01ff81121cca14190e7f">QUESO::OperatorBase::get_eigenvalue</a></div><div class="ttdeci">virtual double get_eigenvalue(unsigned int i) const =0</div><div class="ttdoc">Return eigenvalue i. </div></div>
-<div class="ttc" id="a00143_html"><div class="ttname"><a href="a00143.html">QUESO::InfiniteDimensionalMeasureBase</a></div><div class="ttdoc">Abstract base class for infinite dimensional measures. </div><div class="ttdef"><b>Definition:</b> <a href="a00362_source.html#l00043">InfiniteDimensionalMeasureBase.h:43</a></div></div>
-<div class="ttc" id="a00140_html_aeb80c76a7c9540756a4e5c23e8b9a836"><div class="ttname"><a href="a00140.html#aeb80c76a7c9540756a4e5c23e8b9a836">QUESO::InfiniteDimensionalGaussian::~InfiniteDimensionalGaussian</a></div><div class="ttdeci">~InfiniteDimensionalGaussian()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00053">InfiniteDimensionalGaussian.C:53</a></div></div>
-<div class="ttc" id="a00140_html_a16bf46c24315506ddca4739b05579b92"><div class="ttname"><a href="a00140.html#a16bf46c24315506ddca4739b05579b92">QUESO::InfiniteDimensionalGaussian::env</a></div><div class="ttdeci">const FullEnvironment &amp; env</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00081">InfiniteDimensionalGaussian.h:81</a></div></div>
-<div class="ttc" id="a00140_html_af08c847ce01c948b60f72be309c60b37"><div class="ttname"><a href="a00140.html#af08c847ce01c948b60f72be309c60b37">QUESO::InfiniteDimensionalGaussian::precision</a></div><div class="ttdeci">const OperatorBase &amp; precision</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00078">InfiniteDimensionalGaussian.h:78</a></div></div>
-<div class="ttc" id="a00089_html"><div class="ttname"><a href="a00089.html">QUESO::FullEnvironment</a></div><div class="ttdoc">This class sets up the full environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00435">Environment.h:435</a></div></div>
-<div class="ttc" id="a00195_html_a7be9cf40cc50b973ed8c2f594f402584"><div class="ttname"><a href="a00195.html#a7be9cf40cc50b973ed8c2f594f402584">QUESO::RngBase::gaussianSample</a></div><div class="ttdeci">virtual double gaussianSample(double stdDev) const =0</div><div class="ttdoc">Samples a value from a Gaussian distribution with standard deviation given by stdDev. </div></div>
-<div class="ttc" id="a00140_html_a3dbfc9028e821ebdee212bf60bf1cf35"><div class="ttname"><a href="a00140.html#a3dbfc9028e821ebdee212bf60bf1cf35">QUESO::InfiniteDimensionalGaussian::InfiniteDimensionalGaussian</a></div><div class="ttdeci">InfiniteDimensionalGaussian(const FullEnvironment &amp;env, const FunctionBase &amp;mean, const OperatorBase &amp;precision, double alpha, double beta)</div><div class="ttdoc">Construct a Gaussian with mean mean, precision operator precision. alpha controls regularity of draws...</div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00037">InfiniteDimensionalGaussian.C:37</a></div></div>
-<div class="ttc" id="a00092_html"><div class="ttname"><a href="a00092.html">QUESO::FunctionBase</a></div><div class="ttdoc">Abstract base class for function objects. </div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00047">FunctionBase.h:47</a></div></div>
-<div class="ttc" id="a00140_html_ab3d6cf41482750591ccd8bbe2426a98d"><div class="ttname"><a href="a00140.html#ab3d6cf41482750591ccd8bbe2426a98d">QUESO::InfiniteDimensionalGaussian::alpha</a></div><div class="ttdeci">double alpha</div><div class="ttdef"><b>Definition:</b> <a href="a00358_source.html#l00084">InfiniteDimensionalGaussian.h:84</a></div></div>
-<div class="ttc" id="a00140_html_a07eac1a9245e12bd3bc73ea65aac5ecf"><div class="ttname"><a href="a00140.html#a07eac1a9245e12bd3bc73ea65aac5ecf">QUESO::InfiniteDimensionalGaussian::get_kl_coefficient</a></div><div class="ttdeci">virtual double get_kl_coefficient(unsigned int i) const </div><div class="ttdoc">Return coefficient i of the KL expansion of the current draw. Must be called after draw() ...</div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00071">InfiniteDimensionalGaussian.C:71</a></div></div>
-<div class="ttc" id="a00188_html_a7e4e66c8db558de7445d89810aaaf0e0"><div class="ttname"><a href="a00188.html#a7e4e66c8db558de7445d89810aaaf0e0">QUESO::OperatorBase::inverse_kl_transform</a></div><div class="ttdeci">virtual SharedPtr&lt; FunctionBase &gt;::Type inverse_kl_transform(std::vector&lt; double &gt; &amp;xi, double alpha) const =0</div><div class="ttdoc">Given coefficients xi, computes the Karhunen-Loeve transform. </div></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span>  m_elements.resize(m_Map.NumGlobalElements());</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00674.html#a565378d68072550178d71122763bcb69">   53</a></span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; m_Map.NumGlobalElements(); ++i) {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    m_elements[i].resize(m_rowSize);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// Destructor</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="a00075.html#a8091b856529984e5c307e37e5438bfa4">   61</a></span>&#160;<a class="code" href="a00075.html">DistArray&lt;T&gt;::~DistArray</a>()</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor"></span>  <span class="keyword">delete</span> m_epetraDistArray;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  m_epetraDistArray = NULL;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; m_Map.NumGlobalElements(); ++i) {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    m_elements[i].clear();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  m_elements.clear();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">// Set methods</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<a class="code" href="a00075.html">DistArray&lt;T&gt;</a>&amp;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00075.html#a6ec9bfcdf00351c8fb9b18dfeab59026">   77</a></span>&#160;<a class="code" href="a00075.html">DistArray&lt;T&gt;::operator=</a>(<span class="keyword">const</span> <a class="code" href="a00075.html">DistArray&lt;T&gt;</a>&amp; rhs)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// Query methods</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;T&amp;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="a00075.html#a910410bb8104a49f71a8a14700d4681a">   85</a></span>&#160;<a class="code" href="a00075.html">DistArray&lt;T&gt;::operator()</a>(<span class="keywordtype">int</span> localElementId, <span class="keywordtype">int</span> colId)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;{</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> (*m_epetraDistArray)(localElementId,colId);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_elements[localElementId][colId];</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">const</span> T&amp;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="a00075.html#a44dad0d61e798227cf34528969c2096a">   96</a></span>&#160;<a class="code" href="a00075.html">DistArray&lt;T&gt;::operator()</a>(<span class="keywordtype">int</span> localElementId, <span class="keywordtype">int</span> colId)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> (*m_epetraDistArray)(localElementId,colId);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_elements[localElementId][colId];</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="a00075.html#a74e491ed573af8b81f701e2ca136206e">  107</a></span>&#160;<a class="code" href="a00075.html">DistArray&lt;T&gt;::GlobalLength</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraDistArray-&gt;<a class="code" href="a00075.html#a74e491ed573af8b81f701e2ca136206e">GlobalLength</a>();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_Map.NumGlobalElements();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="a00075.html#af4a798f5defa6a37dfc82175c7f92f83">  118</a></span>&#160;<a class="code" href="a00075.html">DistArray&lt;T&gt;::MyLength</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraDistArray-&gt;<a class="code" href="a00075.html#af4a798f5defa6a37dfc82175c7f92f83">MyLength</a>();</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_Map.NumMyElements();</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="a00075.html#ac20dd88a7b36e19948c39b8f1a1ab805">  129</a></span>&#160;<a class="code" href="a00075.html">DistArray&lt;T&gt;::RowSize</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_epetraDistArray-&gt;<a class="code" href="a00075.html#ac20dd88a7b36e19948c39b8f1a1ab805">RowSize</a>();</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> m_rowSize;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">// I/O methods</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="a00075.html#ad9d1da6bb1947b03a01cf1fd43bc5780">  141</a></span>&#160;<a class="code" href="a00075.html">DistArray&lt;T&gt;::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor"></span>  os &lt;&lt; *m_epetraDistArray;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor"></span>  os &lt;&lt; <span class="stringliteral">&quot;m_rowSize = &quot;</span>           &lt;&lt; m_rowSize</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;     &lt;&lt; <span class="stringliteral">&quot;, m_elements.size() = &quot;</span> &lt;&lt; m_elements.size()</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;     &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;}</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">// Class prototypes with all the types that QUESO needs</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00075.html">QUESO::DistArray&lt;QUESO::GslVector*&gt;</a>;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00075.html">QUESO::DistArray&lt;QUESO::GslMatrix*&gt;</a>;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00075.html">QUESO::DistArray&lt;QUESO::ScalarSequence&lt;double&gt;</a>*&gt;;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00075.html">QUESO::DistArray&lt;QUESO::SampledScalarCdf&lt;double&gt;</a>*&gt;;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00075.html">QUESO::DistArray&lt;QUESO::BaseOneDGrid&lt;double&gt;</a>*&gt;;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00075.html">QUESO::DistArray&lt;std::string&gt;</a>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00075.html">QUESO::DistArray&lt;std::vector&lt;double&gt;</a>*&gt;;</div>
+<div class="ttc" id="a00075_html_a54e6413babda861c8bf5213888c9b9f0"><div class="ttname"><a href="a00075.html#a54e6413babda861c8bf5213888c9b9f0">QUESO::DistArray::DistArray</a></div><div class="ttdeci">DistArray()</div><div class="ttdoc">Default constructor. Do not call this directly. </div></div>
+<div class="ttc" id="a00075_html_af4a798f5defa6a37dfc82175c7f92f83"><div class="ttname"><a href="a00075.html#af4a798f5defa6a37dfc82175c7f92f83">QUESO::DistArray::MyLength</a></div><div class="ttdeci">int MyLength() const </div><div class="ttdoc">Returns the length of the locally owned array. </div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00118">DistArray.C:118</a></div></div>
+<div class="ttc" id="a00075_html"><div class="ttname"><a href="a00075.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00056">DistArray.h:56</a></div></div>
+<div class="ttc" id="a00075_html_ac20dd88a7b36e19948c39b8f1a1ab805"><div class="ttname"><a href="a00075.html#ac20dd88a7b36e19948c39b8f1a1ab805">QUESO::DistArray::RowSize</a></div><div class="ttdeci">int RowSize() const </div><div class="ttdoc">Returns the row size, that is, the amount of data associated with each element. </div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00129">DistArray.C:129</a></div></div>
+<div class="ttc" id="a00075_html_a74e491ed573af8b81f701e2ca136206e"><div class="ttname"><a href="a00075.html#a74e491ed573af8b81f701e2ca136206e">QUESO::DistArray::GlobalLength</a></div><div class="ttdeci">int GlobalLength() const </div><div class="ttdoc">Returns the global length of the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00403_source.html#l00107">DistArray.C:107</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

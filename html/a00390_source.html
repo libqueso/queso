@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/src/BasicPdfsBoost.C Source File</title>
+<title>queso-0.56.2: src/core/inc/TKFactoryRandomWalk.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_637b9fe55c797d9c55ffa9eb30124a86.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_6c3c03b0c6c61440556655ca6259a2f1.html">core</a></li><li class="navelem"><a class="el" href="dir_8c6469bb17906efee6ca4d3fe37c75c7.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">BasicPdfsBoost.C</div>  </div>
+<div class="title">TKFactoryRandomWalk.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00390.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,46 +75,57 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/BasicPdfsBoost.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00053.html#a6409e117dda8033c960db50f8293a385">   30</a></span>&#160;<a class="code" href="a00053.html#a7ba56f194cdce87c7ef247457a5ed4a6">BasicPdfsBoost::BasicPdfsBoost</a>(<span class="keywordtype">int</span> worldRank)</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  :</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <a class="code" href="a00052.html">BasicPdfsBase</a>(worldRank)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="a00053.html#a0d1bc5ab5bdffb0870031746ebe37a94">   37</a></span>&#160;<a class="code" href="a00053.html#a0d1bc5ab5bdffb0870031746ebe37a94">BasicPdfsBoost::~BasicPdfsBoost</a>()</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="comment">//this function does nothing</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00053.html#a1fb018d87021cb4af85289102c7fddcb">   44</a></span>&#160;<a class="code" href="a00053.html#a1fb018d87021cb4af85289102c7fddcb">BasicPdfsBoost::betaPdfActualValue</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="a00340.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_TK_FACTORY_RANDOM_WALK_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_TK_FACTORY_RANDOM_WALK_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/TransitionKernelFactory.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/TKGroup.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> DerivedTK&gt;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00232.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00232.html">TKFactoryRandomWalk</a> : <span class="keyword">public</span> <a class="code" href="a00235.html">TransitionKernelFactory</a></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00232.html#a041026679c59cc250f2fee6ef6afef0b">   45</a></span>&#160;  <a class="code" href="a00232.html#a041026679c59cc250f2fee6ef6afef0b">TKFactoryRandomWalk</a>(<span class="keyword">const</span> std::string &amp; name)</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    : <a class="code" href="a00235.html">TransitionKernelFactory</a>(name)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  {}</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keywordtype">double</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00053.html#aabf856ea8be88e4fda2b378e91eee922">   51</a></span>&#160;<a class="code" href="a00053.html#aabf856ea8be88e4fda2b378e91eee922">BasicPdfsBoost::gammaPdfActualValue</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00340.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00053_html_a1fb018d87021cb4af85289102c7fddcb"><div class="ttname"><a href="a00053.html#a1fb018d87021cb4af85289102c7fddcb">QUESO::BasicPdfsBoost::betaPdfActualValue</a></div><div class="ttdeci">double betaPdfActualValue(double x, double alpha, double beta) const </div><div class="ttdoc">TODO: Actual value of the Beta PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00044">BasicPdfsBoost.C:44</a></div></div>
-<div class="ttc" id="a00053_html_a0d1bc5ab5bdffb0870031746ebe37a94"><div class="ttname"><a href="a00053.html#a0d1bc5ab5bdffb0870031746ebe37a94">QUESO::BasicPdfsBoost::~BasicPdfsBoost</a></div><div class="ttdeci">~BasicPdfsBoost()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00037">BasicPdfsBoost.C:37</a></div></div>
-<div class="ttc" id="a00053_html_aabf856ea8be88e4fda2b378e91eee922"><div class="ttname"><a href="a00053.html#aabf856ea8be88e4fda2b378e91eee922">QUESO::BasicPdfsBoost::gammaPdfActualValue</a></div><div class="ttdeci">double gammaPdfActualValue(double x, double a, double b) const </div><div class="ttdoc">TODO: Actual value of the Gamma PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00051">BasicPdfsBoost.C:51</a></div></div>
-<div class="ttc" id="a00053_html_a7ba56f194cdce87c7ef247457a5ed4a6"><div class="ttname"><a href="a00053.html#a7ba56f194cdce87c7ef247457a5ed4a6">QUESO::BasicPdfsBoost::BasicPdfsBoost</a></div><div class="ttdeci">BasicPdfsBoost()</div><div class="ttdoc">Default constructor. </div></div>
-<div class="ttc" id="a00340_html_a7cd5266c96c8870c5d1c1e13073afb87"><div class="ttname"><a href="a00340.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a></div><div class="ttdeci">#define queso_not_implemented()</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00056">asserts.h:56</a></div></div>
-<div class="ttc" id="a00052_html"><div class="ttname"><a href="a00052.html">QUESO::BasicPdfsBase</a></div><div class="ttdoc">TODO: Base class for basic PDFs (via either GSL or Boost). </div><div class="ttdef"><b>Definition:</b> <a href="a00342_source.html#l00044">BasicPdfsBase.h:44</a></div></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00232.html#afaf4f55d0fa4ff4cdf25f998d2736532">   52</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00232.html#afaf4f55d0fa4ff4cdf25f998d2736532">~TKFactoryRandomWalk</a>() {}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00232.html#a520efe2a2b7395b6c27de57413646061">   55</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00212.html">SharedPtr&lt;BaseTKGroup&lt;GslVector, GslMatrix&gt;</a> &gt;::Type <a class="code" href="a00232.html#a520efe2a2b7395b6c27de57413646061">build_tk</a>()</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="a00212.html">SharedPtr&lt;BaseTKGroup&lt;GslVector, GslMatrix&gt;</a> &gt;::Type new_tk;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    new_tk.reset(<span class="keyword">new</span> DerivedTK(this-&gt;<a class="code" href="a00235.html#a5e5e1bf63eef6f1ba39a78c07c8fb06b">m_options</a>-&gt;<a class="code" href="a00169.html#a66736c046146c02fc3e73f8d6e799c7e">m_prefix</a>.c_str(),</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                               *(this-&gt;<a class="code" href="a00235.html#a2569c0dbbc7a70f142806a8cf53acef3">m_vectorSpace</a>),</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                               *(this-&gt;<a class="code" href="a00235.html#a7a1f7158b48973b4db1e628c10b17887">m_dr_scales</a>),</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                               *(this-&gt;<a class="code" href="a00235.html#ac4ae87bdcfc1e2929a571839ce9824b7">m_initial_cov_matrix</a>)));</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">return</span> new_tk;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;};</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace QUESO</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif  // QUESO_TK_FACTORY_RANDOM_WALK_H</span></div>
+<div class="ttc" id="a00169_html_a66736c046146c02fc3e73f8d6e799c7e"><div class="ttname"><a href="a00169.html#a66736c046146c02fc3e73f8d6e799c7e">QUESO::MhOptionsValues::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdoc">Prefix for input file option names. Prepends all options for this class. </div><div class="ttdef"><b>Definition:</b> <a href="a00532_source.html#l00166">MetropolisHastingsSGOptions.h:166</a></div></div>
+<div class="ttc" id="a00235_html_a2569c0dbbc7a70f142806a8cf53acef3"><div class="ttname"><a href="a00235.html#a2569c0dbbc7a70f142806a8cf53acef3">QUESO::TransitionKernelFactory::m_vectorSpace</a></div><div class="ttdeci">static const VectorSpace&lt; GslVector, GslMatrix &gt; * m_vectorSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00109">TransitionKernelFactory.h:109</a></div></div>
+<div class="ttc" id="a00235_html"><div class="ttname"><a href="a00235.html">QUESO::TransitionKernelFactory</a></div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00041">TransitionKernelFactory.h:41</a></div></div>
+<div class="ttc" id="a00235_html_ac4ae87bdcfc1e2929a571839ce9824b7"><div class="ttname"><a href="a00235.html#ac4ae87bdcfc1e2929a571839ce9824b7">QUESO::TransitionKernelFactory::m_initial_cov_matrix</a></div><div class="ttdeci">static GslMatrix * m_initial_cov_matrix</div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00112">TransitionKernelFactory.h:112</a></div></div>
+<div class="ttc" id="a00232_html_afaf4f55d0fa4ff4cdf25f998d2736532"><div class="ttname"><a href="a00232.html#afaf4f55d0fa4ff4cdf25f998d2736532">QUESO::TKFactoryRandomWalk::~TKFactoryRandomWalk</a></div><div class="ttdeci">virtual ~TKFactoryRandomWalk()</div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00052">TKFactoryRandomWalk.h:52</a></div></div>
+<div class="ttc" id="a00235_html_a7a1f7158b48973b4db1e628c10b17887"><div class="ttname"><a href="a00235.html#a7a1f7158b48973b4db1e628c10b17887">QUESO::TransitionKernelFactory::m_dr_scales</a></div><div class="ttdeci">static const std::vector&lt; double &gt; * m_dr_scales</div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00110">TransitionKernelFactory.h:110</a></div></div>
+<div class="ttc" id="a00232_html_a520efe2a2b7395b6c27de57413646061"><div class="ttname"><a href="a00232.html#a520efe2a2b7395b6c27de57413646061">QUESO::TKFactoryRandomWalk::build_tk</a></div><div class="ttdeci">virtual SharedPtr&lt; BaseTKGroup&lt; GslVector, GslMatrix &gt; &gt;::Type build_tk()</div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00055">TKFactoryRandomWalk.h:55</a></div></div>
+<div class="ttc" id="a00212_html"><div class="ttname"><a href="a00212.html">QUESO::SharedPtr</a></div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00067">SharedPtr.h:67</a></div></div>
+<div class="ttc" id="a00235_html_a5e5e1bf63eef6f1ba39a78c07c8fb06b"><div class="ttname"><a href="a00235.html#a5e5e1bf63eef6f1ba39a78c07c8fb06b">QUESO::TransitionKernelFactory::m_options</a></div><div class="ttdeci">static const MhOptionsValues * m_options</div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00113">TransitionKernelFactory.h:113</a></div></div>
+<div class="ttc" id="a00232_html"><div class="ttname"><a href="a00232.html">QUESO::TKFactoryRandomWalk</a></div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00039">TKFactoryRandomWalk.h:39</a></div></div>
+<div class="ttc" id="a00232_html_a041026679c59cc250f2fee6ef6afef0b"><div class="ttname"><a href="a00232.html#a041026679c59cc250f2fee6ef6afef0b">QUESO::TKFactoryRandomWalk::TKFactoryRandomWalk</a></div><div class="ttdeci">TKFactoryRandomWalk(const std::string &amp;name)</div><div class="ttdef"><b>Definition:</b> <a href="a00390_source.html#l00045">TKFactoryRandomWalk.h:45</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

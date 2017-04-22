@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: QUESO::LagrangePolynomial1D1DFunction Class Reference</title>
+<title>queso-0.56.2: QUESO::Map Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -45,112 +45,121 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00690.html">QUESO</a></li><li class="navelem"><a class="el" href="a00162.html">LagrangePolynomial1D1DFunction</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00674.html">QUESO</a></li><li class="navelem"><a class="el" href="a00162.html">Map</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a01411.html">List of all members</a>  </div>
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="a00860.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::LagrangePolynomial1D1DFunction Class Reference</div>  </div>
+<div class="title">QUESO::Map Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Class for one-dimensional Lagrange polynomials.  
+<p>A class for partitioning vectors and matrices.  
  <a href="a00162.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00466_source.html">1D1DFunction.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00371_source.html">Map.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::LagrangePolynomial1D1DFunction:</div>
+Collaboration diagram for QUESO::Map:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01412.png" border="0" usemap="#_q_u_e_s_o_1_1_lagrange_polynomial1_d1_d_function_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_lagrange_polynomial1_d1_d_function_inherit__map" id="_q_u_e_s_o_1_1_lagrange_polynomial1_d1_d_function_inherit__map">
-<area shape="rect" id="node2" href="a00033.html" title="Class for one&#45;dimensional functions. " alt="" coords="11,5,196,32"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for QUESO::LagrangePolynomial1D1DFunction:</div>
-<div class="dyncontent">
-<div class="center"><img src="a01413.png" border="0" usemap="#_q_u_e_s_o_1_1_lagrange_polynomial1_d1_d_function_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_lagrange_polynomial1_d1_d_function_coll__map" id="_q_u_e_s_o_1_1_lagrange_polynomial1_d1_d_function_coll__map">
-<area shape="rect" id="node2" href="a00033.html" title="Class for one&#45;dimensional functions. " alt="" coords="11,5,196,32"/></map>
+<div class="center"><img src="a00861.png" border="0" usemap="#_q_u_e_s_o_1_1_map_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_map_coll__map" id="_q_u_e_s_o_1_1_map_coll__map">
+<area shape="rect" id="node2" href="a00179.html" title="The QUESO MPI Communicator Class. " alt="" coords="672,251,811,277"/><area shape="rect" id="node3" href="a00036.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="397,251,579,277"/><area shape="rect" id="node4" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::RngBase \&gt;" alt="" coords="22,5,221,46"/><area shape="rect" id="node5" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::MpiComm \&gt;" alt="" coords="22,83,221,125"/><area shape="rect" id="node6" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::variables_map \&gt;" alt="" coords="6,149,237,190"/><area shape="rect" id="node7" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::EnvOptionsValues \&gt;" alt="" coords="22,214,221,255"/><area shape="rect" id="node8" href="a00206.html" title="QUESO::ScopedPtr\&lt; GetPot \&gt;" alt="" coords="19,280,223,307"/><area shape="rect" id="node9" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::BasicPdfsBase \&gt;" alt="" coords="22,331,221,373"/><area shape="rect" id="node10" href="a00206.html" title="QUESO::ScopedPtr\&lt; std\l::ofstream \&gt;" alt="" coords="37,397,206,438"/><area shape="rect" id="node11" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::options\l_description \&gt;" alt="" coords="30,463,213,519"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:ab8678ebfde2a4b2ca59741673eeaf103"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#ab8678ebfde2a4b2ca59741673eeaf103">LagrangePolynomial1D1DFunction</a> (const std::vector&lt; double &gt; &amp;positionValues, const std::vector&lt; double &gt; *functionValues)</td></tr>
-<tr class="memdesc:ab8678ebfde2a4b2ca59741673eeaf103"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ab8678ebfde2a4b2ca59741673eeaf103">More...</a><br/></td></tr>
-<tr class="separator:ab8678ebfde2a4b2ca59741673eeaf103"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1b9170d2f09c55c85fb093644da4246"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#aa1b9170d2f09c55c85fb093644da4246">~LagrangePolynomial1D1DFunction</a> ()</td></tr>
-<tr class="memdesc:aa1b9170d2f09c55c85fb093644da4246"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#aa1b9170d2f09c55c85fb093644da4246">More...</a><br/></td></tr>
-<tr class="separator:aa1b9170d2f09c55c85fb093644da4246"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Mathematical methods</div></td></tr>
-<tr class="memitem:ada2741739cc9ff0fe98bb51e690df072"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#ada2741739cc9ff0fe98bb51e690df072">value</a> (double domainValue) const </td></tr>
-<tr class="memdesc:ada2741739cc9ff0fe98bb51e690df072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the Lagrange polynomial at point <code>domainValue</code>.  <a href="#ada2741739cc9ff0fe98bb51e690df072">More...</a><br/></td></tr>
-<tr class="separator:ada2741739cc9ff0fe98bb51e690df072"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a202ba706747ba35cf699799fbc3dbb8b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a202ba706747ba35cf699799fbc3dbb8b">deriv</a> (double domainValue) const </td></tr>
-<tr class="memdesc:a202ba706747ba35cf699799fbc3dbb8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Returns the value of the derivative of the Lagrange polynomial at point <code>domainValue</code>.  <a href="#a202ba706747ba35cf699799fbc3dbb8b">More...</a><br/></td></tr>
-<tr class="separator:a202ba706747ba35cf699799fbc3dbb8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00033"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00033')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00033.html">QUESO::Base1D1DFunction</a></td></tr>
-<tr class="memitem:a8e8c0f8d500675e4acfd4d7043000791 inherit pub_methods_a00033"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#a8e8c0f8d500675e4acfd4d7043000791">Base1D1DFunction</a> (double <a class="el" href="a00033.html#a4c110e621ef1ac557bbcc60d41f5a3c2">minDomainValue</a>, double <a class="el" href="a00033.html#ad2b80d0c52c0cb56c89f70f30b3bb19e">maxDomainValue</a>)</td></tr>
-<tr class="memdesc:a8e8c0f8d500675e4acfd4d7043000791 inherit pub_methods_a00033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a8e8c0f8d500675e4acfd4d7043000791">More...</a><br/></td></tr>
-<tr class="separator:a8e8c0f8d500675e4acfd4d7043000791 inherit pub_methods_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0512da686e14fe3b0544f84432ea322e inherit pub_methods_a00033"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#a0512da686e14fe3b0544f84432ea322e">~Base1D1DFunction</a> ()</td></tr>
-<tr class="memdesc:a0512da686e14fe3b0544f84432ea322e inherit pub_methods_a00033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a0512da686e14fe3b0544f84432ea322e">More...</a><br/></td></tr>
-<tr class="separator:a0512da686e14fe3b0544f84432ea322e inherit pub_methods_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c110e621ef1ac557bbcc60d41f5a3c2 inherit pub_methods_a00033"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#a4c110e621ef1ac557bbcc60d41f5a3c2">minDomainValue</a> () const </td></tr>
-<tr class="memdesc:a4c110e621ef1ac557bbcc60d41f5a3c2 inherit pub_methods_a00033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the minimum value of the domain of the (one-dimensional) function.  <a href="#a4c110e621ef1ac557bbcc60d41f5a3c2">More...</a><br/></td></tr>
-<tr class="separator:a4c110e621ef1ac557bbcc60d41f5a3c2 inherit pub_methods_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2b80d0c52c0cb56c89f70f30b3bb19e inherit pub_methods_a00033"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#ad2b80d0c52c0cb56c89f70f30b3bb19e">maxDomainValue</a> () const </td></tr>
-<tr class="memdesc:ad2b80d0c52c0cb56c89f70f30b3bb19e inherit pub_methods_a00033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum value of the domain of the (one-dimensional) function.  <a href="#ad2b80d0c52c0cb56c89f70f30b3bb19e">More...</a><br/></td></tr>
-<tr class="separator:ad2b80d0c52c0cb56c89f70f30b3bb19e inherit pub_methods_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac41e4e15b7f97c14a0389069bf8e833d inherit pub_methods_a00033"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#ac41e4e15b7f97c14a0389069bf8e833d">multiplyAndIntegrate</a> (const <a class="el" href="a00033.html">Base1D1DFunction</a> &amp;func, unsigned int quadratureOrder, double *resultWithMultiplicationByTAsWell) const </td></tr>
-<tr class="memdesc:ac41e4e15b7f97c14a0389069bf8e833d inherit pub_methods_a00033"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Multiplies <code>this</code> function with <code>function</code>, and integrates it numerically. See template specialization.  <a href="#ac41e4e15b7f97c14a0389069bf8e833d">More...</a><br/></td></tr>
-<tr class="separator:ac41e4e15b7f97c14a0389069bf8e833d inherit pub_methods_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5d31038467331b850a36361a60f7394"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#aa5d31038467331b850a36361a60f7394">Map</a> (int numGlobalElements, int indexBase, const <a class="el" href="a00179.html">MpiComm</a> &amp;comm)</td></tr>
+<tr class="memdesc:aa5d31038467331b850a36361a60f7394"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a uniform linear distribution of elements.  <a href="#aa5d31038467331b850a36361a60f7394">More...</a><br/></td></tr>
+<tr class="separator:aa5d31038467331b850a36361a60f7394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a381dabf55f318037416da6ae81a5db0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a381dabf55f318037416da6ae81a5db0b">Map</a> (const <a class="el" href="a00162.html">Map</a> &amp;src)</td></tr>
+<tr class="memdesc:a381dabf55f318037416da6ae81a5db0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#a381dabf55f318037416da6ae81a5db0b">More...</a><br/></td></tr>
+<tr class="separator:a381dabf55f318037416da6ae81a5db0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a280330a2d8fc1694461f09941a443b4e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a280330a2d8fc1694461f09941a443b4e">~Map</a> ()</td></tr>
+<tr class="memdesc:a280330a2d8fc1694461f09941a443b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a280330a2d8fc1694461f09941a443b4e">More...</a><br/></td></tr>
+<tr class="separator:a280330a2d8fc1694461f09941a443b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Set methods</div></td></tr>
+<tr class="memitem:afb3d6d9dc20139964090478678194359"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00162.html">Map</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#afb3d6d9dc20139964090478678194359">operator=</a> (const <a class="el" href="a00162.html">Map</a> &amp;rhs)</td></tr>
+<tr class="memdesc:afb3d6d9dc20139964090478678194359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator.  <a href="#afb3d6d9dc20139964090478678194359">More...</a><br/></td></tr>
+<tr class="separator:afb3d6d9dc20139964090478678194359"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Size, dimension and local ID accessor methods</div></td></tr>
+<tr class="memitem:ac67907266dcd7108ffe5a0cbef908781"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#ac67907266dcd7108ffe5a0cbef908781">NumGlobalElements</a> () const </td></tr>
+<tr class="memdesc:ac67907266dcd7108ffe5a0cbef908781"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total number of elements across all processors.  <a href="#ac67907266dcd7108ffe5a0cbef908781">More...</a><br/></td></tr>
+<tr class="separator:ac67907266dcd7108ffe5a0cbef908781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83f67cf2643489a45ef0e515d814c89d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a83f67cf2643489a45ef0e515d814c89d">IndexBase</a> () const </td></tr>
+<tr class="separator:a83f67cf2643489a45ef0e515d814c89d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6407f6d6a6df8a0a40923c8dc524b021"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a6407f6d6a6df8a0a40923c8dc524b021">NumMyElements</a> () const </td></tr>
+<tr class="memdesc:a6407f6d6a6df8a0a40923c8dc524b021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of elements owned by the calling processor.  <a href="#a6407f6d6a6df8a0a40923c8dc524b021">More...</a><br/></td></tr>
+<tr class="separator:a6407f6d6a6df8a0a40923c8dc524b021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a686b1ea15e0aa9a5de9d6a03456be4a9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a686b1ea15e0aa9a5de9d6a03456be4a9">MinMyGID</a> () const </td></tr>
+<tr class="memdesc:a686b1ea15e0aa9a5de9d6a03456be4a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The minimum global index value on the calling processor.  <a href="#a686b1ea15e0aa9a5de9d6a03456be4a9">More...</a><br/></td></tr>
+<tr class="separator:a686b1ea15e0aa9a5de9d6a03456be4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Miscellaneous methods</div></td></tr>
+<tr class="memitem:aab4fc9911156b61c51f905849e3c9856"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00179.html">MpiComm</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#aab4fc9911156b61c51f905849e3c9856">Comm</a> () const </td></tr>
+<tr class="memdesc:aab4fc9911156b61c51f905849e3c9856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function for <a class="el" href="a00179.html" title="The QUESO MPI Communicator Class. ">MpiComm</a> communicator.  <a href="#aab4fc9911156b61c51f905849e3c9856">More...</a><br/></td></tr>
+<tr class="separator:aab4fc9911156b61c51f905849e3c9856"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a717d14c9cfef5fc54208a5e5162d1506"><td class="memItemLeft" align="right" valign="top">const Epetra_Map &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a717d14c9cfef5fc54208a5e5162d1506">epetraMap</a> () const </td></tr>
+<tr class="memdesc:a717d14c9cfef5fc54208a5e5162d1506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trilinos Epetra_Map: A class for partitioning vectors and matrices.  <a href="#a717d14c9cfef5fc54208a5e5162d1506">More...</a><br/></td></tr>
+<tr class="separator:a717d14c9cfef5fc54208a5e5162d1506"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a192c6dcd8bdba6177830fc1398ce5b01"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a192c6dcd8bdba6177830fc1398ce5b01">m_positionValues</a></td></tr>
-<tr class="separator:a192c6dcd8bdba6177830fc1398ce5b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6dc315c563b9b83a88cd3f280a75aa4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#aa6dc315c563b9b83a88cd3f280a75aa4">m_functionValues</a></td></tr>
-<tr class="separator:aa6dc315c563b9b83a88cd3f280a75aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00033"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00033')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00033.html">QUESO::Base1D1DFunction</a></td></tr>
-<tr class="memitem:a7b18b3854ee74ef5befbc67b75ebbdc5 inherit pro_attribs_a00033"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a></td></tr>
-<tr class="separator:a7b18b3854ee74ef5befbc67b75ebbdc5 inherit pro_attribs_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0025999ccab2145cd46c0a81e260e8f inherit pro_attribs_a00033"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00033.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a></td></tr>
-<tr class="separator:aa0025999ccab2145cd46c0a81e260e8f inherit pro_attribs_a00033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:acce20c97c69af851cbf67386beb133b2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#acce20c97c69af851cbf67386beb133b2">Map</a> ()</td></tr>
+<tr class="memdesc:acce20c97c69af851cbf67386beb133b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. Do not call this directly.  <a href="#acce20c97c69af851cbf67386beb133b2">More...</a><br/></td></tr>
+<tr class="separator:acce20c97c69af851cbf67386beb133b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ed4b24e922e77695d85de7fd4e9042a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a2ed4b24e922e77695d85de7fd4e9042a">copy</a> (const <a class="el" href="a00162.html">Map</a> &amp;src)</td></tr>
+<tr class="memdesc:a2ed4b24e922e77695d85de7fd4e9042a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the map.  <a href="#a2ed4b24e922e77695d85de7fd4e9042a">More...</a><br/></td></tr>
+<tr class="separator:a2ed4b24e922e77695d85de7fd4e9042a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:aa002700b90ae2edbf5b3ee6968b28c50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00179.html">MpiComm</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#aa002700b90ae2edbf5b3ee6968b28c50">m_MpiComm</a></td></tr>
+<tr class="memdesc:aa002700b90ae2edbf5b3ee6968b28c50"><td class="mdescLeft">&#160;</td><td class="mdescRight">This communicator can be queried for processor rank and size information.  <a href="#aa002700b90ae2edbf5b3ee6968b28c50">More...</a><br/></td></tr>
+<tr class="separator:aa002700b90ae2edbf5b3ee6968b28c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e425bf1687adba1f0c973966109f9d0"><td class="memItemLeft" align="right" valign="top">Epetra_Map *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a></td></tr>
+<tr class="memdesc:a5e425bf1687adba1f0c973966109f9d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epetra_Map.  <a href="#a5e425bf1687adba1f0c973966109f9d0">More...</a><br/></td></tr>
+<tr class="separator:a5e425bf1687adba1f0c973966109f9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67c0e876f9c6e9dcf9eba45d34c02b0a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a67c0e876f9c6e9dcf9eba45d34c02b0a">m_numGlobalElements</a></td></tr>
+<tr class="memdesc:a67c0e876f9c6e9dcf9eba45d34c02b0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of elements across all processors.  <a href="#a67c0e876f9c6e9dcf9eba45d34c02b0a">More...</a><br/></td></tr>
+<tr class="separator:a67c0e876f9c6e9dcf9eba45d34c02b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26b42eedd432d109ac0e349eff15da29"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#a26b42eedd432d109ac0e349eff15da29">m_indexBase</a></td></tr>
+<tr class="memdesc:a26b42eedd432d109ac0e349eff15da29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base integer value for indexed array references.  <a href="#a26b42eedd432d109ac0e349eff15da29">More...</a><br/></td></tr>
+<tr class="separator:a26b42eedd432d109ac0e349eff15da29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdde1747848ac8dd3cebf8eed159de82"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00162.html#afdde1747848ac8dd3cebf8eed159de82">m_numMyElements</a></td></tr>
+<tr class="memdesc:afdde1747848ac8dd3cebf8eed159de82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements owned by the calling processor.  <a href="#afdde1747848ac8dd3cebf8eed159de82">More...</a><br/></td></tr>
+<tr class="separator:afdde1747848ac8dd3cebf8eed159de82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class for one-dimensional Lagrange polynomials. </p>
-<p>The Lagrange interpolating polynomial of a one-dimensional function <img class="formulaInl" alt="$ f(x) = y $" src="form_20.png"/> is the polynomial <img class="formulaInl" alt="$ P(x) $" src="form_21.png"/> of degree <img class="formulaInl" alt="$ \leq n-1 $" src="form_22.png"/> that passes through the <img class="formulaInl" alt="$ n $" src="form_9.png"/> points <img class="formulaInl" alt="$ (x_1,y_1=f(x_1)), (x_2,y_2=f(x_2)), ..., (x_n,y_n=f(x_n))$" src="form_23.png"/>, and is given by: </p>
-<p class="formulaDsp">
-<img class="formulaDsp" alt="\[ P(x)=\sum_{j=1}^n \prod_{k=1; k\not=j}^n \frac{x-x_k}{x_j-x_k}.\]" src="form_24.png"/>
-</p>
-<p>Written explicitly, </p>
-<p class="formulaDsp">
-<img class="formulaDsp" alt="\[ P(x)=\frac{(x-x_2)(x-x_3)...(x-x_n)}{(x_1-x_2)(x_1-x_3)...(x_1-x_n)}y_1+ \frac{(x-x_1)(x-x_3)...(x-x_n)}{(x_2-x_1)(x_2-x_3)...(x_2-x_n)}y_2+...+ \frac{(x-x_1)(x-x_2)...(x-x_(n-1))}{(x_n-x_1)(x_n-x_2)...(x_n-x_(n-1))}y_n.\]" src="form_25.png"/>
-</p>
-<p>In this class, the array <code> std::vector&lt;double&gt;&amp; positionValues </code> stores the points <img class="formulaInl" alt="$ x_1, x_2, ... x_n $" src="form_26.png"/> and the array <code> std::vector&lt;double&gt;* functionValues </code> stores the points <img class="formulaInl" alt="$ y_1, y_2, ... y_n $" src="form_27.png"/> of the Lagrange polynomial.</p>
-<dl class="section see"><dt>See Also</dt><dd>Archer, Branden <a class="el" href="a00308.html#a0ae30037179743e2ec49d709cd3e7bbb">and</a> Weisstein, Eric W. "Lagrange Interpolating Polynomial." From MathWorld&ndash;A Wolfram Web Resource. <a href="http://mathworld.wolfram.com/LagrangeInterpolatingPolynomial.html">http://mathworld.wolfram.com/LagrangeInterpolatingPolynomial.html</a>. </dd></dl>
+<div class="textblock"><p>A class for partitioning vectors and matrices. </p>
+<p>It is often the case that multiple matrix and vector objects have an identical distribution of elements on a parallel machine. The <a class="el" href="a00162.html" title="A class for partitioning vectors and matrices. ">Map</a> keeps information that describes this distribution for matrices and vectors. Inspired by Trilinos Epetra_Map class. </p>
 
-<p>Definition at line <a class="el" href="a00466_source.html#l00558">558</a> of file <a class="el" href="a00466_source.html">1D1DFunction.h</a>.</p>
+<p>Definition at line <a class="el" href="a00371_source.html#l00049">49</a> of file <a class="el" href="a00371_source.html">Map.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ab8678ebfde2a4b2ca59741673eeaf103"></a>
+<a class="anchor" id="aa5d31038467331b850a36361a60f7394"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::LagrangePolynomial1D1DFunction::LagrangePolynomial1D1DFunction </td>
+          <td class="memname">QUESO::Map::Map </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>positionValues</em>, </td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numGlobalElements</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; double &gt; *&#160;</td>
-          <td class="paramname"><em>functionValues</em>&#160;</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>indexBase</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="a00179.html">MpiComm</a> &amp;&#160;</td>
+          <td class="paramname"><em>comm</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -160,34 +169,34 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Default constructor. </p>
+<p>Constructor for a uniform linear distribution of elements. </p>
 
-<p>Definition at line <a class="el" href="a00480_source.html#l00743">743</a> of file <a class="el" href="a00480_source.html">1D1DFunction.C</a>.</p>
-
-<p>References <a class="el" href="a00466_source.html#l00585">m_functionValues</a>, <a class="el" href="a00466_source.html#l00584">m_positionValues</a>, and <a class="el" href="a00340_source.html#l00073">queso_require_equal_to_msg</a>.</p>
-<div class="fragment"><div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;  :</div>
-<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;  <a class="code" href="a00033.html#a8e8c0f8d500675e4acfd4d7043000791">Base1D1DFunction</a>(-INFINITY,INFINITY),</div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;  <a class="code" href="a00162.html#a192c6dcd8bdba6177830fc1398ce5b01">m_positionValues</a>(positionValues),</div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;  <a class="code" href="a00162.html#aa6dc315c563b9b83a88cd3f280a75aa4">m_functionValues</a>(positionValues.size(),1.)</div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;{</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;  <span class="keywordflow">if</span> (functionValues) {</div>
-<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <a class="code" href="a00340.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(<a class="code" href="a00162.html#a192c6dcd8bdba6177830fc1398ce5b01">m_positionValues</a>.size(), functionValues-&gt;size(), <span class="stringliteral">&quot;invalid input&quot;</span>);</div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    <a class="code" href="a00162.html#aa6dc315c563b9b83a88cd3f280a75aa4">m_functionValues</a> = *functionValues;</div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;  }</div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;}</div>
-<div class="ttc" id="a00033_html_a8e8c0f8d500675e4acfd4d7043000791"><div class="ttname"><a href="a00033.html#a8e8c0f8d500675e4acfd4d7043000791">QUESO::Base1D1DFunction::Base1D1DFunction</a></div><div class="ttdeci">Base1D1DFunction(double minDomainValue, double maxDomainValue)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00480_source.html#l00033">1D1DFunction.C:33</a></div></div>
-<div class="ttc" id="a00340_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00340.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00073">asserts.h:73</a></div></div>
-<div class="ttc" id="a00162_html_a192c6dcd8bdba6177830fc1398ce5b01"><div class="ttname"><a href="a00162.html#a192c6dcd8bdba6177830fc1398ce5b01">QUESO::LagrangePolynomial1D1DFunction::m_positionValues</a></div><div class="ttdeci">std::vector&lt; double &gt; m_positionValues</div><div class="ttdef"><b>Definition:</b> <a href="a00466_source.html#l00584">1D1DFunction.h:584</a></div></div>
-<div class="ttc" id="a00162_html_aa6dc315c563b9b83a88cd3f280a75aa4"><div class="ttname"><a href="a00162.html#aa6dc315c563b9b83a88cd3f280a75aa4">QUESO::LagrangePolynomial1D1DFunction::m_functionValues</a></div><div class="ttdeci">std::vector&lt; double &gt; m_functionValues</div><div class="ttdef"><b>Definition:</b> <a href="a00466_source.html#l00585">1D1DFunction.h:585</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aa1b9170d2f09c55c85fb093644da4246"></a>
+<a class="anchor" id="a381dabf55f318037416da6ae81a5db0b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::LagrangePolynomial1D1DFunction::~LagrangePolynomial1D1DFunction </td>
+          <td class="memname">QUESO::Map::Map </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00162.html">Map</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy constructor. </p>
+
+</div>
+</div>
+<a class="anchor" id="a280330a2d8fc1694461f09941a443b4e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QUESO::Map::~Map </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -197,70 +206,75 @@ Protected Attributes</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="a00480_source.html#l00757">757</a> of file <a class="el" href="a00480_source.html">1D1DFunction.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;{</div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;}</div>
+</div>
+</div>
+<a class="anchor" id="acce20c97c69af851cbf67386beb133b2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QUESO::Map::Map </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default constructor. Do not call this directly. </p>
+
+<p>Definition at line <a class="el" href="a00420_source.html#l00063">63</a> of file <a class="el" href="a00420_source.html">Map.C</a>.</p>
+
+<p>References <a class="el" href="a00371_source.html#l00113">m_epetraMap</a>.</p>
+<div class="fragment"><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor"></span>  <span class="keyword">delete</span> <a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a> = NULL;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span>  <span class="comment">// Nothing to do</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="ttc" id="a00162_html_a5e425bf1687adba1f0c973966109f9d0"><div class="ttname"><a href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">QUESO::Map::m_epetraMap</a></div><div class="ttdeci">Epetra_Map * m_epetraMap</div><div class="ttdoc">Epetra_Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00113">Map.h:113</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a202ba706747ba35cf699799fbc3dbb8b"></a>
+<a class="anchor" id="aab4fc9911156b61c51f905849e3c9856"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double QUESO::LagrangePolynomial1D1DFunction::deriv </td>
+          <td class="memname">const <a class="el" href="a00179.html">MpiComm</a> &amp; QUESO::Map::Comm </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>domainValue</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>TODO: Returns the value of the derivative of the Lagrange polynomial at point <code>domainValue</code>. </p>
-<dl class="todo"><dt><b><a class="el" href="a00692.html#_todo000009">Todo:</a></b></dt><dd>This function checks if point <code>domainValue</code> belongs to the domain of <code>this</code> function, and in affirmative case, it returns the value of the derivative at such point. </dd></dl>
+<p>Access function for <a class="el" href="a00179.html" title="The QUESO MPI Communicator Class. ">MpiComm</a> communicator. </p>
 
-<p>Implements <a class="el" href="a00033.html#a6b8de03f2099f31735dcaf15c24bca32">QUESO::Base1D1DFunction</a>.</p>
+<p>Definition at line <a class="el" href="a00420_source.html#l00131">131</a> of file <a class="el" href="a00420_source.html">Map.C</a>.</p>
 
-<p>Definition at line <a class="el" href="a00480_source.html#l00797">797</a> of file <a class="el" href="a00480_source.html">1D1DFunction.C</a>.</p>
+<p>References <a class="el" href="a00371_source.html#l00109">m_MpiComm</a>.</p>
 
-<p>References <a class="el" href="a00466_source.html#l00086">QUESO::Base1D1DFunction::m_maxDomainValue</a>, <a class="el" href="a00466_source.html#l00085">QUESO::Base1D1DFunction::m_minDomainValue</a>, <a class="el" href="a00340_source.html#l00056">queso_not_implemented</a>, <a class="el" href="a00340_source.html#l00069">queso_require_msg</a>, and <a class="el" href="a00480_source.html#l00762">value()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;{</div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00162.html#ada2741739cc9ff0fe98bb51e690df072">value</a> = 0.;</div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;</div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;  <span class="keywordflow">if</span> ((domainValue &lt; <a class="code" href="a00033.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a>) || (domainValue &gt; <a class="code" href="a00033.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a>)) {</div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;In LagrangePolynomial1D1DFunction::deriv()&quot;</span></div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;: requested x (&quot;</span>            &lt;&lt; domainValue</div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;) is out of the interval (&quot;</span> &lt;&lt; <a class="code" href="a00033.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a></div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>                         &lt;&lt; <a class="code" href="a00033.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a></div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;)&quot;</span></div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;  }</div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;</div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(!((domainValue &lt; <a class="code" href="a00033.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a>) || (domainValue &gt; <a class="code" href="a00033.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a>)), <span class="stringliteral">&quot;x out of range&quot;</span>);</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;</div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;  <a class="code" href="a00340.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;</div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00162.html#ada2741739cc9ff0fe98bb51e690df072">value</a>;</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;}</div>
-<div class="ttc" id="a00033_html_aa0025999ccab2145cd46c0a81e260e8f"><div class="ttname"><a href="a00033.html#aa0025999ccab2145cd46c0a81e260e8f">QUESO::Base1D1DFunction::m_maxDomainValue</a></div><div class="ttdeci">double m_maxDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00466_source.html#l00086">1D1DFunction.h:86</a></div></div>
-<div class="ttc" id="a00033_html_a7b18b3854ee74ef5befbc67b75ebbdc5"><div class="ttname"><a href="a00033.html#a7b18b3854ee74ef5befbc67b75ebbdc5">QUESO::Base1D1DFunction::m_minDomainValue</a></div><div class="ttdeci">double m_minDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00466_source.html#l00085">1D1DFunction.h:85</a></div></div>
-<div class="ttc" id="a00340_html_a7cd5266c96c8870c5d1c1e13073afb87"><div class="ttname"><a href="a00340.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a></div><div class="ttdeci">#define queso_not_implemented()</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00056">asserts.h:56</a></div></div>
-<div class="ttc" id="a00162_html_ada2741739cc9ff0fe98bb51e690df072"><div class="ttname"><a href="a00162.html#ada2741739cc9ff0fe98bb51e690df072">QUESO::LagrangePolynomial1D1DFunction::value</a></div><div class="ttdeci">double value(double domainValue) const </div><div class="ttdoc">Returns the value of the Lagrange polynomial at point domainValue. </div><div class="ttdef"><b>Definition:</b> <a href="a00480_source.html#l00762">1D1DFunction.C:762</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
+<p>Referenced by <a class="el" href="a00421_source.html#l00062">QUESO::Matrix::numOfProcsForStorage()</a>, <a class="el" href="a00435_source.html#l00068">QUESO::Vector::numOfProcsForStorage()</a>, <a class="el" href="a00439_source.html#l00739">QUESO::GPMSAFactory&lt; V, M &gt;::setUpEmulator()</a>, and <a class="el" href="a00409_source.html#l00693">QUESO::GslMatrix::transpose()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;{</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00162.html#aa002700b90ae2edbf5b3ee6968b28c50">m_MpiComm</a>;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;}</div>
+<div class="ttc" id="a00162_html_aa002700b90ae2edbf5b3ee6968b28c50"><div class="ttname"><a href="a00162.html#aa002700b90ae2edbf5b3ee6968b28c50">QUESO::Map::m_MpiComm</a></div><div class="ttdeci">MpiComm m_MpiComm</div><div class="ttdoc">This communicator can be queried for processor rank and size information. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00109">Map.h:109</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ada2741739cc9ff0fe98bb51e690df072"></a>
+<a class="anchor" id="a2ed4b24e922e77695d85de7fd4e9042a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -268,70 +282,224 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double QUESO::LagrangePolynomial1D1DFunction::value </td>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::Map::copy </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>domainValue</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">const <a class="el" href="a00162.html">Map</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the value of the Lagrange polynomial at point <code>domainValue</code>. </p>
+<p>Copies the map. </p>
 
-<p>Implements <a class="el" href="a00033.html#a1042dfd930c30a35d6dbf70f94e8dfe5">QUESO::Base1D1DFunction</a>.</p>
+<p>Definition at line <a class="el" href="a00420_source.html#l00146">146</a> of file <a class="el" href="a00420_source.html">Map.C</a>.</p>
 
-<p>Definition at line <a class="el" href="a00480_source.html#l00762">762</a> of file <a class="el" href="a00480_source.html">1D1DFunction.C</a>.</p>
+<p>References <a class="el" href="a00371_source.html#l00113">m_epetraMap</a>, <a class="el" href="a00371_source.html#l00119">m_indexBase</a>, <a class="el" href="a00371_source.html#l00109">m_MpiComm</a>, <a class="el" href="a00371_source.html#l00116">m_numGlobalElements</a>, and <a class="el" href="a00371_source.html#l00122">m_numMyElements</a>.</p>
 
-<p>References <a class="el" href="a00310_source.html#l00053">k</a>, <a class="el" href="a00466_source.html#l00585">m_functionValues</a>, and <a class="el" href="a00466_source.html#l00584">m_positionValues</a>.</p>
+<p>Referenced by <a class="el" href="a00420_source.html#l00076">operator=()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;{</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <a class="code" href="a00162.html#aa002700b90ae2edbf5b3ee6968b28c50">m_MpiComm</a>         = src.m_MpiComm;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor"></span>  <span class="keyword">delete</span> <a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a>;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a>         = <span class="keyword">new</span> Epetra_Map(*src.m_epetraMap);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor"></span>  <a class="code" href="a00162.html#a67c0e876f9c6e9dcf9eba45d34c02b0a">m_numGlobalElements</a> = src.m_numGlobalElements;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <a class="code" href="a00162.html#a26b42eedd432d109ac0e349eff15da29">m_indexBase</a>         = src.m_indexBase;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <a class="code" href="a00162.html#afdde1747848ac8dd3cebf8eed159de82">m_numMyElements</a>     = src.m_numMyElements;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;}</div>
+<div class="ttc" id="a00162_html_afdde1747848ac8dd3cebf8eed159de82"><div class="ttname"><a href="a00162.html#afdde1747848ac8dd3cebf8eed159de82">QUESO::Map::m_numMyElements</a></div><div class="ttdeci">int m_numMyElements</div><div class="ttdoc">Number of elements owned by the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00122">Map.h:122</a></div></div>
+<div class="ttc" id="a00162_html_a5e425bf1687adba1f0c973966109f9d0"><div class="ttname"><a href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">QUESO::Map::m_epetraMap</a></div><div class="ttdeci">Epetra_Map * m_epetraMap</div><div class="ttdoc">Epetra_Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00113">Map.h:113</a></div></div>
+<div class="ttc" id="a00162_html_aa002700b90ae2edbf5b3ee6968b28c50"><div class="ttname"><a href="a00162.html#aa002700b90ae2edbf5b3ee6968b28c50">QUESO::Map::m_MpiComm</a></div><div class="ttdeci">MpiComm m_MpiComm</div><div class="ttdoc">This communicator can be queried for processor rank and size information. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00109">Map.h:109</a></div></div>
+<div class="ttc" id="a00162_html_a67c0e876f9c6e9dcf9eba45d34c02b0a"><div class="ttname"><a href="a00162.html#a67c0e876f9c6e9dcf9eba45d34c02b0a">QUESO::Map::m_numGlobalElements</a></div><div class="ttdeci">int m_numGlobalElements</div><div class="ttdoc">Total number of elements across all processors. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00116">Map.h:116</a></div></div>
+<div class="ttc" id="a00162_html_a26b42eedd432d109ac0e349eff15da29"><div class="ttname"><a href="a00162.html#a26b42eedd432d109ac0e349eff15da29">QUESO::Map::m_indexBase</a></div><div class="ttdeci">int m_indexBase</div><div class="ttdoc">Base integer value for indexed array references. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00119">Map.h:119</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a717d14c9cfef5fc54208a5e5162d1506"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const Epetra_Map &amp; QUESO::Map::epetraMap </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
-<p>Referenced by <a class="el" href="a00480_source.html#l00797">deriv()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;{</div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00162.html#ada2741739cc9ff0fe98bb51e690df072">value</a> = 0.;</div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;</div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a> = 0; <a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a> &lt; <a class="code" href="a00162.html#a192c6dcd8bdba6177830fc1398ce5b01">m_positionValues</a>.size(); ++<a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>) {</div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    <span class="keywordtype">double</span> scaleFactor = 1.;</div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    <span class="keywordtype">double</span> posK = <a class="code" href="a00162.html#a192c6dcd8bdba6177830fc1398ce5b01">m_positionValues</a>[<a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>];</div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="a00162.html#a192c6dcd8bdba6177830fc1398ce5b01">m_positionValues</a>.size(); ++j) {</div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;      <span class="keywordflow">if</span> (j != <a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>) {</div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;        <span class="keywordtype">double</span> posJ = <a class="code" href="a00162.html#a192c6dcd8bdba6177830fc1398ce5b01">m_positionValues</a>[j];</div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;        scaleFactor *= (domainValue-posJ)/(posK-posJ);</div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;      }</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    }</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;</div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;    <span class="comment">//if (m_env.subDisplayFile()) {</span></div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    <span class="comment">//  *m_env.subDisplayFile() &lt;&lt; &quot;In sddTG&lt;K_V,K_M&gt;::lagrange()&quot;</span></div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;    <span class="comment">//                          &lt;&lt; &quot;: k = &quot; &lt;&lt; k</span></div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    <span class="comment">//                          &lt;&lt; &quot;, scaleFactor = &quot; &lt;&lt; scaleFactor</span></div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    <span class="comment">//                          &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    <span class="comment">//}</span></div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;</div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    value += scaleFactor * <a class="code" href="a00162.html#aa6dc315c563b9b83a88cd3f280a75aa4">m_functionValues</a>[<a class="code" href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>];</div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;</div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    <span class="comment">//if (m_env.subDisplayFile()) {</span></div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    <span class="comment">//  *m_env.subDisplayFile() &lt;&lt; &quot;In sddTG&lt;K_V,K_M&gt;::lagrange()&quot;</span></div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;    <span class="comment">//                          &lt;&lt; &quot;: k = &quot; &lt;&lt; k</span></div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    <span class="comment">//                          &lt;&lt; &quot;, value = &quot; &lt;&lt; value</span></div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;    <span class="comment">//                          &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;    <span class="comment">//}</span></div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;  }</div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;</div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00162.html#ada2741739cc9ff0fe98bb51e690df072">value</a>;</div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;}</div>
-<div class="ttc" id="a00310_html_ab66ed8e0098c0a86b458672a55a9cca9"><div class="ttname"><a href="a00310.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition:</b> <a href="a00310_source.html#l00053">ann_sample.cpp:53</a></div></div>
-<div class="ttc" id="a00162_html_a192c6dcd8bdba6177830fc1398ce5b01"><div class="ttname"><a href="a00162.html#a192c6dcd8bdba6177830fc1398ce5b01">QUESO::LagrangePolynomial1D1DFunction::m_positionValues</a></div><div class="ttdeci">std::vector&lt; double &gt; m_positionValues</div><div class="ttdef"><b>Definition:</b> <a href="a00466_source.html#l00584">1D1DFunction.h:584</a></div></div>
-<div class="ttc" id="a00162_html_ada2741739cc9ff0fe98bb51e690df072"><div class="ttname"><a href="a00162.html#ada2741739cc9ff0fe98bb51e690df072">QUESO::LagrangePolynomial1D1DFunction::value</a></div><div class="ttdeci">double value(double domainValue) const </div><div class="ttdoc">Returns the value of the Lagrange polynomial at point domainValue. </div><div class="ttdef"><b>Definition:</b> <a href="a00480_source.html#l00762">1D1DFunction.C:762</a></div></div>
-<div class="ttc" id="a00162_html_aa6dc315c563b9b83a88cd3f280a75aa4"><div class="ttname"><a href="a00162.html#aa6dc315c563b9b83a88cd3f280a75aa4">QUESO::LagrangePolynomial1D1DFunction::m_functionValues</a></div><div class="ttdeci">std::vector&lt; double &gt; m_functionValues</div><div class="ttdef"><b>Definition:</b> <a href="a00466_source.html#l00585">1D1DFunction.h:585</a></div></div>
+<p>Trilinos Epetra_Map: A class for partitioning vectors and matrices. </p>
+
+<p>Definition at line <a class="el" href="a00420_source.html#l00138">138</a> of file <a class="el" href="a00420_source.html">Map.C</a>.</p>
+
+<p>References <a class="el" href="a00371_source.html#l00113">m_epetraMap</a>.</p>
+<div class="fragment"><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;{</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a>;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;}</div>
+<div class="ttc" id="a00162_html_a5e425bf1687adba1f0c973966109f9d0"><div class="ttname"><a href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">QUESO::Map::m_epetraMap</a></div><div class="ttdeci">Epetra_Map * m_epetraMap</div><div class="ttdoc">Epetra_Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00113">Map.h:113</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a83f67cf2643489a45ef0e515d814c89d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QUESO::Map::IndexBase </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the base integer value for indexed array references. The first position in the global processor in my processors. </p>
+
+<p>Definition at line <a class="el" href="a00420_source.html#l00096">96</a> of file <a class="el" href="a00420_source.html">Map.C</a>.</p>
+
+<p>References <a class="el" href="a00371_source.html#l00113">m_epetraMap</a>, and <a class="el" href="a00371_source.html#l00119">m_indexBase</a>.</p>
+<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;{</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a>-&gt;IndexBase();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00162.html#a26b42eedd432d109ac0e349eff15da29">m_indexBase</a>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="ttc" id="a00162_html_a5e425bf1687adba1f0c973966109f9d0"><div class="ttname"><a href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">QUESO::Map::m_epetraMap</a></div><div class="ttdeci">Epetra_Map * m_epetraMap</div><div class="ttdoc">Epetra_Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00113">Map.h:113</a></div></div>
+<div class="ttc" id="a00162_html_a26b42eedd432d109ac0e349eff15da29"><div class="ttname"><a href="a00162.html#a26b42eedd432d109ac0e349eff15da29">QUESO::Map::m_indexBase</a></div><div class="ttdeci">int m_indexBase</div><div class="ttdoc">Base integer value for indexed array references. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00119">Map.h:119</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a686b1ea15e0aa9a5de9d6a03456be4a9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QUESO::Map::MinMyGID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The minimum global index value on the calling processor. </p>
+
+<p>Definition at line <a class="el" href="a00420_source.html#l00118">118</a> of file <a class="el" href="a00420_source.html">Map.C</a>.</p>
+
+<p>References <a class="el" href="a00371_source.html#l00113">m_epetraMap</a>.</p>
+<div class="fragment"><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;{</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a>-&gt;MinMyGID();</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="ttc" id="a00162_html_a5e425bf1687adba1f0c973966109f9d0"><div class="ttname"><a href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">QUESO::Map::m_epetraMap</a></div><div class="ttdeci">Epetra_Map * m_epetraMap</div><div class="ttdoc">Epetra_Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00113">Map.h:113</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ac67907266dcd7108ffe5a0cbef908781"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QUESO::Map::NumGlobalElements </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the total number of elements across all processors. </p>
+
+<p>Definition at line <a class="el" href="a00420_source.html#l00085">85</a> of file <a class="el" href="a00420_source.html">Map.C</a>.</p>
+
+<p>References <a class="el" href="a00371_source.html#l00113">m_epetraMap</a>, and <a class="el" href="a00371_source.html#l00116">m_numGlobalElements</a>.</p>
+
+<p>Referenced by <a class="el" href="a00572_source.html#l00181">QUESO::ConcatenatedJointPdf&lt; V, M &gt;::distributionVariance()</a>, <a class="el" href="a00411_source.html#l00034">QUESO::GslVector::GslVector()</a>, <a class="el" href="a00285_source.html#l00111">QUESO::ConcatenationSubset&lt; V, M &gt;::moments()</a>, <a class="el" href="a00411_source.html#l00267">QUESO::GslVector::sizeGlobal()</a>, <a class="el" href="a00432_source.html#l00257">QUESO::TeuchosVector::sizeGlobal()</a>, <a class="el" href="a00431_source.html#l00043">QUESO::TeuchosMatrix::TeuchosMatrix()</a>, <a class="el" href="a00432_source.html#l00038">QUESO::TeuchosVector::TeuchosVector()</a>, and <a class="el" href="a00304_source.html#l00038">QUESO::VectorSpace&lt; V, M &gt;::VectorSpace()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;{</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a>-&gt;NumGlobalElements();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00162.html#a67c0e876f9c6e9dcf9eba45d34c02b0a">m_numGlobalElements</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="ttc" id="a00162_html_a5e425bf1687adba1f0c973966109f9d0"><div class="ttname"><a href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">QUESO::Map::m_epetraMap</a></div><div class="ttdeci">Epetra_Map * m_epetraMap</div><div class="ttdoc">Epetra_Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00113">Map.h:113</a></div></div>
+<div class="ttc" id="a00162_html_a67c0e876f9c6e9dcf9eba45d34c02b0a"><div class="ttname"><a href="a00162.html#a67c0e876f9c6e9dcf9eba45d34c02b0a">QUESO::Map::m_numGlobalElements</a></div><div class="ttdeci">int m_numGlobalElements</div><div class="ttdoc">Total number of elements across all processors. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00116">Map.h:116</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a6407f6d6a6df8a0a40923c8dc524b021"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QUESO::Map::NumMyElements </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of elements owned by the calling processor. </p>
+
+<p>Definition at line <a class="el" href="a00420_source.html#l00107">107</a> of file <a class="el" href="a00420_source.html">Map.C</a>.</p>
+
+<p>References <a class="el" href="a00371_source.html#l00113">m_epetraMap</a>, and <a class="el" href="a00371_source.html#l00122">m_numMyElements</a>.</p>
+
+<p>Referenced by <a class="el" href="a00411_source.html#l00034">QUESO::GslVector::GslVector()</a>, <a class="el" href="a00411_source.html#l00241">QUESO::GslVector::sizeLocal()</a>, <a class="el" href="a00432_source.html#l00249">QUESO::TeuchosVector::sizeLocal()</a>, and <a class="el" href="a00432_source.html#l00038">QUESO::TeuchosVector::TeuchosVector()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;{</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a>-&gt;NumMyElements();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor"></span>  <span class="keywordflow">return</span> <a class="code" href="a00162.html#afdde1747848ac8dd3cebf8eed159de82">m_numMyElements</a>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="ttc" id="a00162_html_afdde1747848ac8dd3cebf8eed159de82"><div class="ttname"><a href="a00162.html#afdde1747848ac8dd3cebf8eed159de82">QUESO::Map::m_numMyElements</a></div><div class="ttdeci">int m_numMyElements</div><div class="ttdoc">Number of elements owned by the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00122">Map.h:122</a></div></div>
+<div class="ttc" id="a00162_html_a5e425bf1687adba1f0c973966109f9d0"><div class="ttname"><a href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">QUESO::Map::m_epetraMap</a></div><div class="ttdeci">Epetra_Map * m_epetraMap</div><div class="ttdoc">Epetra_Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00113">Map.h:113</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="afb3d6d9dc20139964090478678194359"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00162.html">Map</a> &amp; QUESO::Map::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00162.html">Map</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Assignment operator. </p>
+
+<p>Definition at line <a class="el" href="a00420_source.html#l00076">76</a> of file <a class="el" href="a00420_source.html">Map.C</a>.</p>
+
+<p>References <a class="el" href="a00420_source.html#l00146">copy()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;{</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  this-&gt;<a class="code" href="a00162.html#a2ed4b24e922e77695d85de7fd4e9042a">copy</a>(rhs);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
+<div class="ttc" id="a00162_html_a2ed4b24e922e77695d85de7fd4e9042a"><div class="ttname"><a href="a00162.html#a2ed4b24e922e77695d85de7fd4e9042a">QUESO::Map::copy</a></div><div class="ttdeci">void copy(const Map &amp;src)</div><div class="ttdoc">Copies the map. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00146">Map.C:146</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="aa6dc315c563b9b83a88cd3f280a75aa4"></a>
+<a class="anchor" id="a5e425bf1687adba1f0c973966109f9d0"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -339,23 +507,25 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;double&gt; QUESO::LagrangePolynomial1D1DFunction::m_functionValues</td>
+          <td class="memname">Epetra_Map* QUESO::Map::m_epetraMap</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00466_source.html#l00585">585</a> of file <a class="el" href="a00466_source.html">1D1DFunction.h</a>.</p>
+<p>Epetra_Map. </p>
 
-<p>Referenced by <a class="el" href="a00480_source.html#l00743">LagrangePolynomial1D1DFunction()</a>, and <a class="el" href="a00480_source.html#l00762">value()</a>.</p>
+<p>Definition at line <a class="el" href="a00371_source.html#l00113">113</a> of file <a class="el" href="a00371_source.html">Map.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00420_source.html#l00146">copy()</a>, <a class="el" href="a00420_source.html#l00138">epetraMap()</a>, <a class="el" href="a00420_source.html#l00096">IndexBase()</a>, <a class="el" href="a00420_source.html#l00063">Map()</a>, <a class="el" href="a00420_source.html#l00118">MinMyGID()</a>, <a class="el" href="a00420_source.html#l00085">NumGlobalElements()</a>, and <a class="el" href="a00420_source.html#l00107">NumMyElements()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a192c6dcd8bdba6177830fc1398ce5b01"></a>
+<a class="anchor" id="a26b42eedd432d109ac0e349eff15da29"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -363,29 +533,109 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;double&gt; QUESO::LagrangePolynomial1D1DFunction::m_positionValues</td>
+          <td class="memname">int QUESO::Map::m_indexBase</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00466_source.html#l00584">584</a> of file <a class="el" href="a00466_source.html">1D1DFunction.h</a>.</p>
+<p>Base integer value for indexed array references. </p>
 
-<p>Referenced by <a class="el" href="a00480_source.html#l00743">LagrangePolynomial1D1DFunction()</a>, and <a class="el" href="a00480_source.html#l00762">value()</a>.</p>
+<p>Definition at line <a class="el" href="a00371_source.html#l00119">119</a> of file <a class="el" href="a00371_source.html">Map.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00420_source.html#l00146">copy()</a>, and <a class="el" href="a00420_source.html#l00096">IndexBase()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa002700b90ae2edbf5b3ee6968b28c50"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00179.html">MpiComm</a> QUESO::Map::m_MpiComm</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This communicator can be queried for processor rank and size information. </p>
+
+<p>Definition at line <a class="el" href="a00371_source.html#l00109">109</a> of file <a class="el" href="a00371_source.html">Map.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00420_source.html#l00131">Comm()</a>, and <a class="el" href="a00420_source.html#l00146">copy()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a67c0e876f9c6e9dcf9eba45d34c02b0a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QUESO::Map::m_numGlobalElements</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Total number of elements across all processors. </p>
+
+<p>Definition at line <a class="el" href="a00371_source.html#l00116">116</a> of file <a class="el" href="a00371_source.html">Map.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00420_source.html#l00146">copy()</a>, and <a class="el" href="a00420_source.html#l00085">NumGlobalElements()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afdde1747848ac8dd3cebf8eed159de82"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QUESO::Map::m_numMyElements</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of elements owned by the calling processor. </p>
+
+<p>Definition at line <a class="el" href="a00371_source.html#l00122">122</a> of file <a class="el" href="a00371_source.html">Map.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00420_source.html#l00146">copy()</a>, and <a class="el" href="a00420_source.html#l00107">NumMyElements()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/misc/inc/<a class="el" href="a00466_source.html">1D1DFunction.h</a></li>
-<li>src/misc/src/<a class="el" href="a00480_source.html">1D1DFunction.C</a></li>
+<li>src/core/inc/<a class="el" href="a00371_source.html">Map.h</a></li>
+<li>src/core/src/<a class="el" href="a00420_source.html">Map.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:14 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:51 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/src/Environment.C File Reference</title>
+<title>queso-0.56.2: src/core/src/AlgorithmFactoryInitializer.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,79 +48,22 @@
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">Environment.C File Reference</div>  </div>
+<div class="title">AlgorithmFactoryInitializer.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;boost/program_options.hpp&gt;</code><br/>
-<code>#include &lt;queso/getpot.h&gt;</code><br/>
-<code>#include &lt;queso/config_queso.h&gt;</code><br/>
-<code>#include &lt;queso/Environment.h&gt;</code><br/>
-<code>#include &lt;queso/EnvironmentOptions.h&gt;</code><br/>
-<code>#include &lt;queso/RngGsl.h&gt;</code><br/>
-<code>#include &lt;queso/RngBoost.h&gt;</code><br/>
-<code>#include &lt;queso/BasicPdfsGsl.h&gt;</code><br/>
-<code>#include &lt;queso/BasicPdfsBoost.h&gt;</code><br/>
-<code>#include &lt;queso/Miscellaneous.h&gt;</code><br/>
-<code>#include &lt;sys/time.h&gt;</code><br/>
-<code>#include &lt;queso/asserts.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for Environment.C:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00839.png" border="0" usemap="#src_2core_2src_2_environment_8_c" alt=""/></div>
-<map name="src_2core_2src_2_environment_8_c" id="src_2core_2src_2_environment_8_c">
-</map>
-</div>
-</div>
+
 <p><a href="a00395_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a44bd37c253b64f7f62597cb945662803"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00395.html#a44bd37c253b64f7f62597cb945662803">GETPOT_NAMESPACE</a>&#160;&#160;&#160;QUESO</td></tr>
-<tr class="separator:a44bd37c253b64f7f62597cb945662803"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ae2e4805bfcc226b2ceb17c8a8dbb1297"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#ae2e4805bfcc226b2ceb17c8a8dbb1297">QUESO::QUESO_version_print</a> (std::ostream &amp;os)</td></tr>
-<tr class="separator:ae2e4805bfcc226b2ceb17c8a8dbb1297"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61ed284ac8a5002856025bf21955b215"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a61ed284ac8a5002856025bf21955b215">QUESO::QUESO_get_numeric_version</a> ()</td></tr>
-<tr class="separator:a61ed284ac8a5002856025bf21955b215"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97e263e01a0ff9fad14de6a8840b007e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a97e263e01a0ff9fad14de6a8840b007e">QUESO::queso_terminate_handler</a> ()</td></tr>
-<tr class="memdesc:a97e263e01a0ff9fad14de6a8840b007e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function for unhandled exceptions in Queso.  <a href="#a97e263e01a0ff9fad14de6a8840b007e">More...</a><br/></td></tr>
-<tr class="separator:a97e263e01a0ff9fad14de6a8840b007e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:ac54b755ffb94b8896563c43fec9a6a4c"><td class="memItemLeft" align="right" valign="top">std::terminate_handler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#ac54b755ffb94b8896563c43fec9a6a4c">QUESO::old_terminate_handler</a></td></tr>
-<tr class="separator:ac54b755ffb94b8896563c43fec9a6a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a44bd37c253b64f7f62597cb945662803"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define GETPOT_NAMESPACE&#160;&#160;&#160;QUESO</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00395_source.html#l00029">29</a> of file <a class="el" href="a00395_source.html">Environment.C</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

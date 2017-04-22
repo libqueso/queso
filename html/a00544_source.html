@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/inc/MarkovChainPositionData.h Source File</title>
+<title>queso-0.56.2: src/stats/inc/ScalarCovarianceFunction.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">MarkovChainPositionData.h</div>  </div>
+<div class="title">ScalarCovarianceFunction.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00544.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,92 +75,55 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_CHAIN_POSITION_DATA_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_CHAIN_POSITION_DATA_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_SCALAR_COVARIANCE_FUNCTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_SCALAR_COVARIANCE_FUNCTION_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector&gt;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00171.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00171.html">MarkovChainPositionData</a></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="a00171.html#acbfcf6d39cc6a76a67e3d3ed0f8e2d6d">MarkovChainPositionData</a>(<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; env);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="a00171.html#acbfcf6d39cc6a76a67e3d3ed0f8e2d6d">MarkovChainPositionData</a>(<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; env,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                                 <span class="keyword">const</span> V&amp; <a class="code" href="a00171.html#a1ad19966c9bcb480d4f055ab6f3dc244">vecValues</a>,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                                 <span class="keywordtype">bool</span>     <a class="code" href="a00171.html#a466849f2d261962720d7c8968e95b5f1">outOfTargetSupport</a>,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                                 <span class="keywordtype">double</span>   <a class="code" href="a00171.html#a4d0fc22cd5a10065474ceaba13d18857">logLikelihood</a>,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                                 <span class="keywordtype">double</span>   <a class="code" href="a00171.html#aa553894577fdc44739538bf51d30555b">logTarget</a>);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="a00171.html#acbfcf6d39cc6a76a67e3d3ed0f8e2d6d">MarkovChainPositionData</a>(<span class="keyword">const</span> <a class="code" href="a00171.html">MarkovChainPositionData&lt;V&gt;</a>&amp; rhs);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00044.html">   53</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00044.html">BaseScalarCovarianceFunction</a> {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00044.html#a7a3d53a332dffce97c5579d93eaf91ff">BaseScalarCovarianceFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                      <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00044.html#a703aa6a8e475adaface0ec514b48a5bc">basicDomainSet</a>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00044.html#a5db872c7f5929e819543f7f58063f3ae">~BaseScalarCovarianceFunction</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00044.html#a703aa6a8e475adaface0ec514b48a5bc">basicDomainSet</a>   ()       <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="a00171.html#a17b359c50ca7914e9698f0ebcf29a19d">~MarkovChainPositionData</a>();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">virtual</span>       <span class="keywordtype">double</span>                 <a class="code" href="a00044.html#a93a35146e106c7fb28913c604a918acb">value</a>    (<span class="keyword">const</span> V&amp; domainVector1, <span class="keyword">const</span> V&amp; domainVector2) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <a class="code" href="a00171.html">MarkovChainPositionData&lt;V&gt;</a>&amp; <a class="code" href="a00171.html#aa3608d527f0215fe772aa9f9e1686dd8">operator= </a>(<span class="keyword">const</span> <a class="code" href="a00171.html">MarkovChainPositionData&lt;V&gt;</a>&amp; rhs);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00044.html#a2a100016b480c498b5219fb937d62543">   76</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00036.html">BaseEnvironment</a>&amp; <a class="code" href="a00044.html#a2a100016b480c498b5219fb937d62543">m_env</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00044.html#a21636873436b88cb77075c6edbd61c71">   77</a></span>&#160;        std::string             <a class="code" href="a00044.html#a21636873436b88cb77075c6edbd61c71">m_prefix</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00044.html#a1060392114362022e427678d0f97ab12">   78</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp;  <a class="code" href="a00044.html#a1060392114362022e427678d0f97ab12">m_basicDomainSet</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">const</span> V&amp; <a class="code" href="a00171.html#a1ad19966c9bcb480d4f055ab6f3dc244">vecValues</a>         () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">bool</span>     <a class="code" href="a00171.html#a466849f2d261962720d7c8968e95b5f1">outOfTargetSupport</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00171.html#a4d0fc22cd5a10065474ceaba13d18857">logLikelihood</a>     () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00171.html#aa553894577fdc44739538bf51d30555b">logTarget</a>         () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">void</span>     <a class="code" href="a00171.html#aa6a5a75dd4661a811956b42a68291e7b">set</a>               (<span class="keyword">const</span> V&amp; vecValues,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                              <span class="keywordtype">bool</span>     outOfTargetSupport,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                              <span class="keywordtype">double</span>   logLikelihood,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                              <span class="keywordtype">double</span>   logTarget);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordtype">void</span>     <a class="code" href="a00171.html#a25bc5762fc4883882ca635dd83772a78">print</a>             (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00171.html#a6ef33eb48213225a4ad86c5baf209257">  106</a></span>&#160;  <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="a00171.html#a6ef33eb48213225a4ad86c5baf209257">operator&lt;&lt;</a>(std::ostream&amp; os,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00171.html">MarkovChainPositionData&lt;V&gt;</a>&amp; obj)</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    obj.<a class="code" href="a00171.html#a25bc5762fc4883882ca635dd83772a78">print</a>(os);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="a00171.html#a61841c4f47bd11a7261668bb44e06bd6">  116</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; <a class="code" href="a00171.html#a61841c4f47bd11a7261668bb44e06bd6">m_env</a>;</div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="a00171.html#ad98640fe86c2c70671467686988c6b91">  117</a></span>&#160;  V*     <a class="code" href="a00171.html#ad98640fe86c2c70671467686988c6b91">m_vecValues</a>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="a00171.html#ac2dba3d144c038ccc297e95033331437">  118</a></span>&#160;  <span class="keywordtype">bool</span>   <a class="code" href="a00171.html#ac2dba3d144c038ccc297e95033331437">m_outOfTargetSupport</a>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="a00171.html#a2def4815940aee10948cd6575f986010">  119</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00171.html#a2def4815940aee10948cd6575f986010">m_logLikelihood</a>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="a00171.html#a0d806977350824012500dca13e890a93">  120</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00171.html#a0d806977350824012500dca13e890a93">m_logTarget</a>;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;};</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif // UQ_CHAIN_POSITION_DATA_H</span></div>
-<div class="ttc" id="a00171_html_a466849f2d261962720d7c8968e95b5f1"><div class="ttname"><a href="a00171.html#a466849f2d261962720d7c8968e95b5f1">QUESO::MarkovChainPositionData::outOfTargetSupport</a></div><div class="ttdeci">bool outOfTargetSupport() const </div><div class="ttdoc">Whether or not a position is out of target support; access to private attribute m_outOfTargetSupport...</div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00100">MarkovChainPositionData.C:100</a></div></div>
-<div class="ttc" id="a00171_html_a61841c4f47bd11a7261668bb44e06bd6"><div class="ttname"><a href="a00171.html#a61841c4f47bd11a7261668bb44e06bd6">QUESO::MarkovChainPositionData::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00116">MarkovChainPositionData.h:116</a></div></div>
-<div class="ttc" id="a00171_html_a4d0fc22cd5a10065474ceaba13d18857"><div class="ttname"><a href="a00171.html#a4d0fc22cd5a10065474ceaba13d18857">QUESO::MarkovChainPositionData::logLikelihood</a></div><div class="ttdeci">double logLikelihood() const </div><div class="ttdoc">Logarithm of the value of the likelihood; access to private attribute m_logLikelihood. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00108">MarkovChainPositionData.C:108</a></div></div>
-<div class="ttc" id="a00171_html_a2def4815940aee10948cd6575f986010"><div class="ttname"><a href="a00171.html#a2def4815940aee10948cd6575f986010">QUESO::MarkovChainPositionData::m_logLikelihood</a></div><div class="ttdeci">double m_logLikelihood</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00119">MarkovChainPositionData.h:119</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00171_html_a6ef33eb48213225a4ad86c5baf209257"><div class="ttname"><a href="a00171.html#a6ef33eb48213225a4ad86c5baf209257">QUESO::MarkovChainPositionData::operator&lt;&lt;</a></div><div class="ttdeci">friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const MarkovChainPositionData&lt; V &gt; &amp;obj)</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00106">MarkovChainPositionData.h:106</a></div></div>
-<div class="ttc" id="a00171_html_acbfcf6d39cc6a76a67e3d3ed0f8e2d6d"><div class="ttname"><a href="a00171.html#acbfcf6d39cc6a76a67e3d3ed0f8e2d6d">QUESO::MarkovChainPositionData::MarkovChainPositionData</a></div><div class="ttdeci">MarkovChainPositionData(const BaseEnvironment &amp;env)</div><div class="ttdoc">Constructor 1. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00032">MarkovChainPositionData.C:32</a></div></div>
-<div class="ttc" id="a00171_html_a0d806977350824012500dca13e890a93"><div class="ttname"><a href="a00171.html#a0d806977350824012500dca13e890a93">QUESO::MarkovChainPositionData::m_logTarget</a></div><div class="ttdeci">double m_logTarget</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00120">MarkovChainPositionData.h:120</a></div></div>
-<div class="ttc" id="a00171_html_aa6a5a75dd4661a811956b42a68291e7b"><div class="ttname"><a href="a00171.html#aa6a5a75dd4661a811956b42a68291e7b">QUESO::MarkovChainPositionData::set</a></div><div class="ttdeci">void set(const V &amp;vecValues, bool outOfTargetSupport, double logLikelihood, double logTarget)</div><div class="ttdoc">Sets the values of the chain. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00123">MarkovChainPositionData.C:123</a></div></div>
-<div class="ttc" id="a00171_html_a17b359c50ca7914e9698f0ebcf29a19d"><div class="ttname"><a href="a00171.html#a17b359c50ca7914e9698f0ebcf29a19d">QUESO::MarkovChainPositionData::~MarkovChainPositionData</a></div><div class="ttdeci">~MarkovChainPositionData()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00070">MarkovChainPositionData.C:70</a></div></div>
-<div class="ttc" id="a00171_html_ad98640fe86c2c70671467686988c6b91"><div class="ttname"><a href="a00171.html#ad98640fe86c2c70671467686988c6b91">QUESO::MarkovChainPositionData::m_vecValues</a></div><div class="ttdeci">V * m_vecValues</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00117">MarkovChainPositionData.h:117</a></div></div>
-<div class="ttc" id="a00171_html_ac2dba3d144c038ccc297e95033331437"><div class="ttname"><a href="a00171.html#ac2dba3d144c038ccc297e95033331437">QUESO::MarkovChainPositionData::m_outOfTargetSupport</a></div><div class="ttdeci">bool m_outOfTargetSupport</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00118">MarkovChainPositionData.h:118</a></div></div>
-<div class="ttc" id="a00171_html_a1ad19966c9bcb480d4f055ab6f3dc244"><div class="ttname"><a href="a00171.html#a1ad19966c9bcb480d4f055ab6f3dc244">QUESO::MarkovChainPositionData::vecValues</a></div><div class="ttdeci">const V &amp; vecValues() const </div><div class="ttdoc">Values of the chain (vector); access to private attribute m_vecValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00091">MarkovChainPositionData.C:91</a></div></div>
-<div class="ttc" id="a00171_html_a25bc5762fc4883882ca635dd83772a78"><div class="ttname"><a href="a00171.html#a25bc5762fc4883882ca635dd83772a78">QUESO::MarkovChainPositionData::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the Markov chain. </div></div>
-<div class="ttc" id="a00171_html_aa553894577fdc44739538bf51d30555b"><div class="ttname"><a href="a00171.html#aa553894577fdc44739538bf51d30555b">QUESO::MarkovChainPositionData::logTarget</a></div><div class="ttdeci">double logTarget() const </div><div class="ttdoc">Logarithm of the value of the target; access to private attribute m_logTarget. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00116">MarkovChainPositionData.C:116</a></div></div>
-<div class="ttc" id="a00171_html_aa3608d527f0215fe772aa9f9e1686dd8"><div class="ttname"><a href="a00171.html#aa3608d527f0215fe772aa9f9e1686dd8">QUESO::MarkovChainPositionData::operator=</a></div><div class="ttdeci">MarkovChainPositionData&lt; V &gt; &amp; operator=(const MarkovChainPositionData&lt; V &gt; &amp;rhs)</div><div class="ttdoc">Assignment operator. </div><div class="ttdef"><b>Definition:</b> <a href="a00631_source.html#l00077">MarkovChainPositionData.C:77</a></div></div>
-<div class="ttc" id="a00171_html"><div class="ttname"><a href="a00171.html">QUESO::MarkovChainPositionData</a></div><div class="ttdoc">A templated class that represents a Markov Chain. </div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00049">MarkovChainPositionData.h:49</a></div></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif // UQ_SCALAR_COVARIANCE_FUNCTION_H</span></div>
+<div class="ttc" id="a00044_html_a5db872c7f5929e819543f7f58063f3ae"><div class="ttname"><a href="a00044.html#a5db872c7f5929e819543f7f58063f3ae">QUESO::BaseScalarCovarianceFunction::~BaseScalarCovarianceFunction</a></div><div class="ttdeci">virtual ~BaseScalarCovarianceFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00630_source.html#l00053">ScalarCovarianceFunction.C:53</a></div></div>
+<div class="ttc" id="a00044_html_a2a100016b480c498b5219fb937d62543"><div class="ttname"><a href="a00044.html#a2a100016b480c498b5219fb937d62543">QUESO::BaseScalarCovarianceFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00076">ScalarCovarianceFunction.h:76</a></div></div>
+<div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">QUESO::BaseScalarCovarianceFunction</a></div><div class="ttdoc">A templated (base) class to accommodate scalar covariance functions (of random variables). </div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00053">ScalarCovarianceFunction.h:53</a></div></div>
+<div class="ttc" id="a00044_html_a703aa6a8e475adaface0ec514b48a5bc"><div class="ttname"><a href="a00044.html#a703aa6a8e475adaface0ec514b48a5bc">QUESO::BaseScalarCovarianceFunction::basicDomainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; basicDomainSet() const </div><div class="ttdoc">Domain set; access to private attribute m_basicDomainSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00630_source.html#l00070">ScalarCovarianceFunction.C:70</a></div></div>
+<div class="ttc" id="a00044_html_a93a35146e106c7fb28913c604a918acb"><div class="ttname"><a href="a00044.html#a93a35146e106c7fb28913c604a918acb">QUESO::BaseScalarCovarianceFunction::value</a></div><div class="ttdeci">virtual double value(const V &amp;domainVector1, const V &amp;domainVector2) const =0</div><div class="ttdoc">The value of the covariance function. See template specialization. </div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00044_html_a7a3d53a332dffce97c5579d93eaf91ff"><div class="ttname"><a href="a00044.html#a7a3d53a332dffce97c5579d93eaf91ff">QUESO::BaseScalarCovarianceFunction::BaseScalarCovarianceFunction</a></div><div class="ttdeci">BaseScalarCovarianceFunction(const char *prefix, const VectorSet&lt; V, M &gt; &amp;basicDomainSet)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00630_source.html#l00031">ScalarCovarianceFunction.C:31</a></div></div>
+<div class="ttc" id="a00044_html_a21636873436b88cb77075c6edbd61c71"><div class="ttname"><a href="a00044.html#a21636873436b88cb77075c6edbd61c71">QUESO::BaseScalarCovarianceFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00077">ScalarCovarianceFunction.h:77</a></div></div>
+<div class="ttc" id="a00044_html_a1060392114362022e427678d0f97ab12"><div class="ttname"><a href="a00044.html#a1060392114362022e427678d0f97ab12">QUESO::BaseScalarCovarianceFunction::m_basicDomainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_basicDomainSet</div><div class="ttdef"><b>Definition:</b> <a href="a00544_source.html#l00078">ScalarCovarianceFunction.h:78</a></div></div>
+<div class="ttc" id="a00036_html"><div class="ttname"><a href="a00036.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00198">Environment.h:198</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

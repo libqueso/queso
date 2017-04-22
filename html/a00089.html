@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: QUESO::FullEnvironment Class Reference</title>
+<title>queso-0.56.2: QUESO::FuncPlusFunc1D1DFunction Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -45,274 +45,103 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00690.html">QUESO</a></li><li class="navelem"><a class="el" href="a00089.html">FullEnvironment</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00674.html">QUESO</a></li><li class="navelem"><a class="el" href="a00089.html">FuncPlusFunc1D1DFunction</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="a01249.html">List of all members</a>  </div>
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="a00952.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::FullEnvironment Class Reference</div>  </div>
+<div class="title">QUESO::FuncPlusFunc1D1DFunction Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This class sets up the full environment underlying the use of the <a class="el" href="a00690.html">QUESO</a> library by an executable.  
+<p>Class for addition of a one-dimensional function with another.  
  <a href="a00089.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00348_source.html">Environment.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00441_source.html">1D1DFunction.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::FullEnvironment:</div>
+Inheritance diagram for QUESO::FuncPlusFunc1D1DFunction:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01250.png" border="0" usemap="#_q_u_e_s_o_1_1_full_environment_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_full_environment_inherit__map" id="_q_u_e_s_o_1_1_full_environment_inherit__map">
-<area shape="rect" id="node2" href="a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="5,5,179,32"/></map>
+<div class="center"><img src="a00953.png" border="0" usemap="#_q_u_e_s_o_1_1_func_plus_func1_d1_d_function_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_func_plus_func1_d1_d_function_inherit__map" id="_q_u_e_s_o_1_1_func_plus_func1_d1_d_function_inherit__map">
+<area shape="rect" id="node2" href="a00034.html" title="Class for one&#45;dimensional functions. " alt="" coords="32,5,224,32"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for QUESO::FullEnvironment:</div>
+Collaboration diagram for QUESO::FuncPlusFunc1D1DFunction:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01251.png" border="0" usemap="#_q_u_e_s_o_1_1_full_environment_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_full_environment_coll__map" id="_q_u_e_s_o_1_1_full_environment_coll__map">
-<area shape="rect" id="node2" href="a00035.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="287,104,461,131"/><area shape="rect" id="node5" href="a00076.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="90,245,267,272"/><area shape="rect" id="node8" href="a00186.html" title="The QUESO MPI Communicator Class. " alt="" coords="483,245,616,272"/><area shape="rect" id="node3" href="a00052.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="269,5,429,32"/><area shape="rect" id="node4" href="a00195.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="454,5,580,32"/><area shape="rect" id="node6" href="a00060.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="22,97,201,138"/><area shape="rect" id="node7" href="a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="5,5,219,32"/></map>
+<div class="center"><img src="a00954.png" border="0" usemap="#_q_u_e_s_o_1_1_func_plus_func1_d1_d_function_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_func_plus_func1_d1_d_function_coll__map" id="_q_u_e_s_o_1_1_func_plus_func1_d1_d_function_coll__map">
+<area shape="rect" id="node2" href="a00034.html" title="Class for one&#45;dimensional functions. " alt="" coords="32,5,224,32"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:a6d9cbfd299f6be53e3883758c0fc1b0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a6d9cbfd299f6be53e3883758c0fc1b0b">FullEnvironment</a> (const char *passedOptionsInputFileName, const char *prefix, <a class="el" href="a00076.html">EnvOptionsValues</a> *alternativeOptionsValues)</td></tr>
-<tr class="memdesc:a6d9cbfd299f6be53e3883758c0fc1b0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parallel constructor.  <a href="#a6d9cbfd299f6be53e3883758c0fc1b0b">More...</a><br/></td></tr>
-<tr class="separator:a6d9cbfd299f6be53e3883758c0fc1b0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8062bee58c94bf56f1864821fea7698f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a8062bee58c94bf56f1864821fea7698f">FullEnvironment</a> (const std::string &amp;passedOptionsInputFileName, const std::string &amp;prefix, <a class="el" href="a00076.html">EnvOptionsValues</a> *alternativeOptionsValues)</td></tr>
-<tr class="separator:a8062bee58c94bf56f1864821fea7698f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a664220a7e2b32242f3d58bfe51d316d1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a664220a7e2b32242f3d58bfe51d316d1">~FullEnvironment</a> ()</td></tr>
-<tr class="memdesc:a664220a7e2b32242f3d58bfe51d316d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a664220a7e2b32242f3d58bfe51d316d1">More...</a><br/></td></tr>
-<tr class="separator:a664220a7e2b32242f3d58bfe51d316d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">I/O methods</div></td></tr>
-<tr class="memitem:a3433b6293fc094095aca2e5ebce5a099"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a3433b6293fc094095aca2e5ebce5a099">print</a> (std::ostream &amp;os) const </td></tr>
-<tr class="memdesc:a3433b6293fc094095aca2e5ebce5a099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the environment options to the stream.  <a href="#a3433b6293fc094095aca2e5ebce5a099">More...</a><br/></td></tr>
-<tr class="separator:a3433b6293fc094095aca2e5ebce5a099"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00035"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00035')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00035.html">QUESO::BaseEnvironment</a></td></tr>
-<tr class="memitem:abe241b184e27083baaeee01116105472 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#abe241b184e27083baaeee01116105472">BaseEnvironment</a> (const char *passedOptionsInputFileName, <a class="el" href="a00076.html">EnvOptionsValues</a> *alternativeOptionsValues)</td></tr>
-<tr class="memdesc:abe241b184e27083baaeee01116105472 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#abe241b184e27083baaeee01116105472">More...</a><br/></td></tr>
-<tr class="separator:abe241b184e27083baaeee01116105472 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a211041022c8bafe12cf451deff3533b2 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a211041022c8bafe12cf451deff3533b2">BaseEnvironment</a> (const std::string &amp;passedOptionsInputFileName, <a class="el" href="a00076.html">EnvOptionsValues</a> *alternativeOptionsValues)</td></tr>
-<tr class="separator:a211041022c8bafe12cf451deff3533b2 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a769c44dce792c1c11f58031604e44504 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a769c44dce792c1c11f58031604e44504">~BaseEnvironment</a> ()</td></tr>
-<tr class="memdesc:a769c44dce792c1c11f58031604e44504 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a769c44dce792c1c11f58031604e44504">More...</a><br/></td></tr>
-<tr class="separator:a769c44dce792c1c11f58031604e44504 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d01d2b909218edb38f19f908efac82f inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a0d01d2b909218edb38f19f908efac82f">fullEnvIsReady</a> () const </td></tr>
-<tr class="memdesc:a0d01d2b909218edb38f19f908efac82f inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the full environment class is ready (constructor has successfully been called).  <a href="#a0d01d2b909218edb38f19f908efac82f">More...</a><br/></td></tr>
-<tr class="separator:a0d01d2b909218edb38f19f908efac82f inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78b57112bbd0e6dd0e8afec00b40ffa7 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a> () const </td></tr>
-<tr class="memdesc:a78b57112bbd0e6dd0e8afec00b40ffa7 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the process world rank.  <a href="#a78b57112bbd0e6dd0e8afec00b40ffa7">More...</a><br/></td></tr>
-<tr class="separator:a78b57112bbd0e6dd0e8afec00b40ffa7 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84a239e42ae443cf71db6e03e8159620 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a84a239e42ae443cf71db6e03e8159620">fullRank</a> () const </td></tr>
-<tr class="memdesc:a84a239e42ae443cf71db6e03e8159620 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the process full rank.  <a href="#a84a239e42ae443cf71db6e03e8159620">More...</a><br/></td></tr>
-<tr class="separator:a84a239e42ae443cf71db6e03e8159620 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b0779b41ff304058856e97e1d16b4d4 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00186.html">MpiComm</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a0b0779b41ff304058856e97e1d16b4d4">fullComm</a> () const </td></tr>
-<tr class="memdesc:a0b0779b41ff304058856e97e1d16b4d4 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function for <a class="el" href="a00186.html" title="The QUESO MPI Communicator Class. ">MpiComm</a> full communicator.  <a href="#a0b0779b41ff304058856e97e1d16b4d4">More...</a><br/></td></tr>
-<tr class="separator:a0b0779b41ff304058856e97e1d16b4d4 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6427d9f94e145748d0d27e5c62f511fa inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00690.html#ab0b3b3f6c0a21b084ea4e021bf96429e">RawType_MPI_Group</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a6427d9f94e145748d0d27e5c62f511fa">subGroup</a> () const </td></tr>
-<tr class="memdesc:a6427d9f94e145748d0d27e5c62f511fa inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function for sub-group.  <a href="#a6427d9f94e145748d0d27e5c62f511fa">More...</a><br/></td></tr>
-<tr class="separator:a6427d9f94e145748d0d27e5c62f511fa inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a172d52f993f1322ed45aaddf71518dbb inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a172d52f993f1322ed45aaddf71518dbb">subRank</a> () const </td></tr>
-<tr class="memdesc:a172d52f993f1322ed45aaddf71518dbb inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function for sub-rank.  <a href="#a172d52f993f1322ed45aaddf71518dbb">More...</a><br/></td></tr>
-<tr class="separator:a172d52f993f1322ed45aaddf71518dbb inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affe39f53e3d5d678842413370af09145 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00186.html">MpiComm</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#affe39f53e3d5d678842413370af09145">subComm</a> () const </td></tr>
-<tr class="memdesc:affe39f53e3d5d678842413370af09145 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function for <a class="el" href="a00186.html" title="The QUESO MPI Communicator Class. ">MpiComm</a> sub communicator.  <a href="#affe39f53e3d5d678842413370af09145">More...</a><br/></td></tr>
-<tr class="separator:affe39f53e3d5d678842413370af09145 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a824458f0d045db251d982ad4c75a4b76 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00186.html">MpiComm</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a824458f0d045db251d982ad4c75a4b76">selfComm</a> () const </td></tr>
-<tr class="memdesc:a824458f0d045db251d982ad4c75a4b76 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function for <a class="el" href="a00186.html" title="The QUESO MPI Communicator Class. ">MpiComm</a> self-communicator.  <a href="#a824458f0d045db251d982ad4c75a4b76">More...</a><br/></td></tr>
-<tr class="separator:a824458f0d045db251d982ad4c75a4b76 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae106b5bb8a80b655b88b3a26b1e7c185 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ae106b5bb8a80b655b88b3a26b1e7c185">inter0Rank</a> () const </td></tr>
-<tr class="memdesc:ae106b5bb8a80b655b88b3a26b1e7c185 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the process inter0 rank.  <a href="#ae106b5bb8a80b655b88b3a26b1e7c185">More...</a><br/></td></tr>
-<tr class="separator:ae106b5bb8a80b655b88b3a26b1e7c185 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a689e4d140c74d495d97eb498714a4b82 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00186.html">MpiComm</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a689e4d140c74d495d97eb498714a4b82">inter0Comm</a> () const </td></tr>
-<tr class="memdesc:a689e4d140c74d495d97eb498714a4b82 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function for <a class="el" href="a00186.html" title="The QUESO MPI Communicator Class. ">MpiComm</a> inter0-communicator.  <a href="#a689e4d140c74d495d97eb498714a4b82">More...</a><br/></td></tr>
-<tr class="separator:a689e4d140c74d495d97eb498714a4b82 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a0064746ae8dddfece4229b9ad374d6 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">std::ofstream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a> () const </td></tr>
-<tr class="memdesc:a8a0064746ae8dddfece4229b9ad374d6 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function for m_subDisplayFile (displays file on stream).  <a href="#a8a0064746ae8dddfece4229b9ad374d6">More...</a><br/></td></tr>
-<tr class="separator:a8a0064746ae8dddfece4229b9ad374d6 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c4361613213ab1412248f99e046281d inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a0c4361613213ab1412248f99e046281d">subDisplayFileName</a> () const </td></tr>
-<tr class="memdesc:a0c4361613213ab1412248f99e046281d inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function for m_subDisplayFileName (displays filename on stream).  <a href="#a0c4361613213ab1412248f99e046281d">More...</a><br/></td></tr>
-<tr class="separator:a0c4361613213ab1412248f99e046281d inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0345f57e31ef7833e379ed972bd094d inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ac0345f57e31ef7833e379ed972bd094d">numSubEnvironments</a> () const </td></tr>
-<tr class="memdesc:ac0345f57e31ef7833e379ed972bd094d inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function to the number of sub-environments.  <a href="#ac0345f57e31ef7833e379ed972bd094d">More...</a><br/></td></tr>
-<tr class="separator:ac0345f57e31ef7833e379ed972bd094d inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ae3174897a9b3a4c85fa18da5d4c16f inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a6ae3174897a9b3a4c85fa18da5d4c16f">subId</a> () const </td></tr>
-<tr class="memdesc:a6ae3174897a9b3a4c85fa18da5d4c16f inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function to the number of each sub-environment Id: m_subId.  <a href="#a6ae3174897a9b3a4c85fa18da5d4c16f">More...</a><br/></td></tr>
-<tr class="separator:a6ae3174897a9b3a4c85fa18da5d4c16f inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73f7849acdd5d5ba15a3094fe18f258f inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a73f7849acdd5d5ba15a3094fe18f258f">subIdString</a> () const </td></tr>
-<tr class="memdesc:a73f7849acdd5d5ba15a3094fe18f258f inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the attribute m_subIdString; which stores the string for the sub-environment, and it will be used, for instance, to create the output files for each sub-environment.  <a href="#a73f7849acdd5d5ba15a3094fe18f258f">More...</a><br/></td></tr>
-<tr class="separator:a73f7849acdd5d5ba15a3094fe18f258f inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc9978b83f01e6bf570e5ed283728094 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#abc9978b83f01e6bf570e5ed283728094">checkTheParallelEnvironment</a> () const </td></tr>
-<tr class="separator:abc9978b83f01e6bf570e5ed283728094 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0e3ccfe00e6f51dbe6dd6b9b6f65183 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#aa0e3ccfe00e6f51dbe6dd6b9b6f65183">optionsInputFileName</a> () const </td></tr>
-<tr class="memdesc:aa0e3ccfe00e6f51dbe6dd6b9b6f65183 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the attribute m_optionsInputFileName, which stores the name of the input file passed by the user to <a class="el" href="a00690.html">QUESO</a>.  <a href="#aa0e3ccfe00e6f51dbe6dd6b9b6f65183">More...</a><br/></td></tr>
-<tr class="separator:aa0e3ccfe00e6f51dbe6dd6b9b6f65183 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f1b585899bdf7ae4f6f41d2bb93f1e6 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a7f1b585899bdf7ae4f6f41d2bb93f1e6">setOptionsInputFileAccessState</a> (bool newState) const </td></tr>
-<tr class="separator:a7f1b585899bdf7ae4f6f41d2bb93f1e6 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c7492248b855f65c79294daca67c9d6 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">boost::program_options::variables_map &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a7c7492248b855f65c79294daca67c9d6">allOptionsMap</a> () const </td></tr>
-<tr class="separator:a7c7492248b855f65c79294daca67c9d6 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d68df6066b32820ccdf22d4fab2ace0 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a6d68df6066b32820ccdf22d4fab2ace0">scanInputFileForMyOptions</a> (const boost::program_options::options_description &amp;optionsDesc) const </td></tr>
-<tr class="memdesc:a6d68df6066b32820ccdf22d4fab2ace0 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method scans the input file provided by the user to <a class="el" href="a00690.html">QUESO</a>.  <a href="#a6d68df6066b32820ccdf22d4fab2ace0">More...</a><br/></td></tr>
-<tr class="separator:a6d68df6066b32820ccdf22d4fab2ace0 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fe5f244fc0316a0ab3e37463f108b96 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a> () const </td></tr>
-<tr class="separator:a1fe5f244fc0316a0ab3e37463f108b96 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70df256cd4d968e426175a38269c04d5 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a70df256cd4d968e426175a38269c04d5">syncVerbosity</a> () const </td></tr>
-<tr class="memdesc:a70df256cd4d968e426175a38269c04d5 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function to private attribute m_syncVerbosity.  <a href="#a70df256cd4d968e426175a38269c04d5">More...</a><br/></td></tr>
-<tr class="separator:a70df256cd4d968e426175a38269c04d5 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83c1c036f81651792a74975f2da23ae1 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a83c1c036f81651792a74975f2da23ae1">checkingLevel</a> () const </td></tr>
-<tr class="memdesc:a83c1c036f81651792a74975f2da23ae1 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function to private attribute m_checkingLevel.  <a href="#a83c1c036f81651792a74975f2da23ae1">More...</a><br/></td></tr>
-<tr class="separator:a83c1c036f81651792a74975f2da23ae1 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc1f1258b770ac8e27cf308bbcd6a296 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00195.html">RngBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#afc1f1258b770ac8e27cf308bbcd6a296">rngObject</a> () const </td></tr>
-<tr class="memdesc:afc1f1258b770ac8e27cf308bbcd6a296 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the RNG object.  <a href="#afc1f1258b770ac8e27cf308bbcd6a296">More...</a><br/></td></tr>
-<tr class="separator:afc1f1258b770ac8e27cf308bbcd6a296 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32c3363d45d178108acca21f819a4dbf inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a32c3363d45d178108acca21f819a4dbf">resetSeed</a> (int newSeedOption)</td></tr>
-<tr class="memdesc:a32c3363d45d178108acca21f819a4dbf inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset RNG seed.  <a href="#a32c3363d45d178108acca21f819a4dbf">More...</a><br/></td></tr>
-<tr class="separator:a32c3363d45d178108acca21f819a4dbf inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addc0bff38872578f48d6fcd2f32ad08e inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#addc0bff38872578f48d6fcd2f32ad08e">seed</a> () const </td></tr>
-<tr class="memdesc:addc0bff38872578f48d6fcd2f32ad08e inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the RNG seed.  <a href="#addc0bff38872578f48d6fcd2f32ad08e">More...</a><br/></td></tr>
-<tr class="separator:addc0bff38872578f48d6fcd2f32ad08e inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af106da59f188ba0dbf4f93da3fcd8ca5 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00052.html">BasicPdfsBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#af106da59f188ba0dbf4f93da3fcd8ca5">basicPdfs</a> () const </td></tr>
-<tr class="memdesc:af106da59f188ba0dbf4f93da3fcd8ca5 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to Basic PDFs.  <a href="#af106da59f188ba0dbf4f93da3fcd8ca5">More...</a><br/></td></tr>
-<tr class="separator:af106da59f188ba0dbf4f93da3fcd8ca5 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ce73b968a255fd32b91e9aab9d06a8a inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a2ce73b968a255fd32b91e9aab9d06a8a">platformName</a> () const </td></tr>
-<tr class="memdesc:a2ce73b968a255fd32b91e9aab9d06a8a inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the platform name.  <a href="#a2ce73b968a255fd32b91e9aab9d06a8a">More...</a><br/></td></tr>
-<tr class="separator:a2ce73b968a255fd32b91e9aab9d06a8a inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52e4108f22c92968be4ff4af0dfc4eac inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a52e4108f22c92968be4ff4af0dfc4eac">identifyingString</a> () const </td></tr>
-<tr class="memdesc:a52e4108f22c92968be4ff4af0dfc4eac inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access function to private attribute m_identifyingString: identifying string.  <a href="#a52e4108f22c92968be4ff4af0dfc4eac">More...</a><br/></td></tr>
-<tr class="separator:a52e4108f22c92968be4ff4af0dfc4eac inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af82cb112f8904bef58a5676e9c9f5a2b inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#af82cb112f8904bef58a5676e9c9f5a2b">resetIdentifyingString</a> (const std::string &amp;newString)</td></tr>
-<tr class="memdesc:af82cb112f8904bef58a5676e9c9f5a2b inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset private attribute m_identifyingString with the value <code>newString</code>.  <a href="#af82cb112f8904bef58a5676e9c9f5a2b">More...</a><br/></td></tr>
-<tr class="separator:af82cb112f8904bef58a5676e9c9f5a2b inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56aa5626cb7aae203d72c57679ba0683 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a56aa5626cb7aae203d72c57679ba0683">isThereInputFile</a> () const </td></tr>
-<tr class="memdesc:a56aa5626cb7aae203d72c57679ba0683 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">//TODO Not implemented? it is called in examples/validationCycle/tests_old/results_5_25/uqTgaEx4.h.  <a href="#a56aa5626cb7aae203d72c57679ba0683">More...</a><br/></td></tr>
-<tr class="separator:a56aa5626cb7aae203d72c57679ba0683 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1adcf7ca2d95e75a29360bcfe091cd65 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">struct timeval&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a1adcf7ca2d95e75a29360bcfe091cd65">timevalBegin</a> () const </td></tr>
-<tr class="memdesc:a1adcf7ca2d95e75a29360bcfe091cd65 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to save the time when the combo `QUESO+user's application' started to run.  <a href="#a1adcf7ca2d95e75a29360bcfe091cd65">More...</a><br/></td></tr>
-<tr class="separator:a1adcf7ca2d95e75a29360bcfe091cd65 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8fe853074f12ea34e18724119a2fc75 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ab8fe853074f12ea34e18724119a2fc75">openOutputFile</a> (const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds, bool writeOver, <a class="el" href="a00087.html">FilePtrSetStruct</a> &amp;filePtrSet) const </td></tr>
-<tr class="memdesc:ab8fe853074f12ea34e18724119a2fc75 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens an output file for each sub-environment that was chosen to send data to the file.  <a href="#ab8fe853074f12ea34e18724119a2fc75">More...</a><br/></td></tr>
-<tr class="separator:ab8fe853074f12ea34e18724119a2fc75 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4dd93dbcb8d2f9ef79af9afaec00aa5 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ad4dd93dbcb8d2f9ef79af9afaec00aa5">openUnifiedOutputFile</a> (const std::string &amp;fileName, const std::string &amp;fileType, bool writeOver, <a class="el" href="a00087.html">FilePtrSetStruct</a> &amp;filePtrSet) const </td></tr>
-<tr class="memdesc:ad4dd93dbcb8d2f9ef79af9afaec00aa5 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a unified output file, that will contain data from all sub-environments.  <a href="#ad4dd93dbcb8d2f9ef79af9afaec00aa5">More...</a><br/></td></tr>
-<tr class="separator:ad4dd93dbcb8d2f9ef79af9afaec00aa5 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a3f76733a31991a1ed9a942feb2dc3c inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a8a3f76733a31991a1ed9a942feb2dc3c">openInputFile</a> (const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds, <a class="el" href="a00087.html">FilePtrSetStruct</a> &amp;filePtrSet) const </td></tr>
-<tr class="memdesc:a8a3f76733a31991a1ed9a942feb2dc3c inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens an input file.  <a href="#a8a3f76733a31991a1ed9a942feb2dc3c">More...</a><br/></td></tr>
-<tr class="separator:a8a3f76733a31991a1ed9a942feb2dc3c inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc1fb3152068b25e84845a0d6d203bcf inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#acc1fb3152068b25e84845a0d6d203bcf">openUnifiedInputFile</a> (const std::string &amp;fileName, const std::string &amp;fileType, <a class="el" href="a00087.html">FilePtrSetStruct</a> &amp;filePtrSet) const </td></tr>
-<tr class="memdesc:acc1fb3152068b25e84845a0d6d203bcf inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the unified input file.  <a href="#acc1fb3152068b25e84845a0d6d203bcf">More...</a><br/></td></tr>
-<tr class="separator:acc1fb3152068b25e84845a0d6d203bcf inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab712bff194ddd91459d4ea8715c77e8b inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ab712bff194ddd91459d4ea8715c77e8b">closeFile</a> (<a class="el" href="a00087.html">FilePtrSetStruct</a> &amp;filePtrSet, const std::string &amp;fileType) const </td></tr>
-<tr class="memdesc:ab712bff194ddd91459d4ea8715c77e8b inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the file.  <a href="#ab712bff194ddd91459d4ea8715c77e8b">More...</a><br/></td></tr>
-<tr class="separator:ab712bff194ddd91459d4ea8715c77e8b inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb2a6a8de19058957f856341fce2440e inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#abb2a6a8de19058957f856341fce2440e">setExceptionalCircumstance</a> (bool value) const </td></tr>
-<tr class="memdesc:abb2a6a8de19058957f856341fce2440e inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an exceptional circumstance.  <a href="#abb2a6a8de19058957f856341fce2440e">More...</a><br/></td></tr>
-<tr class="separator:abb2a6a8de19058957f856341fce2440e inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0bc451b18302cfd5ee747c321e1c6e5 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#af0bc451b18302cfd5ee747c321e1c6e5">exceptionalCircumstance</a> () const </td></tr>
-<tr class="memdesc:af0bc451b18302cfd5ee747c321e1c6e5 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decides whether there is an exceptional circumstance.  <a href="#af0bc451b18302cfd5ee747c321e1c6e5">More...</a><br/></td></tr>
-<tr class="separator:af0bc451b18302cfd5ee747c321e1c6e5 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2cc7bdcfb0c6eb33696f3071f782bb9 inherit pub_methods_a00035"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00129.html">GetPot</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ab2cc7bdcfb0c6eb33696f3071f782bb9">input</a> () const </td></tr>
-<tr class="memdesc:ab2cc7bdcfb0c6eb33696f3071f782bb9 inherit pub_methods_a00035"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="a00129.html">GetPot</a> input file parser.  <a href="#ab2cc7bdcfb0c6eb33696f3071f782bb9">More...</a><br/></td></tr>
-<tr class="separator:ab2cc7bdcfb0c6eb33696f3071f782bb9 inherit pub_methods_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a94be2216d37b20604485b4bb19bd0a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a4a94be2216d37b20604485b4bb19bd0a">FuncPlusFunc1D1DFunction</a> (const <a class="el" href="a00034.html">Base1D1DFunction</a> &amp;func1, const <a class="el" href="a00034.html">Base1D1DFunction</a> &amp;func2)</td></tr>
+<tr class="memdesc:a4a94be2216d37b20604485b4bb19bd0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a4a94be2216d37b20604485b4bb19bd0a">More...</a><br/></td></tr>
+<tr class="separator:a4a94be2216d37b20604485b4bb19bd0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86c5c243f2c16da8582c55b597e55823"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a86c5c243f2c16da8582c55b597e55823">~FuncPlusFunc1D1DFunction</a> ()</td></tr>
+<tr class="memdesc:a86c5c243f2c16da8582c55b597e55823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a86c5c243f2c16da8582c55b597e55823">More...</a><br/></td></tr>
+<tr class="separator:a86c5c243f2c16da8582c55b597e55823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Mathematical methods</div></td></tr>
+<tr class="memitem:a9e7a69d195d586fa982c6088ff6a7007"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a9e7a69d195d586fa982c6088ff6a7007">value</a> (double domainValue) const </td></tr>
+<tr class="memdesc:a9e7a69d195d586fa982c6088ff6a7007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the addition of function <code>func1</code> and <code>func2</code> evaluated at the point <code>domainValue</code>, i.e. returnValue = <code>func1(domainValue)+func2(domainValue) </code>.  <a href="#a9e7a69d195d586fa982c6088ff6a7007">More...</a><br/></td></tr>
+<tr class="separator:a9e7a69d195d586fa982c6088ff6a7007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37e3b0d0b5655b555cde6674e382a36e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a37e3b0d0b5655b555cde6674e382a36e">deriv</a> (double domainValue) const </td></tr>
+<tr class="memdesc:a37e3b0d0b5655b555cde6674e382a36e"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Returns the value of the derivative of the addition of two functions.  <a href="#a37e3b0d0b5655b555cde6674e382a36e">More...</a><br/></td></tr>
+<tr class="separator:a37e3b0d0b5655b555cde6674e382a36e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00034"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00034')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00034.html">QUESO::Base1D1DFunction</a></td></tr>
+<tr class="memitem:a8e8c0f8d500675e4acfd4d7043000791 inherit pub_methods_a00034"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00034.html#a8e8c0f8d500675e4acfd4d7043000791">Base1D1DFunction</a> (double <a class="el" href="a00034.html#a4c110e621ef1ac557bbcc60d41f5a3c2">minDomainValue</a>, double <a class="el" href="a00034.html#ad2b80d0c52c0cb56c89f70f30b3bb19e">maxDomainValue</a>)</td></tr>
+<tr class="memdesc:a8e8c0f8d500675e4acfd4d7043000791 inherit pub_methods_a00034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a8e8c0f8d500675e4acfd4d7043000791">More...</a><br/></td></tr>
+<tr class="separator:a8e8c0f8d500675e4acfd4d7043000791 inherit pub_methods_a00034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0512da686e14fe3b0544f84432ea322e inherit pub_methods_a00034"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00034.html#a0512da686e14fe3b0544f84432ea322e">~Base1D1DFunction</a> ()</td></tr>
+<tr class="memdesc:a0512da686e14fe3b0544f84432ea322e inherit pub_methods_a00034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a0512da686e14fe3b0544f84432ea322e">More...</a><br/></td></tr>
+<tr class="separator:a0512da686e14fe3b0544f84432ea322e inherit pub_methods_a00034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c110e621ef1ac557bbcc60d41f5a3c2 inherit pub_methods_a00034"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00034.html#a4c110e621ef1ac557bbcc60d41f5a3c2">minDomainValue</a> () const </td></tr>
+<tr class="memdesc:a4c110e621ef1ac557bbcc60d41f5a3c2 inherit pub_methods_a00034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the minimum value of the domain of the (one-dimensional) function.  <a href="#a4c110e621ef1ac557bbcc60d41f5a3c2">More...</a><br/></td></tr>
+<tr class="separator:a4c110e621ef1ac557bbcc60d41f5a3c2 inherit pub_methods_a00034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2b80d0c52c0cb56c89f70f30b3bb19e inherit pub_methods_a00034"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00034.html#ad2b80d0c52c0cb56c89f70f30b3bb19e">maxDomainValue</a> () const </td></tr>
+<tr class="memdesc:ad2b80d0c52c0cb56c89f70f30b3bb19e inherit pub_methods_a00034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum value of the domain of the (one-dimensional) function.  <a href="#ad2b80d0c52c0cb56c89f70f30b3bb19e">More...</a><br/></td></tr>
+<tr class="separator:ad2b80d0c52c0cb56c89f70f30b3bb19e inherit pub_methods_a00034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac41e4e15b7f97c14a0389069bf8e833d inherit pub_methods_a00034"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00034.html#ac41e4e15b7f97c14a0389069bf8e833d">multiplyAndIntegrate</a> (const <a class="el" href="a00034.html">Base1D1DFunction</a> &amp;func, unsigned int quadratureOrder, double *resultWithMultiplicationByTAsWell) const </td></tr>
+<tr class="memdesc:ac41e4e15b7f97c14a0389069bf8e833d inherit pub_methods_a00034"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Multiplies <code>this</code> function with <code>function</code>, and integrates it numerically. See template specialization.  <a href="#ac41e4e15b7f97c14a0389069bf8e833d">More...</a><br/></td></tr>
+<tr class="separator:ac41e4e15b7f97c14a0389069bf8e833d inherit pub_methods_a00034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a1c2cf08f2f0aebc760011f1603bbd872"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a1c2cf08f2f0aebc760011f1603bbd872">construct</a> (const char *prefix)</td></tr>
-<tr class="memdesc:a1c2cf08f2f0aebc760011f1603bbd872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Named constructor backend for multiple constructor overloads.  <a href="#a1c2cf08f2f0aebc760011f1603bbd872">More...</a><br/></td></tr>
-<tr class="separator:a1c2cf08f2f0aebc760011f1603bbd872"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41eadd931012db5a422f5ec13adb7816"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a41eadd931012db5a422f5ec13adb7816">readOptionsInputFile</a> ()</td></tr>
-<tr class="memdesc:a41eadd931012db5a422f5ec13adb7816"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the options input file and reads the options.  <a href="#a41eadd931012db5a422f5ec13adb7816">More...</a><br/></td></tr>
-<tr class="separator:a41eadd931012db5a422f5ec13adb7816"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_a00035"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00035')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00035.html">QUESO::BaseEnvironment</a></td></tr>
-<tr class="memitem:a62020b48a3506aa067d1c94c461cb11e inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a62020b48a3506aa067d1c94c461cb11e">m_fullEnvIsReady</a></td></tr>
-<tr class="separator:a62020b48a3506aa067d1c94c461cb11e inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a464cab923ada0e14c6e3a4000c2ea385 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">m_worldRank</a></td></tr>
-<tr class="separator:a464cab923ada0e14c6e3a4000c2ea385 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e80c9067b0875c419f1b9ecccbdb46d inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00186.html">MpiComm</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a8e80c9067b0875c419f1b9ecccbdb46d">m_fullComm</a></td></tr>
-<tr class="separator:a8e80c9067b0875c419f1b9ecccbdb46d inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bfa53f6bdaec0a6aa3dc00ee2c0101f inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a0bfa53f6bdaec0a6aa3dc00ee2c0101f">m_fullRank</a></td></tr>
-<tr class="separator:a0bfa53f6bdaec0a6aa3dc00ee2c0101f inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5be3e52676db90de1321bc94233c15d inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ad5be3e52676db90de1321bc94233c15d">m_fullCommSize</a></td></tr>
-<tr class="separator:ad5be3e52676db90de1321bc94233c15d inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad455ca08c81b8d953e9a8d2bb14d03c3 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00690.html#ab0b3b3f6c0a21b084ea4e021bf96429e">RawType_MPI_Group</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ad455ca08c81b8d953e9a8d2bb14d03c3">m_fullGroup</a></td></tr>
-<tr class="separator:ad455ca08c81b8d953e9a8d2bb14d03c3 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37195909442a817980e1cf8392b9e63d inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a37195909442a817980e1cf8392b9e63d">m_optionsInputFileName</a></td></tr>
-<tr class="separator:a37195909442a817980e1cf8392b9e63d inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48ea9a77af61344a313dfd7390b414b4 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a48ea9a77af61344a313dfd7390b414b4">m_optionsInputFileAccessState</a></td></tr>
-<tr class="separator:a48ea9a77af61344a313dfd7390b414b4 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dea510cfdd559ca96d851e55de1b251 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">boost::program_options::options_description *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a4dea510cfdd559ca96d851e55de1b251">m_allOptionsDesc</a></td></tr>
-<tr class="separator:a4dea510cfdd559ca96d851e55de1b251 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9930b4a2fddd76196d2de047ecaac679 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">boost::program_options::variables_map *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a9930b4a2fddd76196d2de047ecaac679">m_allOptionsMap</a></td></tr>
-<tr class="separator:a9930b4a2fddd76196d2de047ecaac679 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2f3575b6eb4589d70fccbdd1f93dac0 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">ScopedPtr&lt; <a class="el" href="a00129.html">GetPot</a> &gt;::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#af2f3575b6eb4589d70fccbdd1f93dac0">m_input</a></td></tr>
-<tr class="separator:af2f3575b6eb4589d70fccbdd1f93dac0 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aea4a26ea39e72300f7c32594c26012 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a2aea4a26ea39e72300f7c32594c26012">m_subId</a></td></tr>
-<tr class="separator:a2aea4a26ea39e72300f7c32594c26012 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19243150a58181cbdaf58b1bacd90009 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a19243150a58181cbdaf58b1bacd90009">m_subIdString</a></td></tr>
-<tr class="separator:a19243150a58181cbdaf58b1bacd90009 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6669dac8fb884d4eb3278625f0e8d661 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00690.html#ab0b3b3f6c0a21b084ea4e021bf96429e">RawType_MPI_Group</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a6669dac8fb884d4eb3278625f0e8d661">m_subGroup</a></td></tr>
-<tr class="separator:a6669dac8fb884d4eb3278625f0e8d661 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8d7b6062d9a58ef1a36eb95753498b4 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00186.html">MpiComm</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ac8d7b6062d9a58ef1a36eb95753498b4">m_subComm</a></td></tr>
-<tr class="separator:ac8d7b6062d9a58ef1a36eb95753498b4 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acecae0962d56bae97b6476c7514b428f inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#acecae0962d56bae97b6476c7514b428f">m_subRank</a></td></tr>
-<tr class="separator:acecae0962d56bae97b6476c7514b428f inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c7b8104e4bb3f1456aa2d85b4dc9a03 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a4c7b8104e4bb3f1456aa2d85b4dc9a03">m_subCommSize</a></td></tr>
-<tr class="separator:a4c7b8104e4bb3f1456aa2d85b4dc9a03 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f1159427c10aa4dfee51936d46103da inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00186.html">MpiComm</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a8f1159427c10aa4dfee51936d46103da">m_selfComm</a></td></tr>
-<tr class="separator:a8f1159427c10aa4dfee51936d46103da inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed2620ad6e42a86f2a5057a5cdcf99f5 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00690.html#ab0b3b3f6c0a21b084ea4e021bf96429e">RawType_MPI_Group</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#aed2620ad6e42a86f2a5057a5cdcf99f5">m_inter0Group</a></td></tr>
-<tr class="separator:aed2620ad6e42a86f2a5057a5cdcf99f5 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5107d456b4267a20f3f48222e52f0c7b inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00186.html">MpiComm</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a5107d456b4267a20f3f48222e52f0c7b">m_inter0Comm</a></td></tr>
-<tr class="separator:a5107d456b4267a20f3f48222e52f0c7b inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1feb61fba41bc96f4913892df85e6853 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a1feb61fba41bc96f4913892df85e6853">m_inter0Rank</a></td></tr>
-<tr class="separator:a1feb61fba41bc96f4913892df85e6853 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7a98e45d9c0379a78ee7937f83f3ec1 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ad7a98e45d9c0379a78ee7937f83f3ec1">m_inter0CommSize</a></td></tr>
-<tr class="separator:ad7a98e45d9c0379a78ee7937f83f3ec1 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52b4275aa8ee85994dd304d9fe95c9c5 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">std::ofstream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a52b4275aa8ee85994dd304d9fe95c9c5">m_subDisplayFile</a></td></tr>
-<tr class="separator:a52b4275aa8ee85994dd304d9fe95c9c5 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e80f48ab043b532ee9d4864cd363574 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00195.html">RngBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a5e80f48ab043b532ee9d4864cd363574">m_rngObject</a></td></tr>
-<tr class="separator:a5e80f48ab043b532ee9d4864cd363574 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43b3045235a87236f0adc7df3427adc0 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00052.html">BasicPdfsBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a43b3045235a87236f0adc7df3427adc0">m_basicPdfs</a></td></tr>
-<tr class="separator:a43b3045235a87236f0adc7df3427adc0 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b2842a4eb78bcae522cf4f9a5634279 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">struct timeval&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a7b2842a4eb78bcae522cf4f9a5634279">m_timevalBegin</a></td></tr>
-<tr class="separator:a7b2842a4eb78bcae522cf4f9a5634279 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a58407f6c1affeb73ce5fb33c541412 inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a2a58407f6c1affeb73ce5fb33c541412">m_exceptionalCircumstance</a></td></tr>
-<tr class="separator:a2a58407f6c1affeb73ce5fb33c541412 inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe26d66495d10fc0547ccd710a30c59a inherit pro_attribs_a00035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00076.html">EnvOptionsValues</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a></td></tr>
-<tr class="separator:afe26d66495d10fc0547ccd710a30c59a inherit pro_attribs_a00035"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ab74636433f4ce2bb8ca93cf7c1c1d72e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00034.html">Base1D1DFunction</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#ab74636433f4ce2bb8ca93cf7c1c1d72e">m_func1</a></td></tr>
+<tr class="separator:ab74636433f4ce2bb8ca93cf7c1c1d72e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82867f82d1b09ae165d5b2e730a49bdd"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00034.html">Base1D1DFunction</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00089.html#a82867f82d1b09ae165d5b2e730a49bdd">m_func2</a></td></tr>
+<tr class="separator:a82867f82d1b09ae165d5b2e730a49bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_a00034"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00034')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00034.html">QUESO::Base1D1DFunction</a></td></tr>
+<tr class="memitem:a7b18b3854ee74ef5befbc67b75ebbdc5 inherit pro_attribs_a00034"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00034.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a></td></tr>
+<tr class="separator:a7b18b3854ee74ef5befbc67b75ebbdc5 inherit pro_attribs_a00034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0025999ccab2145cd46c0a81e260e8f inherit pro_attribs_a00034"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00034.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a></td></tr>
+<tr class="separator:aa0025999ccab2145cd46c0a81e260e8f inherit pro_attribs_a00034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class sets up the full environment underlying the use of the <a class="el" href="a00690.html">QUESO</a> library by an executable. </p>
-<p>This is the class that is actually used during a QUESO+application run. </p>
+<div class="textblock"><p>Class for addition of a one-dimensional function with another. </p>
+<p>This class implements the addition of two generic one-dimensional functions (both functions may be of any type of functions derived from <a class="el" href="a00034.html" title="Class for one-dimensional functions. ">Base1D1DFunction</a>). </p>
 
-<p>Definition at line <a class="el" href="a00348_source.html#l00435">435</a> of file <a class="el" href="a00348_source.html">Environment.h</a>.</p>
+<p>Definition at line <a class="el" href="a00441_source.html#l00504">504</a> of file <a class="el" href="a00441_source.html">1D1DFunction.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a6d9cbfd299f6be53e3883758c0fc1b0b"></a>
+<a class="anchor" id="a4a94be2216d37b20604485b4bb19bd0a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::FullEnvironment::FullEnvironment </td>
+          <td class="memname">QUESO::FuncPlusFunc1D1DFunction::FuncPlusFunc1D1DFunction </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>passedOptionsInputFileName</em>, </td>
+          <td class="paramtype">const <a class="el" href="a00034.html">Base1D1DFunction</a> &amp;&#160;</td>
+          <td class="paramname"><em>func1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>prefix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00076.html">EnvOptionsValues</a> *&#160;</td>
-          <td class="paramname"><em>alternativeOptionsValues</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00034.html">Base1D1DFunction</a> &amp;&#160;</td>
+          <td class="paramname"><em>func2</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -322,72 +151,27 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Parallel constructor. </p>
-<p>Initializes the full communicator, reads the options, deals with multiple sub-environments, e.g. dealing with sub/self/inter0-communicators, handles path for output files.Serial constructor.</p>
-<p>No communicator is passed. Output path handling is exactly as in the parallel ctor. </p>
+<p>Default constructor. </p>
 
-<p>Definition at line <a class="el" href="a00395_source.html#l01462">1462</a> of file <a class="el" href="a00395_source.html">Environment.C</a>.</p>
-
-<p>References <a class="el" href="a00395_source.html#l01483">construct()</a>.</p>
-<div class="fragment"><div class="line"><a name="l01466"></a><span class="lineno"> 1466</span>&#160;  :</div>
-<div class="line"><a name="l01467"></a><span class="lineno"> 1467</span>&#160;  <a class="code" href="a00035.html#abe241b184e27083baaeee01116105472">BaseEnvironment</a>(passedOptionsInputFileName,alternativeOptionsValues)</div>
-<div class="line"><a name="l01468"></a><span class="lineno"> 1468</span>&#160;{</div>
-<div class="line"><a name="l01469"></a><span class="lineno"> 1469</span>&#160;  this-&gt;<a class="code" href="a00089.html#a1c2cf08f2f0aebc760011f1603bbd872">construct</a>(prefix);</div>
-<div class="line"><a name="l01470"></a><span class="lineno"> 1470</span>&#160;}</div>
-<div class="ttc" id="a00035_html_abe241b184e27083baaeee01116105472"><div class="ttname"><a href="a00035.html#abe241b184e27083baaeee01116105472">QUESO::BaseEnvironment::BaseEnvironment</a></div><div class="ttdeci">BaseEnvironment(const char *passedOptionsInputFileName, EnvOptionsValues *alternativeOptionsValues)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00141">Environment.C:141</a></div></div>
-<div class="ttc" id="a00089_html_a1c2cf08f2f0aebc760011f1603bbd872"><div class="ttname"><a href="a00089.html#a1c2cf08f2f0aebc760011f1603bbd872">QUESO::FullEnvironment::construct</a></div><div class="ttdeci">void construct(const char *prefix)</div><div class="ttdoc">Named constructor backend for multiple constructor overloads. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l01483">Environment.C:1483</a></div></div>
+<p>Definition at line <a class="el" href="a00460_source.html#l00695">695</a> of file <a class="el" href="a00460_source.html">1D1DFunction.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;  :</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;  <a class="code" href="a00034.html#a8e8c0f8d500675e4acfd4d7043000791">Base1D1DFunction</a>(std::max(func1.minDomainValue(),func2.minDomainValue()),std::min(func1.maxDomainValue(),func2.maxDomainValue())),</div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;  <a class="code" href="a00089.html#ab74636433f4ce2bb8ca93cf7c1c1d72e">m_func1</a>(func1),</div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;  <a class="code" href="a00089.html#a82867f82d1b09ae165d5b2e730a49bdd">m_func2</a>(func2)</div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;{</div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;}</div>
+<div class="ttc" id="a00089_html_a82867f82d1b09ae165d5b2e730a49bdd"><div class="ttname"><a href="a00089.html#a82867f82d1b09ae165d5b2e730a49bdd">QUESO::FuncPlusFunc1D1DFunction::m_func2</a></div><div class="ttdeci">const Base1D1DFunction &amp; m_func2</div><div class="ttdef"><b>Definition:</b> <a href="a00441_source.html#l00532">1D1DFunction.h:532</a></div></div>
+<div class="ttc" id="a00089_html_ab74636433f4ce2bb8ca93cf7c1c1d72e"><div class="ttname"><a href="a00089.html#ab74636433f4ce2bb8ca93cf7c1c1d72e">QUESO::FuncPlusFunc1D1DFunction::m_func1</a></div><div class="ttdeci">const Base1D1DFunction &amp; m_func1</div><div class="ttdef"><b>Definition:</b> <a href="a00441_source.html#l00531">1D1DFunction.h:531</a></div></div>
+<div class="ttc" id="a00034_html_a8e8c0f8d500675e4acfd4d7043000791"><div class="ttname"><a href="a00034.html#a8e8c0f8d500675e4acfd4d7043000791">QUESO::Base1D1DFunction::Base1D1DFunction</a></div><div class="ttdeci">Base1D1DFunction(double minDomainValue, double maxDomainValue)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00460_source.html#l00033">1D1DFunction.C:33</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a8062bee58c94bf56f1864821fea7698f"></a>
+<a class="anchor" id="a86c5c243f2c16da8582c55b597e55823"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QUESO::FullEnvironment::FullEnvironment </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>passedOptionsInputFileName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>prefix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00076.html">EnvOptionsValues</a> *&#160;</td>
-          <td class="paramname"><em>alternativeOptionsValues</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00395_source.html#l01472">1472</a> of file <a class="el" href="a00395_source.html">Environment.C</a>.</p>
-
-<p>References <a class="el" href="a00395_source.html#l01483">construct()</a>.</p>
-<div class="fragment"><div class="line"><a name="l01476"></a><span class="lineno"> 1476</span>&#160;  :</div>
-<div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160;  <a class="code" href="a00035.html#abe241b184e27083baaeee01116105472">BaseEnvironment</a>(passedOptionsInputFileName,alternativeOptionsValues)</div>
-<div class="line"><a name="l01478"></a><span class="lineno"> 1478</span>&#160;{</div>
-<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;  this-&gt;<a class="code" href="a00089.html#a1c2cf08f2f0aebc760011f1603bbd872">construct</a>(prefix.c_str());</div>
-<div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;}</div>
-<div class="ttc" id="a00035_html_abe241b184e27083baaeee01116105472"><div class="ttname"><a href="a00035.html#abe241b184e27083baaeee01116105472">QUESO::BaseEnvironment::BaseEnvironment</a></div><div class="ttdeci">BaseEnvironment(const char *passedOptionsInputFileName, EnvOptionsValues *alternativeOptionsValues)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00141">Environment.C:141</a></div></div>
-<div class="ttc" id="a00089_html_a1c2cf08f2f0aebc760011f1603bbd872"><div class="ttname"><a href="a00089.html#a1c2cf08f2f0aebc760011f1603bbd872">QUESO::FullEnvironment::construct</a></div><div class="ttdeci">void construct(const char *prefix)</div><div class="ttdoc">Named constructor backend for multiple constructor overloads. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l01483">Environment.C:1483</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a664220a7e2b32242f3d58bfe51d316d1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QUESO::FullEnvironment::~FullEnvironment </td>
+          <td class="memname">QUESO::FuncPlusFunc1D1DFunction::~FuncPlusFunc1D1DFunction </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -397,14 +181,14 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="a00395_source.html#l01711">1711</a> of file <a class="el" href="a00395_source.html">Environment.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l01712"></a><span class="lineno"> 1712</span>&#160;{</div>
-<div class="line"><a name="l01713"></a><span class="lineno"> 1713</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00460_source.html#l00705">705</a> of file <a class="el" href="a00460_source.html">1D1DFunction.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;{</div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a1c2cf08f2f0aebc760011f1603bbd872"></a>
+<a class="anchor" id="a37e3b0d0b5655b555cde6674e382a36e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -412,294 +196,10 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::FullEnvironment::construct </td>
+          <td class="memname">double QUESO::FuncPlusFunc1D1DFunction::deriv </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>prefix</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Named constructor backend for multiple constructor overloads. </p>
-
-<p>Definition at line <a class="el" href="a00395_source.html#l01483">1483</a> of file <a class="el" href="a00395_source.html">Environment.C</a>.</p>
-
-<p>References <a class="el" href="a00413_source.html#l00164">QUESO::MpiComm::Barrier()</a>, <a class="el" href="a00490_source.html#l00362">QUESO::CheckFilePath()</a>, <a class="el" href="a00395_source.html#l00449">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00395_source.html#l00274">QUESO::BaseEnvironment::fullComm()</a>, <a class="el" href="a00348_source.html#l00377">QUESO::BaseEnvironment::m_allOptionsDesc</a>, <a class="el" href="a00348_source.html#l00378">QUESO::BaseEnvironment::m_allOptionsMap</a>, <a class="el" href="a00348_source.html#l00398">QUESO::BaseEnvironment::m_basicPdfs</a>, <a class="el" href="a00348_source.html#l00369">QUESO::BaseEnvironment::m_fullComm</a>, <a class="el" href="a00348_source.html#l00371">QUESO::BaseEnvironment::m_fullCommSize</a>, <a class="el" href="a00348_source.html#l00366">QUESO::BaseEnvironment::m_fullEnvIsReady</a>, <a class="el" href="a00348_source.html#l00372">QUESO::BaseEnvironment::m_fullGroup</a>, <a class="el" href="a00348_source.html#l00370">QUESO::BaseEnvironment::m_fullRank</a>, <a class="el" href="a00349_source.html#l00108">QUESO::EnvOptionsValues::m_help</a>, <a class="el" href="a00348_source.html#l00380">QUESO::BaseEnvironment::m_input</a>, <a class="el" href="a00348_source.html#l00392">QUESO::BaseEnvironment::m_inter0Comm</a>, <a class="el" href="a00348_source.html#l00394">QUESO::BaseEnvironment::m_inter0CommSize</a>, <a class="el" href="a00348_source.html#l00391">QUESO::BaseEnvironment::m_inter0Group</a>, <a class="el" href="a00348_source.html#l00393">QUESO::BaseEnvironment::m_inter0Rank</a>, <a class="el" href="a00349_source.html#l00112">QUESO::EnvOptionsValues::m_numSubEnvironments</a>, <a class="el" href="a00348_source.html#l00374">QUESO::BaseEnvironment::m_optionsInputFileName</a>, <a class="el" href="a00348_source.html#l00402">QUESO::BaseEnvironment::m_optionsObj</a>, <a class="el" href="a00348_source.html#l00397">QUESO::BaseEnvironment::m_rngObject</a>, <a class="el" href="a00349_source.html#l00146">QUESO::EnvOptionsValues::m_rngType</a>, <a class="el" href="a00349_source.html#l00155">QUESO::EnvOptionsValues::m_seed</a>, <a class="el" href="a00348_source.html#l00389">QUESO::BaseEnvironment::m_selfComm</a>, <a class="el" href="a00348_source.html#l00385">QUESO::BaseEnvironment::m_subComm</a>, <a class="el" href="a00348_source.html#l00387">QUESO::BaseEnvironment::m_subCommSize</a>, <a class="el" href="a00349_source.html#l00121">QUESO::EnvOptionsValues::m_subDisplayAllowAll</a>, <a class="el" href="a00349_source.html#l00134">QUESO::EnvOptionsValues::m_subDisplayAllowedSet</a>, <a class="el" href="a00349_source.html#l00127">QUESO::EnvOptionsValues::m_subDisplayAllowInter0</a>, <a class="el" href="a00348_source.html#l00396">QUESO::BaseEnvironment::m_subDisplayFile</a>, <a class="el" href="a00349_source.html#l00115">QUESO::EnvOptionsValues::m_subDisplayFileName</a>, <a class="el" href="a00348_source.html#l00384">QUESO::BaseEnvironment::m_subGroup</a>, <a class="el" href="a00348_source.html#l00382">QUESO::BaseEnvironment::m_subId</a>, <a class="el" href="a00348_source.html#l00383">QUESO::BaseEnvironment::m_subIdString</a>, <a class="el" href="a00348_source.html#l00386">QUESO::BaseEnvironment::m_subRank</a>, <a class="el" href="a00348_source.html#l00399">QUESO::BaseEnvironment::m_timevalBegin</a>, <a class="el" href="a00395_source.html#l00135">QUESO::old_terminate_handler</a>, <a class="el" href="a00340_source.html#l00047">queso_error_msg</a>, <a class="el" href="a00340_source.html#l00073">queso_require_equal_to_msg</a>, <a class="el" href="a00340_source.html#l00078">queso_require_greater_equal_msg</a>, <a class="el" href="a00340_source.html#l00069">queso_require_msg</a>, <a class="el" href="a00395_source.html#l01722">QUESO::queso_terminate_handler()</a>, <a class="el" href="a00395_source.html#l00054">QUESO::QUESO_version_print()</a>, <a class="el" href="a00395_source.html#l01749">readOptionsInputFile()</a>, and <a class="el" href="a00349_source.html#l00036">UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE</a>.</p>
-
-<p>Referenced by <a class="el" href="a00395_source.html#l01462">FullEnvironment()</a>.</p>
-<div class="fragment"><div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;{</div>
-<div class="line"><a name="l01485"></a><span class="lineno"> 1485</span>&#160;<span class="preprocessor">#ifdef QUESO_MEMORY_DEBUGGING</span></div>
-<div class="line"><a name="l01486"></a><span class="lineno"> 1486</span>&#160;<span class="preprocessor"></span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Entering FullEnv&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01488"></a><span class="lineno"> 1488</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l01489"></a><span class="lineno"> 1489</span>&#160;  <a class="code" href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">m_worldRank</a> = 0;</div>
-<div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;</div>
-<div class="line"><a name="l01491"></a><span class="lineno"> 1491</span>&#160;  <a class="code" href="a00035.html#a8e80c9067b0875c419f1b9ecccbdb46d">m_fullComm</a> = <span class="keyword">new</span> MpiComm(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l01492"></a><span class="lineno"> 1492</span>&#160;  <a class="code" href="a00035.html#a0bfa53f6bdaec0a6aa3dc00ee2c0101f">m_fullRank</a>     = 0;</div>
-<div class="line"><a name="l01493"></a><span class="lineno"> 1493</span>&#160;  <a class="code" href="a00035.html#ad5be3e52676db90de1321bc94233c15d">m_fullCommSize</a> = 1;</div>
-<div class="line"><a name="l01494"></a><span class="lineno"> 1494</span>&#160;</div>
-<div class="line"><a name="l01495"></a><span class="lineno"> 1495</span>&#160;<span class="preprocessor">#ifndef QUESO_HAS_MPI</span></div>
-<div class="line"><a name="l01496"></a><span class="lineno"> 1496</span>&#160;<span class="preprocessor"></span>  <a class="code" href="a00035.html#ad455ca08c81b8d953e9a8d2bb14d03c3">m_fullGroup</a> = 0;</div>
-<div class="line"><a name="l01497"></a><span class="lineno"> 1497</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01498"></a><span class="lineno"> 1498</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l01499"></a><span class="lineno"> 1499</span>&#160;  <span class="comment">// saving old uncaught exception handler, invoking queso_terminate</span></div>
-<div class="line"><a name="l01500"></a><span class="lineno"> 1500</span>&#160;  <a class="code" href="a00690.html#ac54b755ffb94b8896563c43fec9a6a4c">old_terminate_handler</a> = std::set_terminate(<a class="code" href="a00690.html#a97e263e01a0ff9fad14de6a8840b007e">queso_terminate_handler</a>);</div>
-<div class="line"><a name="l01501"></a><span class="lineno"> 1501</span>&#160;</div>
-<div class="line"><a name="l01502"></a><span class="lineno"> 1502</span>&#160;<span class="preprocessor">#ifdef QUESO_MEMORY_DEBUGGING</span></div>
-<div class="line"><a name="l01503"></a><span class="lineno"> 1503</span>&#160;<span class="preprocessor"></span>  std::cout &lt;&lt; <span class="stringliteral">&quot;In FullEnv, finished dealing with MPI initially&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01504"></a><span class="lineno"> 1504</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01505"></a><span class="lineno"> 1505</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l01507"></a><span class="lineno"> 1507</span>&#160;  <span class="comment">// Read options</span></div>
-<div class="line"><a name="l01509"></a><span class="lineno"> 1509</span>&#160;<span class="comment"></span>  <span class="comment">// If NULL, we create one</span></div>
-<div class="line"><a name="l01510"></a><span class="lineno"> 1510</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a> == NULL) {</div>
-<div class="line"><a name="l01511"></a><span class="lineno"> 1511</span>&#160;    <span class="comment">// If there&#39;s an input file, we grab the options from there.  Otherwise the</span></div>
-<div class="line"><a name="l01512"></a><span class="lineno"> 1512</span>&#160;    <span class="comment">// defaults are used</span></div>
-<div class="line"><a name="l01513"></a><span class="lineno"> 1513</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00035.html#a37195909442a817980e1cf8392b9e63d">m_optionsInputFileName</a> != <span class="stringliteral">&quot;&quot;</span>) {</div>
-<div class="line"><a name="l01514"></a><span class="lineno"> 1514</span>&#160;<span class="preprocessor">#ifndef DISABLE_BOOST_PROGRAM_OPTIONS</span></div>
-<div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;<span class="preprocessor"></span>      <a class="code" href="a00035.html#a9930b4a2fddd76196d2de047ecaac679">m_allOptionsMap</a>  = <span class="keyword">new</span> boost::program_options::variables_map();</div>
-<div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;      <a class="code" href="a00035.html#a4dea510cfdd559ca96d851e55de1b251">m_allOptionsDesc</a> = <span class="keyword">new</span> boost::program_options::options_description(<span class="stringliteral">&quot;Allowed options&quot;</span>);</div>
-<div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;<span class="preprocessor">#endif  // DISABLE_BOOST_PROGRAM_OPTIONS</span></div>
-<div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;      <a class="code" href="a00089.html#a41eadd931012db5a422f5ec13adb7816">readOptionsInputFile</a>();</div>
-<div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;</div>
-<div class="line"><a name="l01521"></a><span class="lineno"> 1521</span>&#160;      <a class="code" href="a00035.html#af2f3575b6eb4589d70fccbdd1f93dac0">m_input</a>-&gt;parse_input_file(<a class="code" href="a00035.html#a37195909442a817980e1cf8392b9e63d">m_optionsInputFileName</a>);</div>
-<div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;    }</div>
-<div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;</div>
-<div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;    EnvOptionsValues * tempOptions = <span class="keyword">new</span> EnvOptionsValues(<span class="keyword">this</span>, prefix);</div>
-<div class="line"><a name="l01525"></a><span class="lineno"> 1525</span>&#160;</div>
-<div class="line"><a name="l01526"></a><span class="lineno"> 1526</span>&#160;    <span class="comment">// We did this dance because scanOptionsValues is not a const method, but</span></div>
-<div class="line"><a name="l01527"></a><span class="lineno"> 1527</span>&#160;    <span class="comment">// m_optionsObj is a pointer to const</span></div>
-<div class="line"><a name="l01528"></a><span class="lineno"> 1528</span>&#160;    <a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a> = tempOptions;</div>
-<div class="line"><a name="l01529"></a><span class="lineno"> 1529</span>&#160;  }</div>
-<div class="line"><a name="l01530"></a><span class="lineno"> 1530</span>&#160;</div>
-<div class="line"><a name="l01531"></a><span class="lineno"> 1531</span>&#160;  <span class="comment">// If help option was supplied, print info</span></div>
-<div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#a2a0d46853f0a45f399aa1259d3540225">m_help</a> != <span class="stringliteral">&quot;&quot;</span>) {</div>
-<div class="line"><a name="l01533"></a><span class="lineno"> 1533</span>&#160;    <span class="comment">// We write to std::cout because subDisplayFile() isn&#39;t ready yet?</span></div>
-<div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;    std::cout &lt;&lt; (*m_optionsObj) &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01535"></a><span class="lineno"> 1535</span>&#160;  }</div>
-<div class="line"><a name="l01536"></a><span class="lineno"> 1536</span>&#160;</div>
-<div class="line"><a name="l01537"></a><span class="lineno"> 1537</span>&#160;  <a class="code" href="a00340.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a>(</div>
-<div class="line"><a name="l01538"></a><span class="lineno"> 1538</span>&#160;      <a class="code" href="a00035.html#a0b0779b41ff304058856e97e1d16b4d4">fullComm</a>().NumProc() % <a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#a0a53bbc1544a519eb50faddcfae0cedd">m_numSubEnvironments</a>, 0,</div>
-<div class="line"><a name="l01539"></a><span class="lineno"> 1539</span>&#160;      <span class="stringliteral">&quot;total number of processors in environment must be multiple of the specified number of subEnvironments&quot;</span>);</div>
-<div class="line"><a name="l01540"></a><span class="lineno"> 1540</span>&#160;</div>
-<div class="line"><a name="l01541"></a><span class="lineno"> 1541</span>&#160;<span class="preprocessor">#ifdef QUESO_MEMORY_DEBUGGING</span></div>
-<div class="line"><a name="l01542"></a><span class="lineno"> 1542</span>&#160;<span class="preprocessor"></span>  std::cout &lt;&lt; <span class="stringliteral">&quot;In FullEnv, finished scanning options&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01543"></a><span class="lineno"> 1543</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01544"></a><span class="lineno"> 1544</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l01545"></a><span class="lineno"> 1545</span>&#160;  <span class="comment">// Only display these messages if the user wants them</span></div>
-<div class="line"><a name="l01546"></a><span class="lineno"> 1546</span>&#160;  <span class="comment">// NOTE: This got moved below the Read Options section</span></div>
-<div class="line"><a name="l01547"></a><span class="lineno"> 1547</span>&#160;  <span class="comment">// because we need the options to be read to know what</span></div>
-<div class="line"><a name="l01548"></a><span class="lineno"> 1548</span>&#160;  <span class="comment">// the verbosity level is.</span></div>
-<div class="line"><a name="l01549"></a><span class="lineno"> 1549</span>&#160;  <span class="keywordflow">if</span> (this-&gt;<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt; 0) {</div>
-<div class="line"><a name="l01551"></a><span class="lineno"> 1551</span>&#160;    <span class="comment">// Display main initial messages</span></div>
-<div class="line"><a name="l01552"></a><span class="lineno"> 1552</span>&#160;    <span class="comment">// &#39;std::cout&#39; is for: main trace messages + synchronized trace messages + error messages prior to &#39;exit()&#39; or &#39;abort()&#39;</span></div>
-<div class="line"><a name="l01554"></a><span class="lineno"> 1554</span>&#160;<span class="comment"></span>    <span class="comment">/*int iRC = 0;*/</span></div>
-<div class="line"><a name="l01555"></a><span class="lineno"> 1555</span>&#160;    <span class="comment">/*iRC = */</span>gettimeofday(&amp;<a class="code" href="a00035.html#a7b2842a4eb78bcae522cf4f9a5634279">m_timevalBegin</a>, NULL);</div>
-<div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160;</div>
-<div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;    <a class="code" href="a00690.html#ae2e4805bfcc226b2ceb17c8a8dbb1297">QUESO_version_print</a>(std::cout);</div>
-<div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;</div>
-<div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;Beginning run at &quot;</span> &lt;&lt; ctime(&amp;<a class="code" href="a00035.html#a7b2842a4eb78bcae522cf4f9a5634279">m_timevalBegin</a>.tv_sec)</div>
-<div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;  }</div>
-<div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;</div>
-<div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;  <a class="code" href="a00035.html#a2aea4a26ea39e72300f7c32594c26012">m_subId</a> = 0;</div>
-<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;  <span class="keywordtype">char</span> tmpSubId[16];</div>
-<div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;  sprintf(tmpSubId,<span class="stringliteral">&quot;%u&quot;</span>,<a class="code" href="a00035.html#a2aea4a26ea39e72300f7c32594c26012">m_subId</a>);</div>
-<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;  <a class="code" href="a00035.html#a19243150a58181cbdaf58b1bacd90009">m_subIdString</a> = tmpSubId;</div>
-<div class="line"><a name="l01567"></a><span class="lineno"> 1567</span>&#160;</div>
-<div class="line"><a name="l01568"></a><span class="lineno"> 1568</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#a942d62cb804c174e1de76cc776368924">m_subDisplayAllowAll</a>) {</div>
-<div class="line"><a name="l01569"></a><span class="lineno"> 1569</span>&#160;    <a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#afd2f167d8f568df84b3efe5df4430ee3">m_subDisplayAllowedSet</a>.insert((<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>) <a class="code" href="a00035.html#a2aea4a26ea39e72300f7c32594c26012">m_subId</a>);</div>
-<div class="line"><a name="l01570"></a><span class="lineno"> 1570</span>&#160;  }</div>
-<div class="line"><a name="l01571"></a><span class="lineno"> 1571</span>&#160;</div>
-<div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160;  <span class="keywordtype">int</span> fullRanksOfMySubEnvironment = 1;</div>
-<div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;</div>
-<div class="line"><a name="l01574"></a><span class="lineno"> 1574</span>&#160;<span class="preprocessor">#ifndef QUESO_HAS_MPI</span></div>
-<div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;<span class="preprocessor"></span>  <a class="code" href="a00035.html#a6669dac8fb884d4eb3278625f0e8d661">m_subGroup</a> = 0;</div>
-<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01577"></a><span class="lineno"> 1577</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;  <a class="code" href="a00035.html#ac8d7b6062d9a58ef1a36eb95753498b4">m_subComm</a> = <span class="keyword">new</span> MpiComm(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;  <a class="code" href="a00035.html#acecae0962d56bae97b6476c7514b428f">m_subRank</a>     = 0;</div>
-<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;  <a class="code" href="a00035.html#a4c7b8104e4bb3f1456aa2d85b4dc9a03">m_subCommSize</a> = 1;</div>
-<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;</div>
-<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;  <span class="comment">// Deal with multiple subEnvironments: create the self communicator</span></div>
-<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;<span class="comment"></span>  <a class="code" href="a00035.html#a8f1159427c10aa4dfee51936d46103da">m_selfComm</a> = <span class="keyword">new</span> MpiComm(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;</div>
-<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;  <span class="comment">// Deal with multiple subEnvironments: create the inter0 communicator</span></div>
-<div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;<span class="comment"></span>  <span class="keywordtype">int</span> fullRanksOfInter0 = 0;</div>
-<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;<span class="preprocessor">#ifndef QUESO_HAS_MPI</span></div>
-<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;<span class="preprocessor"></span>  <a class="code" href="a00035.html#aed2620ad6e42a86f2a5057a5cdcf99f5">m_inter0Group</a> = 0;</div>
-<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;<span class="preprocessor"></span>  <a class="code" href="a00035.html#a5107d456b4267a20f3f48222e52f0c7b">m_inter0Comm</a> = <span class="keyword">new</span> MpiComm(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;  <a class="code" href="a00035.html#a1feb61fba41bc96f4913892df85e6853">m_inter0Rank</a>     = 0;</div>
-<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;  <a class="code" href="a00035.html#ad7a98e45d9c0379a78ee7937f83f3ec1">m_inter0CommSize</a> = 1;</div>
-<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;</div>
-<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#a942d62cb804c174e1de76cc776368924">m_subDisplayAllowAll</a>) {</div>
-<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;    <span class="comment">// This situation has been already taken care of above</span></div>
-<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;  }</div>
-<div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#ae7b34ee974716034ae21a2c39891b8c3">m_subDisplayAllowInter0</a>) {</div>
-<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00035.html#a1feb61fba41bc96f4913892df85e6853">m_inter0Rank</a> &gt;= 0) {</div>
-<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;      <a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#afd2f167d8f568df84b3efe5df4430ee3">m_subDisplayAllowedSet</a>.insert((<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>) <a class="code" href="a00035.html#a2aea4a26ea39e72300f7c32594c26012">m_subId</a>);</div>
-<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;    }</div>
-<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;  }</div>
-<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;</div>
-<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;</div>
-<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;  <span class="comment">// Open &quot;screen&quot; file</span></div>
-<div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;<span class="comment"></span>  <span class="keywordtype">bool</span> openFile = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00035.html#acecae0962d56bae97b6476c7514b428f">m_subRank</a>                                               == 0                                              ) &amp;&amp;</div>
-<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;      (<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#ae92ff6d68751d90fd6fbb7de98e66ef2">m_subDisplayFileName</a>                 != <a class="code" href="a00349.html#a0b152a87af300fefc74156efb1526e67">UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE</a>             ) &amp;&amp;</div>
-<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;      (<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#afd2f167d8f568df84b3efe5df4430ee3">m_subDisplayAllowedSet</a>.find(<a class="code" href="a00035.html#a2aea4a26ea39e72300f7c32594c26012">m_subId</a>) != <a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#afd2f167d8f568df84b3efe5df4430ee3">m_subDisplayAllowedSet</a>.end())) {</div>
-<div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;    openFile = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;  }</div>
-<div class="line"><a name="l01617"></a><span class="lineno"> 1617</span>&#160;</div>
-<div class="line"><a name="l01618"></a><span class="lineno"> 1618</span>&#160;  <span class="keywordflow">if</span> (openFile &amp;&amp; <a class="code" href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">m_worldRank</a> == 0) {</div>
-<div class="line"><a name="l01620"></a><span class="lineno"> 1620</span>&#160;    <span class="comment">// Verify parent directory exists (for cases when a user</span></div>
-<div class="line"><a name="l01621"></a><span class="lineno"> 1621</span>&#160;    <span class="comment">// specifies a relative path for the desired output file).</span></div>
-<div class="line"><a name="l01623"></a><span class="lineno"> 1623</span>&#160;<span class="comment"></span>    <span class="keywordtype">int</span> irtrn = <a class="code" href="a00690.html#abc55c11f68bb99c4eba88030f1164764">CheckFilePath</a>((<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#ae92ff6d68751d90fd6fbb7de98e66ef2">m_subDisplayFileName</a>+<span class="stringliteral">&quot;_sub&quot;</span>+<a class="code" href="a00035.html#a19243150a58181cbdaf58b1bacd90009">m_subIdString</a>+<span class="stringliteral">&quot;.txt&quot;</span>).c_str());</div>
-<div class="line"><a name="l01624"></a><span class="lineno"> 1624</span>&#160;    <a class="code" href="a00340.html#ac1ccb5a9313d762500e14d0ec5f57dfe">queso_require_greater_equal_msg</a>(irtrn, 0, <span class="stringliteral">&quot;unable to verify output path&quot;</span>);</div>
-<div class="line"><a name="l01625"></a><span class="lineno"> 1625</span>&#160;  }</div>
-<div class="line"><a name="l01626"></a><span class="lineno"> 1626</span>&#160;</div>
-<div class="line"><a name="l01628"></a><span class="lineno"> 1628</span>&#160;  <span class="comment">// Ensure that rank 0 has created path, if necessary, before other tasks use it</span></div>
-<div class="line"><a name="l01630"></a><span class="lineno"> 1630</span>&#160;<span class="comment"></span>  <a class="code" href="a00035.html#a8e80c9067b0875c419f1b9ecccbdb46d">m_fullComm</a>-&gt;<a class="code" href="a00186.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
-<div class="line"><a name="l01631"></a><span class="lineno"> 1631</span>&#160;</div>
-<div class="line"><a name="l01632"></a><span class="lineno"> 1632</span>&#160;  <span class="keywordflow">if</span> (openFile) {</div>
-<div class="line"><a name="l01634"></a><span class="lineno"> 1634</span>&#160;    <span class="comment">// Always write over an eventual pre-existing file</span></div>
-<div class="line"><a name="l01636"></a><span class="lineno"> 1636</span>&#160;<span class="comment"></span>    <a class="code" href="a00035.html#a52b4275aa8ee85994dd304d9fe95c9c5">m_subDisplayFile</a> = <span class="keyword">new</span> std::ofstream((<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#ae92ff6d68751d90fd6fbb7de98e66ef2">m_subDisplayFileName</a>+<span class="stringliteral">&quot;_sub&quot;</span>+<a class="code" href="a00035.html#a19243150a58181cbdaf58b1bacd90009">m_subIdString</a>+<span class="stringliteral">&quot;.txt&quot;</span>).c_str(),</div>
-<div class="line"><a name="l01637"></a><span class="lineno"> 1637</span>&#160;                                         std::ofstream::out | std::ofstream::trunc);</div>
-<div class="line"><a name="l01638"></a><span class="lineno"> 1638</span>&#160;    <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>((<a class="code" href="a00035.html#a52b4275aa8ee85994dd304d9fe95c9c5">m_subDisplayFile</a> &amp;&amp; <a class="code" href="a00035.html#a52b4275aa8ee85994dd304d9fe95c9c5">m_subDisplayFile</a>-&gt;is_open()), <span class="stringliteral">&quot;failed to open sub screen file&quot;</span>);</div>
-<div class="line"><a name="l01639"></a><span class="lineno"> 1639</span>&#160;</div>
-<div class="line"><a name="l01640"></a><span class="lineno"> 1640</span>&#160;    <a class="code" href="a00690.html#ae2e4805bfcc226b2ceb17c8a8dbb1297">QUESO_version_print</a>(*<a class="code" href="a00035.html#a52b4275aa8ee85994dd304d9fe95c9c5">m_subDisplayFile</a>);</div>
-<div class="line"><a name="l01641"></a><span class="lineno"> 1641</span>&#160;</div>
-<div class="line"><a name="l01642"></a><span class="lineno"> 1642</span>&#160;    *<a class="code" href="a00035.html#a52b4275aa8ee85994dd304d9fe95c9c5">m_subDisplayFile</a> &lt;&lt; <span class="stringliteral">&quot;Beginning run at &quot;</span> &lt;&lt; ctime(&amp;<a class="code" href="a00035.html#a7b2842a4eb78bcae522cf4f9a5634279">m_timevalBegin</a>.tv_sec)</div>
-<div class="line"><a name="l01643"></a><span class="lineno"> 1643</span>&#160;                      &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01644"></a><span class="lineno"> 1644</span>&#160;  }</div>
-<div class="line"><a name="l01645"></a><span class="lineno"> 1645</span>&#160;</div>
-<div class="line"><a name="l01647"></a><span class="lineno"> 1647</span>&#160;  <span class="comment">// Debug message related to subEnvironments</span></div>
-<div class="line"><a name="l01649"></a><span class="lineno"> 1649</span>&#160;<span class="comment"></span>  <span class="keywordflow">if</span> (this-&gt;<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 2) {</div>
-<div class="line"><a name="l01650"></a><span class="lineno"> 1650</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00035.html#ad5be3e52676db90de1321bc94233c15d">m_fullCommSize</a>; ++i) {</div>
-<div class="line"><a name="l01651"></a><span class="lineno"> 1651</span>&#160;      <span class="keywordflow">if</span> (i == <a class="code" href="a00035.html#a0bfa53f6bdaec0a6aa3dc00ee2c0101f">m_fullRank</a>) {</div>
-<div class="line"><a name="l01652"></a><span class="lineno"> 1652</span>&#160;        <span class="comment">//std::cout &lt;&lt; &quot;In FullEnvironment::commonConstructor()&quot;</span></div>
-<div class="line"><a name="l01653"></a><span class="lineno"> 1653</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;MPI node of worldRank &quot;</span>             &lt;&lt; <a class="code" href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">m_worldRank</a></div>
-<div class="line"><a name="l01654"></a><span class="lineno"> 1654</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot; has fullRank &quot;</span>                     &lt;&lt; <a class="code" href="a00035.html#a0bfa53f6bdaec0a6aa3dc00ee2c0101f">m_fullRank</a></div>
-<div class="line"><a name="l01655"></a><span class="lineno"> 1655</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;, belongs to subEnvironment of id &quot;</span> &lt;&lt; <a class="code" href="a00035.html#a2aea4a26ea39e72300f7c32594c26012">m_subId</a></div>
-<div class="line"><a name="l01656"></a><span class="lineno"> 1656</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;, and has subRank &quot;</span>                 &lt;&lt; <a class="code" href="a00035.html#acecae0962d56bae97b6476c7514b428f">m_subRank</a></div>
-<div class="line"><a name="l01657"></a><span class="lineno"> 1657</span>&#160;                  &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01658"></a><span class="lineno"> 1658</span>&#160;</div>
-<div class="line"><a name="l01659"></a><span class="lineno"> 1659</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;MPI node of worldRank &quot;</span> &lt;&lt; <a class="code" href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">m_worldRank</a></div>
-<div class="line"><a name="l01660"></a><span class="lineno"> 1660</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot; belongs to sub communicator with full ranks&quot;</span>;</div>
-<div class="line"><a name="l01661"></a><span class="lineno"> 1661</span>&#160;          std::cout &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; fullRanksOfMySubEnvironment;</div>
-<div class="line"><a name="l01662"></a><span class="lineno"> 1662</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l01663"></a><span class="lineno"> 1663</span>&#160;</div>
-<div class="line"><a name="l01664"></a><span class="lineno"> 1664</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="a00035.html#a5107d456b4267a20f3f48222e52f0c7b">m_inter0Comm</a>) {</div>
-<div class="line"><a name="l01665"></a><span class="lineno"> 1665</span>&#160;          std::cout &lt;&lt; <span class="stringliteral">&quot;MPI node of worldRank &quot;</span> &lt;&lt; m_worldRank</div>
-<div class="line"><a name="l01666"></a><span class="lineno"> 1666</span>&#160;                    &lt;&lt; <span class="stringliteral">&quot; also belongs to inter0 communicator with full ranks&quot;</span>;</div>
-<div class="line"><a name="l01667"></a><span class="lineno"> 1667</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; fullRanksOfInter0;</div>
-<div class="line"><a name="l01668"></a><span class="lineno"> 1668</span>&#160;          std::cout &lt;&lt; <span class="stringliteral">&quot;, and has inter0Rank &quot;</span> &lt;&lt; <a class="code" href="a00035.html#a1feb61fba41bc96f4913892df85e6853">m_inter0Rank</a>;</div>
-<div class="line"><a name="l01669"></a><span class="lineno"> 1669</span>&#160;        }</div>
-<div class="line"><a name="l01670"></a><span class="lineno"> 1670</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l01671"></a><span class="lineno"> 1671</span>&#160;</div>
-<div class="line"><a name="l01672"></a><span class="lineno"> 1672</span>&#160;  std::cout &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01673"></a><span class="lineno"> 1673</span>&#160;      }</div>
-<div class="line"><a name="l01674"></a><span class="lineno"> 1674</span>&#160;      <a class="code" href="a00035.html#a8e80c9067b0875c419f1b9ecccbdb46d">m_fullComm</a>-&gt;<a class="code" href="a00186.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
-<div class="line"><a name="l01675"></a><span class="lineno"> 1675</span>&#160;    }</div>
-<div class="line"><a name="l01676"></a><span class="lineno"> 1676</span>&#160;  }</div>
-<div class="line"><a name="l01677"></a><span class="lineno"> 1677</span>&#160;</div>
-<div class="line"><a name="l01679"></a><span class="lineno"> 1679</span>&#160;  <span class="comment">// Deal with seed</span></div>
-<div class="line"><a name="l01681"></a><span class="lineno"> 1681</span>&#160;<span class="comment"></span>  <span class="keywordflow">if</span> (<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#a01502ec46080bf43c99d55646e6a1b7f">m_rngType</a> == <span class="stringliteral">&quot;gsl&quot;</span>) {</div>
-<div class="line"><a name="l01682"></a><span class="lineno"> 1682</span>&#160;    <a class="code" href="a00035.html#a5e80f48ab043b532ee9d4864cd363574">m_rngObject</a> = <span class="keyword">new</span> <a class="code" href="a00199.html">RngGsl</a>(<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#adf0629a19e30b4f907b2e5fc90c9830a">m_seed</a>,<a class="code" href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">m_worldRank</a>);</div>
-<div class="line"><a name="l01683"></a><span class="lineno"> 1683</span>&#160;    <a class="code" href="a00035.html#a43b3045235a87236f0adc7df3427adc0">m_basicPdfs</a> = <span class="keyword">new</span> BasicPdfsGsl(<a class="code" href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">m_worldRank</a>);</div>
-<div class="line"><a name="l01684"></a><span class="lineno"> 1684</span>&#160;  }</div>
-<div class="line"><a name="l01685"></a><span class="lineno"> 1685</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#a01502ec46080bf43c99d55646e6a1b7f">m_rngType</a> == <span class="stringliteral">&quot;boost&quot;</span>) {</div>
-<div class="line"><a name="l01686"></a><span class="lineno"> 1686</span>&#160;    <a class="code" href="a00035.html#a5e80f48ab043b532ee9d4864cd363574">m_rngObject</a> = <span class="keyword">new</span> <a class="code" href="a00196.html">RngBoost</a>(<a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#adf0629a19e30b4f907b2e5fc90c9830a">m_seed</a>,<a class="code" href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">m_worldRank</a>);</div>
-<div class="line"><a name="l01687"></a><span class="lineno"> 1687</span>&#160;    <a class="code" href="a00035.html#a43b3045235a87236f0adc7df3427adc0">m_basicPdfs</a> = <span class="keyword">new</span> BasicPdfsBoost(<a class="code" href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">m_worldRank</a>);</div>
-<div class="line"><a name="l01688"></a><span class="lineno"> 1688</span>&#160;  }</div>
-<div class="line"><a name="l01689"></a><span class="lineno"> 1689</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l01690"></a><span class="lineno"> 1690</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;In Environment::constructor()&quot;</span></div>
-<div class="line"><a name="l01691"></a><span class="lineno"> 1691</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;: rngType = &quot;</span> &lt;&lt; <a class="code" href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">m_optionsObj</a>-&gt;<a class="code" href="a00076.html#a01502ec46080bf43c99d55646e6a1b7f">m_rngType</a></div>
-<div class="line"><a name="l01692"></a><span class="lineno"> 1692</span>&#160;              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01693"></a><span class="lineno"> 1693</span>&#160;    <a class="code" href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;the requested &#39;rngType&#39; is not supported yet&quot;</span>);</div>
-<div class="line"><a name="l01694"></a><span class="lineno"> 1694</span>&#160;  }</div>
-<div class="line"><a name="l01695"></a><span class="lineno"> 1695</span>&#160;</div>
-<div class="line"><a name="l01697"></a><span class="lineno"> 1697</span>&#160;  <span class="comment">// Leave commonConstructor()</span></div>
-<div class="line"><a name="l01699"></a><span class="lineno"> 1699</span>&#160;<span class="comment"></span>  <a class="code" href="a00035.html#a8e80c9067b0875c419f1b9ecccbdb46d">m_fullComm</a>-&gt;<a class="code" href="a00186.html#a4059971c30e023b272fccaa6aa00c426">Barrier</a>();</div>
-<div class="line"><a name="l01700"></a><span class="lineno"> 1700</span>&#160;  <a class="code" href="a00035.html#a62020b48a3506aa067d1c94c461cb11e">m_fullEnvIsReady</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01701"></a><span class="lineno"> 1701</span>&#160;</div>
-<div class="line"><a name="l01702"></a><span class="lineno"> 1702</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00035.html#a52b4275aa8ee85994dd304d9fe95c9c5">m_subDisplayFile</a>) &amp;&amp; (this-&gt;<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l01703"></a><span class="lineno"> 1703</span>&#160;    *<a class="code" href="a00035.html#a52b4275aa8ee85994dd304d9fe95c9c5">m_subDisplayFile</a> &lt;&lt; <span class="stringliteral">&quot;Done with initializations at FullEnvironment::commonConstructor()&quot;</span></div>
-<div class="line"><a name="l01704"></a><span class="lineno"> 1704</span>&#160;                      &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01705"></a><span class="lineno"> 1705</span>&#160;  }</div>
-<div class="line"><a name="l01706"></a><span class="lineno"> 1706</span>&#160;</div>
-<div class="line"><a name="l01707"></a><span class="lineno"> 1707</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l01708"></a><span class="lineno"> 1708</span>&#160;}</div>
-<div class="ttc" id="a00035_html_a37195909442a817980e1cf8392b9e63d"><div class="ttname"><a href="a00035.html#a37195909442a817980e1cf8392b9e63d">QUESO::BaseEnvironment::m_optionsInputFileName</a></div><div class="ttdeci">std::string m_optionsInputFileName</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00374">Environment.h:374</a></div></div>
-<div class="ttc" id="a00035_html_afe26d66495d10fc0547ccd710a30c59a"><div class="ttname"><a href="a00035.html#afe26d66495d10fc0547ccd710a30c59a">QUESO::BaseEnvironment::m_optionsObj</a></div><div class="ttdeci">EnvOptionsValues * m_optionsObj</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00402">Environment.h:402</a></div></div>
-<div class="ttc" id="a00035_html_a7b2842a4eb78bcae522cf4f9a5634279"><div class="ttname"><a href="a00035.html#a7b2842a4eb78bcae522cf4f9a5634279">QUESO::BaseEnvironment::m_timevalBegin</a></div><div class="ttdeci">struct timeval m_timevalBegin</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00399">Environment.h:399</a></div></div>
-<div class="ttc" id="a00035_html_a5e80f48ab043b532ee9d4864cd363574"><div class="ttname"><a href="a00035.html#a5e80f48ab043b532ee9d4864cd363574">QUESO::BaseEnvironment::m_rngObject</a></div><div class="ttdeci">RngBase * m_rngObject</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00397">Environment.h:397</a></div></div>
-<div class="ttc" id="a00186_html_a4059971c30e023b272fccaa6aa00c426"><div class="ttname"><a href="a00186.html#a4059971c30e023b272fccaa6aa00c426">QUESO::MpiComm::Barrier</a></div><div class="ttdeci">void Barrier() const </div><div class="ttdoc">Pause every process in *this communicator until all the processes reach this point. </div><div class="ttdef"><b>Definition:</b> <a href="a00413_source.html#l00164">MpiComm.C:164</a></div></div>
-<div class="ttc" id="a00340_html_ac1ccb5a9313d762500e14d0ec5f57dfe"><div class="ttname"><a href="a00340.html#ac1ccb5a9313d762500e14d0ec5f57dfe">queso_require_greater_equal_msg</a></div><div class="ttdeci">#define queso_require_greater_equal_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00078">asserts.h:78</a></div></div>
-<div class="ttc" id="a00076_html_a942d62cb804c174e1de76cc776368924"><div class="ttname"><a href="a00076.html#a942d62cb804c174e1de76cc776368924">QUESO::EnvOptionsValues::m_subDisplayAllowAll</a></div><div class="ttdeci">bool m_subDisplayAllowAll</div><div class="ttdoc">Allows (or not) all sub-environments to write to output file. </div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00121">EnvironmentOptions.h:121</a></div></div>
-<div class="ttc" id="a00035_html_a9930b4a2fddd76196d2de047ecaac679"><div class="ttname"><a href="a00035.html#a9930b4a2fddd76196d2de047ecaac679">QUESO::BaseEnvironment::m_allOptionsMap</a></div><div class="ttdeci">boost::program_options::variables_map * m_allOptionsMap</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00378">Environment.h:378</a></div></div>
-<div class="ttc" id="a00035_html_a62020b48a3506aa067d1c94c461cb11e"><div class="ttname"><a href="a00035.html#a62020b48a3506aa067d1c94c461cb11e">QUESO::BaseEnvironment::m_fullEnvIsReady</a></div><div class="ttdeci">bool m_fullEnvIsReady</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00366">Environment.h:366</a></div></div>
-<div class="ttc" id="a00035_html_a6669dac8fb884d4eb3278625f0e8d661"><div class="ttname"><a href="a00035.html#a6669dac8fb884d4eb3278625f0e8d661">QUESO::BaseEnvironment::m_subGroup</a></div><div class="ttdeci">RawType_MPI_Group m_subGroup</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00384">Environment.h:384</a></div></div>
-<div class="ttc" id="a00035_html_a52b4275aa8ee85994dd304d9fe95c9c5"><div class="ttname"><a href="a00035.html#a52b4275aa8ee85994dd304d9fe95c9c5">QUESO::BaseEnvironment::m_subDisplayFile</a></div><div class="ttdeci">std::ofstream * m_subDisplayFile</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00396">Environment.h:396</a></div></div>
-<div class="ttc" id="a00690_html_abc55c11f68bb99c4eba88030f1164764"><div class="ttname"><a href="a00690.html#abc55c11f68bb99c4eba88030f1164764">QUESO::CheckFilePath</a></div><div class="ttdeci">int CheckFilePath(const char *path)</div><div class="ttdef"><b>Definition:</b> <a href="a00490_source.html#l00362">Miscellaneous.C:362</a></div></div>
-<div class="ttc" id="a00196_html"><div class="ttname"><a href="a00196.html">RngBoost</a></div><div class="ttdoc">Class for random number generation using Boost library. </div></div>
-<div class="ttc" id="a00340_html_ac7c55bc91ea8b2497b7a4db666f68409"><div class="ttname"><a href="a00340.html#ac7c55bc91ea8b2497b7a4db666f68409">queso_require_equal_to_msg</a></div><div class="ttdeci">#define queso_require_equal_to_msg(expr1, expr2, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00073">asserts.h:73</a></div></div>
-<div class="ttc" id="a00035_html_a19243150a58181cbdaf58b1bacd90009"><div class="ttname"><a href="a00035.html#a19243150a58181cbdaf58b1bacd90009">QUESO::BaseEnvironment::m_subIdString</a></div><div class="ttdeci">std::string m_subIdString</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00383">Environment.h:383</a></div></div>
-<div class="ttc" id="a00035_html_ac8d7b6062d9a58ef1a36eb95753498b4"><div class="ttname"><a href="a00035.html#ac8d7b6062d9a58ef1a36eb95753498b4">QUESO::BaseEnvironment::m_subComm</a></div><div class="ttdeci">MpiComm * m_subComm</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00385">Environment.h:385</a></div></div>
-<div class="ttc" id="a00199_html"><div class="ttname"><a href="a00199.html">RngGsl</a></div><div class="ttdoc">Class for random number generation using GSL library. </div></div>
-<div class="ttc" id="a00035_html_a464cab923ada0e14c6e3a4000c2ea385"><div class="ttname"><a href="a00035.html#a464cab923ada0e14c6e3a4000c2ea385">QUESO::BaseEnvironment::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00367">Environment.h:367</a></div></div>
-<div class="ttc" id="a00035_html_a4dea510cfdd559ca96d851e55de1b251"><div class="ttname"><a href="a00035.html#a4dea510cfdd559ca96d851e55de1b251">QUESO::BaseEnvironment::m_allOptionsDesc</a></div><div class="ttdeci">boost::program_options::options_description * m_allOptionsDesc</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00377">Environment.h:377</a></div></div>
-<div class="ttc" id="a00035_html_ad7a98e45d9c0379a78ee7937f83f3ec1"><div class="ttname"><a href="a00035.html#ad7a98e45d9c0379a78ee7937f83f3ec1">QUESO::BaseEnvironment::m_inter0CommSize</a></div><div class="ttdeci">int m_inter0CommSize</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00394">Environment.h:394</a></div></div>
-<div class="ttc" id="a00690_html_ac54b755ffb94b8896563c43fec9a6a4c"><div class="ttname"><a href="a00690.html#ac54b755ffb94b8896563c43fec9a6a4c">QUESO::old_terminate_handler</a></div><div class="ttdeci">std::terminate_handler old_terminate_handler</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00135">Environment.C:135</a></div></div>
-<div class="ttc" id="a00035_html_a5107d456b4267a20f3f48222e52f0c7b"><div class="ttname"><a href="a00035.html#a5107d456b4267a20f3f48222e52f0c7b">QUESO::BaseEnvironment::m_inter0Comm</a></div><div class="ttdeci">MpiComm * m_inter0Comm</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00392">Environment.h:392</a></div></div>
-<div class="ttc" id="a00035_html_a2aea4a26ea39e72300f7c32594c26012"><div class="ttname"><a href="a00035.html#a2aea4a26ea39e72300f7c32594c26012">QUESO::BaseEnvironment::m_subId</a></div><div class="ttdeci">unsigned int m_subId</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00382">Environment.h:382</a></div></div>
-<div class="ttc" id="a00076_html_ae92ff6d68751d90fd6fbb7de98e66ef2"><div class="ttname"><a href="a00076.html#ae92ff6d68751d90fd6fbb7de98e66ef2">QUESO::EnvOptionsValues::m_subDisplayFileName</a></div><div class="ttdeci">std::string m_subDisplayFileName</div><div class="ttdoc">Output filename for sub-screen writing. </div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00115">EnvironmentOptions.h:115</a></div></div>
-<div class="ttc" id="a00076_html_a0a53bbc1544a519eb50faddcfae0cedd"><div class="ttname"><a href="a00076.html#a0a53bbc1544a519eb50faddcfae0cedd">QUESO::EnvOptionsValues::m_numSubEnvironments</a></div><div class="ttdeci">unsigned int m_numSubEnvironments</div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00112">EnvironmentOptions.h:112</a></div></div>
-<div class="ttc" id="a00076_html_afd2f167d8f568df84b3efe5df4430ee3"><div class="ttname"><a href="a00076.html#afd2f167d8f568df84b3efe5df4430ee3">QUESO::EnvOptionsValues::m_subDisplayAllowedSet</a></div><div class="ttdeci">std::set&lt; unsigned int &gt; m_subDisplayAllowedSet</div><div class="ttdoc">Sub-environments that will write to output. </div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00134">EnvironmentOptions.h:134</a></div></div>
-<div class="ttc" id="a00089_html_a41eadd931012db5a422f5ec13adb7816"><div class="ttname"><a href="a00089.html#a41eadd931012db5a422f5ec13adb7816">QUESO::FullEnvironment::readOptionsInputFile</a></div><div class="ttdeci">void readOptionsInputFile()</div><div class="ttdoc">Checks the options input file and reads the options. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l01749">Environment.C:1749</a></div></div>
-<div class="ttc" id="a00690_html_a97e263e01a0ff9fad14de6a8840b007e"><div class="ttname"><a href="a00690.html#a97e263e01a0ff9fad14de6a8840b007e">QUESO::queso_terminate_handler</a></div><div class="ttdeci">void queso_terminate_handler()</div><div class="ttdoc">Function for unhandled exceptions in Queso. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l01722">Environment.C:1722</a></div></div>
-<div class="ttc" id="a00690_html_ae2e4805bfcc226b2ceb17c8a8dbb1297"><div class="ttname"><a href="a00690.html#ae2e4805bfcc226b2ceb17c8a8dbb1297">QUESO::QUESO_version_print</a></div><div class="ttdeci">void QUESO_version_print(std::ostream &amp;os)</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00054">Environment.C:54</a></div></div>
-<div class="ttc" id="a00035_html_a8f1159427c10aa4dfee51936d46103da"><div class="ttname"><a href="a00035.html#a8f1159427c10aa4dfee51936d46103da">QUESO::BaseEnvironment::m_selfComm</a></div><div class="ttdeci">MpiComm * m_selfComm</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00389">Environment.h:389</a></div></div>
-<div class="ttc" id="a00076_html_a01502ec46080bf43c99d55646e6a1b7f"><div class="ttname"><a href="a00076.html#a01502ec46080bf43c99d55646e6a1b7f">QUESO::EnvOptionsValues::m_rngType</a></div><div class="ttdeci">std::string m_rngType</div><div class="ttdoc">Type of the random number generator. </div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00146">EnvironmentOptions.h:146</a></div></div>
-<div class="ttc" id="a00035_html_af2f3575b6eb4589d70fccbdd1f93dac0"><div class="ttname"><a href="a00035.html#af2f3575b6eb4589d70fccbdd1f93dac0">QUESO::BaseEnvironment::m_input</a></div><div class="ttdeci">ScopedPtr&lt; GetPot &gt;::Type m_input</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00380">Environment.h:380</a></div></div>
-<div class="ttc" id="a00035_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00449">Environment.C:449</a></div></div>
-<div class="ttc" id="a00035_html_ad455ca08c81b8d953e9a8d2bb14d03c3"><div class="ttname"><a href="a00035.html#ad455ca08c81b8d953e9a8d2bb14d03c3">QUESO::BaseEnvironment::m_fullGroup</a></div><div class="ttdeci">RawType_MPI_Group m_fullGroup</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00372">Environment.h:372</a></div></div>
-<div class="ttc" id="a00035_html_ad5be3e52676db90de1321bc94233c15d"><div class="ttname"><a href="a00035.html#ad5be3e52676db90de1321bc94233c15d">QUESO::BaseEnvironment::m_fullCommSize</a></div><div class="ttdeci">int m_fullCommSize</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00371">Environment.h:371</a></div></div>
-<div class="ttc" id="a00035_html_acecae0962d56bae97b6476c7514b428f"><div class="ttname"><a href="a00035.html#acecae0962d56bae97b6476c7514b428f">QUESO::BaseEnvironment::m_subRank</a></div><div class="ttdeci">int m_subRank</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00386">Environment.h:386</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
-<div class="ttc" id="a00035_html_a4c7b8104e4bb3f1456aa2d85b4dc9a03"><div class="ttname"><a href="a00035.html#a4c7b8104e4bb3f1456aa2d85b4dc9a03">QUESO::BaseEnvironment::m_subCommSize</a></div><div class="ttdeci">int m_subCommSize</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00387">Environment.h:387</a></div></div>
-<div class="ttc" id="a00035_html_a0b0779b41ff304058856e97e1d16b4d4"><div class="ttname"><a href="a00035.html#a0b0779b41ff304058856e97e1d16b4d4">QUESO::BaseEnvironment::fullComm</a></div><div class="ttdeci">const MpiComm &amp; fullComm() const </div><div class="ttdoc">Access function for MpiComm full communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00274">Environment.C:274</a></div></div>
-<div class="ttc" id="a00076_html_adf0629a19e30b4f907b2e5fc90c9830a"><div class="ttname"><a href="a00076.html#adf0629a19e30b4f907b2e5fc90c9830a">QUESO::EnvOptionsValues::m_seed</a></div><div class="ttdeci">int m_seed</div><div class="ttdoc">Seed of the random number generator. </div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00155">EnvironmentOptions.h:155</a></div></div>
-<div class="ttc" id="a00076_html_a2a0d46853f0a45f399aa1259d3540225"><div class="ttname"><a href="a00076.html#a2a0d46853f0a45f399aa1259d3540225">QUESO::EnvOptionsValues::m_help</a></div><div class="ttdeci">std::string m_help</div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00108">EnvironmentOptions.h:108</a></div></div>
-<div class="ttc" id="a00035_html_a1feb61fba41bc96f4913892df85e6853"><div class="ttname"><a href="a00035.html#a1feb61fba41bc96f4913892df85e6853">QUESO::BaseEnvironment::m_inter0Rank</a></div><div class="ttdeci">int m_inter0Rank</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00393">Environment.h:393</a></div></div>
-<div class="ttc" id="a00035_html_aed2620ad6e42a86f2a5057a5cdcf99f5"><div class="ttname"><a href="a00035.html#aed2620ad6e42a86f2a5057a5cdcf99f5">QUESO::BaseEnvironment::m_inter0Group</a></div><div class="ttdeci">RawType_MPI_Group m_inter0Group</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00391">Environment.h:391</a></div></div>
-<div class="ttc" id="a00340_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00047">asserts.h:47</a></div></div>
-<div class="ttc" id="a00349_html_a0b152a87af300fefc74156efb1526e67"><div class="ttname"><a href="a00349.html#a0b152a87af300fefc74156efb1526e67">UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE</a></div><div class="ttdeci">#define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE</div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00036">EnvironmentOptions.h:36</a></div></div>
-<div class="ttc" id="a00035_html_a0bfa53f6bdaec0a6aa3dc00ee2c0101f"><div class="ttname"><a href="a00035.html#a0bfa53f6bdaec0a6aa3dc00ee2c0101f">QUESO::BaseEnvironment::m_fullRank</a></div><div class="ttdeci">int m_fullRank</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00370">Environment.h:370</a></div></div>
-<div class="ttc" id="a00035_html_a43b3045235a87236f0adc7df3427adc0"><div class="ttname"><a href="a00035.html#a43b3045235a87236f0adc7df3427adc0">QUESO::BaseEnvironment::m_basicPdfs</a></div><div class="ttdeci">BasicPdfsBase * m_basicPdfs</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00398">Environment.h:398</a></div></div>
-<div class="ttc" id="a00076_html_ae7b34ee974716034ae21a2c39891b8c3"><div class="ttname"><a href="a00076.html#ae7b34ee974716034ae21a2c39891b8c3">QUESO::EnvOptionsValues::m_subDisplayAllowInter0</a></div><div class="ttdeci">bool m_subDisplayAllowInter0</div><div class="ttdoc">Allows (or not) all inter0 nodes to write to output file. </div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00127">EnvironmentOptions.h:127</a></div></div>
-<div class="ttc" id="a00035_html_a8e80c9067b0875c419f1b9ecccbdb46d"><div class="ttname"><a href="a00035.html#a8e80c9067b0875c419f1b9ecccbdb46d">QUESO::BaseEnvironment::m_fullComm</a></div><div class="ttdeci">MpiComm * m_fullComm</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00369">Environment.h:369</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a3433b6293fc094095aca2e5ebce5a099"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::FullEnvironment::print </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>domainValue</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -710,19 +210,40 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Sends the environment options to the stream. </p>
+<p>TODO: Returns the value of the derivative of the addition of two functions. </p>
+<dl class="todo"><dt><b><a class="el" href="a00676.html#_todo000009">Todo:</a></b></dt><dd>Please, implement me! <br/>
+ </dd></dl>
 
-<p>Implements <a class="el" href="a00035.html#adba5fa84e671bb56eb001ec596729a4e">QUESO::BaseEnvironment</a>.</p>
+<p>Implements <a class="el" href="a00034.html#a6b8de03f2099f31735dcaf15c24bca32">QUESO::Base1D1DFunction</a>.</p>
 
-<p>Definition at line <a class="el" href="a00395_source.html#l01716">1716</a> of file <a class="el" href="a00395_source.html">Environment.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l01717"></a><span class="lineno"> 1717</span>&#160;{</div>
-<div class="line"><a name="l01718"></a><span class="lineno"> 1718</span>&#160;  os.flush(); <span class="comment">// just to avoid icpc warnings</span></div>
-<div class="line"><a name="l01719"></a><span class="lineno"> 1719</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l01720"></a><span class="lineno"> 1720</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00460_source.html#l00720">720</a> of file <a class="el" href="a00460_source.html">1D1DFunction.C</a>.</p>
+
+<p>References <a class="el" href="a00441_source.html#l00086">QUESO::Base1D1DFunction::m_maxDomainValue</a>, <a class="el" href="a00441_source.html#l00085">QUESO::Base1D1DFunction::m_minDomainValue</a>, and <a class="el" href="a00460_source.html#l00710">value()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;{</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00089.html#a9e7a69d195d586fa982c6088ff6a7007">value</a> = 0.;</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;  <span class="keywordflow">if</span> ((domainValue &lt; <a class="code" href="a00034.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a>) || (domainValue &gt; <a class="code" href="a00034.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a>)) {</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;In FuncPlus1D1DFunction::deriv()&quot;</span></div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;: requested x (&quot;</span>            &lt;&lt; domainValue</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;) is out of the interval (&quot;</span> &lt;&lt; <a class="code" href="a00034.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a></div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>                         &lt;&lt; <a class="code" href="a00034.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a></div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;)&quot;</span></div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;  }</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;  queso_require_msg(!((domainValue &lt; <a class="code" href="a00034.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a>) || (domainValue &gt; <a class="code" href="a00034.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a>)), <span class="stringliteral">&quot;x out of range&quot;</span>);</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;  queso_not_implemented();</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00089.html#a9e7a69d195d586fa982c6088ff6a7007">value</a>;</div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;}</div>
+<div class="ttc" id="a00034_html_aa0025999ccab2145cd46c0a81e260e8f"><div class="ttname"><a href="a00034.html#aa0025999ccab2145cd46c0a81e260e8f">QUESO::Base1D1DFunction::m_maxDomainValue</a></div><div class="ttdeci">double m_maxDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00441_source.html#l00086">1D1DFunction.h:86</a></div></div>
+<div class="ttc" id="a00034_html_a7b18b3854ee74ef5befbc67b75ebbdc5"><div class="ttname"><a href="a00034.html#a7b18b3854ee74ef5befbc67b75ebbdc5">QUESO::Base1D1DFunction::m_minDomainValue</a></div><div class="ttdeci">double m_minDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00441_source.html#l00085">1D1DFunction.h:85</a></div></div>
+<div class="ttc" id="a00089_html_a9e7a69d195d586fa982c6088ff6a7007"><div class="ttname"><a href="a00089.html#a9e7a69d195d586fa982c6088ff6a7007">QUESO::FuncPlusFunc1D1DFunction::value</a></div><div class="ttdeci">double value(double domainValue) const </div><div class="ttdoc">Returns the value of the addition of function func1 and func2 evaluated at the point domainValue...</div><div class="ttdef"><b>Definition:</b> <a href="a00460_source.html#l00710">1D1DFunction.C:710</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a41eadd931012db5a422f5ec13adb7816"></a>
+<a class="anchor" id="a9e7a69d195d586fa982c6088ff6a7007"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -730,61 +251,100 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> QUESO::FullEnvironment::readOptionsInputFile </td>
+          <td class="memname">double QUESO::FuncPlusFunc1D1DFunction::value </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>domainValue</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Checks the options input file and reads the options. </p>
+<p>Returns the value of the addition of function <code>func1</code> and <code>func2</code> evaluated at the point <code>domainValue</code>, i.e. returnValue = <code>func1(domainValue)+func2(domainValue) </code>. </p>
+<p>This function calls the <a class="el" href="a00089.html#a9e7a69d195d586fa982c6088ff6a7007" title="Returns the value of the addition of function func1 and func2 evaluated at the point domainValue...">value()</a> method of the both functions and adds their return value with one another. </p>
 
-<p>Definition at line <a class="el" href="a00395_source.html#l01749">1749</a> of file <a class="el" href="a00395_source.html">Environment.C</a>.</p>
+<p>Implements <a class="el" href="a00034.html#a1042dfd930c30a35d6dbf70f94e8dfe5">QUESO::Base1D1DFunction</a>.</p>
 
-<p>References <a class="el" href="a00348_source.html#l00370">QUESO::BaseEnvironment::m_fullRank</a>, <a class="el" href="a00348_source.html#l00374">QUESO::BaseEnvironment::m_optionsInputFileName</a>, and <a class="el" href="a00340_source.html#l00053">queso_error</a>.</p>
+<p>Definition at line <a class="el" href="a00460_source.html#l00710">710</a> of file <a class="el" href="a00460_source.html">1D1DFunction.C</a>.</p>
 
-<p>Referenced by <a class="el" href="a00395_source.html#l01483">construct()</a>.</p>
-<div class="fragment"><div class="line"><a name="l01750"></a><span class="lineno"> 1750</span>&#160;{</div>
-<div class="line"><a name="l01751"></a><span class="lineno"> 1751</span>&#160;  std::ifstream* ifs = <span class="keyword">new</span> std::ifstream(<a class="code" href="a00035.html#a37195909442a817980e1cf8392b9e63d">m_optionsInputFileName</a>.c_str());</div>
-<div class="line"><a name="l01752"></a><span class="lineno"> 1752</span>&#160;  <span class="keywordflow">if</span> (ifs-&gt;is_open()) {</div>
-<div class="line"><a name="l01753"></a><span class="lineno"> 1753</span>&#160;    <span class="comment">//ifs-&gt;close();</span></div>
-<div class="line"><a name="l01754"></a><span class="lineno"> 1754</span>&#160;    <span class="keyword">delete</span> ifs;</div>
-<div class="line"><a name="l01755"></a><span class="lineno"> 1755</span>&#160;  }</div>
-<div class="line"><a name="l01756"></a><span class="lineno"> 1756</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l01757"></a><span class="lineno"> 1757</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00035.html#a0bfa53f6bdaec0a6aa3dc00ee2c0101f">m_fullRank</a> == 0) std::cout &lt;&lt; <span class="stringliteral">&quot;An invalid input file has been passed to the &#39;environment&#39; class constructor!&quot;</span></div>
-<div class="line"><a name="l01758"></a><span class="lineno"> 1758</span>&#160;                                   &lt;&lt; <span class="stringliteral">&quot;: name of file is &#39;&quot;</span> &lt;&lt; <a class="code" href="a00035.html#a37195909442a817980e1cf8392b9e63d">m_optionsInputFileName</a>.c_str() &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span></div>
-<div class="line"><a name="l01759"></a><span class="lineno"> 1759</span>&#160;                                   &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01760"></a><span class="lineno"> 1760</span>&#160;</div>
-<div class="line"><a name="l01761"></a><span class="lineno"> 1761</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="a00035.html#a0bfa53f6bdaec0a6aa3dc00ee2c0101f">m_fullRank</a> == 0) std::cout &lt;&lt; <span class="stringliteral">&quot;\nThis is a help message of the QUESO library.&quot;</span></div>
-<div class="line"><a name="l01762"></a><span class="lineno"> 1762</span>&#160;                                   &lt;&lt; <span class="stringliteral">&quot;\nAn application using the QUESO library shall be executed by typing&quot;</span></div>
-<div class="line"><a name="l01763"></a><span class="lineno"> 1763</span>&#160;                                   &lt;&lt; <span class="stringliteral">&quot;\n  &#39;&lt;eventual mpi commands and options&gt; &lt;Application&gt; &lt;InputFile&gt;&#39;&quot;</span></div>
-<div class="line"><a name="l01764"></a><span class="lineno"> 1764</span>&#160;                                   &lt;&lt; <span class="stringliteral">&quot;\nin the command line.&quot;</span></div>
-<div class="line"><a name="l01765"></a><span class="lineno"> 1765</span>&#160;                                   &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a name="l01766"></a><span class="lineno"> 1766</span>&#160;                                   &lt;&lt; std::endl;</div>
-<div class="line"><a name="l01767"></a><span class="lineno"> 1767</span>&#160;    <a class="code" href="a00340.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>();</div>
-<div class="line"><a name="l01768"></a><span class="lineno"> 1768</span>&#160;  }</div>
-<div class="line"><a name="l01769"></a><span class="lineno"> 1769</span>&#160;</div>
-<div class="line"><a name="l01770"></a><span class="lineno"> 1770</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l01771"></a><span class="lineno"> 1771</span>&#160;}</div>
-<div class="ttc" id="a00035_html_a37195909442a817980e1cf8392b9e63d"><div class="ttname"><a href="a00035.html#a37195909442a817980e1cf8392b9e63d">QUESO::BaseEnvironment::m_optionsInputFileName</a></div><div class="ttdeci">std::string m_optionsInputFileName</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00374">Environment.h:374</a></div></div>
-<div class="ttc" id="a00340_html_a0af4fa8de607265fa3e7413ba0475a18"><div class="ttname"><a href="a00340.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a></div><div class="ttdeci">#define queso_error()</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00053">asserts.h:53</a></div></div>
-<div class="ttc" id="a00035_html_a0bfa53f6bdaec0a6aa3dc00ee2c0101f"><div class="ttname"><a href="a00035.html#a0bfa53f6bdaec0a6aa3dc00ee2c0101f">QUESO::BaseEnvironment::m_fullRank</a></div><div class="ttdeci">int m_fullRank</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00370">Environment.h:370</a></div></div>
+<p>References <a class="el" href="a00441_source.html#l00531">m_func1</a>, <a class="el" href="a00441_source.html#l00532">m_func2</a>, and <a class="el" href="a00034.html#a1042dfd930c30a35d6dbf70f94e8dfe5">QUESO::Base1D1DFunction::value()</a>.</p>
+
+<p>Referenced by <a class="el" href="a00460_source.html#l00720">deriv()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;{</div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00089.html#a9e7a69d195d586fa982c6088ff6a7007">value</a> = 0.;</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;</div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;  value += <a class="code" href="a00089.html#ab74636433f4ce2bb8ca93cf7c1c1d72e">m_func1</a>.<a class="code" href="a00034.html#a1042dfd930c30a35d6dbf70f94e8dfe5">value</a>(domainValue) + <a class="code" href="a00089.html#a82867f82d1b09ae165d5b2e730a49bdd">m_func2</a>.<a class="code" href="a00034.html#a1042dfd930c30a35d6dbf70f94e8dfe5">value</a>(domainValue);</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00089.html#a9e7a69d195d586fa982c6088ff6a7007">value</a>;</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;}</div>
+<div class="ttc" id="a00089_html_a82867f82d1b09ae165d5b2e730a49bdd"><div class="ttname"><a href="a00089.html#a82867f82d1b09ae165d5b2e730a49bdd">QUESO::FuncPlusFunc1D1DFunction::m_func2</a></div><div class="ttdeci">const Base1D1DFunction &amp; m_func2</div><div class="ttdef"><b>Definition:</b> <a href="a00441_source.html#l00532">1D1DFunction.h:532</a></div></div>
+<div class="ttc" id="a00089_html_ab74636433f4ce2bb8ca93cf7c1c1d72e"><div class="ttname"><a href="a00089.html#ab74636433f4ce2bb8ca93cf7c1c1d72e">QUESO::FuncPlusFunc1D1DFunction::m_func1</a></div><div class="ttdeci">const Base1D1DFunction &amp; m_func1</div><div class="ttdef"><b>Definition:</b> <a href="a00441_source.html#l00531">1D1DFunction.h:531</a></div></div>
+<div class="ttc" id="a00034_html_a1042dfd930c30a35d6dbf70f94e8dfe5"><div class="ttname"><a href="a00034.html#a1042dfd930c30a35d6dbf70f94e8dfe5">QUESO::Base1D1DFunction::value</a></div><div class="ttdeci">virtual double value(double domainValue) const =0</div><div class="ttdoc">Returns the value of the (one-dimensional) function. See template specialization. ...</div></div>
+<div class="ttc" id="a00089_html_a9e7a69d195d586fa982c6088ff6a7007"><div class="ttname"><a href="a00089.html#a9e7a69d195d586fa982c6088ff6a7007">QUESO::FuncPlusFunc1D1DFunction::value</a></div><div class="ttdeci">double value(double domainValue) const </div><div class="ttdoc">Returns the value of the addition of function func1 and func2 evaluated at the point domainValue...</div><div class="ttdef"><b>Definition:</b> <a href="a00460_source.html#l00710">1D1DFunction.C:710</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ab74636433f4ce2bb8ca93cf7c1c1d72e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00034.html">Base1D1DFunction</a>&amp; QUESO::FuncPlusFunc1D1DFunction::m_func1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00441_source.html#l00531">531</a> of file <a class="el" href="a00441_source.html">1D1DFunction.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00460_source.html#l00710">value()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a82867f82d1b09ae165d5b2e730a49bdd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="a00034.html">Base1D1DFunction</a>&amp; QUESO::FuncPlusFunc1D1DFunction::m_func2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00441_source.html#l00532">532</a> of file <a class="el" href="a00441_source.html">1D1DFunction.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00460_source.html#l00710">value()</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/core/inc/<a class="el" href="a00348_source.html">Environment.h</a></li>
-<li>src/core/src/<a class="el" href="a00395_source.html">Environment.C</a></li>
+<li>src/misc/inc/<a class="el" href="a00441_source.html">1D1DFunction.h</a></li>
+<li>src/misc/src/<a class="el" href="a00460_source.html">1D1DFunction.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:13 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:51 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

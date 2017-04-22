@@ -1,3 +1,4 @@
-<map id="QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;" name="QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;">
-<area shape="rect" id="node2" href="$a00047.html" title="A templated (base) class for handling vector functions. " alt="" coords="13,6,203,47"/>
+<map id="QUESO::PoweredJointPdf&lt; V, M &gt;" name="QUESO::PoweredJointPdf&lt; V, M &gt;">
+<area shape="rect" id="node2" href="$a00038.html" title="A templated (base) class for handling joint PDFs. " alt="" coords="25,97,180,138"/>
+<area shape="rect" id="node3" href="$a00045.html" title="A templated (base) class for handling scalar functions. " alt="" coords="5,6,200,47"/>
 </map>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: QUESO::InterpolationSurrogateDataSet&lt; V, M &gt; Class Template Reference</title>
+<title>queso-0.56.2: QUESO::JeffreysVectorRealizer&lt; V, M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -45,86 +45,101 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00690.html">QUESO</a></li><li class="navelem"><a class="el" href="a00147.html">InterpolationSurrogateDataSet</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00674.html">QUESO</a></li><li class="navelem"><a class="el" href="a00147.html">JeffreysVectorRealizer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="a01711.html">List of all members</a>  </div>
+<a href="a01128.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::InterpolationSurrogateDataSet&lt; V, M &gt; Class Template Reference</div>  </div>
+<div class="title">QUESO::JeffreysVectorRealizer&lt; V, M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Container class for multiple, consistent <a class="el" href="a00146.html">InterpolationSurrogateData</a> objects.  
+<p>A class for handling sampling from a jeffreys probability density distribution.  
  <a href="a00147.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00673_source.html">InterpolationSurrogateDataSet.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00521_source.html">JeffreysVectorRealizer.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for QUESO::JeffreysVectorRealizer&lt; V, M &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="a01129.png" border="0" usemap="#_q_u_e_s_o_1_1_jeffreys_vector_realizer_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_jeffreys_vector_realizer_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_jeffreys_vector_realizer_3_01_v_00_01_m_01_4_inherit__map">
+<area shape="rect" id="node2" href="a00050.html" title="A templated (base) class for handling sampling from vector RVs. " alt="" coords="13,6,208,47"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for QUESO::JeffreysVectorRealizer&lt; V, M &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="a01130.png" border="0" usemap="#_q_u_e_s_o_1_1_jeffreys_vector_realizer_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_jeffreys_vector_realizer_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_jeffreys_vector_realizer_3_01_v_00_01_m_01_4_coll__map">
+<area shape="rect" id="node2" href="a00050.html" title="A templated (base) class for handling sampling from vector RVs. " alt="" coords="672,243,867,285"/><area shape="rect" id="node3" href="a00036.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="397,251,579,277"/><area shape="rect" id="node4" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::RngBase \&gt;" alt="" coords="22,5,221,46"/><area shape="rect" id="node5" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::MpiComm \&gt;" alt="" coords="22,83,221,125"/><area shape="rect" id="node6" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::variables_map \&gt;" alt="" coords="6,149,237,190"/><area shape="rect" id="node7" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::EnvOptionsValues \&gt;" alt="" coords="22,214,221,255"/><area shape="rect" id="node8" href="a00206.html" title="QUESO::ScopedPtr\&lt; GetPot \&gt;" alt="" coords="19,280,223,307"/><area shape="rect" id="node9" href="a00206.html" title="QUESO::ScopedPtr\&lt; QUESO\l::BasicPdfsBase \&gt;" alt="" coords="22,331,221,373"/><area shape="rect" id="node10" href="a00206.html" title="QUESO::ScopedPtr\&lt; std\l::ofstream \&gt;" alt="" coords="37,397,206,438"/><area shape="rect" id="node11" href="a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::options\l_description \&gt;" alt="" coords="30,463,213,519"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7d35bf67379e9b0afd13be28c30246fe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#a7d35bf67379e9b0afd13be28c30246fe">InterpolationSurrogateDataSet</a> (const <a class="el" href="a00061.html">BoxSubset</a>&lt; V, M &gt; &amp;domain, const std::vector&lt; unsigned int &gt; &amp;n_points, unsigned int n_datasets)</td></tr>
-<tr class="separator:a7d35bf67379e9b0afd13be28c30246fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0af094673e17a1aee7c1e5bd0e91be2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#aa0af094673e17a1aee7c1e5bd0e91be2">~InterpolationSurrogateDataSet</a> ()</td></tr>
-<tr class="separator:aa0af094673e17a1aee7c1e5bd0e91be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2887a9f215a3972c7f9340ce3df40e90"><td class="memItemLeft" align="right" valign="top">const <br class="typebreak"/>
-<a class="el" href="a00146.html">InterpolationSurrogateData</a>&lt; V, <br class="typebreak"/>
-M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#a2887a9f215a3972c7f9340ce3df40e90">get_dataset</a> (unsigned int s) const </td></tr>
-<tr class="separator:a2887a9f215a3972c7f9340ce3df40e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f34694d81e68d2ce228f9773cf7ada1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00146.html">InterpolationSurrogateData</a>&lt; V, <br class="typebreak"/>
-M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#a1f34694d81e68d2ce228f9773cf7ada1">get_dataset</a> (unsigned int s)</td></tr>
-<tr class="separator:a1f34694d81e68d2ce228f9773cf7ada1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d9c452ebeea6b1b3cfcf5042c19dcd6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#a2d9c452ebeea6b1b3cfcf5042c19dcd6">size</a> () const </td></tr>
-<tr class="separator:a2d9c452ebeea6b1b3cfcf5042c19dcd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
+<tr class="memitem:a021a570c651d8e2145656ebc47486b30"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#a021a570c651d8e2145656ebc47486b30">JeffreysVectorRealizer</a> (const char *prefix, const <a class="el" href="a00249.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00050.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>)</td></tr>
+<tr class="memdesc:a021a570c651d8e2145656ebc47486b30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a021a570c651d8e2145656ebc47486b30">More...</a><br/></td></tr>
+<tr class="separator:a021a570c651d8e2145656ebc47486b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62c3dae91d392779204eba228470b65f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#a62c3dae91d392779204eba228470b65f">~JeffreysVectorRealizer</a> ()</td></tr>
+<tr class="memdesc:a62c3dae91d392779204eba228470b65f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a62c3dae91d392779204eba228470b65f">More...</a><br/></td></tr>
+<tr class="separator:a62c3dae91d392779204eba228470b65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Realization-related methods</div></td></tr>
+<tr class="memitem:a505bdd78f3ef70a7227f57aa6ef6df04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#a505bdd78f3ef70a7227f57aa6ef6df04">realization</a> (V &amp;nextValues) const </td></tr>
+<tr class="memdesc:a505bdd78f3ef70a7227f57aa6ef6df04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a realization.  <a href="#a505bdd78f3ef70a7227f57aa6ef6df04">More...</a><br/></td></tr>
+<tr class="separator:a505bdd78f3ef70a7227f57aa6ef6df04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00050"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00050')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00050.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:ad77258f8737d87b5d0cd58b398939c70 inherit pub_methods_a00050"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#ad77258f8737d87b5d0cd58b398939c70">BaseVectorRealizer</a> (const char *prefix, const <a class="el" href="a00249.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00050.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>, unsigned int <a class="el" href="a00050.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a>)</td></tr>
+<tr class="memdesc:ad77258f8737d87b5d0cd58b398939c70 inherit pub_methods_a00050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ad77258f8737d87b5d0cd58b398939c70">More...</a><br/></td></tr>
+<tr class="separator:ad77258f8737d87b5d0cd58b398939c70 inherit pub_methods_a00050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc2eda9b3cea09c559c19e349c537b91 inherit pub_methods_a00050"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#abc2eda9b3cea09c559c19e349c537b91">~BaseVectorRealizer</a> ()</td></tr>
+<tr class="memdesc:abc2eda9b3cea09c559c19e349c537b91 inherit pub_methods_a00050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#abc2eda9b3cea09c559c19e349c537b91">More...</a><br/></td></tr>
+<tr class="separator:abc2eda9b3cea09c559c19e349c537b91 inherit pub_methods_a00050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad958991bab8d6369e8a0d66b22a237d4 inherit pub_methods_a00050"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00249.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a> () const </td></tr>
+<tr class="memdesc:ad958991bab8d6369e8a0d66b22a237d4 inherit pub_methods_a00050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet.  <a href="#ad958991bab8d6369e8a0d66b22a237d4">More...</a><br/></td></tr>
+<tr class="separator:ad958991bab8d6369e8a0d66b22a237d4 inherit pub_methods_a00050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9fda59efacf5bd84c472c96dfa00613 inherit pub_methods_a00050"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a> () const </td></tr>
+<tr class="memdesc:ad9fda59efacf5bd84c472c96dfa00613 inherit pub_methods_a00050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sub-period of the realization. Access to protected attribute m_subPeriod.  <a href="#ad9fda59efacf5bd84c472c96dfa00613">More...</a><br/></td></tr>
+<tr class="separator:ad9fda59efacf5bd84c472c96dfa00613 inherit pub_methods_a00050"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a71227219fcb0dca3198728cfecd906e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#a71227219fcb0dca3198728cfecd906e4">InterpolationSurrogateDataSet</a> ()</td></tr>
-<tr class="separator:a71227219fcb0dca3198728cfecd906e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a8af1851b14baab8cb2f30333cf907adc"><td class="memItemLeft" align="right" valign="top">std::vector<br class="typebreak"/>
-&lt; <a class="el" href="a00146.html">InterpolationSurrogateData</a><br class="typebreak"/>
-&lt; V, M &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a></td></tr>
-<tr class="memdesc:a8af1851b14baab8cb2f30333cf907adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure to hold all data sets.  <a href="#a8af1851b14baab8cb2f30333cf907adc">More...</a><br/></td></tr>
-<tr class="separator:a8af1851b14baab8cb2f30333cf907adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_a00050"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00050')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00050.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:acde246c52f82d8ed687d91cfac14c29c inherit pro_attribs_a00050"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00036.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a></td></tr>
+<tr class="separator:acde246c52f82d8ed687d91cfac14c29c inherit pro_attribs_a00050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5559b6921816ccaed7afc2d342c2a32 inherit pro_attribs_a00050"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></td></tr>
+<tr class="separator:ac5559b6921816ccaed7afc2d342c2a32 inherit pro_attribs_a00050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c705235d28a3c12641da57cde948872 inherit pro_attribs_a00050"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00249.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#a6c705235d28a3c12641da57cde948872">m_unifiedImageSet</a></td></tr>
+<tr class="separator:a6c705235d28a3c12641da57cde948872 inherit pro_attribs_a00050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeddb6129f2810fef48b4e00daa5cea7b inherit pro_attribs_a00050"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00050.html#aeddb6129f2810fef48b4e00daa5cea7b">m_subPeriod</a></td></tr>
+<tr class="separator:aeddb6129f2810fef48b4e00daa5cea7b inherit pro_attribs_a00050"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class V = GslVector, class M = GslMatrix&gt;<br/>
-class QUESO::InterpolationSurrogateDataSet&lt; V, M &gt;</h3>
+class QUESO::JeffreysVectorRealizer&lt; V, M &gt;</h3>
 
-<p>Container class for multiple, consistent <a class="el" href="a00146.html">InterpolationSurrogateData</a> objects. </p>
-<p>This is mostly a convenience object to build and hold multiple <a class="el" href="a00146.html">InterpolationSurrogateData</a> objects that will have the domian and n_points in each dimension. This is useful for building the surrogates using the <a class="el" href="a00145.html" title="Build interpolation-based surrogate. ">InterpolationSurrogateBuilder</a>. </p>
+<p>A class for handling sampling from a jeffreys probability density distribution. </p>
+<p>This class handles sampling from a jeffreys probability density distribution. </p>
 
-<p>Definition at line <a class="el" href="a00673_source.html#l00041">41</a> of file <a class="el" href="a00673_source.html">InterpolationSurrogateDataSet.h</a>.</p>
+<p>Definition at line <a class="el" href="a00521_source.html#l00046">46</a> of file <a class="el" href="a00521_source.html">JeffreysVectorRealizer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a7d35bf67379e9b0afd13be28c30246fe"></a>
+<a class="anchor" id="a021a570c651d8e2145656ebc47486b30"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00147.html">QUESO::InterpolationSurrogateDataSet</a>&lt; V, M &gt;::<a class="el" href="a00147.html">InterpolationSurrogateDataSet</a> </td>
+          <td class="memname"><a class="el" href="a00147.html">QUESO::JeffreysVectorRealizer</a>&lt; V, M &gt;::<a class="el" href="a00147.html">JeffreysVectorRealizer</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00061.html">BoxSubset</a>&lt; V, M &gt; &amp;&#160;</td>
-          <td class="paramname"><em>domain</em>, </td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>prefix</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>n_points</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>n_datasets</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00249.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>unifiedImageSet</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -134,26 +149,43 @@ template&lt;class V , class M &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00683_source.html#l00035">35</a> of file <a class="el" href="a00683_source.html">InterpolationSurrogateDataSet.C</a>.</p>
+<p>Constructor. </p>
+<p>Constructs a new object, given a prefix and the image set of the vector realizer. </p>
 
-<p>References <a class="el" href="a00673_source.html#l00063">QUESO::InterpolationSurrogateDataSet&lt; V, M &gt;::m_datasets</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    : <a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>(n_datasets,NULL)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s = 0; s &lt; n_datasets; s++ )</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>[s] = <span class="keyword">new</span> InterpolationSurrogateData&lt;V,M&gt;( domain, n_points );</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
-<div class="ttc" id="a00147_html_a8af1851b14baab8cb2f30333cf907adc"><div class="ttname"><a href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">QUESO::InterpolationSurrogateDataSet::m_datasets</a></div><div class="ttdeci">std::vector&lt; InterpolationSurrogateData&lt; V, M &gt; * &gt; m_datasets</div><div class="ttdoc">Data structure to hold all data sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00673_source.html#l00063">InterpolationSurrogateDataSet.h:63</a></div></div>
+<p>Definition at line <a class="el" href="a00607_source.html#l00034">34</a> of file <a class="el" href="a00607_source.html">JeffreysVectorRealizer.C</a>.</p>
+
+<p>References <a class="el" href="a00404_source.html#l00450">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00562_source.html#l00077">QUESO::BaseVectorRealizer&lt; V, M &gt;::m_env</a>, <a class="el" href="a00562_source.html#l00078">QUESO::BaseVectorRealizer&lt; V, M &gt;::m_prefix</a>, and <a class="el" href="a00404_source.html#l00320">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  BaseVectorRealizer&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;gen&quot;</span>).c_str(),<a class="code" href="a00050.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>,std::numeric_limits&lt;unsigned int&gt;::max())</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00050.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00050.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    *<a class="code" href="a00050.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering JeffreysVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00050.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00050.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00050.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    *<a class="code" href="a00050.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving JeffreysVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00050.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
+<div class="ttc" id="a00050_html_acde246c52f82d8ed687d91cfac14c29c"><div class="ttname"><a href="a00050.html#acde246c52f82d8ed687d91cfac14c29c">QUESO::BaseVectorRealizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00562_source.html#l00077">VectorRealizer.h:77</a></div></div>
+<div class="ttc" id="a00036_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00320">Environment.C:320</a></div></div>
+<div class="ttc" id="a00036_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00450">Environment.C:450</a></div></div>
+<div class="ttc" id="a00050_html_ad958991bab8d6369e8a0d66b22a237d4"><div class="ttname"><a href="a00050.html#ad958991bab8d6369e8a0d66b22a237d4">QUESO::BaseVectorRealizer::unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; unifiedImageSet() const </div><div class="ttdoc">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00648_source.html#l00070">VectorRealizer.C:70</a></div></div>
+<div class="ttc" id="a00050_html_ac5559b6921816ccaed7afc2d342c2a32"><div class="ttname"><a href="a00050.html#ac5559b6921816ccaed7afc2d342c2a32">QUESO::BaseVectorRealizer::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00562_source.html#l00078">VectorRealizer.h:78</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aa0af094673e17a1aee7c1e5bd0e91be2"></a>
+<a class="anchor" id="a62c3dae91d392779204eba228470b65f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00147.html">QUESO::InterpolationSurrogateDataSet</a>&lt; V, M &gt;::~<a class="el" href="a00147.html">InterpolationSurrogateDataSet</a> </td>
+          <td class="memname"><a class="el" href="a00147.html">QUESO::JeffreysVectorRealizer</a>&lt; V, M &gt;::~<a class="el" href="a00147.html">JeffreysVectorRealizer</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -161,46 +193,16 @@ template&lt;class V , class M &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00683_source.html#l00045">45</a> of file <a class="el" href="a00683_source.html">InterpolationSurrogateDataSet.C</a>.</p>
+<p>Destructor. </p>
 
-<p>References <a class="el" href="a00308_source.html#l00041">it</a>.</p>
-<div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">for</span>( <span class="keyword">typename</span> std::vector&lt;InterpolationSurrogateData&lt;V,M&gt;*&gt;::iterator <a class="code" href="a00308.html#a76868a71f10b10fd75a76f81ad936660">it</a> = <a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>.begin();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;         <a class="code" href="a00308.html#a76868a71f10b10fd75a76f81ad936660">it</a> != <a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>.end(); ++<a class="code" href="a00308.html#a76868a71f10b10fd75a76f81ad936660">it</a> )</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keyword">delete</span> *<a class="code" href="a00308.html#a76868a71f10b10fd75a76f81ad936660">it</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
-<div class="ttc" id="a00308_html_a76868a71f10b10fd75a76f81ad936660"><div class="ttname"><a href="a00308.html#a76868a71f10b10fd75a76f81ad936660">it</a></div><div class="ttdeci">that you receive source code or can get it if you want it</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00041">License.txt:41</a></div></div>
-<div class="ttc" id="a00147_html_a8af1851b14baab8cb2f30333cf907adc"><div class="ttname"><a href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">QUESO::InterpolationSurrogateDataSet::m_datasets</a></div><div class="ttdeci">std::vector&lt; InterpolationSurrogateData&lt; V, M &gt; * &gt; m_datasets</div><div class="ttdoc">Data structure to hold all data sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00673_source.html#l00063">InterpolationSurrogateDataSet.h:63</a></div></div>
+<p>Definition at line <a class="el" href="a00607_source.html#l00054">54</a> of file <a class="el" href="a00607_source.html">JeffreysVectorRealizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a71227219fcb0dca3198728cfecd906e4"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00147.html">QUESO::InterpolationSurrogateDataSet</a>&lt; V, M &gt;::<a class="el" href="a00147.html">InterpolationSurrogateDataSet</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a2887a9f215a3972c7f9340ce3df40e90"></a>
+<a class="anchor" id="a505bdd78f3ef70a7227f57aa6ef6df04"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -210,141 +212,72 @@ template&lt;class V , class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00146.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp; <a class="el" href="a00147.html">QUESO::InterpolationSurrogateDataSet</a>&lt; V, M &gt;::get_dataset </td>
+          <td class="memname"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> <a class="el" href="a00147.html">QUESO::JeffreysVectorRealizer</a>&lt; V, M &gt;::realization </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
+          <td class="paramtype">V &amp;&#160;</td>
+          <td class="paramname"><em>nextValues</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00673_source.html#l00069">69</a> of file <a class="el" href="a00673_source.html">InterpolationSurrogateDataSet.h</a>.</p>
+<p>Draws a realization. </p>
+<p>This function draws a realization of a jeffreys distribution and saves it in <code>nextValues</code>. It internally finds the minimum and the maximum values of the distribution. </p>
 
-<p>References <a class="el" href="a00340_source.html#l00132">queso_assert</a>, and <a class="el" href="a00340_source.html#l00119">queso_require_less</a>.</p>
-<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="a00340.html#a943cd349edccbbcdb652ac081bb42df1">queso_require_less</a>( s, <a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>.size() );</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="a00340.html#a95f9887ed9b637efb5b71f1df7d6bc4d">queso_assert</a>( <a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>[s] );</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">return</span> *(<a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>[s]);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  }</div>
-<div class="ttc" id="a00147_html_a8af1851b14baab8cb2f30333cf907adc"><div class="ttname"><a href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">QUESO::InterpolationSurrogateDataSet::m_datasets</a></div><div class="ttdeci">std::vector&lt; InterpolationSurrogateData&lt; V, M &gt; * &gt; m_datasets</div><div class="ttdoc">Data structure to hold all data sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00673_source.html#l00063">InterpolationSurrogateDataSet.h:63</a></div></div>
-<div class="ttc" id="a00340_html_a95f9887ed9b637efb5b71f1df7d6bc4d"><div class="ttname"><a href="a00340.html#a95f9887ed9b637efb5b71f1df7d6bc4d">queso_assert</a></div><div class="ttdeci">#define queso_assert(asserted)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00132">asserts.h:132</a></div></div>
-<div class="ttc" id="a00340_html_a943cd349edccbbcdb652ac081bb42df1"><div class="ttname"><a href="a00340.html#a943cd349edccbbcdb652ac081bb42df1">queso_require_less</a></div><div class="ttdeci">#define queso_require_less(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00119">asserts.h:119</a></div></div>
+<p>Implements <a class="el" href="a00050.html#a6845173dd79a80ae11c86cde26e55817">QUESO::BaseVectorRealizer&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00607_source.html#l00060">60</a> of file <a class="el" href="a00607_source.html">JeffreysVectorRealizer.C</a>.</p>
+
+<p>References <a class="el" href="a00284_source.html#l00101">QUESO::BoxSubset&lt; V, M &gt;::maxValues()</a>, and <a class="el" href="a00284_source.html#l00095">QUESO::BoxSubset&lt; V, M &gt;::minValues()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">const</span> BoxSubset&lt;V,M&gt;* imageBox = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>BoxSubset&lt;V,M&gt;* <span class="keyword">&gt;</span>(&amp;<a class="code" href="a00050.html#a6c705235d28a3c12641da57cde948872">m_unifiedImageSet</a>);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">if</span> (imageBox == NULL) {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    queso_error_msg(<span class="stringliteral">&quot;For JeffreysVectorRealizer&lt;V,M&gt;::realization(), only box images are supported right now&quot;</span>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="comment">//take log of Jeffreys bounds to set uniform bounds</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  GslVector logMinValues(imageBox-&gt;minValues());</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; logMinValues.sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span> (logMinValues[i] &lt; 0.0) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      queso_error_msg(<span class="stringliteral">&quot;The minimum value for a Jeffreys distribution should be greater than or equal to zero.&quot;</span>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      logMinValues[i] = std::log(logMinValues[i]);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  GslVector logMaxValues(imageBox-&gt;maxValues());</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; logMaxValues.sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (logMaxValues[i] &lt;= 0.0) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      queso_error_msg(<span class="stringliteral">&quot;The maximum value for a Jeffreys distribution should be greater than zero.&quot;</span>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      logMaxValues[i] = std::log(logMaxValues[i]);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  nextValues.cwSetUniform(logMinValues,logMaxValues);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; nextValues.sizeLocal(); ++i) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    nextValues[i] = std::exp(nextValues[i]);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
+<div class="ttc" id="a00050_html_a6c705235d28a3c12641da57cde948872"><div class="ttname"><a href="a00050.html#a6c705235d28a3c12641da57cde948872">QUESO::BaseVectorRealizer::m_unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_unifiedImageSet</div><div class="ttdef"><b>Definition:</b> <a href="a00562_source.html#l00079">VectorRealizer.h:79</a></div></div>
 </div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a1f34694d81e68d2ce228f9773cf7ada1"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V , class M &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00146.html">InterpolationSurrogateData</a>&lt; V, M &gt; &amp; <a class="el" href="a00147.html">QUESO::InterpolationSurrogateDataSet</a>&lt; V, M &gt;::get_dataset </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00673_source.html#l00079">79</a> of file <a class="el" href="a00673_source.html">InterpolationSurrogateDataSet.h</a>.</p>
-
-<p>References <a class="el" href="a00340_source.html#l00132">queso_assert</a>, and <a class="el" href="a00340_source.html#l00119">queso_require_less</a>.</p>
-<div class="fragment"><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="a00340.html#a943cd349edccbbcdb652ac081bb42df1">queso_require_less</a>( s, <a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>.size() );</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="a00340.html#a95f9887ed9b637efb5b71f1df7d6bc4d">queso_assert</a>( <a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>[s] );</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">return</span> *(<a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>[s]);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
-<div class="ttc" id="a00147_html_a8af1851b14baab8cb2f30333cf907adc"><div class="ttname"><a href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">QUESO::InterpolationSurrogateDataSet::m_datasets</a></div><div class="ttdeci">std::vector&lt; InterpolationSurrogateData&lt; V, M &gt; * &gt; m_datasets</div><div class="ttdoc">Data structure to hold all data sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00673_source.html#l00063">InterpolationSurrogateDataSet.h:63</a></div></div>
-<div class="ttc" id="a00340_html_a95f9887ed9b637efb5b71f1df7d6bc4d"><div class="ttname"><a href="a00340.html#a95f9887ed9b637efb5b71f1df7d6bc4d">queso_assert</a></div><div class="ttdeci">#define queso_assert(asserted)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00132">asserts.h:132</a></div></div>
-<div class="ttc" id="a00340_html_a943cd349edccbbcdb652ac081bb42df1"><div class="ttname"><a href="a00340.html#a943cd349edccbbcdb652ac081bb42df1">queso_require_less</a></div><div class="ttdeci">#define queso_require_less(expr1, expr2)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00119">asserts.h:119</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a2d9c452ebeea6b1b3cfcf5042c19dcd6"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int <a class="el" href="a00147.html">QUESO::InterpolationSurrogateDataSet</a>&lt; V, M &gt;::size </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00673_source.html#l00055">55</a> of file <a class="el" href="a00673_source.html">InterpolationSurrogateDataSet.h</a>.</p>
-
-<p>References <a class="el" href="a00673_source.html#l00063">QUESO::InterpolationSurrogateDataSet&lt; V, M &gt;::m_datasets</a>.</p>
-<div class="fragment"><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    { <span class="keywordflow">return</span> <a class="code" href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">m_datasets</a>.size(); }</div>
-<div class="ttc" id="a00147_html_a8af1851b14baab8cb2f30333cf907adc"><div class="ttname"><a href="a00147.html#a8af1851b14baab8cb2f30333cf907adc">QUESO::InterpolationSurrogateDataSet::m_datasets</a></div><div class="ttdeci">std::vector&lt; InterpolationSurrogateData&lt; V, M &gt; * &gt; m_datasets</div><div class="ttdoc">Data structure to hold all data sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00673_source.html#l00063">InterpolationSurrogateDataSet.h:63</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a8af1851b14baab8cb2f30333cf907adc"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V = GslVector, class M = GslMatrix&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="a00146.html">InterpolationSurrogateData</a>&lt;V,M&gt;*&gt; <a class="el" href="a00147.html">QUESO::InterpolationSurrogateDataSet</a>&lt; V, M &gt;::m_datasets</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Data structure to hold all data sets. </p>
-
-<p>Definition at line <a class="el" href="a00673_source.html#l00063">63</a> of file <a class="el" href="a00673_source.html">InterpolationSurrogateDataSet.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00683_source.html#l00035">QUESO::InterpolationSurrogateDataSet&lt; V, M &gt;::InterpolationSurrogateDataSet()</a>, and <a class="el" href="a00673_source.html#l00055">QUESO::InterpolationSurrogateDataSet&lt; V, M &gt;::size()</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/surrogates/inc/<a class="el" href="a00673_source.html">InterpolationSurrogateDataSet.h</a></li>
-<li>src/surrogates/src/<a class="el" href="a00683_source.html">InterpolationSurrogateDataSet.C</a></li>
+<li>src/stats/inc/<a class="el" href="a00521_source.html">JeffreysVectorRealizer.h</a></li>
+<li>src/stats/src/<a class="el" href="a00607_source.html">JeffreysVectorRealizer.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:16 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:52 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

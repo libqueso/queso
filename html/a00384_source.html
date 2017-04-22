@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/TKFactoryStochasticNewton.h Source File</title>
+<title>queso-0.56.2: src/core/inc/SharedPtr.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">TKFactoryStochasticNewton.h</div>  </div>
+<div class="title">SharedPtr.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00384.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,40 +75,44 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_TK_FACTORY_STOCHASTIC_NEWTON_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_TK_FACTORY_STOCHASTIC_NEWTON_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_SHARED_PTR_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_SHARED_PTR_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/TransitionKernelFactory.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/TKGroup.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> DerivedTK&gt;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00230.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00230.html">TKFactoryStochasticNewton</a> : <span class="keyword">public</span> <a class="code" href="a00232.html">TransitionKernelFactory</a></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00230.html#a7c67b0db9c0daf53ef773618b42a1cb8">   45</a></span>&#160;  <a class="code" href="a00230.html#a7c67b0db9c0daf53ef773618b42a1cb8">TKFactoryStochasticNewton</a>(<span class="keyword">const</span> std::string &amp; name)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    : <a class="code" href="a00232.html">TransitionKernelFactory</a>(name)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  {}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00230.html#aeaff54f52ee11ec10ba7893ad3e7cfbd">   52</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00230.html#aeaff54f52ee11ec10ba7893ad3e7cfbd">~TKFactoryStochasticNewton</a>() {}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">virtual</span> SharedPtr&lt;BaseTKGroup&lt;GslVector, GslMatrix&gt; &gt;::Type <a class="code" href="a00230.html#a6f38a67ff1f31842a1e37c480a0df47a">build_tk</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;} <span class="comment">// namespace QUESO</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif // QUESO_TK_FACTORY_STOCHASTIC_NEWTON_H</span></div>
-<div class="ttc" id="a00230_html"><div class="ttname"><a href="a00230.html">QUESO::TKFactoryStochasticNewton</a></div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00039">TKFactoryStochasticNewton.h:39</a></div></div>
-<div class="ttc" id="a00230_html_aeaff54f52ee11ec10ba7893ad3e7cfbd"><div class="ttname"><a href="a00230.html#aeaff54f52ee11ec10ba7893ad3e7cfbd">QUESO::TKFactoryStochasticNewton::~TKFactoryStochasticNewton</a></div><div class="ttdeci">virtual ~TKFactoryStochasticNewton()</div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00052">TKFactoryStochasticNewton.h:52</a></div></div>
-<div class="ttc" id="a00232_html"><div class="ttname"><a href="a00232.html">QUESO::TransitionKernelFactory</a></div><div class="ttdef"><b>Definition:</b> <a href="a00385_source.html#l00041">TransitionKernelFactory.h:41</a></div></div>
-<div class="ttc" id="a00230_html_a6f38a67ff1f31842a1e37c480a0df47a"><div class="ttname"><a href="a00230.html#a6f38a67ff1f31842a1e37c480a0df47a">QUESO::TKFactoryStochasticNewton::build_tk</a></div><div class="ttdeci">virtual SharedPtr&lt; BaseTKGroup&lt; GslVector, GslMatrix &gt; &gt;::Type build_tk()</div><div class="ttdef"><b>Definition:</b> <a href="a00426_source.html#l00033">TKFactoryStochasticNewton.C:33</a></div></div>
-<div class="ttc" id="a00230_html_a7c67b0db9c0daf53ef773618b42a1cb8"><div class="ttname"><a href="a00230.html#a7c67b0db9c0daf53ef773618b42a1cb8">QUESO::TKFactoryStochasticNewton::TKFactoryStochasticNewton</a></div><div class="ttdeci">TKFactoryStochasticNewton(const std::string &amp;name)</div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00045">TKFactoryStochasticNewton.h:45</a></div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/config_queso.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#ifdef QUESO_HAVE_CXX11_SHARED_PTR</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#elif QUESO_HAVE_BOOST_SHARED_PTR_HPP</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;boost/shared_ptr.hpp&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">namespace </span>QUESO</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#ifdef QUESO_HAVE_CXX11_SHARED_PTR</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor"></span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="a00212.html">   67</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="a00212.html">SharedPtr</a></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  {</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00212.html#ae608ddf14a45c74e5ca093dfbc3cbdf0">   69</a></span>&#160;    <span class="keyword">typedef</span> std::shared_ptr&lt;T&gt; <a class="code" href="a00212.html#ae608ddf14a45c74e5ca093dfbc3cbdf0">Type</a>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  };</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#elif QUESO_HAVE_BOOST_SHARED_PTR_HPP</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">struct </span><a class="code" href="a00212.html">SharedPtr</a></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  {</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00212.html#a204b3e60e70324c50111c9bfbbab26ac">   75</a></span>&#160;    <span class="keyword">typedef</span> boost::shared_ptr&lt;T&gt; <a class="code" href="a00212.html#a204b3e60e70324c50111c9bfbbab26ac">Type</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  };</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#     error &quot;No valid definition for SharedPtr found!&quot;</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;} <span class="comment">// end namespace QUESO</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif // UQ_SHARED_PTR_H</span></div>
+<div class="ttc" id="a00212_html"><div class="ttname"><a href="a00212.html">QUESO::SharedPtr</a></div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00067">SharedPtr.h:67</a></div></div>
+<div class="ttc" id="a00212_html_a204b3e60e70324c50111c9bfbbab26ac"><div class="ttname"><a href="a00212.html#a204b3e60e70324c50111c9bfbbab26ac">QUESO::SharedPtr::Type</a></div><div class="ttdeci">boost::shared_ptr&lt; T &gt; Type</div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00075">SharedPtr.h:75</a></div></div>
+<div class="ttc" id="a00212_html_ae608ddf14a45c74e5ca093dfbc3cbdf0"><div class="ttname"><a href="a00212.html#ae608ddf14a45c74e5ca093dfbc3cbdf0">QUESO::SharedPtr::Type</a></div><div class="ttdeci">std::shared_ptr&lt; T &gt; Type</div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00069">SharedPtr.h:69</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/OptimizerOptions.h File Reference</title>
+<title>queso-0.56.2: src/core/inc/Matrix.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -49,193 +49,35 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">OptimizerOptions.h File Reference</div>  </div>
+<div class="title">Matrix.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Classes to allow options to be passed to an instance of Optimizer.  
+<p>Matrix class.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;string&gt;</code><br/>
-<code>#include &lt;queso/SharedPtr.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for OptimizerOptions.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00816.png" border="0" usemap="#src_2core_2inc_2_optimizer_options_8h" alt=""/></div>
-<map name="src_2core_2inc_2_optimizer_options_8h" id="src_2core_2inc_2_optimizer_options_8h">
-</map>
-</div>
-</div>
+
 <p><a href="a00372_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00190.html">QUESO::OptimizerOptions</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class provides options for a Optimizer.  <a href="a00190.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00164.html">QUESO::Matrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for matrix operations (virtual).  <a href="a00164.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:aa88f0ffc98f3e82def2f966c4014e819"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00372.html#aa88f0ffc98f3e82def2f966c4014e819">UQ_OPT_HELP</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
-<tr class="separator:aa88f0ffc98f3e82def2f966c4014e819"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64cf5a55cffafed2878024df6bdf3596"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00372.html#a64cf5a55cffafed2878024df6bdf3596">UQ_OPT_MAX_ITERATIONS</a>&#160;&#160;&#160;100</td></tr>
-<tr class="separator:a64cf5a55cffafed2878024df6bdf3596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf0d4db9571d99e58016d8314e7cb5b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00372.html#aaf0d4db9571d99e58016d8314e7cb5b6">UQ_OPT_TOLERANCE</a>&#160;&#160;&#160;1e-3</td></tr>
-<tr class="separator:aaf0d4db9571d99e58016d8314e7cb5b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b6140d491159299344464e3b060edd5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00372.html#a9b6140d491159299344464e3b060edd5">UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE</a>&#160;&#160;&#160;1e-4</td></tr>
-<tr class="separator:a9b6140d491159299344464e3b060edd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e988fe669f7f5c41bb5c6d5c5dbc6ae"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00372.html#a7e988fe669f7f5c41bb5c6d5c5dbc6ae">UQ_OPT_SOLVER_TYPE</a>&#160;&#160;&#160;&quot;bfgs2&quot;</td></tr>
-<tr class="separator:a7e988fe669f7f5c41bb5c6d5c5dbc6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe62e382d11668c266abcf733275c165"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00372.html#abe62e382d11668c266abcf733275c165">UQ_OPT_FSTEP_SIZE</a>&#160;&#160;&#160;0.1</td></tr>
-<tr class="separator:abe62e382d11668c266abcf733275c165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b57b4f3b13980e8f72c0d4305c711b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00372.html#a3b57b4f3b13980e8f72c0d4305c711b6">UQ_OPT_FDFSTEP_SIZE</a>&#160;&#160;&#160;1.0</td></tr>
-<tr class="separator:a3b57b4f3b13980e8f72c0d4305c711b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa045152ee9a8fe57fc092734bff2e027"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00372.html#aa045152ee9a8fe57fc092734bff2e027">UQ_OPT_LINE_TOLERANCE</a>&#160;&#160;&#160;0.1</td></tr>
-<tr class="separator:aa045152ee9a8fe57fc092734bff2e027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Classes to allow options to be passed to an instance of Optimizer. </p>
+<div class="textblock"><p>Matrix class. </p>
 
-<p>Definition in file <a class="el" href="a00372_source.html">OptimizerOptions.h</a>.</p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a3b57b4f3b13980e8f72c0d4305c711b6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_OPT_FDFSTEP_SIZE&#160;&#160;&#160;1.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00372_source.html#l00042">42</a> of file <a class="el" href="a00372_source.html">OptimizerOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00417_source.html#l00057">QUESO::OptimizerOptions::OptimizerOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a9b6140d491159299344464e3b060edd5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE&#160;&#160;&#160;1e-4</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00372_source.html#l00039">39</a> of file <a class="el" href="a00372_source.html">OptimizerOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00417_source.html#l00057">QUESO::OptimizerOptions::OptimizerOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abe62e382d11668c266abcf733275c165"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_OPT_FSTEP_SIZE&#160;&#160;&#160;0.1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00372_source.html#l00041">41</a> of file <a class="el" href="a00372_source.html">OptimizerOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00417_source.html#l00057">QUESO::OptimizerOptions::OptimizerOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa88f0ffc98f3e82def2f966c4014e819"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_OPT_HELP&#160;&#160;&#160;&quot;&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00372_source.html#l00034">34</a> of file <a class="el" href="a00372_source.html">OptimizerOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00417_source.html#l00057">QUESO::OptimizerOptions::OptimizerOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa045152ee9a8fe57fc092734bff2e027"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_OPT_LINE_TOLERANCE&#160;&#160;&#160;0.1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00372_source.html#l00043">43</a> of file <a class="el" href="a00372_source.html">OptimizerOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00417_source.html#l00057">QUESO::OptimizerOptions::OptimizerOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a64cf5a55cffafed2878024df6bdf3596"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_OPT_MAX_ITERATIONS&#160;&#160;&#160;100</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00372_source.html#l00037">37</a> of file <a class="el" href="a00372_source.html">OptimizerOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00417_source.html#l00057">QUESO::OptimizerOptions::OptimizerOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7e988fe669f7f5c41bb5c6d5c5dbc6ae"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_OPT_SOLVER_TYPE&#160;&#160;&#160;&quot;bfgs2&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00372_source.html#l00040">40</a> of file <a class="el" href="a00372_source.html">OptimizerOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00417_source.html#l00057">QUESO::OptimizerOptions::OptimizerOptions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aaf0d4db9571d99e58016d8314e7cb5b6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_OPT_TOLERANCE&#160;&#160;&#160;1e-3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00372_source.html#l00038">38</a> of file <a class="el" href="a00372_source.html">OptimizerOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00417_source.html#l00057">QUESO::OptimizerOptions::OptimizerOptions()</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<p>Definition in file <a class="el" href="a00372_source.html">Matrix.h</a>.</p>
+</div></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

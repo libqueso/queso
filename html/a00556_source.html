@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/inc/SampledScalarCdf.h Source File</title>
+<title>queso-0.56.2: src/stats/inc/UniformVectorRealizer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">SampledScalarCdf.h</div>  </div>
+<div class="title">UniformVectorRealizer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00556.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,78 +75,53 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_SAMPLED_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_SAMPLED_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_UNIFORM_REALIZER_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_UNIFORM_REALIZER_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/StdOneDGrid.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarCdf.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRealizer.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSequence.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Sampled cumulative distribution function class</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00201.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00201.html">SampledScalarCdf</a> : <span class="keyword">public</span> <a class="code" href="a00042.html">BaseScalarCdf</a>&lt;T&gt; {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslVector;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00242.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00242.html">UniformVectorRealizer</a> : <span class="keyword">public</span> <a class="code" href="a00050.html">BaseVectorRealizer</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00201.html#aa1b09a58b4afb1b8c1c822dd4575faad">SampledScalarCdf</a>(<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; <a class="code" href="a00042.html#a70c89dd2ad294be170338a283fc58ff3">env</a>,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                          <span class="keyword">const</span> <span class="keywordtype">char</span>*                   <a class="code" href="a00042.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                          <span class="keyword">const</span> <a class="code" href="a00040.html">BaseOneDGrid&lt;T&gt;</a>&amp; cdfGrid,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                          <span class="keyword">const</span> std::vector&lt;double&gt;&amp;    cdfValues);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; <a class="code" href="a00201.html#ae2b5a724fcecef81ef74f8d52b021fcb">~SampledScalarCdf</a>();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00201.html#a3eb93ff8c14d2b66bf692033a2a3b8b6">value</a>           (T                       paramValue) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00242.html#a68012df178de00ac40163033fa42c4b3">UniformVectorRealizer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                               <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00050.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="a00242.html#a39faaea0c942308fedee9cc672ad0a75">~UniformVectorRealizer</a>();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  T      <a class="code" href="a00201.html#a685b0c343b3ab320680c132c836fb1da">inverse</a>         (<span class="keywordtype">double</span>                  cdfValue  ) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span>   <a class="code" href="a00201.html#ab1d99d5dcc9dc79b50501caf80154c39">getSupport</a>      (T&amp; minHorizontal, T&amp; maxHorizontal) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">void</span>   <a class="code" href="a00201.html#a1ae05088dd70e2432a52577ba6dca468">print</a>           (std::ostream&amp;           os        ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00242.html#a59c9c5c848823a4c6b0992adc4f772e2">realization</a>(V&amp; nextValues) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">void</span>   <a class="code" href="a00201.html#af597534e752c2974448d7fd071266c59">subWriteContents</a>(<span class="keyword">const</span> std::string&amp;            varNamePrefix,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                          <span class="keyword">const</span> std::string&amp;            fileName,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                          <span class="keyword">const</span> std::string&amp;            fileType,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                          <span class="keyword">const</span> std::set&lt;unsigned int&gt;&amp; allowedSubEnvIds) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseScalarCdf&lt;T&gt;::m_env</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseScalarCdf&lt;T&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseScalarCdf&lt;T&gt;::m_minHorizontal</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00042.html">BaseScalarCdf&lt;T&gt;::m_maxHorizontal</a>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">   92</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00040.html">BaseOneDGrid&lt;T&gt;</a>&amp; <a class="code" href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">m_cdfGrid</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">   93</a></span>&#160;  <span class="keyword">const</span> std::vector&lt;double&gt;&amp;    <a class="code" href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">m_cdfValues</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">//std::vector&lt;double&gt;&amp;          m_sortedCdfValues;</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif // UQ_SAMPLED_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H</span></div>
-<div class="ttc" id="a00201_html_aa1b09a58b4afb1b8c1c822dd4575faad"><div class="ttname"><a href="a00201.html#aa1b09a58b4afb1b8c1c822dd4575faad">QUESO::SampledScalarCdf::SampledScalarCdf</a></div><div class="ttdeci">SampledScalarCdf(const BaseEnvironment &amp;env, const char *prefix, const BaseOneDGrid&lt; T &gt; &amp;cdfGrid, const std::vector&lt; double &gt; &amp;cdfValues)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00643_source.html#l00031">SampledScalarCdf.C:31</a></div></div>
-<div class="ttc" id="a00042_html_a70c89dd2ad294be170338a283fc58ff3"><div class="ttname"><a href="a00042.html#a70c89dd2ad294be170338a283fc58ff3">QUESO::BaseScalarCdf::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Environment. Access to private attribute m_env. </div><div class="ttdef"><b>Definition:</b> <a href="a00646_source.html#l00060">ScalarCdf.C:60</a></div></div>
-<div class="ttc" id="a00042_html"><div class="ttname"><a href="a00042.html">QUESO::BaseScalarCdf</a></div><div class="ttdoc">A templated (base) class for handling CDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00049">ScalarCdf.h:49</a></div></div>
-<div class="ttc" id="a00201_html_af597534e752c2974448d7fd071266c59"><div class="ttname"><a href="a00201.html#af597534e752c2974448d7fd071266c59">QUESO::SampledScalarCdf::subWriteContents</a></div><div class="ttdeci">void subWriteContents(const std::string &amp;varNamePrefix, const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds) const </div><div class="ttdoc">Writes the CDF of an allowed sub-environment to a file. </div><div class="ttdef"><b>Definition:</b> <a href="a00643_source.html#l00216">SampledScalarCdf.C:216</a></div></div>
-<div class="ttc" id="a00201_html_a3eb93ff8c14d2b66bf692033a2a3b8b6"><div class="ttname"><a href="a00201.html#a3eb93ff8c14d2b66bf692033a2a3b8b6">QUESO::SampledScalarCdf::value</a></div><div class="ttdeci">double value(T paramValue) const </div><div class="ttdoc">Returns the value of the CDF at paramValue. </div><div class="ttdef"><b>Definition:</b> <a href="a00643_source.html#l00066">SampledScalarCdf.C:66</a></div></div>
-<div class="ttc" id="a00201_html"><div class="ttname"><a href="a00201.html">QUESO::SampledScalarCdf</a></div><div class="ttdoc">A class for handling sampled CDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00046">SampledScalarCdf.h:46</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00201_html_a685b0c343b3ab320680c132c836fb1da"><div class="ttname"><a href="a00201.html#a685b0c343b3ab320680c132c836fb1da">QUESO::SampledScalarCdf::inverse</a></div><div class="ttdeci">T inverse(double cdfValue) const </div><div class="ttdoc">Returns the position of a given value of CDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00643_source.html#l00102">SampledScalarCdf.C:102</a></div></div>
-<div class="ttc" id="a00042_html_aafb3eaf3bf1d7269073e9c77bd8c766d"><div class="ttname"><a href="a00042.html#aafb3eaf3bf1d7269073e9c77bd8c766d">QUESO::BaseScalarCdf::prefix</a></div><div class="ttdeci">const std::string &amp; prefix() const </div><div class="ttdoc">Access to private attribute m_prefix. </div><div class="ttdef"><b>Definition:</b> <a href="a00646_source.html#l00067">ScalarCdf.C:67</a></div></div>
-<div class="ttc" id="a00201_html_a1ae05088dd70e2432a52577ba6dca468"><div class="ttname"><a href="a00201.html#a1ae05088dd70e2432a52577ba6dca468">QUESO::SampledScalarCdf::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the CDF (values of the grid points and of the CDF at such grid points). </div><div class="ttdef"><b>Definition:</b> <a href="a00643_source.html#l00194">SampledScalarCdf.C:194</a></div></div>
-<div class="ttc" id="a00040_html"><div class="ttname"><a href="a00040.html">QUESO::BaseOneDGrid</a></div><div class="ttdoc">Base class for accommodating one-dimensional grids. </div><div class="ttdef"><b>Definition:</b> <a href="a00476_source.html#l00046">OneDGrid.h:46</a></div></div>
-<div class="ttc" id="a00201_html_ab8cf649637f31cc75c9f676d5927c10f"><div class="ttname"><a href="a00201.html#ab8cf649637f31cc75c9f676d5927c10f">QUESO::SampledScalarCdf::m_cdfValues</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; m_cdfValues</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00093">SampledScalarCdf.h:93</a></div></div>
-<div class="ttc" id="a00201_html_ab1d99d5dcc9dc79b50501caf80154c39"><div class="ttname"><a href="a00201.html#ab1d99d5dcc9dc79b50501caf80154c39">QUESO::SampledScalarCdf::getSupport</a></div><div class="ttdeci">void getSupport(T &amp;minHorizontal, T &amp;maxHorizontal) const </div><div class="ttdoc">Returns the support (image) of the CDF between two horizontal values (domain). </div><div class="ttdef"><b>Definition:</b> <a href="a00643_source.html#l00153">SampledScalarCdf.C:153</a></div></div>
-<div class="ttc" id="a00201_html_ae2b5a724fcecef81ef74f8d52b021fcb"><div class="ttname"><a href="a00201.html#ae2b5a724fcecef81ef74f8d52b021fcb">QUESO::SampledScalarCdf::~SampledScalarCdf</a></div><div class="ttdeci">~SampledScalarCdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00643_source.html#l00060">SampledScalarCdf.C:60</a></div></div>
-<div class="ttc" id="a00201_html_a58d6744bac9ce8d906839bf381517f4a"><div class="ttname"><a href="a00201.html#a58d6744bac9ce8d906839bf381517f4a">QUESO::SampledScalarCdf::m_cdfGrid</a></div><div class="ttdeci">const BaseOneDGrid&lt; T &gt; &amp; m_cdfGrid</div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00092">SampledScalarCdf.h:92</a></div></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRealizer&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRealizer&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRealizer&lt;V,M&gt;::m_unifiedImageSet</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRealizer&lt;V,M&gt;::m_subPeriod</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif // UQ_UNIFORM_REALIZER_H</span></div>
+<div class="ttc" id="a00242_html"><div class="ttname"><a href="a00242.html">QUESO::UniformVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from a Uniform probability density distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00556_source.html#l00045">UniformVectorRealizer.h:45</a></div></div>
+<div class="ttc" id="a00050_html"><div class="ttname"><a href="a00050.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00562_source.html#l00049">VectorRealizer.h:49</a></div></div>
+<div class="ttc" id="a00242_html_a59c9c5c848823a4c6b0992adc4f772e2"><div class="ttname"><a href="a00242.html#a59c9c5c848823a4c6b0992adc4f772e2">QUESO::UniformVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdoc">Draws a realization. </div><div class="ttdef"><b>Definition:</b> <a href="a00642_source.html#l00061">UniformVectorRealizer.C:61</a></div></div>
+<div class="ttc" id="a00242_html_a39faaea0c942308fedee9cc672ad0a75"><div class="ttname"><a href="a00242.html#a39faaea0c942308fedee9cc672ad0a75">QUESO::UniformVectorRealizer::~UniformVectorRealizer</a></div><div class="ttdeci">~UniformVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00642_source.html#l00055">UniformVectorRealizer.C:55</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00242_html_a68012df178de00ac40163033fa42c4b3"><div class="ttname"><a href="a00242.html#a68012df178de00ac40163033fa42c4b3">QUESO::UniformVectorRealizer::UniformVectorRealizer</a></div><div class="ttdeci">UniformVectorRealizer(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00642_source.html#l00035">UniformVectorRealizer.C:35</a></div></div>
+<div class="ttc" id="a00050_html_ad958991bab8d6369e8a0d66b22a237d4"><div class="ttname"><a href="a00050.html#ad958991bab8d6369e8a0d66b22a237d4">QUESO::BaseVectorRealizer::unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; unifiedImageSet() const </div><div class="ttdoc">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00648_source.html#l00070">VectorRealizer.C:70</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

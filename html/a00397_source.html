@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/src/FunctionBase.C Source File</title>
+<title>queso-0.56.2: src/core/src/BasicPdfsBase.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">FunctionBase.C</div>  </div>
+<div class="title">BasicPdfsBase.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00397.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,25 +75,30 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/FunctionOperatorBuilder.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/FunctionBase.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00092.html#adf2e807076f9630fe281485527e443f3">   30</a></span>&#160;<a class="code" href="a00092.html#adf2e807076f9630fe281485527e443f3">FunctionBase::FunctionBase</a>()</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00092.html#a387bb45998e02219a06a1d3a8280f7ad">   34</a></span>&#160;<a class="code" href="a00092.html#a387bb45998e02219a06a1d3a8280f7ad">FunctionBase::~FunctionBase</a>()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00092_html_a387bb45998e02219a06a1d3a8280f7ad"><div class="ttname"><a href="a00092.html#a387bb45998e02219a06a1d3a8280f7ad">QUESO::FunctionBase::~FunctionBase</a></div><div class="ttdeci">virtual ~FunctionBase()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00397_source.html#l00034">FunctionBase.C:34</a></div></div>
-<div class="ttc" id="a00092_html_adf2e807076f9630fe281485527e443f3"><div class="ttname"><a href="a00092.html#adf2e807076f9630fe281485527e443f3">QUESO::FunctionBase::FunctionBase</a></div><div class="ttdeci">FunctionBase()</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00397_source.html#l00030">FunctionBase.C:30</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/BasicPdfsBase.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="a00053.html#a2ca589bc1e025d7e84a0b029b4c610a1">   29</a></span>&#160;<a class="code" href="a00053.html#a2ca589bc1e025d7e84a0b029b4c610a1">BasicPdfsBase::BasicPdfsBase</a>()</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00053.html#acf3bfe40802cd488d9d01077a7d15e55">   33</a></span>&#160;<a class="code" href="a00053.html#a2ca589bc1e025d7e84a0b029b4c610a1">BasicPdfsBase::BasicPdfsBase</a>(<span class="keywordtype">int</span> worldRank)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  m_worldRank(worldRank)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00053.html#a4e0421cd14da7b04d4242318c7de5ece">   39</a></span>&#160;<a class="code" href="a00053.html#a4e0421cd14da7b04d4242318c7de5ece">BasicPdfsBase::~BasicPdfsBase</a>()</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00053_html_a2ca589bc1e025d7e84a0b029b4c610a1"><div class="ttname"><a href="a00053.html#a2ca589bc1e025d7e84a0b029b4c610a1">QUESO::BasicPdfsBase::BasicPdfsBase</a></div><div class="ttdeci">BasicPdfsBase()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00397_source.html#l00029">BasicPdfsBase.C:29</a></div></div>
+<div class="ttc" id="a00053_html_a4e0421cd14da7b04d4242318c7de5ece"><div class="ttname"><a href="a00053.html#a4e0421cd14da7b04d4242318c7de5ece">QUESO::BasicPdfsBase::~BasicPdfsBase</a></div><div class="ttdeci">virtual ~BasicPdfsBase()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00397_source.html#l00039">BasicPdfsBase.C:39</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

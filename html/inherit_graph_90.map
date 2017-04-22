@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00130.html" title="QUESO::GpmsaComputerModel\l\&lt; S_V, S_M, D_V, D_M, P\l_V, P_M, Q_V, Q_M \&gt;" alt="" coords="6,5,213,61"/>
+<area shape="rect" id="node1" href="$a00164.html" title="Class for matrix operations (virtual). " alt="" coords="5,56,120,83"/>
+<area shape="rect" id="node2" href="$a00123.html" title="Class for representing block matrices using GSL library. " alt="" coords="169,5,335,32"/>
+<area shape="rect" id="node3" href="$a00124.html" title="Class for matrix operations using GSL library. " alt="" coords="185,56,319,83"/>
+<area shape="rect" id="node4" href="$a00227.html" title="Class for matrix operations using Teuchos (Trilinos). " alt="" coords="170,107,334,133"/>
 </map>

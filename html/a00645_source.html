@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/src/SampledVectorMdf.C Source File</title>
+<title>queso-0.56.2: src/stats/src/VectorCdf.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">SampledVectorMdf.C</div>  </div>
+<div class="title">VectorCdf.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00645.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,78 +75,95 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/SampledVectorMdf.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/VectorCdf.h&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Default constructor -----------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00203.html#ad66c0648ca45526f0912634b2042cba9">   31</a></span>&#160;<a class="code" href="a00203.html#ad66c0648ca45526f0912634b2042cba9">SampledVectorMdf&lt;V,M&gt;::SampledVectorMdf</a>(</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                          prefix,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00027.html">ArrayOfOneDGrids &lt;V,M&gt;</a>&amp; oneDGrids,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00028.html">ArrayOfOneDTables&lt;V,M&gt;</a>&amp; mdfValues)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  :</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="a00048.html">BaseVectorMdf</a>&lt;V,M&gt;(prefix,oneDGrids.rowSpace()),</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  m_oneDGrids(oneDGrids),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_mdfValues(mdfValues)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00048.html#a39fbb4c9b12a0906a6d8c82535c837c7">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00048.html#a39fbb4c9b12a0906a6d8c82535c837c7">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    *<a class="code" href="a00048.html#a39fbb4c9b12a0906a6d8c82535c837c7">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering SampledVectorMdf&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00048.html#ada097dfdcb97838d0bd71a25ed7a4193">m_prefix</a></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00048.html#a39fbb4c9b12a0906a6d8c82535c837c7">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00048.html#a39fbb4c9b12a0906a6d8c82535c837c7">m_env</a>.<a class="code" href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    *<a class="code" href="a00048.html#a39fbb4c9b12a0906a6d8c82535c837c7">m_env</a>.<a class="code" href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving SampledVectorMdf&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00048.html#ada097dfdcb97838d0bd71a25ed7a4193">m_prefix</a></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00203.html#ab1d081a98ca1285a6fc3d29029c3632c">   54</a></span>&#160;<a class="code" href="a00203.html#ab1d081a98ca1285a6fc3d29029c3632c">SampledVectorMdf&lt;V,M&gt;::~SampledVectorMdf</a>()</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// Math methods--------------------------------------</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="a00203.html#af4b8d3c492d7cfb94ac82da8df8779e9">   60</a></span>&#160;<a class="code" href="a00203.html#af4b8d3c492d7cfb94ac82da8df8779e9">SampledVectorMdf&lt;V,M&gt;::values</a>(</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">const</span> V&amp; paramValues,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        V&amp; mdfVec)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a>(<span class="stringliteral">&quot;incomplete code&quot;</span>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// I/O methods---------------------------------------</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="a00203.html#af4a617a8e579abb72bf9d91d7ddb17e0">   70</a></span>&#160;<a class="code" href="a00203.html#af4a617a8e579abb72bf9d91d7ddb17e0">SampledVectorMdf&lt;V,M&gt;::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00047.html#ac7d0efcc78675e5ecc0ec684841c70e2">   31</a></span>&#160;<a class="code" href="a00047.html#ac7d0efcc78675e5ecc0ec684841c70e2">BaseVectorCdf&lt;V,M&gt;::BaseVectorCdf</a>(</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; pdfSupport)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  m_env       (pdfSupport.env()),</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  m_prefix    ((std::string)(prefix)+<span class="stringliteral">&quot;Cdf_&quot;</span>),</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  m_pdfSupport(pdfSupport)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00047.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00047.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    *<a class="code" href="a00047.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering BaseVectorCdf&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00047.html#ac88b657f25153ab6c03bd65b64cada52">m_prefix</a></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00047.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00047.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    *<a class="code" href="a00047.html#aa1effe370ac016f1fc7eaf538c5751a6">m_env</a>.<a class="code" href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving BaseVectorCdf&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00047.html#ac88b657f25153ab6c03bd65b64cada52">m_prefix</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00047.html#a0b3bcef9ed025de3184649c46c72cafb">   53</a></span>&#160;<a class="code" href="a00047.html#a0b3bcef9ed025de3184649c46c72cafb">BaseVectorCdf&lt;V,M&gt;::~BaseVectorCdf</a>()</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// Math methods--------------------------------------</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp;</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="a00047.html#aaf5088d3994606a9d449ccd414509709">   59</a></span>&#160;<a class="code" href="a00047.html#aaf5088d3994606a9d449ccd414509709">BaseVectorCdf&lt;V,M&gt;::pdfSupport</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordflow">return</span> m_pdfSupport;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// I/O methods---------------------------------------</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="a00047.html#acd85c96edf9454b64fe31d6750164dfc">   66</a></span>&#160;<a class="code" href="a00047.html#acd85c96edf9454b64fe31d6750164dfc">BaseVectorCdf&lt;V,M&gt;::subWriteContents</a>(</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">const</span> std::string&amp;            <span class="comment">/* varNamePrefix */</span>,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">const</span> std::string&amp;            <span class="comment">/* fileName */</span>,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">const</span> std::string&amp;            <span class="comment">/* fileType */</span>,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">const</span> std::set&lt;unsigned int&gt;&amp; <span class="comment">/* allowedSubEnvIds */</span>)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// Print values *of* grid points</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  os &lt;&lt; m_oneDGrids;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">// Print *mdf* values *at* grid points</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  os &lt;&lt; m_mdfValues;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00203_html_af4b8d3c492d7cfb94ac82da8df8779e9"><div class="ttname"><a href="a00203.html#af4b8d3c492d7cfb94ac82da8df8779e9">QUESO::SampledVectorMdf::values</a></div><div class="ttdeci">void values(const V &amp;paramValues, V &amp;mdfVec) const </div><div class="ttdoc">TODO: Returns the values of the vector MDF at each element of paramValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00060">SampledVectorMdf.C:60</a></div></div>
-<div class="ttc" id="a00027_html"><div class="ttname"><a href="a00027.html">QUESO::ArrayOfOneDGrids</a></div><div class="ttdoc">Class to accommodate arrays of one-dimensional grid. </div><div class="ttdef"><b>Definition:</b> <a href="a00469_source.html#l00047">ArrayOfOneDGrids.h:47</a></div></div>
-<div class="ttc" id="a00035_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00035.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00320">Environment.C:320</a></div></div>
-<div class="ttc" id="a00048_html_a39fbb4c9b12a0906a6d8c82535c837c7"><div class="ttname"><a href="a00048.html#a39fbb4c9b12a0906a6d8c82535c837c7">QUESO::BaseVectorMdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00577_source.html#l00082">VectorMdf.h:82</a></div></div>
-<div class="ttc" id="a00203_html_ab1d081a98ca1285a6fc3d29029c3632c"><div class="ttname"><a href="a00203.html#ab1d081a98ca1285a6fc3d29029c3632c">QUESO::SampledVectorMdf::~SampledVectorMdf</a></div><div class="ttdeci">~SampledVectorMdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00054">SampledVectorMdf.C:54</a></div></div>
-<div class="ttc" id="a00035_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00035.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00449">Environment.C:449</a></div></div>
-<div class="ttc" id="a00340_html_ae4891e6d45de7b78d62625c0f1aff96a"><div class="ttname"><a href="a00340.html#ae4891e6d45de7b78d62625c0f1aff96a">queso_error_msg</a></div><div class="ttdeci">#define queso_error_msg(msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00047">asserts.h:47</a></div></div>
-<div class="ttc" id="a00203_html_ad66c0648ca45526f0912634b2042cba9"><div class="ttname"><a href="a00203.html#ad66c0648ca45526f0912634b2042cba9">QUESO::SampledVectorMdf::SampledVectorMdf</a></div><div class="ttdeci">SampledVectorMdf(const char *prefix, const ArrayOfOneDGrids&lt; V, M &gt; &amp;oneDGrids, const ArrayOfOneDTables&lt; V, M &gt; &amp;mdfValues)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00031">SampledVectorMdf.C:31</a></div></div>
-<div class="ttc" id="a00203_html_af4a617a8e579abb72bf9d91d7ddb17e0"><div class="ttname"><a href="a00203.html#af4a617a8e579abb72bf9d91d7ddb17e0">QUESO::SampledVectorMdf::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the vector MDF (values of the grid points and of the MDF at such grid points). </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00070">SampledVectorMdf.C:70</a></div></div>
-<div class="ttc" id="a00048_html_ada097dfdcb97838d0bd71a25ed7a4193"><div class="ttname"><a href="a00048.html#ada097dfdcb97838d0bd71a25ed7a4193">QUESO::BaseVectorMdf::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00577_source.html#l00083">VectorMdf.h:83</a></div></div>
-<div class="ttc" id="a00028_html"><div class="ttname"><a href="a00028.html">QUESO::ArrayOfOneDTables</a></div><div class="ttdoc">Class to accommodate arrays of one-dimensional tables. </div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l00049">ArrayOfOneDTables.h:49</a></div></div>
-<div class="ttc" id="a00048_html"><div class="ttname"><a href="a00048.html">QUESO::BaseVectorMdf</a></div><div class="ttdoc">A templated (base) class for handling MDFs of vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00577_source.html#l00052">VectorMdf.h:52</a></div></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  std::cerr &lt;&lt; <span class="stringliteral">&quot;WARNING: BaseVectorCdf&lt;V,M&gt;::subWriteContents() being used...&quot;</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">//---------------------------------------------------</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">// Method outside either class definition------------</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">//---------------------------------------------------</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment"></span><span class="comment">//</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="a00674.html#aa34cd1eb7f035b5e6f8d8c090f02d65f">   84</a></span>&#160;<a class="code" href="a00674.html#aa34cd1eb7f035b5e6f8d8c090f02d65f">horizontalDistances</a>(<span class="keyword">const</span> <a class="code" href="a00047.html">BaseVectorCdf&lt;V,M&gt;</a>&amp; cdf1,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    <span class="keyword">const</span> <a class="code" href="a00047.html">BaseVectorCdf&lt;V,M&gt;</a>&amp; cdf2,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                    <span class="keyword">const</span> V&amp; epsilonVec,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                    V&amp;       distances)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;{</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; cdf1.<a class="code" href="a00047.html#aaf5088d3994606a9d449ccd414509709">pdfSupport</a>().vectorSpace().dimLocal(); ++i) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    distances[i] = <a class="code" href="a00674.html#a389e9373827829b35f2bf36df32d0ef1">horizontalDistance</a>(cdf1.<a class="code" href="a00047.html#aac430df67c3f278eb14b1691b9fedbb2">cdf</a>(i),</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                      cdf2.<a class="code" href="a00047.html#aac430df67c3f278eb14b1691b9fedbb2">cdf</a>(i),</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                                      epsilonVec[i]);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00047_html_ac88b657f25153ab6c03bd65b64cada52"><div class="ttname"><a href="a00047.html#ac88b657f25153ab6c03bd65b64cada52">QUESO::BaseVectorCdf::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00099">VectorCdf.h:99</a></div></div>
+<div class="ttc" id="a00674_html_aa34cd1eb7f035b5e6f8d8c090f02d65f"><div class="ttname"><a href="a00674.html#aa34cd1eb7f035b5e6f8d8c090f02d65f">QUESO::horizontalDistances</a></div><div class="ttdeci">void horizontalDistances(const BaseVectorCdf&lt; V, M &gt; &amp;cdf1, const BaseVectorCdf&lt; V, M &gt; &amp;cdf2, const V &amp;epsilonVec, V &amp;distances)</div><div class="ttdoc">It calculated the maximum horizontal distances between two vector CDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00084">VectorCdf.C:84</a></div></div>
+<div class="ttc" id="a00047_html_aa1effe370ac016f1fc7eaf538c5751a6"><div class="ttname"><a href="a00047.html#aa1effe370ac016f1fc7eaf538c5751a6">QUESO::BaseVectorCdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00098">VectorCdf.h:98</a></div></div>
+<div class="ttc" id="a00047_html_acd85c96edf9454b64fe31d6750164dfc"><div class="ttname"><a href="a00047.html#acd85c96edf9454b64fe31d6750164dfc">QUESO::BaseVectorCdf::subWriteContents</a></div><div class="ttdeci">virtual void subWriteContents(const std::string &amp;varNamePrefix, const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds) const </div><div class="ttdoc">Writes the CDF of an allowed sub-environment to a file. </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00066">VectorCdf.C:66</a></div></div>
+<div class="ttc" id="a00047_html"><div class="ttname"><a href="a00047.html">QUESO::BaseVectorCdf</a></div><div class="ttdoc">A templated (base) class for handling CDFs of vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00559_source.html#l00053">VectorCdf.h:53</a></div></div>
+<div class="ttc" id="a00674_html_a389e9373827829b35f2bf36df32d0ef1"><div class="ttname"><a href="a00674.html#a389e9373827829b35f2bf36df32d0ef1">QUESO::horizontalDistance</a></div><div class="ttdeci">double horizontalDistance(const BaseScalarCdf&lt; T &gt; &amp;cdf1, const BaseScalarCdf&lt; T &gt; &amp;cdf2, double epsilon)</div><div class="ttdoc">It calculated the maximum horizontal distance between two CDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00629_source.html#l00096">ScalarCdf.C:96</a></div></div>
+<div class="ttc" id="a00047_html_a0b3bcef9ed025de3184649c46c72cafb"><div class="ttname"><a href="a00047.html#a0b3bcef9ed025de3184649c46c72cafb">QUESO::BaseVectorCdf::~BaseVectorCdf</a></div><div class="ttdeci">virtual ~BaseVectorCdf()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00053">VectorCdf.C:53</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00047_html_aaf5088d3994606a9d449ccd414509709"><div class="ttname"><a href="a00047.html#aaf5088d3994606a9d449ccd414509709">QUESO::BaseVectorCdf::pdfSupport</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; pdfSupport() const </div><div class="ttdoc">Returns the image set (support) of the PDF; access to protected attribute m_pdfSupport. </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00059">VectorCdf.C:59</a></div></div>
+<div class="ttc" id="a00047_html_aac430df67c3f278eb14b1691b9fedbb2"><div class="ttname"><a href="a00047.html#aac430df67c3f278eb14b1691b9fedbb2">QUESO::BaseVectorCdf::cdf</a></div><div class="ttdeci">virtual const BaseScalarCdf&lt; double &gt; &amp; cdf(unsigned int rowId) const =0</div></div>
+<div class="ttc" id="a00036_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00036.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00320">Environment.C:320</a></div></div>
+<div class="ttc" id="a00036_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00036.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00404_source.html#l00450">Environment.C:450</a></div></div>
+<div class="ttc" id="a00047_html_ac7d0efcc78675e5ecc0ec684841c70e2"><div class="ttname"><a href="a00047.html#ac7d0efcc78675e5ecc0ec684841c70e2">QUESO::BaseVectorCdf::BaseVectorCdf</a></div><div class="ttdeci">BaseVectorCdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;pdfSupport)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00645_source.html#l00031">VectorCdf.C:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

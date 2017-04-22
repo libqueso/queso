@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/gp/inc/SimulationModelOptions.h File Reference</title>
+<title>queso-0.56.2: src/misc/inc/AsciiTable.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,327 +43,41 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_b4cf28f9c7017ae598e01d89fd5623b0.html">gp</a></li><li class="navelem"><a class="el" href="dir_ce64702489dbb32a8d0ac93a35e853be.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_b78c18289fd7719ff0daf45dba9bb4e6.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">SimulationModelOptions.h File Reference</div>  </div>
+<div class="title">AsciiTable.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/Environment.h&gt;</code><br/>
-<code>#include &lt;queso/BoostInputOptionsParser.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for SimulationModelOptions.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00890.png" border="0" usemap="#src_2gp_2inc_2_simulation_model_options_8h" alt=""/></div>
-<map name="src_2gp_2inc_2_simulation_model_options_8h" id="src_2gp_2inc_2_simulation_model_options_8h">
-</map>
-</div>
-</div>
+
+<p>Class to read ASCII values from a table.  
+<a href="#details">More...</a></p>
+
 <p><a href="a00446_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00216.html">QUESO::SmOptionsValues</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00213.html">QUESO::SimulationModelOptions</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html">QUESO::AsciiTable&lt; V, M &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for reading ASCII values from a table in a file.  <a href="a00031.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00688"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html">boost</a></td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00689"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00689.html">boost::program_options</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ae093399982cca0d24b89722d8bcd3611"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#ae093399982cca0d24b89722d8bcd3611">UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE</a>&#160;&#160;&#160;&quot;.&quot;</td></tr>
-<tr class="separator:ae093399982cca0d24b89722d8bcd3611"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe60e805696859c40dd904460936d08e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#abe60e805696859c40dd904460936d08e">UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV</a>&#160;&#160;&#160;<a class="el" href="a00446.html#ae093399982cca0d24b89722d8bcd3611">UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE</a></td></tr>
-<tr class="separator:abe60e805696859c40dd904460936d08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82548b23d7b12932dd04c1c407b4aca6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a82548b23d7b12932dd04c1c407b4aca6">UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a82548b23d7b12932dd04c1c407b4aca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e95c2e336d5d714d5a600189693dc69"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a7e95c2e336d5d714d5a600189693dc69">UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOWED_SET_ODV</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
-<tr class="separator:a7e95c2e336d5d714d5a600189693dc69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a683bcf5595dac9f028d025cf05c9c30a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a683bcf5595dac9f028d025cf05c9c30a">UQ_SIMULATION_MODEL_P_ETA_ODV</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:a683bcf5595dac9f028d025cf05c9c30a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9db40259b132e5570037d9da1ac02e77"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a9db40259b132e5570037d9da1ac02e77">UQ_SIMULATION_MODEL_ZERO_RELATIVE_SINGULAR_VALUE_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a9db40259b132e5570037d9da1ac02e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5221a6d561b4c122250a152bebea95bd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a5221a6d561b4c122250a152bebea95bd">UQ_SIMULATION_MODEL_CDF_THRESHOLD_FOR_P_ETA_ODV</a>&#160;&#160;&#160;1.</td></tr>
-<tr class="separator:a5221a6d561b4c122250a152bebea95bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73043d742f91582222804df81c7b64d5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a73043d742f91582222804df81c7b64d5">UQ_SIMULATION_MODEL_A_W_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a73043d742f91582222804df81c7b64d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04b3a52f036b302507cf7333b4839b00"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a04b3a52f036b302507cf7333b4839b00">UQ_SIMULATION_MODEL_B_W_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a04b3a52f036b302507cf7333b4839b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7d82a5688c9de186997b6f5d54d8f68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#af7d82a5688c9de186997b6f5d54d8f68">UQ_SIMULATION_MODEL_A_RHO_W_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:af7d82a5688c9de186997b6f5d54d8f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a127ca970e319251858928e8c78dc312e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a127ca970e319251858928e8c78dc312e">UQ_SIMULATION_MODEL_B_RHO_W_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a127ca970e319251858928e8c78dc312e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade55ff65941f27c73040fb52aa5df605"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#ade55ff65941f27c73040fb52aa5df605">UQ_SIMULATION_MODEL_A_ETA_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:ade55ff65941f27c73040fb52aa5df605"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaddf1137fb92a637204f972a0023ab32"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#aaddf1137fb92a637204f972a0023ab32">UQ_SIMULATION_MODEL_B_ETA_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:aaddf1137fb92a637204f972a0023ab32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a985b7329d133ea83efcf88bce0fa2d5a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a985b7329d133ea83efcf88bce0fa2d5a">UQ_SIMULATION_MODEL_A_S_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a985b7329d133ea83efcf88bce0fa2d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e653748e46d797bdfcff9b01a1ab1d0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00446.html#a4e653748e46d797bdfcff9b01a1ab1d0">UQ_SIMULATION_MODEL_B_S_ODV</a>&#160;&#160;&#160;0.</td></tr>
-<tr class="separator:a4e653748e46d797bdfcff9b01a1ab1d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a5ba220a2c0a3088e2f591da19eed3cfa"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html#a5ba220a2c0a3088e2f591da19eed3cfa">QUESO::operator&lt;&lt;</a> (std::ostream &amp;os, const SimulationModelOptions &amp;obj)</td></tr>
-<tr class="separator:a5ba220a2c0a3088e2f591da19eed3cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="ade55ff65941f27c73040fb52aa5df605"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_A_ETA_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class to read ASCII values from a table. </p>
 
-<p>Definition at line <a class="el" href="a00446_source.html#l00047">47</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af7d82a5688c9de186997b6f5d54d8f68"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_A_RHO_W_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00045">45</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a985b7329d133ea83efcf88bce0fa2d5a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_A_S_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00049">49</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a73043d742f91582222804df81c7b64d5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_A_W_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00043">43</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aaddf1137fb92a637204f972a0023ab32"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_B_ETA_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00048">48</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a127ca970e319251858928e8c78dc312e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_B_RHO_W_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00046">46</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4e653748e46d797bdfcff9b01a1ab1d0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_B_S_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00050">50</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a04b3a52f036b302507cf7333b4839b00"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_B_W_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00044">44</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5221a6d561b4c122250a152bebea95bd"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_CDF_THRESHOLD_FOR_P_ETA_ODV&#160;&#160;&#160;1.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00042">42</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a82548b23d7b12932dd04c1c407b4aca6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00038">38</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7e95c2e336d5d714d5a600189693dc69"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOWED_SET_ODV&#160;&#160;&#160;&quot;&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00039">39</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abe60e805696859c40dd904460936d08e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV&#160;&#160;&#160;<a class="el" href="a00446.html#ae093399982cca0d24b89722d8bcd3611">UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00037">37</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae093399982cca0d24b89722d8bcd3611"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_FILENAME_FOR_NO_FILE&#160;&#160;&#160;&quot;.&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00034">34</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a683bcf5595dac9f028d025cf05c9c30a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_P_ETA_ODV&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00040">40</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a9db40259b132e5570037d9da1ac02e77"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UQ_SIMULATION_MODEL_ZERO_RELATIVE_SINGULAR_VALUE_ODV&#160;&#160;&#160;0.</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00446_source.html#l00041">41</a> of file <a class="el" href="a00446_source.html">SimulationModelOptions.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00464_source.html#l00415">QUESO::SimulationModelOptions::defineMyOptions()</a>, and <a class="el" href="a00464_source.html#l00072">QUESO::SmOptionsValues::SmOptionsValues()</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<p>Definition in file <a class="el" href="a00446_source.html">AsciiTable.h</a>.</p>
+</div></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -1,2 +1,5 @@
-<map id="src/stats/inc/MonteCarloSG.h" name="src/stats/inc/MonteCarloSG.h">
+<map id="QUESO::MultiDQuadratureBase&lt; V, M &gt;" name="QUESO::MultiDQuadratureBase&lt; V, M &gt;">
+<area shape="rect" id="node3" href="$a00176.html" title="Numerical integration using Monte Carlo. " alt="" coords="5,171,213,213"/>
+<area shape="rect" id="node4" href="$a00226.html" title="Numerical quadrature using a tensor product of Base1DQuadrature rules. " alt="" coords="239,171,465,213"/>
+<area shape="rect" id="node2" href="$a00042.html" title="Base class for quadrature rules. " alt="" coords="145,5,316,32"/>
 </map>

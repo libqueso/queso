@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/inc/ConcatenatedVectorRealizer.h Source File</title>
+<title>queso-0.56.2: src/stats/inc/GaussianVectorRealizer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ConcatenatedVectorRealizer.h</div>  </div>
+<div class="title">GaussianVectorRealizer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00502.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,8 +75,8 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_CONCATENATED_REALIZER_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_CONCATENATED_REALIZER_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GAUSSIAN_REALIZER_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GAUSSIAN_REALIZER_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRealizer.h&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSequence.h&gt;</span></div>
@@ -89,51 +89,83 @@
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Concatenated class [R-11]</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Gaussian class [R-03]</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00063.html">   51</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00063.html">ConcatenatedVectorRealizer</a> : <span class="keyword">public</span> <a class="code" href="a00049.html">BaseVectorRealizer</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00106.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00106.html">GaussianVectorRealizer</a> : <span class="keyword">public</span> <a class="code" href="a00050.html">BaseVectorRealizer</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00063.html#a8a97c764739721d97851285e69b9739a">ConcatenatedVectorRealizer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                           prefix,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                    <span class="keyword">const</span> <a class="code" href="a00049.html">BaseVectorRealizer&lt;V,M&gt;</a>&amp; realizer1,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                    <span class="keyword">const</span> <a class="code" href="a00049.html">BaseVectorRealizer&lt;V,M&gt;</a>&amp; realizer2,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                    <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;V,M&gt;</a>&amp;          <a class="code" href="a00049.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="a00106.html#a853058669a791085bf60362042820601">GaussianVectorRealizer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00050.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                <span class="keyword">const</span> V&amp;                     lawExpVector, <span class="comment">// vector of mean values</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                <span class="keyword">const</span> M&amp;                     lowerCholLawCovMatrix); <span class="comment">// lower triangular matrix resulting from Cholesky decomposition of the covariance matrix</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="a00063.html#a8a97c764739721d97851285e69b9739a">ConcatenatedVectorRealizer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                                                prefix,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                                    <span class="keyword">const</span> std::vector&lt;<span class="keyword">const</span> <a class="code" href="a00049.html">BaseVectorRealizer&lt;V,M&gt;</a>* &gt;&amp; realizers,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                                    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                                               minPeriod,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                                    <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;V,M&gt;</a>&amp;                               unifiedImageSet);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="a00063.html#a661c37a3cd05a88d98ba95cc2780bb81">~ConcatenatedVectorRealizer</a>();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00063.html#afa41c8065e84a5bbfd74a67436ecd889">realization</a>(V&amp; nextValues) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00049.html">BaseVectorRealizer&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00049.html">BaseVectorRealizer&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00049.html">BaseVectorRealizer&lt;V,M&gt;::m_unifiedImageSet</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00049.html">BaseVectorRealizer&lt;V,M&gt;::m_subPeriod</a>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="a00063.html#a1be059d72ef9d1296928d345774e89c7">   84</a></span>&#160;  std::vector&lt;const BaseVectorRealizer&lt;V,M&gt;* &gt; <a class="code" href="a00063.html#a1be059d72ef9d1296928d345774e89c7">m_realizers</a>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="a00106.html#a853058669a791085bf60362042820601">GaussianVectorRealizer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                                <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; unifiedImageSet,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                                <span class="keyword">const</span> V&amp;                     lawExpVector, <span class="comment">// vector of mean values</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                                <span class="keyword">const</span> M&amp;                     matU,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                <span class="keyword">const</span> V&amp;                     vecSsqrt,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                                <span class="keyword">const</span> M&amp;                     matVt);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <a class="code" href="a00106.html#a06b3de43f945bb00c51fa289313f5fe4">~GaussianVectorRealizer</a>();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">const</span> V&amp;   <a class="code" href="a00106.html#aed5160b9059056ed699a43d02b52718f">unifiedLawExpVector</a>        ()              <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">const</span> V&amp;   <a class="code" href="a00106.html#a4e42eda8fa9a5f23eb2cb6963df4eddc">unifiedLawVarVector</a>        ()              <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif // UQ_CONCATENATED_REALIZER_H</span></div>
-<div class="ttc" id="a00049_html_ad958991bab8d6369e8a0d66b22a237d4"><div class="ttname"><a href="a00049.html#ad958991bab8d6369e8a0d66b22a237d4">QUESO::BaseVectorRealizer::unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; unifiedImageSet() const </div><div class="ttdoc">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00665_source.html#l00070">VectorRealizer.C:70</a></div></div>
-<div class="ttc" id="a00063_html_a1be059d72ef9d1296928d345774e89c7"><div class="ttname"><a href="a00063.html#a1be059d72ef9d1296928d345774e89c7">QUESO::ConcatenatedVectorRealizer::m_realizers</a></div><div class="ttdeci">std::vector&lt; const BaseVectorRealizer&lt; V, M &gt; * &gt; m_realizers</div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00084">ConcatenatedVectorRealizer.h:84</a></div></div>
-<div class="ttc" id="a00063_html_a8a97c764739721d97851285e69b9739a"><div class="ttname"><a href="a00063.html#a8a97c764739721d97851285e69b9739a">QUESO::ConcatenatedVectorRealizer::ConcatenatedVectorRealizer</a></div><div class="ttdeci">ConcatenatedVectorRealizer(const char *prefix, const BaseVectorRealizer&lt; V, M &gt; &amp;realizer1, const BaseVectorRealizer&lt; V, M &gt; &amp;realizer2, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00589_source.html#l00033">ConcatenatedVectorRealizer.C:33</a></div></div>
-<div class="ttc" id="a00063_html_a661c37a3cd05a88d98ba95cc2780bb81"><div class="ttname"><a href="a00063.html#a661c37a3cd05a88d98ba95cc2780bb81">QUESO::ConcatenatedVectorRealizer::~ConcatenatedVectorRealizer</a></div><div class="ttdeci">~ConcatenatedVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00589_source.html#l00074">ConcatenatedVectorRealizer.C:74</a></div></div>
-<div class="ttc" id="a00063_html"><div class="ttname"><a href="a00063.html">QUESO::ConcatenatedVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from concatenated probability density distributions. </div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00051">ConcatenatedVectorRealizer.h:51</a></div></div>
-<div class="ttc" id="a00246_html"><div class="ttname"><a href="a00246.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00049_html"><div class="ttname"><a href="a00049.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00578_source.html#l00049">VectorRealizer.h:49</a></div></div>
-<div class="ttc" id="a00063_html_afa41c8065e84a5bbfd74a67436ecd889"><div class="ttname"><a href="a00063.html#afa41c8065e84a5bbfd74a67436ecd889">QUESO::ConcatenatedVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdoc">Performs a realization (sample) from a probability density function. See template specialization...</div><div class="ttdef"><b>Definition:</b> <a href="a00589_source.html#l00080">ConcatenatedVectorRealizer.C:80</a></div></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00106.html#ad001b06fe7dab455507df0eb19494518">realization</a>                (V&amp; nextValues) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00106.html#a04b1533c8f182d0705e5bb3309f3bb74">updateLawExpVector</a>         (<span class="keyword">const</span> V&amp; newLawExpVector);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00106.html#a560a5c29ea7dfe62c55615e0c619711b">updateLowerCholLawCovMatrix</a>(<span class="keyword">const</span> M&amp; newLowerCholLawCovMatrix);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00106.html#a560a5c29ea7dfe62c55615e0c619711b">updateLowerCholLawCovMatrix</a>(<span class="keyword">const</span> M&amp; matU,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;           <span class="keyword">const</span> V&amp; vecSsqrt,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;           <span class="keyword">const</span> M&amp; matVt);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="a00106.html#ae1e6e0b9c268ced4a2192a9bcbd37668">  109</a></span>&#160;  V* <a class="code" href="a00106.html#ae1e6e0b9c268ced4a2192a9bcbd37668">m_unifiedLawExpVector</a>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="a00106.html#a80276355d3e24953ed7be0749a554d85">  110</a></span>&#160;  V* <a class="code" href="a00106.html#a80276355d3e24953ed7be0749a554d85">m_unifiedLawVarVector</a>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="a00106.html#ac5cc90b95dddd02a987f45af652f4495">  111</a></span>&#160;  M* <a class="code" href="a00106.html#ac5cc90b95dddd02a987f45af652f4495">m_lowerCholLawCovMatrix</a>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="a00106.html#a62aebd74fe00824ceed9724b8c41cfa7">  112</a></span>&#160;  M* <a class="code" href="a00106.html#a62aebd74fe00824ceed9724b8c41cfa7">m_matU</a>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="a00106.html#a473a7c1e61dd0b311bb7da6c244cb53d">  113</a></span>&#160;  V* <a class="code" href="a00106.html#a473a7c1e61dd0b311bb7da6c244cb53d">m_vecSsqrt</a>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="a00106.html#aa121afe8cf67cea2a52552b4d12d57b8">  114</a></span>&#160;  M* <a class="code" href="a00106.html#aa121afe8cf67cea2a52552b4d12d57b8">m_matVt</a>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRealizer&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRealizer&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRealizer&lt;V,M&gt;::m_unifiedImageSet</a>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00050.html">BaseVectorRealizer&lt;V,M&gt;::m_subPeriod</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;};</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif // UQ_GAUSSIAN_REALIZER_H</span></div>
+<div class="ttc" id="a00106_html_a04b1533c8f182d0705e5bb3309f3bb74"><div class="ttname"><a href="a00106.html#a04b1533c8f182d0705e5bb3309f3bb74">QUESO::GaussianVectorRealizer::updateLawExpVector</a></div><div class="ttdeci">void updateLawExpVector(const V &amp;newLawExpVector)</div><div class="ttdoc">Updates the mean with the new value newLawExpVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00590_source.html#l00146">GaussianVectorRealizer.C:146</a></div></div>
+<div class="ttc" id="a00106_html_ac5cc90b95dddd02a987f45af652f4495"><div class="ttname"><a href="a00106.html#ac5cc90b95dddd02a987f45af652f4495">QUESO::GaussianVectorRealizer::m_lowerCholLawCovMatrix</a></div><div class="ttdeci">M * m_lowerCholLawCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00111">GaussianVectorRealizer.h:111</a></div></div>
+<div class="ttc" id="a00106_html_a80276355d3e24953ed7be0749a554d85"><div class="ttname"><a href="a00106.html#a80276355d3e24953ed7be0749a554d85">QUESO::GaussianVectorRealizer::m_unifiedLawVarVector</a></div><div class="ttdeci">V * m_unifiedLawVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00110">GaussianVectorRealizer.h:110</a></div></div>
+<div class="ttc" id="a00050_html"><div class="ttname"><a href="a00050.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00562_source.html#l00049">VectorRealizer.h:49</a></div></div>
+<div class="ttc" id="a00106_html"><div class="ttname"><a href="a00106.html">QUESO::GaussianVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from Gaussian probability density distributions. </div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00048">GaussianVectorRealizer.h:48</a></div></div>
+<div class="ttc" id="a00106_html_a62aebd74fe00824ceed9724b8c41cfa7"><div class="ttname"><a href="a00106.html#a62aebd74fe00824ceed9724b8c41cfa7">QUESO::GaussianVectorRealizer::m_matU</a></div><div class="ttdeci">M * m_matU</div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00112">GaussianVectorRealizer.h:112</a></div></div>
+<div class="ttc" id="a00106_html_a4e42eda8fa9a5f23eb2cb6963df4eddc"><div class="ttname"><a href="a00106.html#a4e42eda8fa9a5f23eb2cb6963df4eddc">QUESO::GaussianVectorRealizer::unifiedLawVarVector</a></div><div class="ttdeci">const V &amp; unifiedLawVarVector() const </div><div class="ttdoc">Access to the vector of variance values and private attribute: m_unifiedLawVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00590_source.html#l00113">GaussianVectorRealizer.C:113</a></div></div>
+<div class="ttc" id="a00106_html_aa121afe8cf67cea2a52552b4d12d57b8"><div class="ttname"><a href="a00106.html#aa121afe8cf67cea2a52552b4d12d57b8">QUESO::GaussianVectorRealizer::m_matVt</a></div><div class="ttdeci">M * m_matVt</div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00114">GaussianVectorRealizer.h:114</a></div></div>
+<div class="ttc" id="a00106_html_ad001b06fe7dab455507df0eb19494518"><div class="ttname"><a href="a00106.html#ad001b06fe7dab455507df0eb19494518">QUESO::GaussianVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdoc">Draws a realization. </div><div class="ttdef"><b>Definition:</b> <a href="a00590_source.html#l00120">GaussianVectorRealizer.C:120</a></div></div>
+<div class="ttc" id="a00106_html_aed5160b9059056ed699a43d02b52718f"><div class="ttname"><a href="a00106.html#aed5160b9059056ed699a43d02b52718f">QUESO::GaussianVectorRealizer::unifiedLawExpVector</a></div><div class="ttdeci">const V &amp; unifiedLawExpVector() const </div><div class="ttdoc">Access to the vector of mean values and private attribute: m_unifiedLawExpVector. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00590_source.html#l00106">GaussianVectorRealizer.C:106</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00106_html_a473a7c1e61dd0b311bb7da6c244cb53d"><div class="ttname"><a href="a00106.html#a473a7c1e61dd0b311bb7da6c244cb53d">QUESO::GaussianVectorRealizer::m_vecSsqrt</a></div><div class="ttdeci">V * m_vecSsqrt</div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00113">GaussianVectorRealizer.h:113</a></div></div>
+<div class="ttc" id="a00106_html_a853058669a791085bf60362042820601"><div class="ttname"><a href="a00106.html#a853058669a791085bf60362042820601">QUESO::GaussianVectorRealizer::GaussianVectorRealizer</a></div><div class="ttdeci">GaussianVectorRealizer(const char *prefix, const VectorSet&lt; V, M &gt; &amp;unifiedImageSet, const V &amp;lawExpVector, const M &amp;lowerCholLawCovMatrix)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00590_source.html#l00034">GaussianVectorRealizer.C:34</a></div></div>
+<div class="ttc" id="a00106_html_a06b3de43f945bb00c51fa289313f5fe4"><div class="ttname"><a href="a00106.html#a06b3de43f945bb00c51fa289313f5fe4">QUESO::GaussianVectorRealizer::~GaussianVectorRealizer</a></div><div class="ttdeci">~GaussianVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00590_source.html#l00094">GaussianVectorRealizer.C:94</a></div></div>
+<div class="ttc" id="a00106_html_a560a5c29ea7dfe62c55615e0c619711b"><div class="ttname"><a href="a00106.html#a560a5c29ea7dfe62c55615e0c619711b">QUESO::GaussianVectorRealizer::updateLowerCholLawCovMatrix</a></div><div class="ttdeci">void updateLowerCholLawCovMatrix(const M &amp;newLowerCholLawCovMatrix)</div><div class="ttdoc">Updates the lower triangular matrix from Cholesky decomposition of the covariance matrix to the new v...</div><div class="ttdef"><b>Definition:</b> <a href="a00590_source.html#l00158">GaussianVectorRealizer.C:158</a></div></div>
+<div class="ttc" id="a00050_html_ad958991bab8d6369e8a0d66b22a237d4"><div class="ttname"><a href="a00050.html#ad958991bab8d6369e8a0d66b22a237d4">QUESO::BaseVectorRealizer::unifiedImageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; unifiedImageSet() const </div><div class="ttdoc">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00648_source.html#l00070">VectorRealizer.C:70</a></div></div>
+<div class="ttc" id="a00106_html_ae1e6e0b9c268ced4a2192a9bcbd37668"><div class="ttname"><a href="a00106.html#ae1e6e0b9c268ced4a2192a9bcbd37668">QUESO::GaussianVectorRealizer::m_unifiedLawExpVector</a></div><div class="ttdeci">V * m_unifiedLawExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00502_source.html#l00109">GaussianVectorRealizer.h:109</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

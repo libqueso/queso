@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/OptimizerMonitor.h Source File</title>
+<title>queso-0.56.2: src/core/inc/Map.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">OptimizerMonitor.h</div>  </div>
+<div class="title">Map.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00371.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,74 +75,92 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_OPTIMIZER_MONITOR_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_OPTIMIZER_MONITOR_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_MAP_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_MAP_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">class </span>BaseEnvironment;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;Epetra_Map.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/MpiComm.h&gt;</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00189.html">   36</a></span>&#160;  <span class="keyword">class </span><a class="code" href="a00189.html">OptimizerMonitor</a></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="a00189.html#af410f10bf0a08688797820b7409ed9a4">OptimizerMonitor</a>( <span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; env, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_iters = 100 );</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="a00189.html#a9598b08479dc941ee342a1973e3544f1">~OptimizerMonitor</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00189.html#ab22352864f5b814c41e7faa26e4e815c">set_display_output</a>( <span class="keywordtype">bool</span> enable_output, <span class="keywordtype">bool</span> print_xmin );</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00162.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00162.html">Map</a></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00162.html#acce20c97c69af851cbf67386beb133b2">Map</a>(<span class="keywordtype">int</span>                   numGlobalElements,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;             <span class="keywordtype">int</span>                   indexBase,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;             <span class="keyword">const</span> <a class="code" href="a00179.html">MpiComm</a>&amp; comm);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00189.html#a983780b8d56263da2616b7a5aaea3d55">append</a>( std::vector&lt;double&gt;&amp; x_min, <span class="keywordtype">double</span> objective, <span class="keywordtype">double</span> norm );</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="a00162.html#acce20c97c69af851cbf67386beb133b2">Map</a>(<span class="keyword">const</span> <a class="code" href="a00162.html">Map</a>&amp; src);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00189.html#a63055f66b67ccce3366e4d1d73469395">reset</a>();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00189.html#a2537f02d9f0aba65b352efbb6cf3c21a">print</a>( std::ostream&amp; output, <span class="keywordtype">bool</span> print_xmin = <span class="keyword">false</span> ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; <a class="code" href="a00162.html#a280330a2d8fc1694461f09941a443b4e">~Map</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="a00162.html">Map</a>&amp; <a class="code" href="a00162.html#afb3d6d9dc20139964090478678194359">operator= </a>(<span class="keyword">const</span> <a class="code" href="a00162.html">Map</a>&amp; rhs);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00189.html#aaf287f2f11d69258832f2b884ecdc886">   75</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; <a class="code" href="a00189.html#aaf287f2f11d69258832f2b884ecdc886">m_env</a>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00189.html#a7e9ebefbc74538272c7e8993f8970d72">   77</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="a00189.html#a7e9ebefbc74538272c7e8993f8970d72">m_display_conv</a>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00189.html#acd3e9ae818e82af894cebd0fba681f3f">   78</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="a00189.html#acd3e9ae818e82af894cebd0fba681f3f">m_print_xmin</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="a00189.html#ad751b5fa114dfd743309276230d0fe2a">   80</a></span>&#160;    std::vector&lt;std::vector&lt;double&gt; &gt; <a class="code" href="a00189.html#ad751b5fa114dfd743309276230d0fe2a">m_minimizer_hist</a>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00189.html#a946b348ed297ce8a5f32cdabdaca54f4">   81</a></span>&#160;    std::vector&lt;double&gt; <a class="code" href="a00189.html#a946b348ed297ce8a5f32cdabdaca54f4">m_objective_hist</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00189.html#aa321ff2a1f1a4af3965e1341ec2225e3">   82</a></span>&#160;    std::vector&lt;double&gt; <a class="code" href="a00189.html#aa321ff2a1f1a4af3965e1341ec2225e3">m_norm_hist</a>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00189.html#a726b0a5557d308b3078e5eb3013a7236">print_header</a>( std::ostream&amp; output, <span class="keywordtype">bool</span> print_xmin ) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00189.html#a19991944635b5001daf8d5fdf600ef00">print_iteration</a>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> iter, std::ostream&amp; output,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                          <span class="keywordtype">bool</span> print_xmin ) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  };</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">int</span>                   <a class="code" href="a00162.html#ac67907266dcd7108ffe5a0cbef908781">NumGlobalElements</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">int</span>                   <a class="code" href="a00162.html#a83f67cf2643489a45ef0e515d814c89d">IndexBase</a>        () <span class="keyword">const</span>;<span class="comment">//1st position in the global processor in my processors</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">int</span>                   <a class="code" href="a00162.html#a6407f6d6a6df8a0a40923c8dc524b021">NumMyElements</a>    () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">int</span>                   <a class="code" href="a00162.html#a686b1ea15e0aa9a5de9d6a03456be4a9">MinMyGID</a>         () <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;} <span class="comment">// end namespace QUESO</span></div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif // UQ_OPTIMIZER_MONITOR_H</span></div>
-<div class="ttc" id="a00189_html_a9598b08479dc941ee342a1973e3544f1"><div class="ttname"><a href="a00189.html#a9598b08479dc941ee342a1973e3544f1">QUESO::OptimizerMonitor::~OptimizerMonitor</a></div><div class="ttdeci">~OptimizerMonitor()</div><div class="ttdef"><b>Definition:</b> <a href="a00416_source.html#l00044">OptimizerMonitor.C:44</a></div></div>
-<div class="ttc" id="a00189_html_a983780b8d56263da2616b7a5aaea3d55"><div class="ttname"><a href="a00189.html#a983780b8d56263da2616b7a5aaea3d55">QUESO::OptimizerMonitor::append</a></div><div class="ttdeci">void append(std::vector&lt; double &gt; &amp;x_min, double objective, double norm)</div><div class="ttdoc">Add current value of minimizer, objective, and error norm. </div><div class="ttdef"><b>Definition:</b> <a href="a00416_source.html#l00053">OptimizerMonitor.C:53</a></div></div>
-<div class="ttc" id="a00189_html_aa321ff2a1f1a4af3965e1341ec2225e3"><div class="ttname"><a href="a00189.html#aa321ff2a1f1a4af3965e1341ec2225e3">QUESO::OptimizerMonitor::m_norm_hist</a></div><div class="ttdeci">std::vector&lt; double &gt; m_norm_hist</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00082">OptimizerMonitor.h:82</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00189_html_a946b348ed297ce8a5f32cdabdaca54f4"><div class="ttname"><a href="a00189.html#a946b348ed297ce8a5f32cdabdaca54f4">QUESO::OptimizerMonitor::m_objective_hist</a></div><div class="ttdeci">std::vector&lt; double &gt; m_objective_hist</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00081">OptimizerMonitor.h:81</a></div></div>
-<div class="ttc" id="a00189_html_ad751b5fa114dfd743309276230d0fe2a"><div class="ttname"><a href="a00189.html#ad751b5fa114dfd743309276230d0fe2a">QUESO::OptimizerMonitor::m_minimizer_hist</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; double &gt; &gt; m_minimizer_hist</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00080">OptimizerMonitor.h:80</a></div></div>
-<div class="ttc" id="a00189_html_af410f10bf0a08688797820b7409ed9a4"><div class="ttname"><a href="a00189.html#af410f10bf0a08688797820b7409ed9a4">QUESO::OptimizerMonitor::OptimizerMonitor</a></div><div class="ttdeci">OptimizerMonitor(const BaseEnvironment &amp;env, unsigned int n_iters=100)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00416_source.html#l00034">OptimizerMonitor.C:34</a></div></div>
-<div class="ttc" id="a00189_html_ab22352864f5b814c41e7faa26e4e815c"><div class="ttname"><a href="a00189.html#ab22352864f5b814c41e7faa26e4e815c">QUESO::OptimizerMonitor::set_display_output</a></div><div class="ttdeci">void set_display_output(bool enable_output, bool print_xmin)</div><div class="ttdoc">Enabling output to std::cout everytime append is called. </div><div class="ttdef"><b>Definition:</b> <a href="a00416_source.html#l00047">OptimizerMonitor.C:47</a></div></div>
-<div class="ttc" id="a00189_html_a7e9ebefbc74538272c7e8993f8970d72"><div class="ttname"><a href="a00189.html#a7e9ebefbc74538272c7e8993f8970d72">QUESO::OptimizerMonitor::m_display_conv</a></div><div class="ttdeci">bool m_display_conv</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00077">OptimizerMonitor.h:77</a></div></div>
-<div class="ttc" id="a00189_html_a19991944635b5001daf8d5fdf600ef00"><div class="ttname"><a href="a00189.html#a19991944635b5001daf8d5fdf600ef00">QUESO::OptimizerMonitor::print_iteration</a></div><div class="ttdeci">void print_iteration(unsigned int iter, std::ostream &amp;output, bool print_xmin) const </div><div class="ttdef"><b>Definition:</b> <a href="a00416_source.html#l00106">OptimizerMonitor.C:106</a></div></div>
-<div class="ttc" id="a00189_html_a726b0a5557d308b3078e5eb3013a7236"><div class="ttname"><a href="a00189.html#a726b0a5557d308b3078e5eb3013a7236">QUESO::OptimizerMonitor::print_header</a></div><div class="ttdeci">void print_header(std::ostream &amp;output, bool print_xmin) const </div><div class="ttdef"><b>Definition:</b> <a href="a00416_source.html#l00076">OptimizerMonitor.C:76</a></div></div>
-<div class="ttc" id="a00189_html_aaf287f2f11d69258832f2b884ecdc886"><div class="ttname"><a href="a00189.html#aaf287f2f11d69258832f2b884ecdc886">QUESO::OptimizerMonitor::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00075">OptimizerMonitor.h:75</a></div></div>
-<div class="ttc" id="a00189_html_a63055f66b67ccce3366e4d1d73469395"><div class="ttname"><a href="a00189.html#a63055f66b67ccce3366e4d1d73469395">QUESO::OptimizerMonitor::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Clears internal datastructures and resets display variables to false. </div><div class="ttdef"><b>Definition:</b> <a href="a00416_source.html#l00137">OptimizerMonitor.C:137</a></div></div>
-<div class="ttc" id="a00189_html"><div class="ttname"><a href="a00189.html">QUESO::OptimizerMonitor</a></div><div class="ttdoc">Object to monitor convergence of optimizers. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00036">OptimizerMonitor.h:36</a></div></div>
-<div class="ttc" id="a00189_html_a2537f02d9f0aba65b352efbb6cf3c21a"><div class="ttname"><a href="a00189.html#a2537f02d9f0aba65b352efbb6cf3c21a">QUESO::OptimizerMonitor::print</a></div><div class="ttdeci">void print(std::ostream &amp;output, bool print_xmin=false) const </div><div class="ttdoc">Prints entire convergence history. </div><div class="ttdef"><b>Definition:</b> <a href="a00416_source.html#l00147">OptimizerMonitor.C:147</a></div></div>
-<div class="ttc" id="a00189_html_acd3e9ae818e82af894cebd0fba681f3f"><div class="ttname"><a href="a00189.html#acd3e9ae818e82af894cebd0fba681f3f">QUESO::OptimizerMonitor::m_print_xmin</a></div><div class="ttdeci">bool m_print_xmin</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00078">OptimizerMonitor.h:78</a></div></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00179.html">MpiComm</a>&amp; <a class="code" href="a00162.html#aab4fc9911156b61c51f905849e3c9856">Comm</a>             () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor"></span>  <span class="keyword">const</span> Epetra_Map&amp;     <a class="code" href="a00162.html#a717d14c9cfef5fc54208a5e5162d1506">epetraMap</a>        () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <a class="code" href="a00162.html#acce20c97c69af851cbf67386beb133b2">Map</a>();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">void</span>                  <a class="code" href="a00162.html#a2ed4b24e922e77695d85de7fd4e9042a">copy</a>             (<span class="keyword">const</span> <a class="code" href="a00162.html">Map</a>&amp; src);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="a00162.html#aa002700b90ae2edbf5b3ee6968b28c50">  109</a></span>&#160;  <a class="code" href="a00179.html">MpiComm</a> <a class="code" href="a00162.html#aa002700b90ae2edbf5b3ee6968b28c50">m_MpiComm</a>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#ifdef QUESO_HAS_TRILINOS</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor"></span>  Epetra_Map*    <a class="code" href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">m_epetraMap</a>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor"></span>  <span class="keywordtype">int</span>            <a class="code" href="a00162.html#a67c0e876f9c6e9dcf9eba45d34c02b0a">m_numGlobalElements</a>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="a00162.html#a26b42eedd432d109ac0e349eff15da29">  119</a></span>&#160;  <span class="keywordtype">int</span>            <a class="code" href="a00162.html#a26b42eedd432d109ac0e349eff15da29">m_indexBase</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="a00162.html#afdde1747848ac8dd3cebf8eed159de82">  122</a></span>&#160;  <span class="keywordtype">int</span>            <a class="code" href="a00162.html#afdde1747848ac8dd3cebf8eed159de82">m_numMyElements</a>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor"></span>};</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif // UQ_MAP_H</span></div>
+<div class="ttc" id="a00162_html_afdde1747848ac8dd3cebf8eed159de82"><div class="ttname"><a href="a00162.html#afdde1747848ac8dd3cebf8eed159de82">QUESO::Map::m_numMyElements</a></div><div class="ttdeci">int m_numMyElements</div><div class="ttdoc">Number of elements owned by the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00122">Map.h:122</a></div></div>
+<div class="ttc" id="a00162_html_ac67907266dcd7108ffe5a0cbef908781"><div class="ttname"><a href="a00162.html#ac67907266dcd7108ffe5a0cbef908781">QUESO::Map::NumGlobalElements</a></div><div class="ttdeci">int NumGlobalElements() const </div><div class="ttdoc">Returns the total number of elements across all processors. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00085">Map.C:85</a></div></div>
+<div class="ttc" id="a00162_html_a686b1ea15e0aa9a5de9d6a03456be4a9"><div class="ttname"><a href="a00162.html#a686b1ea15e0aa9a5de9d6a03456be4a9">QUESO::Map::MinMyGID</a></div><div class="ttdeci">int MinMyGID() const </div><div class="ttdoc">The minimum global index value on the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00118">Map.C:118</a></div></div>
+<div class="ttc" id="a00162_html"><div class="ttname"><a href="a00162.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00049">Map.h:49</a></div></div>
+<div class="ttc" id="a00179_html"><div class="ttname"><a href="a00179.html">QUESO::MpiComm</a></div><div class="ttdoc">The QUESO MPI Communicator Class. </div><div class="ttdef"><b>Definition:</b> <a href="a00373_source.html#l00203">MpiComm.h:203</a></div></div>
+<div class="ttc" id="a00162_html_a2ed4b24e922e77695d85de7fd4e9042a"><div class="ttname"><a href="a00162.html#a2ed4b24e922e77695d85de7fd4e9042a">QUESO::Map::copy</a></div><div class="ttdeci">void copy(const Map &amp;src)</div><div class="ttdoc">Copies the map. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00146">Map.C:146</a></div></div>
+<div class="ttc" id="a00162_html_a83f67cf2643489a45ef0e515d814c89d"><div class="ttname"><a href="a00162.html#a83f67cf2643489a45ef0e515d814c89d">QUESO::Map::IndexBase</a></div><div class="ttdeci">int IndexBase() const </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00096">Map.C:96</a></div></div>
+<div class="ttc" id="a00162_html_a5e425bf1687adba1f0c973966109f9d0"><div class="ttname"><a href="a00162.html#a5e425bf1687adba1f0c973966109f9d0">QUESO::Map::m_epetraMap</a></div><div class="ttdeci">Epetra_Map * m_epetraMap</div><div class="ttdoc">Epetra_Map. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00113">Map.h:113</a></div></div>
+<div class="ttc" id="a00162_html_afb3d6d9dc20139964090478678194359"><div class="ttname"><a href="a00162.html#afb3d6d9dc20139964090478678194359">QUESO::Map::operator=</a></div><div class="ttdeci">Map &amp; operator=(const Map &amp;rhs)</div><div class="ttdoc">Assignment operator. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00076">Map.C:76</a></div></div>
+<div class="ttc" id="a00162_html_aa002700b90ae2edbf5b3ee6968b28c50"><div class="ttname"><a href="a00162.html#aa002700b90ae2edbf5b3ee6968b28c50">QUESO::Map::m_MpiComm</a></div><div class="ttdeci">MpiComm m_MpiComm</div><div class="ttdoc">This communicator can be queried for processor rank and size information. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00109">Map.h:109</a></div></div>
+<div class="ttc" id="a00162_html_aab4fc9911156b61c51f905849e3c9856"><div class="ttname"><a href="a00162.html#aab4fc9911156b61c51f905849e3c9856">QUESO::Map::Comm</a></div><div class="ttdeci">const MpiComm &amp; Comm() const </div><div class="ttdoc">Access function for MpiComm communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00131">Map.C:131</a></div></div>
+<div class="ttc" id="a00162_html_a717d14c9cfef5fc54208a5e5162d1506"><div class="ttname"><a href="a00162.html#a717d14c9cfef5fc54208a5e5162d1506">QUESO::Map::epetraMap</a></div><div class="ttdeci">const Epetra_Map &amp; epetraMap() const </div><div class="ttdoc">Trilinos Epetra_Map: A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00138">Map.C:138</a></div></div>
+<div class="ttc" id="a00162_html_a67c0e876f9c6e9dcf9eba45d34c02b0a"><div class="ttname"><a href="a00162.html#a67c0e876f9c6e9dcf9eba45d34c02b0a">QUESO::Map::m_numGlobalElements</a></div><div class="ttdeci">int m_numGlobalElements</div><div class="ttdoc">Total number of elements across all processors. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00116">Map.h:116</a></div></div>
+<div class="ttc" id="a00162_html_a6407f6d6a6df8a0a40923c8dc524b021"><div class="ttname"><a href="a00162.html#a6407f6d6a6df8a0a40923c8dc524b021">QUESO::Map::NumMyElements</a></div><div class="ttdeci">int NumMyElements() const </div><div class="ttdoc">Returns the number of elements owned by the calling processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00107">Map.C:107</a></div></div>
+<div class="ttc" id="a00162_html_a280330a2d8fc1694461f09941a443b4e"><div class="ttname"><a href="a00162.html#a280330a2d8fc1694461f09941a443b4e">QUESO::Map::~Map</a></div><div class="ttdeci">~Map()</div><div class="ttdoc">Destructor. </div></div>
+<div class="ttc" id="a00162_html_a26b42eedd432d109ac0e349eff15da29"><div class="ttname"><a href="a00162.html#a26b42eedd432d109ac0e349eff15da29">QUESO::Map::m_indexBase</a></div><div class="ttdeci">int m_indexBase</div><div class="ttdoc">Base integer value for indexed array references. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00119">Map.h:119</a></div></div>
+<div class="ttc" id="a00162_html_acce20c97c69af851cbf67386beb133b2"><div class="ttname"><a href="a00162.html#acce20c97c69af851cbf67386beb133b2">QUESO::Map::Map</a></div><div class="ttdeci">Map()</div><div class="ttdoc">Default constructor. Do not call this directly. </div><div class="ttdef"><b>Definition:</b> <a href="a00420_source.html#l00063">Map.C:63</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

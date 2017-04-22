@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/basic/src/GenericScalarFunction.C Source File</title>
+<title>queso-0.56.2: src/basic/src/ConstantScalarFunction.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GenericScalarFunction.C</div>  </div>
+<div class="title">ConstantScalarFunction.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00286.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,99 +75,62 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSubset.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/GenericScalarFunction.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// Default constructor</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00123.html#a4619abc294e9703b564b4c034211f078">   39</a></span>&#160;<a class="code" href="a00123.html#a4619abc294e9703b564b4c034211f078">GenericScalarFunction&lt;V,M&gt;::GenericScalarFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* prefix,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00246.html">VectorSet&lt;V,M&gt;</a>&amp; domainSet,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">double</span> (*valueRoutinePtr)(<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, <span class="keyword">const</span> <span class="keywordtype">void</span>* routinesDataPtr, V* gradVector, M* hessianMatrix, V* hessianEffect),</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">void</span>* routinesDataPtr,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">bool</span> routineIsForLn)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  : <a class="code" href="a00044.html">BaseScalarFunction</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;gen&quot;</span>).c_str(), domainSet),</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    m_valueRoutinePtr             (valueRoutinePtr),</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    m_routinesDataPtr             (routinesDataPtr),</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    m_routineIsForLn              (routineIsForLn)</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// Destructor</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00123.html#ae88df82626c01d80179d6380c5c3dcf0">   53</a></span>&#160;<a class="code" href="a00123.html#ae88df82626c01d80179d6380c5c3dcf0">GenericScalarFunction&lt;V,M&gt;::~GenericScalarFunction</a>()</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">// Math methods</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="a00123.html#a8629ec7c184b58254b147294e52e8c4c">   59</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="a00123.html#a8629ec7c184b58254b147294e52e8c4c">GenericScalarFunction&lt;V,M&gt;::actualValue</a>(<span class="keyword">const</span> V&amp; domainVector,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">const</span> V* domainDirection,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    V* gradVector,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    M* hessianMatrix,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    V* hessianEffect)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(m_valueRoutinePtr, <span class="stringliteral">&quot;m_valueRoutinePtr = NULL&quot;</span>);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">double</span> value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">if</span> (m_routineIsForLn) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    value = std::exp(value);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSubset.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/ConstantScalarFunction.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// Default constructor</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00070.html#a678cb62f30857415abcb1f0a18ad9a9b">   35</a></span>&#160;<a class="code" href="a00070.html#a678cb62f30857415abcb1f0a18ad9a9b">ConstantScalarFunction&lt;V,M&gt;::ConstantScalarFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* prefix,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;V,M&gt;</a>&amp; domainSet,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">double</span> constantValue)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  : <a class="code" href="a00045.html">BaseScalarFunction</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;gen&quot;</span>).c_str(), domainSet),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    m_constantValue(constantValue)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// Destructor</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00070.html#ab64b8406ba428ac948013bd5458d6410">   45</a></span>&#160;<a class="code" href="a00070.html#ab64b8406ba428ac948013bd5458d6410">ConstantScalarFunction&lt;V,M&gt;::~ConstantScalarFunction</a>()</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// Math methods</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00070.html#a36f58555d9d88c4785297bf72fb5a9f1">   51</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="a00070.html#a36f58555d9d88c4785297bf72fb5a9f1">ConstantScalarFunction&lt;V,M&gt;::actualValue</a>(<span class="keyword">const</span> V&amp; domainVector,</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">const</span> V* domainDirection,</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    V* gradVector,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    M* hessianMatrix,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    V* hessianEffect)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">return</span> m_constantValue;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="a00070.html#acf0fb2fe0c7dbe30bec6782c94e2a9e3">   62</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="a00070.html#acf0fb2fe0c7dbe30bec6782c94e2a9e3">ConstantScalarFunction&lt;V,M&gt;::lnValue</a>(<span class="keyword">const</span> V&amp; domainVector,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">const</span> V* domainDirection,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    V* gradVector,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    M* hessianMatrix,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    V* hessianEffect)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">return</span> 0.;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">if</span> ((domainDirection != NULL) ||</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        (gradVector      != NULL) ||</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        (hessianMatrix   != NULL) ||</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        (hessianEffect   != NULL))</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <a class="code" href="a00340.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V,<span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00123.html#a0e93bae1ceb42049353e798a8866fd77">   82</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="a00123.html#a0e93bae1ceb42049353e798a8866fd77">GenericScalarFunction&lt;V,M&gt;::lnValue</a>(<span class="keyword">const</span> V&amp; domainVector,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">const</span> V* domainDirection,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    V* gradVector,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    M* hessianMatrix,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    V* hessianEffect)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <a class="code" href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a>(m_valueRoutinePtr, <span class="stringliteral">&quot;m_valueRoutinePtr = NULL&quot;</span>);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">double</span> value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">if</span> (m_routineIsForLn == <span class="keyword">false</span>) {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    value = log(value);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">if</span> ((domainDirection != NULL) ||</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        (gradVector      != NULL) ||</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        (hessianMatrix   != NULL) ||</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        (hessianEffect   != NULL))</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <a class="code" href="a00340.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>();</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00123.html">QUESO::GenericScalarFunction&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00269_source.html#l00051">ScalarFunction.h:51</a></div></div>
-<div class="ttc" id="a00123_html"><div class="ttname"><a href="a00123.html">QUESO::GenericScalarFunction</a></div><div class="ttdoc">A class for handling generic scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00265_source.html#l00046">GenericScalarFunction.h:46</a></div></div>
-<div class="ttc" id="a00123_html_a8629ec7c184b58254b147294e52e8c4c"><div class="ttname"><a href="a00123.html#a8629ec7c184b58254b147294e52e8c4c">QUESO::GenericScalarFunction::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Calculates the actual value of this scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00059">GenericScalarFunction.C:59</a></div></div>
-<div class="ttc" id="a00123_html_a0e93bae1ceb42049353e798a8866fd77"><div class="ttname"><a href="a00123.html#a0e93bae1ceb42049353e798a8866fd77">QUESO::GenericScalarFunction::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Calculates the logarithm of value of this scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00082">GenericScalarFunction.C:82</a></div></div>
-<div class="ttc" id="a00246_html"><div class="ttname"><a href="a00246.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00052">VectorSet.h:52</a></div></div>
-<div class="ttc" id="a00340_html_a7cd5266c96c8870c5d1c1e13073afb87"><div class="ttname"><a href="a00340.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a></div><div class="ttdeci">#define queso_not_implemented()</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00056">asserts.h:56</a></div></div>
-<div class="ttc" id="a00123_html_a4619abc294e9703b564b4c034211f078"><div class="ttname"><a href="a00123.html#a4619abc294e9703b564b4c034211f078">QUESO::GenericScalarFunction::GenericScalarFunction</a></div><div class="ttdeci">GenericScalarFunction(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, double(*valueRoutinePtr)(const V &amp;domainVector, const V *domainDirection, const void *routinesDataPtr, V *gradVector, M *hessianMatrix, V *hessianEffect), const void *routinesDataPtr, bool routineIsForLn)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00039">GenericScalarFunction.C:39</a></div></div>
-<div class="ttc" id="a00123_html_ae88df82626c01d80179d6380c5c3dcf0"><div class="ttname"><a href="a00123.html#ae88df82626c01d80179d6380c5c3dcf0">QUESO::GenericScalarFunction::~GenericScalarFunction</a></div><div class="ttdeci">virtual ~GenericScalarFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00053">GenericScalarFunction.C:53</a></div></div>
-<div class="ttc" id="a00340_html_a12c8e412795bd37f07e28e922e394abb"><div class="ttname"><a href="a00340.html#a12c8e412795bd37f07e28e922e394abb">queso_require_msg</a></div><div class="ttdeci">#define queso_require_msg(asserted, msg)</div><div class="ttdef"><b>Definition:</b> <a href="a00340_source.html#l00069">asserts.h:69</a></div></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00070_html_acf0fb2fe0c7dbe30bec6782c94e2a9e3"><div class="ttname"><a href="a00070.html#acf0fb2fe0c7dbe30bec6782c94e2a9e3">QUESO::ConstantScalarFunction::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Calculates the logarithm of the value of this scalar function (which is zero). </div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00062">ConstantScalarFunction.C:62</a></div></div>
+<div class="ttc" id="a00070_html_ab64b8406ba428ac948013bd5458d6410"><div class="ttname"><a href="a00070.html#ab64b8406ba428ac948013bd5458d6410">QUESO::ConstantScalarFunction::~ConstantScalarFunction</a></div><div class="ttdeci">virtual ~ConstantScalarFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00045">ConstantScalarFunction.C:45</a></div></div>
+<div class="ttc" id="a00070_html_a678cb62f30857415abcb1f0a18ad9a9b"><div class="ttname"><a href="a00070.html#a678cb62f30857415abcb1f0a18ad9a9b">QUESO::ConstantScalarFunction::ConstantScalarFunction</a></div><div class="ttdeci">ConstantScalarFunction(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, double constantValue)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00035">ConstantScalarFunction.C:35</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00280_source.html#l00052">VectorSet.h:52</a></div></div>
+<div class="ttc" id="a00045_html"><div class="ttname"><a href="a00045.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00272_source.html#l00052">ScalarFunction.h:52</a></div></div>
+<div class="ttc" id="a00070_html_a36f58555d9d88c4785297bf72fb5a9f1"><div class="ttname"><a href="a00070.html#a36f58555d9d88c4785297bf72fb5a9f1">QUESO::ConstantScalarFunction::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Calculates the actual value of this scalar function. </div><div class="ttdef"><b>Definition:</b> <a href="a00286_source.html#l00051">ConstantScalarFunction.C:51</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:09 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:46 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

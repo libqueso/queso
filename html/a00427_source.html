@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/src/TransitionKernelFactory.C Source File</title>
+<title>queso-0.56.2: src/core/src/RngBase.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">TransitionKernelFactory.C</div>  </div>
+<div class="title">RngBase.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00427.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,102 +75,65 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/TransitionKernelFactory.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/ScaledCovMatrixTKGroup.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/TransformedScaledCovMatrixTKGroup.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/HessianCovMatricesTKGroup.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/RngBase.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="a00190.html#a5e8dbae3304dfd27211b0d1f6de6eee0">   29</a></span>&#160;<a class="code" href="a00190.html#ad8dd3cef9323851cad163c37b815bc88">RngBase::RngBase</a>(<span class="keywordtype">int</span> seed, <span class="keywordtype">int</span> worldRank)</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  :</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  m_seed     (seed),</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  m_worldRank(worldRank)</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;std::map&lt;std::string, Factory&lt;BaseTKGroup&lt;GslVector, GslMatrix&gt; &gt; *&gt; &amp;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="a00083.html#a12c315c69d8189f827d419c4a43d8c11">   37</a></span>&#160;<a class="code" href="a00083.html">Factory&lt;BaseTKGroup&lt;GslVector, GslMatrix&gt;</a> &gt;::factory_map()</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="a00190.html#adbd867ec865be8813641146f7a63c80b">privateResetSeed</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="a00190.html#a64e1281954e342f704d5f3cbcbffa30c">   37</a></span>&#160;<a class="code" href="a00190.html#a64e1281954e342f704d5f3cbcbffa30c">RngBase::~RngBase</a>()</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">static</span> std::map&lt;std::string, Factory&lt;BaseTKGroup&lt;GslVector, GslMatrix&gt; &gt; *&gt; _factory_map;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">return</span> _factory_map;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// SharedPtr&lt;BaseTKGroup&lt;GslVector, GslMatrix&gt; &gt;::Type</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// TransitionKernelFactory::build_tk(</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">//     const MhOptionsValues &amp; options,</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">//     const VectorSpace&lt;GslVector, GslMatrix&gt; &amp; v,</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//     const std::vector&lt;double&gt; &amp; dr_scales,</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//     const ScalarFunctionSynchronizer&lt;GslVector, GslMatrix&gt; &amp; pdf_synchronizer,</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">//     GslMatrix &amp; initial_cov_matrix,</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">//     const BaseJointPdf&lt;GslVector, GslMatrix&gt; &amp; target_pdf)</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// {</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">//   SharedPtr&lt;BaseTKGroup&lt;GslVector, GslMatrix&gt; &gt;::Type new_tk;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">//   if (options.m_tkUseLocalHessian) {</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">//     new_tk.reset(new HessianCovMatricesTKGroup&lt;GslVector,GslMatrix&gt;(</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//           options.m_prefix.c_str(),</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//           v,</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">//           dr_scales,</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">//           pdf_synchronizer));</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">//   }</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">//   else {</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">//     if (options.m_initialProposalCovMatrixDataInputFileName != &quot;.&quot;) {</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">//       std::set&lt;unsigned int&gt; tmpSet;</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">//       tmpSet.insert(v.env().subId());</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">//       initial_cov_matrix.subReadContents((options.m_initialProposalCovMatrixDataInputFileName+&quot;_sub&quot;+v.env().subIdString()),</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">//                                           options.m_initialProposalCovMatrixDataInputFileType,</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">//                                           tmpSet);</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">//     }</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">//     // Decide whether or not to do logit transform</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">//     if (options.m_doLogitTransform) {</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">//       // Variable transform of initial proposal cov matrix has already been</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">//       // done</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">//       // We need this dynamic_cast to BoxSubset so that m_tk can inspect the</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">//       // domain bounds and do the necessary transform</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">//       new_tk.reset(new TransformedScaledCovMatrixTKGroup&lt;GslVector, GslMatrix&gt;(</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">//           options.m_prefix.c_str(),</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">//           dynamic_cast&lt;const BoxSubset&lt;GslVector, GslMatrix&gt; &amp; &gt;(target_pdf.domainSet()),</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">//           dr_scales, initial_cov_matrix));</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">//     }</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">//     else {</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">//       new_tk.reset(new ScaledCovMatrixTKGroup&lt;GslVector, GslMatrix&gt;(</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">//           options.m_prefix.c_str(), v, dr_scales,</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">//           initial_cov_matrix));</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">//     }</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">//   }</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">//   return new_tk;</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">// }</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">const</span> <a class="code" href="a00247.html">VectorSpace&lt;GslVector, GslMatrix&gt;</a> * <a class="code" href="a00232.html#a2569c0dbbc7a70f142806a8cf53acef3">TransitionKernelFactory::m_vectorSpace</a> = NULL;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">const</span> std::vector&lt;double&gt; * <a class="code" href="a00232.html#a7a1f7158b48973b4db1e628c10b17887">TransitionKernelFactory::m_dr_scales</a> = NULL;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword">const</span> <a class="code" href="a00204.html">ScalarFunctionSynchronizer&lt;GslVector, GslMatrix&gt;</a> * <a class="code" href="a00232.html#a33b1d4eacb1722bd3ed71952012b1d29">TransitionKernelFactory::m_pdf_synchronizer</a> = NULL;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<a class="code" href="a00136.html">GslMatrix</a> * <a class="code" href="a00232.html#ac4ae87bdcfc1e2929a571839ce9824b7">TransitionKernelFactory::m_initial_cov_matrix</a> = NULL;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">const</span> <a class="code" href="a00177.html">MhOptionsValues</a> * <a class="code" href="a00232.html#a5e5e1bf63eef6f1ba39a78c07c8fb06b">TransitionKernelFactory::m_options</a> = NULL;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">const</span> <a class="code" href="a00038.html">BaseJointPdf&lt;GslVector, GslMatrix&gt;</a> * <a class="code" href="a00232.html#a18b7f96ca4c27ad09470e3945085e81b">TransitionKernelFactory::m_target_pdf</a> = NULL;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;} <span class="comment">// namespace QUESO</span></div>
-<div class="ttc" id="a00232_html_ac4ae87bdcfc1e2929a571839ce9824b7"><div class="ttname"><a href="a00232.html#ac4ae87bdcfc1e2929a571839ce9824b7">QUESO::TransitionKernelFactory::m_initial_cov_matrix</a></div><div class="ttdeci">static GslMatrix * m_initial_cov_matrix</div><div class="ttdef"><b>Definition:</b> <a href="a00385_source.html#l00112">TransitionKernelFactory.h:112</a></div></div>
-<div class="ttc" id="a00247_html"><div class="ttname"><a href="a00247.html">QUESO::VectorSpace</a></div><div class="ttdoc">A class representing a vector space. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00232_html_a33b1d4eacb1722bd3ed71952012b1d29"><div class="ttname"><a href="a00232.html#a33b1d4eacb1722bd3ed71952012b1d29">QUESO::TransitionKernelFactory::m_pdf_synchronizer</a></div><div class="ttdeci">static const ScalarFunctionSynchronizer&lt; GslVector, GslMatrix &gt; * m_pdf_synchronizer</div><div class="ttdef"><b>Definition:</b> <a href="a00385_source.html#l00111">TransitionKernelFactory.h:111</a></div></div>
-<div class="ttc" id="a00232_html_a5e5e1bf63eef6f1ba39a78c07c8fb06b"><div class="ttname"><a href="a00232.html#a5e5e1bf63eef6f1ba39a78c07c8fb06b">QUESO::TransitionKernelFactory::m_options</a></div><div class="ttdeci">static const MhOptionsValues * m_options</div><div class="ttdef"><b>Definition:</b> <a href="a00385_source.html#l00113">TransitionKernelFactory.h:113</a></div></div>
-<div class="ttc" id="a00038_html"><div class="ttname"><a href="a00038.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00540_source.html#l00055">JointPdf.h:55</a></div></div>
-<div class="ttc" id="a00083_html"><div class="ttname"><a href="a00083.html">QUESO::Factory</a></div><div class="ttdef"><b>Definition:</b> <a href="a00351_source.html#l00043">Factory.h:43</a></div></div>
-<div class="ttc" id="a00232_html_a18b7f96ca4c27ad09470e3945085e81b"><div class="ttname"><a href="a00232.html#a18b7f96ca4c27ad09470e3945085e81b">QUESO::TransitionKernelFactory::m_target_pdf</a></div><div class="ttdeci">static const BaseJointPdf&lt; GslVector, GslMatrix &gt; * m_target_pdf</div><div class="ttdef"><b>Definition:</b> <a href="a00385_source.html#l00114">TransitionKernelFactory.h:114</a></div></div>
-<div class="ttc" id="a00232_html_a7a1f7158b48973b4db1e628c10b17887"><div class="ttname"><a href="a00232.html#a7a1f7158b48973b4db1e628c10b17887">QUESO::TransitionKernelFactory::m_dr_scales</a></div><div class="ttdeci">static const std::vector&lt; double &gt; * m_dr_scales</div><div class="ttdef"><b>Definition:</b> <a href="a00385_source.html#l00110">TransitionKernelFactory.h:110</a></div></div>
-<div class="ttc" id="a00177_html"><div class="ttname"><a href="a00177.html">QUESO::MhOptionsValues</a></div><div class="ttdoc">This class provides options for the Metropolis-Hastings generator of samples if no input file is avai...</div><div class="ttdef"><b>Definition:</b> <a href="a00548_source.html#l00127">MetropolisHastingsSGOptions.h:127</a></div></div>
-<div class="ttc" id="a00232_html_a2569c0dbbc7a70f142806a8cf53acef3"><div class="ttname"><a href="a00232.html#a2569c0dbbc7a70f142806a8cf53acef3">QUESO::TransitionKernelFactory::m_vectorSpace</a></div><div class="ttdeci">static const VectorSpace&lt; GslVector, GslMatrix &gt; * m_vectorSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00385_source.html#l00109">TransitionKernelFactory.h:109</a></div></div>
-<div class="ttc" id="a00204_html"><div class="ttname"><a href="a00204.html">QUESO::ScalarFunctionSynchronizer</a></div><div class="ttdoc">A templated class for synchronizing the calls of scalar functions (BaseScalarFunction and derived cla...</div><div class="ttdef"><b>Definition:</b> <a href="a00270_source.html#l00049">ScalarFunctionSynchronizer.h:49</a></div></div>
-<div class="ttc" id="a00136_html"><div class="ttname"><a href="a00136.html">QUESO::GslMatrix</a></div><div class="ttdoc">Class for matrix operations using GSL library. </div><div class="ttdef"><b>Definition:</b> <a href="a00355_source.html#l00049">GslMatrix.h:49</a></div></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="a00190.html#a3094da86084e56faaae9325f1117f9a3">   42</a></span>&#160;<a class="code" href="a00190.html#a3094da86084e56faaae9325f1117f9a3">RngBase::seed</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00190.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00190.html#a8cb8cbf14298bfcb84de1b562c069e84">   48</a></span>&#160;<a class="code" href="a00190.html#a8cb8cbf14298bfcb84de1b562c069e84">RngBase::resetSeed</a>(<span class="keywordtype">int</span> newSeed)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="a00190.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a> = newSeed;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="a00190.html#adbd867ec865be8813641146f7a63c80b">privateResetSeed</a>();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00190.html#adbd867ec865be8813641146f7a63c80b">   56</a></span>&#160;<a class="code" href="a00190.html#adbd867ec865be8813641146f7a63c80b">RngBase::privateResetSeed</a>()</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00190.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a> &gt;= 0) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// Do nothing</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="a00190.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a> &lt; 0) {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="a00190.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a> = (-<a class="code" href="a00190.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a>+<a class="code" href="a00190.html#a94515d2b7d493d8e4e238628716dd11b">m_worldRank</a>);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="comment">//else {</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">//  struct timeval timevalNow;</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">//  /*iRC = */gettimeofday(&amp;timevalNow, NULL);</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="comment">//  m_seed = (int) timevalNow.tv_usec;</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">//}</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00190_html_a3094da86084e56faaae9325f1117f9a3"><div class="ttname"><a href="a00190.html#a3094da86084e56faaae9325f1117f9a3">QUESO::RngBase::seed</a></div><div class="ttdeci">int seed() const </div><div class="ttdoc">Sets the seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00042">RngBase.C:42</a></div></div>
+<div class="ttc" id="a00190_html_a8cb8cbf14298bfcb84de1b562c069e84"><div class="ttname"><a href="a00190.html#a8cb8cbf14298bfcb84de1b562c069e84">QUESO::RngBase::resetSeed</a></div><div class="ttdeci">virtual void resetSeed(int newSeed)</div><div class="ttdoc">Resets the seed with value newSeed. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00048">RngBase.C:48</a></div></div>
+<div class="ttc" id="a00190_html_ab67b3c940ba6ffb4f2d70079fe36e343"><div class="ttname"><a href="a00190.html#ab67b3c940ba6ffb4f2d70079fe36e343">QUESO::RngBase::m_seed</a></div><div class="ttdeci">int m_seed</div><div class="ttdoc">Seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00379_source.html#l00082">RngBase.h:82</a></div></div>
+<div class="ttc" id="a00190_html_a64e1281954e342f704d5f3cbcbffa30c"><div class="ttname"><a href="a00190.html#a64e1281954e342f704d5f3cbcbffa30c">QUESO::RngBase::~RngBase</a></div><div class="ttdeci">virtual ~RngBase()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00037">RngBase.C:37</a></div></div>
+<div class="ttc" id="a00190_html_adbd867ec865be8813641146f7a63c80b"><div class="ttname"><a href="a00190.html#adbd867ec865be8813641146f7a63c80b">QUESO::RngBase::privateResetSeed</a></div><div class="ttdeci">void privateResetSeed()</div><div class="ttdoc">Reset seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00056">RngBase.C:56</a></div></div>
+<div class="ttc" id="a00190_html_ad8dd3cef9323851cad163c37b815bc88"><div class="ttname"><a href="a00190.html#ad8dd3cef9323851cad163c37b815bc88">QUESO::RngBase::RngBase</a></div><div class="ttdeci">RngBase()</div><div class="ttdoc">Default Constructor: it should not be used. </div></div>
+<div class="ttc" id="a00190_html_a94515d2b7d493d8e4e238628716dd11b"><div class="ttname"><a href="a00190.html#a94515d2b7d493d8e4e238628716dd11b">QUESO::RngBase::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdoc">Rank of processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00379_source.html#l00085">RngBase.h:85</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

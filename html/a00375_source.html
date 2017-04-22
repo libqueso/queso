@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/RngBoost.h Source File</title>
+<title>queso-0.56.2: src/core/inc/Optimizer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">RngBoost.h</div>  </div>
+<div class="title">Optimizer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00375.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,64 +75,108 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_RNG_BOOST_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_RNG_BOOST_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_BASE_OPTIMIZER_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_BASE_OPTIMIZER_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/RngBase.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;boost/random/mersenne_twister.hpp&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/ScopedPtr.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/OptimizerOptions.h&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00197.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00197.html">RngBoost</a> : <span class="keyword">public</span> <a class="code" href="a00195.html">RngBase</a></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">class </span>Vector;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">class </span>OptimizerMonitor;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00041.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00041.html">BaseOptimizer</a> {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="a00197.html#ab95981fa2be4fb685bdcdb5c1c11a28e">RngBoost</a>(<span class="keywordtype">int</span> <a class="code" href="a00195.html#a3094da86084e56faaae9325f1117f9a3">seed</a>, <span class="keywordtype">int</span> worldRank);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; <a class="code" href="a00197.html#a96ffa32ae3700ca164db8799d32b19ca">~RngBoost</a>();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="a00041.html#a06ee4af69d1dcdcb6c5fc64337cfed16">BaseOptimizer</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00041.html#a06ee4af69d1dcdcb6c5fc64337cfed16">BaseOptimizer</a>(<a class="code" href="a00185.html">OptimizerOptions</a> options);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00041.html#ad0d3914f16c9539125fdf18f72e06c1a">~BaseOptimizer</a>();</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">void</span>     <a class="code" href="a00197.html#a94c246d855ea22332b0dafc0891e328f">resetSeed</a>     (<span class="keywordtype">int</span> newSeed);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00041.html#a07b2d2fdb0c13aa26f10a301ec01f94c">minimize</a>(<a class="code" href="a00184.html">OptimizerMonitor</a>* monitor) = 0;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00197.html#aad1548eec706aeb6580af163bd80e0a9">uniformSample</a> ()                          <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00041.html#afee64fa553e2115c11e483409c005463">getMaxIterations</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00197.html#a9d33a495101b353e267ea7d3a6df361f">gaussianSample</a>(<span class="keywordtype">double</span> stdDev)             <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00041.html#a31e322b52129baacf03e19278e0375f0">getTolerance</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00041.html#a5e527eab75fab7fa43f741494fdb9f08">getFiniteDifferenceStepSize</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00197.html#ab859b0ff1e728c6a65c2aef62afe028e">betaSample</a>    (<span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00197.html#ae4fcb113ba19dbec7684f41c3aebf4e7">gammaSample</a>   (<span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b)        <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <a class="code" href="a00197.html#ab95981fa2be4fb685bdcdb5c1c11a28e">RngBoost</a>();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">virtual</span> std::string <a class="code" href="a00041.html#af476e1f343476f3ce69248ef165d86af">getSolverType</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00041.html#aca6e8ebe7a0e54f5ca29dbb32f135f33">getFstepSize</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00041.html#a2154765968b53399e21730654c496c3f">getFdfstepSize</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00041.html#a83733d920337ec958be77172dc775c92">getLineTolerance</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00041.html#ae01578ed2d1ba7e92ba4f5a51347aec2">setMaxIterations</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> maxIterations);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00041.html#a236511ca3bacfd63664d018a1b8265d8">setTolerance</a>(<span class="keywordtype">double</span> tolerance);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00041.html#a7f93afc910029b6a722ef3d855cd2daf">setFiniteDifferenceStepSize</a>(<span class="keywordtype">double</span> h);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="a00197.html#aef65914cae8b11e345bfb082db616f0e">  109</a></span>&#160;  boost::mt19937 <a class="code" href="a00197.html#aef65914cae8b11e345bfb082db616f0e">m_rng</a>; <span class="comment">// it cannot be static, as it is not initialized yet</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;};</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00041.html#ac1b1ddd1c2e218b8acb44fe2a71a86ea">setSolverType</a>(std::string solverType);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00041.html#a937601490bc46d3a098e1c6ac8562c4a">setFstepSize</a>(<span class="keywordtype">double</span> fstepSize);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00041.html#a12ce9afe481c022fd6a0d2bad6bcbd9f">setFdfstepSize</a>(<span class="keywordtype">double</span> fdfstepSize);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif // UQ_RNG_BOOST_H</span></div>
-<div class="ttc" id="a00197_html_a9d33a495101b353e267ea7d3a6df361f"><div class="ttname"><a href="a00197.html#a9d33a495101b353e267ea7d3a6df361f">QUESO::RngBoost::gaussianSample</a></div><div class="ttdeci">double gaussianSample(double stdDev) const </div><div class="ttdef"><b>Definition:</b> <a href="a00419_source.html#l00071">RngBoost.C:71</a></div></div>
-<div class="ttc" id="a00197_html_ab859b0ff1e728c6a65c2aef62afe028e"><div class="ttname"><a href="a00197.html#ab859b0ff1e728c6a65c2aef62afe028e">QUESO::RngBoost::betaSample</a></div><div class="ttdeci">double betaSample(double alpha, double beta) const </div><div class="ttdoc">Samples a value from a Beta distribution. Support: [0,1]. </div><div class="ttdef"><b>Definition:</b> <a href="a00419_source.html#l00081">RngBoost.C:81</a></div></div>
-<div class="ttc" id="a00197_html_aef65914cae8b11e345bfb082db616f0e"><div class="ttname"><a href="a00197.html#aef65914cae8b11e345bfb082db616f0e">QUESO::RngBoost::m_rng</a></div><div class="ttdeci">boost::mt19937 m_rng</div><div class="ttdoc">Random number generator from class boost::mt19937. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00109">RngBoost.h:109</a></div></div>
-<div class="ttc" id="a00197_html_aad1548eec706aeb6580af163bd80e0a9"><div class="ttname"><a href="a00197.html#aad1548eec706aeb6580af163bd80e0a9">QUESO::RngBoost::uniformSample</a></div><div class="ttdeci">double uniformSample() const </div><div class="ttdoc">Samples a value from a uniform distribution. Support: [0,1] or [a,b]. </div><div class="ttdef"><b>Definition:</b> <a href="a00419_source.html#l00063">RngBoost.C:63</a></div></div>
-<div class="ttc" id="a00197_html_ab95981fa2be4fb685bdcdb5c1c11a28e"><div class="ttname"><a href="a00197.html#ab95981fa2be4fb685bdcdb5c1c11a28e">QUESO::RngBoost::RngBoost</a></div><div class="ttdeci">RngBoost()</div><div class="ttdoc">Default Constructor: it should not be used. </div></div>
-<div class="ttc" id="a00195_html"><div class="ttname"><a href="a00195.html">QUESO::RngBase</a></div><div class="ttdoc">Class for random number generation (base class for either GSL or Boost RNG). </div><div class="ttdef"><b>Definition:</b> <a href="a00374_source.html#l00045">RngBase.h:45</a></div></div>
-<div class="ttc" id="a00197_html_a96ffa32ae3700ca164db8799d32b19ca"><div class="ttname"><a href="a00197.html#a96ffa32ae3700ca164db8799d32b19ca">QUESO::RngBoost::~RngBoost</a></div><div class="ttdeci">~RngBoost()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00419_source.html#l00047">RngBoost.C:47</a></div></div>
-<div class="ttc" id="a00197_html_ae4fcb113ba19dbec7684f41c3aebf4e7"><div class="ttname"><a href="a00197.html#ae4fcb113ba19dbec7684f41c3aebf4e7">QUESO::RngBoost::gammaSample</a></div><div class="ttdeci">double gammaSample(double a, double b) const </div><div class="ttdoc">Samples a value from a Gamma distribution. Support: [0,infinity). </div><div class="ttdef"><b>Definition:</b> <a href="a00419_source.html#l00090">RngBoost.C:90</a></div></div>
-<div class="ttc" id="a00195_html_a3094da86084e56faaae9325f1117f9a3"><div class="ttname"><a href="a00195.html#a3094da86084e56faaae9325f1117f9a3">QUESO::RngBase::seed</a></div><div class="ttdeci">int seed() const </div><div class="ttdoc">Sets the seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00418_source.html#l00042">RngBase.C:42</a></div></div>
-<div class="ttc" id="a00197_html"><div class="ttname"><a href="a00197.html">QUESO::RngBoost</a></div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00046">RngBoost.h:46</a></div></div>
-<div class="ttc" id="a00197_html_a94c246d855ea22332b0dafc0891e328f"><div class="ttname"><a href="a00197.html#a94c246d855ea22332b0dafc0891e328f">QUESO::RngBoost::resetSeed</a></div><div class="ttdeci">void resetSeed(int newSeed)</div><div class="ttdoc">Resets the seed with value newSeed. </div><div class="ttdef"><b>Definition:</b> <a href="a00419_source.html#l00054">RngBoost.C:54</a></div></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00041.html#ab3d357a3f134abfdee472aa4da994593">setLineTolerance</a>(<span class="keywordtype">double</span> lineTolerance);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="a00041.html#a9f491dcc7bc4388ee8b8ff567caf4550">  117</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00041.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="a00041.html#a383e5c3d09fd907658f7558f14a57c25">  118</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00041.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="a00041.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">  119</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00041.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="a00041.html#a81267b03c652a22d5fe7b0e75cc503e4">  120</a></span>&#160;  std::string <a class="code" href="a00041.html#a81267b03c652a22d5fe7b0e75cc503e4">m_solverType</a>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="a00041.html#a099bd31affbd64b94113210b5b3af320">  121</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00041.html#a099bd31affbd64b94113210b5b3af320">m_fstepSize</a>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="a00041.html#a819fc55c84c473cea25b0d370bfd3c20">  122</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00041.html#a819fc55c84c473cea25b0d370bfd3c20">m_fdfstepSize</a>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="a00041.html#aa407711e151ff41026e8f6fbe471482a">  123</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00041.html#aa407711e151ff41026e8f6fbe471482a">m_lineTolerance</a>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="comment">// This is protected so that derived classes (optimizers) can access options</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="a00041.html#a7ed2b0b81a5f908aca801e6979c191e9">  126</a></span>&#160;  <a class="code" href="a00206.html#a2d85bf8bff0e24798e89bf6c4d76b15a">ScopedPtr&lt;OptimizerOptions&gt;::Type</a> <a class="code" href="a00041.html#a7ed2b0b81a5f908aca801e6979c191e9">m_optionsObj</a>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;};</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif // UQ_BASE_OPTIMIZER_H</span></div>
+<div class="ttc" id="a00041_html_a819fc55c84c473cea25b0d370bfd3c20"><div class="ttname"><a href="a00041.html#a819fc55c84c473cea25b0d370bfd3c20">QUESO::BaseOptimizer::m_fdfstepSize</a></div><div class="ttdeci">double m_fdfstepSize</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00122">Optimizer.h:122</a></div></div>
+<div class="ttc" id="a00041_html_a06ee4af69d1dcdcb6c5fc64337cfed16"><div class="ttname"><a href="a00041.html#a06ee4af69d1dcdcb6c5fc64337cfed16">QUESO::BaseOptimizer::BaseOptimizer</a></div><div class="ttdeci">BaseOptimizer()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00029">Optimizer.C:29</a></div></div>
+<div class="ttc" id="a00041_html_ae01578ed2d1ba7e92ba4f5a51347aec2"><div class="ttname"><a href="a00041.html#ae01578ed2d1ba7e92ba4f5a51347aec2">QUESO::BaseOptimizer::setMaxIterations</a></div><div class="ttdeci">void setMaxIterations(unsigned int maxIterations)</div><div class="ttdoc">Sets the maximum number of iterations to be used by the optimizer. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00093">Optimizer.C:93</a></div></div>
+<div class="ttc" id="a00041_html_a2154765968b53399e21730654c496c3f"><div class="ttname"><a href="a00041.html#a2154765968b53399e21730654c496c3f">QUESO::BaseOptimizer::getFdfstepSize</a></div><div class="ttdeci">virtual double getFdfstepSize() const </div><div class="ttdoc">Gets the step to use in gradient-based solvers. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00081">Optimizer.C:81</a></div></div>
+<div class="ttc" id="a00041_html_a236511ca3bacfd63664d018a1b8265d8"><div class="ttname"><a href="a00041.html#a236511ca3bacfd63664d018a1b8265d8">QUESO::BaseOptimizer::setTolerance</a></div><div class="ttdeci">void setTolerance(double tolerance)</div><div class="ttdoc">Sets the tolerance the optimizer will use to test for an extremum. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00099">Optimizer.C:99</a></div></div>
+<div class="ttc" id="a00041_html_a83733d920337ec958be77172dc775c92"><div class="ttname"><a href="a00041.html#a83733d920337ec958be77172dc775c92">QUESO::BaseOptimizer::getLineTolerance</a></div><div class="ttdeci">virtual double getLineTolerance() const </div><div class="ttdoc">Gets the tolerance to use for line minimisation. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00087">Optimizer.C:87</a></div></div>
+<div class="ttc" id="a00041_html_a52d7dc0a76af37c36c5e3f8d01c8ab21"><div class="ttname"><a href="a00041.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">QUESO::BaseOptimizer::m_finiteDifferenceStepSize</a></div><div class="ttdeci">double m_finiteDifferenceStepSize</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00119">Optimizer.h:119</a></div></div>
+<div class="ttc" id="a00041_html_a383e5c3d09fd907658f7558f14a57c25"><div class="ttname"><a href="a00041.html#a383e5c3d09fd907658f7558f14a57c25">QUESO::BaseOptimizer::m_tolerance</a></div><div class="ttdeci">double m_tolerance</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00118">Optimizer.h:118</a></div></div>
+<div class="ttc" id="a00041_html_af476e1f343476f3ce69248ef165d86af"><div class="ttname"><a href="a00041.html#af476e1f343476f3ce69248ef165d86af">QUESO::BaseOptimizer::getSolverType</a></div><div class="ttdeci">virtual std::string getSolverType() const </div><div class="ttdoc">Gets the algorithm to use for minimisation. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00069">Optimizer.C:69</a></div></div>
+<div class="ttc" id="a00184_html"><div class="ttname"><a href="a00184.html">QUESO::OptimizerMonitor</a></div><div class="ttdoc">Object to monitor convergence of optimizers. </div><div class="ttdef"><b>Definition:</b> <a href="a00376_source.html#l00036">OptimizerMonitor.h:36</a></div></div>
+<div class="ttc" id="a00041_html_a7ed2b0b81a5f908aca801e6979c191e9"><div class="ttname"><a href="a00041.html#a7ed2b0b81a5f908aca801e6979c191e9">QUESO::BaseOptimizer::m_optionsObj</a></div><div class="ttdeci">ScopedPtr&lt; OptimizerOptions &gt;::Type m_optionsObj</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00126">Optimizer.h:126</a></div></div>
+<div class="ttc" id="a00041_html_a9f491dcc7bc4388ee8b8ff567caf4550"><div class="ttname"><a href="a00041.html#a9f491dcc7bc4388ee8b8ff567caf4550">QUESO::BaseOptimizer::m_maxIterations</a></div><div class="ttdeci">unsigned int m_maxIterations</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00117">Optimizer.h:117</a></div></div>
+<div class="ttc" id="a00206_html_a2d85bf8bff0e24798e89bf6c4d76b15a"><div class="ttname"><a href="a00206.html#a2d85bf8bff0e24798e89bf6c4d76b15a">QUESO::ScopedPtr::Type</a></div><div class="ttdeci">std::unique_ptr&lt; T &gt; Type</div><div class="ttdef"><b>Definition:</b> <a href="a00383_source.html#l00076">ScopedPtr.h:76</a></div></div>
+<div class="ttc" id="a00041_html"><div class="ttname"><a href="a00041.html">QUESO::BaseOptimizer</a></div><div class="ttdoc">A base class for handling optimisation of scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00047">Optimizer.h:47</a></div></div>
+<div class="ttc" id="a00041_html_ab3d357a3f134abfdee472aa4da994593"><div class="ttname"><a href="a00041.html#ab3d357a3f134abfdee472aa4da994593">QUESO::BaseOptimizer::setLineTolerance</a></div><div class="ttdeci">virtual void setLineTolerance(double lineTolerance)</div><div class="ttdoc">Sets the tolerance to use for line minimisation. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00129">Optimizer.C:129</a></div></div>
+<div class="ttc" id="a00041_html_ac1b1ddd1c2e218b8acb44fe2a71a86ea"><div class="ttname"><a href="a00041.html#ac1b1ddd1c2e218b8acb44fe2a71a86ea">QUESO::BaseOptimizer::setSolverType</a></div><div class="ttdeci">virtual void setSolverType(std::string solverType)</div><div class="ttdoc">Sets the algorithm to use for minimisation. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00111">Optimizer.C:111</a></div></div>
+<div class="ttc" id="a00041_html_aa407711e151ff41026e8f6fbe471482a"><div class="ttname"><a href="a00041.html#aa407711e151ff41026e8f6fbe471482a">QUESO::BaseOptimizer::m_lineTolerance</a></div><div class="ttdeci">double m_lineTolerance</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00123">Optimizer.h:123</a></div></div>
+<div class="ttc" id="a00041_html_a7f93afc910029b6a722ef3d855cd2daf"><div class="ttname"><a href="a00041.html#a7f93afc910029b6a722ef3d855cd2daf">QUESO::BaseOptimizer::setFiniteDifferenceStepSize</a></div><div class="ttdeci">void setFiniteDifferenceStepSize(double h)</div><div class="ttdoc">Sets the step to use in the finite difference derivative. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00105">Optimizer.C:105</a></div></div>
+<div class="ttc" id="a00041_html_aca6e8ebe7a0e54f5ca29dbb32f135f33"><div class="ttname"><a href="a00041.html#aca6e8ebe7a0e54f5ca29dbb32f135f33">QUESO::BaseOptimizer::getFstepSize</a></div><div class="ttdeci">virtual double getFstepSize() const </div><div class="ttdoc">Gets the step size to use in gradient-free solvers. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00075">Optimizer.C:75</a></div></div>
+<div class="ttc" id="a00041_html_a31e322b52129baacf03e19278e0375f0"><div class="ttname"><a href="a00041.html#a31e322b52129baacf03e19278e0375f0">QUESO::BaseOptimizer::getTolerance</a></div><div class="ttdeci">double getTolerance() const </div><div class="ttdoc">Returns the tolerance used to test for an extremum in the optimizer. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00057">Optimizer.C:57</a></div></div>
+<div class="ttc" id="a00041_html_a81267b03c652a22d5fe7b0e75cc503e4"><div class="ttname"><a href="a00041.html#a81267b03c652a22d5fe7b0e75cc503e4">QUESO::BaseOptimizer::m_solverType</a></div><div class="ttdeci">std::string m_solverType</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00120">Optimizer.h:120</a></div></div>
+<div class="ttc" id="a00041_html_a12ce9afe481c022fd6a0d2bad6bcbd9f"><div class="ttname"><a href="a00041.html#a12ce9afe481c022fd6a0d2bad6bcbd9f">QUESO::BaseOptimizer::setFdfstepSize</a></div><div class="ttdeci">virtual void setFdfstepSize(double fdfstepSize)</div><div class="ttdoc">Sets the step to use in gradient-based solvers. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00123">Optimizer.C:123</a></div></div>
+<div class="ttc" id="a00041_html_a937601490bc46d3a098e1c6ac8562c4a"><div class="ttname"><a href="a00041.html#a937601490bc46d3a098e1c6ac8562c4a">QUESO::BaseOptimizer::setFstepSize</a></div><div class="ttdeci">virtual void setFstepSize(double fstepSize)</div><div class="ttdoc">Sets the step size to use in gradient-free solvers. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00117">Optimizer.C:117</a></div></div>
+<div class="ttc" id="a00041_html_a07b2d2fdb0c13aa26f10a301ec01f94c"><div class="ttname"><a href="a00041.html#a07b2d2fdb0c13aa26f10a301ec01f94c">QUESO::BaseOptimizer::minimize</a></div><div class="ttdeci">virtual void minimize(OptimizerMonitor *monitor)=0</div><div class="ttdoc">Minimize the objective function, starting at m_initialPoint. </div></div>
+<div class="ttc" id="a00041_html_a099bd31affbd64b94113210b5b3af320"><div class="ttname"><a href="a00041.html#a099bd31affbd64b94113210b5b3af320">QUESO::BaseOptimizer::m_fstepSize</a></div><div class="ttdeci">double m_fstepSize</div><div class="ttdef"><b>Definition:</b> <a href="a00375_source.html#l00121">Optimizer.h:121</a></div></div>
+<div class="ttc" id="a00041_html_ad0d3914f16c9539125fdf18f72e06c1a"><div class="ttname"><a href="a00041.html#ad0d3914f16c9539125fdf18f72e06c1a">QUESO::BaseOptimizer::~BaseOptimizer</a></div><div class="ttdeci">virtual ~BaseOptimizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00046">Optimizer.C:46</a></div></div>
+<div class="ttc" id="a00185_html"><div class="ttname"><a href="a00185.html">QUESO::OptimizerOptions</a></div><div class="ttdoc">This class provides options for a Optimizer. </div><div class="ttdef"><b>Definition:</b> <a href="a00377_source.html#l00060">OptimizerOptions.h:60</a></div></div>
+<div class="ttc" id="a00041_html_a5e527eab75fab7fa43f741494fdb9f08"><div class="ttname"><a href="a00041.html#a5e527eab75fab7fa43f741494fdb9f08">QUESO::BaseOptimizer::getFiniteDifferenceStepSize</a></div><div class="ttdeci">double getFiniteDifferenceStepSize() const </div><div class="ttdoc">Returns the step size used in the finite difference formula. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00063">Optimizer.C:63</a></div></div>
+<div class="ttc" id="a00041_html_afee64fa553e2115c11e483409c005463"><div class="ttname"><a href="a00041.html#afee64fa553e2115c11e483409c005463">QUESO::BaseOptimizer::getMaxIterations</a></div><div class="ttdeci">unsigned int getMaxIterations() const </div><div class="ttdoc">Returns the maximum number of iterations the optimizer will do. </div><div class="ttdef"><b>Definition:</b> <a href="a00424_source.html#l00051">Optimizer.C:51</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/misc/inc/AsciiTable.h Source File</title>
+<title>queso-0.56.2: src/misc/src/MonteCarloQuadrature.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_b78c18289fd7719ff0daf45dba9bb4e6.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_974a4f9b5986246761932d409834af31.html">src</a></li><li class="navelem"><a class="el" href="dir_fd073eb1633a0d190d175355df604331.html">misc</a></li><li class="navelem"><a class="el" href="dir_4a3d6721aef5231a3f41ae337e19a0ed.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">AsciiTable.h</div>  </div>
+<div class="title">MonteCarloQuadrature.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00471.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,86 +75,65 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_ASCII_TABLE_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ASCII_TABLE_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/DistArray.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Map.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/Miscellaneous.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslVector;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00030.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00030.html">AsciiTable</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="a00030.html#a4d856e0d046d823e906aa4448b5762f1">AsciiTable</a>(<span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp; env,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                          <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            <a class="code" href="a00030.html#aa764ef68ef1d2ed85a4b6bd4eb0d7b17">numRows</a>,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                          <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            numExtraCols,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                    <span class="keyword">const</span> std::vector&lt;bool&gt;*      extraColIsString,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    <span class="keyword">const</span> std::string&amp;            fileName);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="a00030.html#a2ff35b2d6920dc9e13dd8966a76beb10">~AsciiTable</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                         <a class="code" href="a00030.html#aa764ef68ef1d2ed85a4b6bd4eb0d7b17">numRows</a>     ()                 <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                         <a class="code" href="a00030.html#a428f547b9f5007e673245c8d2d0be387">numCols</a>     ()                 <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00072.html">DistArray&lt;std::string&gt;</a>&amp; <a class="code" href="a00030.html#a8918d88137629c62e2408c164795479c">stringColumn</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j)   <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">const</span> V&amp;                             <a class="code" href="a00030.html#a267e1834e60c5df459122b2509e4ca9d">doubleColumn</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j)   <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">void</span>                                 <a class="code" href="a00030.html#a4e58f0ab57b3af3aa4333955175abcf3">print</a>       (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="a00170.html">Map</a>* <a class="code" href="a00030.html#aa42459bf69563f6606103c5f6da60a5a">newMap</a>(); <span class="comment">// See template specialization</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="a00030.html#a2ba907db652aa02d53d493980d7a3753">   85</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00035.html">BaseEnvironment</a>&amp;               <a class="code" href="a00030.html#a2ba907db652aa02d53d493980d7a3753">m_env</a>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="a00030.html#a4f772a7719d36cb0a0908eed37bd1deb">   86</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                                <a class="code" href="a00030.html#a4f772a7719d36cb0a0908eed37bd1deb">m_numRows</a>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="a00030.html#ada886c8db06d2d618f2898ad2cf2bd87">   87</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                                <a class="code" href="a00030.html#ada886c8db06d2d618f2898ad2cf2bd87">m_numCols</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="a00030.html#a1c84e461d75e0846c156617f222c2ec3">   88</a></span>&#160;  std::vector&lt;bool&gt;                           <a class="code" href="a00030.html#a1c84e461d75e0846c156617f222c2ec3">m_colIsString</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="a00030.html#adb7e4bac907ef1c93d745f02ea9f15d2">   89</a></span>&#160;  std::string                                 <a class="code" href="a00030.html#adb7e4bac907ef1c93d745f02ea9f15d2">m_fileName</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="a00030.html#a7771fe0a08a93abdeadcc5e55e350eea">   91</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00170.html">Map</a>*                           <a class="code" href="a00030.html#a7771fe0a08a93abdeadcc5e55e350eea">m_map</a>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00030.html#a14ba55d29e9a4ddeb14cd5acd8a27268">   92</a></span>&#160;  std::vector&lt;DistArray&lt;std::string&gt;*&gt; <a class="code" href="a00030.html#a14ba55d29e9a4ddeb14cd5acd8a27268">m_stringColumns</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00030.html#aa25a1d14c88cd5de341c43e052622f51">   93</a></span>&#160;  std::vector&lt;V*&gt;                             <a class="code" href="a00030.html#aa25a1d14c88cd5de341c43e052622f51">m_doubleColumns</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00030.html#a008557a6d782f76a51e72c77b3136322">readColumnsFromFile</a>();</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif // UQ_ASCII_TABLE_H</span></div>
-<div class="ttc" id="a00030_html_a4d856e0d046d823e906aa4448b5762f1"><div class="ttname"><a href="a00030.html#a4d856e0d046d823e906aa4448b5762f1">QUESO::AsciiTable::AsciiTable</a></div><div class="ttdeci">AsciiTable(const BaseEnvironment &amp;env, unsigned int numRows, unsigned int numExtraCols, const std::vector&lt; bool &gt; *extraColIsString, const std::string &amp;fileName)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00485_source.html#l00032">AsciiTable.C:32</a></div></div>
-<div class="ttc" id="a00030_html_a2ff35b2d6920dc9e13dd8966a76beb10"><div class="ttname"><a href="a00030.html#a2ff35b2d6920dc9e13dd8966a76beb10">QUESO::AsciiTable::~AsciiTable</a></div><div class="ttdeci">~AsciiTable()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00485_source.html#l00077">AsciiTable.C:77</a></div></div>
-<div class="ttc" id="a00030_html"><div class="ttname"><a href="a00030.html">QUESO::AsciiTable</a></div><div class="ttdoc">Class for reading ASCII values from a table in a file. </div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00045">AsciiTable.h:45</a></div></div>
-<div class="ttc" id="a00035_html"><div class="ttname"><a href="a00035.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00197">Environment.h:197</a></div></div>
-<div class="ttc" id="a00030_html_a1c84e461d75e0846c156617f222c2ec3"><div class="ttname"><a href="a00030.html#a1c84e461d75e0846c156617f222c2ec3">QUESO::AsciiTable::m_colIsString</a></div><div class="ttdeci">std::vector&lt; bool &gt; m_colIsString</div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00088">AsciiTable.h:88</a></div></div>
-<div class="ttc" id="a00030_html_adb7e4bac907ef1c93d745f02ea9f15d2"><div class="ttname"><a href="a00030.html#adb7e4bac907ef1c93d745f02ea9f15d2">QUESO::AsciiTable::m_fileName</a></div><div class="ttdeci">std::string m_fileName</div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00089">AsciiTable.h:89</a></div></div>
-<div class="ttc" id="a00030_html_aa42459bf69563f6606103c5f6da60a5a"><div class="ttname"><a href="a00030.html#aa42459bf69563f6606103c5f6da60a5a">QUESO::AsciiTable::newMap</a></div><div class="ttdeci">Map * newMap()</div></div>
-<div class="ttc" id="a00170_html"><div class="ttname"><a href="a00170.html">QUESO::Map</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00366_source.html#l00049">Map.h:49</a></div></div>
-<div class="ttc" id="a00030_html_ada886c8db06d2d618f2898ad2cf2bd87"><div class="ttname"><a href="a00030.html#ada886c8db06d2d618f2898ad2cf2bd87">QUESO::AsciiTable::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00087">AsciiTable.h:87</a></div></div>
-<div class="ttc" id="a00030_html_a428f547b9f5007e673245c8d2d0be387"><div class="ttname"><a href="a00030.html#a428f547b9f5007e673245c8d2d0be387">QUESO::AsciiTable::numCols</a></div><div class="ttdeci">unsigned int numCols() const </div><div class="ttdoc">Returns the number of columns in the table. </div><div class="ttdef"><b>Definition:</b> <a href="a00485_source.html#l00243">AsciiTable.C:243</a></div></div>
-<div class="ttc" id="a00030_html_a14ba55d29e9a4ddeb14cd5acd8a27268"><div class="ttname"><a href="a00030.html#a14ba55d29e9a4ddeb14cd5acd8a27268">QUESO::AsciiTable::m_stringColumns</a></div><div class="ttdeci">std::vector&lt; DistArray&lt; std::string &gt; * &gt; m_stringColumns</div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00092">AsciiTable.h:92</a></div></div>
-<div class="ttc" id="a00030_html_a2ba907db652aa02d53d493980d7a3753"><div class="ttname"><a href="a00030.html#a2ba907db652aa02d53d493980d7a3753">QUESO::AsciiTable::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00085">AsciiTable.h:85</a></div></div>
-<div class="ttc" id="a00030_html_a008557a6d782f76a51e72c77b3136322"><div class="ttname"><a href="a00030.html#a008557a6d782f76a51e72c77b3136322">QUESO::AsciiTable::readColumnsFromFile</a></div><div class="ttdeci">void readColumnsFromFile()</div><div class="ttdef"><b>Definition:</b> <a href="a00485_source.html#l00090">AsciiTable.C:90</a></div></div>
-<div class="ttc" id="a00030_html_a7771fe0a08a93abdeadcc5e55e350eea"><div class="ttname"><a href="a00030.html#a7771fe0a08a93abdeadcc5e55e350eea">QUESO::AsciiTable::m_map</a></div><div class="ttdeci">const Map * m_map</div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00091">AsciiTable.h:91</a></div></div>
-<div class="ttc" id="a00030_html_a4f772a7719d36cb0a0908eed37bd1deb"><div class="ttname"><a href="a00030.html#a4f772a7719d36cb0a0908eed37bd1deb">QUESO::AsciiTable::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00086">AsciiTable.h:86</a></div></div>
-<div class="ttc" id="a00030_html_a267e1834e60c5df459122b2509e4ca9d"><div class="ttname"><a href="a00030.html#a267e1834e60c5df459122b2509e4ca9d">QUESO::AsciiTable::doubleColumn</a></div><div class="ttdeci">const V &amp; doubleColumn(unsigned int j) const </div><div class="ttdoc">Returns the value (double) stored in column j. </div><div class="ttdef"><b>Definition:</b> <a href="a00485_source.html#l00261">AsciiTable.C:261</a></div></div>
-<div class="ttc" id="a00072_html"><div class="ttname"><a href="a00072.html">QUESO::DistArray&lt; std::string &gt;</a></div></div>
-<div class="ttc" id="a00030_html_a4e58f0ab57b3af3aa4333955175abcf3"><div class="ttname"><a href="a00030.html#a4e58f0ab57b3af3aa4333955175abcf3">QUESO::AsciiTable::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the table. </div><div class="ttdef"><b>Definition:</b> <a href="a00485_source.html#l00273">AsciiTable.C:273</a></div></div>
-<div class="ttc" id="a00030_html_a8918d88137629c62e2408c164795479c"><div class="ttname"><a href="a00030.html#a8918d88137629c62e2408c164795479c">QUESO::AsciiTable::stringColumn</a></div><div class="ttdeci">const DistArray&lt; std::string &gt; &amp; stringColumn(unsigned int j) const </div><div class="ttdoc">Returns the string stored in column j. </div><div class="ttdef"><b>Definition:</b> <a href="a00485_source.html#l00250">AsciiTable.C:250</a></div></div>
-<div class="ttc" id="a00030_html_aa25a1d14c88cd5de341c43e052622f51"><div class="ttname"><a href="a00030.html#aa25a1d14c88cd5de341c43e052622f51">QUESO::AsciiTable::m_doubleColumns</a></div><div class="ttdeci">std::vector&lt; V * &gt; m_doubleColumns</div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00093">AsciiTable.h:93</a></div></div>
-<div class="ttc" id="a00030_html_aa764ef68ef1d2ed85a4b6bd4eb0d7b17"><div class="ttname"><a href="a00030.html#aa764ef68ef1d2ed85a4b6bd4eb0d7b17">QUESO::AsciiTable::numRows</a></div><div class="ttdeci">unsigned int numRows() const </div><div class="ttdoc">Returns the number of rows in the table. </div><div class="ttdef"><b>Definition:</b> <a href="a00485_source.html#l00236">AsciiTable.C:236</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/MonteCarloQuadrature.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/UniformVectorRV.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00176.html#a3a1de74056092729757aedd7286034c0">   33</a></span>&#160;  <a class="code" href="a00176.html#a3a1de74056092729757aedd7286034c0">MonteCarloQuadrature&lt;V,M&gt;::MonteCarloQuadrature</a>( <span class="keyword">const</span> <a class="code" href="a00251.html">VectorSubset&lt;V,M&gt;</a> &amp; domain,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                                                   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_samples )</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    : <a class="code" href="a00181.html">MultiDQuadratureBase</a>&lt;V,M&gt;(domain)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// We&#39;ll just uniformly sample over the domain to retrieve the quadrature</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// points.</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="a00243.html">UniformVectorRV&lt;V,M&gt;</a> uniform_rv(<span class="stringliteral">&quot;MonteCarloQuadrature_&quot;</span>, <span class="comment">//prefix</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                                    this-&gt;<a class="code" href="a00181.html#aa4f04bdbaeeec882c3a4e2df49aff541">m_domain</a>);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00050.html">BaseVectorRealizer&lt; V, M &gt;</a> &amp; realizer = uniform_rv.<a class="code" href="a00051.html#aea4b01eef0baf36944d14459a7b9ccf4">realizer</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    this-&gt;<a class="code" href="a00181.html#a8a86b127e937aa5c386a297a9073fdee">m_positions</a>.resize(n_samples,<a class="code" href="a00212.html#ae608ddf14a45c74e5ca093dfbc3cbdf0">SharedPtr&lt;GslVector&gt;::Type</a>());</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; n_samples; i++ )</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="comment">// Create new vector from our vector space</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="comment">// We are taking ownership of this pointer.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keyword">typename</span> <a class="code" href="a00212.html#ae608ddf14a45c74e5ca093dfbc3cbdf0">QUESO::SharedPtr&lt;V&gt;::Type</a> domain_vec(domain.<a class="code" href="a00251.html#afc859b5206bc056c66893c854c191959">vectorSpace</a>().newVector());</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="comment">// Draw the new point</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        realizer.<a class="code" href="a00050.html#a6845173dd79a80ae11c86cde26e55817">realization</a>(*domain_vec);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="comment">// This is now the quadrature point position</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        this-&gt;<a class="code" href="a00181.html#a8a86b127e937aa5c386a297a9073fdee">m_positions</a>[i] = domain_vec;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// The weights are just the scaling factor for the MC sum</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    this-&gt;<a class="code" href="a00042.html#a999a43375580749bc726f177c115f949">m_weights</a>.resize(n_samples,domain.<a class="code" href="a00249.html#a3266f16e2672f5f3c929f22df085e545">volume</a>()/(double)(n_samples));</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="comment">// Instantiate</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00176.html">MonteCarloQuadrature&lt;GslVector,GslMatrix&gt;</a>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;} <span class="comment">// end namespace QUESO</span></div>
+<div class="ttc" id="a00176_html"><div class="ttname"><a href="a00176.html">QUESO::MonteCarloQuadrature</a></div><div class="ttdoc">Numerical integration using Monte Carlo. </div><div class="ttdef"><b>Definition:</b> <a href="a00452_source.html#l00047">MonteCarloQuadrature.h:47</a></div></div>
+<div class="ttc" id="a00050_html"><div class="ttname"><a href="a00050.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00562_source.html#l00049">VectorRealizer.h:49</a></div></div>
+<div class="ttc" id="a00176_html_a3a1de74056092729757aedd7286034c0"><div class="ttname"><a href="a00176.html#a3a1de74056092729757aedd7286034c0">QUESO::MonteCarloQuadrature::MonteCarloQuadrature</a></div><div class="ttdeci">MonteCarloQuadrature(const VectorSubset&lt; V, M &gt; &amp;domain, unsigned int n_samples)</div><div class="ttdef"><b>Definition:</b> <a href="a00471_source.html#l00033">MonteCarloQuadrature.C:33</a></div></div>
+<div class="ttc" id="a00243_html"><div class="ttname"><a href="a00243.html">QUESO::UniformVectorRV</a></div><div class="ttdoc">A class representing a uniform vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00557_source.html#l00049">UniformVectorRV.h:49</a></div></div>
+<div class="ttc" id="a00251_html_afc859b5206bc056c66893c854c191959"><div class="ttname"><a href="a00251.html#afc859b5206bc056c66893c854c191959">QUESO::VectorSubset::vectorSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; vectorSpace() const </div><div class="ttdoc">Vector space to which this set belongs to. See template specialization. </div><div class="ttdef"><b>Definition:</b> <a href="a00305_source.html#l00068">VectorSubset.C:68</a></div></div>
+<div class="ttc" id="a00042_html_a999a43375580749bc726f177c115f949"><div class="ttname"><a href="a00042.html#a999a43375580749bc726f177c115f949">QUESO::BaseQuadrature::m_weights</a></div><div class="ttdeci">std::vector&lt; double &gt; m_weights</div><div class="ttdef"><b>Definition:</b> <a href="a00447_source.html#l00056">BaseQuadrature.h:56</a></div></div>
+<div class="ttc" id="a00181_html_a8a86b127e937aa5c386a297a9073fdee"><div class="ttname"><a href="a00181.html#a8a86b127e937aa5c386a297a9073fdee">QUESO::MultiDQuadratureBase::m_positions</a></div><div class="ttdeci">std::vector&lt; typename QUESO::SharedPtr&lt; V &gt;::Type &gt; m_positions</div><div class="ttdoc">Locations of quadrature points. </div><div class="ttdef"><b>Definition:</b> <a href="a00454_source.html#l00071">MultiDQuadratureBase.h:71</a></div></div>
+<div class="ttc" id="a00181_html_aa4f04bdbaeeec882c3a4e2df49aff541"><div class="ttname"><a href="a00181.html#aa4f04bdbaeeec882c3a4e2df49aff541">QUESO::MultiDQuadratureBase::m_domain</a></div><div class="ttdeci">const VectorSubset&lt; V, M &gt; &amp; m_domain</div><div class="ttdoc">Domain over which the quadrature will be performed. </div><div class="ttdef"><b>Definition:</b> <a href="a00454_source.html#l00074">MultiDQuadratureBase.h:74</a></div></div>
+<div class="ttc" id="a00181_html"><div class="ttname"><a href="a00181.html">QUESO::MultiDQuadratureBase</a></div><div class="ttdoc">Base class for multi-dimensional quadrature rules. </div><div class="ttdef"><b>Definition:</b> <a href="a00454_source.html#l00048">MultiDQuadratureBase.h:48</a></div></div>
+<div class="ttc" id="a00249_html_a3266f16e2672f5f3c929f22df085e545"><div class="ttname"><a href="a00249.html#a3266f16e2672f5f3c929f22df085e545">QUESO::VectorSet::volume</a></div><div class="ttdeci">double volume() const </div><div class="ttdoc">Set volume; access to private attribute m_volume. </div><div class="ttdef"><b>Definition:</b> <a href="a00303_source.html#l00091">VectorSet.C:91</a></div></div>
+<div class="ttc" id="a00051_html_aea4b01eef0baf36944d14459a7b9ccf4"><div class="ttname"><a href="a00051.html#aea4b01eef0baf36944d14459a7b9ccf4">QUESO::BaseVectorRV::realizer</a></div><div class="ttdeci">const BaseVectorRealizer&lt; V, M &gt; &amp; realizer() const </div><div class="ttdoc">Finds a realization (sample) of the PDF of this vector RV; access to private attribute m_realizer...</div><div class="ttdef"><b>Definition:</b> <a href="a00649_source.html#l00106">VectorRV.C:106</a></div></div>
+<div class="ttc" id="a00212_html_ae608ddf14a45c74e5ca093dfbc3cbdf0"><div class="ttname"><a href="a00212.html#ae608ddf14a45c74e5ca093dfbc3cbdf0">QUESO::SharedPtr::Type</a></div><div class="ttdeci">std::shared_ptr&lt; T &gt; Type</div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00069">SharedPtr.h:69</a></div></div>
+<div class="ttc" id="a00050_html_a6845173dd79a80ae11c86cde26e55817"><div class="ttname"><a href="a00050.html#a6845173dd79a80ae11c86cde26e55817">QUESO::BaseVectorRealizer::realization</a></div><div class="ttdeci">virtual void realization(V &amp;nextValues) const =0</div><div class="ttdoc">Performs a realization (sample) from a probability density function. See template specialization...</div></div>
+<div class="ttc" id="a00251_html"><div class="ttname"><a href="a00251.html">QUESO::VectorSubset</a></div><div class="ttdoc">A templated class for handling subsets. </div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00046">VectorSubset.h:46</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

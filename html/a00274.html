@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/basic/inc/VectorFunction.h File Reference</title>
+<title>queso-0.56.2: src/basic/inc/ScalarSequence.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -49,45 +49,48 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">VectorFunction.h File Reference</div>  </div>
+<div class="title">ScalarSequence.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Set of classes for handling vector functions.  
+<p>A templated class for handling scalar samples.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;queso/Environment.h&gt;</code><br/>
-<code>#include &lt;queso/DistArray.h&gt;</code><br/>
-<code>#include &lt;queso/VectorSet.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for VectorFunction.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00709.png" border="0" usemap="#src_2basic_2inc_2_vector_function_8h" alt=""/></div>
-<map name="src_2basic_2inc_2_vector_function_8h" id="src_2basic_2inc_2_vector_function_8h">
-</map>
-</div>
-</div>
+
 <p><a href="a00274_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00047.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A templated (base) class for handling vector functions.  <a href="a00047.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00203.html">QUESO::ScalarSequence&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for handling scalar samples.  <a href="a00203.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:af865210b84a63c53796aff42989c4af7"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:af865210b84a63c53796aff42989c4af7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00674.html#af865210b84a63c53796aff42989c4af7">QUESO::ComputeSubGaussian2dKde</a> (const ScalarSequence&lt; T &gt; &amp;scalarSeq1, const ScalarSequence&lt; T &gt; &amp;scalarSeq2, unsigned int initialPos, double scaleValue1, double scaleValue2, const std::vector&lt; T &gt; &amp;evaluationPositions1, const std::vector&lt; T &gt; &amp;evaluationPositions2, std::vector&lt; double &gt; &amp;densityValues)</td></tr>
+<tr class="separator:af865210b84a63c53796aff42989c4af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7a1e5f83b5acc46b51bc87eb3dc9b28"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:af7a1e5f83b5acc46b51bc87eb3dc9b28"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00674.html#af7a1e5f83b5acc46b51bc87eb3dc9b28">QUESO::ComputeUnifiedGaussian2dKde</a> (bool useOnlyInter0Comm, const ScalarSequence&lt; T &gt; &amp;scalarSeq1, const ScalarSequence&lt; T &gt; &amp;scalarSeq2, unsigned int initialPos, double unifiedScaleValue1, double unifiedScaleValue2, const std::vector&lt; T &gt; &amp;unifiedEvaluationPositions1, const std::vector&lt; T &gt; &amp;unifiedEvaluationPositions2, std::vector&lt; double &gt; &amp;unifiedDensityValues)</td></tr>
+<tr class="separator:af7a1e5f83b5acc46b51bc87eb3dc9b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add6823a7271447445f532bf5ce73e9b8"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:add6823a7271447445f532bf5ce73e9b8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00674.html#add6823a7271447445f532bf5ce73e9b8">QUESO::ComputeCovCorrBetweenScalarSequences</a> (const ScalarSequence&lt; T &gt; &amp;subPSeq, const ScalarSequence&lt; T &gt; &amp;subQSeq, unsigned int subNumSamples, T &amp;covValue, T &amp;corrValue)</td></tr>
+<tr class="separator:add6823a7271447445f532bf5ce73e9b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Set of classes for handling vector functions. </p>
+<div class="textblock"><p>A templated class for handling scalar samples. </p>
 
-<p>Definition in file <a class="el" href="a00274_source.html">VectorFunction.h</a>.</p>
+<p>Definition in file <a class="el" href="a00274_source.html">ScalarSequence.h</a>.</p>
 </div></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

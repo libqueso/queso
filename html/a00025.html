@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: ANNpr_queue Class Reference</title>
+<title>queso-0.56.2: ANNpointSet Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -46,60 +46,42 @@
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="a01157.html">List of all members</a>  </div>
+<a href="a00704.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ANNpr_queue Class Reference</div>  </div>
+<div class="title">ANNpointSet Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="a00332_source.html">pr_queue.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00308_source.html">ANN.h</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for ANNpr_queue:</div>
+Inheritance diagram for ANNpointSet:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01158.png" border="0" usemap="#_a_n_npr__queue_coll__map" alt="Collaboration graph"/></div>
-<map name="_a_n_npr__queue_coll__map" id="_a_n_npr__queue_coll__map">
-<area shape="rect" id="node2" href="a00193.html" title="ANNpr_queue::pq_node" alt="" coords="5,5,163,32"/></map>
+<div class="center"><img src="a00705.png" border="0" usemap="#_a_n_npoint_set_inherit__map" alt="Inheritance graph"/></div>
+<map name="_a_n_npoint_set_inherit__map" id="_a_n_npoint_set_inherit__map">
+<area shape="rect" id="node2" href="a00016.html" title="ANNbruteForce" alt="" coords="5,80,117,107"/><area shape="rect" id="node3" href="a00020.html" title="ANNkd_tree" alt="" coords="142,80,236,107"/><area shape="rect" id="node4" href="a00015.html" title="ANNbd_tree" alt="" coords="142,155,236,181"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00193.html">pq_node</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a796142149290820b2e3f54f9da927059"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a796142149290820b2e3f54f9da927059">ANNpr_queue</a> (int max)</td></tr>
-<tr class="separator:a796142149290820b2e3f54f9da927059"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04cb7e4585b6ab68693eb0c2dd2d9e96"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a04cb7e4585b6ab68693eb0c2dd2d9e96">~ANNpr_queue</a> ()</td></tr>
-<tr class="separator:a04cb7e4585b6ab68693eb0c2dd2d9e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82924b7522162467cd0251ce128947c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00305.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a82924b7522162467cd0251ce128947c8">empty</a> ()</td></tr>
-<tr class="separator:a82924b7522162467cd0251ce128947c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ae6efba5c56255cfba2b256c7620f9e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00305.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a2ae6efba5c56255cfba2b256c7620f9e">non_empty</a> ()</td></tr>
-<tr class="separator:a2ae6efba5c56255cfba2b256c7620f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeee23855dc7d85497315316469fff47a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#aeee23855dc7d85497315316469fff47a">reset</a> ()</td></tr>
-<tr class="separator:aeee23855dc7d85497315316469fff47a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace0ac53aabbcaba22d209e3e1d987db6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ace0ac53aabbcaba22d209e3e1d987db6">insert</a> (<a class="el" href="a00332.html#a4f3250dcb9a07c4b44eec3de958c8a68">PQkey</a> kv, <a class="el" href="a00332.html#a67e38939e5afb9f1663d563a6047825d">PQinfo</a> inf)</td></tr>
-<tr class="separator:ace0ac53aabbcaba22d209e3e1d987db6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d03698bdbe68ac6245edf74952958e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a9d03698bdbe68ac6245edf74952958e4">extr_min</a> (<a class="el" href="a00332.html#a4f3250dcb9a07c4b44eec3de958c8a68">PQkey</a> &amp;kv, <a class="el" href="a00332.html#a67e38939e5afb9f1663d563a6047825d">PQinfo</a> &amp;inf)</td></tr>
-<tr class="separator:a9d03698bdbe68ac6245edf74952958e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:aa0fad9a0df1cfb72f4cf85217dfe6742"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a></td></tr>
-<tr class="separator:aa0fad9a0df1cfb72f4cf85217dfe6742"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7938a5f4f4e59fa8188409750e739fd3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a7938a5f4f4e59fa8188409750e739fd3">max_size</a></td></tr>
-<tr class="separator:a7938a5f4f4e59fa8188409750e739fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a253013fd1d0d6eee66d47bc14959abbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00193.html">pq_node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a></td></tr>
-<tr class="separator:a253013fd1d0d6eee66d47bc14959abbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22d90676e746e4d4d45215a879068d03"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a22d90676e746e4d4d45215a879068d03">~ANNpointSet</a> ()</td></tr>
+<tr class="separator:a22d90676e746e4d4d45215a879068d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbbdd0587a0bcd655a1b8d353fde0800"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#acbbdd0587a0bcd655a1b8d353fde0800">annkSearch</a> (<a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> q, int <a class="el" href="a00313.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, <a class="el" href="a00308.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a> nn_idx, <a class="el" href="a00308.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a> dd, double <a class="el" href="a00313.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>=0.0)=0</td></tr>
+<tr class="separator:acbbdd0587a0bcd655a1b8d353fde0800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab83304c25c29458433b06457a5eb944"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#aab83304c25c29458433b06457a5eb944">annkFRSearch</a> (<a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a> q, <a class="el" href="a00308.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a> sqRad, int <a class="el" href="a00313.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>=0, <a class="el" href="a00308.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a> nn_idx=NULL, <a class="el" href="a00308.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a> dd=NULL, double <a class="el" href="a00313.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>=0.0)=0</td></tr>
+<tr class="separator:aab83304c25c29458433b06457a5eb944"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5c31c17581ec593d31ceeb12adb1728"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#af5c31c17581ec593d31ceeb12adb1728">theDim</a> ()=0</td></tr>
+<tr class="separator:af5c31c17581ec593d31ceeb12adb1728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b2fefca5fecd901ac637dfad13251b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a15b2fefca5fecd901ac637dfad13251b">nPoints</a> ()=0</td></tr>
+<tr class="separator:a15b2fefca5fecd901ac637dfad13251b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab791b3d9247afc32521ddcb61f27f6a2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ab791b3d9247afc32521ddcb61f27f6a2">thePoints</a> ()=0</td></tr>
+<tr class="separator:ab791b3d9247afc32521ddcb61f27f6a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="a00332_source.html#l00054">54</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
+<p>Definition at line <a class="el" href="a00308_source.html#l00491">491</a> of file <a class="el" href="a00308_source.html">ANN.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a796142149290820b2e3f54f9da927059"></a>
+<a class="anchor" id="a22d90676e746e4d4d45215a879068d03"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -107,43 +89,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">ANNpr_queue::ANNpr_queue </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>max</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00332_source.html#l00065">65</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
-
-<p>References <a class="el" href="a00332_source.html#l00061">max_size</a>, <a class="el" href="a00332_source.html#l00060">n</a>, and <a class="el" href="a00332_source.html#l00062">pq</a>.</p>
-<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                        <a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a> = 0;                                          <span class="comment">// initially empty</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                        <a class="code" href="a00025.html#a7938a5f4f4e59fa8188409750e739fd3">max_size</a> = max;                         <span class="comment">// maximum number of items</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                        <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a> = <span class="keyword">new</span> pq_node[max+1];        <span class="comment">// queue is array [1..max] of nodes</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                }</div>
-<div class="ttc" id="a00025_html_aa0fad9a0df1cfb72f4cf85217dfe6742"><div class="ttname"><a href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">ANNpr_queue::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00060">pr_queue.h:60</a></div></div>
-<div class="ttc" id="a00025_html_a253013fd1d0d6eee66d47bc14959abbe"><div class="ttname"><a href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">ANNpr_queue::pq</a></div><div class="ttdeci">pq_node * pq</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00062">pr_queue.h:62</a></div></div>
-<div class="ttc" id="a00025_html_a7938a5f4f4e59fa8188409750e739fd3"><div class="ttname"><a href="a00025.html#a7938a5f4f4e59fa8188409750e739fd3">ANNpr_queue::max_size</a></div><div class="ttdeci">int max_size</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00061">pr_queue.h:61</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a04cb7e4585b6ab68693eb0c2dd2d9e96"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">ANNpr_queue::~ANNpr_queue </td>
+          <td class="memname">virtual ANNpointSet::~ANNpointSet </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -151,21 +97,18 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00332_source.html#l00072">72</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
-
-<p>References <a class="el" href="a00332_source.html#l00062">pq</a>.</p>
-<div class="fragment"><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                { <span class="keyword">delete</span> [] <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>; }</div>
-<div class="ttc" id="a00025_html_a253013fd1d0d6eee66d47bc14959abbe"><div class="ttname"><a href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">ANNpr_queue::pq</a></div><div class="ttdeci">pq_node * pq</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00062">pr_queue.h:62</a></div></div>
+<p>Definition at line <a class="el" href="a00308_source.html#l00493">493</a> of file <a class="el" href="a00308_source.html">ANN.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;{}                      <span class="comment">// virtual distructor</span></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a82924b7522162467cd0251ce128947c8"></a>
+<a class="anchor" id="aab83304c25c29458433b06457a5eb944"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -173,47 +116,40 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00305.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a> ANNpr_queue::empty </td>
+          <td class="memname">virtual int ANNpointSet::annkFRSearch </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00332_source.html#l00075">75</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
-
-<p>References <a class="el" href="a00305_source.html#l00132">ANNfalse</a>, <a class="el" href="a00305_source.html#l00132">ANNtrue</a>, and <a class="el" href="a00332_source.html#l00060">n</a>.</p>
-<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                { <span class="keywordflow">if</span> (<a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a>==0) <span class="keywordflow">return</span> <a class="code" href="a00305.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a>; <span class="keywordflow">else</span> <span class="keywordflow">return</span> <a class="code" href="a00305.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a>; }</div>
-<div class="ttc" id="a00305_html_ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1"><div class="ttname"><a href="a00305.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a></div><div class="ttdef"><b>Definition:</b> <a href="a00305_source.html#l00132">ANN.h:132</a></div></div>
-<div class="ttc" id="a00305_html_ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474"><div class="ttname"><a href="a00305.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a></div><div class="ttdef"><b>Definition:</b> <a href="a00305_source.html#l00132">ANN.h:132</a></div></div>
-<div class="ttc" id="a00025_html_aa0fad9a0df1cfb72f4cf85217dfe6742"><div class="ttname"><a href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">ANNpr_queue::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00060">pr_queue.h:60</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a9d03698bdbe68ac6245edf74952958e4"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> ANNpr_queue::extr_min </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00332.html#a4f3250dcb9a07c4b44eec3de958c8a68">PQkey</a> &amp;&#160;</td>
-          <td class="paramname"><em>kv</em>, </td>
+          <td class="paramtype"><a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00332.html#a67e38939e5afb9f1663d563a6047825d">PQinfo</a> &amp;&#160;</td>
-          <td class="paramname"><em>inf</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00308.html#ab2a7296707a2205201daccfc1929c3ca">ANNdist</a>&#160;</td>
+          <td class="paramname"><em>sqRad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>k</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00308.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>&#160;</td>
+          <td class="paramname"><em>nn_idx</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00308.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a>&#160;</td>
+          <td class="paramname"><em>dd</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>eps</em> = <code>0.0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -223,44 +159,16 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00332_source.html#l00102">102</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
+<p>Implemented in <a class="el" href="a00020.html#a9f98ea5b23ad8957fbea661014d25889">ANNkd_tree</a>, and <a class="el" href="a00016.html#a2b72f0687a5fc325471213b1b42f932f">ANNbruteForce</a>.</p>
 
-<p>References <a class="el" href="a00306_source.html#l00131">ANN_FLOP</a>, <a class="el" href="a00332_source.html#l00058">ANNpr_queue::pq_node::info</a>, <a class="el" href="a00332_source.html#l00057">ANNpr_queue::pq_node::key</a>, <a class="el" href="a00332_source.html#l00060">n</a>, and <a class="el" href="a00332_source.html#l00062">pq</a>.</p>
-
-<p>Referenced by <a class="el" href="a00321_source.html#l00087">ANNkd_tree::annkPriSearch()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                        kv = <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[1].<a class="code" href="a00193.html#a320dd10cf722157d3b335f84807a7bab">key</a>;                         <span class="comment">// key of min item</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                        inf = <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[1].<a class="code" href="a00193.html#a2d68afd877b07688ca0d92a458089f59">info</a>;                       <span class="comment">// information of min item</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                        <span class="keyword">register</span> <a class="code" href="a00332.html#a4f3250dcb9a07c4b44eec3de958c8a68">PQkey</a> kn = <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[<a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a>--].<a class="code" href="a00193.html#a320dd10cf722157d3b335f84807a7bab">key</a>;<span class="comment">// last item in queue</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                        <span class="keyword">register</span> <span class="keywordtype">int</span> p = 1;                     <span class="comment">// p points to item out of position</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                        <span class="keyword">register</span> <span class="keywordtype">int</span> r = p&lt;&lt;1;          <span class="comment">// left child of p</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                        <span class="keywordflow">while</span> (r &lt;= <a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a>) {                        <span class="comment">// while r is still within the heap</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                                <a class="code" href="a00306.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a>(2)                             <span class="comment">// increment floating ops</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                                                                                <span class="comment">// set r to smaller child of p</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                                if (r &lt; <a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a>  &amp;&amp; <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[r].key &gt; <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[r+1].key) r++;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                                if (kn &lt;= <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[r].key)    <span class="comment">// in proper order</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                                        break;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                                <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[p] = <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[r];                  <span class="comment">// else swap with child</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                                p = r;                                  <span class="comment">// advance pointers</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                                r = p&lt;&lt;1;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                        }</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                        <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[p] = <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[<a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a>+1];                        <span class="comment">// insert last item in proper place</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                }</div>
-<div class="ttc" id="a00306_html_a9e54d6f38fc80e6cdd64b97abf63c9a3"><div class="ttname"><a href="a00306.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a></div><div class="ttdeci">#define ANN_FLOP(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00131">ANNperf.h:131</a></div></div>
-<div class="ttc" id="a00025_html_aa0fad9a0df1cfb72f4cf85217dfe6742"><div class="ttname"><a href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">ANNpr_queue::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00060">pr_queue.h:60</a></div></div>
-<div class="ttc" id="a00025_html_a253013fd1d0d6eee66d47bc14959abbe"><div class="ttname"><a href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">ANNpr_queue::pq</a></div><div class="ttdeci">pq_node * pq</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00062">pr_queue.h:62</a></div></div>
-<div class="ttc" id="a00193_html_a2d68afd877b07688ca0d92a458089f59"><div class="ttname"><a href="a00193.html#a2d68afd877b07688ca0d92a458089f59">ANNpr_queue::pq_node::info</a></div><div class="ttdeci">PQinfo info</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00058">pr_queue.h:58</a></div></div>
-<div class="ttc" id="a00332_html_a4f3250dcb9a07c4b44eec3de958c8a68"><div class="ttname"><a href="a00332.html#a4f3250dcb9a07c4b44eec3de958c8a68">PQkey</a></div><div class="ttdeci">ANNdist PQkey</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00036">pr_queue.h:36</a></div></div>
-<div class="ttc" id="a00193_html_a320dd10cf722157d3b335f84807a7bab"><div class="ttname"><a href="a00193.html#a320dd10cf722157d3b335f84807a7bab">ANNpr_queue::pq_node::key</a></div><div class="ttdeci">PQkey key</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00057">pr_queue.h:57</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ace0ac53aabbcaba22d209e3e1d987db6"></a>
+<a class="anchor" id="acbbdd0587a0bcd655a1b8d353fde0800"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -268,16 +176,34 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> ANNpr_queue::insert </td>
+          <td class="memname">virtual <a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> ANNpointSet::annkSearch </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00332.html#a4f3250dcb9a07c4b44eec3de958c8a68">PQkey</a>&#160;</td>
-          <td class="paramname"><em>kv</em>, </td>
+          <td class="paramtype"><a class="el" href="a00308.html#ad85f4b5cb9cf5877a2094bf8582133f5">ANNpoint</a>&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00332.html#a67e38939e5afb9f1663d563a6047825d">PQinfo</a>&#160;</td>
-          <td class="paramname"><em>inf</em>&#160;</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>k</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00308.html#a6cc54f9929727736423d719870cf1a5b">ANNidxArray</a>&#160;</td>
+          <td class="paramname"><em>nn_idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00308.html#ae3a038f02621d79c1efd5f8fb2ee968e">ANNdistArray</a>&#160;</td>
+          <td class="paramname"><em>dd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>eps</em> = <code>0.0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -287,40 +213,16 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00332_source.html#l00084">84</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
+<p>Implemented in <a class="el" href="a00020.html#a2a0fa2889c23a34773dc054c7769b3c6">ANNkd_tree</a>, and <a class="el" href="a00016.html#ac18a8d4dd4550a8336228d0d219cbc18">ANNbruteForce</a>.</p>
 
-<p>References <a class="el" href="a00306_source.html#l00131">ANN_FLOP</a>, <a class="el" href="a00307_source.html#l00048">ANNabort</a>, <a class="el" href="a00311_source.html#l00169">annError()</a>, <a class="el" href="a00332_source.html#l00058">ANNpr_queue::pq_node::info</a>, <a class="el" href="a00332_source.html#l00057">ANNpr_queue::pq_node::key</a>, <a class="el" href="a00332_source.html#l00061">max_size</a>, <a class="el" href="a00332_source.html#l00060">n</a>, and <a class="el" href="a00332_source.html#l00062">pq</a>.</p>
-
-<p>Referenced by <a class="el" href="a00313_source.html#l00039">ANNbd_shrink::ann_pri_search()</a>, <a class="el" href="a00321_source.html#l00139">ANNkd_split::ann_pri_search()</a>, and <a class="el" href="a00321_source.html#l00087">ANNkd_tree::annkPriSearch()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                        <span class="keywordflow">if</span> (++<a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a> &gt; <a class="code" href="a00025.html#a7938a5f4f4e59fa8188409750e739fd3">max_size</a>) <a class="code" href="a00307.html#a9c45d5ab29fad7c514d22008daf15534">annError</a>(<span class="stringliteral">&quot;Priority queue overflow.&quot;</span>, <a class="code" href="a00307.html#a13bdbb0af13b1a99636a383f628469d4ac74a434b098f1c98aa9c2fbdd2e93524">ANNabort</a>);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                        <span class="keyword">register</span> <span class="keywordtype">int</span> r = <a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                        <span class="keywordflow">while</span> (r &gt; 1) {                         <span class="comment">// sift up new item</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                <span class="keyword">register</span> <span class="keywordtype">int</span> p = r/2;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                                <a class="code" href="a00306.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a>(1)                             <span class="comment">// increment floating ops</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                                if (<a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[p].key &lt;= kv)    <span class="comment">// in proper order</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                        break;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                                <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[r] = <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[p];                  <span class="comment">// else swap with parent</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                                r = p;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                        }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                        <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[r].key = kv;                         <span class="comment">// insert new item at final location</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                        <a class="code" href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">pq</a>[r].info = inf;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                }</div>
-<div class="ttc" id="a00306_html_a9e54d6f38fc80e6cdd64b97abf63c9a3"><div class="ttname"><a href="a00306.html#a9e54d6f38fc80e6cdd64b97abf63c9a3">ANN_FLOP</a></div><div class="ttdeci">#define ANN_FLOP(n)</div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00131">ANNperf.h:131</a></div></div>
-<div class="ttc" id="a00307_html_a13bdbb0af13b1a99636a383f628469d4ac74a434b098f1c98aa9c2fbdd2e93524"><div class="ttname"><a href="a00307.html#a13bdbb0af13b1a99636a383f628469d4ac74a434b098f1c98aa9c2fbdd2e93524">ANNabort</a></div><div class="ttdef"><b>Definition:</b> <a href="a00307_source.html#l00048">ANNx.h:48</a></div></div>
-<div class="ttc" id="a00025_html_aa0fad9a0df1cfb72f4cf85217dfe6742"><div class="ttname"><a href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">ANNpr_queue::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00060">pr_queue.h:60</a></div></div>
-<div class="ttc" id="a00025_html_a253013fd1d0d6eee66d47bc14959abbe"><div class="ttname"><a href="a00025.html#a253013fd1d0d6eee66d47bc14959abbe">ANNpr_queue::pq</a></div><div class="ttdeci">pq_node * pq</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00062">pr_queue.h:62</a></div></div>
-<div class="ttc" id="a00025_html_a7938a5f4f4e59fa8188409750e739fd3"><div class="ttname"><a href="a00025.html#a7938a5f4f4e59fa8188409750e739fd3">ANNpr_queue::max_size</a></div><div class="ttdeci">int max_size</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00061">pr_queue.h:61</a></div></div>
-<div class="ttc" id="a00307_html_a9c45d5ab29fad7c514d22008daf15534"><div class="ttname"><a href="a00307.html#a9c45d5ab29fad7c514d22008daf15534">annError</a></div><div class="ttdeci">void annError(const char *msg, ANNerr level)</div><div class="ttdef"><b>Definition:</b> <a href="a00311_source.html#l00169">ANN.cpp:169</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a2ae6efba5c56255cfba2b256c7620f9e"></a>
+<a class="anchor" id="a15b2fefca5fecd901ac637dfad13251b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -328,7 +230,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00305.html#ae5927710e8251aa54f5b820eca160f2c">ANNbool</a> ANNpr_queue::non_empty </td>
+          <td class="memname">virtual int ANNpointSet::nPoints </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -336,24 +238,16 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00332_source.html#l00078">78</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
+<p>Implemented in <a class="el" href="a00020.html#a7acce8e5f6bbbe1e3c9e7f503e70d19d">ANNkd_tree</a>, and <a class="el" href="a00016.html#acbf6eef7ce9c6999435c62f678afaba4">ANNbruteForce</a>.</p>
 
-<p>References <a class="el" href="a00305_source.html#l00132">ANNfalse</a>, <a class="el" href="a00305_source.html#l00132">ANNtrue</a>, and <a class="el" href="a00332_source.html#l00060">n</a>.</p>
-
-<p>Referenced by <a class="el" href="a00321_source.html#l00087">ANNkd_tree::annkPriSearch()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                { <span class="keywordflow">if</span> (<a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a>==0) <span class="keywordflow">return</span> <a class="code" href="a00305.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a>; <span class="keywordflow">else</span> <span class="keywordflow">return</span> <a class="code" href="a00305.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a>; }</div>
-<div class="ttc" id="a00305_html_ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1"><div class="ttname"><a href="a00305.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1">ANNtrue</a></div><div class="ttdef"><b>Definition:</b> <a href="a00305_source.html#l00132">ANN.h:132</a></div></div>
-<div class="ttc" id="a00305_html_ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474"><div class="ttname"><a href="a00305.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474">ANNfalse</a></div><div class="ttdef"><b>Definition:</b> <a href="a00305_source.html#l00132">ANN.h:132</a></div></div>
-<div class="ttc" id="a00025_html_aa0fad9a0df1cfb72f4cf85217dfe6742"><div class="ttname"><a href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">ANNpr_queue::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00060">pr_queue.h:60</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aeee23855dc7d85497315316469fff47a"></a>
+<a class="anchor" id="af5c31c17581ec593d31ceeb12adb1728"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -361,7 +255,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00308.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a> ANNpr_queue::reset </td>
+          <td class="memname">virtual int ANNpointSet::theDim </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -369,21 +263,16 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00332_source.html#l00081">81</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
+<p>Implemented in <a class="el" href="a00020.html#a200c6e8c2d9ea1d9afbdec893c41edb2">ANNkd_tree</a>, and <a class="el" href="a00016.html#ad7894b12b925b0c3bbeb57d5ba260285">ANNbruteForce</a>.</p>
 
-<p>References <a class="el" href="a00332_source.html#l00060">n</a>.</p>
-<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                { <a class="code" href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">n</a> = 0; }</div>
-<div class="ttc" id="a00025_html_aa0fad9a0df1cfb72f4cf85217dfe6742"><div class="ttname"><a href="a00025.html#aa0fad9a0df1cfb72f4cf85217dfe6742">ANNpr_queue::n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00060">pr_queue.h:60</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a7938a5f4f4e59fa8188409750e739fd3"></a>
+<a class="anchor" id="ab791b3d9247afc32521ddcb61f27f6a2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -391,76 +280,29 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int ANNpr_queue::max_size</td>
+          <td class="memname">virtual <a class="el" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> ANNpointSet::thePoints </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00332_source.html#l00061">61</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00332_source.html#l00065">ANNpr_queue()</a>, and <a class="el" href="a00332_source.html#l00084">insert()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa0fad9a0df1cfb72f4cf85217dfe6742"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int ANNpr_queue::n</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00332_source.html#l00060">60</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00332_source.html#l00065">ANNpr_queue()</a>, <a class="el" href="a00332_source.html#l00075">empty()</a>, <a class="el" href="a00332_source.html#l00102">extr_min()</a>, <a class="el" href="a00332_source.html#l00084">insert()</a>, <a class="el" href="a00332_source.html#l00078">non_empty()</a>, and <a class="el" href="a00332_source.html#l00081">reset()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a253013fd1d0d6eee66d47bc14959abbe"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00193.html">pq_node</a>* ANNpr_queue::pq</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00332_source.html#l00062">62</a> of file <a class="el" href="a00332_source.html">pr_queue.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00332_source.html#l00065">ANNpr_queue()</a>, <a class="el" href="a00332_source.html#l00102">extr_min()</a>, <a class="el" href="a00332_source.html#l00084">insert()</a>, and <a class="el" href="a00332_source.html#l00072">~ANNpr_queue()</a>.</p>
+<p>Implemented in <a class="el" href="a00020.html#a927be6420bd73db85ad8e356b462ec1b">ANNkd_tree</a>, and <a class="el" href="a00016.html#a97a436f7288964a2f7cb84ce3d056350">ANNbruteForce</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/contrib/ANN/src/<a class="el" href="a00332_source.html">pr_queue.h</a></li>
+<li>src/contrib/ANN/include/ANN/<a class="el" href="a00308_source.html">ANN.h</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

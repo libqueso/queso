@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/RngBase.h Source File</title>
+<title>queso-0.56.2: src/core/inc/OperatorBase.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">RngBase.h</div>  </div>
+<div class="title">OperatorBase.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00374.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,66 +75,51 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_RNG_BASE_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_RNG_BASE_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef QUESO_OPERATOR_BASE_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_OPERATOR_BASE_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/SharedPtr.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/FunctionBase.h&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00195.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00195.html">RngBase</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">class </span>FunctionOperatorBuilder;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00183.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00183.html">OperatorBase</a> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="a00195.html#ad8dd3cef9323851cad163c37b815bc88">RngBase</a>(<span class="keywordtype">int</span> <a class="code" href="a00195.html#a3094da86084e56faaae9325f1117f9a3">seed</a>, <span class="keywordtype">int</span> worldRank);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00195.html#a64e1281954e342f704d5f3cbcbffa30c">~RngBase</a>();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="a00183.html#ae9f848c2418f2dca590175a53be0b250">OperatorBase</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00183.html#a2869fcba07398fa247c0095f3e5f272d">~OperatorBase</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;          <span class="keywordtype">int</span>    <a class="code" href="a00195.html#a3094da86084e56faaae9325f1117f9a3">seed</a>          () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span>   <a class="code" href="a00195.html#a8cb8cbf14298bfcb84de1b562c069e84">resetSeed</a>     (<span class="keywordtype">int</span> newSeed);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00195.html#aed8342f0c8a4ac0a311cce9cac2b67e5">uniformSample</a> ()                          <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00195.html#a7be9cf40cc50b973ed8c2f594f402584">gaussianSample</a>(<span class="keywordtype">double</span> stdDev)             <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00195.html#a098089a93e29db4ad9ac106c8b5de583">betaSample</a>    (<span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00195.html#abd9abcf42426b568d4f13f5c3f3dc997">gammaSample</a>   (<span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b)        <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00195.html#ab67b3c940ba6ffb4f2d70079fe36e343">   82</a></span>&#160;          <span class="keywordtype">int</span> <a class="code" href="a00195.html#ab67b3c940ba6ffb4f2d70079fe36e343">m_seed</a>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="a00195.html#a94515d2b7d493d8e4e238628716dd11b">   85</a></span>&#160;          <span class="keywordtype">int</span> <a class="code" href="a00195.html#a94515d2b7d493d8e4e238628716dd11b">m_worldRank</a>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <a class="code" href="a00195.html#ad8dd3cef9323851cad163c37b815bc88">RngBase</a>();</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00195.html#adbd867ec865be8813641146f7a63c80b">privateResetSeed</a>();</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#endif // UQ_RNG_BASE_H</span></div>
-<div class="ttc" id="a00195_html_a64e1281954e342f704d5f3cbcbffa30c"><div class="ttname"><a href="a00195.html#a64e1281954e342f704d5f3cbcbffa30c">QUESO::RngBase::~RngBase</a></div><div class="ttdeci">virtual ~RngBase()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00418_source.html#l00037">RngBase.C:37</a></div></div>
-<div class="ttc" id="a00195_html_ab67b3c940ba6ffb4f2d70079fe36e343"><div class="ttname"><a href="a00195.html#ab67b3c940ba6ffb4f2d70079fe36e343">QUESO::RngBase::m_seed</a></div><div class="ttdeci">int m_seed</div><div class="ttdoc">Seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00374_source.html#l00082">RngBase.h:82</a></div></div>
-<div class="ttc" id="a00195_html_a8cb8cbf14298bfcb84de1b562c069e84"><div class="ttname"><a href="a00195.html#a8cb8cbf14298bfcb84de1b562c069e84">QUESO::RngBase::resetSeed</a></div><div class="ttdeci">virtual void resetSeed(int newSeed)</div><div class="ttdoc">Resets the seed with value newSeed. </div><div class="ttdef"><b>Definition:</b> <a href="a00418_source.html#l00048">RngBase.C:48</a></div></div>
-<div class="ttc" id="a00195_html_ad8dd3cef9323851cad163c37b815bc88"><div class="ttname"><a href="a00195.html#ad8dd3cef9323851cad163c37b815bc88">QUESO::RngBase::RngBase</a></div><div class="ttdeci">RngBase()</div><div class="ttdoc">Default Constructor: it should not be used. </div></div>
-<div class="ttc" id="a00195_html"><div class="ttname"><a href="a00195.html">QUESO::RngBase</a></div><div class="ttdoc">Class for random number generation (base class for either GSL or Boost RNG). </div><div class="ttdef"><b>Definition:</b> <a href="a00374_source.html#l00045">RngBase.h:45</a></div></div>
-<div class="ttc" id="a00195_html_aed8342f0c8a4ac0a311cce9cac2b67e5"><div class="ttname"><a href="a00195.html#aed8342f0c8a4ac0a311cce9cac2b67e5">QUESO::RngBase::uniformSample</a></div><div class="ttdeci">virtual double uniformSample() const =0</div><div class="ttdoc">Samples a value from a uniform distribution. </div></div>
-<div class="ttc" id="a00195_html_a098089a93e29db4ad9ac106c8b5de583"><div class="ttname"><a href="a00195.html#a098089a93e29db4ad9ac106c8b5de583">QUESO::RngBase::betaSample</a></div><div class="ttdeci">virtual double betaSample(double alpha, double beta) const =0</div><div class="ttdoc">Samples a value from a Beta distribution. </div></div>
-<div class="ttc" id="a00195_html_a94515d2b7d493d8e4e238628716dd11b"><div class="ttname"><a href="a00195.html#a94515d2b7d493d8e4e238628716dd11b">QUESO::RngBase::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdoc">Rank of processor. </div><div class="ttdef"><b>Definition:</b> <a href="a00374_source.html#l00085">RngBase.h:85</a></div></div>
-<div class="ttc" id="a00195_html_abd9abcf42426b568d4f13f5c3f3dc997"><div class="ttname"><a href="a00195.html#abd9abcf42426b568d4f13f5c3f3dc997">QUESO::RngBase::gammaSample</a></div><div class="ttdeci">virtual double gammaSample(double a, double b) const =0</div><div class="ttdoc">Samples a value from a Gamma distribution. </div></div>
-<div class="ttc" id="a00195_html_adbd867ec865be8813641146f7a63c80b"><div class="ttname"><a href="a00195.html#adbd867ec865be8813641146f7a63c80b">QUESO::RngBase::privateResetSeed</a></div><div class="ttdeci">void privateResetSeed()</div><div class="ttdoc">Reset seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00418_source.html#l00056">RngBase.C:56</a></div></div>
-<div class="ttc" id="a00195_html_a3094da86084e56faaae9325f1117f9a3"><div class="ttname"><a href="a00195.html#a3094da86084e56faaae9325f1117f9a3">QUESO::RngBase::seed</a></div><div class="ttdeci">int seed() const </div><div class="ttdoc">Sets the seed. </div><div class="ttdef"><b>Definition:</b> <a href="a00418_source.html#l00042">RngBase.C:42</a></div></div>
-<div class="ttc" id="a00195_html_a7be9cf40cc50b973ed8c2f594f402584"><div class="ttname"><a href="a00195.html#a7be9cf40cc50b973ed8c2f594f402584">QUESO::RngBase::gaussianSample</a></div><div class="ttdeci">virtual double gaussianSample(double stdDev) const =0</div><div class="ttdoc">Samples a value from a Gaussian distribution with standard deviation given by stdDev. </div></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00183.html#ae16245b5e46e01ff81121cca14190e7f">get_eigenvalue</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00183.html#a598da528247dcaec786eee415664d42e">get_inverted_eigenvalue</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00183.html#a610fc538c34726a001d49c138a17817e">get_num_converged</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00212.html#ae608ddf14a45c74e5ca093dfbc3cbdf0">SharedPtr&lt;FunctionBase&gt;::Type</a></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="a00183.html#a7e4e66c8db558de7445d89810aaaf0e0">inverse_kl_transform</a>(std::vector&lt;double&gt;&amp; xi, <span class="keywordtype">double</span> alpha) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif // QUESO_OPERATOR_BASE_H</span></div>
+<div class="ttc" id="a00183_html_a610fc538c34726a001d49c138a17817e"><div class="ttname"><a href="a00183.html#a610fc538c34726a001d49c138a17817e">QUESO::OperatorBase::get_num_converged</a></div><div class="ttdeci">virtual unsigned int get_num_converged() const =0</div><div class="ttdoc">Return the number of converged eigenpairs. </div></div>
+<div class="ttc" id="a00183_html_a7e4e66c8db558de7445d89810aaaf0e0"><div class="ttname"><a href="a00183.html#a7e4e66c8db558de7445d89810aaaf0e0">QUESO::OperatorBase::inverse_kl_transform</a></div><div class="ttdeci">virtual SharedPtr&lt; FunctionBase &gt;::Type inverse_kl_transform(std::vector&lt; double &gt; &amp;xi, double alpha) const =0</div><div class="ttdoc">Given coefficients xi, computes the Karhunen-Loeve transform. </div></div>
+<div class="ttc" id="a00183_html_a598da528247dcaec786eee415664d42e"><div class="ttname"><a href="a00183.html#a598da528247dcaec786eee415664d42e">QUESO::OperatorBase::get_inverted_eigenvalue</a></div><div class="ttdeci">virtual double get_inverted_eigenvalue(unsigned int i) const =0</div><div class="ttdoc">Return the reciprocal of eigenvalue i. </div></div>
+<div class="ttc" id="a00183_html"><div class="ttname"><a href="a00183.html">QUESO::OperatorBase</a></div><div class="ttdoc">Abstract base class for operator objects. Operators are assumed to be symmetric and positive-definite...</div><div class="ttdef"><b>Definition:</b> <a href="a00374_source.html#l00045">OperatorBase.h:45</a></div></div>
+<div class="ttc" id="a00183_html_ae9f848c2418f2dca590175a53be0b250"><div class="ttname"><a href="a00183.html#ae9f848c2418f2dca590175a53be0b250">QUESO::OperatorBase::OperatorBase</a></div><div class="ttdeci">OperatorBase()</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00423_source.html#l00030">OperatorBase.C:30</a></div></div>
+<div class="ttc" id="a00183_html_a2869fcba07398fa247c0095f3e5f272d"><div class="ttname"><a href="a00183.html#a2869fcba07398fa247c0095f3e5f272d">QUESO::OperatorBase::~OperatorBase</a></div><div class="ttdeci">virtual ~OperatorBase()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00423_source.html#l00034">OperatorBase.C:34</a></div></div>
+<div class="ttc" id="a00212_html_ae608ddf14a45c74e5ca093dfbc3cbdf0"><div class="ttname"><a href="a00212.html#ae608ddf14a45c74e5ca093dfbc3cbdf0">QUESO::SharedPtr::Type</a></div><div class="ttdeci">std::shared_ptr&lt; T &gt; Type</div><div class="ttdef"><b>Definition:</b> <a href="a00384_source.html#l00069">SharedPtr.h:69</a></div></div>
+<div class="ttc" id="a00183_html_ae16245b5e46e01ff81121cca14190e7f"><div class="ttname"><a href="a00183.html#ae16245b5e46e01ff81121cca14190e7f">QUESO::OperatorBase::get_eigenvalue</a></div><div class="ttdeci">virtual double get_eigenvalue(unsigned int i) const =0</div><div class="ttdoc">Return eigenvalue i. </div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:10 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:47 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

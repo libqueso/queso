@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/core/inc/queso.h File Reference</title>
+<title>queso-0.56.2: src/core/inc/MpiComm.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,61 +48,70 @@
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">queso.h File Reference</div>  </div>
+<div class="title">MpiComm.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;config_queso.h&quot;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for queso.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00817.png" border="0" usemap="#src_2core_2inc_2queso_8h" alt=""/></div>
-<map name="src_2core_2inc_2queso_8h" id="src_2core_2inc_2queso_8h">
-</map>
-</div>
-</div>
+
+<p>MPI Communicator Class.  
+<a href="#details">More...</a></p>
+
 <p><a href="a00373_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a4ade4ed888e8e8984634ec507e08dcf4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00373.html#a4ade4ed888e8e8984634ec507e08dcf4">QUESO_LIB_VERSION</a>&#160;&#160;&#160;QUESO_VERSION</td></tr>
-<tr class="separator:a4ade4ed888e8e8984634ec507e08dcf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a200372295aca6277053dc3198acd1fa2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00373.html#a200372295aca6277053dc3198acd1fa2">QUESO_LIB_RELEASE</a>&#160;&#160;&#160;QUESO_BUILD_DEVSTATUS</td></tr>
-<tr class="separator:a200372295aca6277053dc3198acd1fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00072.html">QUESO::data_type</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00073.html">QUESO::DataType</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00216.html">QUESO::StandardType&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00179.html">QUESO::MpiComm</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="a00674.html">QUESO</a> MPI Communicator Class.  <a href="a00179.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:aa3aeb31f2c1693b8f0d9403675d5b805"><td class="memItemLeft" align="right" valign="top">typedef MPI_Comm&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#aa3aeb31f2c1693b8f0d9403675d5b805">QUESO::RawType_MPI_Comm</a></td></tr>
+<tr class="separator:aa3aeb31f2c1693b8f0d9403675d5b805"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0b3b3f6c0a21b084ea4e021bf96429e"><td class="memItemLeft" align="right" valign="top">typedef MPI_Group&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#ab0b3b3f6c0a21b084ea4e021bf96429e">QUESO::RawType_MPI_Group</a></td></tr>
+<tr class="separator:ab0b3b3f6c0a21b084ea4e021bf96429e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a974e147ad875ce654b48aade7a1c39de"><td class="memItemLeft" align="right" valign="top">typedef MPI_Datatype&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a974e147ad875ce654b48aade7a1c39de">QUESO::RawType_MPI_Datatype</a></td></tr>
+<tr class="separator:a974e147ad875ce654b48aade7a1c39de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6d0b364b5e4fa56c276c5bbc1a2911d"><td class="memItemLeft" align="right" valign="top">typedef MPI_Datatype&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#ab6d0b364b5e4fa56c276c5bbc1a2911d">QUESO::data_type</a></td></tr>
+<tr class="separator:ab6d0b364b5e4fa56c276c5bbc1a2911d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75bb589f75213c4ff7d02a6b7da5bbfc"><td class="memItemLeft" align="right" valign="top">typedef MPI_Op&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a75bb589f75213c4ff7d02a6b7da5bbfc">QUESO::RawType_MPI_Op</a></td></tr>
+<tr class="separator:a75bb589f75213c4ff7d02a6b7da5bbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89d6670b5a300a7fbbab7c0839c1534c"><td class="memItemLeft" align="right" valign="top">typedef MPI_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a89d6670b5a300a7fbbab7c0839c1534c">QUESO::RawType_MPI_Status</a></td></tr>
+<tr class="separator:a89d6670b5a300a7fbbab7c0839c1534c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a8b76f48cc08fb011fb27746004776437"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a8b76f48cc08fb011fb27746004776437">QUESO::QUESO_STANDARD_TYPE</a> (char, MPI_CHAR)</td></tr>
+<tr class="separator:a8b76f48cc08fb011fb27746004776437"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64edde0445268d888eb466196ae89581"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a64edde0445268d888eb466196ae89581">QUESO::QUESO_STANDARD_TYPE</a> (int, MPI_INT)</td></tr>
+<tr class="separator:a64edde0445268d888eb466196ae89581"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75623147a0c67c1b4ca64a569db91cc0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a75623147a0c67c1b4ca64a569db91cc0">QUESO::QUESO_STANDARD_TYPE</a> (unsigned int, MPI_UNSIGNED)</td></tr>
+<tr class="separator:a75623147a0c67c1b4ca64a569db91cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a924cb6caebb8bad257d154bbb46b6cca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a924cb6caebb8bad257d154bbb46b6cca">QUESO::QUESO_STANDARD_TYPE</a> (double, MPI_DOUBLE)</td></tr>
+<tr class="separator:a924cb6caebb8bad257d154bbb46b6cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a200372295aca6277053dc3198acd1fa2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QUESO_LIB_RELEASE&#160;&#160;&#160;QUESO_BUILD_DEVSTATUS</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>MPI Communicator Class. </p>
 
-<p>Definition at line <a class="el" href="a00373_source.html#l00047">47</a> of file <a class="el" href="a00373_source.html">queso.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4ade4ed888e8e8984634ec507e08dcf4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QUESO_LIB_VERSION&#160;&#160;&#160;QUESO_VERSION</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00373_source.html#l00042">42</a> of file <a class="el" href="a00373_source.html">queso.h</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<p>Definition in file <a class="el" href="a00373_source.html">MpiComm.h</a>.</p>
+</div></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

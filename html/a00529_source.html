@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/inc/HessianCovMatricesTKGroup.h Source File</title>
+<title>queso-0.56.2: src/stats/inc/MatrixCovarianceFunction.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">HessianCovMatricesTKGroup.h</div>  </div>
+<div class="title">MatrixCovarianceFunction.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00529.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -57,7 +57,7 @@
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2015 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008-2017 The PECOS Development Team</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
@@ -75,87 +75,64 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_HESSIANCOV_TRANSITION_KERNEL_GROUP_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_HESSIANCOV_TRANSITION_KERNEL_GROUP_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_MATRIX_COVARIANCE_FUNCTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_MATRIX_COVARIANCE_FUNCTION_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/TKGroup.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRV.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarFunctionSynchronizer.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>GslVector;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>GslMatrix;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// TK with Hessians</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment"></span><span class="keyword">template</span> &lt;<span class="keyword">class</span> V = GslVector, <span class="keyword">class</span> M = GslMatrix&gt;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00139.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00139.html">HessianCovMatricesTKGroup</a> : <span class="keyword">public</span> <a class="code" href="a00045.html">BaseTKGroup</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="a00139.html#a130c5c8e70e348350a12bd8d8a207fd4">HessianCovMatricesTKGroup</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                                   prefix,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                                   <span class="keyword">const</span> <a class="code" href="a00247.html">VectorSpace&lt;V,M&gt;</a>&amp;                vectorSpace,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                                   <span class="keyword">const</span> std::vector&lt;double&gt;&amp;                    scales,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                                   <span class="keyword">const</span> <a class="code" href="a00204.html">ScalarFunctionSynchronizer&lt;V,M&gt;</a>&amp; targetPdfSynchronizer);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00139.html#a7d5732bbedaebfc7b63ccbb11ea2c1b6">~HessianCovMatricesTKGroup</a>();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; <span class="comment">/* The covariance for two random variates \f$ X \f$ and \f$ Y \f$,</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"> * each with sample size \f$ N \f$, is defined by the expectation value:</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment"> * \f$ cov (X,Y) = &lt;(X-\mu_X)(Y-\mu_Y)&gt; = &lt; X Y &gt; - \mu_X \mu_Y \f$</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment"> * where \f$ \mu_X \f$ and \f$ \mu_Y \f$ are the respective means, which can be written out</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment"> * explicitly as \f[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\f] */</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V = GslVector, <span class="keyword">class</span> P_M = GslMatrix, <span class="keyword">class</span> Q_V = GslVector, <span class="keyword">class</span> Q_M = GslMatrix&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00039.html">   57</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00039.html">BaseMatrixCovarianceFunction</a> {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">bool</span>                          <a class="code" href="a00139.html#abf0f6a04543c18b2f95e615b09191c2b">symmetric</a>                 () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00108.html">GaussianVectorRV&lt;V,M&gt;</a>&amp; <a class="code" href="a00139.html#a39835e7075b66c67a48ead7aa0f4d1ed">rv</a>                        (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                     stageId ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="a00039.html#aa19fd2a4d2cc8ce822d4712abbd45021">BaseMatrixCovarianceFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                      prefix,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                                      <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; <a class="code" href="a00039.html#a6ce876e4dae5ab4b165ac100e310dd45">basicDomainSet</a>,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                                      <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;Q_V,Q_M&gt;</a>&amp; imageSet);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00108.html">GaussianVectorRV&lt;V,M&gt;</a>&amp; <a class="code" href="a00139.html#a39835e7075b66c67a48ead7aa0f4d1ed">rv</a>                        (<span class="keyword">const</span> std::vector&lt;unsigned int&gt;&amp; stageIds);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="a00108.html">GaussianVectorRV&lt;V, M&gt;</a> &amp; <a class="code" href="a00139.html#a39835e7075b66c67a48ead7aa0f4d1ed">rv</a>(<span class="keyword">const</span> V &amp; position) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00039.html#a821c7190922a832ecc4ae3bcc78b99cc">~BaseMatrixCovarianceFunction</a>();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">bool</span>                          <a class="code" href="a00139.html#a935cca86e22544d5a478e05862a4a200">setPreComputingPosition</a>   (<span class="keyword">const</span> V&amp; position, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>  stageId );</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">void</span>                          <a class="code" href="a00139.html#af5ca7d6d8464e444607bb3da6cd39be8">clearPreComputingPositions</a>();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00139.html#a955970d8c6b7b8e1403c6f7378480e46">set_dr_stage</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> stageId);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; <a class="code" href="a00039.html#a6ce876e4dae5ab4b165ac100e310dd45">basicDomainSet</a>()             <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span>                     <a class="code" href="a00039.html#af1ae061b09f7b4187d2ba8920ced6074">covMatrix</a>     (<span class="keyword">const</span> P_V&amp; domainVector1, <span class="keyword">const</span> P_V&amp; domainVector2, Q_M&amp; imageMatrix) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00039.html#a2bf98f6576db775109e240a2d828c578">   81</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00036.html">BaseEnvironment</a>&amp;    <a class="code" href="a00039.html#a2bf98f6576db775109e240a2d828c578">m_env</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00039.html#a05865387f77ce48e71ab2448982c5616">   82</a></span>&#160;        std::string                <a class="code" href="a00039.html#a05865387f77ce48e71ab2448982c5616">m_prefix</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00039.html#a3c466742b27fc304cce106f96d8e49c7">   83</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;P_V,P_M&gt;</a>&amp; <a class="code" href="a00039.html#a3c466742b27fc304cce106f96d8e49c7">m_basicDomainSet</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="a00039.html#aa6e05a29048771a3a327b82cea09d480">   84</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00249.html">VectorSet&lt;Q_V,Q_M&gt;</a>&amp; <a class="code" href="a00039.html#aa6e05a29048771a3a327b82cea09d480">m_imageSet</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordtype">void</span>                          <a class="code" href="a00139.html#aa780d91ffdf133df50d5d9a3a0edaa95">print</a>                     (std::ostream&amp; os) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00045.html">BaseTKGroup&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00045.html">BaseTKGroup&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00045.html">BaseTKGroup&lt;V,M&gt;::m_vectorSpace</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00045.html">BaseTKGroup&lt;V,M&gt;::m_scales</a>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00045.html">BaseTKGroup&lt;V,M&gt;::m_preComputingPositions</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00045.html">BaseTKGroup&lt;V,M&gt;::m_rvs</a>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="a00139.html#a22daa22c22e5d9800c3817f6912ca122">   98</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00204.html">ScalarFunctionSynchronizer&lt;V,M&gt;</a>&amp; <a class="code" href="a00139.html#a22daa22c22e5d9800c3817f6912ca122">m_targetPdfSynchronizer</a>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="a00139.html#a4c0fe3171a35cdd453a4e23e1438ddf9">   99</a></span>&#160;  std::vector&lt;V*&gt;                               <a class="code" href="a00139.html#a4c0fe3171a35cdd453a4e23e1438ddf9">m_originalNewtonSteps</a>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="a00139.html#acc7219917faf933e77694894856fa646">  100</a></span>&#160;  std::vector&lt;M*&gt;                               <a class="code" href="a00139.html#acc7219917faf933e77694894856fa646">m_originalCovMatrices</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#endif // UQ_HESSIANCOV_TRANSITION_KERNEL_GROUP_H</span></div>
-<div class="ttc" id="a00139_html"><div class="ttname"><a href="a00139.html">QUESO::HessianCovMatricesTKGroup</a></div><div class="ttdoc">This class allows the representation of a transition kernel with Hessians. </div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00044">HessianCovMatricesTKGroup.h:44</a></div></div>
-<div class="ttc" id="a00139_html_abf0f6a04543c18b2f95e615b09191c2b"><div class="ttname"><a href="a00139.html#abf0f6a04543c18b2f95e615b09191c2b">QUESO::HessianCovMatricesTKGroup::symmetric</a></div><div class="ttdeci">bool symmetric() const </div><div class="ttdoc">Whether or not the matrix is symmetric. Always &amp;#39;false&amp;#39;. </div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00074">HessianCovMatricesTKGroup.C:74</a></div></div>
-<div class="ttc" id="a00139_html_af5ca7d6d8464e444607bb3da6cd39be8"><div class="ttname"><a href="a00139.html#af5ca7d6d8464e444607bb3da6cd39be8">QUESO::HessianCovMatricesTKGroup::clearPreComputingPositions</a></div><div class="ttdeci">void clearPreComputingPositions()</div><div class="ttdoc">Clears the pre-computing positions m_preComputingPositions[stageId]. </div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00342">HessianCovMatricesTKGroup.C:342</a></div></div>
-<div class="ttc" id="a00139_html_a935cca86e22544d5a478e05862a4a200"><div class="ttname"><a href="a00139.html#a935cca86e22544d5a478e05862a4a200">QUESO::HessianCovMatricesTKGroup::setPreComputingPosition</a></div><div class="ttdeci">bool setPreComputingPosition(const V &amp;position, unsigned int stageId)</div><div class="ttdoc">Sets the pre-computing positions m_preComputingPositions[stageId] with a new vector of size position...</div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00166">HessianCovMatricesTKGroup.C:166</a></div></div>
-<div class="ttc" id="a00139_html_a955970d8c6b7b8e1403c6f7378480e46"><div class="ttname"><a href="a00139.html#a955970d8c6b7b8e1403c6f7378480e46">QUESO::HessianCovMatricesTKGroup::set_dr_stage</a></div><div class="ttdeci">virtual unsigned int set_dr_stage(unsigned int stageId)</div><div class="ttdoc">Does nothing. Subclasses may re-implement. Returns the current stage id. </div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00377">HessianCovMatricesTKGroup.C:377</a></div></div>
-<div class="ttc" id="a00247_html"><div class="ttname"><a href="a00247.html">QUESO::VectorSpace</a></div><div class="ttdoc">A class representing a vector space. </div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00139_html_a22daa22c22e5d9800c3817f6912ca122"><div class="ttname"><a href="a00139.html#a22daa22c22e5d9800c3817f6912ca122">QUESO::HessianCovMatricesTKGroup::m_targetPdfSynchronizer</a></div><div class="ttdeci">const ScalarFunctionSynchronizer&lt; V, M &gt; &amp; m_targetPdfSynchronizer</div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00098">HessianCovMatricesTKGroup.h:98</a></div></div>
-<div class="ttc" id="a00139_html_a39835e7075b66c67a48ead7aa0f4d1ed"><div class="ttname"><a href="a00139.html#a39835e7075b66c67a48ead7aa0f4d1ed">QUESO::HessianCovMatricesTKGroup::rv</a></div><div class="ttdeci">const GaussianVectorRV&lt; V, M &gt; &amp; rv(unsigned int stageId) const </div><div class="ttdoc">Gaussian increment property to construct a transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00081">HessianCovMatricesTKGroup.C:81</a></div></div>
-<div class="ttc" id="a00139_html_a7d5732bbedaebfc7b63ccbb11ea2c1b6"><div class="ttname"><a href="a00139.html#a7d5732bbedaebfc7b63ccbb11ea2c1b6">QUESO::HessianCovMatricesTKGroup::~HessianCovMatricesTKGroup</a></div><div class="ttdeci">~HessianCovMatricesTKGroup()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00068">HessianCovMatricesTKGroup.C:68</a></div></div>
-<div class="ttc" id="a00139_html_aa780d91ffdf133df50d5d9a3a0edaa95"><div class="ttname"><a href="a00139.html#aa780d91ffdf133df50d5d9a3a0edaa95">QUESO::HessianCovMatricesTKGroup::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00388">HessianCovMatricesTKGroup.C:388</a></div></div>
-<div class="ttc" id="a00045_html"><div class="ttname"><a href="a00045.html">QUESO::BaseTKGroup</a></div><div class="ttdoc">This base class allows the representation of a transition kernel. </div><div class="ttdef"><b>Definition:</b> <a href="a00496_source.html#l00032">Algorithm.h:32</a></div></div>
-<div class="ttc" id="a00108_html"><div class="ttname"><a href="a00108.html">QUESO::GaussianVectorRV</a></div><div class="ttdoc">A class representing a Gaussian vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00521_source.html#l00062">GaussianVectorRV.h:62</a></div></div>
-<div class="ttc" id="a00139_html_acc7219917faf933e77694894856fa646"><div class="ttname"><a href="a00139.html#acc7219917faf933e77694894856fa646">QUESO::HessianCovMatricesTKGroup::m_originalCovMatrices</a></div><div class="ttdeci">std::vector&lt; M * &gt; m_originalCovMatrices</div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00100">HessianCovMatricesTKGroup.h:100</a></div></div>
-<div class="ttc" id="a00139_html_a4c0fe3171a35cdd453a4e23e1438ddf9"><div class="ttname"><a href="a00139.html#a4c0fe3171a35cdd453a4e23e1438ddf9">QUESO::HessianCovMatricesTKGroup::m_originalNewtonSteps</a></div><div class="ttdeci">std::vector&lt; V * &gt; m_originalNewtonSteps</div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00099">HessianCovMatricesTKGroup.h:99</a></div></div>
-<div class="ttc" id="a00204_html"><div class="ttname"><a href="a00204.html">QUESO::ScalarFunctionSynchronizer</a></div><div class="ttdoc">A templated class for synchronizing the calls of scalar functions (BaseScalarFunction and derived cla...</div><div class="ttdef"><b>Definition:</b> <a href="a00270_source.html#l00049">ScalarFunctionSynchronizer.h:49</a></div></div>
-<div class="ttc" id="a00139_html_a130c5c8e70e348350a12bd8d8a207fd4"><div class="ttname"><a href="a00139.html#a130c5c8e70e348350a12bd8d8a207fd4">QUESO::HessianCovMatricesTKGroup::HessianCovMatricesTKGroup</a></div><div class="ttdeci">HessianCovMatricesTKGroup(const char *prefix, const VectorSpace&lt; V, M &gt; &amp;vectorSpace, const std::vector&lt; double &gt; &amp;scales, const ScalarFunctionSynchronizer&lt; V, M &gt; &amp;targetPdfSynchronizer)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00616_source.html#l00033">HessianCovMatricesTKGroup.C:33</a></div></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif // UQ_MATRIX_COVARIANCE_FUNCTION_H</span></div>
+<div class="ttc" id="a00039_html"><div class="ttname"><a href="a00039.html">QUESO::BaseMatrixCovarianceFunction</a></div><div class="ttdoc">A templated (base) class to accommodate covariance matrix of (random) vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00057">MatrixCovarianceFunction.h:57</a></div></div>
+<div class="ttc" id="a00039_html_a3c466742b27fc304cce106f96d8e49c7"><div class="ttname"><a href="a00039.html#a3c466742b27fc304cce106f96d8e49c7">QUESO::BaseMatrixCovarianceFunction::m_basicDomainSet</a></div><div class="ttdeci">const VectorSet&lt; P_V, P_M &gt; &amp; m_basicDomainSet</div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00083">MatrixCovarianceFunction.h:83</a></div></div>
+<div class="ttc" id="a00249_html"><div class="ttname"><a href="a00249.html">QUESO::VectorSet&lt; P_V, P_M &gt;</a></div></div>
+<div class="ttc" id="a00039_html_aa19fd2a4d2cc8ce822d4712abbd45021"><div class="ttname"><a href="a00039.html#aa19fd2a4d2cc8ce822d4712abbd45021">QUESO::BaseMatrixCovarianceFunction::BaseMatrixCovarianceFunction</a></div><div class="ttdeci">BaseMatrixCovarianceFunction(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;basicDomainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00615_source.html#l00031">MatrixCovarianceFunction.C:31</a></div></div>
+<div class="ttc" id="a00039_html_a05865387f77ce48e71ab2448982c5616"><div class="ttname"><a href="a00039.html#a05865387f77ce48e71ab2448982c5616">QUESO::BaseMatrixCovarianceFunction::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00082">MatrixCovarianceFunction.h:82</a></div></div>
+<div class="ttc" id="a00039_html_af1ae061b09f7b4187d2ba8920ced6074"><div class="ttname"><a href="a00039.html#af1ae061b09f7b4187d2ba8920ced6074">QUESO::BaseMatrixCovarianceFunction::covMatrix</a></div><div class="ttdeci">virtual void covMatrix(const P_V &amp;domainVector1, const P_V &amp;domainVector2, Q_M &amp;imageMatrix) const =0</div><div class="ttdoc">Calculates the covariance matrix. See template specialization. </div></div>
+<div class="ttc" id="a00039_html_aa6e05a29048771a3a327b82cea09d480"><div class="ttname"><a href="a00039.html#aa6e05a29048771a3a327b82cea09d480">QUESO::BaseMatrixCovarianceFunction::m_imageSet</a></div><div class="ttdeci">const VectorSet&lt; Q_V, Q_M &gt; &amp; m_imageSet</div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00084">MatrixCovarianceFunction.h:84</a></div></div>
+<div class="ttc" id="a00039_html_a6ce876e4dae5ab4b165ac100e310dd45"><div class="ttname"><a href="a00039.html#a6ce876e4dae5ab4b165ac100e310dd45">QUESO::BaseMatrixCovarianceFunction::basicDomainSet</a></div><div class="ttdeci">const VectorSet&lt; P_V, P_M &gt; &amp; basicDomainSet() const </div><div class="ttdoc">Domain set; access to private attribute m_basicDomainSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00615_source.html#l00072">MatrixCovarianceFunction.C:72</a></div></div>
+<div class="ttc" id="a00039_html_a821c7190922a832ecc4ae3bcc78b99cc"><div class="ttname"><a href="a00039.html#a821c7190922a832ecc4ae3bcc78b99cc">QUESO::BaseMatrixCovarianceFunction::~BaseMatrixCovarianceFunction</a></div><div class="ttdeci">virtual ~BaseMatrixCovarianceFunction()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00615_source.html#l00055">MatrixCovarianceFunction.C:55</a></div></div>
+<div class="ttc" id="a00039_html_a2bf98f6576db775109e240a2d828c578"><div class="ttname"><a href="a00039.html#a2bf98f6576db775109e240a2d828c578">QUESO::BaseMatrixCovarianceFunction::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00529_source.html#l00081">MatrixCovarianceFunction.h:81</a></div></div>
+<div class="ttc" id="a00036_html"><div class="ttname"><a href="a00036.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00198">Environment.h:198</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:11 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:48 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

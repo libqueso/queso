@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00172.html" title="Class for matrix operations (virtual). " alt="" coords="5,31,115,57"/>
-<area shape="rect" id="node2" href="$a00135.html" title="Class for representing block matrices using GSL library. " alt="" coords="163,5,325,32"/>
-<area shape="rect" id="node3" href="$a00136.html" title="Class for matrix operations using GSL library. " alt="" coords="180,56,308,83"/>
+<area shape="rect" id="node2" href="$a00153.html" title="Abstract base class for operator objects using libmesh in the backend. " alt="" coords="214,31,421,57"/>
+<area shape="rect" id="node3" href="$a00152.html" title="Class describing negative Laplacian operator using libmesh backend. " alt="" coords="469,23,704,65"/>
+<area shape="rect" id="node4" href="$a00183.html" title="Abstract base class for operator objects. Operators are assumed to be symmetric and positive&#45;definite..." alt="" coords="6,56,165,83"/>
 </map>

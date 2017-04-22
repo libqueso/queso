@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.56.1: src/stats/inc/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h File Reference</title>
+<title>queso-0.56.2: src/stats/inc/InfoTheory_impl.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.56.1
+   <div id="projectname">queso-0.56.2
    </div>
   </td>
  </tr>
@@ -48,38 +48,44 @@
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h File Reference</div>  </div>
+<div class="title">InfoTheory_impl.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/GslBlockMatrix.h&gt;</code><br/>
-<code>#include &lt;queso/GaussianLikelihood.h&gt;</code><br/>
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00955.png" border="0" usemap="#src_2stats_2inc_2_gaussian_likelihood_block_diagonal_covariance_random_coefficients_8h" alt=""/></div>
-<map name="src_2stats_2inc_2_gaussian_likelihood_block_diagonal_covariance_random_coefficients_8h" id="src_2stats_2inc_2_gaussian_likelihood_block_diagonal_covariance_random_coefficients_8h">
-</map>
-</div>
-</div>
+
 <p><a href="a00513_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html">QUESO::GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients&lt; V, M &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class representing a Gaussian likelihood with block-diagonal covariance matrix.  <a href="a00100.html#details">More...</a><br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00690"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00690.html">QUESO</a></td></tr>
+<tr class="memitem:a00674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a6a196ef8ad820370cdeb20ba592010bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a6a196ef8ad820370cdeb20ba592010bf">QUESO::distANN_XY</a> (const <a class="el" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataX, const <a class="el" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataY, double *distsXY, unsigned int dimX, unsigned int dimY, unsigned int xN, unsigned int yN, unsigned int <a class="el" href="a00313.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, double <a class="el" href="a00313.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>)</td></tr>
+<tr class="separator:a6a196ef8ad820370cdeb20ba592010bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af821567e2b02fd8c90f8fbf922e9ae4d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html#a3b083519fd2b41d83363afcfd5ebad9d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#af821567e2b02fd8c90f8fbf922e9ae4d">QUESO::normalizeANN_XY</a> (<a class="el" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataXY, unsigned int dimXY, <a class="el" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataX, unsigned int dimX, <a class="el" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataY, unsigned int dimY, unsigned int N)</td></tr>
+<tr class="separator:af821567e2b02fd8c90f8fbf922e9ae4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d6290566a16aaf04989b41d552dca36"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00674.html#a7d6290566a16aaf04989b41d552dca36">QUESO::computeMI_ANN</a> (<a class="el" href="a00308.html#a402299ac00a81ad80f09a0eb84ba4059">ANNpointArray</a> dataXY, unsigned int dimX, unsigned int dimY, unsigned int <a class="el" href="a00313.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, unsigned int N, double <a class="el" href="a00313.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>)</td></tr>
+<tr class="separator:a7d6290566a16aaf04989b41d552dca36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acebecb9ad29fbbae7b4a09ebdafb936d"><td class="memTemplParams" colspan="2">template&lt;template&lt; class P_V, class P_M &gt; class RV, class P_V , class P_M &gt; </td></tr>
+<tr class="memitem:acebecb9ad29fbbae7b4a09ebdafb936d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00674.html#acebecb9ad29fbbae7b4a09ebdafb936d">QUESO::estimateMI_ANN</a> (const RV&lt; P_V, P_M &gt; &amp;jointRV, const unsigned int xDimSel[], unsigned int dimX, const unsigned int yDimSel[], unsigned int dimY, unsigned int <a class="el" href="a00313.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, unsigned int N, double <a class="el" href="a00313.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>)</td></tr>
+<tr class="separator:acebecb9ad29fbbae7b4a09ebdafb936d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adda252ede022194be7cfaf8303d52cdb"><td class="memTemplParams" colspan="2">template&lt;class P_V , class P_M , template&lt; class P_V, class P_M &gt; class RV_1, template&lt; class P_V, class P_M &gt; class RV_2&gt; </td></tr>
+<tr class="memitem:adda252ede022194be7cfaf8303d52cdb"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00674.html#adda252ede022194be7cfaf8303d52cdb">QUESO::estimateMI_ANN</a> (const RV_1&lt; P_V, P_M &gt; &amp;xRV, const RV_2&lt; P_V, P_M &gt; &amp;yRV, const unsigned int xDimSel[], unsigned int dimX, const unsigned int yDimSel[], unsigned int dimY, unsigned int <a class="el" href="a00313.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, unsigned int N, double <a class="el" href="a00313.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>)</td></tr>
+<tr class="separator:adda252ede022194be7cfaf8303d52cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ab2b57f7f786fd2d1df2b80e55e907e"><td class="memTemplParams" colspan="2">template&lt;class P_V , class P_M , template&lt; class P_V, class P_M &gt; class RV_1, template&lt; class P_V, class P_M &gt; class RV_2&gt; </td></tr>
+<tr class="memitem:a3ab2b57f7f786fd2d1df2b80e55e907e"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00674.html#a3ab2b57f7f786fd2d1df2b80e55e907e">QUESO::estimateKL_ANN</a> (RV_1&lt; P_V, P_M &gt; &amp;xRV, RV_2&lt; P_V, P_M &gt; &amp;yRV, unsigned int xDimSel[], unsigned int dimX, unsigned int yDimSel[], unsigned int dimY, unsigned int xN, unsigned int yN, unsigned int <a class="el" href="a00313.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, double <a class="el" href="a00313.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>)</td></tr>
+<tr class="separator:a3ab2b57f7f786fd2d1df2b80e55e907e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc234a4894bc8976671659dd40eb145d"><td class="memTemplParams" colspan="2">template&lt;class P_V , class P_M , template&lt; class P_V, class P_M &gt; class RV_1, template&lt; class P_V, class P_M &gt; class RV_2&gt; </td></tr>
+<tr class="memitem:acc234a4894bc8976671659dd40eb145d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00674.html#acc234a4894bc8976671659dd40eb145d">QUESO::estimateCE_ANN</a> (RV_1&lt; P_V, P_M &gt; &amp;xRV, RV_2&lt; P_V, P_M &gt; &amp;yRV, unsigned int xDimSel[], unsigned int dimX, unsigned int yDimSel[], unsigned int dimY, unsigned int xN, unsigned int yN, unsigned int <a class="el" href="a00313.html#ab66ed8e0098c0a86b458672a55a9cca9">k</a>, double <a class="el" href="a00313.html#a974b448c3d0a13d483d36ef15de369b5">eps</a>)</td></tr>
+<tr class="separator:acc234a4894bc8976671659dd40eb145d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu Dec 15 2016 13:23:12 for queso-0.56.1
+Generated on Sat Apr 22 2017 12:47:49 for queso-0.56.2
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>
