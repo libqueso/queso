@@ -246,7 +246,7 @@ BimodalExample_gsl_CPPFLAGS = -I$(srcdir)/t04_bimodal $(AM_CPPFLAGS)
 test_custom_tk_am_SOURCES =
 test_custom_tk_am_SOURCES += custom_tk/adaptive_metropolis_main.C
 test_custom_tk_am_SOURCES += custom_tk/adaptive_metropolis.C
-test_custom_tk_am_SOURCES += test_custom_tk/adaptive_metropolis.h
+test_custom_tk_am_SOURCES += custom_tk/adaptive_metropolis.h
 test_custom_tk_am_CPPFLAGS = -I$(srcdir)/custom_tk $(AM_CPPFLAGS)
 
 test_no_initial_point_SOURCES = test_StatisticalInverseProblem/test_no_initial_point.C
@@ -352,6 +352,7 @@ EXTRA_DIST += test_gpmsa/test_gpmsa_samples_diff.sh
 EXTRA_DIST += test_gpmsa/test_autoscaled.sh
 EXTRA_DIST += test_gpmsa/test_gpmsa_vector_samples.m
 EXTRA_DIST += test_gpmsa/test_gpmsa_autoscaled_samples.m
+EXTRA_DIST += test_gpmsa/gpmsa_autoscaled_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt
