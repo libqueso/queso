@@ -128,10 +128,12 @@ FilePtrSetStruct::FilePtrSetStruct()
   h5Var(-1)
 #endif
 {
+  queso_deprecated();
 }
 
 FilePtrSetStruct::~FilePtrSetStruct()
 {
+  queso_deprecated();
 }
 
   //
