@@ -94,11 +94,11 @@ AC_ARG_ENABLE(mpi,
 # Check if the user disabled program options #
 ##############################################
 AC_ARG_ENABLE([boost-program-options],
-              AS_HELP_STRING([--disable-boost-program-options], [Disables use
+              AS_HELP_STRING([--enable-boost-program-options], [Enables use
                               of boost program options for parsing the QUESO
-                              input file.  GetPot will be used instead.]),
-              [enable_program_options="no"],
-              [enable_program_options="yes"])
+                              input file.  GetPot will not be used.]),
+              [enable_program_options="yes"],
+              [enable_program_options="no"])
 
 #-------------------
 # Compilers and MPI
