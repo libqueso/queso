@@ -321,10 +321,10 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     env.input()(m_option_emulatorDataPrecisionScale,
                 m_emulatorDataPrecisionScale);
 
-  m_emulatorDataPrecisionShape =
+  m_autoscaleMinMaxAll =
     env.input()(m_option_autoscaleMinMaxAll,
                 m_autoscaleMinMaxAll);
-  m_emulatorDataPrecisionScale =
+  m_autoscaleMeanVarAll =
     env.input()(m_option_autoscaleMeanVarAll,
                 m_autoscaleMeanVarAll);
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
