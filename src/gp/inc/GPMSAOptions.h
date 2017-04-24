@@ -185,6 +185,15 @@ public:
   double normalized_uncertain_parameter(unsigned int i,
                                         double physical_param) const;
 
+  //! Calculate a normalized value from a physical value for the
+  //  specified output index.
+  double normalized_output(unsigned int i,
+                           double physical_param) const;
+
+  //! Returns the scale, in physical units, corresponding to a single
+  //  nondimensionalized unit for the specified output index.
+  double output_scale(unsigned int i) const;
+
   //! The shape parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionShape;
 
@@ -254,6 +263,11 @@ private:
   std::set<unsigned int> m_autoscaleMinMaxScenario;
   std::set<unsigned int> m_autoscaleMeanVarScenario;
 
+  // True if the specified autoscaling should be done for the specific
+  // output index
+  std::set<unsigned int> m_autoscaleMinMaxOutput;
+  std::set<unsigned int> m_autoscaleMeanVarOutput;
+
   // The point in each uncertain input parameter range (typically min
   // or mean) corresponding to a normalized parameter of 0
   std::vector<double> m_uncertainScaleMin;
@@ -271,6 +285,14 @@ private:
   // (typically max minus min or standard deviation) corresponding to
   // a normalized width of 1
   std::vector<double> m_scenarioScaleRange;
+
+  // The point in each output range (typically min
+  // or mean) corresponding to a normalized parameter of 0
+  std::vector<double> m_outputScaleMin;
+
+  // The width of the physical output range (typically max minus min
+  // or standard deviation) corresponding to a normalized width of 1
+  std::vector<double> m_outputScaleRange;
 
   std::string m_option_help;
   std::string m_option_maxEmulatorBasisVectors;
