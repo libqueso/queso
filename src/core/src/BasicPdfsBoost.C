@@ -23,6 +23,9 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/BasicPdfsBoost.h>
+
+#ifdef QUESO_HAVE_BOOST
+
 #include <boost/math/distributions/gamma.hpp>
 #include <boost/math/distributions/beta.hpp>
 
@@ -58,3 +61,5 @@ BasicPdfsBoost::gammaPdfActualValue(double x, double a, double b) const
 }
 
 }  // End namespace QUESO
+
+#endif  // QUESO_HAVE_BOOST

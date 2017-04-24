@@ -1435,8 +1435,12 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
     m_basicPdfs.reset(new BasicPdfsGsl(m_worldRank));
   }
   else if (m_optionsObj->m_rngType == "boost") {
+#ifdef QUESO_HAVE_BOOST
     m_rngObject.reset(new RngBoost(m_optionsObj->m_seed,m_worldRank));
     m_basicPdfs.reset(new BasicPdfsBoost(m_worldRank));
+#else
+    queso_error_msg("Boost RNG requested, but QUESO was not built with boost.");
+#endif  // QUESO_HAVE_BOOST
   }
   else if (m_optionsObj->m_rngType == "cxx11") {
 #ifdef QUESO_HAVE_CXX11
@@ -1688,8 +1692,12 @@ FullEnvironment::construct (const char *prefix)
     m_basicPdfs.reset(new BasicPdfsGsl(m_worldRank));
   }
   else if (m_optionsObj->m_rngType == "boost") {
+#ifdef QUESO_HAVE_BOOST
     m_rngObject.reset(new RngBoost(m_optionsObj->m_seed,m_worldRank));
     m_basicPdfs.reset(new BasicPdfsBoost(m_worldRank));
+#else
+    queso_error_msg("Boost RNG requested, but QUESO wasn't built with boost.");
+#endif  // QUESO_HAVE_BOOST
   }
   else if (m_optionsObj->m_rngType == "cxx11") {
 #ifdef QUESO_HAVE_CXX11

@@ -25,6 +25,9 @@
 #ifndef UQ_RNG_BOOST_H
 #define UQ_RNG_BOOST_H
 
+#include <queso/config_queso.h>
+#ifdef QUESO_HAVE_BOOST
+
 #include <queso/RngBase.h>
 #include <boost/random/mersenne_twister.hpp>
 
@@ -110,5 +113,7 @@ private:
 };
 
 }  // End namespace QUESO
+
+#endif  // QUESO_HAVE_BOOST
 
 #endif // UQ_RNG_BOOST_H

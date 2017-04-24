@@ -25,6 +25,9 @@
 #ifndef UQ_BASIC_PDFS_BOOST_H
 #define UQ_BASIC_PDFS_BOOST_H
 
+#include <queso/config_queso.h>
+#ifdef QUESO_HAVE_BOOST
+
 #include <queso/BasicPdfsBase.h>
 
 namespace QUESO {
@@ -67,5 +70,7 @@ private:
 };
 
 }  // End namespace QUESO
+
+#endif  // QUESO_HAVE_BOOST
 
 #endif // UQ_BASIC_PDFS_BOOST_H

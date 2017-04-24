@@ -24,6 +24,8 @@
 
 #include <queso/RngBoost.h>
 
+#ifdef QUESO_HAVE_BOOST
+
 #include <boost/random.hpp>
 #include <boost/math/distributions.hpp>
 
@@ -95,3 +97,5 @@ RngBoost::gammaSample(double a, double b) const
 }
 
 }  // End namespace QUESO
+
+#endif  // QUESO_HAVE_BOOST
