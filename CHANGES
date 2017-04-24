@@ -3,6 +3,9 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.58.0 (Date?)
+  * Make Boost program_options opt-in
+
 Version 0.57.0 (Apr 22, 2017)
   * Add methods to calculate normalized GP parameters
   * GCC-4.4.7 compatibility fixes
