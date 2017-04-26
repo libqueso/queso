@@ -53,6 +53,10 @@ TransformedScaledCovMatrixTKGroup<V,M>::TransformedScaledCovMatrixTKGroup(
                            << std::endl;
   }
 
+  // Transform prop cov matrix since we're doing a logit random walk.
+  // Note we're transforming *after* we potentially read it from the input file.
+  transformCovMatrixToGaussianSpace(m_originalCovMatrix);
+
   // Set RVs to have zero mean in the Gaussian space
   setRVsWithZeroMean();
 
@@ -306,6 +310,51 @@ TransformedScaledCovMatrixTKGroup<V, M>::transformToGaussianSpace(
     else {
       // No transform.
       transformedPoint[i] = physicalPoint[i];
+    }
+  }
+}
+
+template <class V, class M>
+void
+TransformedScaledCovMatrixTKGroup<V, M>::transformCovMatrixToGaussianSpace(
+    M & covMatrix)
+{
+  V min_domain_bounds(m_boxSubset.minValues());
+  V max_domain_bounds(m_boxSubset.maxValues());
+
+  for (unsigned int i = 0; i < min_domain_bounds.sizeLocal(); i++) {
+    double min_val = min_domain_bounds[i];
+    double max_val = max_domain_bounds[i];
+
+    if (queso_isfinite(min_val) && queso_isfinite(max_val)) {
+      if (covMatrix(i, i) >= max_val - min_val) {
+        // User is trying to specify a uniform proposal distribution, which
+        // is unsupported.  Throw an error for now.
+        std::cerr << "Proposal variance element "
+                  << i
+                  << " is "
+                  << covMatrix(i, i)
+                  << " but domain is of size "
+                  << max_val - min_val
+                  << std::endl;
+        std::cerr << "QUESO does not support uniform-like proposal "
+                  << "distributions.  Try making the proposal variance smaller"
+                  << std::endl;
+      }
+
+      // The jacobian at the midpoint of the domain
+      double transformJacobian = 4.0 / (max_val - min_val);
+
+      // Just do the multiplication by hand for now.  There's no method in
+      // Gsl(Vector|Matrix) to do this for me.
+      for (unsigned int j = 0; j < min_domain_bounds.sizeLocal(); j++) {
+        // Multiply column j by element j
+        covMatrix(j, i) *= transformJacobian;
+      }
+      for (unsigned int j = 0; j < min_domain_bounds.sizeLocal(); j++) {
+        // Multiply row j by element j
+        covMatrix(i, j) *= transformJacobian;
+      }
     }
   }
 }

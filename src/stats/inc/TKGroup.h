@@ -115,6 +115,14 @@ public:
    * After this method is called, covMatrixIsDirty should return \c true.
    */
   virtual void cleanCovMatrix() = 0;
+
+  //! Sets and proposal covariance matrix (and for all DR stage RVs as well)
+  /*!
+   * If the TK has a proposal covariance matrix, set the covariance matrix.
+   * If the TK support delayed rejection, derived classes should scale by a
+   * factor of \f$ 1/scales^2 \f$.
+   */
+  virtual void updateLawCovMatrix(const M & covMatrix) = 0;
   //@}
 
   //! @name I/O methods

@@ -75,7 +75,7 @@ public:
 
   //! Scales the covariance matrix.
   /*! The covariance matrix is scaled by a factor of \f$ 1/scales^2 \f$.*/
-  void updateLawCovMatrix(const M & covMatrix);
+  virtual void updateLawCovMatrix(const M & covMatrix);
   //@}
 
   //! @name Misc methods

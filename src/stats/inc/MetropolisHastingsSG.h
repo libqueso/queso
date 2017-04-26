@@ -341,9 +341,6 @@ private:
 	double m_initialLogPriorValue;
 	double m_initialLogLikelihoodValue;
 
-  void transformInitialCovMatrixToGaussianSpace(const BoxSubset<P_V, P_M> &
-      boxSubset);
-
   bool m_userDidNotProvideOptions;
 
   unsigned int m_latestDirtyCovMatrixIteration;
