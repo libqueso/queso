@@ -1431,6 +1431,9 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   this->hyperparamMins.reset(new V(this->hyperparamSpace->zeroVector()));
   this->hyperparamMaxs.reset(new V(this->hyperparamSpace->zeroVector()));
 
+  this->hyperparamMins->cwSet(0.0);
+  this->hyperparamMaxs->cwSet(1.0);
+
   // Min emulator precision
   (*(this->hyperparamMins))[0] = 0.3;
   // Max emulator precision
