@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Defines.h>
 #include <queso/VectorSpace.h>
 
 #ifdef QUESO_HAS_TRILINOS
