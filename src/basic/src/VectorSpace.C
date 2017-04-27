@@ -47,6 +47,15 @@ VectorSpace<V,M>::VectorSpace(const BaseEnvironment& env, const char* prefix,
     m_emptyComponentName(""),
     m_zeroVector(new V(m_env,*m_map))
 {
+  V mins(*m_zeroVector);
+  mins.cwSet(-INFINITY);
+
+  V maxs(*m_zeroVector);
+  maxs.cwSet(INFINITY);
+
+  this->setMinValues(mins);  // Copied, so no UB.
+  this->setMaxValues(maxs);
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering VectorSpace<V,M>::constructor(1)"
                             << ", with m_prefix = "                << m_prefix

@@ -34,19 +34,18 @@ namespace QUESO {
 template<class V, class M>
 InvLogitGaussianVectorRealizer<V, M>::InvLogitGaussianVectorRealizer(
     const char * prefix,
-    const BoxSubset<V, M> & unifiedImageBoxSubset,
+    const VectorSet<V, M> & unifiedImageSet,
     const V & lawExpVector,
     const M & lowerCholLawCovMatrix)
   : BaseVectorRealizer<V, M>(((std::string)(prefix)+"invlogit_gau").c_str(),
-      unifiedImageBoxSubset, std::numeric_limits<unsigned int>::max()),
+      unifiedImageSet, std::numeric_limits<unsigned int>::max()),
     m_unifiedLawExpVector(new V(lawExpVector)),
     m_unifiedLawVarVector(
-        unifiedImageBoxSubset.vectorSpace().newVector(INFINITY)),  // FIX ME
+        unifiedImageSet.vectorSpace().newVector(INFINITY)),  // FIX ME
     m_lowerCholLawCovMatrix(new M(lowerCholLawCovMatrix)),
     m_matU(NULL),
     m_vecSsqrt(NULL),
-    m_matVt(NULL),
-    m_unifiedImageBoxSubset(unifiedImageBoxSubset)
+    m_matVt(NULL)
 {
   *m_unifiedLawExpVector = lawExpVector;
 }
@@ -54,21 +53,19 @@ InvLogitGaussianVectorRealizer<V, M>::InvLogitGaussianVectorRealizer(
 template<class V, class M>
 InvLogitGaussianVectorRealizer<V, M>::InvLogitGaussianVectorRealizer(
     const char * prefix,
-    const BoxSubset<V, M> & unifiedImageBoxSubset,
+    const VectorSet<V, M> & unifiedImageSet,
     const V & lawExpVector,
     const M & matU,
     const V & vecSsqrt,
     const M & matVt)
   : BaseVectorRealizer<V, M>(((std::string)(prefix)+"invlogit_gau").c_str(),
-      unifiedImageBoxSubset, std::numeric_limits<unsigned int>::max()),
+      unifiedImageSet, std::numeric_limits<unsigned int>::max()),
     m_unifiedLawExpVector(new V(lawExpVector)),
-    m_unifiedLawVarVector(
-        unifiedImageBoxSubset.vectorSpace().newVector( INFINITY)), // FIX ME
+    m_unifiedLawVarVector(unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
     m_lowerCholLawCovMatrix(NULL),
     m_matU(new M(matU)),
     m_vecSsqrt(new V(vecSsqrt)),
-    m_matVt(new M(matVt)),
-    m_unifiedImageBoxSubset(unifiedImageBoxSubset)
+    m_matVt(new M(matVt))
 {
   *m_unifiedLawExpVector = lawExpVector; // ????
 }
@@ -118,8 +115,8 @@ InvLogitGaussianVectorRealizer<V, M>::realization(V & nextValues) const
     queso_error_msg("GaussianVectorRealizer<V,M>::realization() inconsistent internal state");
   }
 
-  V min_domain_bounds(this->m_unifiedImageBoxSubset.minValues());
-  V max_domain_bounds(this->m_unifiedImageBoxSubset.maxValues());
+  V min_domain_bounds(this->m_unifiedImageSet.minValues());
+  V max_domain_bounds(this->m_unifiedImageSet.maxValues());
 
   for (unsigned int i = 0; i < nextValues.sizeLocal(); i++) {
     double temp = std::exp(nextValues[i]);

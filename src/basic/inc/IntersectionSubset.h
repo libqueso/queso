@@ -25,7 +25,6 @@
 #ifndef UQ_INTERSECTION_SUBSET_H
 #define UQ_INTERSECTION_SUBSET_H
 
-#include <queso/VectorSpace.h>
 #include <queso/VectorSubset.h>
 
 namespace QUESO {

@@ -31,6 +31,8 @@
 
 namespace QUESO
 {
+  class FullEnvironment;
+
   template<class V, class M>
   class InterpolationSurrogateIOBase
   {

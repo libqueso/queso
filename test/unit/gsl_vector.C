@@ -32,6 +32,7 @@
 #include <queso/EnvironmentOptions.h>
 #include <queso/GslVector.h>
 #include <queso/VectorRV.h>
+#include <queso/VectorSpace.h>
 
 namespace QUESOTesting
 {

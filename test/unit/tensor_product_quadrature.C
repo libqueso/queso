@@ -36,7 +36,9 @@
 
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/VectorSpace.h>
 
+#include <vector>
 #include <cmath>
 #include <limits>
 

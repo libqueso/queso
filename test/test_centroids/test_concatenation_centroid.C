@@ -24,8 +24,11 @@
 
 #include <queso/Environment.h>
 #include <queso/BoxSubset.h>
+#include <queso/VectorSpace.h>
 #include <queso/ConcatenationSubset.h>
 #include <queso/GslVector.h>
+
+#include <cmath>
 
 #define TOL 1e-14
 

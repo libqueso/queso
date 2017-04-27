@@ -37,6 +37,10 @@
 #include <queso/SequenceOfVectors.h>
 #include <queso/BoxSubset.h>
 
+#include <cmath>
+#include <vector>
+#include <string>
+
 namespace QUESOTesting
 {
 

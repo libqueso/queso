@@ -31,6 +31,9 @@
 
 #include <queso/1D1DFunction.h>
 
+#include <iostream>
+#include <vector>
+
 namespace QUESOTesting
 {
 

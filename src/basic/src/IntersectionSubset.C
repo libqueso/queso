@@ -41,6 +41,24 @@ IntersectionSubset<V,M>::IntersectionSubset(const char* prefix,
     m_set1(set1),
     m_set2(set2)
 {
+  V mins(vectorSpace.zeroVector());
+  V maxs(vectorSpace.zeroVector());
+
+  for (unsigned int i = 0; i < mins.sizeLocal(); i++) {
+    double min1 = m_set1.minValues()[i];
+    double min2 = m_set2.minValues()[i];
+
+    double max1 = m_set1.maxValues()[i];
+    double max2 = m_set2.maxValues()[i];
+
+    mins[i] = min1 > min2 ? min1 : min2;
+    maxs[i] = max1 < max2 ? max1 : max2;
+
+    queso_require_less_msg(min1, max1, "intersection is empty");
+  }
+
+  this->setMinValues(mins);
+  this->setMaxValues(maxs);
 }
 
 // Destructor

@@ -23,6 +23,7 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/GammaJointPdf.h>
+#include <queso/VectorSpace.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/BasicPdfsBase.h>

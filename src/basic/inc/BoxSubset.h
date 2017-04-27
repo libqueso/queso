@@ -25,7 +25,6 @@
 #ifndef UQ_BOX_SUBSET_H
 #define UQ_BOX_SUBSET_H
 
-#include <queso/VectorSpace.h>
 #include <queso/VectorSubset.h>
 
 namespace QUESO {
@@ -71,12 +70,6 @@ public:
 
   //! Returns the moments of inertia of this box subset in the matrix \c mat.
   void moments (M & mat)     const;
-
-  //! Vector of the minimum values of the box subset.
-  const V&   minValues()                 const;
-
-  //! Vector of the maximum values of the box subset.
-  const V&   maxValues()                 const;
   //@}
 
   //! Prints the volume, the minimum and the maximum values of \c this.

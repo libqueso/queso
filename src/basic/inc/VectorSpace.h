@@ -25,15 +25,16 @@
 #ifndef UQ_VECTOR_SPACE_H
 #define UQ_VECTOR_SPACE_H
 
-#include <queso/DistArray.h>
-#include <queso/Map.h>
 #include <queso/VectorSet.h>
-#include <cmath>
+
+#include <vector>
 
 namespace QUESO {
 
 class GslVector;
 class GslMatrix;
+class Map;
+template <class T> class DistArray;
 
 /*!
  * \class VectorSpace

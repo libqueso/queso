@@ -27,7 +27,6 @@
 
 #include <queso/JointPdf.h>
 #include <queso/ScalarFunction.h>
-#include <queso/BoxSubset.h>
 
 namespace QUESO {
 
@@ -68,17 +67,17 @@ public:
    * matrix).
    */
   InvLogitGaussianJointPdf(const char * prefix,
-      const BoxSubset<V, M> & domainBoxSubset, const V & lawExpVector,
+      const VectorSet<V, M> & domainSet, const V & lawExpVector,
       const V & lawVarVector);
 
   //! Constructor
   /*!
-   * Constructs a new object, given a prefix and the image set of the vector
+   * Constructs a new object, given a prefix and the domain set of the vector
    * realizer, a vector of mean values, \c lawExpVector (for the Gaussian, not
    * the transformed Gaussian), and a covariance matrix, \c lawCovMatrix.
    */
   InvLogitGaussianJointPdf(const char * prefix,
-      const BoxSubset<V, M> & domainBoxSubset, const V & lawExpVector,
+      const VectorSet<V, M> & domainSet, const V & lawExpVector,
       const M & lawCovMatrix);
 
   //! Destructor
@@ -164,8 +163,6 @@ private:
   V * m_lawVarVector;
   bool m_diagonalCovMatrix;
   const M * m_lawCovMatrix;
-
-  const BoxSubset<V, M> & m_domainBoxSubset;
 };
 
 }  // End namespace QUESO

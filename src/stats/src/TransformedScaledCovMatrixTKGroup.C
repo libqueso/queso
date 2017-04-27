@@ -32,11 +32,11 @@ namespace QUESO {
 template<class V, class M>
 TransformedScaledCovMatrixTKGroup<V,M>::TransformedScaledCovMatrixTKGroup(
     const char * prefix,
-    const BoxSubset<V,M> & boxSubset,
+    const VectorSet<V,M> & domainSet,
     const std::vector<double> & scales,
     const M & covMatrix)
-  : BaseTKGroup<V, M>(prefix, boxSubset.vectorSpace(), scales),
-    m_boxSubset(boxSubset),
+  : BaseTKGroup<V, M>(prefix, domainSet.vectorSpace(), scales),
+    m_domainSet(domainSet),
     m_originalCovMatrix(covMatrix)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
@@ -262,7 +262,7 @@ TransformedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()
     double factor = 1./m_scales[i]/m_scales[i];
     queso_require_msg(!(m_rvs[i]), "m_rvs[i] != NULL");
     m_rvs[i] = new InvLogitGaussianVectorRV<V,M>(m_prefix.c_str(),
-        m_boxSubset, m_vectorSpace->zeroVector(),
+        m_domainSet, m_vectorSpace->zeroVector(),
         factor*m_originalCovMatrix);
   }
 
@@ -282,8 +282,8 @@ void
 TransformedScaledCovMatrixTKGroup<V, M>::transformToGaussianSpace(
     const V & physicalPoint, V & transformedPoint) const
 {
-  V min_domain_bounds(this->m_boxSubset.minValues());
-  V max_domain_bounds(this->m_boxSubset.maxValues());
+  V min_domain_bounds(this->m_domainSet.minValues());
+  V max_domain_bounds(this->m_domainSet.maxValues());
 
   for (unsigned int i = 0; i < transformedPoint.sizeLocal(); i++) {
     double min_val = min_domain_bounds[i];
@@ -319,8 +319,8 @@ void
 TransformedScaledCovMatrixTKGroup<V, M>::transformCovMatrixToGaussianSpace(
     M & covMatrix)
 {
-  V min_domain_bounds(m_boxSubset.minValues());
-  V max_domain_bounds(m_boxSubset.maxValues());
+  V min_domain_bounds(m_domainSet.minValues());
+  V max_domain_bounds(m_domainSet.maxValues());
 
   for (unsigned int i = 0; i < min_domain_bounds.sizeLocal(); i++) {
     double min_val = min_domain_bounds[i];

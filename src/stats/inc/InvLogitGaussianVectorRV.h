@@ -26,12 +26,12 @@
 #define UQ_INVLOGIT_GAUSSIAN_VECTOR_RV_H
 
 #include <queso/VectorRV.h>
-#include <queso/BoxSubset.h>
 
 namespace QUESO {
 
 class GslVector;
 class GslMatrix;
+template <class V, class M> class VectorSet;
 
 /*!
  * \class InvLogitGaussianVectorRV
@@ -50,20 +50,20 @@ public:
   /*!
    * Construct a (transformed) Gaussian vector RV with mean \c lawExpVector
    * (of the Gaussian, not the transformed Gaussian) and diagonal covariance
-   * matrix \c lawVarVector whose variates live in \c imageBoxSubset.
+   * matrix \c lawVarVector whose variates live in \c imageSet.
    */
   InvLogitGaussianVectorRV(const char * prefix,
-      const BoxSubset<V, M> & imageBoxSubset, const V & lawExpVector,
+      const VectorSet<V, M> & imageSet, const V & lawExpVector,
       const V & lawVarVector);
 
   //! Constructor
   /*!
    * Construct a (transformed) Gaussian vector RV with mean \c lawExpVector
    * (of the Gaussian, not the transformed Gaussian) and covariance matrix
-   * \c lawCovMatrix whose variates live in \c imageBoxSubset.
+   * \c lawCovMatrix whose variates live in \c imageSet.
    */
   InvLogitGaussianVectorRV(const char * prefix,
-      const BoxSubset<V, M> & imageBoxSubset, const V & lawExpVector,
+      const VectorSet<V, M> & imageSet, const V & lawExpVector,
       const M & lawCovMatrix);
 
   //! Virtual destructor

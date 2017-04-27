@@ -27,6 +27,7 @@
 
 #include <queso/Environment.h>
 #include <queso/VectorSpace.h>
+#include <queso/DistArray.h>
 
 namespace QUESO {
 

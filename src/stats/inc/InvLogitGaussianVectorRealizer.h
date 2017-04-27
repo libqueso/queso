@@ -61,7 +61,7 @@ public:
    * Cholesky decomposition of the covariance matrix, \c lowerCholLawCovMatrix.
    */
   InvLogitGaussianVectorRealizer(const char * prefix,
-      const BoxSubset<V, M> & unifiedImageBoxSubset, const V & lawExpVector,
+      const VectorSet<V, M> & unifiedImageSet, const V & lawExpVector,
       const M & lowerCholLawCovMatrix);
 
   //! Constructor
@@ -73,7 +73,7 @@ public:
    * \c matU, \c vecSsqrt and \c matVt.
    */
   InvLogitGaussianVectorRealizer(const char * prefix,
-      const BoxSubset<V, M> & unifiedImageBoxSubset, const V & lawExpVector,
+      const VectorSet<V, M> & unifiedImageSet, const V & lawExpVector,
       const M & matU, const V & vecSsqrt, const M & matVt);
 
   //! Destructor
@@ -127,9 +127,6 @@ private:
   using BaseVectorRealizer<V, M>::m_prefix;
   using BaseVectorRealizer<V, M>::m_unifiedImageSet;
   using BaseVectorRealizer<V, M>::m_subPeriod;
-
-  // For easy access to the bounds of the domain
-  const BoxSubset<V, M> & m_unifiedImageBoxSubset;
 };
 
 }  // End namespace QUESO

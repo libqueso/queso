@@ -45,9 +45,12 @@ BoxSubset<V,M>::BoxSubset(const char* prefix,
     queso_require_less_equal_msg(minValues[i], maxValues[i], "it should happen minValue <= maxValue for all dimensions");
   }
 
+  this->setMinValues(minValues);
+  this->setMaxValues(maxValues);
+
   m_volume = 1.;
   for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
-    m_volume *= (m_maxValues[i] - m_minValues[i]);
+    m_volume *= (maxValues[i] - minValues[i]);
   }
 }
 
@@ -64,16 +67,16 @@ bool BoxSubset<V,M>::contains(const V& vec) const
   // prudenci, 2012-09-26: allow boundary values because of 'beta' realizer, which can generate a sample with boundary value '1'
   //return (!vec.atLeastOneComponentSmallerOrEqualThan(m_minValues) &&
   //        !vec.atLeastOneComponentBiggerOrEqualThan (m_maxValues));
-  return (!vec.atLeastOneComponentSmallerThan(m_minValues) &&
-          !vec.atLeastOneComponentBiggerThan (m_maxValues));
+  return (!vec.atLeastOneComponentSmallerThan(this->minValues()) &&
+          !vec.atLeastOneComponentBiggerThan (this->maxValues()));
 }
 
 
 template<class V, class M>
 void BoxSubset<V,M>::centroid(V& vec) const
 {
-  vec = m_minValues;
-  vec += m_maxValues;
+  vec = this->minValues();
+  vec += this->maxValues();
   vec *= 0.5;
 }
 
@@ -85,22 +88,9 @@ void BoxSubset<V,M>::moments(M& mat) const
   mat.zeroLower();
   mat.zeroUpper();
   for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
-    double length_i = (m_maxValues[i] - m_minValues[i]);
+    double length_i = (this->maxValues()[i] - this->minValues()[i]);
     mat(i,i) = length_i*length_i*length_i/12;
   }
-}
-
-
-template<class V, class M>
-const V& BoxSubset<V,M>::minValues() const
-{
-  return m_minValues;
-}
-
-template<class V, class M>
-const V& BoxSubset<V,M>::maxValues() const
-{
-  return m_maxValues;
 }
 
 // I/O method
@@ -108,8 +98,8 @@ template <class V, class M>
 void BoxSubset<V,M>::print(std::ostream& os) const
 {
   os << "In BoxSubset<V,M>::print()"
-     << ": m_minValues = " << m_minValues
-     << ", m_maxValues = " << m_maxValues
+     << ": minValues = " << this->minValues()
+     << ", maxValues = " << this->maxValues()
      << ", m_volume = "    << m_volume
      << std::endl;
 

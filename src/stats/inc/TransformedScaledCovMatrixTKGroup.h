@@ -51,7 +51,7 @@ public:
   //@{
   //! Default constructor.
   TransformedScaledCovMatrixTKGroup(const char * prefix,
-      const BoxSubset<V, M> & boxSubset, const std::vector<double> & scales,
+      const VectorSet<V, M> & domainSet, const std::vector<double> & scales,
       const M & covMatrix);
 
   //! Destructor.
@@ -122,9 +122,8 @@ private:
   using BaseTKGroup<V, M>::m_preComputingPositions;
   using BaseTKGroup<V, M>::m_rvs;
 
-  const BoxSubset<V, M> & m_boxSubset;
+  const VectorSet<V, M> & m_domainSet;
   M m_originalCovMatrix;
-
 };
 
 }  // End namespace QUESO

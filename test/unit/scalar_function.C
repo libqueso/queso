@@ -34,7 +34,10 @@
 #include <queso/GslVector.h>
 #include <queso/BoxSubset.h>
 #include <queso/VectorSet.h>
+#include <queso/VectorSpace.h>
 #include <queso/ScalarFunction.h>
+
+#include <cmath>
 
 namespace QUESOTesting
 {

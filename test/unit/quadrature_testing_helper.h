@@ -30,8 +30,12 @@
 #include <cppunit/TestCase.h>
 
 #include <queso/EnvironmentOptions.h>
+#include <queso/Environment.h>
 #include <queso/BoxSubset.h>
 #include <queso/MultiDQuadratureBase.h>
+
+#include <cmath>
+#include <vector>
 
 namespace QUESOTesting
 {

@@ -26,6 +26,7 @@
 #define UQ_INTERPOLATION_SURROGATE_DATA_SET_H
 
 #include <queso/InterpolationSurrogateData.h>
+#include <queso/asserts.h>
 
 namespace QUESO
 {

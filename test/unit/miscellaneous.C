@@ -32,6 +32,11 @@
 #include <queso/Miscellaneous.h>
 #include <queso/RngGsl.h>
 
+#include <string>
+#include <vector>
+#include <fstream>
+#include <cstdio>
+
 namespace QUESOTesting
 {
 

@@ -34,6 +34,10 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorRV.h>
+#include <queso/VectorSpace.h>
+
+#include <vector>
+#include <iostream>
 
 namespace QUESOTesting
 {

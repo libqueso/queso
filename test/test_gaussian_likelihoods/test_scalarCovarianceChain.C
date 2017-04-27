@@ -25,6 +25,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSet.h>
+#include <queso/VectorSpace.h>
 #include <queso/BoxSubset.h>
 #include <queso/UniformVectorRV.h>
 #include <queso/GenericVectorRV.h>
