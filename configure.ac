@@ -187,7 +187,7 @@ AC_CACHE_SAVE
 # Check for boost (required)
 
 AC_LANG([C++])
-BOOST_REQUIRE([1.35])
+BOOST_REQUIRE([1.35], [HAVE_BOOST=0])
 AS_IF([test "x$enable_program_options" != "xno"],
       [
        BOOST_PROGRAM_OPTIONS
@@ -202,6 +202,8 @@ AS_IF([test "x$enable_program_options" = "xno"],
 BOOST_FIND_HEADER([boost/scoped_ptr.hpp])
 BOOST_FIND_HEADER([boost/shared_ptr.hpp])
 BOOST_FIND_HEADER([boost/math/special_functions.hpp])
+
+AM_CONDITIONAL(HAVE_BOOST, test x$HAVE_BOOST = x1)
 AC_CACHE_SAVE
 
 # Check for GLPK (optional)

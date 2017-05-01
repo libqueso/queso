@@ -60,6 +60,12 @@ else
   echo '   'Link with MPI.............. : no
 fi
 
+if test "$HAVE_BOOST" = "1"; then
+  echo '   'Link with Boost............ : yes
+else
+  echo '   'Link with Boost............ : no
+fi
+
 if test "$HAVE_GRVY" = "0"; then
   echo '   'Link with GRVY............. : no
 else

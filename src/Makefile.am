@@ -1,6 +1,10 @@
 AM_CPPFLAGS = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I$(top_builddir)/inc
+
+if HAVE_BOOST
 AM_CPPFLAGS += $(BOOST_CPPFLAGS)
+endif
+
 AM_CPPFLAGS += $(GSL_CFLAGS)
 
 if HAVE_ANN
@@ -32,7 +36,11 @@ lib_LTLIBRARIES      = libqueso.la
 libqueso_includedir  = $(prefix)/include/queso
 libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GSL_LIBS)
+
+if HAVE_BOOST
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
+endif
+
 libqueso_la_LDFLAGS += $(HDF5_LIBS)
 libqueso_la_LIBADD   =  # Empty.  Append below.
 

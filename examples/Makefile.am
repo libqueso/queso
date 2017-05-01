@@ -3,7 +3,11 @@
 AM_CPPFLAGS  = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I$(top_builddir)/src/core/inc
 AM_CPPFLAGS += -I$(top_builddir)/inc
+
+if HAVE_BOOST
 AM_CPPFLAGS += $(BOOST_CPPFLAGS)
+endif
+
 AM_CPPFLAGS += $(GSL_CFLAGS)
 AM_CPPFLAGS += $(GRVY_CFLAGS)
 

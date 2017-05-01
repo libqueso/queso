@@ -82,7 +82,12 @@ LDADD       = $(top_builddir)/src/libqueso.la
 AM_CPPFLAGS = $(QUESO_CPPFLAGS)
 AM_CPPFLAGS += -I.
 AM_CPPFLAGS += -I$(top_builddir)/inc
-AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
+
+if HAVE_BOOST
+AM_CPPFLAGS += $(BOOST_CPPFLAGS)
+endif
+
+AM_CPPFLAGS += $(GSL_CFLAGS) $(ANN_CFLAGS)
 
 #----------------
 # CppUnit support

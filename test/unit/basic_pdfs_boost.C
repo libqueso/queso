@@ -26,6 +26,8 @@
 
 #ifdef QUESO_HAVE_CPPUNIT
 
+#ifdef QUESO_HAVE_BOOST
+
 #include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/TestCase.h>
 
@@ -76,5 +78,7 @@ private:
 CPPUNIT_TEST_SUITE_REGISTRATION(BasicPdfsBoostTest);
 
 } // end namespace QUESOTesting
+
+#endif  // QUESO_HAVE_BOOST
 
 #endif // QUESO_HAVE_CPPUNIT
