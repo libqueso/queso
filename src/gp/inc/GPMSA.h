@@ -32,6 +32,7 @@
 #include <queso/VectorSpace.h>
 #include <queso/VectorRV.h>
 #include <queso/ConcatenatedVectorRV.h>
+#include <queso/ConcatenationSubset.h>
 #include <queso/GammaVectorRV.h>
 #include <queso/BetaVectorRV.h>
 #include <queso/UniformVectorRV.h>
@@ -417,12 +418,16 @@ public:
   typename ScopedPtr<V>::Type emulatorDataPrecisionMax;
   typename ScopedPtr<BoxSubset<V, M> >::Type emulatorDataPrecisionDomain;
 
-  // Now form full prior
-  typename ScopedPtr<VectorSpace<V, M> >::Type totalSpace;
-  typename ScopedPtr<V>::Type totalMins;
-  typename ScopedPtr<V>::Type totalMaxs;
+  // Hyperparameter-only prior components
+  typename ScopedPtr<VectorSpace<V, M> >::Type hyperparamSpace;
+  typename ScopedPtr<V>::Type hyperparamMins;
+  typename ScopedPtr<V>::Type hyperparamMaxs;
 
-  typename ScopedPtr<BoxSubset<V, M> >::Type totalDomain;
+  typename ScopedPtr<BoxSubset<V, M> >::Type hyperparamDomain;
+
+  // Full prior components
+  typename ScopedPtr<VectorSpace<V, M> >::Type totalSpace;
+  typename ScopedPtr<ConcatenationSubset<V, M> >::Type totalDomain;
 
   std::vector<const BaseVectorRV<V, M> *> priors;
 

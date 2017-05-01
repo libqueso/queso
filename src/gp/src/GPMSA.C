@@ -1403,15 +1403,24 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       *(this->m_emulatorDataPrecisionScaleVec)));
 
   // Now form full prior
-  unsigned int dimSum = 2 +
-                        (this->num_svd_terms < numOutputs) +
-                        (numOutputs > 1) +
-                        this->m_opts->m_calibrateObservationalPrecision +
-                        num_svd_terms +
-                        dimParameter +
-                        dimParameter +
-                        dimScenario +
-                        dimScenario;  // yum
+  const unsigned int dimHyper =
+    2 +
+    (this->num_svd_terms < numOutputs) +
+    (numOutputs > 1) +
+    this->m_opts->m_calibrateObservationalPrecision +
+    num_svd_terms +
+    dimParameter +
+    dimScenario +
+    dimScenario;  // yum
+
+  const unsigned int dimSum = dimParameter + dimHyper;
+
+  this->hyperparamSpace.reset
+    (new VectorSpace<V, M>
+     (this->m_env,
+      "",
+      dimHyper,
+      NULL));
 
   this->totalSpace.reset
     (new VectorSpace<V, M>
@@ -1419,49 +1428,55 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       "",
       dimSum,
       NULL));
-  this->totalMins.reset(new V(this->totalSpace->zeroVector()));
-  this->totalMaxs.reset(new V(this->totalSpace->zeroVector()));
+  this->hyperparamMins.reset(new V(this->hyperparamSpace->zeroVector()));
+  this->hyperparamMaxs.reset(new V(this->hyperparamSpace->zeroVector()));
 
-  // Hackety hack McHackington.  There's no better way to do this unfortunately
-  this->totalMins->cwSet(0);
-  this->totalMaxs->cwSet(1);
+  this->hyperparamMins->cwSet(0.0);
+  this->hyperparamMaxs->cwSet(1.0);
 
   // Min emulator precision
-  (*(this->totalMins))[dimParameter] = 0.3;
+  (*(this->hyperparamMins))[0] = 0.3;
   // Max emulator precision
-  (*(this->totalMaxs))[dimParameter] = INFINITY;
+  (*(this->hyperparamMaxs))[0] = INFINITY;
 
   if (numOutputs > 1)
     for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
       {
         // Min weights precision
-        (*(this->totalMins))[dimParameter+1+basis] = 0.3;
+        (*(this->hyperparamMins))[1+basis] = 0.3;
         // Max weights precision
-        (*(this->totalMaxs))[dimParameter+1+basis] = INFINITY;
+        (*(this->hyperparamMaxs))[1+basis] = INFINITY;
       }
 
   // FIXME: F = 1 for now
   // Min discrepancy precision
-  (*(this->totalMins))[dimParameter+(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = 0;
+  (*(this->hyperparamMins))[(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = 0;
   // Max discrepancy precision
-  (*(this->totalMaxs))[dimParameter+(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = INFINITY;
+  (*(this->hyperparamMaxs))[(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = INFINITY;
 
   const int emulator_data_precision_index =
-    dimSum - 1 - this->m_opts->m_calibrateObservationalPrecision;
-  (*(this->totalMins))[emulator_data_precision_index] = 60.0;  // Min emulator data precision
-  (*(this->totalMaxs))[emulator_data_precision_index] = 1e5;   // Max emulator data precision
+    dimHyper - 1 - this->m_opts->m_calibrateObservationalPrecision;
+  (*(this->hyperparamMins))[emulator_data_precision_index] = 60.0;  // Min emulator data precision
+  (*(this->hyperparamMaxs))[emulator_data_precision_index] = 1e5;   // Max emulator data precision
 
   if (this->m_opts->m_calibrateObservationalPrecision) {
-    (*(this->totalMins))[dimSum-1] = 0.3;      // Min observation error precision
-    (*(this->totalMaxs))[dimSum-1] = INFINITY; // Max observation error precision
+    (*(this->hyperparamMins))[dimHyper-1] = 0.3;      // Min observation error precision
+    (*(this->hyperparamMaxs))[dimHyper-1] = INFINITY; // Max observation error precision
   }
 
-  this->totalDomain.reset
+  this->hyperparamDomain.reset
     (new BoxSubset<V, M>
      ("",
+      *(this->hyperparamSpace),
+      *(this->hyperparamMins),
+      *(this->hyperparamMaxs)));
+
+  this->totalDomain.reset
+    (new ConcatenationSubset<V, M>
+     ("",
       *(this->totalSpace),
-      *(this->totalMins),
-      *(this->totalMaxs)));
+      this->m_parameterPrior.imageSet(),
+      *(this->hyperparamDomain)));
 
   this->priors.push_back(&(this->m_parameterPrior));
 
