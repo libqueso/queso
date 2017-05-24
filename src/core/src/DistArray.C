@@ -74,7 +74,7 @@ DistArray<T>::~DistArray()
 // Set methods
 template<typename T>
 DistArray<T>&
-DistArray<T>::operator=(const DistArray<T>& rhs)
+DistArray<T>::operator=(const DistArray<T>& /* rhs */)
 {
   return *this;
 }
