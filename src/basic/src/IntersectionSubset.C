@@ -75,14 +75,14 @@ bool IntersectionSubset<V,M>::contains(const V& vec) const
 }
 
 template<class V, class M>
-void IntersectionSubset<V,M>::centroid(V& vec) const
+void IntersectionSubset<V,M>::centroid(V& /* vec */) const
 {
   // No general way to do this?
   queso_not_implemented();
 }
 
 template<class V, class M>
-void IntersectionSubset<V,M>::moments(M& vec) const
+void IntersectionSubset<V,M>::moments(M& /* vec */) const
 {
   // No general way to do this?
   queso_not_implemented();
