@@ -507,7 +507,7 @@ double StatisticalInverseProblem<P_V,P_M>::eig() const
 // I/O methods--------------------------------------
 template <class P_V,class P_M>
 void
-StatisticalInverseProblem<P_V,P_M>::print(std::ostream& os) const
+StatisticalInverseProblem<P_V,P_M>::print(std::ostream& /* os */) const
 {
   return;
 }
