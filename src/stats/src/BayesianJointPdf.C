@@ -234,7 +234,7 @@ BayesianJointPdf<V,M>::lnValue(const V & domainVector, V & gradVector) const
 // --------------------------------------------------
 template<class V, class M>
 double
-BayesianJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+BayesianJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int /* numSamples */, bool /* updateFactorInternally */) const
 {
   double value = 0.;
 
