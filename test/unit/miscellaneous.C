@@ -45,6 +45,7 @@ class MiscellaneousTest : public CppUnit::TestCase
 public:
   CPPUNIT_TEST_SUITE(MiscellaneousTest);
   CPPUNIT_TEST(test_words_from_string);
+  CPPUNIT_TEST(test_doubles_from_string);
   CPPUNIT_TEST(test_string_and_double_from_file);
   CPPUNIT_TEST(test_chars_and_double_from_file);
   CPPUNIT_TEST(test_debug_msgs);
@@ -69,6 +70,19 @@ public:
     CPPUNIT_ASSERT_EQUAL(std::string("are"), words[1]);
     CPPUNIT_ASSERT_EQUAL(std::string("some"), words[2]);
     CPPUNIT_ASSERT_EQUAL(std::string("words"), words[3]);
+  }
+
+  void test_doubles_from_string()
+  {
+    std::string inputString("0.1 1e2 -4.0 8");
+    std::vector<double> doubles;
+
+    QUESO::MiscReadDoublesFromString(inputString, doubles);
+
+    CPPUNIT_ASSERT_EQUAL(0.1, doubles[0]);
+    CPPUNIT_ASSERT_EQUAL(100.0, doubles[1]);
+    CPPUNIT_ASSERT_EQUAL(-4.0, doubles[2]);
+    CPPUNIT_ASSERT_EQUAL(8.0, doubles[3]);
   }
 
   void test_string_and_double_from_file()
