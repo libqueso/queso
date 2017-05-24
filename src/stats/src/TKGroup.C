@@ -122,7 +122,7 @@ BaseTKGroup<V,M>::clearPreComputingPositions()
 
 template <class V, class M>
 unsigned int
-BaseTKGroup<V, M>::set_dr_stage(unsigned int stageId)
+BaseTKGroup<V, M>::set_dr_stage(unsigned int /* stageId */)
 {
   return this->m_stageId;
 }
