@@ -414,9 +414,9 @@ void
 GPMSAOptions::set_final_scaling
   (const std::vector<typename SharedPtr<V>::Type> & m_simulationScenarios,
    const std::vector<typename SharedPtr<V>::Type> & m_simulationParameters,
-   const std::vector<typename SharedPtr<V>::Type> & m_simulationOutputs,
+   const std::vector<typename SharedPtr<V>::Type> & /* m_simulationOutputs */,
    const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
-   const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs)
+   const std::vector<typename SharedPtr<V>::Type> & /* m_experimentOutputs */)
 {
   if ((m_autoscaleMinMaxAll && m_autoscaleMeanVarAll) ||
       ((m_autoscaleMinMaxAll || m_autoscaleMeanVarAll) &&
