@@ -83,7 +83,7 @@ EnvOptionsValues::EnvOptionsValues()
 EnvOptionsValues::EnvOptionsValues(const BaseEnvironment * env, const char *
     prefix)
   :
-    m_prefix((std::string) + "env_"),
+    m_prefix((std::string)(prefix) + "env_"),
     m_help(UQ_ENV_HELP),
     m_numSubEnvironments(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
     m_subDisplayFileName(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
