@@ -12,7 +12,7 @@ std::vector<double>
 readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationScenarios,
          const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationParameters,
          const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationOutputs,
-         const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentScenarios,
+         const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & /* experimentScenarios */,
          const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentOutputs) {
   FILE * fp_in = fopen("gp/vector/dakota_pstudy.dat", "r");
   if (!fp_in)
