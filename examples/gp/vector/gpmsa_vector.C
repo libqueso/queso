@@ -43,7 +43,7 @@ readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulatio
     queso_error_msg("dakota_pstudy.dat was unreadable");
 
   i = 0;
-  while (fscanf(fp_in, "%d %lf %lf %lf %lf %lf %lf\n", &id, &k_tmasl, &k_tmoml,
+  while (fscanf(fp_in, "%u %lf %lf %lf %lf %lf %lf\n", &id, &k_tmasl, &k_tmoml,
         &k_tnrgl, &k_xkwlx, &k_cd, &pressure) != EOF) {
     (*(simulationScenarios[i]))[0] = 0.5;
 
