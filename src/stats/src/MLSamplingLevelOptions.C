@@ -620,7 +620,7 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
 }
 
 void
-MLSamplingLevelOptions::checkOptions(const BaseEnvironment * env)
+MLSamplingLevelOptions::checkOptions(const BaseEnvironment * /* env */)
 {
   char tmpStr[64];
 
