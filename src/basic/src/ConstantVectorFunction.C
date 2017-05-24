@@ -55,12 +55,12 @@ ConstantVectorFunction<P_V,P_M,Q_V,Q_M>::~ConstantVectorFunction()
 template<class P_V,class P_M,class Q_V,class Q_M>
 void
 ConstantVectorFunction<P_V,P_M,Q_V,Q_M>::compute(
-  const P_V&                    domainVector,
-  const P_V*                    domainDirection,
+  const P_V&                    /* domainVector */,
+  const P_V*                    /* domainDirection */,
         Q_V&                    imageVector,
-        DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
-        DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
-        DistArray<P_V*>* hessianEffects) const
+        DistArray<P_V*>* /* gradVectors */,     // Yes, 'P_V'
+        DistArray<P_M*>* /* hessianMatrices */, // Yes, 'P_M'
+        DistArray<P_V*>* /* hessianEffects */) const
 {
   queso_require_msg(m_constantImageVector, "m_constantImageVector is NULL");
 
