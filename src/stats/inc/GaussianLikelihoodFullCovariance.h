@@ -65,6 +65,8 @@ public:
   //! Logarithm of the value of the scalar function.
   virtual double lnValue(const V & domainVector) const;
 
+  using LikelihoodBase<V, M>::lnValue;
+
 private:
   double m_covarianceCoefficient;
   const M & m_covariance;
