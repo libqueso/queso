@@ -22,10 +22,10 @@ Qoi_mc<P_V, P_M, Q_V, Q_M>::~Qoi_mc()
 template<class P_V, class P_M, class Q_V, class Q_M>
 void
 Qoi_mc<P_V, P_M, Q_V, Q_M>::compute(const P_V & domainVector,
-    const P_V * domainDirection,
-    Q_V & imageVector, QUESO::DistArray<P_V *> * gradVectors,
-    QUESO::DistArray<P_M *> * hessianMatrices,
-    QUESO::DistArray<P_V *> * hessianEffects) const
+    const P_V * /* domainDirection */,
+    Q_V & imageVector, QUESO::DistArray<P_V *> * /* gradVectors */,
+    QUESO::DistArray<P_M *> * /* hessianMatrices */,
+    QUESO::DistArray<P_V *> * /* hessianEffects */) const
 {
   if (domainVector.sizeLocal() != 2) {
     queso_error_msg("domainVector does not have size 2");
