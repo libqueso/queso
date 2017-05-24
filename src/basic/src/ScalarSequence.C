@@ -1705,7 +1705,7 @@ ScalarSequence<T>::unifiedHistogram(
 template <class T>
 void
 ScalarSequence<T>::subBasicHistogram(
-  unsigned int                initialPos,
+  unsigned int                /* initialPos */,
   const T&                    minHorizontalValue,
   const T&                    maxHorizontalValue,
   UniformOneDGrid<T>*& gridValues,
@@ -1747,7 +1747,7 @@ ScalarSequence<T>::subBasicHistogram(
 template <class T>
 void
 ScalarSequence<T>::subWeightHistogram(
-  unsigned int                initialPos,
+  unsigned int                /* initialPos */,
   const T&                    minHorizontalValue,
   const T&                    maxHorizontalValue,
   UniformOneDGrid<T>*& gridValues,
@@ -1789,7 +1789,7 @@ ScalarSequence<T>::subWeightHistogram(
 template <class T>
 void
 ScalarSequence<T>::subWeightHistogram(
-  unsigned int               initialPos,
+  unsigned int               /* initialPos */,
   const T&                   minHorizontalValue,
   const T&                   maxHorizontalValue,
   std::vector<T>&            gridValues,
@@ -2427,8 +2427,8 @@ template <class T>
 T
 ScalarSequence<T>::brooksGelmanConvMeasure(
   bool         useOnlyInter0Comm,
-  unsigned int initialPos,
-  unsigned int spacing) const
+  unsigned int /* initialPos */,
+  unsigned int /* spacing */) const
 {
   double resultValue = 0.;
 
