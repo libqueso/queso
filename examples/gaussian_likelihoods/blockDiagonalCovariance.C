@@ -57,6 +57,8 @@ public:
       modelOutput[i] = 1.0;
     }
   }
+
+  using QUESO::GaussianLikelihoodBlockDiagonalCovariance<V, M>::evaluateModel;
 };
 
 int main(int argc, char ** argv) {

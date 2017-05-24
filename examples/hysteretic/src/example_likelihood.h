@@ -60,6 +60,8 @@ public:
 
   std::vector<std::vector<double>* > floor;
               std::vector<double>    accel;
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 #endif

@@ -51,6 +51,8 @@ public:
 
   const QUESO::GslVector* meanVector;
   const QUESO::GslMatrix* covMatrix;
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 #endif

@@ -67,6 +67,8 @@ public:
   {
     return std::exp(this->lnValue(domainVector));
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 #endif // __TGA2_LIKELIHOOD_H__

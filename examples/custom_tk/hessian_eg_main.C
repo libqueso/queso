@@ -55,6 +55,8 @@ public:
   }
 
   double m_obsStdDev;
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv)

@@ -56,6 +56,8 @@ public:
       modelOutput[i] = 1.0;
     }
   }
+
+  using QUESO::GaussianLikelihoodScalarCovariance<V, M>::evaluateModel;
 };
 
 int main(int argc, char ** argv) {

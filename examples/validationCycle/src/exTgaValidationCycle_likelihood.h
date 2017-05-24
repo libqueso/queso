@@ -421,6 +421,8 @@ public:
   std::vector<double> m_Me3; // relative masses
 
   const QUESO::BaseEnvironment & m_env;
+
+  using QUESO::BaseScalarFunction<P_V, P_M>::lnValue;
 };
 
 #endif // EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H
