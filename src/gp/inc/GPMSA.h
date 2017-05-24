@@ -122,6 +122,8 @@ public:
   const M & KT_K_inv;
 
   const GPMSAOptions & m_opts;
+
+  using BaseScalarFunction<V, M>::lnValue;
 };
 
 template <class V = GslVector, class M = GslMatrix>
