@@ -374,7 +374,7 @@ HessianCovMatricesTKGroup<V,M>::clearPreComputingPositions()
 
 template <class V, class M>
 void
-HessianCovMatricesTKGroup<V, M>::updateLawCovMatrix(const M & covMatrix)
+HessianCovMatricesTKGroup<V, M>::updateLawCovMatrix(const M & /* covMatrix */)
 {
   queso_error_msg(std::string("Stochastic Newton does not support adaptivity"));
 }
