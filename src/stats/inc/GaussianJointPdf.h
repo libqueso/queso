@@ -115,6 +115,8 @@ public:
   //! Print method for informational and logging purposes
   virtual void print(std::ostream & os) const;
 
+  using BaseJointPdf<V, M>::lnValue;
+
 protected:
   using BaseScalarFunction<V,M>::m_env;
   using BaseScalarFunction<V,M>::m_prefix;
