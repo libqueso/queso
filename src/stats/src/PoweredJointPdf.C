@@ -140,7 +140,7 @@ PoweredJointPdf<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-PoweredJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+PoweredJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int /* numSamples */, bool /* updateFactorInternally */) const
 {
   double value = 0.;
 
