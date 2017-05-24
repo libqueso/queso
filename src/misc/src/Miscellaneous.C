@@ -107,12 +107,13 @@ MiscReadWordsFromString(
     if (inputString[i] == ' ') {
       if (aWordIsBeingRead == true) {
         // We just finished reading the current string/word.
-        char tmpVar[numberOfChars+1];
+        std::string tmpVar;
+        tmpVar.reserve(numberOfChars+1);
         for (std::string::size_type j = 0; j < numberOfChars; ++j) {
           tmpVar[j] = inputString[positionOfFirstChar+j];
         }
         tmpVar[numberOfChars] = '\0';
-        outputWords.push_back(tmpVar);
+        outputWords.push_back(tmpVar.c_str());
 
         // Continue loop
         aWordIsBeingRead = false;
@@ -130,12 +131,13 @@ MiscReadWordsFromString(
   } // for
   if (aWordIsBeingRead == true) {
     // We just finished reading the current string/word.
-    char tmpVar[numberOfChars+1];
+    std::string tmpVar;
+    tmpVar.reserve(numberOfChars+1);
     for (std::string::size_type j = 0; j < numberOfChars; ++j) {
       tmpVar[j] = inputString[positionOfFirstChar+j];
     }
     tmpVar[numberOfChars] = '\0';
-    outputWords.push_back(tmpVar);
+    outputWords.push_back(tmpVar.c_str());
   }
   std::vector<std::string>(outputWords).swap(outputWords);
 
