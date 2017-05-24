@@ -125,11 +125,11 @@ const VectorSet<V, M> & BaseScalarFunction<V, M>::domainSet() const
 
 template <class V, class M>
 double
-BaseScalarFunction<V, M>::lnValue(const V & domainVector,
-                                  const V * domainDirection,
-                                  V * gradVector,
-                                  M * hessianMatrix,
-                                  V * hessianEffect) const
+BaseScalarFunction<V, M>::lnValue(const V & /* domainVector */,
+                                  const V * /* domainDirection */,
+                                  V * /* gradVector */,
+                                  M * /* hessianMatrix */,
+                                  V * /* hessianEffect */) const
 {
   std::string msg;
 
@@ -172,10 +172,10 @@ BaseScalarFunction<V, M>::lnValue(const V & domainVector, V & gradVector) const
 
 template <class V, class M>
 double
-BaseScalarFunction<V, M>::lnValue(const V & domainVector,
-                                  V & gradVector,
-                                  const V & domainDirection,
-                                  V & hessianEffect) const
+BaseScalarFunction<V, M>::lnValue(const V & /* domainVector */,
+                                  V & /* gradVector */,
+                                  const V & /* domainDirection */,
+                                  V & /* hessianEffect */) const
 {
   std::string msg;
 
