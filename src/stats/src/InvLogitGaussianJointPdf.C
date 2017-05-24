@@ -130,10 +130,10 @@ template<class V, class M>
 double
 InvLogitGaussianJointPdf<V,M>::lnValue(
   const V& domainVector,
-  const V* domainDirection,
-        V* gradVector,
-        M* hessianMatrix,
-        V* hessianEffect) const
+  const V* /* domainDirection */,
+        V* /* gradVector */,
+        M* /* hessianMatrix */,
+        V* /* hessianEffect */) const
 {
   double returnValue;
   double lnDeterminant = 0.0;
@@ -228,7 +228,7 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
 
 template<class V, class M>
 void
-InvLogitGaussianJointPdf<V,M>::distributionMean(V& meanVector) const
+InvLogitGaussianJointPdf<V,M>::distributionMean(V& /* meanVector */) const
 {
   // AFAIK there's no simple closed form here, and taking the inverse
   // transformation of the mean in the transformed space probably
@@ -240,7 +240,7 @@ InvLogitGaussianJointPdf<V,M>::distributionMean(V& meanVector) const
 //---------------------------------------------------
 template<class V,class M>
 void
-InvLogitGaussianJointPdf<V,M>::distributionVariance(M & covMatrix) const
+InvLogitGaussianJointPdf<V,M>::distributionVariance(M & /* covMatrix */) const
 {
   // AFAIK there's no simple closed form here, and taking the inverse
   // transformation of the variance in the transformed space probably
