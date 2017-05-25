@@ -26,9 +26,9 @@
 #define TEST_TOL 1e-8
 #define INTEGRATE_TOL 1e-2
 
+#ifdef QUESO_HAVE_LIBMESH
 int main(int argc, char **argv)
 {
-#ifdef QUESO_HAVE_LIBMESH
   unsigned int i, j;
   QUESO::EnvOptionsValues opts;
   opts.m_seed = -1;
@@ -126,7 +126,10 @@ int main(int argc, char **argv)
   MPI_Finalize();
 #endif
   return 0;
-#else
-  return 77;
-#endif
 }
+#else
+int main()
+{
+  return 77;
+}
+#endif

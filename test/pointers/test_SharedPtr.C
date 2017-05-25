@@ -25,7 +25,7 @@
 #include <queso/asserts.h>
 #include <queso/SharedPtr.h>
 
-int main(int argc, char* argv[])
+int main()
 {
   QUESO::SharedPtr<int>::Type int_ptr1(new int(1));
 

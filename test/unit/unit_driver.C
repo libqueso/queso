@@ -29,7 +29,7 @@
 #include <cppunit/ui/text/TestRunner.h>
 #endif // QUESO_HAVE_CPPUNIT
 
-int main(int argc, char **argv)
+int main()
 {
 #ifdef QUESO_HAVE_CPPUNIT
 

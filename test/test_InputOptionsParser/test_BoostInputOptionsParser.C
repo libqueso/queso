@@ -149,7 +149,7 @@ void test_empty()
 }
 #endif  // DISABLE_BOOST_PROGRAM_OPTIONS
 
-int main(int argc, char ** argv)
+int main()
 {
 #ifndef DISABLE_BOOST_PROGRAM_OPTIONS
   test_default();

@@ -36,7 +36,7 @@ public:
   using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
-int main(int argc, char ** argv) {
+int main() {
   std::string inputFileName = "test_Environment/input_test_serialEnv";
   const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
