@@ -39,6 +39,8 @@ public:
           hessianMatrix, hessianEffect));
   }
 
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
+
 private:
   // Maybe store the observed data, y, here.
 };

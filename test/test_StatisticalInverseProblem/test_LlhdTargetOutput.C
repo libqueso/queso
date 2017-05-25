@@ -34,6 +34,8 @@ public:
     return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
           hessianMatrix, hessianEffect));
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

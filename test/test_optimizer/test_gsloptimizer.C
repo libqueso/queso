@@ -39,6 +39,8 @@ public:
               (domainVector[1]-2)*(domainVector[1]-2) +
               (domainVector[2]-3)*(domainVector[2]-3) );
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

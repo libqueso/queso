@@ -44,6 +44,8 @@ public:
   }
 
   const QUESO::GaussianJointPdf<V, M> & m_pdf;
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

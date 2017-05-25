@@ -37,6 +37,8 @@ public:
 
     return -(domainVector[0] * domainVector[0]);
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

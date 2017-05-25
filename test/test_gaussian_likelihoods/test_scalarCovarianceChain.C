@@ -59,6 +59,8 @@ public:
       modelOutput[i] = domainVector[i];
     }
   }
+
+  using QUESO::GaussianLikelihoodScalarCovariance<V, M>::evaluateModel;
 };
 
 // A custom likelihood (that just so happens to also be Gaussian)
@@ -94,6 +96,8 @@ public:
   {
     return this->lnValue(domainVector);
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 template<class V, class M>
