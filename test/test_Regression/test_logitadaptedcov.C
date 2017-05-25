@@ -30,8 +30,8 @@ public:
   {
   }
 
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  virtual double lnValue(const V & domainVector, const V * /* domainDirection */,
+      V * /* gradVector */, M * /* hessianMatrix */, V * /* hessianEffect */) const
   {
     return this->m_pdf.lnValue(domainVector, NULL, NULL, NULL, NULL);
   }

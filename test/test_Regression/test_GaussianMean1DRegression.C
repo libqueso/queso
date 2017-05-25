@@ -40,11 +40,11 @@ unsigned int likelihoodCalls = 0;     // output
 template<class P_V,class P_M>
 double LikelihoodFunc(
 		      const P_V&  paramValues,
-		      const P_V*  paramDirection,
+		      const P_V*  /* paramDirection */,
 		      const void* functionDataPtr,
-		      P_V*        gradVector,
-		      P_M*        hessianMatrix,
-		      P_V*        hessianEffect)
+		      P_V*        /* gradVector */,
+		      P_M*        /* hessianMatrix */,
+		      P_V*        /* hessianEffect */)
 {
 
   double samplingVar = ((likelihoodData *)functionDataPtr)->samplingVar;

@@ -22,8 +22,8 @@ public:
     // Deconstruct here
   }
 
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  virtual double lnValue(const V & domainVector, const V * /* domainDirection */,
+      V * gradVector, M * /* hessianMatrix */, V * /* hessianEffect */) const
   {
     if (gradVector != NULL) {
       (*gradVector)[0] = -domainVector[0];

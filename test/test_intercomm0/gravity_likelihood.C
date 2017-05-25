@@ -65,8 +65,8 @@ Likelihood<V, M>::~Likelihood()
 
 template<class V, class M>
 double
-Likelihood<V, M>::lnValue(const V & domainVector, const V * domainDirection,
-    V * gradVector, M * hessianMatrix, V * hessianEffect) const
+Likelihood<V, M>::lnValue(const V & domainVector, const V * /* domainDirection */,
+    V * /* gradVector */, M * /* hessianMatrix */, V * /* hessianEffect */) const
 {
   double g = domainVector[0];
 

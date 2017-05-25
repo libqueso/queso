@@ -45,12 +45,12 @@ qoiRoutine_Data
 // The actual (user defined) qoi routine
 template<class P_V,class P_M,class Q_V,class Q_M>
 void qoiRoutine(const P_V&                    paramValues,
-                const P_V*                    paramDirection,
+                const P_V*                    /* paramDirection */,
                 const void*                   functionDataPtr,
                       Q_V&                    qoiValues,
-                      QUESO::DistArray<P_V*>* gradVectors,
-                      QUESO::DistArray<P_M*>* hessianMatrices,
-                      QUESO::DistArray<P_V*>* hessianEffects)
+                      QUESO::DistArray<P_V*>* /* gradVectors */,
+                      QUESO::DistArray<P_M*>* /* hessianMatrices */,
+                      QUESO::DistArray<P_V*>* /* hessianEffects */)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];
