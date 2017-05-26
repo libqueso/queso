@@ -24,11 +24,11 @@
 
 #include <queso/Defines.h>
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
 #else
 #include <queso/getpot.h>
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/GPMSAOptions.h>
 
@@ -105,9 +105,9 @@ GPMSAOptions::GPMSAOptions(
 GPMSAOptions::GPMSAOptions()
   :
   m_env(NULL)
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   ,m_parser(new BoostInputOptionsParser())
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 {
   this->set_defaults();
   this->set_prefix("");
@@ -180,7 +180,7 @@ GPMSAOptions::parse(const BaseEnvironment & env,
 
   this->set_prefix(prefix);
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser.reset(new BoostInputOptionsParser(env.optionsInputFileName()));
 
   m_parser->registerOption<std::string>
@@ -327,7 +327,7 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_autoscaleMeanVarAll =
     env.input()(m_option_autoscaleMeanVarAll,
                 m_autoscaleMeanVarAll);
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
 }
@@ -610,9 +610,9 @@ GPMSAOptions::print(std::ostream& os) const
 std::ostream &
 operator<<(std::ostream& os, const GPMSAOptions & obj)
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   obj.print(os);
   return os;
 }

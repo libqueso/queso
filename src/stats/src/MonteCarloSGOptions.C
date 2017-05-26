@@ -24,11 +24,11 @@
 
 #include <queso/Defines.h>
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
 #else
 #include <queso/getpot.h>
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/MonteCarloSGOptions.h>
 #include <queso/Miscellaneous.h>
@@ -72,9 +72,9 @@ McOptionsValues::McOptionsValues(
     m_alternativePSsOptionsValues(),
     m_alternativeQSsOptionsValues(),
 #endif
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(NULL),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                     (m_prefix + "help"                       ),
     m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"         ),
     m_option_dataOutputAllowedSet     (m_prefix + "dataOutputAllowedSet"       ),
@@ -138,9 +138,9 @@ McOptionsValues::McOptionsValues(
     m_alternativePSsOptionsValues(),
     m_alternativeQSsOptionsValues(),
 #endif
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                     (m_prefix + "help"                       ),
     m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"         ),
     m_option_dataOutputAllowedSet     (m_prefix + "dataOutputAllowedSet"       ),
@@ -170,7 +170,7 @@ McOptionsValues::McOptionsValues(
   if (alternativeQSsOptionsValues) m_alternativeQSsOptionsValues = *alternativeQSsOptionsValues;
 #endif
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string >(m_option_help,                      UQ_MOC_SG_HELP                            , "produce help message for Monte Carlo distribution calculator");
   m_parser->registerOption<std::string >(m_option_dataOutputFileName,        UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV       , "name of generic data output file"                            );
   m_parser->registerOption<std::string >(m_option_dataOutputAllowedSet,      UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV     , "subEnvs that will write to generic data output file"         );
@@ -268,7 +268,7 @@ McOptionsValues::McOptionsValues(
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_qseq_computeStats = env->input()(m_option_qseq_computeStats, UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV);
 #endif
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // Copy constructor --------------------------------
@@ -329,9 +329,9 @@ McOptionsValues::copy(const McOptionsValues& src)
 
 std::ostream & operator<<(std::ostream & os, const McOptionsValues & obj)
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   os <<         obj.m_option_dataOutputFileName   << " = " << obj.m_dataOutputFileName
      << "\n" << obj.m_option_dataOutputAllowedSet << " = ";
@@ -386,9 +386,9 @@ MonteCarloSGOptions::MonteCarloSGOptions(
 #endif
   m_prefix                          ((std::string)(prefix) + "mc_"),
   m_env                             (env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                     (new boost::program_options::options_description("Monte Carlo options")),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                     (m_prefix + "help"                       ),
   m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"         ),
   m_option_dataOutputAllowedSet     (m_prefix + "dataOutputAllowedSet"       ),
@@ -429,9 +429,9 @@ MonteCarloSGOptions::MonteCarloSGOptions(
 #endif
   m_prefix                          ((std::string)(prefix) + "mc_"),
   m_env                             (env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                     (NULL),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                     (m_prefix + "help"                     ),
   m_option_dataOutputFileName       (m_prefix + "dataOutputFileName"       ),
   m_option_dataOutputAllowedSet     (m_prefix + "dataOutputAllowedSet"     ),
@@ -484,9 +484,9 @@ MonteCarloSGOptions::~MonteCarloSGOptions()
   if (m_pseqStatisticalOptionsObj) delete m_pseqStatisticalOptionsObj; // dakota
   if (m_qseqStatisticalOptionsObj) delete m_qseqStatisticalOptionsObj; // dakota
 #endif
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   if (m_optionsDesc              ) delete m_optionsDesc;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 }
 // I/O methods -------------------------------------
 void
@@ -494,13 +494,13 @@ MonteCarloSGOptions::scanOptionsValues()
 {
   queso_deprecated();
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In MonteCarloSGOptions::scanOptionsValues()"
@@ -520,7 +520,7 @@ MonteCarloSGOptions::scanOptionsValues()
   return;
 }
 // Private methods ---------------------------------
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 void
 MonteCarloSGOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
 {
@@ -665,7 +665,7 @@ MonteCarloSGOptions::getMyOptionValues(boost::program_options::options_descripti
 #endif
   return;
 }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 void
 MonteCarloSGOptions::print(std::ostream& os) const

@@ -24,9 +24,9 @@
 
 #include <queso/Environment.h>
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/getpot.h>
 
@@ -153,10 +153,10 @@ BaseEnvironment::BaseEnvironment(
   m_fullCommSize               (1),
   m_optionsInputFileName       (""),
   m_optionsInputFileAccessState(true),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_allOptionsDesc             (),
   m_allOptionsMap              (),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_input                      (new GetPot),
   m_subComm                    (),
   m_subRank                    (-1),
@@ -192,10 +192,10 @@ BaseEnvironment::BaseEnvironment(
   m_fullCommSize               (1),
   m_optionsInputFileName       (passedOptionsInputFileName),
   m_optionsInputFileAccessState(true),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_allOptionsDesc             (),
   m_allOptionsMap              (),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_input                      (new GetPot),
   m_subComm                    (),
   m_subRank                    (-1),
@@ -369,7 +369,7 @@ BaseEnvironment::setOptionsInputFileAccessState(bool newState) const
   return;
 }
 //-------------------------------------------------------
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
 const boost::program_options::options_description&
 BaseEnvironment::allOptionsDesc() const
@@ -379,9 +379,9 @@ BaseEnvironment::allOptionsDesc() const
   return *m_allOptionsDesc;
 }
 #endif
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 //-------------------------------------------------------
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 boost::program_options::variables_map&
 BaseEnvironment::allOptionsMap() const
 {
@@ -390,9 +390,9 @@ BaseEnvironment::allOptionsMap() const
   queso_require_msg(m_allOptionsMap, "m_allOptionsMap variable is NULL");
   return *m_allOptionsMap;
 }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 //-------------------------------------------------------
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 void
 BaseEnvironment::scanInputFileForMyOptions(const boost::program_options::options_description& optionsDesc) const
 {
@@ -444,7 +444,7 @@ BaseEnvironment::scanInputFileForMyOptions(const boost::program_options::options
 
   return;
 }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 //-----------------------------------------------------
 unsigned int
 BaseEnvironment::displayVerbosity() const
@@ -1235,10 +1235,10 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
     // If there's an input file, we grab the options from there.  Otherwise the
     // defaults are used
     if (m_optionsInputFileName != "") {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
       m_allOptionsMap.reset(new boost::program_options::variables_map());
       m_allOptionsDesc.reset(new boost::program_options::options_description("Allowed options"));
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
       readOptionsInputFile();
 
@@ -1516,10 +1516,10 @@ FullEnvironment::construct (const char *prefix)
     // If there's an input file, we grab the options from there.  Otherwise the
     // defaults are used
     if (m_optionsInputFileName != "") {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
       m_allOptionsMap.reset(new boost::program_options::variables_map());
       m_allOptionsDesc.reset(new boost::program_options::options_description("Allowed options"));
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
       readOptionsInputFile();
 

@@ -158,7 +158,7 @@ protected:
   const VectorSet<V, M> & m_domainSet;
 
 private:
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   //! Input parser
   ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif
