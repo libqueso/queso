@@ -53,8 +53,7 @@ MiscReadDoublesFromString(
     if (inputString[i] == ' ') {
       if (aDoubleIsBeingRead == true) {
         // We just finished reading the current string/double. Convert string to double now.
-        std::string tmpVar;
-        tmpVar.reserve(numberOfChars+1);
+        std::string tmpVar(numberOfChars+1, ' ');
         for (std::string::size_type j = 0; j < numberOfChars; ++j) {
           tmpVar[j] = inputString[positionOfFirstChar+j];
         }
@@ -77,8 +76,7 @@ MiscReadDoublesFromString(
   } // for
   if (aDoubleIsBeingRead == true) {
     // We just finished reading the current string/double. Convert string to double now.
-    std::string tmpVar;
-    tmpVar.reserve(numberOfChars+1);
+    std::string tmpVar(numberOfChars+1, ' ');
     for (std::string::size_type j = 0; j < numberOfChars; ++j) {
       tmpVar[j] = inputString[positionOfFirstChar+j];
     }
@@ -107,8 +105,7 @@ MiscReadWordsFromString(
     if (inputString[i] == ' ') {
       if (aWordIsBeingRead == true) {
         // We just finished reading the current string/word.
-        std::string tmpVar;
-        tmpVar.reserve(numberOfChars+1);
+        std::string tmpVar(numberOfChars+1, ' ');
         for (std::string::size_type j = 0; j < numberOfChars; ++j) {
           tmpVar[j] = inputString[positionOfFirstChar+j];
         }
@@ -131,8 +128,7 @@ MiscReadWordsFromString(
   } // for
   if (aWordIsBeingRead == true) {
     // We just finished reading the current string/word.
-    std::string tmpVar;
-    tmpVar.reserve(numberOfChars+1);
+    std::string tmpVar(numberOfChars+1, ' ');
     for (std::string::size_type j = 0; j < numberOfChars; ++j) {
       tmpVar[j] = inputString[positionOfFirstChar+j];
     }

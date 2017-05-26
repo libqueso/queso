@@ -1881,8 +1881,7 @@ GslMatrix::subReadContents(
     unsigned int posInTmpString = 6;
 
     // Isolate 'n_rows' in a string
-    std::string nRowsString;
-    nRowsString.reserve(tmpString.size()-posInTmpString+1);
+    std::string nRowsString(tmpString.size()-posInTmpString+1, ' ');
     unsigned int posInRowsString = 0;
     do {
       queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ',' not found in first line of file");
@@ -1892,8 +1891,7 @@ GslMatrix::subReadContents(
 
     // Isolate 'n_cols' in a string
     posInTmpString++; // Avoid reading ',' char
-    std::string nColsString;
-    nColsString.reserve(tmpString.size()-posInTmpString+1);
+    std::string nColsString(tmpString.size()-posInTmpString+1, ' ');
     unsigned int posInColsString = 0;
     do {
       queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ')' not found in first line of file");
