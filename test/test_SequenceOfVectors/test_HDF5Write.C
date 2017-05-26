@@ -9,11 +9,13 @@
 #include <queso/VectorSpace.h>
 #include <queso/SequenceOfVectors.h>
 
-int main(int argc, char **argv) {
 #ifndef QUESO_HAS_HDF5
+int main() {
   // If we don't have HDF5, skip this test
   return 77;
+}
 #else
+int main(int argc, char **argv) {
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 #endif
@@ -62,5 +64,5 @@ int main(int argc, char **argv) {
   MPI_Finalize();
 #endif
   return 0;
-#endif  // QUESO_HAS_HDF
 }
+#endif  // QUESO_HAS_HDF
