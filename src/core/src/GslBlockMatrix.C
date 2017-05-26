@@ -77,13 +77,13 @@ GslBlockMatrix::chol()
 }
 
 void
-GslBlockMatrix::zeroLower(bool includeDiagonal)
+GslBlockMatrix::zeroLower(bool /* includeDiagonal */)
 {
   queso_not_implemented();
 }
 
 void
-GslBlockMatrix::zeroUpper(bool includeDiagonal)
+GslBlockMatrix::zeroUpper(bool /* includeDiagonal */)
 {
   queso_not_implemented();
 }

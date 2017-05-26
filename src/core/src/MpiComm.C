@@ -140,7 +140,7 @@ MpiComm::NumProc() const
 // Methods overridden from Comm ---------------------
 
 void
-MpiComm::Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype datatype, RawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const
+MpiComm::Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype datatype, RawType_MPI_Op op, const char* /* whereMsg */, const char* whatMsg) const
 {
   queso_deprecated();
   if (NumProc() > 1) {  // Necessarily true if QUESO_HAS_MPI
@@ -154,7 +154,7 @@ MpiComm::Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype
 template <typename T>
 void
 MpiComm::Allreduce(const T* sendbuf, T* recvbuf, int count, RawType_MPI_Op op,
-                   const char* whereMsg, const char* whatMsg) const
+                   const char* /* whereMsg */, const char* whatMsg) const
 {
   if (NumProc() > 1) {  // Necessarily true if QUESO_HAS_MPI
 #ifdef QUESO_HAS_MPI
@@ -188,7 +188,7 @@ MpiComm::Barrier() const // const char* whereMsg, const char* whatMsg) const
 }
 //--------------------------------------------------
 void
-MpiComm::Bcast(void* buffer, int count, RawType_MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
+MpiComm::Bcast(void* buffer, int count, RawType_MPI_Datatype datatype, int root, const char* /* whereMsg */, const char* whatMsg) const
 {
   if (NumProc() > 1) {  // Necesarrily true if QUESO_HAS_MPI
 #ifdef QUESO_HAS_MPI
@@ -203,7 +203,7 @@ MpiComm::Gather(
   void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype,
   void* recvbuf, int recvcount, RawType_MPI_Datatype recvtype,
   int root,
-  const char* whereMsg, const char* whatMsg) const
+  const char* /* whereMsg */, const char* whatMsg) const
 {
   queso_deprecated();
   if (NumProc() > 1) {  // Necessarily true if QUESO_HAS_MPI
@@ -222,7 +222,7 @@ MpiComm::Gather(
 template <typename T>
 void
 MpiComm::Gather(const T * sendbuf, int sendcnt, T * recvbuf, int recvcount,
-                int root, const char* whereMsg, const char* whatMsg) const
+                int root, const char* /* whereMsg */, const char* whatMsg) const
 {
   if (NumProc() > 1) {  // Necessarily true if QUESO_HAS_MPI
 #ifdef QUESO_HAS_MPI
@@ -255,7 +255,7 @@ MpiComm::Gatherv(
   void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype,
   void* recvbuf, int* recvcnts, int* displs, RawType_MPI_Datatype recvtype,
   int root,
-  const char* whereMsg, const char* whatMsg) const
+  const char* /* whereMsg */, const char* whatMsg) const
 {
   queso_deprecated();
   if (NumProc() > 1) {  // Necessarily true if QUESO_HAS_MPI
@@ -274,7 +274,7 @@ MpiComm::Gatherv(
 template <typename T>
 void
 MpiComm::Gatherv(const T * sendbuf, int sendcnt, T * recvbuf, int * recvcnts,
-                 int * displs, int root, const char * whereMsg,
+                 int * displs, int root, const char * /* whereMsg */,
                  const char * whatMsg) const
 {
   if (NumProc() > 1) {  // Necessarily true if QUESO_HAS_MPI
@@ -306,7 +306,7 @@ MpiComm::Gatherv(const T * sendbuf, int sendcnt, T * recvbuf, int * recvcnts,
 void
 MpiComm::Recv(
   void* buf, int count, RawType_MPI_Datatype datatype, int source, int tag, RawType_MPI_Status* status,
-  const char* whereMsg, const char* whatMsg) const
+  const char* /* whereMsg */, const char* whatMsg) const
 {
   if (NumProc() > 1) {  // Necesarrily true if QUESO_HAS_MPI
 #ifdef QUESO_HAS_MPI
@@ -319,7 +319,7 @@ MpiComm::Recv(
 void
 MpiComm::Send(
   void* buf, int count, RawType_MPI_Datatype datatype, int dest, int tag,
-  const char* whereMsg, const char* whatMsg) const
+  const char* /* whereMsg */, const char* whatMsg) const
 {
   if (NumProc() > 1) {  // Necesarrily true if QUESO_HAS_MPI
 #ifdef QUESO_HAS_MPI

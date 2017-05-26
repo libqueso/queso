@@ -50,16 +50,18 @@ public:
 
   virtual double lnValue(const V & paramValues) const;
   virtual double actualValue(const V & paramValues,
-                             const V * paramDirection,
-                             V *       gradVector,
-                             M *       hessianMatrix,
-                             V *       hessianEffect) const
+                             const V * /* paramDirection */,
+                             V *       /* gradVector */,
+                             M *       /* hessianMatrix */,
+                             V *       /* hessianEffect */) const
   {
     return std::exp(this->lnValue(paramValues));
   }
 
   std::vector<std::vector<double>* > floor;
               std::vector<double>    accel;
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 #endif

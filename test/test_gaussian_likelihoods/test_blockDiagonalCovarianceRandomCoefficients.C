@@ -58,6 +58,8 @@ public:
       modelOutput[i] = domainVector[0] + 3.0;
     }
   }
+
+  using QUESO::GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients<V, M>::evaluateModel;
 };
 
 int main(int argc, char ** argv) {

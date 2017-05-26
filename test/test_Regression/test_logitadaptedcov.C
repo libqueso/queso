@@ -30,8 +30,8 @@ public:
   {
   }
 
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  virtual double lnValue(const V & domainVector, const V * /* domainDirection */,
+      V * /* gradVector */, M * /* hessianMatrix */, V * /* hessianEffect */) const
   {
     return this->m_pdf.lnValue(domainVector, NULL, NULL, NULL, NULL);
   }
@@ -44,6 +44,8 @@ public:
   }
 
   const QUESO::GaussianJointPdf<V, M> & m_pdf;
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

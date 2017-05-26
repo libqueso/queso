@@ -98,6 +98,8 @@ public:
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
   //@}
 
+  using BaseJointPdf<V, M>::lnValue;
+
 protected:
   using BaseScalarFunction<V,M>::m_env;
   using BaseScalarFunction<V,M>::m_prefix;

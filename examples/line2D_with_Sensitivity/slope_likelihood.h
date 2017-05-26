@@ -14,6 +14,8 @@ public:
   virtual double actualValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const;  
 
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
+
 private:
   std::vector<double> x_vals; // point along the x axes
   std::vector<double> y_obs; // noisy y estimates

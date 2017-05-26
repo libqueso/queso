@@ -69,8 +69,8 @@ Likelihood<V, M>::lnValue(const V & domainVector) const
 template<class V, class M>
 double
 Likelihood<V, M>::actualValue(const V & domainVector,
-    const V * domainDirection, V * gradVector, M * hessianMatrix,
-    V * hessianEffect) const
+    const V * /* domainDirection */, V * /* gradVector */, M * /* hessianMatrix */,
+    V * /* hessianEffect */) const
 {
   return std::exp(this->lnValue(domainVector));
 }

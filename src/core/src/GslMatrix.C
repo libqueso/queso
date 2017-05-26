@@ -1881,7 +1881,7 @@ GslMatrix::subReadContents(
     unsigned int posInTmpString = 6;
 
     // Isolate 'n_rows' in a string
-    char nRowsString[tmpString.size()-posInTmpString+1];
+    std::string nRowsString(tmpString.size()-posInTmpString+1, ' ');
     unsigned int posInRowsString = 0;
     do {
       queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ',' not found in first line of file");
@@ -1891,7 +1891,7 @@ GslMatrix::subReadContents(
 
     // Isolate 'n_cols' in a string
     posInTmpString++; // Avoid reading ',' char
-    char nColsString[tmpString.size()-posInTmpString+1];
+    std::string nColsString(tmpString.size()-posInTmpString+1, ' ');
     unsigned int posInColsString = 0;
     do {
       queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ')' not found in first line of file");
@@ -1900,8 +1900,8 @@ GslMatrix::subReadContents(
     nColsString[posInColsString] = '\0';
 
     // Convert 'n_rows' and 'n_cols' strings to numbers
-    unsigned int numRowsInFile = (unsigned int) strtod(nRowsString,NULL);
-    unsigned int numColsInFile = (unsigned int) strtod(nColsString,NULL);
+    unsigned int numRowsInFile = (unsigned int) strtod(nRowsString.c_str(),NULL);
+    unsigned int numColsInFile = (unsigned int) strtod(nColsString.c_str(),NULL);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In GslMatrix::subReadContents()"
                               << ": fullRank "        << m_env.fullRank()

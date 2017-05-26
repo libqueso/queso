@@ -30,7 +30,7 @@ namespace QUESO {
 
 template <class V, class M>
 GPMSAEmulator<V, M>::GPMSAEmulator(
-    const VectorSet<V, M> & domain,
+    const VectorSet<V, M> & /* domain */,
     const VectorSpace<V, M> & m_scenarioSpace,
     const VectorSpace<V, M> & m_parameterSpace,
     const VectorSpace<V, M> & m_simulationOutputSpace,

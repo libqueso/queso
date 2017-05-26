@@ -78,10 +78,10 @@ public:
   virtual double lnValue(const V & domainVector, V & gradVector) const;
 
   //! Mean value of the underlying random variable.
-  virtual void   distributionMean (V & meanVector) const { queso_not_implemented(); }
+  virtual void   distributionMean (V & /* meanVector */) const { queso_not_implemented(); }
 
   //! Covariance matrix of the underlying random variable.
-  virtual void   distributionVariance (M & covMatrix) const { queso_not_implemented(); };
+  virtual void   distributionVariance (M & /* covMatrix */) const { queso_not_implemented(); };
 
   //! TODO: Computes the logarithm of the normalization factor.
   /*! \todo: implement me!*/

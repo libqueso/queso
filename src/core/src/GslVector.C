@@ -881,7 +881,7 @@ GslVector::subReadContents(
     unsigned int posInTmpString = 6;
 
     // Isolate 'n_positions' in a string
-    char nPositionsString[tmpString.size()-posInTmpString+1];
+    std::string nPositionsString(tmpString.size()-posInTmpString+1, ' ');
     unsigned int posInPositionsString = 0;
     do {
       queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ',' not found in first line of file");
@@ -891,7 +891,7 @@ GslVector::subReadContents(
 
     // Isolate 'n_params' in a string
     posInTmpString++; // Avoid reading ',' char
-    char nParamsString[tmpString.size()-posInTmpString+1];
+    std::string nParamsString(tmpString.size()-posInTmpString+1, ' ');
     unsigned int posInParamsString = 0;
     do {
       queso_require_less_msg(posInTmpString, tmpString.size(), "symbol ')' not found in first line of file");
@@ -900,8 +900,8 @@ GslVector::subReadContents(
     nParamsString[posInParamsString] = '\0';
 
     // Convert 'n_positions' and 'n_params' strings to numbers
-    unsigned int sizeOfVecInFile = (unsigned int) strtod(nPositionsString,NULL);
-    unsigned int numParamsInFile = (unsigned int) strtod(nParamsString,   NULL);
+    unsigned int sizeOfVecInFile = (unsigned int) strtod(nPositionsString.c_str(),NULL);
+    unsigned int numParamsInFile = (unsigned int) strtod(nParamsString.c_str(),   NULL);
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In GslVector::subReadContents()"
                               << ": fullRank "            << m_env.fullRank()

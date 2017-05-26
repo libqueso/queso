@@ -26,8 +26,8 @@ public:
           gradVector, hessianMatrix, hessianEffect));
   }
 
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const {
+  virtual double lnValue(const V & domainVector, const V * /* domainDirection */,
+      V * gradVector, M * /* hessianMatrix */, V * /* hessianEffect */) const {
 
     // Need to check if NULL because QUESO will somtimes call this with a
     // NULL pointer
@@ -37,6 +37,8 @@ public:
 
     return -(domainVector[0] * domainVector[0]);
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

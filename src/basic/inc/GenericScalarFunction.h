@@ -68,6 +68,9 @@ public:
   /*! It is used in routines that calculate the likelihood and expect the logarithm of value.*/
   double lnValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   //@}
+
+  using BaseScalarFunction<V, M>::lnValue;
+
 protected:
   using BaseScalarFunction<V,M>::m_env;
   using BaseScalarFunction<V,M>::m_prefix;

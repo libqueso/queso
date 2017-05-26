@@ -36,6 +36,8 @@ public:
   {
     return std::exp(this->lnValue(domainVector));
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

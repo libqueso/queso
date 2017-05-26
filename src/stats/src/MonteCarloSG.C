@@ -111,7 +111,7 @@ MonteCarloSG<P_V,P_M,Q_V,Q_M>::generateSequence(
 // I/O methods---------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-MonteCarloSG<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
+MonteCarloSG<P_V,P_M,Q_V,Q_M>::print(std::ostream& /* os */) const
 {
   return;
 }

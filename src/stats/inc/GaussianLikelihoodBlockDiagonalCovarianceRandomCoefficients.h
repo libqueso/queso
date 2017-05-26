@@ -78,6 +78,8 @@ public:
    */
   virtual double lnValue(const V & domainVector) const;
 
+  using LikelihoodBase<V, M>::lnValue;
+
 private:
   const GslBlockMatrix & m_covariance;
 };

@@ -7,11 +7,13 @@
 
 #include <cstdio>
 
+#define LINE_SIZE 512
+
 // Read in data files
 double readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationScenarios,
     const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationParameters,
     const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationOutputs,
-    const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentScenarios,
+    const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & /* experimentScenarios */,
     const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentOutputs) {
   FILE * fp_in = fopen("gp/scalar/dakota_pstudy.dat", "r");
   if (!fp_in)
@@ -19,9 +21,9 @@ double readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & si
   if (!fp_in)
     queso_error_msg("Cannot find dakota_pstudy.dat");
 
-  unsigned int i, id, size = 512;
+  unsigned int i, id;
   double k_tmasl, k_tmoml, k_tnrgl, k_xkwlx, k_cd, pressure;
-  char line[size];
+  char line[LINE_SIZE];
 
   // The user should know what the bounds on the data are
   double mins[] = {0.95, 0.9, 0.9, 0.9, 0.9};
@@ -31,12 +33,12 @@ double readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & si
   double m2sim = 0;
 
   // First line is a header, so we ignore it
-  char * gotline = fgets(line, size, fp_in);
+  char * gotline = fgets(line, LINE_SIZE, fp_in);
   if (!gotline)
     queso_error_msg("dakota_pstudy.dat was unreadable");
 
   i = 0;
-  while (fscanf(fp_in, "%d %lf %lf %lf %lf %lf %lf\n", &id, &k_tmasl, &k_tmoml,
+  while (fscanf(fp_in, "%u %lf %lf %lf %lf %lf %lf\n", &id, &k_tmasl, &k_tmoml,
         &k_tnrgl, &k_xkwlx, &k_cd, &pressure) != EOF) {
     (*(simulationScenarios[i]))[0] = 0.5;
 

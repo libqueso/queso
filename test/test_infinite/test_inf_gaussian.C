@@ -13,9 +13,9 @@
 #include <queso/InfiniteDimensionalGaussian.h>
 #endif  // QUESO_HAVE_LIBMESH
 
+#ifdef QUESO_HAVE_LIBMESH
 int main(int argc, char **argv)
 {
-#ifdef QUESO_HAVE_LIBMESH
   unsigned int i;
   unsigned int j;
   const unsigned int num_pairs = 5;
@@ -114,7 +114,9 @@ int main(int argc, char **argv)
   MPI_Finalize();
 #endif
   return 0;
-#else
-  return 77;
-#endif
 }
+#else
+int main() {
+  return 77;
+}
+#endif

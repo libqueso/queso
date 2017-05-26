@@ -397,10 +397,10 @@ public:
   }
 
   virtual double actualValue(const P_V&  paramValues,
-                             const P_V*  paramDirection,
-                             P_V*        gradVector,
-                             P_M*        hessianMatrix,
-                             P_V*        hessianEffect) const
+                             const P_V*  /* paramDirection */,
+                             P_V*        /* gradVector */,
+                             P_M*        /* hessianMatrix */,
+                             P_V*        /* hessianEffect */) const
   {
     return std::exp(this->lnValue(paramValues));
   }
@@ -421,6 +421,8 @@ public:
   std::vector<double> m_Me3; // relative masses
 
   const QUESO::BaseEnvironment & m_env;
+
+  using QUESO::BaseScalarFunction<P_V, P_M>::lnValue;
 };
 
 #endif // EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H

@@ -26,12 +26,14 @@ public:
           gradVector, hessianMatrix, hessianEffect));
   }
 
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const {
+  virtual double lnValue(const V & domainVector, const V * /* domainDirection */,
+      V * /* gradVector */, M * /* hessianMatrix */, V * /* hessianEffect */) const {
     // Note: we do not fill gradVector, so QUESO should fall back to a finite
     // difference calculation for the derivative
     return -(domainVector[0] * domainVector[0]);
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

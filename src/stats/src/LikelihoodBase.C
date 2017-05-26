@@ -46,9 +46,9 @@ LikelihoodBase<V, M>::~LikelihoodBase()
 }
 
 template<class V, class M>
-void LikelihoodBase<V, M>::evaluateModel(const V & domainVector, const V * domainDirection,
-                                         V & modelOutput, V * gradVector, M * hessianMatrix,
-                                         V * hessianEffect) const
+void LikelihoodBase<V, M>::evaluateModel(const V & /* domainVector */, const V * /* domainDirection */,
+                                         V & /* modelOutput */, V * /* gradVector */, M * /* hessianMatrix */,
+                                         V * /* hessianEffect */) const
 {
   std::stringstream ss;
   ss << "ERROR: evaluateModel() not implemented! This interface is deprecated."

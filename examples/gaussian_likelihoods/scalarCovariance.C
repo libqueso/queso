@@ -47,15 +47,17 @@ public:
   {
   }
 
-  virtual void evaluateModel(const V & domainVector, const V * domainDirection,
-      V & modelOutput, V * gradVector, M * hessianMatrix,
-      V * hessianEffect) const
+  virtual void evaluateModel(const V & /* domainVector */, const V * /* domainDirection */,
+      V & modelOutput, V * /* gradVector */, M * /* hessianMatrix */,
+      V * /* hessianEffect */) const
   {
     // Evaluate model and fill up the m_modelOutput member variable
     for (unsigned int i = 0; i < modelOutput.sizeLocal(); i++) {
       modelOutput[i] = 1.0;
     }
   }
+
+  using QUESO::GaussianLikelihoodScalarCovariance<V, M>::evaluateModel;
 };
 
 int main(int argc, char ** argv) {

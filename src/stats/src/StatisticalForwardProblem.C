@@ -417,7 +417,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 // I/O methods--------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
+StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::print(std::ostream& /* os */) const
 {
   return;
 }

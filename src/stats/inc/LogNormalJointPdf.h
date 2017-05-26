@@ -92,6 +92,9 @@ public:
   //! Access to the vector of variance values and private attribute:  m_lawVarVector.
   const V& lawVarVector() const;
 //@}
+
+  using BaseJointPdf<V, M>::lnValue;
+
 protected:
   using BaseScalarFunction<V,M>::m_env;
   using BaseScalarFunction<V,M>::m_prefix;

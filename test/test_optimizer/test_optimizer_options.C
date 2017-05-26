@@ -22,8 +22,8 @@ public:
       // Do nothing
     }
 
-  virtual double actualValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const {
+  virtual double actualValue(const V & domainVector, const V * /* domainDirection */,
+      V * /* gradVector */, M * /* hessianMatrix */, V * /* hessianEffect */) const {
     return std::exp(this->lnValue(domainVector));
   }
 
@@ -36,6 +36,8 @@ public:
 
     return this->lnValue(domainVector);
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

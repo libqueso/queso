@@ -38,9 +38,9 @@
 #include <queso/asserts.h>
 #include <queso/GslMatrix.h>
 
+#ifdef QUESO_HAS_ANN
 int main(int argc, char* argv[])
 {
-#ifdef QUESO_HAS_ANN
   queso_require_equal_to_msg(argc, 2, "Please specify an input file on the command line");
 
   // Initialize environment
@@ -70,8 +70,10 @@ int main(int argc, char* argv[])
 #endif
 
   return 0;
-
-#else // QUESO_HAS_ANN
-  queso_error_msg("ANN has not been enabled. Please recompile QUESO with --enable-ann=yes");
-#endif // QUESO_HAS_ANN
 }
+#else // QUESO_HAS_ANN
+int main()
+{
+  queso_error_msg("ANN has not been enabled. Please recompile QUESO with --enable-ann=yes");
+}
+#endif // QUESO_HAS_ANN

@@ -36,9 +36,9 @@ double Likelihood::evaluate(QUESO::FunctionBase &flow)
 }
 #endif
 
+#ifdef QUESO_HAVE_LIBMESH
 int main(int argc, char **argv)
 {
-#ifdef QUESO_HAVE_LIBMESH
   std::string in_file_name = "test_infinite/inf_options";
   const char * test_srcdir = std::getenv("srcdir");
   if (test_srcdir)
@@ -103,7 +103,10 @@ int main(int argc, char **argv)
   MPI_Finalize();
 #endif
   return 0;
-#else
-  return 77;
-#endif
 }
+#else
+int main()
+{
+  return 77;
+}
+#endif

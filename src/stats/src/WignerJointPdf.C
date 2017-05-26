@@ -67,7 +67,7 @@ template<class V, class M>
 double
 WignerJointPdf<V,M>::actualValue(
   const V& domainVector,
-  const V* domainDirection,
+  const V* /* domainDirection */,
         V* gradVector,
         M* hessianMatrix,
         V* hessianEffect) const
@@ -115,7 +115,7 @@ WignerJointPdf<V,M>::distributionMean(V& meanVector) const
 //---------------------------------------------------
 template<class V,class M>
 void
-WignerJointPdf<V,M>::distributionVariance(M & covMatrix) const
+WignerJointPdf<V,M>::distributionVariance(M & /* covMatrix */) const
 {
   queso_not_implemented();
 }

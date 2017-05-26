@@ -20,8 +20,8 @@ public:
   {
   }
 
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  virtual double lnValue(const V & /* domainVector */, const V * /* domainDirection */,
+      V * /* gradVector */, M * /* hessianMatrix */, V * /* hessianEffect */) const
   {
     double misfit = 1.0;
 
@@ -34,6 +34,8 @@ public:
     return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
           hessianMatrix, hessianEffect));
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 int main(int argc, char ** argv) {

@@ -47,9 +47,9 @@ public:
   {
   }
 
-  virtual void evaluateModel(const V & domainVector, const V * domainDirection,
-      V & modelOutput, V * gradVector, M * hessianMatrix,
-      V * hessianEffect) const
+  virtual void evaluateModel(const V & /* domainVector */, const V * /* domainDirection */,
+      V & modelOutput, V * /* gradVector */, M * /* hessianMatrix */,
+      V * /* hessianEffect */) const
   {
     // domainVector is of size 2 because the first element is the model
     // parameter and the second (last) element is the multiplicative
@@ -62,6 +62,8 @@ public:
       modelOutput[i] = 1.0;
     }
   }
+
+  using QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::evaluateModel;
 };
 
 int main(int argc, char ** argv) {

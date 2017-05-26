@@ -62,11 +62,13 @@ public:
 
   virtual double lnValue(const QUESO::GslVector & paramValues) const;
 
-  virtual double actualValue(const V & domainVector, const V * domainDirection,
-          V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  virtual double actualValue(const V & domainVector, const V * /* domainDirection */,
+          V * /* gradVector */, M * /* hessianMatrix */, V * /* hessianEffect */) const
   {
     return std::exp(this->lnValue(domainVector));
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 };
 
 #endif // __TGA2_LIKELIHOOD_H__

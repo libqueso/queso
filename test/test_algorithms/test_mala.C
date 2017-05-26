@@ -22,8 +22,8 @@ public:
     // Deconstruct here
   }
 
-  virtual double lnValue(const V & domainVector, const V * domainDirection,
-      V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  virtual double lnValue(const V & domainVector, const V * /* domainDirection */,
+      V * gradVector, M * /* hessianMatrix */, V * /* hessianEffect */) const
   {
     if (gradVector != NULL) {
       (*gradVector)[0] = -domainVector[0];
@@ -38,6 +38,8 @@ public:
     return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
           hessianMatrix, hessianEffect));
   }
+
+  using QUESO::BaseScalarFunction<V, M>::lnValue;
 
 private:
   // Maybe store the observed data, y, here.
