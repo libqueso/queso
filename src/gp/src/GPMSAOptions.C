@@ -623,11 +623,11 @@ operator<<(std::ostream& os, const GPMSAOptions & obj)
 template
 void
 GPMSAOptions::set_final_scaling<GslVector>
-  (const std::vector<typename SharedPtr<GslVector>::Type> &,
-   const std::vector<typename SharedPtr<GslVector>::Type> &,
-   const std::vector<typename SharedPtr<GslVector>::Type> &,
-   const std::vector<typename SharedPtr<GslVector>::Type> &,
-   const std::vector<typename SharedPtr<GslVector>::Type> &);
+  (const std::vector<SharedPtr<GslVector>::Type> &,
+   const std::vector<SharedPtr<GslVector>::Type> &,
+   const std::vector<SharedPtr<GslVector>::Type> &,
+   const std::vector<SharedPtr<GslVector>::Type> &,
+   const std::vector<SharedPtr<GslVector>::Type> &);
 
 
 }  // End namespace QUESO
