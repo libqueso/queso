@@ -25,7 +25,7 @@
 #include <queso/Defines.h>
 #include <queso/Environment.h>
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
 #else
 #include <queso/getpot.h>
@@ -46,9 +46,9 @@ OptimizerOptions::OptimizerOptions()
     m_fdfstepSize(UQ_OPT_FDFSTEP_SIZE),
     m_lineTolerance(UQ_OPT_LINE_TOLERANCE),
     m_env(NULL),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(NULL),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_maxIterations(m_prefix + "maxIterations"),
     m_option_tolerance(m_prefix + "tolerance"),
@@ -72,9 +72,9 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
     m_fdfstepSize(UQ_OPT_FDFSTEP_SIZE),
     m_lineTolerance(UQ_OPT_LINE_TOLERANCE),
     m_env(env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help(m_prefix + "help"),
     m_option_maxIterations(m_prefix + "maxIterations"),
     m_option_tolerance(m_prefix + "tolerance"),
@@ -84,7 +84,7 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
     m_option_fdfstepSize(m_prefix + "fdfStepSize"),
     m_option_lineTolerance(m_prefix + "lineTolerance")
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string>(m_option_help, UQ_OPT_HELP,
       "produce help message for statistical inverse problem");
 
@@ -125,7 +125,7 @@ OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
   m_fstepSize = m_env->input()(m_option_fstepSize, UQ_OPT_FSTEP_SIZE);
   m_fdfstepSize = m_env->input()(m_option_fdfstepSize, UQ_OPT_FDFSTEP_SIZE);
   m_lineTolerance = m_env->input()(m_option_lineTolerance, UQ_OPT_LINE_TOLERANCE);
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
 }

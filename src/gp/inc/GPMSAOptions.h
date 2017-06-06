@@ -24,10 +24,10 @@
 #include <queso/Environment.h>
 #include <queso/SharedPtr.h>
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
 #include <queso/ScopedPtr.h>
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 #ifndef UQ_GPMSA_OPTIONS_H
 #define UQ_GPMSA_OPTIONS_H
@@ -236,9 +236,9 @@ public:
 private:
   const BaseEnvironment * m_env;
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   QUESO::ScopedPtr<BoostInputOptionsParser>::Type m_parser;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   // True if the specified autoscaling should be done for all inputs
   bool m_autoscaleMinMaxAll;

@@ -21,6 +21,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/config_queso.h>
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 
 // ODV = option default value
@@ -41,9 +42,9 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     m_num_iters(UQ_INF_NUM_ITERS_ODV),
     m_save_freq(UQ_INF_SAVE_FREQ_ODV),
     m_rwmh_step(UQ_INF_RWMH_STEP_ODV),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_env(env),
     m_option_help(m_prefix + "help"),
     m_option_dataOutputDirName(m_prefix + "dataOutputDirName"),
@@ -54,7 +55,7 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
 {
   queso_require_not_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the abscense of an options input file"));
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption(m_option_help, "produce help message for infinite dimensional sampler");
   m_parser->registerOption<std::string>(m_option_dataOutputDirName, UQ_INF_DATA_OUTPUT_DIR_NAME_ODV, "name of data output dir");
   m_parser->registerOption<std::string>(m_option_dataOutputFileName, UQ_INF_DATA_OUTPUT_FILE_NAME_ODV, "name of data output file (HDF5)");
@@ -75,7 +76,7 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
   m_option_num_iters = m_env.input()(m_option_num_iters, UQ_INF_NUM_ITERS_ODV);
   m_option_save_freq = m_env.input()(m_option_save_freq, UQ_INF_SAVE_FREQ_ODV);
   m_option_rwmh_step = m_env.input()(m_option_rwmh_step, UQ_INF_RWMH_STEP_ODV);;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
 }
@@ -105,9 +106,9 @@ void InfiniteDimensionalMCMCSamplerOptions::print(std::ostream & os) const
 std::ostream & operator<<(std::ostream & os,
     const InfiniteDimensionalMCMCSamplerOptions & obj)
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   obj.print(os);
   return os;
 }

@@ -22,7 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#include <queso/config_queso.h>
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
 
 #include <queso/BoostInputOptionsParser.h>
@@ -176,4 +177,4 @@ template void BoostInputOptionsParser::getOption<std::vector<unsigned int, std::
 template void BoostInputOptionsParser::getOption<std::vector<double, std::allocator<double> > >(const std::string&, std::vector<double, std::allocator<double> >&) const;
 
 }  // End namespace QUESO
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS

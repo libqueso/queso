@@ -21,7 +21,8 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#include <queso/config_queso.h>
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 #ifndef UQ_BOOST_INPUT_OPTIONS_H
 #define UQ_BOOST_INPUT_OPTIONS_H
@@ -106,4 +107,4 @@ private:
 
 #endif  // UQ_BOOST_INPUT_OPTIONS_H
 
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS

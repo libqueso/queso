@@ -24,7 +24,7 @@
 
 #include <queso/Defines.h>
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
 #else
 #include <queso/getpot.h>
@@ -49,9 +49,9 @@ SfpOptionsValues::SfpOptionsValues()
     m_computeCorrelations (UQ_SFP_COMPUTE_CORRELATIONS_ODV ),
     m_dataOutputFileName  (UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV),
     //m_dataOutputAllowedSet(),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(NULL),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                (m_prefix + "help"                ),
     m_option_computeSolution     (m_prefix + "computeSolution"     ),
     m_option_computeCovariances  (m_prefix + "computeCovariances"  ),
@@ -75,9 +75,9 @@ SfpOptionsValues::SfpOptionsValues(const BaseEnvironment * env, const char *
     m_computeCorrelations (UQ_SFP_COMPUTE_CORRELATIONS_ODV ),
     m_dataOutputFileName  (UQ_SFP_DATA_OUTPUT_FILE_NAME_ODV),
     //m_dataOutputAllowedSet(),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                (m_prefix + "help"                ),
     m_option_computeSolution     (m_prefix + "computeSolution"     ),
     m_option_computeCovariances  (m_prefix + "computeCovariances"  ),
@@ -89,7 +89,7 @@ SfpOptionsValues::SfpOptionsValues(const BaseEnvironment * env, const char *
     m_solverString        (UQ_SFP_SOLVER_ODV               )
 #endif
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string>(m_option_help,                 UQ_SFP_HELP,                        "produce help message for statistical forward problem");
   m_parser->registerOption<bool       >(m_option_computeSolution,      UQ_SFP_COMPUTE_SOLUTION_ODV       , "compute solution process"                            );
   m_parser->registerOption<bool       >(m_option_computeCovariances,   UQ_SFP_COMPUTE_COVARIANCES_ODV    , "compute pq covariances"                              );
@@ -130,7 +130,7 @@ SfpOptionsValues::SfpOptionsValues(const BaseEnvironment * env, const char *
 #ifdef UQ_SFP_READS_SOLVER_OPTION
   m_solver = env->input()(m_option_solver, UQ_SFP_SOLVER_ODV);
 #endif
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
 }
@@ -179,9 +179,9 @@ SfpOptionsValues::copy(const SfpOptionsValues& src)
 std::ostream &
 operator<<(std::ostream & os, const SfpOptionsValues & obj)
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   os <<         obj.m_option_computeSolution      << " = " << obj.m_computeSolution
      << "\n" << obj.m_option_computeCovariances   << " = " << obj.m_computeCovariances
@@ -210,9 +210,9 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
   m_ov                         (),
   m_prefix                     ((std::string)(prefix) + "fp_"   ),
   m_env                        (env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                (new boost::program_options::options_description("Statistical Forward Problem options")),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_computeCovariances  (m_prefix + "computeCovariances"  ),
@@ -236,9 +236,9 @@ StatisticalForwardProblemOptions::StatisticalForwardProblemOptions(
   m_ov                         (alternativeOptionsValues         ),
   m_prefix                     ((std::string)(prefix) + "fp_"    ),
   m_env                        (env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                (NULL),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                (m_prefix + "help"                ),
   m_option_computeSolution     (m_prefix + "computeSolution"     ),
   m_option_computeCovariances  (m_prefix + "computeCovariances"  ),
@@ -266,9 +266,9 @@ StatisticalForwardProblemOptions::~StatisticalForwardProblemOptions()
 {
   queso_deprecated();
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   if (m_optionsDesc) delete m_optionsDesc;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 // I/O methods -------------------------------------
@@ -277,13 +277,13 @@ StatisticalForwardProblemOptions::scanOptionsValues()
 {
   queso_deprecated();
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   if (m_env.subDisplayFile() != NULL) {
     *m_env.subDisplayFile() << "In StatisticalForwardProblemOptions::scanOptionsValues()"
@@ -317,7 +317,7 @@ StatisticalForwardProblemOptions::print(std::ostream& os) const
   return;
 }
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 // Private methods ---------------------------------
 void
 StatisticalForwardProblemOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
@@ -338,9 +338,9 @@ StatisticalForwardProblemOptions::defineMyOptions(boost::program_options::option
 
   return;
 }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 //--------------------------------------------------
 void
 StatisticalForwardProblemOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
@@ -391,7 +391,7 @@ StatisticalForwardProblemOptions::getMyOptionValues(boost::program_options::opti
 
   return;
 }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 // --------------------------------------------------
 // Operator declared outside class definition ------
