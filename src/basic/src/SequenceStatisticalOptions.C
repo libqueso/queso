@@ -25,9 +25,9 @@
 #include <queso/Defines.h>
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/SequenceStatisticalOptions.h>
 #include <queso/Miscellaneous.h>

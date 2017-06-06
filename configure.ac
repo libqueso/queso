@@ -97,8 +97,12 @@ AC_ARG_ENABLE([boost-program-options],
               AS_HELP_STRING([--enable-boost-program-options], [Enables use
                               of boost program options for parsing the QUESO
                               input file.  GetPot will not be used.]),
-              [enable_program_options="yes"],
-              [enable_program_options="no"])
+              [case "${enableval}" in
+               yes) enable_program_options=yes ;;
+               no)  enable_program_options=no ;;
+               *)   AC_MSG_ERROR(bad value ${enableval} for --disable-boost-program-options) ;;
+              esac],
+              [enable_program_options=no])
 
 #-------------------
 # Compilers and MPI
@@ -195,8 +199,7 @@ AS_IF([test "x$enable_program_options" != "xno"],
 
 AS_IF([test "x$enable_program_options" = "xno"],
       [
-       QUESO_CPPFLAGS="$QUESO_CPPFLAGS -DDISABLE_BOOST_PROGRAM_OPTIONS"
-       AC_SUBST(QUESO_CPPFLAGS)
+       AC_DEFINE(DISABLE_BOOST_PROGRAM_OPTIONS, 1, [Flag determining whether boost program options is disabled])
       ])
 
 BOOST_FIND_HEADER([boost/scoped_ptr.hpp])

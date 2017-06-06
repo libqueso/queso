@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/config_queso.h>
 #include <queso/MLSamplingLevelOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -111,9 +112,9 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
     m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
     m_env                                      (env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                                      (m_prefix + "help"                                      ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -186,10 +187,10 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
     m_option_tk                                        (m_prefix + "tk"                                        ),
     m_option_updateInterval                            (m_prefix + "updateInterval"                            )
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   this->defineAllOptions();
   m_parser->scanInputFile();
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   this->getAllOptions();
 
   checkOptions(&env);
@@ -198,7 +199,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
 void
 MLSamplingLevelOptions::defineAllOptions()
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string >(m_option_help,                                       UQ_ML_SAMPLING_L_HELP                      , "produce help message for Bayesian Markov chain distr. calculator");
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -270,13 +271,13 @@ MLSamplingLevelOptions::defineAllOptions()
   m_parser->registerOption<std::string >(m_option_algorithm,                                  UQ_ML_SAMPLING_L_ALGORITHM                 , "which algorithm to use for sampling"                             );
   m_parser->registerOption<std::string >(m_option_tk,                                         UQ_ML_SAMPLING_L_TK                        , "which transition kernel to use for sampling"                     );
   m_parser->registerOption<unsigned int>(m_option_updateInterval,                             UQ_ML_SAMPLING_L_UPDATE_INTERVAL           , "how often to call TK's updateTK method"                          );
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 void
 MLSamplingLevelOptions::getAllOptions()
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->getOption<std::string >(m_option_help,                                       m_help);
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -481,7 +482,7 @@ MLSamplingLevelOptions::getAllOptions()
   m_algorithm                                 = m_env.input()(m_option_algorithm,                                  UQ_ML_SAMPLING_L_ALGORITHM                 );
   m_tk                                        = m_env.input()(m_option_tk,                                         UQ_ML_SAMPLING_L_TK                        );
   m_updateInterval                            = m_env.input()(m_option_updateInterval,                             UQ_ML_SAMPLING_L_UPDATE_INTERVAL           );
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 }
 
 void
@@ -594,7 +595,7 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
   // FIXME
   if (defaultOptions) this->copyOptionsValues(*defaultOptions);
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   // Replace the parser since default values changed
   if (m_parser) {
     delete m_parser;
@@ -604,7 +605,7 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
   // FIXME: Does this work with GetPot?
   this->defineAllOptions();
   m_parser->scanInputFile();
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   this->getAllOptions();
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -840,9 +841,9 @@ MLSamplingLevelOptions::env() const
 
 std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptions& obj)
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   obj.print(os);
   return os;
 }

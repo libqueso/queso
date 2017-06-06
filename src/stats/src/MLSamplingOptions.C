@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/config_queso.h>
 #include <queso/MLSamplingOptions.h>
 #include <queso/Miscellaneous.h>
 
@@ -45,9 +46,9 @@ MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* pre
     m_dataOutputFileName                   (UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),
   //m_dataOutputAllowedSet                 (),
     m_env                                  (env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                          (m_prefix + "help"                          ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
     m_option_restartOutput_levelPeriod     (m_prefix + "restartOutput_levelPeriod"     ),
@@ -63,7 +64,7 @@ MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* pre
     m_option_dataOutputFileName            (m_prefix + "dataOutputFileName"  ),
     m_option_dataOutputAllowedSet          (m_prefix + "dataOutputAllowedSet")
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string >(m_option_help,                           UQ_ML_SAMPLING_HELP,                                   "produce help msg for ML sampling options"      );
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   m_parser->registerOption<unsigned int>(m_option_restartOutput_levelPeriod,      UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV,        "restartOutput_levelPeriod"                     );
@@ -120,7 +121,7 @@ MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* pre
     m_dataOutputAllowedSet.insert(allowed);
   }
 
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions(&env);
 }
@@ -171,9 +172,9 @@ MLSamplingOptions::print(std::ostream& os) const
 
 std::ostream& operator<<(std::ostream& os, const MLSamplingOptions& obj)
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   obj.print(os);
   return os;
