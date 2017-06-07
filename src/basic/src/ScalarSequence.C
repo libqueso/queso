@@ -2749,8 +2749,7 @@ ScalarSequence<T>::unifiedWriteContents(
               status, 0,
               "error writing to dataset on rank" << m_env.inter0Rank());
 
-            H5Dclose(datasets[c]);
-
+          H5Dclose(datasets[c]);
         }
         H5Sclose(dataspace);
         H5Tclose(datatype);
