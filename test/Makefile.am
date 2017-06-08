@@ -76,6 +76,7 @@ check_PROGRAMS += BimodalExample_gsl
 check_PROGRAMS += test_fd_fallback
 check_PROGRAMS += test_custom_tk_am
 check_PROGRAMS += test_no_initial_point
+check_PROGRAMS += test_parallel_h5
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -255,6 +256,7 @@ test_custom_tk_am_SOURCES += custom_tk/adaptive_metropolis.h
 test_custom_tk_am_CPPFLAGS = -I$(srcdir)/custom_tk $(AM_CPPFLAGS)
 
 test_no_initial_point_SOURCES = test_StatisticalInverseProblem/test_no_initial_point.C
+test_parallel_h5_SOURCES = test_StatisticalInverseProblem/test_parallel_h5.C
 
 TESTS =
 TESTS += unit_driver
@@ -334,6 +336,7 @@ TESTS += test_fd_fallback
 TESTS += test_SequenceOfVectorsErase
 TESTS += test_custom_tk_am
 TESTS += test_no_initial_point
+TESTS += test_StatisticalInverseProblem/test_parallel_h5.sh
 
 if ! MPI_ENABLED
 XFAIL_TESTS = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
@@ -428,6 +431,7 @@ clean-local:
 	rm -rf $(top_builddir)/test/output_test_TgaValidationCycle_gsl
 	rm -rf $(top_builddir)/test/output_test_SipSfpExample_gsl
 	rm -rf $(top_builddir)/test/output_test_custom_tk_am
+	rm -rf $(top_builddir)/test/output_test_parallel_h5
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno

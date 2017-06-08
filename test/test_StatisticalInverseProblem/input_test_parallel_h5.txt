@@ -1,0 +1,33 @@
+###############################################
+# UQ Environment
+###############################################
+env_numSubEnvironments   = 2
+env_subDisplayFileName   = output_test_parallel_h5/display
+env_subDisplayAllowAll   = 1
+env_displayVerbosity     = 0
+env_syncVerbosity        = 0
+env_seed                 = 0
+
+###############################################
+# Statistical inverse problem (ip)
+###############################################
+ip_computeSolution      = 1
+ip_dataOutputFileName   = .
+
+###############################################
+# 'ip_': information for Metropolis-Hastings algorithm
+###############################################
+ip_mh_dataOutputFileName = .
+ip_mh_dataOutputAllowAll = 0
+
+ip_mh_rawChain_dataInputFileName    = .
+ip_mh_rawChain_size                 = 10
+ip_mh_rawChain_generateExtra        = 0
+ip_mh_rawChain_dataOutputFileName   = output_test_parallel_h5/ip_raw_chain
+ip_mh_rawChain_dataOutputFileType   = h5
+ip_mh_rawChain_dataOutputAllowAll   = 1
+ip_mh_rawChain_computeStats         = 1
+
+ip_mh_displayCandidates             = 0
+
+ip_mh_filteredChain_generate        = 0
