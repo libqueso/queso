@@ -811,10 +811,18 @@ BaseEnvironment::openUnifiedOutputFile(
         }
 #ifdef QUESO_HAS_HDF5
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-          filePtrSet.h5Var = H5Fcreate((baseFileName+"."+fileType).c_str(),
+
+          std::string fullFileName = baseFileName+"."+fileType;
+
+          filePtrSet.h5Var = H5Fcreate(fullFileName.c_str(),
                                        H5F_ACC_TRUNC,
                                        H5P_DEFAULT,
                                        H5P_DEFAULT);
+
+
+          queso_require_greater_equal_msg(
+              filePtrSet.h5Var, 0,
+              "error opening file `" << fullFileName << "`");
         }
 #endif
         else {
@@ -842,7 +850,10 @@ BaseEnvironment::openUnifiedOutputFile(
         }
 #ifdef QUESO_HAS_HDF5
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
-          filePtrSet.h5Var = H5Fcreate((baseFileName+"."+fileType).c_str(), // TEMPORARY - FIX ME
+
+          std::string fullFileName = baseFileName+"."+fileType;
+
+          filePtrSet.h5Var = H5Fcreate(fullFileName.c_str(),
                                        H5F_ACC_TRUNC,
                                        H5P_DEFAULT,
                                        H5P_DEFAULT);
@@ -850,6 +861,9 @@ BaseEnvironment::openUnifiedOutputFile(
           //                    m_worldRank,
           //                    "BaseEnvironment::openUnifiedOutputFile(), writeOver=false",
           //                    "hdf file type not supported yet");
+          queso_require_greater_equal_msg(
+              filePtrSet.h5Var, 0,
+              "error opening file `" << fullFileName << "`");
         }
 #endif
         else {
