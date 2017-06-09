@@ -1625,86 +1625,9 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
     }
     else if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
              (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
-    for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
-      if (m_env.inter0Rank() == (int) r) {
-        // My turn
-        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-          *m_env.subDisplayFile() << "In SequenceOfVectors<V,M>::unifiedWriteContents()"
-                                  << ": worldRank "      << m_env.worldRank()
-                                  << ", fullRank "       << m_env.fullRank()
-                                  << ", subEnvironment " << m_env.subId()
-                                  << ", subRank "        << m_env.subRank()
-                                  << ", inter0Rank "     << m_env.inter0Rank()
-                                //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
-                                  << ", fileName = "     << fileName
-                                  << ", about to open file for r = " << r
-                                  << std::endl;
-        }
-
-        // bool writeOver = (r == 0);
-        bool writeOver = false; // A 'true' causes problems when the user chooses (via options
-                                // in the input file) to use just one file for all outputs.
-        FilePtrSetStruct unifiedFilePtrSet;
-        if (m_env.openUnifiedOutputFile(fileName,
-                                        fileType, // "m or hdf"
-                                        writeOver,
-                                        unifiedFilePtrSet)) {
-          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) { // 2013-02-23
-            *m_env.subDisplayFile() << "In SequenceOfVectors<V,M>::unifiedWriteContents()"
-                                    << ": worldRank "      << m_env.worldRank()
-                                    << ", fullRank "       << m_env.fullRank()
-                                    << ", subEnvironment " << m_env.subId()
-                                    << ", subRank "        << m_env.subRank()
-                                    << ", inter0Rank "     << m_env.inter0Rank()
-                                  //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
-                                    << ", fileName = "     << fileName
-                                    << ", just opened file for r = " << r
-                                    << std::endl;
-          }
-
-          unsigned int chainSize = this->subSequenceSize();
-          if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
-              (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
-            if (r == 0) {
-              if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-                // Need unified matlab header here since this is unifiedWriteContents
-                writeUnifiedMatlabHeader(*unifiedFilePtrSet.ofsVar,
-                    this->subSequenceSize()*m_env.inter0Comm().NumProc(),
-                    this->vectorSizeLocal());
-              }
-              else {  // If we get here it's definitely a txt file not matlab
-                writeTxtHeader(*unifiedFilePtrSet.ofsVar,
-                    this->subSequenceSize()*m_env.inter0Comm().NumProc(),
-                    this->vectorSizeLocal());
-              }
-            }
-
-            for (unsigned int j = 0; j < chainSize; ++j) { // 2013-02-23
-        //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): m_seq[" << j << "] = " << m_seq[j]
-              //          << std::endl;
-            //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): &(m_seq[" << j << "].map()) = " << &(m_seq[j]->map())
-              //          << std::endl;
-              //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): (m_seq[" << j << "].map().NumMyElements = " << m_seq[j]->map().NumMyElements()
-              //          << std::endl;
-              //V tmpVec(*(m_seq[j]));
-        //std::cout << "*(m_seq[" << j << "]) = " << tmpVec
-              //          << std::endl;
-        //std::cout << "*(m_seq[" << j << "]) = " << *(m_seq[j])
-              //          << std::endl;
-
-              bool savedVectorPrintScientific = m_seq[j]->getPrintScientific();
-              bool savedVectorPrintState      = m_seq[j]->getPrintHorizontally();
-              m_seq[j]->setPrintScientific  (true);
-              m_seq[j]->setPrintHorizontally(true);
-
-              *unifiedFilePtrSet.ofsVar << *(m_seq[j])
-                                        << std::endl;
-
-              m_seq[j]->setPrintHorizontally(savedVectorPrintState);
-              m_seq[j]->setPrintScientific  (savedVectorPrintScientific);
-            }
-          }
-
+      for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
+        if (m_env.inter0Rank() == (int) r) {
+          // My turn
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
             *m_env.subDisplayFile() << "In SequenceOfVectors<V,M>::unifiedWriteContents()"
                                     << ": worldRank "      << m_env.worldRank()
@@ -1714,28 +1637,105 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
                                     << ", inter0Rank "     << m_env.inter0Rank()
                                   //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
                                     << ", fileName = "     << fileName
-                                    << ", about to close file for r = " << r
+                                    << ", about to open file for r = " << r
                                     << std::endl;
           }
 
-          m_env.closeFile(unifiedFilePtrSet,fileType);
+          // bool writeOver = (r == 0);
+          bool writeOver = false; // A 'true' causes problems when the user chooses (via options
+                                  // in the input file) to use just one file for all outputs.
+          FilePtrSetStruct unifiedFilePtrSet;
+          if (m_env.openUnifiedOutputFile(fileName,
+                                          fileType, // "m or hdf"
+                                          writeOver,
+                                          unifiedFilePtrSet)) {
+            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) { // 2013-02-23
+              *m_env.subDisplayFile() << "In SequenceOfVectors<V,M>::unifiedWriteContents()"
+                                      << ": worldRank "      << m_env.worldRank()
+                                      << ", fullRank "       << m_env.fullRank()
+                                      << ", subEnvironment " << m_env.subId()
+                                      << ", subRank "        << m_env.subRank()
+                                      << ", inter0Rank "     << m_env.inter0Rank()
+                                    //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                                      << ", fileName = "     << fileName
+                                      << ", just opened file for r = " << r
+                                      << std::endl;
+            }
 
-          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-            *m_env.subDisplayFile() << "In SequenceOfVectors<V,M>::unifiedWriteContents()"
-                                    << ": worldRank "      << m_env.worldRank()
-                                    << ", fullRank "       << m_env.fullRank()
-                                    << ", subEnvironment " << m_env.subId()
-                                    << ", subRank "        << m_env.subRank()
-                                    << ", inter0Rank "     << m_env.inter0Rank()
-                                  //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
-                                    << ", fileName = "     << fileName
-                                    << ", just closed file for r = " << r
-                                    << std::endl;
-          }
-        } // if (m_env.openUnifiedOutputFile())
-      } // if (m_env.inter0Rank() == (int) r)
-      m_env.inter0Comm().Barrier();
-    } // for r
+            unsigned int chainSize = this->subSequenceSize();
+            if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+                (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
+              if (r == 0) {
+                if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+                  // Need unified matlab header here since this is unifiedWriteContents
+                  writeUnifiedMatlabHeader(*unifiedFilePtrSet.ofsVar,
+                      this->subSequenceSize()*m_env.inter0Comm().NumProc(),
+                      this->vectorSizeLocal());
+                }
+                else {  // If we get here it's definitely a txt file not matlab
+                  writeTxtHeader(*unifiedFilePtrSet.ofsVar,
+                      this->subSequenceSize()*m_env.inter0Comm().NumProc(),
+                      this->vectorSizeLocal());
+                }
+              }
+
+              for (unsigned int j = 0; j < chainSize; ++j) { // 2013-02-23
+          //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): m_seq[" << j << "] = " << m_seq[j]
+                //          << std::endl;
+              //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): &(m_seq[" << j << "].map()) = " << &(m_seq[j]->map())
+                //          << std::endl;
+                //std::cout << "In SequenceOfVectors<V,M>::unifiedWriteContents(): (m_seq[" << j << "].map().NumMyElements = " << m_seq[j]->map().NumMyElements()
+                //          << std::endl;
+                //V tmpVec(*(m_seq[j]));
+          //std::cout << "*(m_seq[" << j << "]) = " << tmpVec
+                //          << std::endl;
+          //std::cout << "*(m_seq[" << j << "]) = " << *(m_seq[j])
+                //          << std::endl;
+
+                bool savedVectorPrintScientific = m_seq[j]->getPrintScientific();
+                bool savedVectorPrintState      = m_seq[j]->getPrintHorizontally();
+                m_seq[j]->setPrintScientific  (true);
+                m_seq[j]->setPrintHorizontally(true);
+
+                *unifiedFilePtrSet.ofsVar << *(m_seq[j])
+                                          << std::endl;
+
+                m_seq[j]->setPrintHorizontally(savedVectorPrintState);
+                m_seq[j]->setPrintScientific  (savedVectorPrintScientific);
+              }
+            }
+
+            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+              *m_env.subDisplayFile() << "In SequenceOfVectors<V,M>::unifiedWriteContents()"
+                                      << ": worldRank "      << m_env.worldRank()
+                                      << ", fullRank "       << m_env.fullRank()
+                                      << ", subEnvironment " << m_env.subId()
+                                      << ", subRank "        << m_env.subRank()
+                                      << ", inter0Rank "     << m_env.inter0Rank()
+                                    //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                                      << ", fileName = "     << fileName
+                                      << ", about to close file for r = " << r
+                                      << std::endl;
+            }
+
+            m_env.closeFile(unifiedFilePtrSet,fileType);
+
+            if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+              *m_env.subDisplayFile() << "In SequenceOfVectors<V,M>::unifiedWriteContents()"
+                                      << ": worldRank "      << m_env.worldRank()
+                                      << ", fullRank "       << m_env.fullRank()
+                                      << ", subEnvironment " << m_env.subId()
+                                      << ", subRank "        << m_env.subRank()
+                                      << ", inter0Rank "     << m_env.inter0Rank()
+                                    //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                                      << ", fileName = "     << fileName
+                                      << ", just closed file for r = " << r
+                                      << std::endl;
+            }
+          } // if (m_env.openUnifiedOutputFile())
+        } // if (m_env.inter0Rank() == (int) r)
+        m_env.inter0Comm().Barrier();
+      } // for r
     }
     else {
       queso_error_msg("invalid file type");
