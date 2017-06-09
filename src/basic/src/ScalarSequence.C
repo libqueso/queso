@@ -2760,48 +2760,48 @@ ScalarSequence<T>::unifiedWriteContents(
     }
     else if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
              (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
-    for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
-      if (m_env.inter0Rank() == (int) r) {
-        // My turn
-        FilePtrSetStruct unifiedFilePtrSet;
-        // bool writeOver = (r == 0);
-        bool writeOver = false; // A 'true' causes problems when the user chooses (via options
-                                // in the input file) to use just one file for all outputs.
-        //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 000 \n" << std::endl;
-        if (m_env.openUnifiedOutputFile(fileName,
-                                        fileType, // "m or hdf"
-                                        writeOver,
-                                        unifiedFilePtrSet)) {
-          //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 001 \n" << std::endl;
+      for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) {
+        if (m_env.inter0Rank() == (int) r) {
+          // My turn
+          FilePtrSetStruct unifiedFilePtrSet;
+          // bool writeOver = (r == 0);
+          bool writeOver = false; // A 'true' causes problems when the user chooses (via options
+                                  // in the input file) to use just one file for all outputs.
+          //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 000 \n" << std::endl;
+          if (m_env.openUnifiedOutputFile(fileName,
+                                          fileType, // "m or hdf"
+                                          writeOver,
+                                          unifiedFilePtrSet)) {
+            //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 001 \n" << std::endl;
 
-          unsigned int chainSize = this->subSequenceSize();
-          if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
-              (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
+            unsigned int chainSize = this->subSequenceSize();
+            if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
+                (fileType == UQ_FILE_EXTENSION_FOR_TXT_FORMAT)) {
 
-            // Write header info
-            if (r == 0) {
-              if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-                this->writeUnifiedMatlabHeader(*unifiedFilePtrSet.ofsVar,
-                    this->subSequenceSize()*m_env.inter0Comm().NumProc());
+              // Write header info
+              if (r == 0) {
+                if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+                  this->writeUnifiedMatlabHeader(*unifiedFilePtrSet.ofsVar,
+                      this->subSequenceSize()*m_env.inter0Comm().NumProc());
+                }
+                else {  // It's definitely txt if we get in here
+                  this->writeTxtHeader(*unifiedFilePtrSet.ofsVar,
+                      this->subSequenceSize()*m_env.inter0Comm().NumProc());
+                }
               }
-              else {  // It's definitely txt if we get in here
-                this->writeTxtHeader(*unifiedFilePtrSet.ofsVar,
-                    this->subSequenceSize()*m_env.inter0Comm().NumProc());
+
+              for (unsigned int j = 0; j < chainSize; ++j) {
+                *unifiedFilePtrSet.ofsVar << m_seq[j]
+                                          << std::endl;
               }
-            }
 
-            for (unsigned int j = 0; j < chainSize; ++j) {
-              *unifiedFilePtrSet.ofsVar << m_seq[j]
-                                        << std::endl;
+              m_env.closeFile(unifiedFilePtrSet,fileType);
             }
-
-            m_env.closeFile(unifiedFilePtrSet,fileType);
-          }
-        } // if (m_env.openUnifiedOutputFile())
-        //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 004 \n" << std::endl;
-      } // if (m_env.inter0Rank() == (int) r)
-      m_env.inter0Comm().Barrier();
-    } // for r
+          } // if (m_env.openUnifiedOutputFile())
+          //std::cout << "\n In ScalarSequence<T>::unifiedWriteContents(), pos 004 \n" << std::endl;
+        } // if (m_env.inter0Rank() == (int) r)
+        m_env.inter0Comm().Barrier();
+      } // for r
     }
     else {
       queso_error_msg("invalid file type");
