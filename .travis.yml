@@ -17,5 +17,6 @@ script:
   - make lcov-reset
   - make check -j4
   - make lcov-report
+  - make -j4 distcheck
 after_success:
     - bash <(curl -s https://codecov.io/bash)
