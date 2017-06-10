@@ -1,3 +1,5 @@
+dist: trusty
+sudo: required
 language: cpp
 compiler:
   - gcc
@@ -7,7 +9,7 @@ before_script:
   - sudo apt-get install -q build-essential
   - sudo apt-get install -q gfortran
   - sudo apt-get install -q libgsl0-dev
-  - sudo apt-get install -q openmpi-bin openmpi-dev
+  - sudo apt-get install -q openmpi-bin libopenmpi-dev
   - sudo apt-get install -q libcppunit-dev
 script:
   - ./bootstrap
