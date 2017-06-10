@@ -135,8 +135,9 @@ void readData
   }
 }
 
-int main(int argc, char ** argv) {
 
+void run_scalar(const QUESO::FullEnvironment& env)
+{
   // Step 0: Set up some variables
   unsigned int numExperiments = 5;  // Number of experiments
   unsigned int numUncertainVars = 3;  // Number of things to calibrate (3 beta)
@@ -144,15 +145,6 @@ int main(int argc, char ** argv) {
   unsigned int numConfigVars = 3;  // Dimension of configuration space (3 x)
   unsigned int numEta = 1;  // Number of responses the model is returning
   unsigned int experimentSize = 1;  // Size of each experiment
-
-#ifdef QUESO_HAS_MPI
-  MPI_Init(&argc, &argv);
-
-  // Step 1: Set up QUESO environment
-  QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
-#else
-  QUESO::FullEnvironment env(argv[1], "", NULL);
-#endif
 
   // Step 2: Set up prior for calibration parameters
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
@@ -358,6 +350,41 @@ int main(int argc, char ** argv) {
   std::cout << "\nFinal GPMSA Options:" << gpmsaFactory.options() << std::endl;
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
+
+}
+
+
+void run_multivariate(const QUESO::FullEnvironment& env)
+{
+
+}
+
+
+int main(int argc, char ** argv) 
+{
+  if (argc < 2) {
+    std::cerr << "Usage: argv[0] gpmsa_<case>.txt\n";
+    return 1;
+  }
+
+#ifdef QUESO_HAS_MPI
+  MPI_Init(&argc, &argv);
+
+  // Step 1: Set up QUESO environment
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, argv[1], "", NULL);
+#else
+  QUESO::FullEnvironment env(argv[1], "", NULL);
+#endif
+
+  std::string input_file(argv[1]);
+  if (input_file.find("scalar") != std::string::npos)
+    run_scalar(env);
+  else if  (input_file.find("mv") != std::string::npos)
+    run_multivariate(env);
+  else {
+    std::cerr << "Unknown case with input: " << input_file <<"\n";
+    return 1;
+  }
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();
