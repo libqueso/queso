@@ -191,9 +191,14 @@ AC_CACHE_SAVE
 # Check for boost (required)
 
 AC_LANG([C++])
+HAVE_BOOST=1
 BOOST_REQUIRE([1.35], [HAVE_BOOST=0])
 AS_IF([test "x$enable_program_options" != "xno"],
       [
+       AS_IF([test "$HAVE_BOOST" = "0"],
+             [
+              AC_MSG_ERROR(["cannot enable program options without boost"])
+             ])
        BOOST_PROGRAM_OPTIONS
       ])
 
