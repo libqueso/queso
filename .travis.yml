@@ -11,7 +11,8 @@ before_script:
   - sudo apt-get install -q libcppunit-dev
 script:
   - ./bootstrap
-  - ./configure CC="mpicc" CXX="mpicxx" --enable-coverage
+  - mkdir build && cd build
+  - ../configure CC="mpicc" CXX="mpicxx" --enable-coverage
   - make -j4
   - make lcov-reset
   - make check -j4
