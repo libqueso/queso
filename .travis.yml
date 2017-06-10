@@ -18,6 +18,7 @@ script:
   - make -j4
   - make lcov-reset
   - make check -j4
+  - cat test/test-suite.log
   - make lcov-report
   - make -j4 distcheck
 after_success:
