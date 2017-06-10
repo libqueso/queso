@@ -11,7 +11,7 @@
 // Public License as published by the Free Software Foundation.
 //
 // This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// but WITHOUT ANY WARRANT Y; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 // Lesser General Public License for more details.
 //
@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-// Bayes linear verification problem due to Brian Williams
+// Bayes linear verification problems due to Brian Williams
 //
 // Described in: [1] Adams, B.M., Coleman, Kayla, Hooper, Russell W.,
 //   Khuwaileh, Bassam A., Lewis, Allison, Smith, Ralph C., Swiler,
@@ -42,96 +42,97 @@
 
 #include <cstdio>
 
-// Read in data files
-double readData(const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationScenarios,
-    const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationParameters,
-    const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationOutputs,
-    const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentScenarios,
-    const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentOutputs) {
-
-  // File containing x, theta, f (vertical concatenation of lhs.txt, y_mod.txt)
-  FILE * fp_in = fopen("gp/linear_verif/simulation.dat", "r");
-  if (!fp_in)
-    fp_in = fopen("simulation.dat", "r");
-  if (!fp_in)
-    queso_error_msg("Cannot find simulation.dat");
-
-  unsigned int i;
-  double x0, x1, x2, beta0, beta1, beta2, linear;
-
-  double meansim = 0;
-  double m2sim = 0;
-
-  i = 0;
-  while (fscanf(fp_in, "%lf %lf %lf %lf %lf %lf %lf\n",
-		&x0, &x1, &x2, &beta0, &beta1, &beta2, &linear) != EOF) {
-    (*(simulationScenarios[i]))[0] = x0;
-    (*(simulationScenarios[i]))[1] = x1;
-    (*(simulationScenarios[i]))[2] = x2;
-
-    (*(simulationParameters[i]))[0] = beta0;
-    (*(simulationParameters[i]))[1] = beta1;
-    (*(simulationParameters[i]))[2] = beta2;
-
-    (*(simulationOutputs[i]))[0] = linear;
-    i++;
-
-    double delta = linear - meansim;
-    meansim += delta / i;
-    m2sim += delta * (linear - meansim);
+void open_data_file(const std::string& data_filename, std::ifstream& data_stream) {
+  std::string example_dir = "gp/linear_verify";
+  data_stream.open(example_dir + "/" + data_filename);
+  if (!data_stream.good()) {
+    data_stream.open(data_filename);
+    if (!data_stream.good())
+      queso_error_msg(std::string("Cannot open data file: ") + data_filename);
   }
+  data_stream.exceptions (std::ifstream::badbit | std::ifstream::eofbit |
+			  std::ifstream::failbit);
+}
 
+// Read in data files
+void readData
+(const std::string& sim_data_filename, const std::string& exp_data_filename,
+ const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationScenarios,
+ const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationParameters,
+ const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationOutputs,
+ const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentScenarios,
+ const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentOutputs)
+{
+  unsigned int num_config = simulationScenarios[0]->sizeGlobal();
+  unsigned int num_params = simulationParameters[0]->sizeGlobal();
+  unsigned int num_responses = simulationOutputs[0]->sizeGlobal();
   unsigned int num_simulations = simulationOutputs.size();
-  if (i != num_simulations)
-    queso_error_msg("Unexpected amount of simulation data in simulation.dat");
 
-  // FIXME: scalar example was missing the sqrt
-  double stdsim = std::sqrt(m2sim / (double)(i - 1));
+  // for accumulating statistics per-response
+  QUESO::GslVector meansim(*(simulationOutputs[0]));  meansim.cwSet(0.0);
+  QUESO::GslVector m2sim(*(simulationOutputs[0]));    m2sim.cwSet(0.0);
+  QUESO::GslVector stdsim(*(simulationOutputs[0]));   stdsim.cwSet(0.0);
 
-  std::cout << "\nSimulation mean: " << meansim;
-  std::cout << "\nSimulation standard deviation: " << stdsim << std::endl;
+  // File containing x, theta, y (vertical concatenation of lhs.txt, y_mod.txt)
+  std::ifstream sim_data;
+  open_data_file(sim_data_filename, sim_data);
+  try {
+    for (unsigned int i = 0; i < num_simulations; ++i) {
+      for (unsigned int j = 0; j < num_config; ++j)
+	sim_data >> (*(simulationScenarios[i]))[j];
+      for (unsigned int j = 0; j < num_params; ++j)
+	sim_data >> (*(simulationParameters[i]))[j];
+      for (unsigned int j = 0; j < num_responses; ++j) {
+	double& sim_output = (*(simulationOutputs[i]))[j];
+	sim_data >> sim_output;
+	double delta = sim_output - meansim[j];
+	meansim[j] += delta / (i+1);
+	m2sim[j] += delta * (sim_output - meansim[j]);
+      }
+    }
+  }
+  catch (const std::ifstream::failure& e) {
+    queso_error_msg(std::string("Error reading ") + sim_data_filename + ": " +
+		    e.what());
+  }
 
   // The user is required to standardise the experimental and simulation data
-  for (unsigned int j = 0; j < i; j++) {
-    (*(simulationOutputs[j]))[0] -= meansim;
-    (*(simulationOutputs[j]))[0] /= stdsim;
+  for (unsigned int j = 0; j < num_responses; ++j) {
+    // FIXME (in other examples): scalar example was missing the sqrt
+    // FIXME: this will divide by 0 for case of 1 simulation
+     stdsim[j] = std::sqrt(m2sim[j] / (double)(num_simulations - 1));
+     // std::cout << "mean[" << j << "] = " << meansim[j] << '\n';
+     // std::cout << "std[" << j << "]  = " << stdsim[j] << '\n';
+     for (unsigned int i = 0; i < num_simulations; ++i) {
+       (*(simulationOutputs[i]))[j] -= meansim[j];
+       (*(simulationOutputs[i]))[j] /= stdsim[j];
+     }
   }
-
-  fclose(fp_in);  // Done with simulation data
 
   // Read in experimental data
-  fp_in = fopen("gp/linear_verif/y_exp.txt", "r");
-  if (!fp_in)
-    fp_in = fopen("y_exp.txt", "r");
-  if (!fp_in)
-    queso_error_msg("Cannot find y_exp.txt");
-
-  i = 0;
-  while (fscanf(fp_in, "%lf %lf %lf %lf\n", &x0, &x1, &x2, &linear) != EOF) {
-    (*(experimentScenarios[i]))[0] = x0;
-    (*(experimentScenarios[i]))[1] = x1;
-    (*(experimentScenarios[i]))[2] = x2;
-
-    (*(experimentOutputs[i]))[0] = linear;
-    i++;
-  }
-
   unsigned int num_experiments = experimentOutputs.size();
-  if (i != num_experiments)
-    queso_error_msg("Unexpected amount of experiment data in y_exp.txt");
-
-  // Also required to standardise experimental data too
-  for (unsigned int j = 0; j < i; j++) {
-    (*(experimentOutputs[j]))[0] -= meansim;
-    (*(experimentOutputs[j]))[0] /= stdsim;
+  std::ifstream exp_data;
+  open_data_file(exp_data_filename, exp_data);
+  try {
+    for (unsigned int i = 0; i < num_experiments; ++i) {
+      for (unsigned int j = 0; j < num_config; ++j)
+	exp_data >> (*(experimentScenarios[i]))[j];
+      for (unsigned int j = 0; j < num_responses; ++j)
+	exp_data >> (*(experimentOutputs[i]))[j];
+    }
+  }
+  catch (const std::ifstream::failure& e) {
+    queso_error_msg(std::string("Error reading ") + exp_data_filename + ": " +
+		    e.what());
   }
 
-  fclose(fp_in);
-
-  // Returning standard deviation of data (simulation data is treated as
-  // plentiful and the standard deviation of this data is treated as the 'true'
-  // standard deviation of the data.  This can be argued.)
-  return stdsim;
+  // Also required to standardise experimental data
+  for (unsigned int i = 0; i < num_experiments; ++i) {
+    for (unsigned int j = 0; j < num_responses; ++j) {
+      (*(experimentOutputs[i]))[j] -= meansim[j];
+      (*(experimentOutputs[i]))[j] /= stdsim[j];
+    }
+  }
 }
 
 int main(int argc, char ** argv) {
@@ -277,11 +278,8 @@ int main(int argc, char ** argv) {
   // Read in data and store the standard deviation of the simulation
   // data (ignored for now).
   //double stdsim =
-  readData(simulationScenarios,
-	   paramVecs,
-	   outputVecs,
-	   experimentScenarios,
-	   experimentVecs);
+  readData("sim_scalar.dat", "y_exp_scalar.txt", simulationScenarios, paramVecs,
+	   outputVecs, experimentScenarios, experimentVecs);
 
   // Experiment observation error
   for (unsigned int i = 0; i < numExperiments; i++)

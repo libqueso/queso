@@ -453,9 +453,9 @@ gpmsa_linverif_CPPFLAGS = -I$(top_srcdir)/examples/gp/linear_verif $(AM_CPPFLAGS
 
 dist_gpmsa_linverif_DATA =
 dist_gpmsa_linverif_DATA += ${gpmsa_scalar_SOURCES}
-dist_gpmsa_linverif_DATA += gp/linear_verif/simulation.dat
-dist_gpmsa_linverif_DATA += gp/linear_verif/gpmsa_input.txt
-dist_gpmsa_linverif_DATA += gp/linear_verif/y_exp.txt
+dist_gpmsa_linverif_DATA += gp/linear_verif/sim_scalar.dat
+dist_gpmsa_linverif_DATA += gp/linear_verif/gpmsa_scalar.txt
+dist_gpmsa_linverif_DATA += gp/linear_verif/y_exp_scalar.txt
 
 #######################################
 # Canned Gaussian likelihood examples #
