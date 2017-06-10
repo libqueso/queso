@@ -3,9 +3,8 @@
 ###############################################
 # env_help                 = 0
 env_numSubEnvironments   = 1
-env_subDisplayFileName   =
+env_subDisplayFileName   = .
 env_subDisplayAllowAll   = 0
-env_subDisplayAllowedSet =
 env_displayVerbosity     = 0
 env_syncVerbosity        = 0
 env_seed                 = 0
@@ -15,23 +14,20 @@ env_seed                 = 0
 ###############################################
 # ip_help                 = 0
 ip_computeSolution      = 1
-ip_dataOutputFileName   =
-ip_dataOutputAllowedSet =
+ip_dataOutputFileName   = .
 
 ###############################################
 # 'ip_': information for Metropolis-Hastings algorithm
 ###############################################
 # ip_mh_help                 = 0
-ip_mh_dataOutputFileName   =
-ip_mh_dataOutputAllowedSet =
+ip_mh_dataOutputFileName   = .
 
 ip_mh_rawChain_dataInputFileName    = .
 ip_mh_rawChain_size                 = 1000
 ip_mh_rawChain_generateExtra        = 0
 ip_mh_rawChain_displayPeriod        = 2000
 ip_mh_rawChain_measureRunTimes      = 1
-ip_mh_rawChain_dataOutputFileName   =
-ip_mh_rawChain_dataOutputAllowedSet =
+ip_mh_rawChain_dataOutputFileName   = .
 ip_mh_rawChain_computeStats         = 1
 
 ip_mh_displayCandidates             = 0
