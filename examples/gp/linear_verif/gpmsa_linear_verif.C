@@ -296,33 +296,45 @@ void run_scalar(const QUESO::FullEnvironment& env)
   // Initial condition of the chain: may need to tweak to Brian's expectations
   std::cout << "\nPrior-based initial position:\n" << paramInitials << std::endl;
 
-  // beta0  beta1  beta2  (3)                                  [0:2]
-  // [ truncation error precision ] (truncated SVD case only)
-  // emulator precision (1)                                    [3]
-  // emulator corr strength (6 total for scenario, beta vars)  [4:9]
-  // discrepancy precision (1)                                 [10]
-  // discrepancy corr strength (3, one per scenario var)       [11:13]
-  // emulator data precision (1)                               [14]
-  // [ observational precision ]                               [15]
-
   // Brian Williams' recommended initial point (only slightly different)
-  paramInitials[0]  = 0.175;
-  paramInitials[1]  = -0.3;
-  paramInitials[2]  = 0.1;
-  paramInitials[3]  = 1;
-  paramInitials[4]  = 0.1;
-  paramInitials[5]  = 0.1; 
-  paramInitials[6]  = 0.1;
-  paramInitials[7]  = 0.1;
-  paramInitials[8]  = 0.1;
-  paramInitials[9]  = 0.1;
-  paramInitials[10] = 1000;
-  paramInitials[11] = 0.1;
-  paramInitials[12] = 0.1;
-  paramInitials[13] = 0.1;
-  paramInitials[14] = 10000;
+  paramInitials[0]  = 0.175;    // beta0
+  paramInitials[1]  = -0.3;     // beta1
+  paramInitials[2]  = 0.1;      // beta2
+
+  // [ truncation error precision ] (truncated SVD case only)
+  // BJW: max(100, shape * scale)
+
+  paramInitials[3]  = 1.0;      // emul precision
+
+  paramInitials[4]  = 0.1;      // emul corr strength (scenario/beta?)
+  paramInitials[5]  = 0.1;      // emul corr strength (scenario/beta?)
+  paramInitials[6]  = 0.1;      // emul corr strength (scenario/beta?)
+  paramInitials[7]  = 0.1;      // emul corr strength (scenario/beta?)
+  paramInitials[8]  = 0.1;      // emul corr strength (scenario/beta?)
+  paramInitials[9]  = 0.1;      // emul corr strength (scenario/beta?)
+  // paramInitials[4]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  // paramInitials[5]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  // paramInitials[6]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  // paramInitials[7]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  // paramInitials[8]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  // paramInitials[9]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+
+  paramInitials[10] = 1000.0;   // discrepancy precision
+  // paramInitials[10] = 20.0;        // discrepancy precision
+
+  paramInitials[11] = 0.1;      // discrepancy corr strength x1
+  paramInitials[12] = 0.1;      // discrepancy corr strength x2
+  paramInitials[13] = 0.1;      // discrepancy corr strength x3
+  // paramInitials[11] = std::exp(-0.025);      // discrepancy corr strength x1
+  // paramInitials[12] = std::exp(-0.025);      // discrepancy corr strength x2
+  // paramInitials[13] = std::exp(-0.025);      // discrepancy corr strength x3
+
+  paramInitials[14] = 10000.0;  // emul data precision
+  // paramInitials[14] = 1000.0;  // emul data precision
+
   if (gpmsaFactory.options().m_calibrateObservationalPrecision)
-    paramInitials[15] = 20;
+    // BJW: max(20, shape * scale)
+    paramInitials[15] = 20.0;   // obs precision
 
   std::cout << "\nAdjusted initial position:\n" << paramInitials << std::endl;
 
@@ -356,7 +368,253 @@ void run_scalar(const QUESO::FullEnvironment& env)
 
 void run_multivariate(const QUESO::FullEnvironment& env)
 {
+  // Step 0: Set up some variables
+  unsigned int numExperiments = 5;  // Number of experiments
+  unsigned int numUncertainVars = 3;  // Number of things to calibrate (3 beta)
+  unsigned int numSimulations = 60;  // Number of simulations
+  unsigned int numConfigVars = 3;  // Dimension of configuration space (3 x)
+  unsigned int numEta = 5;  // Number of responses the model is returning
+  unsigned int experimentSize = 5;  // Size of each experiment
 
+  // Step 2: Set up prior for calibration parameters
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
+      "param_", numUncertainVars, NULL);
+
+  // Parameter (theta) bounds:
+  //   descriptors   'beta0'  'beta1'  'beta2'
+  //   upper_bounds    0.45   -0.1      0.4
+  //   lower_bounds   -0.1    -0.5     -0.2
+  QUESO::GslVector paramMins(paramSpace.zeroVector());
+  paramMins[0] = -0.1;
+  paramMins[1] = -0.5;
+  paramMins[2] = -0.2;
+
+  QUESO::GslVector paramMaxs(paramSpace.zeroVector());
+  paramMaxs[0] =  0.45;
+  paramMaxs[1] = -0.1;
+  paramMaxs[2] =  0.4;
+
+  QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix> paramDomain("param_",
+      paramSpace, paramMins, paramMaxs);
+
+  QUESO::UniformVectorRV<QUESO::GslVector, QUESO::GslMatrix> priorRv("prior_",
+      paramDomain);
+
+  // Step 3: Instantiate the 'scenario' and 'output' spaces for simulation
+
+  // Config space:
+  //         Min  Max
+  // x1      0.9   1.1
+  // x2     -1.5   1.0
+  // x3     -1.5   0.5
+
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> configSpace(env,
+      "scenario_", numConfigVars, NULL);
+
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> nEtaSpace(env,
+      "output_", numEta, NULL);
+
+  // Step 4: Instantiate the 'output' space for the experiments
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> experimentSpace(env,
+      "experimentspace_", experimentSize, NULL);
+
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> totalExperimentSpace(env,
+      "experimentspace_", experimentSize * numExperiments, NULL);
+
+  // Step 5: Instantiate the Gaussian process emulator object
+  //
+  // Regarding simulation scenario input values, the user should standardise
+  // them so that they exist inside a hypercube.
+  //
+  // Regarding simulation output data, the user should transform it so that the
+  // mean is zero and the variance is one.
+  //
+  // Regarding experimental scenario input values, the user should standardize
+  // them so that they exist inside a hypercube.
+  //
+  // Regarding experimental data, the user should transformed it so that it has
+  // zero mean and variance one.
+
+  // GPMSA stores all the information about our simulation
+  // data and experimental data.  It also stores default information about the
+  // hyperparameter distributions.
+  QUESO::GPMSAFactory<QUESO::GslVector, QUESO::GslMatrix>
+    gpmsaFactory(env,
+                 NULL,
+                 priorRv,
+                 configSpace,
+                 paramSpace,
+                 nEtaSpace,
+                 experimentSpace,
+                 numSimulations,
+                 numExperiments);
+
+  QUESO::GPMSAOptions& gp_opts = gpmsaFactory.options();
+
+  // Must set scaling before adding experiments due to construct order
+  // As of this implementation autoscale only affects params/scenarios
+
+  // TODO: Ask Brian Williams about preferred scaling and probably set
+  // to scale to domain bounds instead of data bounds...
+  gp_opts.set_autoscale_minmax();
+
+  // std::vector containing all the points in scenario space where we have
+  // simulations
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    simulationScenarios(numSimulations);
+
+  // std::vector containing all the points in parameter space where we have
+  // simulations
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    paramVecs(numSimulations);
+
+  // std::vector containing all the simulation output data
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    outputVecs(numSimulations);
+
+  // std::vector containing all the points in scenario space where we have
+  // experiments
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    experimentScenarios(numExperiments);
+
+  // std::vector containing all the experimental output data
+  std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type>
+    experimentVecs(numExperiments);
+
+  // The experimental output data observation error covariance matrix
+  QUESO::SharedPtr<QUESO::GslMatrix>::Type experimentMat
+    (new QUESO::GslMatrix(totalExperimentSpace.zeroVector()));
+
+  // Instantiate each of the simulation points/outputs
+  for (unsigned int i = 0; i < numSimulations; i++) {
+    simulationScenarios[i].reset(new QUESO::GslVector(configSpace.zeroVector()));  // 'x_{i+1}^*' in paper
+    paramVecs          [i].reset(new QUESO::GslVector(paramSpace.zeroVector()));  // 't_{i+1}^*' in paper
+    outputVecs         [i].reset(new QUESO::GslVector(nEtaSpace.zeroVector()));  // 'eta_{i+1}' in paper
+  }
+
+  for (unsigned int i = 0; i < numExperiments; i++) {
+    experimentScenarios[i].reset(new QUESO::GslVector(configSpace.zeroVector())); // 'x_{i+1}' in paper
+    experimentVecs     [i].reset(new QUESO::GslVector(experimentSpace.zeroVector()));
+  }
+
+  // Read in data and store the standard deviation of the simulation
+  // data (ignored for now).
+  //double stdsim =
+  readData("sim_mv.dat", "y_exp_mv.txt", simulationScenarios, paramVecs,
+	   outputVecs, experimentScenarios, experimentVecs);
+
+  // Experiment observation error
+
+  // True observation error for each experiment uses this R among responses
+  //   0.0025   0.002   0.0016 0.00128 0.001024
+  //   0.002    0.0025  0.002  0.0016  0.00128
+  //   0.0016   0.002   0.0025 0.002   0.0016
+  //   0.00128  0.0016  0.002  0.0025  0.002
+  //   0.001024 0.00128 0.0016 0.002   0.0025
+  QUESO::GslMatrix covarianceR(experimentSpace.zeroVector());
+  for (unsigned int i = 0; i < 5; ++i)
+    covarianceR(i, i) = 0.0025;
+  for (unsigned int i = 0; i < 4; ++i)
+    covarianceR(i, i+1) = covarianceR(i+1, i) = 0.002;
+  for (unsigned int i = 0; i < 3; ++i)
+    covarianceR(i, i+2) = covarianceR(i+2, i) = 0.0016;
+  for (unsigned int i = 0; i < 2; ++i)
+    covarianceR(i, i+3) = covarianceR(i+3, i) = 0.00128;
+  covarianceR(0,4) = covarianceR(4,0) = 0.001024;
+
+  // Populate the totalExperimentSpace covariance matrix
+  std::vector<const QUESO::GslMatrix* > vec_covmat_ptrs(numExperiments, &covarianceR);
+  experimentMat->fillWithBlocksDiagonally(0, 0, vec_covmat_ptrs, true, true);
+
+  // Add simulation and experimental data
+  gpmsaFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
+  gpmsaFactory.addExperiments(experimentScenarios, experimentVecs, experimentMat);
+
+  QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix> postRv(
+      "post_",
+      gpmsaFactory.prior().imageSet().vectorSpace());
+  QUESO::StatisticalInverseProblem<QUESO::GslVector, QUESO::GslMatrix> ip("",
+      NULL, gpmsaFactory, postRv);
+
+  QUESO::GslVector paramInitials(
+      gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
+
+  // Start with the mean of the prior
+  gpmsaFactory.prior().pdf().distributionMean(paramInitials);
+
+  // Initial condition of the chain: may need to tweak to Brian's expectations
+  std::cout << "\nPrior-based initial position:\n" << paramInitials << std::endl;
+
+  // Brian Williams' recommended initial point (only slightly different)
+  paramInitials[0]  = 0.175;    // beta0
+  paramInitials[1]  = -0.3;     // beta1
+  paramInitials[2]  = 0.1;      // beta2
+
+  // [ truncation error precision ] (truncated SVD case only)
+
+  paramInitials[3]  = 1.0;      // emul precision
+  paramInitials[4]  = 1.0;      // weights0 precision
+  paramInitials[5]  = 1.0;      // weights0 precision
+  paramInitials[6]  = 1.0;      // weights0 precision
+  paramInitials[7]  = 1.0;      // weights0 precision
+  paramInitials[8]  = 1.0;      // weights0 precision
+
+  paramInitials[9]  = 0.1;      // emul corr strength (scenario/beta?)
+  paramInitials[10]  = 0.1;     // emul corr strength (scenario/beta?)
+  paramInitials[11]  = 0.1;     // emul corr strength (scenario/beta?)
+  paramInitials[12]  = 0.1;     // emul corr strength (scenario/beta?)
+  paramInitials[13]  = 0.1;     // emul corr strength (scenario/beta?)
+  paramInitials[14]  = 0.1;     // emul corr strength (scenario/beta?)
+  // paramInitials[9]  = std::exp(-0.025);      // emul corr strength (scenario/beta?)
+  // paramInitials[10]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
+  // paramInitials[11]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
+  // paramInitials[12]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
+  // paramInitials[13]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
+  // paramInitials[14]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
+
+  paramInitials[15] = 1000.0;   // discrepancy precision
+  // paramInitials[15] = 20.0;   // discrepancy precision
+
+  paramInitials[16] = 0.1;      // discrepancy corr strength x1
+  paramInitials[17] = 0.1;      // discrepancy corr strength x2
+  paramInitials[18] = 0.1;      // discrepancy corr strength x3
+  // paramInitials[16] = std::exp(-0.025);      // discrepancy corr strength x1
+  // paramInitials[17] = std::exp(-0.025);      // discrepancy corr strength x2
+  // paramInitials[18] = std::exp(-0.025);      // discrepancy corr strength x3
+
+  paramInitials[19] = 10000.0;  // emul data precision
+  // paramInitials[19] = 1000.0;  // emul data precision
+
+  if (gpmsaFactory.options().m_calibrateObservationalPrecision)
+    // BJW: max(20, shape * scale)
+    paramInitials[20] = 20.0;   // obs precision
+
+  std::cout << "\nAdjusted initial position:\n" << paramInitials << std::endl;
+
+  QUESO::GslMatrix proposalCovMatrix(
+      gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
+
+  // Start with the covariance matrix for the whole prior, including
+  // GPMSA hyper-parameters.
+  gpmsaFactory.prior().pdf().distributionVariance(proposalCovMatrix);
+
+  std::cout << "\nPrior proposal covariance diagonal:\n";
+  for (unsigned int i=0; i<proposalCovMatrix.numCols(); ++i)
+    std::cout << proposalCovMatrix(i,i) << " ";
+  std::cout << std::endl;
+
+  // FIXME: The default doesn't seem to work for this case; fudge it:
+  proposalCovMatrix(15, 15) = 1.0e2;
+  proposalCovMatrix(19, 19) = 1.0e1;
+
+  std::cout << "\nFinal proposal covariance diagonal:\n";
+  for (unsigned int i=0; i<proposalCovMatrix.numCols(); ++i)
+    std::cout << proposalCovMatrix(i,i) << " ";
+  std::cout << std::endl;
+
+  std::cout << "\nFinal GPMSA Options:" << gpmsaFactory.options() << std::endl;
+
+  ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 }
 
 
