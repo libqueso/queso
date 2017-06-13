@@ -185,6 +185,12 @@ public:
   double normalized_uncertain_parameter(unsigned int i,
                                         double physical_param) const;
 
+  //! The shape parameter for the Gamma hyperprior for the truncation error precision
+  double m_truncationErrorPrecisionShape;
+
+  //! The scale parameter for the Gamma hyperprior for the truncation error precision
+  double m_truncationErrorPrecisionScale;
+
   //! The shape parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionShape;
 
@@ -274,6 +280,8 @@ private:
 
   std::string m_option_help;
   std::string m_option_maxEmulatorBasisVectors;
+  std::string m_option_truncationErrorPrecisionShape;
+  std::string m_option_truncationErrorPrecisionScale;
   std::string m_option_emulatorBasisVarianceToCapture;
   std::string m_option_emulatorPrecisionShape;
   std::string m_option_emulatorPrecisionScale;

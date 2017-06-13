@@ -382,6 +382,7 @@ public:
   typename ScopedPtr<VectorSpace<V, M> >::Type oneDSpace;
 
   // Truncation error precision
+  typename ScopedPtr<VectorSpace<V, M> >::Type truncationErrorPrecisionSpace;
   typename ScopedPtr<V>::Type truncationErrorPrecisionMin;
   typename ScopedPtr<V>::Type truncationErrorPrecisionMax;
   typename ScopedPtr<BoxSubset<V, M> >::Type truncationErrorPrecisionDomain;
@@ -434,7 +435,7 @@ public:
   std::vector<const BaseVectorRV<V, M> *> priors;
 
   // The hyperpriors
-  typename ScopedPtr<UniformVectorRV<V, M> >::Type m_truncationErrorPrecision;  // scalar
+  typename ScopedPtr<GammaVectorRV<V, M> >::Type m_truncationErrorPrecision;  // scalar
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_emulatorPrecision;  // (dim num_svd_terms) gamma(a, b) shape-rate
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_observationalPrecision;  // scalar gamma(a, b) shape-rate
   typename ScopedPtr<BetaVectorRV<V, M> >::Type m_emulatorCorrelationStrength;  // (dim scenariosspace + dim parameterspace)
@@ -443,6 +444,8 @@ public:
   typename ScopedPtr<GammaVectorRV<V, M> >::Type m_emulatorDataPrecision;  // (scalar) shape-rate
   typename ScopedPtr<ConcatenatedVectorRV<V, M> >::Type m_totalPrior;  // prior for joint parameters and hyperparameters
 
+  typename ScopedPtr<V>::Type m_truncationErrorPrecisionShapeVec;
+  typename ScopedPtr<V>::Type m_truncationErrorPrecisionScaleVec;
   typename ScopedPtr<V>::Type m_emulatorPrecisionShapeVec;
   typename ScopedPtr<V>::Type m_emulatorPrecisionScaleVec;
   typename ScopedPtr<V>::Type m_observationalPrecisionShapeVec;
