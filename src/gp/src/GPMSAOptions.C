@@ -51,6 +51,8 @@
 #define UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV 0.1
 #define UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV 3.0
 #define UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV 333.333
+#define UQ_GPMSA_OBSERVATIONAL_PRECISION_RIDGE 1e-4
+#define UQ_GPMSA_OBSERVATIONAL_COVARIANCE_RIDGE 0.0
 
 namespace { // Anonymous namespace for helper functions
 
@@ -135,6 +137,8 @@ GPMSAOptions::set_prefix(const char * prefix)
   m_option_discrepancyCorrelationStrengthBeta = m_prefix + "discrepancy_correlation_strength_beta";
   m_option_emulatorDataPrecisionShape = m_prefix + "emulator_data_precision_shape";
   m_option_emulatorDataPrecisionScale = m_prefix + "emulator_data_precision_scale";
+  m_option_observationalPrecisionRidge = m_prefix + "observational_precision_ridge";
+  m_option_observationalCovarianceRidge = m_prefix + "observational_covariance_ridge";
   m_option_autoscaleMinMaxAll = m_prefix + "autoscale_min_max_all";
   m_option_autoscaleMeanVarAll = m_prefix + "autoscale_mean_var_all";
 }
@@ -160,6 +164,8 @@ GPMSAOptions::set_defaults()
   m_discrepancyCorrelationStrengthBeta = UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV;
   m_emulatorDataPrecisionShape = UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV;
   m_emulatorDataPrecisionScale = UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV;
+  m_observationalPrecisionRidge = UQ_GPMSA_OBSERVATIONAL_PRECISION_RIDGE;
+  m_observationalCovarianceRidge = UQ_GPMSA_OBSERVATIONAL_COVARIANCE_RIDGE;
 
   m_autoscaleMinMaxAll = false;
   m_autoscaleMeanVarAll = false;
@@ -248,6 +254,16 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     "scale hyperprior (Gamma) parameter for emulator data precision");
 
   m_parser->registerOption
+    (m_option_observationalPrecisionRidge,
+    m_observationalPrecisionRidge,
+    "ridge to add to observational precision matrix");
+
+  m_parser->registerOption
+    (m_option_observationalCovarianceRidge,
+    m_observationalCovarianceRidge,
+    "ridge to add to observational covariance matrix");
+
+  m_parser->registerOption
     (m_option_autoscaleMinMaxAll,
     m_autoscaleMinMaxAll,
     "option to autoscale all parameters and outputs based on data range");
@@ -272,6 +288,8 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<double>(m_option_discrepancyCorrelationStrengthBeta,  m_discrepancyCorrelationStrengthBeta);
   m_parser->getOption<double>(m_option_emulatorDataPrecisionShape,          m_emulatorDataPrecisionShape);
   m_parser->getOption<double>(m_option_emulatorDataPrecisionScale,          m_emulatorDataPrecisionScale);
+  m_parser->getOption<double>(m_option_observationalPrecisionRidge,         m_observationalPrecisionRidge);
+  m_parser->getOption<double>(m_option_observationalCovarianceRidge,        m_observationalCovarianceRidge);
   m_parser->getOption<bool>  (m_option_autoscaleMinMaxAll,                  m_autoscaleMinMaxAll);
   m_parser->getOption<bool>  (m_option_autoscaleMeanVarAll,                 m_autoscaleMeanVarAll);
 #else
@@ -320,6 +338,13 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_emulatorDataPrecisionScale =
     env.input()(m_option_emulatorDataPrecisionScale,
                 m_emulatorDataPrecisionScale);
+
+  m_observationalPrecisionRidge =
+    env.input()(m_option_observationalPrecisionRidge,
+                m_observationalPrecisionRidge);
+  m_observationalCovarianceRidge =
+    env.input()(m_option_observationalCovarianceRidge,
+                m_observationalCovarianceRidge);
 
   m_autoscaleMinMaxAll =
     env.input()(m_option_autoscaleMinMaxAll,
@@ -602,6 +627,8 @@ GPMSAOptions::print(std::ostream& os) const
      << "\n" << m_option_discrepancyCorrelationStrengthBeta << " = " << this->m_discrepancyCorrelationStrengthBeta
      << "\n" << m_option_emulatorDataPrecisionShape << " = " << this->m_emulatorDataPrecisionShape
      << "\n" << m_option_emulatorDataPrecisionScale << " = " << this->m_emulatorDataPrecisionScale
+     << "\n" << m_option_observationalPrecisionRidge << " = " << this->m_observationalPrecisionRidge
+     << "\n" << m_option_observationalCovarianceRidge << " = " << this->m_observationalCovarianceRidge
      << "\n" << m_option_autoscaleMinMaxAll << " = " << this->m_autoscaleMinMaxAll
      << "\n" << m_option_autoscaleMeanVarAll << " = " << this->m_autoscaleMeanVarAll
      << std::endl;
