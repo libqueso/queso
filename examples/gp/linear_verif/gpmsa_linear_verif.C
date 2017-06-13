@@ -129,10 +129,10 @@ void readData
 
   // Also required to standardise experimental data and covariance
   for (unsigned int i = 0; i < num_experiments; ++i) {
+    unsigned int block_offset = i * num_responses;
     for (unsigned int j = 0; j < num_responses; ++j) {
       (*(experimentOutputs[i]))[j] -= meansim[j];
       (*(experimentOutputs[i]))[j] /= stdsim[j];
-      unsigned int block_offset = i * num_responses;
       for (unsigned int k = 0; k < num_responses; ++k)
 	experimentMat(block_offset + j, block_offset + k) /=
 	  (stdsim[j] * stdsim[k]);
@@ -274,6 +274,7 @@ void run_scalar(const QUESO::FullEnvironment& env)
 
   // Experiment observation error (also needs to be scaled by
   // simulation variance)
+  // NOTE: In general, this matrix would be size sum(experiment sizes)
   for (unsigned int i = 0; i < numExperiments; i++)
     (*experimentMat)(i, i) = std::pow(0.05, 2.0);
 
