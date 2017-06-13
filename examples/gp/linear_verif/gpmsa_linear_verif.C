@@ -11,7 +11,7 @@
 // Public License as published by the Free Software Foundation.
 //
 // This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANT Y; without even the implied warranty of
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 // Lesser General Public License for more details.
 //
@@ -61,7 +61,8 @@ void readData
  const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationParameters,
  const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & simulationOutputs,
  const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentScenarios,
- const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentOutputs)
+ const std::vector<QUESO::SharedPtr<QUESO::GslVector>::Type> & experimentOutputs,
+ QUESO::GslMatrix& experimentMat)
 {
   unsigned int num_config = simulationScenarios[0]->sizeGlobal();
   unsigned int num_params = simulationParameters[0]->sizeGlobal();
@@ -126,11 +127,15 @@ void readData
 		    e.what());
   }
 
-  // Also required to standardise experimental data
+  // Also required to standardise experimental data and covariance
   for (unsigned int i = 0; i < num_experiments; ++i) {
     for (unsigned int j = 0; j < num_responses; ++j) {
       (*(experimentOutputs[i]))[j] -= meansim[j];
       (*(experimentOutputs[i]))[j] /= stdsim[j];
+      unsigned int block_offset = i * num_responses;
+      for (unsigned int k = 0; k < num_responses; ++k)
+	experimentMat(block_offset + j, block_offset + k) /=
+	  (stdsim[j] * stdsim[k]);
     }
   }
 }
@@ -267,15 +272,16 @@ void run_scalar(const QUESO::FullEnvironment& env)
     experimentVecs     [i].reset(new QUESO::GslVector(experimentSpace.zeroVector()));
   }
 
+  // Experiment observation error (also needs to be scaled by
+  // simulation variance)
+  for (unsigned int i = 0; i < numExperiments; i++)
+    (*experimentMat)(i, i) = std::pow(0.05, 2.0);
+
   // Read in data and store the standard deviation of the simulation
   // data (ignored for now).
   //double stdsim =
   readData("sim_scalar.dat", "y_exp_scalar.txt", simulationScenarios, paramVecs,
-	   outputVecs, experimentScenarios, experimentVecs);
-
-  // Experiment observation error
-  for (unsigned int i = 0; i < numExperiments; i++)
-    (*experimentMat)(i, i) = std::pow(0.05, 2.0);
+	   outputVecs, experimentScenarios, experimentVecs, *experimentMat);
 
   // Add simulation and experimental data
   gpmsaFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
@@ -296,45 +302,27 @@ void run_scalar(const QUESO::FullEnvironment& env)
   // Initial condition of the chain: may need to tweak to Brian's expectations
   std::cout << "\nPrior-based initial position:\n" << paramInitials << std::endl;
 
-  // Brian Williams' recommended initial point (only slightly different)
+  // Brian Williams' recommended initial point
   paramInitials[0]  = 0.175;    // beta0
   paramInitials[1]  = -0.3;     // beta1
   paramInitials[2]  = 0.1;      // beta2
-
   // [ truncation error precision ] (truncated SVD case only)
   // BJW: max(100, shape * scale)
-
-  paramInitials[3]  = 1.0;      // emul precision
-
-  paramInitials[4]  = 0.1;      // emul corr strength (scenario/beta?)
-  paramInitials[5]  = 0.1;      // emul corr strength (scenario/beta?)
-  paramInitials[6]  = 0.1;      // emul corr strength (scenario/beta?)
-  paramInitials[7]  = 0.1;      // emul corr strength (scenario/beta?)
-  paramInitials[8]  = 0.1;      // emul corr strength (scenario/beta?)
-  paramInitials[9]  = 0.1;      // emul corr strength (scenario/beta?)
-  // paramInitials[4]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  // paramInitials[5]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  // paramInitials[6]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  // paramInitials[7]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  // paramInitials[8]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  // paramInitials[9]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-
-  paramInitials[10] = 1000.0;   // discrepancy precision
-  // paramInitials[10] = 20.0;        // discrepancy precision
-
-  paramInitials[11] = 0.1;      // discrepancy corr strength x1
-  paramInitials[12] = 0.1;      // discrepancy corr strength x2
-  paramInitials[13] = 0.1;      // discrepancy corr strength x3
-  // paramInitials[11] = std::exp(-0.025);      // discrepancy corr strength x1
-  // paramInitials[12] = std::exp(-0.025);      // discrepancy corr strength x2
-  // paramInitials[13] = std::exp(-0.025);      // discrepancy corr strength x3
-
-  paramInitials[14] = 10000.0;  // emul data precision
-  // paramInitials[14] = 1000.0;  // emul data precision
-
+  paramInitials[3]  = 1.0;               // emul precision
+  paramInitials[4]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[5]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[6]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[7]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[8]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[9]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[10] = 20.0;              // discrepancy precision
+  paramInitials[11] = std::exp(-0.025);  // discrepancy corr strength x1
+  paramInitials[12] = std::exp(-0.025);  // discrepancy corr strength x2
+  paramInitials[13] = std::exp(-0.025);  // discrepancy corr strength x3
+  paramInitials[14] = 1000.0;            // emul data precision
   if (gpmsaFactory.options().m_calibrateObservationalPrecision)
     // BJW: max(20, shape * scale)
-    paramInitials[15] = 20.0;   // obs precision
+    paramInitials[15] = 20.0;            // obs precision
 
   std::cout << "\nAdjusted initial position:\n" << paramInitials << std::endl;
 
@@ -497,11 +485,6 @@ void run_multivariate(const QUESO::FullEnvironment& env)
     experimentVecs     [i].reset(new QUESO::GslVector(experimentSpace.zeroVector()));
   }
 
-  // Read in data and store the standard deviation of the simulation
-  // data (ignored for now).
-  //double stdsim =
-  readData("sim_mv.dat", "y_exp_mv.txt", simulationScenarios, paramVecs,
-	   outputVecs, experimentScenarios, experimentVecs);
 
   // Experiment observation error
 
@@ -523,8 +506,15 @@ void run_multivariate(const QUESO::FullEnvironment& env)
   covarianceR(0,4) = covarianceR(4,0) = 0.001024;
 
   // Populate the totalExperimentSpace covariance matrix
-  std::vector<const QUESO::GslMatrix* > vec_covmat_ptrs(numExperiments, &covarianceR);
+  std::vector<const QUESO::GslMatrix* > vec_covmat_ptrs(numExperiments, 
+							&covarianceR);
   experimentMat->fillWithBlocksDiagonally(0, 0, vec_covmat_ptrs, true, true);
+
+  // Read in data and store the standard deviation of the simulation
+  // data (ignored for now).
+  //double stdsim =
+  readData("sim_mv.dat", "y_exp_mv.txt", simulationScenarios, paramVecs,
+	   outputVecs, experimentScenarios, experimentVecs, *experimentMat);
 
   // Add simulation and experimental data
   gpmsaFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
@@ -545,46 +535,28 @@ void run_multivariate(const QUESO::FullEnvironment& env)
   // Initial condition of the chain: may need to tweak to Brian's expectations
   std::cout << "\nPrior-based initial position:\n" << paramInitials << std::endl;
 
-  // Brian Williams' recommended initial point (only slightly different)
+  // Brian Williams' recommended initial point
   paramInitials[0]  = 0.175;    // beta0
   paramInitials[1]  = -0.3;     // beta1
   paramInitials[2]  = 0.1;      // beta2
-
   // [ truncation error precision ] (truncated SVD case only)
-
-  paramInitials[3]  = 1.0;      // emul precision
-  paramInitials[4]  = 1.0;      // weights0 precision
-  paramInitials[5]  = 1.0;      // weights0 precision
-  paramInitials[6]  = 1.0;      // weights0 precision
-  paramInitials[7]  = 1.0;      // weights0 precision
-  paramInitials[8]  = 1.0;      // weights0 precision
-
-  paramInitials[9]  = 0.1;      // emul corr strength (scenario/beta?)
-  paramInitials[10]  = 0.1;     // emul corr strength (scenario/beta?)
-  paramInitials[11]  = 0.1;     // emul corr strength (scenario/beta?)
-  paramInitials[12]  = 0.1;     // emul corr strength (scenario/beta?)
-  paramInitials[13]  = 0.1;     // emul corr strength (scenario/beta?)
-  paramInitials[14]  = 0.1;     // emul corr strength (scenario/beta?)
-  // paramInitials[9]  = std::exp(-0.025);      // emul corr strength (scenario/beta?)
-  // paramInitials[10]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
-  // paramInitials[11]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
-  // paramInitials[12]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
-  // paramInitials[13]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
-  // paramInitials[14]  = std::exp(-0.025);     // emul corr strength (scenario/beta?)
-
-  paramInitials[15] = 1000.0;   // discrepancy precision
-  // paramInitials[15] = 20.0;   // discrepancy precision
-
-  paramInitials[16] = 0.1;      // discrepancy corr strength x1
-  paramInitials[17] = 0.1;      // discrepancy corr strength x2
-  paramInitials[18] = 0.1;      // discrepancy corr strength x3
-  // paramInitials[16] = std::exp(-0.025);      // discrepancy corr strength x1
-  // paramInitials[17] = std::exp(-0.025);      // discrepancy corr strength x2
-  // paramInitials[18] = std::exp(-0.025);      // discrepancy corr strength x3
-
-  paramInitials[19] = 10000.0;  // emul data precision
-  // paramInitials[19] = 1000.0;  // emul data precision
-
+  paramInitials[3]  = 1.0;               // emul precision
+  paramInitials[4]  = 1.0;               // weights0 precision
+  paramInitials[5]  = 1.0;               // weights0 precision
+  paramInitials[6]  = 1.0;               // weights0 precision
+  paramInitials[7]  = 1.0;               // weights0 precision
+  paramInitials[8]  = 1.0;               // weights0 precision
+  paramInitials[9]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[10] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[11] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[12] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[13] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[14] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
+  paramInitials[15] = 20.0;              // discrepancy precision
+  paramInitials[16] = std::exp(-0.025);  // discrepancy corr strength x1
+  paramInitials[17] = std::exp(-0.025);  // discrepancy corr strength x2
+  paramInitials[18] = std::exp(-0.025);  // discrepancy corr strength x3
+  paramInitials[19] = 1000.0;            // emul data precision
   if (gpmsaFactory.options().m_calibrateObservationalPrecision)
     // BJW: max(20, shape * scale)
     paramInitials[20] = 20.0;   // obs precision

@@ -56,16 +56,13 @@ gpmsa_emulator_correlation_strength_alpha = 1.0
 gpmsa_emulator_correlation_strength_beta = 0.1
 gpmsa_discrepancy_precision_shape = 1.0
 
-gpmsa_discrepancy_precision_scale = 1e4
-##gpmsa_discrepancy_precision_scale = 1e3
+gpmsa_discrepancy_precision_scale = 1e3
 
 gpmsa_discrepancy_correlation_strength_alpha = 1.0
 gpmsa_discrepancy_correlation_strength_beta = 0.1
 
-gpmsa_emulator_data_precision_shape = 1.0
-gpmsa_emulator_data_precision_scale = 10000
-##gpmsa_emulator_data_precision_shape = 3.0
-##gpmsa_emulator_data_precision_scale = 333.3333333333333
+gpmsa_emulator_data_precision_shape = 3.0
+gpmsa_emulator_data_precision_scale = 333.3333333333333
 
 # Calibration of obs error multiplier is critical for this problem
 
@@ -73,5 +70,3 @@ gpmsa_calibrate_observational_precision = 1
 gpmsa_observational_precision_shape = 64
 # 1/64 (0.015625)
 gpmsa_observational_precision_scale = 0.015625
-##gpmsa_observational_precision_shape = 1
-##gpmsa_observational_precision_scale = 1000.0
