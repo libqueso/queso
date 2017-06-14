@@ -100,6 +100,12 @@ public:
   void set_autoscale_minmax_scenario_parameter(unsigned int i);
 
   //! Do automatic normalization, using minimum and maximum values in
+  //  the supplied data, for output data i.
+  //
+  //  Normalized values will range from 0 to 1.
+  void set_autoscale_minmax_output(unsigned int i);
+
+  //! Do automatic normalization, using minimum and maximum values in
   //  the supplied data, for all input uncertain parameters, all input
   //  scenario parameters, and all output values.
   //
@@ -117,6 +123,12 @@ public:
   //
   //  Normalized values will have mean 0 and standard deviation 1.
   void set_autoscale_meanvar_scenario_parameter(unsigned int i);
+
+  //! Do automatic normalization, using mean and variance of the
+  //  supplied data, for output i.
+  //
+  //  Normalized values will have mean 0 and standard deviation 1.
+  void set_autoscale_meanvar_output(unsigned int i);
 
   //! Do automatic normalization, using mean and variance of the
   //  supplied data, for all input uncertain parameters, all input
@@ -151,9 +163,9 @@ public:
                                       double range_min,
                                       double range_max);
 
-  //! Set a value, for output value i in simulation and
-  //  experimental outputs, of the physical output range (range_min,
-  //  range_max) which should be rescaled to (0,1)
+  //! Set a value, for output value i in simulation and outputs, of
+  //  the physical output range (range_min, range_max) which should be
+  //  rescaled to (0,1)
   //
   //  If no value is set and no automatic normalization is specified,
   //  a default of (0,1) will be used; i.e. no normalization.
@@ -188,7 +200,7 @@ public:
   //! Calculate a normalized value from a physical value for the
   //  specified output index.
   double normalized_output(unsigned int i,
-                           double physical_param) const;
+                           double output_data) const;
 
   //! Returns the scale, in physical units, corresponding to a single
   //  nondimensionalized unit for the specified output index.
