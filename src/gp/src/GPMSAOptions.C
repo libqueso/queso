@@ -39,6 +39,8 @@
 #define UQ_GPMSA_HELP ""
 #define UQ_GPMSA_MAX_SIMULATOR_BASIS_VECTORS_ODV 0
 #define UQ_GPMSA_SIMULATOR_BASIS_VARIANCE_TO_CAPTURE 1.0
+#define UQ_GPMSA_TRUNCATION_ERROR_PRECISION_SHAPE_ODV 5.0
+#define UQ_GPMSA_TRUNCATION_ERROR_PRECISION_SCALE_ODV 200.0
 #define UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV 5.0
 #define UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV 0.2
 #define UQ_GPMSA_OBSERVATIONAL_PRECISION_SHAPE_ODV 5.0
@@ -128,6 +130,8 @@ GPMSAOptions::set_prefix(const char * prefix)
   m_option_help = m_prefix + "help";
   m_option_maxEmulatorBasisVectors = m_prefix + "max_emulator_basis_vectors";
   m_option_emulatorBasisVarianceToCapture = m_prefix + "emulator_basis_variance_to_capture";
+  m_option_truncationErrorPrecisionShape = m_prefix + "truncation_error_precision_shape";
+  m_option_truncationErrorPrecisionScale = m_prefix + "truncation_error_precision_scale";
   m_option_emulatorPrecisionShape = m_prefix + "emulator_precision_shape";
   m_option_emulatorPrecisionScale = m_prefix + "emulator_precision_scale";
   m_option_calibrateObservationalPrecision = m_prefix + "calibrate_observational_precision";
@@ -157,6 +161,8 @@ GPMSAOptions::set_defaults()
   m_help = UQ_GPMSA_HELP;
   m_maxEmulatorBasisVectors = UQ_GPMSA_MAX_SIMULATOR_BASIS_VECTORS_ODV;
   m_emulatorBasisVarianceToCapture = UQ_GPMSA_SIMULATOR_BASIS_VARIANCE_TO_CAPTURE;
+  m_truncationErrorPrecisionShape = UQ_GPMSA_TRUNCATION_ERROR_PRECISION_SHAPE_ODV;
+  m_truncationErrorPrecisionScale = UQ_GPMSA_TRUNCATION_ERROR_PRECISION_SCALE_ODV;
   m_emulatorPrecisionShape = UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV;
   m_emulatorPrecisionScale = UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV;
   m_calibrateObservationalPrecision = false;
@@ -201,6 +207,15 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     (m_option_help,
      m_help,
      "produce help message Gaussian process emulator");
+
+  m_parser->registerOption
+    (m_option_truncationErrorPrecisionShape,
+     m_truncationErrorPrecisionShape,
+     "shape hyperprior (Gamma) parameter for truncation error precision");
+  m_parser->registerOption
+    (m_option_truncationErrorPrecisionScale,
+    m_truncationErrorPrecisionScale,
+    "scale hyperprior (Gamma) parameter for truncation error precision");
 
   m_parser->registerOption
     (m_option_emulatorPrecisionShape,
@@ -283,6 +298,8 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->scanInputFile();
 
   m_parser->getOption<std::string>(m_option_help,                           m_help);
+  m_parser->getOption<double>(m_option_truncationErrorPrecisionShape,       m_truncationErrorPrecisionShape);
+  m_parser->getOption<double>(m_option_truncationErrorPrecisionScale,       m_truncationErrorPrecisionScale);
   m_parser->getOption<double>(m_option_emulatorPrecisionShape,              m_emulatorPrecisionShape);
   m_parser->getOption<double>(m_option_emulatorPrecisionScale,              m_emulatorPrecisionScale);
   m_parser->getOption<bool>  (m_option_calibrateObservationalPrecision,     m_calibrateObservationalPrecision);
@@ -302,6 +319,14 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<bool>  (m_option_autoscaleMeanVarAll,                 m_autoscaleMeanVarAll);
 #else
   m_help = env.input()(m_option_help, UQ_GPMSA_HELP);
+
+  m_truncationErrorPrecisionShape =
+    env.input()(m_option_truncationErrorPrecisionShape,
+                m_truncationErrorPrecisionShape);
+  m_truncationErrorPrecisionScale =
+    env.input()(m_option_truncationErrorPrecisionScale,
+                m_truncationErrorPrecisionScale);
+
   m_emulatorPrecisionShape =
     env.input()(m_option_emulatorPrecisionShape,
                 m_emulatorPrecisionShape);
@@ -640,7 +665,9 @@ GPMSAOptions::checkOptions()
 void
 GPMSAOptions::print(std::ostream& os) const
 {
-  os << "\n" << m_option_emulatorPrecisionShape << " = " << this->m_emulatorPrecisionShape
+  os << "\n" << m_option_truncationErrorPrecisionShape << " = " << this->m_truncationErrorPrecisionShape
+     << "\n" << m_option_truncationErrorPrecisionScale << " = " << this->m_truncationErrorPrecisionScale
+     << "\n" << m_option_emulatorPrecisionShape << " = " << this->m_emulatorPrecisionShape
      << "\n" << m_option_emulatorPrecisionScale << " = " << this->m_emulatorPrecisionScale
      << "\n" << m_option_calibrateObservationalPrecision << " = " << this->m_calibrateObservationalPrecision
      << "\n" << m_option_observationalPrecisionShape << " = " << this->m_observationalPrecisionShape
