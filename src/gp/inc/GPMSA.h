@@ -309,13 +309,11 @@ public:
    * consistent with the discrepancy precision coefficients which will
    * multiply them.
    *
-   * If no discrepancy basis is provided, a single "1 for each output"
-   * vector will be used.
+   * If no discrepancy basis is provided, the natural basis e_i
+   * vectors will be used.
    *
-   * For now we will assume that outputs are the same for each
-   * experiment (tau_ij and phi_ij are independent of i, in the
-   * notation of Higdon et al), and so each discrepancy basis can be
-   * expressed as a vector indexed by output index.
+   * Data vectors are consistently indexed for each simulation output
+   * provided, and so discrepancy bases use the same indexing.
    */
   void setDiscrepancyBases(const std::vector<typename SharedPtr<V>::Type> & discrepancyBases);
 
@@ -376,6 +374,10 @@ public:
 
   // The emulator state
   // const V & m_emulator;
+
+  // Set up default discrepancy basis vectors if users have not
+  // supplied or requested a non-default basis.
+  void setUpDiscrepancyBases();
 
   // Build the emulator once all data has been added
   void setUpEmulator();
