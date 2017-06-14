@@ -252,6 +252,12 @@ public:
   //! The scale parameter for the Gamma hyperprior for the emulator data precision
   double m_emulatorDataPrecisionScale;
 
+  //! The ridge to add to B^T*W_y*B before inverting it
+  double m_observationalPrecisionRidge;
+
+  //! The ridge to add to (B^T*W_y*B)^-1 before using it
+  double m_observationalCovarianceRidge;
+
   friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj);
 
 private:
@@ -322,9 +328,13 @@ private:
   std::string m_option_discrepancyCorrelationStrengthBeta;
   std::string m_option_emulatorDataPrecisionShape;
   std::string m_option_emulatorDataPrecisionScale;
+  std::string m_option_observationalPrecisionRidge;
+  std::string m_option_observationalCovarianceRidge;
 
   std::string m_option_autoscaleMinMaxAll;
   std::string m_option_autoscaleMeanVarAll;
+
+  bool options_have_been_used;
 
   void checkOptions();
 };

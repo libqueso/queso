@@ -51,6 +51,8 @@
 #define UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV 0.1
 #define UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV 3.0
 #define UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV 333.333
+#define UQ_GPMSA_OBSERVATIONAL_PRECISION_RIDGE 1e-4
+#define UQ_GPMSA_OBSERVATIONAL_COVARIANCE_RIDGE 0.0
 
 namespace { // Anonymous namespace for helper functions
 
@@ -95,7 +97,8 @@ namespace QUESO {
 
 GPMSAOptions::GPMSAOptions(
   const BaseEnvironment & env,
-  const char * prefix)
+  const char * prefix) :
+  options_have_been_used(false)
 {
   this->set_defaults();
   this->parse(env, prefix);
@@ -104,10 +107,11 @@ GPMSAOptions::GPMSAOptions(
 
 GPMSAOptions::GPMSAOptions()
   :
-  m_env(NULL)
+  m_env(NULL),
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-  ,m_parser(new BoostInputOptionsParser())
+  m_parser(new BoostInputOptionsParser()),
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+  options_have_been_used(false)
 {
   this->set_defaults();
   this->set_prefix("");
@@ -117,6 +121,8 @@ GPMSAOptions::GPMSAOptions()
 void
 GPMSAOptions::set_prefix(const char * prefix)
 {
+  queso_require(!options_have_been_used);
+
   m_prefix = std::string(prefix) + "gpmsa_";
 
   m_option_help = m_prefix + "help";
@@ -135,6 +141,8 @@ GPMSAOptions::set_prefix(const char * prefix)
   m_option_discrepancyCorrelationStrengthBeta = m_prefix + "discrepancy_correlation_strength_beta";
   m_option_emulatorDataPrecisionShape = m_prefix + "emulator_data_precision_shape";
   m_option_emulatorDataPrecisionScale = m_prefix + "emulator_data_precision_scale";
+  m_option_observationalPrecisionRidge = m_prefix + "observational_precision_ridge";
+  m_option_observationalCovarianceRidge = m_prefix + "observational_covariance_ridge";
   m_option_autoscaleMinMaxAll = m_prefix + "autoscale_min_max_all";
   m_option_autoscaleMeanVarAll = m_prefix + "autoscale_mean_var_all";
 }
@@ -144,6 +152,8 @@ GPMSAOptions::set_prefix(const char * prefix)
 void
 GPMSAOptions::set_defaults()
 {
+  queso_require(!options_have_been_used);
+
   m_help = UQ_GPMSA_HELP;
   m_maxEmulatorBasisVectors = UQ_GPMSA_MAX_SIMULATOR_BASIS_VECTORS_ODV;
   m_emulatorBasisVarianceToCapture = UQ_GPMSA_SIMULATOR_BASIS_VARIANCE_TO_CAPTURE;
@@ -160,6 +170,8 @@ GPMSAOptions::set_defaults()
   m_discrepancyCorrelationStrengthBeta = UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV;
   m_emulatorDataPrecisionShape = UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV;
   m_emulatorDataPrecisionScale = UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV;
+  m_observationalPrecisionRidge = UQ_GPMSA_OBSERVATIONAL_PRECISION_RIDGE;
+  m_observationalCovarianceRidge = UQ_GPMSA_OBSERVATIONAL_COVARIANCE_RIDGE;
 
   m_autoscaleMinMaxAll = false;
   m_autoscaleMeanVarAll = false;
@@ -172,6 +184,8 @@ void
 GPMSAOptions::parse(const BaseEnvironment & env,
                     const char * prefix)
 {
+  queso_require(!options_have_been_used);
+
   m_env = &env;
 
   if (m_env->optionsInputFileName() == "") {
@@ -248,6 +262,16 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     "scale hyperprior (Gamma) parameter for emulator data precision");
 
   m_parser->registerOption
+    (m_option_observationalPrecisionRidge,
+    m_observationalPrecisionRidge,
+    "ridge to add to observational precision matrix");
+
+  m_parser->registerOption
+    (m_option_observationalCovarianceRidge,
+    m_observationalCovarianceRidge,
+    "ridge to add to observational covariance matrix");
+
+  m_parser->registerOption
     (m_option_autoscaleMinMaxAll,
     m_autoscaleMinMaxAll,
     "option to autoscale all parameters and outputs based on data range");
@@ -272,6 +296,8 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<double>(m_option_discrepancyCorrelationStrengthBeta,  m_discrepancyCorrelationStrengthBeta);
   m_parser->getOption<double>(m_option_emulatorDataPrecisionShape,          m_emulatorDataPrecisionShape);
   m_parser->getOption<double>(m_option_emulatorDataPrecisionScale,          m_emulatorDataPrecisionScale);
+  m_parser->getOption<double>(m_option_observationalPrecisionRidge,         m_observationalPrecisionRidge);
+  m_parser->getOption<double>(m_option_observationalCovarianceRidge,        m_observationalCovarianceRidge);
   m_parser->getOption<bool>  (m_option_autoscaleMinMaxAll,                  m_autoscaleMinMaxAll);
   m_parser->getOption<bool>  (m_option_autoscaleMeanVarAll,                 m_autoscaleMeanVarAll);
 #else
@@ -321,6 +347,13 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     env.input()(m_option_emulatorDataPrecisionScale,
                 m_emulatorDataPrecisionScale);
 
+  m_observationalPrecisionRidge =
+    env.input()(m_option_observationalPrecisionRidge,
+                m_observationalPrecisionRidge);
+  m_observationalCovarianceRidge =
+    env.input()(m_option_observationalCovarianceRidge,
+                m_observationalCovarianceRidge);
+
   m_autoscaleMinMaxAll =
     env.input()(m_option_autoscaleMinMaxAll,
                 m_autoscaleMinMaxAll);
@@ -340,6 +373,8 @@ GPMSAOptions::~GPMSAOptions()
 void
 GPMSAOptions::set_autoscale_minmax()
 {
+  queso_require(!options_have_been_used);
+
   this->m_autoscaleMinMaxAll = true;
 }
 
@@ -347,6 +382,8 @@ GPMSAOptions::set_autoscale_minmax()
 void
 GPMSAOptions::set_autoscale_minmax_uncertain_parameter(unsigned int i)
 {
+  queso_require(!options_have_been_used);
+
   m_autoscaleMinMaxUncertain.insert(i);
 }
 
@@ -354,6 +391,8 @@ GPMSAOptions::set_autoscale_minmax_uncertain_parameter(unsigned int i)
 void
 GPMSAOptions::set_autoscale_minmax_scenario_parameter(unsigned int i)
 {
+  queso_require(!options_have_been_used);
+
   m_autoscaleMinMaxScenario.insert(i);
 }
 
@@ -368,6 +407,8 @@ GPMSAOptions::set_autoscale_minmax_output(unsigned int i)
 void
 GPMSAOptions::set_autoscale_meanvar()
 {
+  queso_require(!options_have_been_used);
+
   this->m_autoscaleMeanVarAll = true;
 }
 
@@ -375,6 +416,8 @@ GPMSAOptions::set_autoscale_meanvar()
 void
 GPMSAOptions::set_autoscale_meanvar_uncertain_parameter(unsigned int i)
 {
+  queso_require(!options_have_been_used);
+
   m_autoscaleMeanVarUncertain.insert(i);
 }
 
@@ -382,6 +425,8 @@ GPMSAOptions::set_autoscale_meanvar_uncertain_parameter(unsigned int i)
 void
 GPMSAOptions::set_autoscale_meanvar_scenario_parameter(unsigned int i)
 {
+  queso_require(!options_have_been_used);
+
   m_autoscaleMeanVarScenario.insert(i);
 }
 
@@ -398,6 +443,8 @@ GPMSAOptions::set_uncertain_parameter_scaling(unsigned int i,
                                               double range_min,
                                               double range_max)
 {
+  queso_require(!options_have_been_used);
+
   if (i >= m_uncertainScaleMin.size())
   {
     m_uncertainScaleMin.resize(i+1, 0);
@@ -413,6 +460,8 @@ GPMSAOptions::set_scenario_parameter_scaling(unsigned int i,
                                              double range_min,
                                              double range_max)
 {
+  queso_require(!options_have_been_used);
+
   if (i >= m_scenarioScaleMin.size())
   {
     m_scenarioScaleMin.resize(i+1, 0);
@@ -610,7 +659,6 @@ GPMSAOptions::set_final_scaling
           }
     }
 
-
   if (m_autoscaleMeanVarAll || !m_autoscaleMeanVarOutput.empty())
     {
       unsigned int n=0;
@@ -640,6 +688,8 @@ GPMSAOptions::set_final_scaling
                                      std::sqrt(varOutput[p]));
           }
     }
+
+  options_have_been_used = true;
 }
 
 
@@ -718,6 +768,8 @@ GPMSAOptions::print(std::ostream& os) const
      << "\n" << m_option_discrepancyCorrelationStrengthBeta << " = " << this->m_discrepancyCorrelationStrengthBeta
      << "\n" << m_option_emulatorDataPrecisionShape << " = " << this->m_emulatorDataPrecisionShape
      << "\n" << m_option_emulatorDataPrecisionScale << " = " << this->m_emulatorDataPrecisionScale
+     << "\n" << m_option_observationalPrecisionRidge << " = " << this->m_observationalPrecisionRidge
+     << "\n" << m_option_observationalCovarianceRidge << " = " << this->m_observationalCovarianceRidge
      << "\n" << m_option_autoscaleMinMaxAll << " = " << this->m_autoscaleMinMaxAll
      << "\n" << m_option_autoscaleMeanVarAll << " = " << this->m_autoscaleMeanVarAll
      << std::endl;

@@ -362,6 +362,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
 
     // Add small white noise component to diagonal to make stuff +ve def
     // = "small ridge"
+    // Barely alluded to, never described, in Higdon et. al.
     const double emulator_data_precision = domainVector[dimSum-1-(numOutputs>1)];
     queso_assert_greater(emulator_data_precision, 0);
     double nugget = 1.0 / emulator_data_precision;
@@ -916,11 +917,20 @@ GPMSAFactory<V, M>::setUpEmulator()
   M BT_Wy_B (B.transpose() * Wy * B);
 
   // Adding a "small ridge" to make sure this is invertible, as on
-  // p.577 - using 1e-4 from discussion notes.
+  // p.577 - defaulted to 1e-4 from discussion notes, but may be
+  // overridden by user options.
+  //
+  // This is "DKridge" in the MATLAB prototype
   for (unsigned int i=0; i != Brows; ++i)
-    BT_Wy_B(i,i) += 1.e-4;
+    BT_Wy_B(i,i) +=
+      this->m_opts->m_observationalPrecisionRidge;
 
   BT_Wy_B_inv.reset(new M(BT_Wy_B.inverse()));
+
+  // Add a ridge to the inverse even, if the user requested one.
+  for (unsigned int i=0; i != Brows; ++i)
+    (*BT_Wy_B_inv)(i,i) +=
+      this->m_opts->m_observationalCovarianceRidge;
 
   this->setUpHyperpriors();
 
