@@ -1202,9 +1202,20 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   // Truncation error precision
   if (this->num_svd_terms < numOutputs)
     {
+      this->truncationErrorPrecisionSpace.reset
+        (new VectorSpace<V, M>
+         (this->m_env,
+          "",
+          1,
+          NULL));
+
       this->truncationErrorPrecisionMin.reset(new V(this->oneDSpace->zeroVector()));
       this->truncationErrorPrecisionMax.reset(new V(this->oneDSpace->zeroVector()));
-      this->truncationErrorPrecisionMin->cwSet(-INFINITY);
+      this->m_truncationErrorPrecisionShapeVec.reset
+        (new V(this->truncationErrorPrecisionSpace->zeroVector()));
+      this->m_truncationErrorPrecisionScaleVec.reset
+        (new V(this->truncationErrorPrecisionSpace->zeroVector()));
+      this->truncationErrorPrecisionMin->cwSet(0);
       this->truncationErrorPrecisionMax->cwSet(INFINITY);
 
       this->truncationErrorPrecisionDomain.reset
@@ -1215,9 +1226,11 @@ GPMSAFactory<V, M>::setUpHyperpriors()
            *(this->truncationErrorPrecisionMax)));
 
       this->m_truncationErrorPrecision.reset
-        (new UniformVectorRV<V, M>
+        (new GammaVectorRV<V, M>
          ("",
-          *(this->truncationErrorPrecisionDomain)));
+          *(this->truncationErrorPrecisionDomain),
+          *(this->m_truncationErrorPrecisionShapeVec),
+          *(this->m_truncationErrorPrecisionScaleVec)));
     }
 
   // Emulator precision
