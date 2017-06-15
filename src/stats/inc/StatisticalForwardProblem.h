@@ -88,7 +88,7 @@ public:
   * image set of the QoI function 'qoiFunction' and the image set of the vector random variable
   * 'qoiRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied,
   * the constructor then reads input options that begin with the string '\<prefix\>fp_'. Options
-  * reading is handled by class 'StatisticalForwardProblemOptions'. If no options input file
+  * reading is handled by class 'SfpOptionsValues'. If no options input file
   * is provided, the construction assigns \c alternativeOptionsValues to the options of the SFP.*/
   StatisticalForwardProblem(const char*                                       prefix,
                                    const SfpOptionsValues*                    alternativeOptionsValues, // dakota

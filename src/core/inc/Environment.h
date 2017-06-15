@@ -48,7 +48,6 @@ namespace QUESO {
 
 // Forward declarations
 class GetPot;
-class EnvironmentOptions;
 class EnvOptionsValues;
 class BasicPdfsBase;
 class RngBase;
@@ -109,15 +108,16 @@ file per allowed rank is opened and allowed ranks can be specified through the '
 /*! These classes rely on 'options classes' to read their options from the input file.
     The options classes are, respectively:
 <list type=number>
-<item> EnvironmentOptions
-<item> StatisticalInverseProblemOptions
-<item> StatisticalForwardProblemOptions
-<item> MetropolisHastingsSGOptions
-<item> MonteCarloSGOptions
++<item> EnvOptionsValues
++<item> SipOptionsValues
++<item> SfpOptionsValues
++<item> MhOptionsValues (and deprecated MetropolisHastingsSGOptions)
++<item> McOptionsValues
 </list>
-    The last two classes also rely on SequenceStatisticalOptions for reading the
-    options specifying which statistics have to be computed on the sequences of vectors
-    involved.
+    The last two classes also rely on
+    SsOptionsValues/SequenceStatisticalOptions for reading the options
+    specifying which statistics have to be computed on the sequences
+    of vectors involved.
 -------------------------------------------------------------*/
 
 /*! The QUESO environment class manages five types of communicators. Let:
