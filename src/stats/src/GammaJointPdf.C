@@ -92,7 +92,8 @@ GammaJointPdf<V,M>::lnValue(
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
     if (m_normalizationStyle == 0) {
-      aux = log(m_env.basicPdfs()->gammaPdfActualValue(domainVector[i],m_a[i],m_b[i]));
+      aux = -std::lgamma(m_a[i]) - m_a[i] * std::log(m_b[i]) +
+        (m_a[i] - 1.0) * std::log(domainVector[i]) - (domainVector[i] / m_b[i]);
     }
     else {
       aux = (m_a[i]-1.)*log(domainVector[i]) - domainVector[i]/m_b[i];
