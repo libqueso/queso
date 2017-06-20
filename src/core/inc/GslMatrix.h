@@ -192,7 +192,16 @@ public:
   //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with GslMatrix::svd (x=solMat, b=rhsMat).
   int               svdSolve                  (const GslMatrix& rhsMat, GslMatrix& solMat) const;
 
-
+  //! This function solves the system A x = b using a Cholesky decomposition of
+  //! A.  A is \c this, x is \c sol and b is \c rhs.
+  /*!
+   * If a Cholesky decomposition hasn't been cached internally, one is computed
+   * and cached for you.  Subsequent solves using the same matrix will then not
+   * re-compute the Cholesky factorisation but use the cached factorisation.
+   *
+   * Modifications to \c this will delete the cached Cholesky factorisation.
+   */
+  void cholSolve(const GslVector & rhs, GslVector & sol) const;
 
   //! This function multiplies \c this matrix by vector \c x and returns the resulting vector.
   GslVector  multiply                  (const GslVector& x) const;
@@ -410,6 +419,9 @@ private:
 
   //! GSL matrix for the LU decomposition of m_mat.
   mutable gsl_matrix*       m_LU;
+
+  //! GSL matrix for the LU decomposition of m_mat.
+  mutable gsl_matrix *      m_chol;
 
   //! Inverse matrix of \c this.
   mutable GslMatrix* m_inverse;
