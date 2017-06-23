@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.57.0], [queso-users@googlegroups.com])
+AC_INIT([queso], [0.57.1], [queso-users@googlegroups.com])
 PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
 AC_SUBST([PACKAGE_DESCRIPTION])
 PACKAGE_URL="https://github.com/libqueso/queso"
@@ -97,8 +97,12 @@ AC_ARG_ENABLE([boost-program-options],
               AS_HELP_STRING([--disable-boost-program-options], [Disables use
                               of boost program options for parsing the QUESO
                               input file.  GetPot will be used instead.]),
-              [enable_program_options="no"],
-              [enable_program_options="yes"])
+              [case "${enableval}" in
+               yes) enable_program_options=yes ;;
+               no)  enable_program_options=no ;;
+               *)   AC_MSG_ERROR(bad value ${enableval} for --disable-boost-program-options) ;;
+              esac],
+              [enable_program_options=yes])
 
 #-------------------
 # Compilers and MPI
@@ -195,8 +199,7 @@ AS_IF([test "x$enable_program_options" != "xno"],
 
 AS_IF([test "x$enable_program_options" = "xno"],
       [
-       QUESO_CPPFLAGS="$QUESO_CPPFLAGS -DDISABLE_BOOST_PROGRAM_OPTIONS"
-       AC_SUBST(QUESO_CPPFLAGS)
+       AC_DEFINE(DISABLE_BOOST_PROGRAM_OPTIONS, 1, [Flag determining whether boost program options is disabled])
       ])
 
 BOOST_FIND_HEADER([boost/scoped_ptr.hpp])

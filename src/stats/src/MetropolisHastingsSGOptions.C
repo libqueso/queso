@@ -24,11 +24,11 @@
 
 #include <queso/Environment.h>
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
 #else
 #include <queso/getpot.h>
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/MetropolisHastingsSGOptions.h>
 #include <queso/Miscellaneous.h>
@@ -112,9 +112,9 @@ MhOptionsValues::MhOptionsValues(
     m_alternativeFilteredSsOptionsValues       (),
 #endif
     m_env(NULL),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                                      (m_prefix + "help"                                      ),
     m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
     m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -255,9 +255,9 @@ MhOptionsValues::MhOptionsValues(
     m_alternativeFilteredSsOptionsValues       (),
 #endif
     m_env(env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
     m_option_help                                      (m_prefix + "help"                                      ),
     m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
     m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -323,7 +323,7 @@ MhOptionsValues::MhOptionsValues(
   if (alternativeFilteredSsOptionsValues) m_alternativeFilteredSsOptionsValues = *alternativeFilteredSsOptionsValues;
 #endif
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_parser->registerOption<std::string >(m_option_help,                                       UQ_MH_SG_HELP,                                                 "produce help msg for Bayesian Metropolis-Hastings"          );
   m_parser->registerOption<std::string >(m_option_dataOutputFileName,                         UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                           , "name of generic output file"                                );
   m_parser->registerOption<bool        >(m_option_dataOutputAllowAll,                         UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                           , "allow all subEnvs write to a generic output file"           );
@@ -560,7 +560,7 @@ MhOptionsValues::MhOptionsValues(
   m_algorithm = m_env->input()(m_option_algorithm, UQ_MH_SG_ALGORITHM);
   m_tk = m_env->input()(m_option_tk, UQ_MH_SG_TK);
   m_updateInterval = m_env->input()(m_option_updateInterval, UQ_MH_SG_UPDATE_INTERVAL);
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions(env);
 }
@@ -742,9 +742,9 @@ MhOptionsValues::copy(const MhOptionsValues& src)
 
 std::ostream & operator<<(std::ostream & os, const MhOptionsValues & obj)
 {
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   os << (*(obj.m_parser)) << std::endl;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   os <<         obj.m_option_dataOutputFileName                         << " = " << obj.m_dataOutputFileName
      << "\n" << obj.m_option_dataOutputAllowAll                         << " = " << obj.m_dataOutputAllowAll
@@ -849,9 +849,9 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 #endif
   m_prefix                                           ((std::string)(prefix) + "mh_"),
   m_env                                              (env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                                      (new boost::program_options::options_description("Bayesian Metropolis-Hastings options")),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                                      (m_prefix + "help"                                      ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
   m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -931,9 +931,9 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 #endif
   m_prefix                                           ((std::string)(prefix) + "mh_"),
   m_env                                              (env),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                                      (),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                                      (m_prefix + "help"                                      ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
   m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -1033,9 +1033,9 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
 #endif
   m_prefix                                           (mlOptions.m_prefix),
   m_env                                              (mlOptions.env()),
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_optionsDesc                                      (),
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   m_option_help                                      (m_prefix + "help"                                      ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
   m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
@@ -1194,13 +1194,13 @@ MetropolisHastingsSGOptions::scanOptionsValues()
 {
   queso_deprecated();
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   queso_require_msg(m_optionsDesc, "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   if ((m_env.subDisplayFile() != NULL) &&
       (m_ov.m_totallyMute == false   )) {
@@ -1313,7 +1313,7 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
   return;
 }
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 // Private methods----------------------------------
 void
 MetropolisHastingsSGOptions::defineMyOptions(boost::program_options::options_description& optionsDesc) const
@@ -1384,9 +1384,9 @@ MetropolisHastingsSGOptions::defineMyOptions(boost::program_options::options_des
 
   return;
 }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 // -------------------------------------------------
 void
 MetropolisHastingsSGOptions::getMyOptionValues(boost::program_options::options_description& optionsDesc)
@@ -1711,7 +1711,7 @@ MetropolisHastingsSGOptions::getMyOptionValues(boost::program_options::options_d
     m_ov.m_updateInterval = ((const boost::program_options::variable_value&) m_env.allOptionsMap()[m_option_updateInterval]).as<unsigned int>();
   }
 }
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 // --------------------------------------------------
 // Operator declared outside class definition ------

@@ -26,11 +26,11 @@
 
 #include <queso/Environment.h>
 
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
 #else
 #include <queso/getpot.h>
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 namespace QUESO {
 
@@ -83,9 +83,9 @@ public:
   const BaseEnvironment& env() const;
 
 private:
-#ifndef DISABLE_BOOST_PROGRAM_OPTIONS
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   BoostInputOptionsParser * m_parser;
-#endif  // DISABLE_BOOST_PROGRAM_OPTIONS
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   const BaseEnvironment& m_env;
 
