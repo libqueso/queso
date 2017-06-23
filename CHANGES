@@ -3,6 +3,11 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.57.1 (Jun 23, 2017)
+  * Fix bug in GPMSA getpot parse
+  * GCC 4.4 compatibility fixes
+  * Fix boost macro bug in build system
+
 Version 0.57.0 (Apr 22, 2017)
   * Add methods to calculate normalized GP parameters
   * GCC-4.4.7 compatibility fixes
