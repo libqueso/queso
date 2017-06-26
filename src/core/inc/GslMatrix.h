@@ -202,7 +202,7 @@ public:
    *
    * Modifications to \c this will delete the cached Cholesky factorisation.
    *
-   * The matrix A must be symmetric and positive definite.  If it isn't, this
+   * The matrix \c A must be symmetric and positive definite.  If it isn't, this
    * method will throw an exception.
    */
   void cholSolve(const GslVector & rhs, GslVector & sol) const;
