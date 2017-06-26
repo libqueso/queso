@@ -204,6 +204,9 @@ public:
    *
    * The matrix \c A must be symmetric and positive definite.  If it isn't, this
    * method will throw an exception.
+   *
+   * The vector \c sol must be pre-sized prior to calling \c cholSolve.  If it
+   * isn't the correct size, an exception is thrown
    */
   void cholSolve(const GslVector & rhs, GslVector & sol) const;
 
