@@ -193,13 +193,17 @@ public:
   int               svdSolve                  (const GslMatrix& rhsMat, GslMatrix& solMat) const;
 
   //! This function solves the system A x = b using a Cholesky decomposition of
-  //! A.  A is \c this, x is \c sol and b is \c rhs.
+  //! a symmetric and positive definite matrix A.  A is \c this, x is \c sol and
+  //! b is \c rhs.
   /*!
    * If a Cholesky decomposition hasn't been cached internally, one is computed
    * and cached for you.  Subsequent solves using the same matrix will then not
    * re-compute the Cholesky factorisation but use the cached factorisation.
    *
    * Modifications to \c this will delete the cached Cholesky factorisation.
+   *
+   * The matrix A must be symmetric and positive definite.  If it isn't, this
+   * method will throw an exception.
    */
   void cholSolve(const GslVector & rhs, GslVector & sol) const;
 
