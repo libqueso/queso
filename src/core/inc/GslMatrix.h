@@ -424,7 +424,7 @@ private:
   //! GSL matrix for the LU decomposition of m_mat.
   mutable gsl_matrix*       m_LU;
 
-  //! GSL matrix for the LU decomposition of m_mat.
+  //! GSL matrix for the LL^T decomposition of m_mat.
   mutable gsl_matrix *      m_chol;
 
   //! Inverse matrix of \c this.
