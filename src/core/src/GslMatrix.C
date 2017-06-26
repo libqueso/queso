@@ -447,6 +447,8 @@ GslMatrix::cholSolve(const GslVector & rhs, GslVector & sol) const
   queso_require_equal_to_msg(this->numCols(), rhs.sizeLocal(), "matrix and rhs have incompatible sizes");
   queso_require_equal_to_msg(sol.sizeLocal(), rhs.sizeLocal(), "solution and rhs have incompatible sizes");
 
+  bool allocated_memory_for_cholesky = false;
+
   int iRC;
   if (m_chol == NULL) {
     gsl_error_handler_t * oldHandler;
@@ -458,6 +460,7 @@ GslMatrix::cholSolve(const GslVector & rhs, GslVector & sol) const
       gsl_set_error_handler(oldHandler);
       queso_error_msg("gsl_matrix_calloc() failed");
     }
+    allocated_memory_for_cholesky = true;
 
     iRC = gsl_matrix_memcpy(m_chol, m_mat);
     if (iRC != 0) {
@@ -482,10 +485,10 @@ GslMatrix::cholSolve(const GslVector & rhs, GslVector & sol) const
   gsl_set_error_handler(oldHandler);
 
   if (iRC != 0) {
-    if (m_chol != NULL) {
+    if (allocated_memory_for_cholesky) {
       gsl_matrix_free(m_chol);
+      m_chol = NULL;
     }
-    m_isSingular = true;
     queso_error_msg("gsl_linalg_cholesky_solve failed: " << gsl_strerror(iRC));
   }
 }
