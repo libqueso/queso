@@ -105,7 +105,7 @@ public:
   {
     // Changing the matrix changes its decomposition(s).  We'll
     // invalidate for now; recalculate later if needed.
-    this->resetLU();
+    this->reset();
     queso_require_less_msg(i, m_mat->size1, "i is too large");
     queso_require_less_msg(j, m_mat->size2, "j is too large");
     return *gsl_matrix_ptr(m_mat,i,j);
@@ -412,8 +412,9 @@ private:
   //! In this function \c this matrix receives a copy of matrix \c src.
   void              copy                      (const GslMatrix& src);
 
-  //! In this function resets the LU decomposition of \c this matrix, as well as deletes the private member pointers, if existing.
-  void              resetLU                   ();
+  //! In this function resets the internal caches of \c this matrix, as well as
+  //! deletes the private member pointers, if existing.
+  void              reset                   ();
 
   //! This function factorizes the M-by-N matrix A into the singular value decomposition A = U S V^T for M >= N. On output the matrix A is replaced by U.
   int               internalSvd               () const;

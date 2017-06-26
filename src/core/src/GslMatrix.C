@@ -166,7 +166,7 @@ GslMatrix::GslMatrix(const GslMatrix& B) // can be a rectangular matrix
 // Destructor ----------------------------------------------------------
 GslMatrix::~GslMatrix()
 {
-  this->resetLU();
+  this->reset();
   if (m_mat) gsl_matrix_free(m_mat);
 }
 
@@ -174,7 +174,7 @@ GslMatrix::~GslMatrix()
 GslMatrix&
 GslMatrix::operator=(const GslMatrix& obj)
 {
-  this->resetLU();
+  this->reset();
   this->copy(obj);
   return *this;
 }
@@ -182,7 +182,7 @@ GslMatrix::operator=(const GslMatrix& obj)
 GslMatrix&
 GslMatrix::operator*=(double a)
 {
-  this->resetLU();
+  this->reset();
   int iRC;
   iRC = gsl_matrix_scale(m_mat,a);
   queso_require_msg(!(iRC), "scaling failed");
@@ -192,7 +192,7 @@ GslMatrix::operator*=(double a)
 GslMatrix&
 GslMatrix::operator/=(double a)
 {
-  this->resetLU();
+  this->reset();
   *this *= (1./a);
 
   return *this;
@@ -201,7 +201,7 @@ GslMatrix::operator/=(double a)
 GslMatrix&
 GslMatrix::operator+=(const GslMatrix& rhs)
 {
-  this->resetLU();
+  this->reset();
   int iRC;
   iRC = gsl_matrix_add(m_mat,rhs.m_mat);
   queso_require_msg(!(iRC), "failed");
@@ -212,7 +212,7 @@ GslMatrix::operator+=(const GslMatrix& rhs)
 GslMatrix&
 GslMatrix::operator-=(const GslMatrix& rhs)
 {
-  this->resetLU();
+  this->reset();
   int iRC;
   iRC = gsl_matrix_sub(m_mat,rhs.m_mat);
   queso_require_msg(!(iRC), "failed");
@@ -226,7 +226,7 @@ void
 GslMatrix::copy(const GslMatrix& src)
 {
   // FIXME - should we be calling Matrix::base_copy here? - RHS
-  this->resetLU();
+  this->reset();
   int iRC;
   iRC = gsl_matrix_memcpy(this->m_mat, src.m_mat);
   queso_require_msg(!(iRC), "failed");
@@ -235,7 +235,7 @@ GslMatrix::copy(const GslMatrix& src)
 }
 
 void
-GslMatrix::resetLU()
+GslMatrix::reset()
 {
   if (m_chol) {
     gsl_matrix_free(m_chol);
@@ -649,7 +649,7 @@ GslMatrix::zeroLower(bool includeDiagonal)
 
   queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
 
-  this->resetLU();
+  this->reset();
 
   if (includeDiagonal) {
     for (unsigned int i = 0; i < nRows; i++) {
@@ -677,7 +677,7 @@ GslMatrix::zeroUpper(bool includeDiagonal)
 
   queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
 
-  this->resetLU();
+  this->reset();
 
   if (includeDiagonal) {
     for (unsigned int i = 0; i < nRows; i++) {
@@ -1717,7 +1717,7 @@ GslMatrix::getColumn(unsigned int column_num ) const
 void
 GslMatrix::setRow(unsigned int row_num, const GslVector& row)
 {
-  this->resetLU();
+  this->reset();
   // Sanity checks
   queso_require_less_msg(row_num, this->numRowsLocal(), "Specified row number not within range");
 
@@ -1734,7 +1734,7 @@ GslMatrix::setRow(unsigned int row_num, const GslVector& row)
 void
 GslMatrix::setColumn(unsigned int column_num, const GslVector& column)
 {
-  this->resetLU();
+  this->reset();
   // Sanity checks
   queso_require_less_msg(column_num, this->numCols(), "Specified column number not within range");
 
