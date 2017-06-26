@@ -449,22 +449,27 @@ GslMatrix::cholSolve(const GslVector & rhs, GslVector & sol) const
 
   int iRC;
   if (m_chol == NULL) {
-    m_chol = gsl_matrix_calloc(this->numRowsLocal(), this->numCols());
-    queso_require_msg(m_chol, "gsl_matrix_calloc() failed");
-
-    iRC = gsl_matrix_memcpy(m_chol, m_mat);
-    queso_require_msg(!(iRC), "gsl_matrix_memcpy() failed");
-
     gsl_error_handler_t * oldHandler;
     oldHandler = gsl_set_error_handler_off();
 
-    iRC = gsl_linalg_cholesky_decomp(m_chol);
+    // Returns NULL if the allocation failed
+    m_chol = gsl_matrix_calloc(this->numRowsLocal(), this->numCols());
+    if (m_chol == NULL) {
+      gsl_set_error_handler(oldHandler);
+      queso_error_msg("gsl_matrix_calloc() failed");
+    }
 
-    gsl_set_error_handler(oldHandler);
-
-    // Clean up if the matrix isn't spd
+    iRC = gsl_matrix_memcpy(m_chol, m_mat);
     if (iRC != 0) {
       gsl_matrix_free(m_chol);
+      gsl_set_error_handler(oldHandler);
+      queso_error_msg("gsl_matrix_memcpy() failed");
+    }
+
+    iRC = gsl_linalg_cholesky_decomp(m_chol);
+    if (iRC != 0) {  // Clean up if the matrix isn't spd
+      gsl_matrix_free(m_chol);
+      gsl_set_error_handler(oldHandler);
       queso_error_msg("gsl_linalg_chol_decomp() failed: " << gsl_strerror(iRC));
     }
   }
