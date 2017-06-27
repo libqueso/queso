@@ -49,6 +49,7 @@ namespace QUESOTesting
     CPPUNIT_TEST( test_inverse_power_method );
     CPPUNIT_TEST( test_power_method );
     CPPUNIT_TEST( test_multiple_rhs_matrix_solve );
+    CPPUNIT_TEST( test_chol_matrix_solve );
     CPPUNIT_TEST( test_cw_extract );
     CPPUNIT_TEST( test_svd );
     CPPUNIT_TEST( test_fill_diag );
@@ -221,6 +222,29 @@ namespace QUESOTesting
       CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0,result(1,1),1.0e-14);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0,result(0,1),1.0e-14);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0,result(1,0),1.0e-14);
+    }
+
+    void test_chol_matrix_solve()
+    {
+      QUESO::VectorSpace<> paramSpace(*_env, "param_", 2, NULL);
+
+      QUESO::GslVector rhs(paramSpace.zeroVector());
+      rhs[0] = 6.0;
+      rhs[1] = 5.0;
+
+      QUESO::GslVector sol(paramSpace.zeroVector());
+
+      QUESO::GslMatrix A(rhs);
+      A(0,0) = 4.;
+      A(0,1) = 1.;
+      A(1,0) = 1.;
+      A(1,1) = 2.;
+
+      A.cholSolve(rhs, sol);
+
+      // We should be getting back the identity matrix in result
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0, sol[0], 1.0e-14);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(2.0, sol[1], 1.0e-14);
     }
 
     void test_cw_extract()
