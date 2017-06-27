@@ -41,7 +41,7 @@ GslMatrix::GslMatrix( // can be a rectangular matrix
   Matrix  (env,map),
   m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),nCols)),
   m_LU           (NULL),
-  m_chol         (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -66,7 +66,7 @@ GslMatrix::GslMatrix( // square matrix
   Matrix  (env,map),
   m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),map.NumGlobalElements())),
   m_LU           (NULL),
-  m_chol         (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -93,7 +93,7 @@ GslMatrix::GslMatrix( // square matrix
   Matrix  (v.env(),v.map()),
   m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
   m_LU           (NULL),
-  m_chol         (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -118,7 +118,7 @@ GslMatrix::GslMatrix(const GslVector& v) // square matrix
   Matrix  (v.env(),v.map()),
   m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
   m_LU           (NULL),
-  m_chol         (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -145,7 +145,7 @@ GslMatrix::GslMatrix(const GslMatrix& B) // can be a rectangular matrix
   Matrix  (B.env(),B.map()),
   m_mat          (gsl_matrix_calloc(B.numRowsLocal(),B.numCols())),
   m_LU           (NULL),
-  m_chol         (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -237,10 +237,7 @@ GslMatrix::copy(const GslMatrix& src)
 void
 GslMatrix::reset()
 {
-  if (m_chol) {
-    gsl_matrix_free(m_chol);
-    m_chol = NULL;
-  }
+  m_chol.reset();
   if (m_LU) {
     gsl_matrix_free(m_LU);
     m_LU = NULL;
@@ -447,31 +444,27 @@ GslMatrix::cholSolve(const GslVector & rhs, GslVector & sol) const
   queso_require_equal_to_msg(this->numCols(), rhs.sizeLocal(), "matrix and rhs have incompatible sizes");
   queso_require_equal_to_msg(sol.sizeLocal(), rhs.sizeLocal(), "solution and rhs have incompatible sizes");
 
-  bool allocated_memory_for_cholesky = false;
-
   int iRC;
   if (m_chol == NULL) {
     gsl_error_handler_t * oldHandler;
     oldHandler = gsl_set_error_handler_off();
 
     // Returns NULL if the allocation failed
-    m_chol = gsl_matrix_calloc(this->numRowsLocal(), this->numCols());
+    m_chol.reset(gsl_matrix_calloc(this->numRowsLocal(), this->numCols()),
+        gsl_matrix_free);
     if (m_chol == NULL) {
       gsl_set_error_handler(oldHandler);
       queso_error_msg("gsl_matrix_calloc() failed");
     }
-    allocated_memory_for_cholesky = true;
 
-    iRC = gsl_matrix_memcpy(m_chol, m_mat);
+    iRC = gsl_matrix_memcpy(m_chol.get(), m_mat);
     if (iRC != 0) {
-      gsl_matrix_free(m_chol);
       gsl_set_error_handler(oldHandler);
       queso_error_msg("gsl_matrix_memcpy() failed");
     }
 
-    iRC = gsl_linalg_cholesky_decomp(m_chol);
+    iRC = gsl_linalg_cholesky_decomp(m_chol.get());
     if (iRC != 0) {  // Clean up if the matrix isn't spd
-      gsl_matrix_free(m_chol);
       gsl_set_error_handler(oldHandler);
       queso_error_msg("gsl_linalg_chol_decomp() failed: " << gsl_strerror(iRC));
     }
@@ -480,17 +473,11 @@ GslMatrix::cholSolve(const GslVector & rhs, GslVector & sol) const
   gsl_error_handler_t * oldHandler;
   oldHandler = gsl_set_error_handler_off();
 
-  iRC = gsl_linalg_cholesky_solve(m_chol, rhs.data(), sol.data());
+  iRC = gsl_linalg_cholesky_solve(m_chol.get(), rhs.data(), sol.data());
 
   gsl_set_error_handler(oldHandler);
 
-  if (iRC != 0) {
-    if (allocated_memory_for_cholesky) {
-      gsl_matrix_free(m_chol);
-      m_chol = NULL;
-    }
-    queso_error_msg("gsl_linalg_cholesky_solve failed: " << gsl_strerror(iRC));
-  }
+  queso_require_msg(!iRC, "gsl_linalg_cholesky_solve failed: " << gsl_strerror(iRC));
 }
 
 int

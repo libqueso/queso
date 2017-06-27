@@ -32,6 +32,7 @@
 #include <queso/Defines.h>
 #include <queso/GslVector.h>
 #include <queso/Matrix.h>
+#include <queso/SharedPtr.h>
 
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_permutation.h>
@@ -429,7 +430,7 @@ private:
   mutable gsl_matrix*       m_LU;
 
   //! GSL matrix for the LL^T decomposition of m_mat.
-  mutable gsl_matrix *      m_chol;
+  mutable SharedPtr<gsl_matrix>::Type m_chol;
 
   //! Inverse matrix of \c this.
   mutable GslMatrix* m_inverse;
