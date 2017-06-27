@@ -102,7 +102,13 @@ BetaJointPdf<V,M>::lnValue(
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
     if (m_normalizationStyle == 0) {
-      aux = log(m_env.basicPdfs()->betaPdfActualValue(domainVector[i],m_alpha[i],m_beta[i]));
+      const double ln_gamma_apb = std::lgamma(m_alpha[i] + m_beta[i]);
+      const double ln_gamma_a = std::lgamma(m_alpha[i]);
+      const double ln_gamma_b = std::lgamma(m_beta[i]);
+
+      aux = ln_gamma_apb - ln_gamma_a - ln_gamma_b +
+        (m_alpha[i] - 1) * std::log(domainVector[i]) +
+        (m_beta[i] - 1) * std::log1p(-domainVector[i]);
     }
     else {
       aux = (m_alpha[i]-1.)*log(domainVector[i]) + (m_beta[i]-1.)*log(1.-domainVector[i]);
