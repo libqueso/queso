@@ -32,6 +32,7 @@
 #include <queso/Defines.h>
 #include <queso/GslVector.h>
 #include <queso/Matrix.h>
+#include <queso/SharedPtr.h>
 
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_permutation.h>
@@ -105,7 +106,7 @@ public:
   {
     // Changing the matrix changes its decomposition(s).  We'll
     // invalidate for now; recalculate later if needed.
-    this->resetLU();
+    this->reset();
     queso_require_less_msg(i, m_mat->size1, "i is too large");
     queso_require_less_msg(j, m_mat->size2, "j is too large");
     return *gsl_matrix_ptr(m_mat,i,j);
@@ -192,7 +193,23 @@ public:
   //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with GslMatrix::svd (x=solMat, b=rhsMat).
   int               svdSolve                  (const GslMatrix& rhsMat, GslMatrix& solMat) const;
 
-
+  //! This function solves the system A x = b using a Cholesky decomposition of
+  //! a symmetric and positive definite matrix A.  A is \c this, x is \c sol and
+  //! b is \c rhs.
+  /*!
+   * If a Cholesky decomposition hasn't been cached internally, one is computed
+   * and cached for you.  Subsequent solves using the same matrix will then not
+   * re-compute the Cholesky factorisation but use the cached factorisation.
+   *
+   * Modifications to \c this will delete the cached Cholesky factorisation.
+   *
+   * The matrix \c A must be symmetric and positive definite.  If it isn't, this
+   * method will throw an exception.
+   *
+   * The vector \c sol must be pre-sized prior to calling \c cholSolve.  If it
+   * isn't the correct size, an exception is thrown
+   */
+  void cholSolve(const GslVector & rhs, GslVector & sol) const;
 
   //! This function multiplies \c this matrix by vector \c x and returns the resulting vector.
   GslVector  multiply                  (const GslVector& x) const;
@@ -399,8 +416,9 @@ private:
   //! In this function \c this matrix receives a copy of matrix \c src.
   void              copy                      (const GslMatrix& src);
 
-  //! In this function resets the LU decomposition of \c this matrix, as well as deletes the private member pointers, if existing.
-  void              resetLU                   ();
+  //! In this function resets the internal caches of \c this matrix, as well as
+  //! deletes the private member pointers, if existing.
+  void              reset                   ();
 
   //! This function factorizes the M-by-N matrix A into the singular value decomposition A = U S V^T for M >= N. On output the matrix A is replaced by U.
   int               internalSvd               () const;
@@ -410,6 +428,9 @@ private:
 
   //! GSL matrix for the LU decomposition of m_mat.
   mutable gsl_matrix*       m_LU;
+
+  //! GSL matrix for the LL^T decomposition of m_mat.
+  mutable SharedPtr<gsl_matrix>::Type m_chol;
 
   //! Inverse matrix of \c this.
   mutable GslMatrix* m_inverse;

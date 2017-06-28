@@ -41,6 +41,7 @@ GslMatrix::GslMatrix( // can be a rectangular matrix
   Matrix  (env,map),
   m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),nCols)),
   m_LU           (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -65,6 +66,7 @@ GslMatrix::GslMatrix( // square matrix
   Matrix  (env,map),
   m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),map.NumGlobalElements())),
   m_LU           (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -91,6 +93,7 @@ GslMatrix::GslMatrix( // square matrix
   Matrix  (v.env(),v.map()),
   m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
   m_LU           (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -115,6 +118,7 @@ GslMatrix::GslMatrix(const GslVector& v) // square matrix
   Matrix  (v.env(),v.map()),
   m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
   m_LU           (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -141,6 +145,7 @@ GslMatrix::GslMatrix(const GslMatrix& B) // can be a rectangular matrix
   Matrix  (B.env(),B.map()),
   m_mat          (gsl_matrix_calloc(B.numRowsLocal(),B.numCols())),
   m_LU           (NULL),
+  m_chol(),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -161,7 +166,7 @@ GslMatrix::GslMatrix(const GslMatrix& B) // can be a rectangular matrix
 // Destructor ----------------------------------------------------------
 GslMatrix::~GslMatrix()
 {
-  this->resetLU();
+  this->reset();
   if (m_mat) gsl_matrix_free(m_mat);
 }
 
@@ -169,7 +174,7 @@ GslMatrix::~GslMatrix()
 GslMatrix&
 GslMatrix::operator=(const GslMatrix& obj)
 {
-  this->resetLU();
+  this->reset();
   this->copy(obj);
   return *this;
 }
@@ -177,7 +182,7 @@ GslMatrix::operator=(const GslMatrix& obj)
 GslMatrix&
 GslMatrix::operator*=(double a)
 {
-  this->resetLU();
+  this->reset();
   int iRC;
   iRC = gsl_matrix_scale(m_mat,a);
   queso_require_msg(!(iRC), "scaling failed");
@@ -187,7 +192,7 @@ GslMatrix::operator*=(double a)
 GslMatrix&
 GslMatrix::operator/=(double a)
 {
-  this->resetLU();
+  this->reset();
   *this *= (1./a);
 
   return *this;
@@ -196,7 +201,7 @@ GslMatrix::operator/=(double a)
 GslMatrix&
 GslMatrix::operator+=(const GslMatrix& rhs)
 {
-  this->resetLU();
+  this->reset();
   int iRC;
   iRC = gsl_matrix_add(m_mat,rhs.m_mat);
   queso_require_msg(!(iRC), "failed");
@@ -207,7 +212,7 @@ GslMatrix::operator+=(const GslMatrix& rhs)
 GslMatrix&
 GslMatrix::operator-=(const GslMatrix& rhs)
 {
-  this->resetLU();
+  this->reset();
   int iRC;
   iRC = gsl_matrix_sub(m_mat,rhs.m_mat);
   queso_require_msg(!(iRC), "failed");
@@ -221,7 +226,7 @@ void
 GslMatrix::copy(const GslMatrix& src)
 {
   // FIXME - should we be calling Matrix::base_copy here? - RHS
-  this->resetLU();
+  this->reset();
   int iRC;
   iRC = gsl_matrix_memcpy(this->m_mat, src.m_mat);
   queso_require_msg(!(iRC), "failed");
@@ -230,8 +235,9 @@ GslMatrix::copy(const GslMatrix& src)
 }
 
 void
-GslMatrix::resetLU()
+GslMatrix::reset()
 {
+  m_chol.reset();
   if (m_LU) {
     gsl_matrix_free(m_LU);
     m_LU = NULL;
@@ -432,6 +438,48 @@ GslMatrix::chol()
   return iRC;
 }
 
+void
+GslMatrix::cholSolve(const GslVector & rhs, GslVector & sol) const
+{
+  queso_require_equal_to_msg(this->numCols(), rhs.sizeLocal(), "matrix and rhs have incompatible sizes");
+  queso_require_equal_to_msg(sol.sizeLocal(), rhs.sizeLocal(), "solution and rhs have incompatible sizes");
+
+  int iRC;
+  if (m_chol == NULL) {
+    gsl_error_handler_t * oldHandler;
+    oldHandler = gsl_set_error_handler_off();
+
+    // Returns NULL if the allocation failed
+    m_chol.reset(gsl_matrix_calloc(this->numRowsLocal(), this->numCols()),
+        gsl_matrix_free);
+    if (m_chol == NULL) {
+      gsl_set_error_handler(oldHandler);
+      queso_error_msg("gsl_matrix_calloc() failed");
+    }
+
+    iRC = gsl_matrix_memcpy(m_chol.get(), m_mat);
+    if (iRC != 0) {
+      gsl_set_error_handler(oldHandler);
+      queso_error_msg("gsl_matrix_memcpy() failed");
+    }
+
+    iRC = gsl_linalg_cholesky_decomp(m_chol.get());
+    if (iRC != 0) {  // Clean up if the matrix isn't spd
+      gsl_set_error_handler(oldHandler);
+      queso_error_msg("gsl_linalg_chol_decomp() failed: " << gsl_strerror(iRC));
+    }
+  }
+
+  gsl_error_handler_t * oldHandler;
+  oldHandler = gsl_set_error_handler_off();
+
+  iRC = gsl_linalg_cholesky_solve(m_chol.get(), rhs.data(), sol.data());
+
+  gsl_set_error_handler(oldHandler);
+
+  queso_require_msg(!iRC, "gsl_linalg_cholesky_solve failed: " << gsl_strerror(iRC));
+}
+
 int
 GslMatrix::svd(GslMatrix& matU, GslVector& vecS, GslMatrix& matVt) const
 {
@@ -596,7 +644,7 @@ GslMatrix::zeroLower(bool includeDiagonal)
 
   queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
 
-  this->resetLU();
+  this->reset();
 
   if (includeDiagonal) {
     for (unsigned int i = 0; i < nRows; i++) {
@@ -624,7 +672,7 @@ GslMatrix::zeroUpper(bool includeDiagonal)
 
   queso_require_equal_to_msg(nRows, nCols, "routine works only for square matrices");
 
-  this->resetLU();
+  this->reset();
 
   if (includeDiagonal) {
     for (unsigned int i = 0; i < nRows; i++) {
@@ -1664,7 +1712,7 @@ GslMatrix::getColumn(unsigned int column_num ) const
 void
 GslMatrix::setRow(unsigned int row_num, const GslVector& row)
 {
-  this->resetLU();
+  this->reset();
   // Sanity checks
   queso_require_less_msg(row_num, this->numRowsLocal(), "Specified row number not within range");
 
@@ -1681,7 +1729,7 @@ GslMatrix::setRow(unsigned int row_num, const GslVector& row)
 void
 GslMatrix::setColumn(unsigned int column_num, const GslVector& column)
 {
-  this->resetLU();
+  this->reset();
   // Sanity checks
   queso_require_less_msg(column_num, this->numCols(), "Specified column number not within range");
 
