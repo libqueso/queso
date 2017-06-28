@@ -366,6 +366,7 @@ EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/neither_input.txt
 EXTRA_DIST += test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+EXTRA_DIST += test_StatisticalInverseProblem/output_test_parallel_h5_expected.h5
 EXTRA_DIST += test_Regression/jeffreys_input.txt
 EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh
 EXTRA_DIST += test_Regression/test_jeffreys_samples.m

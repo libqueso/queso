@@ -13,6 +13,9 @@ if [ $have_mpi -eq 1 ]; then
 
     $PROG $INPUT
 
+    h5diff ${srcdir}/test_StatisticalInverseProblem/output_test_parallel_h5_expected.h5 \
+           output_test_parallel_h5/ip_raw_chain.h5
+
     rm -r output_test_parallel_h5
   else
     exit 77
