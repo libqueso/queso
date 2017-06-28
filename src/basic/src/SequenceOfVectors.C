@@ -1542,9 +1542,7 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
 #ifdef QUESO_HAS_HDF5
       unsigned int chainSize = this->subSequenceSize();
       unsigned int numParams = m_vectorSpace.dimLocal();
-      double * data;
-      data = (double *)malloc(numParams * chainSize * sizeof(double));
-      queso_require_msg(data, "couldn't allocate memory for data");
+      std::vector<double> data(numParams * chainSize);
 
       for (unsigned int i = 0; i < chainSize; ++i) {
         V tmpVec(*(m_seq[i]));
@@ -1555,11 +1553,11 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
 
       int numChains = m_env.inter0Comm().NumProc();
       int numrecv = numParams * chainSize * numChains;
-      double * recvbuf = (double *)malloc(numrecv * sizeof(double));
+      std::vector<double> recvbuf(numrecv);
 
-      m_env.inter0Comm().template Gather<double>(data,
+      m_env.inter0Comm().template Gather<double>(&data[0],
                                                  numParams * chainSize,
-                                                 recvbuf,
+                                                 &recvbuf[0],
                                                  numParams * chainSize,
                                                  0,
                                                  "",
@@ -1606,7 +1604,7 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
                             H5S_ALL,
                             H5S_ALL,
                             H5P_DEFAULT,
-                            recvbuf+(numParams*chainSize*c));
+                            &recvbuf[numParams*chainSize*c]);
 
           queso_require_greater_equal_msg(
               status, 0,
@@ -1619,8 +1617,6 @@ SequenceOfVectors<V,M>::unifiedWriteContents(
         H5Tclose(datatype);
         m_env.closeFile(unifiedFilePtrSet, fileType);
       }
-      free(data);
-      free(recvbuf);
 #endif  // QUESO_HAS_HDF5
     }
     else if ((fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) ||
