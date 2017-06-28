@@ -7,7 +7,7 @@ have_hdf5=@HAVE_HDF5@
 
 if [ $have_mpi -eq 1 ]; then
   if [ $have_hdf5 -eq 1 ]; then
-    PROG="mpirun -np 2 ./test_parallel_h5"
+    PROG="mpiexec -np 2 ./test_parallel_h5"
 
     INPUT="${srcdir}/test_StatisticalInverseProblem/input_test_parallel_h5.txt"
 
