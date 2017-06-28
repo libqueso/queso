@@ -121,7 +121,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // discrepancy_corr_strength(1) // = "rho_{delta k}" in scalar case,
   // ...                          //   "rho_{v i}" in vector
   // discrepancy_corr_strength(dimScenario)
-  // emulator_data_precision(1)   // = "small white noise", "small ridge"
+  // emulator_data_precision(1)   // = "small white noise",
+                                  // "small ridge", "nugget"
   // observation_error_precision  // = "lambda_y", iff user-requested
 
   // Other variables:
@@ -766,7 +767,8 @@ GPMSAFactory<V, M>::setUpEmulator()
 
   for (unsigned int i=0; i != m_numSimulations; ++i)
     for (unsigned int j=0; j != numOutputs; ++j)
-      (*simulationOutputMeans)[j] += (*m_simulationOutputs[i])[j];
+      (*simulationOutputMeans)[j] +=
+        this->m_opts->normalized_output(j, (*m_simulationOutputs[i])[j]);
 
   for (unsigned int j=0; j != numOutputs; ++j)
     (*simulationOutputMeans)[j] /= m_numSimulations;
@@ -776,7 +778,8 @@ GPMSAFactory<V, M>::setUpEmulator()
   for (unsigned int i=0; i != m_numSimulations; ++i)
     for (unsigned int j=0; j != numOutputs; ++j)
       simulation_matrix(i,j) =
-        (*m_simulationOutputs[i])[j] - (*simulationOutputMeans)[j];
+        this->m_opts->normalized_output(j, (*m_simulationOutputs[i])[j]) -
+        (*simulationOutputMeans)[j];
 
   // GSL only finds left singular vectors if n_rows>=n_columns, so we need to
   // calculate them indirectly from the eigenvalues of M^T*M
@@ -904,7 +907,9 @@ GPMSAFactory<V, M>::setUpEmulator()
               // No fancy perturbation here
               unsigned int j = ex*numOutputs+outj;
 
-              Wy(i,j) = W_i(outi,outj);
+              Wy(i,j) = W_i(outi,outj) /
+                        (this->m_opts->output_scale(outi) *
+                         this->m_opts->output_scale(outj));
             }
         }
     }
@@ -1113,14 +1118,14 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       for (unsigned int i = 0; i < this->m_numExperiments; i++) {
         for (unsigned int k = 0; k != numOutputs; ++k)
           y[i*numOutputs+k] =
-            (*((this->m_experimentOutputs)[i]))[k] -
+            this->m_opts->normalized_output(k, (*((this->m_experimentOutputs)[i]))[k]) -
             (*simulationOutputMeans)[k];
       }
 
       for (unsigned int i = 0; i < this->m_numSimulations; i++) {
         for (unsigned int k = 0; k != numOutputs; ++k)
           eta[i*numOutputs+k] =
-            (*((this->m_simulationOutputs)[i]))[k] -
+            this->m_opts->normalized_output(k, (*((this->m_simulationOutputs)[i]))[k]) -
             (*simulationOutputMeans)[k];
       }
 
@@ -1155,6 +1160,8 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       V y_temp(Wy * y);
       y_temp -= Wy * B * yhat;
 
+      // At this point everything has already been normalized, so no
+      // more normalization to do?
       observationalPrecisionScale +=
         scalarProduct(y, y_temp) / 2.0;
     }
@@ -1168,12 +1175,13 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       // We currently use the mean of the simulation data, not a free
       // hyperparameter mean
       for (unsigned int i = 0; i < this->m_numExperiments; i++) {
-        (*residual)[i] = (*((this->m_experimentOutputs)[i]))[0] -
-                         (*simulationOutputMeans)[0];
+        (*residual)[i] =
+          this->m_opts->normalized_output(0, (*((this->m_experimentOutputs)[i]))[0]) -
+          (*simulationOutputMeans)[0];
       }
       for (unsigned int i = 0; i < this->m_numSimulations; i++) {
         (*residual)[i+this->m_numExperiments] =
-          (*((this->m_simulationOutputs)[i]))[0] -
+          this->m_opts->normalized_output(0, (*((this->m_simulationOutputs)[i]))[0]) -
           (*simulationOutputMeans)[0];
       }
     }

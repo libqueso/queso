@@ -423,6 +423,13 @@ GPMSAOptions::set_autoscale_minmax_scenario_parameter(unsigned int i)
 
 
 void
+GPMSAOptions::set_autoscale_minmax_output(unsigned int i)
+{
+  m_autoscaleMinMaxOutput.insert(i);
+}
+
+
+void
 GPMSAOptions::set_autoscale_meanvar()
 {
   queso_require(!options_have_been_used);
@@ -446,6 +453,13 @@ GPMSAOptions::set_autoscale_meanvar_scenario_parameter(unsigned int i)
   queso_require(!options_have_been_used);
 
   m_autoscaleMeanVarScenario.insert(i);
+}
+
+
+void
+GPMSAOptions::set_autoscale_meanvar_output(unsigned int i)
+{
+  m_autoscaleMeanVarOutput.insert(i);
 }
 
 
@@ -483,21 +497,38 @@ GPMSAOptions::set_scenario_parameter_scaling(unsigned int i,
 }
 
 
+void
+GPMSAOptions::set_output_scaling(unsigned int i,
+                                 double range_min,
+                                 double range_max)
+{
+  if (i >= m_outputScaleMin.size())
+  {
+    m_outputScaleMin.resize(i+1, 0);
+    m_outputScaleRange.resize(i+1, 1);
+  }
+  m_outputScaleMin[i] = range_min;
+  m_outputScaleRange[i] = range_max - range_min;
+}
+
+
 template <typename V>
 void
 GPMSAOptions::set_final_scaling
   (const std::vector<typename SharedPtr<V>::Type> & m_simulationScenarios,
    const std::vector<typename SharedPtr<V>::Type> & m_simulationParameters,
-   const std::vector<typename SharedPtr<V>::Type> & /* m_simulationOutputs */,
+   const std::vector<typename SharedPtr<V>::Type> & m_simulationOutputs,
    const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
-   const std::vector<typename SharedPtr<V>::Type> & /* m_experimentOutputs */)
+   const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs)
 {
   if ((m_autoscaleMinMaxAll && m_autoscaleMeanVarAll) ||
       ((m_autoscaleMinMaxAll || m_autoscaleMeanVarAll) &&
        (!m_autoscaleMinMaxUncertain.empty() ||
         !m_autoscaleMeanVarUncertain.empty() ||
         !m_autoscaleMinMaxScenario.empty() ||
-        !m_autoscaleMeanVarScenario.empty())))
+        !m_autoscaleMeanVarScenario.empty() ||
+        !m_autoscaleMinMaxOutput.empty() ||
+        !m_autoscaleMeanVarOutput.empty())))
     queso_error_msg("Cannot autoscale based on incompatible criteria");
 
   unsigned int dimScenario = m_simulationScenarios.size() ?
@@ -505,6 +536,11 @@ GPMSAOptions::set_final_scaling
 
   unsigned int dimParameter = m_simulationParameters.size() ?
           m_simulationParameters[0]->sizeGlobal() : 0;
+
+  unsigned int dimOutput = m_simulationOutputs.size() ?
+          m_simulationOutputs[0]->sizeGlobal() : 0;
+
+  queso_require_msg(dimOutput, "GPMSA needs *some* output data");
 
   if (m_autoscaleMinMaxAll || !m_autoscaleMinMaxScenario.empty())
     {
@@ -555,6 +591,30 @@ GPMSAOptions::set_final_scaling
 
             this->set_uncertain_parameter_scaling(p, minUncertain[p],
                                                      maxUncertain[p]);
+          }
+    }
+
+  if (m_autoscaleMinMaxAll || !m_autoscaleMinMaxOutput.empty())
+    {
+      V maxOutput(*m_simulationOutputs[0]);
+
+      V minOutput(*m_simulationOutputs[0]);
+
+      for (unsigned int i=1; i < m_simulationOutputs.size(); ++i)
+        min_max_update(minOutput, maxOutput,
+                       (*m_simulationOutputs[i]));
+
+      for (unsigned int p=0; p != dimOutput; ++p)
+        if (m_autoscaleMinMaxAll ||
+            m_autoscaleMinMaxOutput.count(p))
+          {
+            if ((m_outputScaleMin.size() > p) &&
+                ((m_outputScaleMin[p] != 0) ||
+                 (m_outputScaleRange[p] != 1)))
+              queso_error_msg("Cannot autoscale and manually scale the same output data");
+
+            this->set_output_scaling(p, minOutput[p],
+                                     maxOutput[p]);
           }
     }
 
@@ -624,6 +684,36 @@ GPMSAOptions::set_final_scaling
           }
     }
 
+  if (m_autoscaleMeanVarAll || !m_autoscaleMeanVarOutput.empty())
+    {
+      unsigned int n=0;
+
+      V meanOutput(*m_simulationOutputs[0]);
+
+      V varOutput(m_simulationOutputs[0]->env(),
+                  m_simulationOutputs[0]->map());
+
+      for (unsigned int i=0; i < m_simulationOutputs.size(); ++i)
+        mean_var_update(n, meanOutput, varOutput,
+                        *m_simulationOutputs[i]);
+
+      varOutput /= n;
+
+      for (unsigned int p=0; p != dimOutput; ++p)
+        if (m_autoscaleMeanVarAll ||
+            m_autoscaleMeanVarOutput.count(p))
+          {
+            if ((m_outputScaleMin.size() > p) &&
+                ((m_outputScaleMin[p] != 0) ||
+                 (m_outputScaleRange[p] != 1)))
+              queso_error_msg("Cannot autoscale and manually scale the same output data");
+
+            this->set_output_scaling(p, meanOutput[p],
+                                     meanOutput[p] +
+                                     std::sqrt(varOutput[p]));
+          }
+    }
+
   options_have_been_used = true;
 }
 
@@ -650,6 +740,31 @@ const
             m_uncertainScaleRange[i];
   return physical_param;
 }
+
+
+double
+GPMSAOptions::normalized_output(unsigned int i,
+                                double output_data)
+const
+{
+  if (i < m_outputScaleMin.size())
+    return (output_data - m_outputScaleMin[i]) /
+            m_outputScaleRange[i];
+  return output_data;
+}
+
+
+
+double
+GPMSAOptions::output_scale(unsigned int i)
+const
+{
+  if (i < m_outputScaleRange.size())
+    return m_outputScaleRange[i];
+  return 1;
+}
+
+
 
 
 void
