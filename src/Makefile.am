@@ -23,6 +23,10 @@ if HDF5_ENABLED
   AM_CPPFLAGS += $(HDF5_CFLAGS)
 endif
 
+if TRILINOS_ENABLED
+  AM_CPPFLAGS += -I$(TRILINOS_INCLUDE)
+endif
+
 if LIBMESH_SLEPC_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)# $(LIBMESH_INCLUDE)
 endif
@@ -61,7 +65,13 @@ endif
 # variable later.
 
 if TRILINOS_ENABLED
-  libqueso_la_LDFLAGS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
+  libqueso_la_LDFLAGS += -L$(TRILINOS_LIB) \
+			 -lteuchoscore \
+			 -lteuchoscomm \
+			 -lteuchosnumerics \
+			 -lteuchosparameterlist \
+			 -lteuchosremainder \
+			 -lepetra
 endif
 
 if LIBMESH_SLEPC_ENABLED
