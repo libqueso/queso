@@ -153,9 +153,11 @@ if test "${with_trilinos}" != no ; then
         dnl We need it to back out the discovered TRILINOS_INCLUDE directory.
         gl_TRILINOS_ABSOLUTE_HEADER([Trilinos_version.h])
         TRILINOS_INCLUDE=`AS_DIRNAME([$gl_cv_absolute_Trilinos_version_h])`
+        TRILINOS_LIB="${trilinos_libdir}"
 
         AC_DEFINE(HAVE_TRILINOS,1,[Define if Trilinos is available])
         AC_SUBST(TRILINOS_INCLUDE)
+        AC_SUBST(TRILINOS_LIB)
         ifelse([$2],,,[$2])
     fi
 
