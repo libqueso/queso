@@ -27,7 +27,9 @@
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <boost/program_options.hpp>
 #else
+#define GETPOT_NAMESPACE QUESO // So we don't clash with other getpots
 #include <queso/getpot.h>
+#undef GETPOT_NAMESPACE
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
 #include <queso/EnvironmentOptions.h>

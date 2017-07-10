@@ -54,9 +54,6 @@
 // Use GSL inline functions
 #define HAVE_INLINE
 
-// So we don't clash with other getpots
-#define GETPOT_NAMESPACE QUESO
-
 // And only do GSL range-checking if we're really debugging
 #ifndef DEBUG
 #define GSL_RANGE_CHECK_OFF

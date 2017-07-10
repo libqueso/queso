@@ -33,7 +33,9 @@
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
 #else
+#define GETPOT_NAMESPACE QUESO // So we don't clash with other getpots
 #include <queso/getpot.h>
+#undef GETPOT_NAMESPACE
 #endif
 
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
