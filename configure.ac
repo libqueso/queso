@@ -292,6 +292,7 @@ AC_CONFIG_FILES([
   doxygen/txt_common/about_vpath.page
 ])
 
+AC_CONFIG_FILES(test/test_StatisticalInverseProblem/test_parallel_h5.sh, [chmod +x test/test_StatisticalInverseProblem/test_parallel_h5.sh])
 AC_CONFIG_FILES(src/apps/queso-config, [chmod +x src/apps/queso-config])
 
 dnl ----------------------------------------------

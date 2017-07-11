@@ -1,0 +1,25 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+
+have_mpi=@HAVE_MPI@
+have_hdf5=@HAVE_HDF5@
+
+if [ $have_mpi -eq 1 ]; then
+  if [ $have_hdf5 -eq 1 ]; then
+    PROG="mpiexec -np 2 ./test_parallel_h5"
+
+    INPUT="${srcdir}/test_StatisticalInverseProblem/input_test_parallel_h5.txt"
+
+    $PROG $INPUT
+
+    h5diff ${srcdir}/test_StatisticalInverseProblem/output_test_parallel_h5_expected.h5 \
+           output_test_parallel_h5/ip_raw_chain.h5
+
+    rm -r output_test_parallel_h5
+  else
+    exit 77
+  fi
+else
+  exit 77
+fi
