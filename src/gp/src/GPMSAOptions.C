@@ -638,7 +638,7 @@ GPMSAOptions::set_final_scaling
         mean_var_update(n, meanScenario, varScenario,
                         *m_experimentScenarios[i]);
 
-      varScenario /= n;
+      varScenario /= n - 1;
 
       for (unsigned int p=0; p != dimScenario; ++p)
         if (m_autoscaleMeanVarAll ||
@@ -669,7 +669,7 @@ GPMSAOptions::set_final_scaling
         mean_var_update(n, meanUncertain, varUncertain,
                         *m_simulationParameters[i]);
 
-      varUncertain /= n;
+      varUncertain /= n - 1;
 
       for (unsigned int p=0; p != dimScenario; ++p)
         if (m_autoscaleMeanVarAll ||
@@ -699,7 +699,7 @@ GPMSAOptions::set_final_scaling
         mean_var_update(n, meanOutput, varOutput,
                         *m_simulationOutputs[i]);
 
-      varOutput /= n;
+      varOutput /= n - 1;
 
       for (unsigned int p=0; p != dimOutput; ++p)
         if (m_autoscaleMeanVarAll ||

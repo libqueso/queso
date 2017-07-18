@@ -355,7 +355,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
               m_opts.m_calibrateObservationalPrecision ?
               domainVector[dimSum-1] : 1.0;
 
-            covMatrix(i,j) += lambda_y * experimentalError;
+            covMatrix(i,j) += experimentalError / lambda_y;
           }
       }
     }
@@ -363,7 +363,11 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     // Add small white noise component to diagonal to make stuff +ve def
     // = "small ridge"
     // Barely alluded to, never described, in Higdon et. al.
-    const double emulator_data_precision = domainVector[dimSum-1-(numOutputs>1)];
+    const double emulator_data_precision =
+      domainVector[dimSum-1-
+                   (numOutputs>1)-
+                   m_opts.m_calibrateObservationalPrecision];
+
     queso_assert_greater(emulator_data_precision, 0);
     double nugget = 1.0 / emulator_data_precision;
 
