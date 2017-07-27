@@ -554,9 +554,12 @@ GPMSAOptions::set_final_scaling
         min_max_update(minScenario, maxScenario,
                        (*m_simulationScenarios[i]));
 
+      // To match Matlab code, only use simulation data for scaling.
+/*
       for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
         min_max_update(minScenario, maxScenario,
                        (*m_experimentScenarios[i]));
+*/
 
       for (unsigned int p=0; p != dimScenario; ++p)
         if (m_autoscaleMinMaxAll ||
@@ -634,9 +637,12 @@ GPMSAOptions::set_final_scaling
         mean_var_update(n, meanScenario, varScenario,
                         *m_simulationScenarios[i]);
 
+      // To match Matlab code, only use simulation data for scaling.
+/*
       for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
         mean_var_update(n, meanScenario, varScenario,
                         *m_experimentScenarios[i]);
+*/
 
       varScenario /= n - 1;
 
