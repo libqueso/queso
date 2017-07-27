@@ -212,6 +212,15 @@ public:
   //! The scale parameter for the Gamma hyperprior for the truncation error precision
   double m_truncationErrorPrecisionScale;
 
+  //! Calculate a normalized value from a physical value for the
+  //  specified output index.
+  double normalized_output(unsigned int i,
+                           double output_data) const;
+
+  //! Returns the scale, in physical units, corresponding to a single
+  //  nondimensionalized unit for the specified output index.
+  double output_scale(unsigned int i) const;
+
   //! The shape parameter for the Gamma hyperprior for the emulator precision
   double m_emulatorPrecisionShape;
 

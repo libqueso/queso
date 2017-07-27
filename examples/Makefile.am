@@ -446,19 +446,33 @@ dist_gpmsa_vector_DATA += gp/scalar/ctf_dat.txt
 
 gpmsa_linverifdir = $(prefix)/examples/gp/linear_verif
 
-gpmsa_linverif_PROGRAMS = gpmsa_linverif
+gpmsa_linverif_PROGRAMS =
+gpmsa_linverif_PROGRAMS += gpmsa_linverif
+gpmsa_linverif_PROGRAMS += gpmsa_linverif_pdf
+gpmsa_linverif_PROGRAMS += gpmsa_linverif_pdf_small
+
 gpmsa_linverif_SOURCES = gp/linear_verif/gpmsa_linear_verif.C
 gpmsa_linverif_LDADD = $(top_builddir)/src/libqueso.la
-gpmsa_linverif_CPPFLAGS = -I$(top_srcdir)/examples/gp/linear_verif $(AM_CPPFLAGS)
+
+gpmsa_linverif_pdf_SOURCES = gp/linear_verif/gpmsa_linear_verif_pdf.C
+gpmsa_linverif_pdf_LDADD = $(top_builddir)/src/libqueso.la
+
+gpmsa_linverif_pdf_small_SOURCES = gp/linear_verif/gpmsa_linear_verif_pdf_small.C
+gpmsa_linverif_pdf_small_LDADD = $(top_builddir)/src/libqueso.la
 
 dist_gpmsa_linverif_DATA =
 dist_gpmsa_linverif_DATA += ${gpmsa_linverif_SOURCES}
 dist_gpmsa_linverif_DATA += gp/linear_verif/gpmsa_scalar.txt
+dist_gpmsa_linverif_DATA += gp/linear_verif/gpmsa_scalar_small.txt
 dist_gpmsa_linverif_DATA += gp/linear_verif/sim_scalar.dat
 dist_gpmsa_linverif_DATA += gp/linear_verif/y_exp_scalar.txt
+dist_gpmsa_linverif_DATA += gp/linear_verif/sim_scalar_small.dat
+dist_gpmsa_linverif_DATA += gp/linear_verif/y_exp_scalar_small.txt
 dist_gpmsa_linverif_DATA += gp/linear_verif/gpmsa_mv.txt
 dist_gpmsa_linverif_DATA += gp/linear_verif/sim_mv.dat
 dist_gpmsa_linverif_DATA += gp/linear_verif/y_exp_mv.txt
+dist_gpmsa_linverif_DATA += gp/linear_verif/mcmc_verif1.txt
+dist_gpmsa_linverif_DATA += gp/linear_verif/mcmc_verif1_small.txt
 
 #######################################
 # Canned Gaussian likelihood examples #

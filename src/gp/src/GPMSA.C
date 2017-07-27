@@ -911,9 +911,9 @@ GPMSAFactory<V, M>::setUpEmulator()
               // No fancy perturbation here
               unsigned int j = ex*numOutputs+outj;
 
-              Wy(i,j) = W_i(outi,outj) /
-                        (this->m_opts->output_scale(outi) *
-                         this->m_opts->output_scale(outj));
+              Wy(i,j) = W_i(outi,outj) *
+                        this->m_opts->output_scale(i) *
+                        this->m_opts->output_scale(j);
             }
         }
     }

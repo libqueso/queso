@@ -717,6 +717,37 @@ GPMSAOptions::set_final_scaling
     }
 
   options_have_been_used = true;
+
+
+  if (m_autoscaleMeanVarAll || !m_autoscaleMeanVarOutput.empty())
+    {
+      unsigned int n=0;
+
+      V meanOutput(*m_simulationOutputs[0]);
+
+      V varOutput(m_simulationOutputs[0]->env(),
+                  m_simulationOutputs[0]->map());
+
+      for (unsigned int i=0; i < m_simulationOutputs.size(); ++i)
+        mean_var_update(n, meanOutput, varOutput,
+                        *m_simulationOutputs[i]);
+
+      varOutput /= n;
+
+      for (unsigned int p=0; p != dimOutput; ++p)
+        if (m_autoscaleMeanVarAll ||
+            m_autoscaleMeanVarOutput.count(p))
+          {
+            if ((m_outputScaleMin.size() > p) &&
+                ((m_outputScaleMin[p] != 0) ||
+                 (m_outputScaleRange[p] != 1)))
+              queso_error_msg("Cannot autoscale and manually scale the same output data");
+
+            this->set_output_scaling(p, meanOutput[p],
+                                     meanOutput[p] +
+                                     std::sqrt(varOutput[p]));
+          }
+    }
 }
 
 

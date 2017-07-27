@@ -327,6 +327,11 @@ void run_scalar(const QUESO::FullEnvironment& env)
 
   std::cout << "\nAdjusted initial position:\n" << paramInitials << std::endl;
 
+  QUESO::GslVector point(paramInitials);
+  double value = gpmsaFactory.prior().pdf().lnValue(point);
+  std::cout << "\nlog prior evaluated at: " << point << std::endl;
+  std::cout << "\nlog prior is: " << value << std::endl;
+
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
 
