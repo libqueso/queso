@@ -733,7 +733,7 @@ const
 {
   if (i < m_scenarioScaleMin.size())
     return (physical_param - m_scenarioScaleMin[i]) /
-            m_scenarioScaleRange[i];
+            (m_scenarioScaleRange[i] ? m_scenarioScaleRange[i] : 1);
   return physical_param;
 }
 
@@ -745,7 +745,7 @@ const
 {
   if (i < m_uncertainScaleMin.size())
     return (physical_param - m_uncertainScaleMin[i]) /
-            m_uncertainScaleRange[i];
+            (m_uncertainScaleRange[i] ? m_uncertainScaleRange[i] : 1);
   return physical_param;
 }
 
@@ -757,7 +757,7 @@ const
 {
   if (i < m_outputScaleMin.size())
     return (output_data - m_outputScaleMin[i]) /
-            m_outputScaleRange[i];
+            (m_outputScaleRange[i] ? m_outputScaleRange[i] : 1);
   return output_data;
 }
 
@@ -767,7 +767,8 @@ double
 GPMSAOptions::output_scale(unsigned int i)
 const
 {
-  if (i < m_outputScaleRange.size())
+  if (i < m_outputScaleRange.size() &&
+      m_outputScaleRange[i])
     return m_outputScaleRange[i];
   return 1;
 }
