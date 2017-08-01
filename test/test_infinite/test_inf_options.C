@@ -89,11 +89,9 @@ int main(int argc, char **argv)
   QUESO::InfiniteDimensionalMCMCSamplerOptions opts(env, "");
   QUESO::InfiniteDimensionalMCMCSampler sampler(env, mu, llhd, &opts);
 
-  if (opts.m_num_iters != 10 ||  // Input file value is 10
-      opts.m_save_freq != 5 ||  // Ditto 5
-      opts.m_rwmh_step != 0.1) {
-    return 1;
-  }
+  queso_require_equal_to(opts.m_num_iters, 10);
+  queso_require_equal_to(opts.m_save_freq, 5);
+  queso_require_equal_to(opts.m_rwmh_step, 0.1);
 
   return 0;
 }
@@ -107,6 +105,7 @@ int main(int argc, char **argv)
 #else
 int main()
 {
+  std::cout << "QUESO was configured without libMesh support." << std::endl;
   return 77;
 }
 #endif
