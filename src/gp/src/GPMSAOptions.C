@@ -83,8 +83,11 @@ void min_max_update(V & min, V & max, const V & new_data,
                           " is above maximum simulation " <<
                           warn_on_update << " " << max[p]);
         }
-      min[p] = std::min(min[p], new_data[p]);
-      max[p] = std::max(max[p], new_data[p]);
+      else
+        {
+          min[p] = std::min(min[p], new_data[p]);
+          max[p] = std::max(max[p], new_data[p]);
+        }
     }
 }
 
