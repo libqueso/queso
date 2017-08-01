@@ -67,15 +67,15 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
 
   m_parser->getOption<std::string>(m_option_dataOutputDirName,  m_dataOutputDirName);
   m_parser->getOption<std::string>(m_option_dataOutputFileName, m_dataOutputFileName);
-  m_parser->getOption<unsigned int>(m_option_num_iters,          m_num_iters);
-  m_parser->getOption<unsigned int>(m_option_save_freq,          m_save_freq);
+  m_parser->getOption<unsigned int>(m_option_num_iters,         m_num_iters);
+  m_parser->getOption<unsigned int>(m_option_save_freq,         m_save_freq);
   m_parser->getOption<double     >(m_option_rwmh_step,          m_rwmh_step);
 #else
-  m_option_dataOutputDirName = m_env.input()(m_option_dataOutputDirName, UQ_INF_DATA_OUTPUT_DIR_NAME_ODV);
-  m_option_dataOutputFileName = m_env.input()(m_option_dataOutputFileName, UQ_INF_DATA_OUTPUT_FILE_NAME_ODV);
-  m_option_num_iters = m_env.input()(m_option_num_iters, UQ_INF_NUM_ITERS_ODV);
-  m_option_save_freq = m_env.input()(m_option_save_freq, UQ_INF_SAVE_FREQ_ODV);
-  m_option_rwmh_step = m_env.input()(m_option_rwmh_step, UQ_INF_RWMH_STEP_ODV);;
+  m_dataOutputDirName = m_env.input()(m_option_dataOutputDirName, UQ_INF_DATA_OUTPUT_DIR_NAME_ODV);
+  m_dataOutputFileName = m_env.input()(m_option_dataOutputFileName, UQ_INF_DATA_OUTPUT_FILE_NAME_ODV);
+  m_num_iters = m_env.input()(m_option_num_iters, UQ_INF_NUM_ITERS_ODV);
+  m_save_freq = m_env.input()(m_option_save_freq, UQ_INF_SAVE_FREQ_ODV);
+  m_rwmh_step = m_env.input()(m_option_rwmh_step, UQ_INF_RWMH_STEP_ODV);;
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
