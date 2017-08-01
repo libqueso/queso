@@ -61,7 +61,8 @@
 namespace { // Anonymous namespace for helper functions
 
 template <typename V>
-void min_max_update(V & min, V & max, const V & new_data)
+void min_max_update(V & min, V & max, const V & new_data,
+                    const char * warn_on_update = NULL)
 {
   unsigned int dim = min.sizeGlobal();
   queso_assert_equal_to(dim, max.sizeGlobal());
@@ -69,6 +70,19 @@ void min_max_update(V & min, V & max, const V & new_data)
 
   for (unsigned int p=0; p != dim; ++p)
     {
+      if (warn_on_update)
+        {
+          if (min[p] > new_data[p])
+            queso_warning("Experimental " << warn_on_update << " " <<
+                          new_data[p] << " at index " << p <<
+                          " is below minimum simulation " <<
+                          warn_on_update << " " << min[p]);
+          if (max[p] < new_data[p])
+            queso_warning("Experimental " << warn_on_update << " " <<
+                          new_data[p] << " at index " << p <<
+                          " is above maximum simulation " <<
+                          warn_on_update << " " << max[p]);
+        }
       min[p] = std::min(min[p], new_data[p]);
       max[p] = std::max(max[p], new_data[p]);
     }
@@ -550,16 +564,18 @@ GPMSAOptions::set_final_scaling
 
       V minScenario(*m_simulationScenarios[0]);
 
+      // Only use simulation data for scaling.
       for (unsigned int i=1; i < m_simulationScenarios.size(); ++i)
         min_max_update(minScenario, maxScenario,
                        (*m_simulationScenarios[i]));
 
-      // To match Matlab code, only use simulation data for scaling.
-/*
+      // But check the experimental data, and yell at the user if it
+      // falls outside the simulation data range, because they
+      // probably don't want to be extrapolating with their GP.
       for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
         min_max_update(minScenario, maxScenario,
-                       (*m_experimentScenarios[i]));
-*/
+                       (*m_experimentScenarios[i]),
+                       /*warn_on_update =*/ "scenario parameter");
 
       for (unsigned int p=0; p != dimScenario; ++p)
         if (m_autoscaleMinMaxAll ||
@@ -605,6 +621,10 @@ GPMSAOptions::set_final_scaling
 
       V minOutput(*m_simulationOutputs[0]);
 
+      // Only use simulation data for scaling.  In this case we won't
+      // warn if the experimental data falls outside the simulation
+      // data bounds, because the user can't control their outputs,
+      // just their inputs.
       for (unsigned int i=1; i < m_simulationOutputs.size(); ++i)
         min_max_update(minOutput, maxOutput,
                        (*m_simulationOutputs[i]));
@@ -633,16 +653,11 @@ GPMSAOptions::set_final_scaling
       V varScenario(m_simulationScenarios[0]->env(),
                     m_simulationScenarios[0]->map());
 
+      // For consistency with the min-max behavior, only normalize
+      // using simulation data, not experiment data.
       for (unsigned int i=0; i < m_simulationScenarios.size(); ++i)
         mean_var_update(n, meanScenario, varScenario,
                         *m_simulationScenarios[i]);
-
-      // To match Matlab code, only use simulation data for scaling.
-/*
-      for (unsigned int i=0; i < m_experimentScenarios.size(); ++i)
-        mean_var_update(n, meanScenario, varScenario,
-                        *m_experimentScenarios[i]);
-*/
 
       varScenario /= n - 1;
 
