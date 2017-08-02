@@ -71,45 +71,23 @@ void readData
   unsigned int num_responses = simulationOutputs[0]->sizeGlobal();
   unsigned int num_simulations = simulationOutputs.size();
 
-  // for accumulating statistics per-response
-  QUESO::GslVector meansim(*(simulationOutputs[0]));  meansim.cwSet(0.0);
-  QUESO::GslVector m2sim(*(simulationOutputs[0]));    m2sim.cwSet(0.0);
-  QUESO::GslVector stdsim(*(simulationOutputs[0]));   stdsim.cwSet(0.0);
-
   // File containing x, theta, y (vertical concatenation of lhs.txt, y_mod.txt)
   std::ifstream sim_data;
   open_data_file(sim_data_filename, sim_data);
   try {
     for (unsigned int i = 0; i < num_simulations; ++i) {
       for (unsigned int j = 0; j < num_config; ++j)
-	sim_data >> (*(simulationScenarios[i]))[j];
+        sim_data >> (*(simulationScenarios[i]))[j];
       for (unsigned int j = 0; j < num_params; ++j)
-	sim_data >> (*(simulationParameters[i]))[j];
+        sim_data >> (*(simulationParameters[i]))[j];
       for (unsigned int j = 0; j < num_responses; ++j) {
-	double& sim_output = (*(simulationOutputs[i]))[j];
-	sim_data >> sim_output;
-	double delta = sim_output - meansim[j];
-	meansim[j] += delta / (i+1);
-	m2sim[j] += delta * (sim_output - meansim[j]);
+        sim_data >> (*(simulationOutputs[i]))[j];
       }
     }
   }
   catch (const std::ifstream::failure& e) {
     queso_error_msg(std::string("Error reading ") + sim_data_filename + ": " +
-		    e.what());
-  }
-
-  // The user is required to standardise the experimental and simulation data
-  for (unsigned int j = 0; j < num_responses; ++j) {
-    // FIXME (in other examples): scalar example was missing the sqrt
-    // FIXME: this will divide by 0 for case of 1 simulation
-     stdsim[j] = std::sqrt(m2sim[j] / (double)(num_simulations - 1));
-     // std::cout << "mean[" << j << "] = " << meansim[j] << '\n';
-     // std::cout << "std[" << j << "]  = " << stdsim[j] << '\n';
-     for (unsigned int i = 0; i < num_simulations; ++i) {
-       (*(simulationOutputs[i]))[j] -= meansim[j];
-       (*(simulationOutputs[i]))[j] /= stdsim[j];
-     }
+        e.what());
   }
 
   // Read in experimental data
@@ -119,30 +97,16 @@ void readData
   try {
     for (unsigned int i = 0; i < num_experiments; ++i) {
       for (unsigned int j = 0; j < num_config; ++j)
-	exp_data >> (*(experimentScenarios[i]))[j];
+        exp_data >> (*(experimentScenarios[i]))[j];
       for (unsigned int j = 0; j < num_responses; ++j)
-	exp_data >> (*(experimentOutputs[i]))[j];
+        exp_data >> (*(experimentOutputs[i]))[j];
     }
   }
   catch (const std::ifstream::failure& e) {
     queso_error_msg(std::string("Error reading ") + exp_data_filename + ": " +
-		    e.what());
-  }
-
-  // Also required to standardise experimental data and covariance
-  for (unsigned int i = 0; i < num_experiments; ++i) {
-    unsigned int block_offset = i * num_responses;
-    for (unsigned int j = 0; j < num_responses; ++j) {
-      (*(experimentOutputs[i]))[j] -= meansim[j];
-
-      (*(experimentOutputs[i]))[j] /= stdsim[j];
-      for (unsigned int k = 0; k < num_responses; ++k)
-	experimentMat(block_offset + j, block_offset + k) /=
-	  (stdsim[j] * stdsim[k]);
-    }
+        e.what());
   }
 }
-
 
 void run_scalar(const QUESO::FullEnvironment& env)
 {
