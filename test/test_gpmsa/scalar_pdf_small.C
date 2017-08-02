@@ -71,11 +71,6 @@ void readData
   unsigned int num_responses = simulationOutputs[0]->sizeGlobal();
   unsigned int num_simulations = simulationOutputs.size();
 
-  // for accumulating statistics per-response
-  QUESO::GslVector meansim(*(simulationOutputs[0]));  meansim.cwSet(0.0);
-  QUESO::GslVector m2sim(*(simulationOutputs[0]));    m2sim.cwSet(0.0);
-  QUESO::GslVector stdsim(*(simulationOutputs[0]));   stdsim.cwSet(0.0);
-
   // File containing x, theta, y (vertical concatenation of lhs.txt, y_mod.txt)
   std::ifstream sim_data;
   open_data_file(sim_data_filename, sim_data);
@@ -86,11 +81,7 @@ void readData
       for (unsigned int j = 0; j < num_params; ++j)
         sim_data >> (*(simulationParameters[i]))[j];
       for (unsigned int j = 0; j < num_responses; ++j) {
-        double& sim_output = (*(simulationOutputs[i]))[j];
-        sim_data >> sim_output;
-        double delta = sim_output - meansim[j];
-        meansim[j] += delta / (i+1);
-        m2sim[j] += delta * (sim_output - meansim[j]);
+        sim_data >> (*(simulationOutputs[i]))[j];
       }
     }
   }
@@ -292,6 +283,10 @@ void run_scalar(const QUESO::FullEnvironment& env)
   }
   solution_data.close();
 
+  // We subtract off the first difference in log priors because the
+  // normalisation constants between our implementation and Matlab's
+  // implementation are not the same.  We expect them to only be the same up to
+  // an additive constant.
   double initial_diff_prior = expected_log_priors[0] - computed_log_priors[0];
   for (unsigned int i = 0; i < expected_log_priors.size(); i++) {
     double diff_prior = expected_log_priors[i] - computed_log_priors[i] - initial_diff_prior;
