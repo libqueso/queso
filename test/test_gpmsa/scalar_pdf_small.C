@@ -274,25 +274,21 @@ void run_scalar(const QUESO::FullEnvironment& env)
     for (unsigned int j = 0; j < point.sizeLocal(); ++j)
       solution_data >> point[j];
 
-    double log_likelihood;
-    solution_data >> log_likelihood;
-    expected_log_likelihoods[i] = log_likelihood;
+    double log_pdf;
+    solution_data >> log_pdf;
+    expected_log_likelihoods[i] = log_pdf;
 
-    double log_prior;
-    solution_data >> log_prior;
-    expected_log_priors[i] = log_prior;
+    solution_data >> log_pdf;
+    expected_log_priors[i] = log_pdf;
 
-    double log_posterior;
-    solution_data >> log_posterior;
-    expected_log_posteriors[i] = log_posterior;
+    solution_data >> log_pdf;
+    expected_log_posteriors[i] = log_pdf;
 
-    double computed_log_prior;
-    computed_log_prior = (gpmsaFactory.prior().pdf().lnValue(point));
-    computed_log_priors[i] = computed_log_prior;
+    log_pdf = (gpmsaFactory.prior().pdf().lnValue(point));
+    computed_log_priors[i] = log_pdf;
 
-    double computed_log_likelihood;
-    computed_log_likelihood = (gpmsaFactory.getGPMSAEmulator().lnValue(point, NULL, NULL, NULL, NULL));
-    computed_log_likelihoods[i] = computed_log_likelihood;
+    log_pdf = (gpmsaFactory.getGPMSAEmulator().lnValue(point, NULL, NULL, NULL, NULL));
+    computed_log_likelihoods[i] = log_pdf;
   }
   solution_data.close();
 
