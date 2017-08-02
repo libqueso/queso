@@ -35,12 +35,12 @@ AC_ARG_WITH(hdf5,
   [AS_HELP_STRING([--with-hdf5[=DIR]],[root directory of HDF5 installation (default = HDF5_DIR)])],
   [with_hdf5=$withval
 if test "${with_hdf5}" != yes; then
-    HDF5_PREFIX=$withval
+   HDF5_PREFIX=$withval
 fi
 ],[
 with_hdf5=$withval
 if test "x${HDF5_DIR}" != "x"; then
-   HDF5_PREFIX=${HDF5_DIR}
+  HDF5_PREFIX=${HDF5_DIR}
 fi
 ])
 
@@ -52,88 +52,87 @@ is_package_required=ifelse([$2], ,no, $2 )
 HAVE_HDF5=0
 
 if test "${with_hdf5}" != no ; then
+  if test -d "${HDF5_PREFIX}/lib" ; then
+     HDF5_LIBS="-L${HDF5_PREFIX}/lib -lhdf5 -Wl,-rpath,${HDF5_PREFIX}/lib"
+     HDF5_FLIBS="-L${HDF5_PREFIX}/lib -lhdf5_fortran -Wl,-rpath,${HDF5_PREFIX}/lib"
+     HDF5_CXXLIBS="-L${HDF5_PREFIX}/lib -lhdf5_cpp -Wl,-rpath,${HDF5_PREFIX}/lib"
+  fi
 
-    if test -d "${HDF5_PREFIX}/lib" ; then
+  if test -d "${HDF5_PREFIX}/include" ; then
+    HDF5_CFLAGS="-I${HDF5_PREFIX}/include"
+  fi
 
-       HDF5_LIBS="-L${HDF5_PREFIX}/lib -lhdf5 -Wl,-rpath,${HDF5_PREFIX}/lib"
-       HDF5_FLIBS="-L${HDF5_PREFIX}/lib -lhdf5_fortran -Wl,-rpath,${HDF5_PREFIX}/lib"
-       HDF5_CXXLIBS="-L${HDF5_PREFIX}/lib -lhdf5_cpp -Wl,-rpath,${HDF5_PREFIX}/lib"
-    fi
+  ac_HDF5_save_CFLAGS="$CFLAGS"
+  ac_HDF5_save_CPPFLAGS="$CPPFLAGS"
+  ac_HDF5_save_LDFLAGS="$LDFLAGS"
+  ac_HDF5_save_LIBS="$LIBS"
 
-    if test -d "${HDF5_PREFIX}/include" ; then
-        HDF5_CFLAGS="-I${HDF5_PREFIX}/include"
-    fi
+  CFLAGS="${HDF5_CFLAGS} ${CFLAGS}"
+  CPPFLAGS="${HDF5_CFLAGS} ${CPPFLAGS}"
+  LDFLAGS="${HDF5_LIBS} ${LDFLAGS}"
 
-    ac_HDF5_save_CFLAGS="$CFLAGS"
-    ac_HDF5_save_CPPFLAGS="$CPPFLAGS"
-    ac_HDF5_save_LDFLAGS="$LDFLAGS"
-    ac_HDF5_save_LIBS="$LIBS"
+  AC_LANG_PUSH([C])
+  AC_CHECK_HEADER([hdf5.h],[found_header=yes],[found_header=no])
 
-    CFLAGS="${HDF5_CFLAGS} ${CFLAGS}"
-    CPPFLAGS="${HDF5_CFLAGS} ${CPPFLAGS}"
-    LDFLAGS="${HDF5_LIBS} ${LDFLAGS}"
+  #-----------------------
+  # Minimum version check
+  #----------------------
 
-    AC_LANG_PUSH([C])
-    AC_CHECK_HEADER([hdf5.h],[found_header=yes],[found_header=no])
+  min_hdf5_version=ifelse([$1], ,1.8.0, $1)
 
-    #-----------------------
-    # Minimum version check
-    #----------------------
+  # looking for major.minor.micro style versioning
 
-    min_hdf5_version=ifelse([$1], ,1.8.0, $1)
+  MAJOR_VER=`echo $min_hdf5_version | sed 's/^\([[0-9]]*\).*/\1/'`
+  if test "x${MAJOR_VER}" = "x" ; then
+    MAJOR_VER=0
+  fi
 
-    # looking for major.minor.micro style versioning
+  MINOR_VER=`echo $min_hdf5_version | sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\2/'`
+  if test "x${MINOR_VER}" = "x" ; then
+    MINOR_VER=0
+  fi
 
-    MAJOR_VER=`echo $min_hdf5_version | sed 's/^\([[0-9]]*\).*/\1/'`
-    if test "x${MAJOR_VER}" = "x" ; then
-       MAJOR_VER=0
-    fi
-
-    MINOR_VER=`echo $min_hdf5_version | sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\2/'`
-    if test "x${MINOR_VER}" = "x" ; then
-       MINOR_VER=0
-    fi
-
-    MICRO_VER=`echo $min_hdf5_version | sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\3/'`
-    if test "x${MICRO_VER}" = "x" ; then
-       MICRO_VER=0
-    fi
+  MICRO_VER=`echo $min_hdf5_version | sed 's/^\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\)\.\{0,1\}\([[0-9]]*\).*/\3/'`
+  if test "x${MICRO_VER}" = "x" ; then
+    MICRO_VER=0
+  fi
 
   #  begin additional test(s) if header if available
 
   if test "x${found_header}" = "xyes" ; then
 
-        AC_MSG_CHECKING(for hdf5 - version >= $min_hdf5_version)
-        version_succeeded=no
+    AC_MSG_CHECKING(for hdf5 - version >= $min_hdf5_version)
+    version_succeeded=no
 
-    	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-       	@%:@include <hdf5.h>
-            ]], [[
-            #if H5_VERS_MAJOR > $MAJOR_VER
-            /* Sweet nibblets */
-            #elif (H5_VERS_MAJOR >= $MAJOR_VER) && (H5_VERS_MINOR >= $MINOR_VER) && (H5_VERS_RELEASE >= $MICRO_VER)
-            /* Winner winner, chicken dinner */
-            #else
-            #  error HDF5 version is too old
-            #endif
-        ]])],[
-            AC_MSG_RESULT(yes)
-            version_succeeded=yes
-        ],[
-            AC_MSG_RESULT(no)
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <hdf5.h>]],
+      [[
+        #if H5_VERS_MAJOR > $MAJOR_VER
+        /* Sweet nibblets */
+        #elif (H5_VERS_MAJOR >= $MAJOR_VER) && (H5_VERS_MINOR >= $MINOR_VER) && (H5_VERS_RELEASE >= $MICRO_VER)
+        /* Winner winner, chicken dinner */
+        #else
+        #  error HDF5 version is too old
+        #endif
+      ]])],
+        [
+          AC_MSG_RESULT(yes)
+          version_succeeded=yes
+        ],
+        [
+          AC_MSG_RESULT(no)
+        ]
+    )
+
+    if test "$version_succeeded" != "yes";then
+      if test "$is_package_required" = yes; then
+        AC_MSG_ERROR([
+          Your HDF5 library version does not meet the minimum versioning
+          requirements ($min_hdf5_version).  Please use --with-hdf5 to specify
+          the location of an updated installation or consider upgrading the
+          system version.
         ])
-
-    	if test "$version_succeeded" != "yes";then
-       	   if test "$is_package_required" = yes; then
-              AC_MSG_ERROR([
-
-   Your HDF5 library version does not meet the minimum versioning
-   requirements ($min_hdf5_version).  Please use --with-hdf5 to specify the location
-   of an updated installation or consider upgrading the system version.
-
-       	 	 ])
-           fi
-        fi
+      fi
+    fi
 
     # Library availability
 
@@ -142,46 +141,43 @@ if test "${with_hdf5}" != no ; then
     AC_CHECK_LIB([hdf5],[H5Fopen],[found_library=yes],[found_library=no])
     AC_LANG_POP([C])
 
-
   fi   dnl end test if header if available
 
-    CFLAGS="$ac_HDF5_save_CFLAGS"
-    CPPFLAGS="$ac_HDF5_save_CPPFLAGS"
-    LDFLAGS="$ac_HDF5_save_LDFLAGS"
-    LIBS="$ac_HDF5_save_LIBS"
+  CFLAGS="$ac_HDF5_save_CFLAGS"
+  CPPFLAGS="$ac_HDF5_save_CPPFLAGS"
+  LDFLAGS="$ac_HDF5_save_LDFLAGS"
+  LIBS="$ac_HDF5_save_LIBS"
 
-    succeeded=no
-    if test "$found_header" = yes; then
-        if test "$version_succeeded" = yes; then
-	   if test "$found_library" = yes; then
-              succeeded=yes
-	   fi
-        fi
+  succeeded=no
+  if test "$found_header" = yes; then
+    if test "$version_succeeded" = yes; then
+      if test "$found_library" = yes; then
+        succeeded=yes
+      fi
     fi
+  fi
 
-    if test "$succeeded" = no; then
-       if test "$is_package_required" = yes; then
-          AC_MSG_ERROR([HDF5 not found.  Try either --with-hdf5 or setting HDF5_DIR.])
-       else
-	  AC_MSG_NOTICE([optional HDF5 library not found, or does not meet version requirements])
-	  HDF5_CFLAGS=""   # HDF5_CFLAGS empty on failure
-          HDF5_FCFLAGS=""  # HDF5_FCFLAGS empty on failure
-          HDF5_LIBS=""     # HDF5_LIBS empty on failure
-          HDF5_FLIBS=""    # HDF5_FLIBS empty on failure
-          HDF5_CXXLIBS=""  # HDF5_CXXLIBS empty on failure
-       fi
+  if test "$succeeded" = no; then
+    if test "$is_package_required" = yes; then
+      AC_MSG_ERROR([HDF5 not found.  Try either --with-hdf5 or setting HDF5_DIR.])
     else
-        HAVE_HDF5=1
-        AC_DEFINE(HAVE_HDF5,1,[Define if HDF5 is available])
-        AC_SUBST(HDF5_CFLAGS)
-        AC_SUBST(HDF5_LIBS)
-        AC_SUBST(HDF5_FLIBS)
-        AC_SUBST(HDF5_CXXLIBS)
-	AC_SUBST(HDF5_PREFIX)
+      AC_MSG_NOTICE([optional HDF5 library not found, or does not meet version requirements])
+      HDF5_CFLAGS=""   # HDF5_CFLAGS empty on failure
+      HDF5_FCFLAGS=""  # HDF5_FCFLAGS empty on failure
+      HDF5_LIBS=""     # HDF5_LIBS empty on failure
+      HDF5_FLIBS=""    # HDF5_FLIBS empty on failure
+      HDF5_CXXLIBS=""  # HDF5_CXXLIBS empty on failure
     fi
-
-    AC_SUBST(HAVE_HDF5)
-
+  else
+    HAVE_HDF5=1
+    AC_DEFINE(HAVE_HDF5,1,[Define if HDF5 is available])
+    AC_SUBST(HDF5_CFLAGS)
+    AC_SUBST(HDF5_LIBS)
+    AC_SUBST(HDF5_FLIBS)
+    AC_SUBST(HDF5_CXXLIBS)
+    AC_SUBST(HDF5_PREFIX)
+  fi
+  AC_SUBST(HAVE_HDF5)
 fi
 
 AM_CONDITIONAL(HDF5_ENABLED,test x$HAVE_HDF5 = x1)
