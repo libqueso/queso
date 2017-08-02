@@ -41,6 +41,7 @@ fi
 with_hdf5=$withval
 if test "x${HDF5_DIR}" != "x"; then
   HDF5_PREFIX=${HDF5_DIR}
+  with_hdf5=yes
 fi
 ])
 
