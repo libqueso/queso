@@ -298,6 +298,10 @@ void run_scalar(const QUESO::FullEnvironment& env)
   }
   solution_data.close();
 
+  // We subtract off the first difference in log priors because the
+  // normalisation constants between our implementation and Matlab's
+  // implementation are not the same.  We expect them to only be the same up to
+  // an additive constant.
   double initial_diff_prior = expected_log_priors[0] - computed_log_priors[0];
   for (unsigned int i = 0; i < expected_log_priors.size(); i++) {
     double diff_prior = expected_log_priors[i] - computed_log_priors[i] - initial_diff_prior;
