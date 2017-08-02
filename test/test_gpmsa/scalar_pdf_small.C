@@ -223,7 +223,8 @@ void run_scalar(const QUESO::FullEnvironment& env)
     paramVecs          [i].reset(new QUESO::GslVector(paramSpace.zeroVector()));  // 't_{i+1}^*' in paper
     outputVecs         [i].reset(new QUESO::GslVector(nEtaSpace.zeroVector()));  // 'eta_{i+1}' in paper
 
-    // Here we tell QUESO which things to scale and how to scale them
+    // Must set scaling before adding experiments due to construct order
+    // As of this implementation autoscale only affects params/scenarios
     gp_opts.set_autoscale_minmax_uncertain_parameter(i);
     gp_opts.set_autoscale_minmax_scenario_parameter(i);
     gp_opts.set_autoscale_meanvar_output(i);
@@ -402,13 +403,6 @@ void run_multivariate(const QUESO::FullEnvironment& env)
                                      numExperiments);
 
   QUESO::GPMSAOptions& gp_opts = gpmsaFactory.options();
-
-  // Must set scaling before adding experiments due to construct order
-  // As of this implementation autoscale only affects params/scenarios
-
-  // TODO: Ask Brian Williams about preferred scaling and probably set
-  // to scale to domain bounds instead of data bounds...
-  gp_opts.set_autoscale_minmax();
 
   // std::vector containing all the points in scenario space where we have
   // simulations
