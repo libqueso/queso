@@ -31,7 +31,7 @@ AC_DEFUN([AX_PATH_HDF5_NEW],
 
 AC_ARG_VAR(HDF5_DIR,[root directory of HDF5 installation])
 
-AC_ARG_WITH(hdf5, 
+AC_ARG_WITH(hdf5,
   [AS_HELP_STRING([--with-hdf5[=DIR]],[root directory of HDF5 installation (default = HDF5_DIR)])],
   [with_hdf5=$withval
 if test "${with_hdf5}" != yes; then
@@ -63,7 +63,7 @@ if test "${with_hdf5}" != no ; then
     if test -d "${HDF5_PREFIX}/include" ; then
         HDF5_CFLAGS="-I${HDF5_PREFIX}/include"
     fi
-    
+
     ac_HDF5_save_CFLAGS="$CFLAGS"
     ac_HDF5_save_CPPFLAGS="$CPPFLAGS"
     ac_HDF5_save_LDFLAGS="$LDFLAGS"
@@ -80,7 +80,7 @@ if test "${with_hdf5}" != no ; then
     # Minimum version check
     #----------------------
 
-    min_hdf5_version=ifelse([$1], ,1.8.0, $1)	
+    min_hdf5_version=ifelse([$1], ,1.8.0, $1)
 
     # looking for major.minor.micro style versioning
 
@@ -105,7 +105,7 @@ if test "${with_hdf5}" != no ; then
 
         AC_MSG_CHECKING(for hdf5 - version >= $min_hdf5_version)
         version_succeeded=no
-	
+
     	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
        	@%:@include <hdf5.h>
             ]], [[
@@ -124,21 +124,21 @@ if test "${with_hdf5}" != no ; then
         ])
 
     	if test "$version_succeeded" != "yes";then
-       	   if test "$is_package_required" = yes; then	
+       	   if test "$is_package_required" = yes; then
               AC_MSG_ERROR([
 
    Your HDF5 library version does not meet the minimum versioning
    requirements ($min_hdf5_version).  Please use --with-hdf5 to specify the location
    of an updated installation or consider upgrading the system version.
 
-       	 	 ]) 
-           fi     
+       	 	 ])
+           fi
         fi
 
     # Library availability
 
     AC_MSG_CHECKING([for -lhdf5 linkage])
-    
+
     AC_CHECK_LIB([hdf5],[H5Fopen],[found_library=yes],[found_library=no])
     AC_LANG_POP([C])
 
@@ -162,7 +162,7 @@ if test "${with_hdf5}" != no ; then
     if test "$succeeded" = no; then
        if test "$is_package_required" = yes; then
           AC_MSG_ERROR([HDF5 not found.  Try either --with-hdf5 or setting HDF5_DIR.])
-       else		             
+       else
 	  AC_MSG_NOTICE([optional HDF5 library not found, or does not meet version requirements])
 	  HDF5_CFLAGS=""   # HDF5_CFLAGS empty on failure
           HDF5_FCFLAGS=""  # HDF5_FCFLAGS empty on failure
