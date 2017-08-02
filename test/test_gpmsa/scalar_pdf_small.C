@@ -159,22 +159,11 @@ void run_scalar(const QUESO::FullEnvironment& env)
       experimentSize * numExperiments, NULL);
 
   // Step 5: Instantiate the Gaussian process emulator object
-  //
-  // Regarding simulation scenario input values, the user should standardise
-  // them so that they exist inside a hypercube.
-  //
-  // Regarding simulation output data, the user should transform it so that the
-  // mean is zero and the variance is one.
-  //
-  // Regarding experimental scenario input values, the user should standardize
-  // them so that they exist inside a hypercube.
-  //
-  // Regarding experimental data, the user should transformed it so that it has
-  // zero mean and variance one.
 
-  // GPMSA stores all the information about our simulation
-  // data and experimental data.  It also stores default information about the
-  // hyperparameter distributions.
+  // GPMSA stores all the information about our simulation data and experimental
+  // data, and if the users opts to, will normalise this to have zero mean and
+  // unit variance.  It also stores default information about the hyperparameter
+  // distributions.
   QUESO::GPMSAFactory<> gpmsaFactory(env,
                                      NULL,
                                      priorRv,
@@ -186,9 +175,6 @@ void run_scalar(const QUESO::FullEnvironment& env)
                                      numExperiments);
 
   QUESO::GPMSAOptions& gp_opts = gpmsaFactory.options();
-
-  // Must set scaling before adding experiments due to construct order
-  // As of this implementation autoscale only affects params/scenarios
 
   // std::vector containing all the points in scenario space where we have
   // simulations
@@ -376,22 +362,11 @@ void run_multivariate(const QUESO::FullEnvironment& env)
       experimentSize * numExperiments, NULL);
 
   // Step 5: Instantiate the Gaussian process emulator object
-  //
-  // Regarding simulation scenario input values, the user should standardise
-  // them so that they exist inside a hypercube.
-  //
-  // Regarding simulation output data, the user should transform it so that the
-  // mean is zero and the variance is one.
-  //
-  // Regarding experimental scenario input values, the user should standardize
-  // them so that they exist inside a hypercube.
-  //
-  // Regarding experimental data, the user should transformed it so that it has
-  // zero mean and variance one.
 
-  // GPMSA stores all the information about our simulation
-  // data and experimental data.  It also stores default information about the
-  // hyperparameter distributions.
+  // GPMSA stores all the information about our simulation data and experimental
+  // data, and if the users opts to, will normalise this to have zero mean and
+  // unit variance.  It also stores default information about the hyperparameter
+  // distributions.
   QUESO::GPMSAFactory<> gpmsaFactory(env,
                                      NULL,
                                      priorRv,
@@ -436,6 +411,12 @@ void run_multivariate(const QUESO::FullEnvironment& env)
     simulationScenarios[i].reset(new QUESO::GslVector(configSpace.zeroVector()));  // 'x_{i+1}^*' in paper
     paramVecs          [i].reset(new QUESO::GslVector(paramSpace.zeroVector()));  // 't_{i+1}^*' in paper
     outputVecs         [i].reset(new QUESO::GslVector(nEtaSpace.zeroVector()));  // 'eta_{i+1}' in paper
+
+    // Must set scaling before adding experiments due to construct order
+    // As of this implementation autoscale only affects params/scenarios
+    gp_opts.set_autoscale_minmax_uncertain_parameter(i);
+    gp_opts.set_autoscale_minmax_scenario_parameter(i);
+    gp_opts.set_autoscale_meanvar_output(i);
   }
 
   for (unsigned int i = 0; i < numExperiments; i++) {
