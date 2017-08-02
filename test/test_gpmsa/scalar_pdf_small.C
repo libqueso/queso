@@ -71,11 +71,6 @@ void readData
   unsigned int num_responses = simulationOutputs[0]->sizeGlobal();
   unsigned int num_simulations = simulationOutputs.size();
 
-  // for accumulating statistics per-response
-  QUESO::GslVector meansim(*(simulationOutputs[0]));  meansim.cwSet(0.0);
-  QUESO::GslVector m2sim(*(simulationOutputs[0]));    m2sim.cwSet(0.0);
-  QUESO::GslVector stdsim(*(simulationOutputs[0]));   stdsim.cwSet(0.0);
-
   // File containing x, theta, y (vertical concatenation of lhs.txt, y_mod.txt)
   std::ifstream sim_data;
   open_data_file(sim_data_filename, sim_data);
@@ -86,11 +81,7 @@ void readData
       for (unsigned int j = 0; j < num_params; ++j)
         sim_data >> (*(simulationParameters[i]))[j];
       for (unsigned int j = 0; j < num_responses; ++j) {
-        double& sim_output = (*(simulationOutputs[i]))[j];
-        sim_data >> sim_output;
-        double delta = sim_output - meansim[j];
-        meansim[j] += delta / (i+1);
-        m2sim[j] += delta * (sim_output - meansim[j]);
+        sim_data >> (*(simulationOutputs[i]))[j];
       }
     }
   }
