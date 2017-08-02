@@ -446,7 +446,9 @@ dist_gpmsa_vector_DATA += gp/scalar/ctf_dat.txt
 
 gpmsa_linverifdir = $(prefix)/examples/gp/linear_verif
 
-gpmsa_linverif_PROGRAMS = gpmsa_linverif
+gpmsa_linverif_PROGRAMS =
+gpmsa_linverif_PROGRAMS += gpmsa_linverif
+
 gpmsa_linverif_SOURCES = gp/linear_verif/gpmsa_linear_verif.C
 gpmsa_linverif_LDADD = $(top_builddir)/src/libqueso.la
 gpmsa_linverif_CPPFLAGS = -I$(top_srcdir)/examples/gp/linear_verif $(AM_CPPFLAGS)
