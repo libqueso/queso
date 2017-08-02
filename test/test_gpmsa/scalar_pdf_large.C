@@ -53,7 +53,7 @@ void open_data_file(const std::string& data_filename, std::ifstream& data_stream
       queso_error_msg(std::string("Cannot open data file: ") + data_filename);
   }
   data_stream.exceptions (std::ifstream::badbit | std::ifstream::eofbit |
-			  std::ifstream::failbit);
+      std::ifstream::failbit);
 }
 
 // Read in data files
@@ -466,15 +466,21 @@ void run_multivariate(const QUESO::FullEnvironment& env)
   covarianceR(0,4) = covarianceR(4,0) = 0.001024;
 
   // Populate the totalExperimentSpace covariance matrix
-  std::vector<const QUESO::GslMatrix* > vec_covmat_ptrs(numExperiments, 
-							&covarianceR);
+  std::vector<const QUESO::GslMatrix* > vec_covmat_ptrs(numExperiments,
+      &covarianceR);
   experimentMat->fillWithBlocksDiagonally(0, 0, vec_covmat_ptrs, true, true);
 
   // Read in data and store the standard deviation of the simulation
   // data (ignored for now).
   //double stdsim =
-  readData("sim_mv.dat", "y_exp_mv.txt", simulationScenarios, paramVecs,
-	   outputVecs, experimentScenarios, experimentVecs, *experimentMat);
+  readData("sim_mv.dat",
+           "y_exp_mv.txt",
+           simulationScenarios,
+           paramVecs,
+           outputVecs,
+           experimentScenarios,
+           experimentVecs,
+           *experimentMat);
 
   // Add simulation and experimental data
   gpmsaFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
@@ -550,7 +556,7 @@ void run_multivariate(const QUESO::FullEnvironment& env)
 }
 
 
-int main(int argc, char ** argv) 
+int main(int argc, char ** argv)
 {
   if (argc < 2) {
     std::cerr << "Usage: argv[0] gpmsa_<case>.txt\n";
