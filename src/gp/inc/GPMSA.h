@@ -124,6 +124,10 @@ public:
   const GPMSAOptions & m_opts;
 
   using BaseScalarFunction<V, M>::lnValue;
+
+private:
+
+  unsigned int m_numExperimentOutputs;
 };
 
 template <class V = GslVector, class M = GslMatrix>
