@@ -296,6 +296,8 @@ libqueso_la_SOURCES += surrogates/src/InterpolationSurrogateIOASCII.C
 # Sources from gp/src
 libqueso_la_SOURCES += gp/src/GPMSA.C
 libqueso_la_SOURCES += gp/src/GPMSAOptions.C
+libqueso_la_SOURCES += gp/src/SimulationOutputMesh.C
+libqueso_la_SOURCES += gp/src/TensorProductMesh.C
 
 # Headers to install from core/inc
 
@@ -504,6 +506,9 @@ libqueso_include_HEADERS += surrogates/inc/InterpolationSurrogateIOASCII.h
 # Headers to install from gp/inc
 libqueso_include_HEADERS += gp/inc/GPMSA.h
 libqueso_include_HEADERS += gp/inc/GPMSAOptions.h
+libqueso_include_HEADERS += gp/inc/SimulationOutputMesh.h
+libqueso_include_HEADERS += gp/inc/SimulationOutputPoint.h
+libqueso_include_HEADERS += gp/inc/TensorProductMesh.h
 
 # Install the magic header
 libqueso_include_HEADERS += contrib/inc/all.h
