@@ -35,10 +35,27 @@ class TensorProductMesh : public SimulationOutputMesh<V>
 public:
   TensorProductMesh();
 
+  static const unsigned int max_coordinates = 4;
+
   void set_x_coordinates(std::vector<double> _coord_vals);
   void set_y_coordinates(std::vector<double> _coord_vals);
   void set_z_coordinates(std::vector<double> _coord_vals);
   void set_t_coordinates(std::vector<double> _coord_vals);
+
+  /**
+   * Set the order in which indices are expected to be traversed in
+   * the corresponding solution data.  The default is x,y,z,t.  This
+   * corresponds to an "order" of "0,1,2,3", and it means that the
+   * solution first iterates over all values in x, then increments in
+   * y before repeating, then so on for all values in y, then
+   * increments in z before repeating, then so on for all values in z
+   * before incrementing t.
+   *
+   * To choose a different ordering, supply a different permutation.
+   * For instance, a user whose data increments in t first, then x,
+   * could supply order = "3,0,1,2".
+   */
+  void set_coordinate_order(std::vector<unsigned int> order);
 
   virtual ~TensorProductMesh();
 
@@ -48,7 +65,11 @@ public:
 private:
   void set_coordinates(unsigned int i, std::vector<double> & _coord_vals);
 
-  std::vector<double> _coordinate_vals[4];
+  std::vector<double> _coordinate_vals[max_coordinates];
+
+  std::vector<unsigned int> _order;
+
+  unsigned int _first_solution_index;
 };
 
 

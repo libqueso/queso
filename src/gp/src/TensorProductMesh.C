@@ -24,12 +24,17 @@
 
 #include <queso/TensorProductMesh.h>
 #include <queso/GslVector.h>
+#include <queso/asserts.h>
 
 namespace QUESO {
 
 template <class V>
-TensorProductMesh<V>::TensorProductMesh()
+TensorProductMesh<V>::TensorProductMesh() :
+  _first_solution_index(0)
 {
+  _order.resize(max_coordinates);
+  for (unsigned int i=0; i != max_coordinates; ++i)
+    _order[i] = i;
 }
 
 
@@ -90,8 +95,30 @@ TensorProductMesh<V>::set_coordinates
   // We passed that argument by value, so it should be safe to steal.
   _coordinate_vals[i].swap(_coord_vals);
 
-  // Assert that coordinates are sorted
+  queso_assert(std::is_sorted(_coordinate_vals.begin(),
+                              _coordinate_vals.end()));
 }
+
+
+
+template <class V>
+void
+TensorProductMesh<V>::set_coordinate_order
+  (std::vector<unsigned int> order)
+{
+  // We passed that argument by value, so it should be safe to steal.
+  _order.swap(order);
+
+#ifndef NDEBUG
+  for (std::size_t i=0; i != _order.size(); ++i)
+    {
+      queso_assert_less(_order[i], max_coordinates);
+      for (std::size_t j=i+1; j != _order.size(); ++j)
+        queso_assert_not_equal_to(_order[i], _order[j]);
+    }
+#endif
+}
+
 
 
 template <class V>
@@ -100,9 +127,13 @@ TensorProductMesh<V>::interpolateOutput
   (const V & solutionVector,
    const SimulationOutputPoint & outputPoint) const
 {
-  std::vector<unsigned int> indices(4, 0);
+  std::vector<unsigned int> indices(max_coordinates, 0);
+  std::vector<double> lb_fraction(max_coordinates, 0);
 
-  for (unsigned int dim = 0; dim != 4; ++dim)
+  unsigned int num_coordinates_used = 0;
+
+  // Find where we are in the space of each coordinate
+  for (unsigned int dim = 0; dim != max_coordinates; ++dim)
     {
       if (!_coordinate_vals[dim].empty())
         {
@@ -111,8 +142,51 @@ TensorProductMesh<V>::interpolateOutput
                              _coordinate_vals[dim].end(), outputPoint.val(dim));
           queso_assert_not_equal_to(lb, _coordinate_vals[dim].end());
           indices[dim] = lb - _coordinate_vals[dim].begin();
+
+          std::vector<double>::const_iterator ub = lb;
+          ub++;
+          if (ub == _coordinate_vals[dim].end())
+            {
+              // Hopefully we're just at the endpoint, not
+              // extrapolating past it
+              lb_fraction[dim] = 0;
+            }
+          else
+            {
+              lb_fraction[dim] =
+                (outputPoint.val(dim) - *lb)/(*ub - *lb);
+            }
+
+          num_coordinates_used++;
         }
     }
+
+  const unsigned int num_points = 1 << num_coordinates_used;
+
+  std::vector<unsigned int> point_indices(num_coordinates_used, 0);
+
+  double interpolated_val = 0;
+  for (unsigned int p = 0; p != num_points; ++p)
+    {
+      unsigned int solution_index = _first_solution_index;
+      unsigned int stride = 1;
+      double coefficient = 1;
+      for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
+        {
+          const unsigned int raw_dim = _order[predim];
+          const bool on_larger_point = (1 << predim) & p;
+          point_indices[predim] = indices[raw_dim] + on_larger_point;
+          solution_index += stride * point_indices[predim];
+          stride *= _coordinate_vals[raw_dim].size();
+          coefficient *= on_larger_point ?
+                         (1.0 - lb_fraction[raw_dim]) :
+                         lb_fraction[raw_dim];
+        }
+
+      interpolated_val += solutionVector[solution_index] * coefficient;
+    }
+
+  return interpolated_val;
 }
 
 
