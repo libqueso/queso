@@ -38,7 +38,7 @@ template <class V = GslVector>
 class SimulationOutputMesh
 {
 public:
-  SimulationOutputMesh();
+  SimulationOutputMesh(std::size_t first_solution_index = 0);
 
   virtual ~SimulationOutputMesh();
 
@@ -48,6 +48,10 @@ public:
   virtual void interpolateOutputs(const V & solutionVector,
                                   const std::vector<SimulationOutputPoint> & outputPoints,
                                   V & interpolatedValues);
+
+protected:
+
+  std::size_t _first_solution_index;
 };
 
 

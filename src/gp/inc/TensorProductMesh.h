@@ -68,8 +68,6 @@ private:
   std::vector<double> _coordinate_vals[max_coordinates];
 
   std::vector<unsigned int> _order;
-
-  unsigned int _first_solution_index;
 };
 
 

@@ -29,8 +29,7 @@
 namespace QUESO {
 
 template <class V>
-TensorProductMesh<V>::TensorProductMesh() :
-  _first_solution_index(0)
+TensorProductMesh<V>::TensorProductMesh()
 {
   _order.resize(max_coordinates);
   for (unsigned int i=0; i != max_coordinates; ++i)
@@ -127,7 +126,7 @@ TensorProductMesh<V>::interpolateOutput
   (const V & solutionVector,
    const SimulationOutputPoint & outputPoint) const
 {
-  std::vector<unsigned int> indices(max_coordinates, 0);
+  std::vector<std::size_t> indices(max_coordinates, 0);
   std::vector<double> lb_fraction(max_coordinates, 0);
 
   unsigned int num_coordinates_used = 0;
@@ -168,8 +167,8 @@ TensorProductMesh<V>::interpolateOutput
   double interpolated_val = 0;
   for (unsigned int p = 0; p != num_points; ++p)
     {
-      unsigned int solution_index = _first_solution_index;
-      unsigned int stride = 1;
+      std::size_t solution_index = this->_first_solution_index;
+      std::size_t stride = 1;
       double coefficient = 1;
       for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
         {

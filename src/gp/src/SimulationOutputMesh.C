@@ -28,7 +28,9 @@
 namespace QUESO {
 
 template <class V>
-SimulationOutputMesh<V>::SimulationOutputMesh()
+SimulationOutputMesh<V>::SimulationOutputMesh
+  (std::size_t first_solution_index) :
+  _first_solution_index(first_solution_index)
 {
 }
 
