@@ -141,8 +141,8 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // covMatrix                    // = "Sigma_D" in scalar case,
   //                                   "Sigma_zhat" in vector
   // m_discrepancyMatrices        // = "D_i"
-  // m_observationErrorMatrices   // = "W_i"
-  // m_observationErrorMatrix     // = "W_y"
+  // m_observationErrorMatrices   // = "W_i^{-1}"
+  // m_observationErrorMatrix     // = "W_y^{-1}"
   // m_BMatrix                    // = "B"
   // num_discrepancy_groups       // = "F"
   // m_emulatorPrecisionShapeVec          // = "a_eta"
@@ -894,24 +894,28 @@ GPMSAFactory<V, M>::setUpEmulator()
 
   const Map Wy_row_map(Wyrows, 0, comm);
 
-  m_observationErrorMatrix.reset
-    (new M(env, Wy_row_map, Wyrows));
-
   M& B = *m_BMatrix;
-  M& Wy = *m_observationErrorMatrix;
+
+  // Observation precision matrix
+  M Wy(env, Wy_row_map, Wyrows);
 
   for (unsigned int ex = 0; ex != m_numExperiments; ++ex)
     {
       const M & D_i = m_discrepancyMatrices[ex];
 
-      // Each error covariance matrix had better be SPD
-      const M & W_i = (*m_observationErrorMatrices[ex]);
 #ifndef NDEBUG
-      M W_i_copy(W_i);
-      int rv = W_i_copy.chol();
-      queso_assert_msg(!rv, "Observation error matrix W_" << ex <<
+      // Each error covariance matrix had better be SPD
+      M Sigma_i_copy(*m_observationErrorMatrices[ex]);
+      int rv = Sigma_i_copy.chol();
+      queso_assert_msg(!rv, "Observation error matrix Sigma_" << ex <<
                        " was not SPD!");
 #endif
+
+      // I think this computes the inverse from the LU factorisation.  Perhaps
+      // we should have it done through the cholesky factorisation.
+      //
+      // inverse() returns a new matrix, so a reference is not enough here.
+      M W_i((*m_observationErrorMatrices[ex]).inverse());
 
       // For the multivariate case, the bases K_eta computed from
       // simulator outputs are the same as the bases K_i which apply
@@ -943,9 +947,9 @@ GPMSAFactory<V, M>::setUpEmulator()
               // No fancy perturbation here
               unsigned int j = ex*numOutputs+outj;
 
-              Wy(i,j) = W_i(outi,outj) /
-                        (this->m_opts->output_scale(outi) *
-                         this->m_opts->output_scale(outj));
+              Wy(i,j) = W_i(outi,outj) *
+                (this->m_opts->output_scale(outi) *
+                 this->m_opts->output_scale(outj));
             }
         }
     }
@@ -967,6 +971,9 @@ GPMSAFactory<V, M>::setUpEmulator()
   for (unsigned int i=0; i != Brows; ++i)
     (*BT_Wy_B_inv)(i,i) +=
       this->m_opts->m_observationalCovarianceRidge;
+
+  // Emulator expects the error matrix, so invert Wy to get it.
+  m_observationErrorMatrix.reset(new M(Wy.inverse()));
 
   this->setUpHyperpriors();
 
