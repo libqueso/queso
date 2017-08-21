@@ -761,7 +761,6 @@ GPMSAFactory<V, M>::setUpDiscrepancyBases()
           // De-normalize the basis so it will be re-normalized later.
           (*standard_basis)[i] = this->m_opts->output_scale(i);
           m_discrepancyBases.push_back(standard_basis);
-          (*standard_basis)[i] = 0;
         }
     }
 }
