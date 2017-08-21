@@ -5,6 +5,7 @@ Simulation, and Optimization.
 
 Version 0.58.0 (Date?)
   * Make Boost program_options opt-in
+  * Multivariate GPMSA bug fixes
 
 Version 0.57.1 (Jun 23, 2017)
   * Fix bug in GPMSA getpot parse
