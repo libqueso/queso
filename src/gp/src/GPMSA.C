@@ -975,16 +975,23 @@ GPMSAFactory<V, M>::setUpEmulator()
   // overridden by user options.
   //
   // This is "DKridge" in the MATLAB prototype
-  for (unsigned int i=0; i != Brows; ++i)
+  //
+  // The number of rows BT_Wy_B has is Bcols
+  for (unsigned int i=0; i != Bcols; ++i)
     BT_Wy_B(i,i) +=
       this->m_opts->m_observationalPrecisionRidge;
 
   BT_Wy_B_inv.reset(new M(BT_Wy_B.inverse()));
 
   // Add a ridge to the inverse even, if the user requested one.
-  for (unsigned int i=0; i != Brows; ++i)
+  //
+  // The number of rows BT_Wy_B_inv has is Bcols
+  for (unsigned int i=0; i != Bcols; ++i)
     (*BT_Wy_B_inv)(i,i) +=
       this->m_opts->m_observationalCovarianceRidge;
+
+  queso_assert_equal_to(BT_Wy_B_inv->numCols(), BT_Wy_B_inv->numRowsGlobal());
+  queso_assert_equal_to(BT_Wy_B_inv->numCols(), Bcols);
 
   this->setUpHyperpriors();
 
