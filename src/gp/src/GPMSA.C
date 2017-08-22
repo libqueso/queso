@@ -977,6 +977,9 @@ GPMSAFactory<V, M>::setUpEmulator()
     (*BT_Wy_B_inv)(i,i) +=
       this->m_opts->m_observationalCovarianceRidge;
 
+  queso_assert_equal_to(BT_Wy_B_inv->numCols(), BT_Wy_B_inv->numRowsGlobal());
+  queso_assert_equal_to(BT_Wy_B_inv->numCols(), Bcols);
+
   this->setUpHyperpriors();
 
   this->m_constructedGP = true;
