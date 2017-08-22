@@ -47,6 +47,7 @@ class GslMatrix;
 
 template <class V>
 class SimulationOutputMesh;
+class SimulationOutputPoint;
 
 template <class V = GslVector, class M = GslMatrix>
 class GPMSAEmulator : public BaseScalarFunction<V, M>
@@ -72,7 +73,8 @@ public:
                 const M & BT_Wy_B_inv_in,
                 const M & KT_K_inv_in,
                 const GPMSAOptions & optsi,
-                const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes_in);
+                const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes_in,
+                const std::vector<typename SharedPtr<std::vector<SimulationOutputPoint> >::Type> & m_experimentPoints_in);
 
   virtual ~GPMSAEmulator();
 
@@ -125,9 +127,20 @@ public:
 
   const M & KT_K_inv;
 
+  //
+  // GPMSA user options to query
+  //
   const GPMSAOptions & m_opts;
 
+  //
+  // Data for functional output(s) cases
+  //
+
+  // Mesh(es) on which functional output is defined
   const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes;
+
+  // Point(s) at which experimental data is located.
+  const std::vector<typename SharedPtr<std::vector<SimulationOutputPoint> >::Type> & m_experimentPoints;
 
   using BaseScalarFunction<V, M>::lnValue;
 
@@ -366,6 +379,8 @@ public:
   std::vector<typename SharedPtr<V>::Type> m_simulationOutputs;
   std::vector<typename SharedPtr<V>::Type> m_experimentScenarios;
   std::vector<typename SharedPtr<V>::Type> m_experimentOutputs;
+
+  std::vector<typename SharedPtr<std::vector<SimulationOutputPoint> >::Type> m_experimentPoints;
 
   // We will be recentering data around the simulation output mean.
   //
