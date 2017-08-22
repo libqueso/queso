@@ -121,6 +121,20 @@ TensorProductMesh<V>::set_coordinate_order
 
 
 template <class V>
+std::size_t
+TensorProductMesh<V>::n_outputs()
+{
+  std::size_t n_outputs = 1;
+  for (unsigned int dim = 0; dim != max_coordinates; ++dim)
+    if (!_coordinate_vals[dim].empty())
+      n_outputs *= _coordinate_vals[dim].size();
+
+  return n_outputs;
+}
+
+
+
+template <class V>
 double
 TensorProductMesh<V>::interpolateOutput
   (const V & solutionVector,

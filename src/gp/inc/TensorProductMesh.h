@@ -59,6 +59,8 @@ public:
 
   virtual ~TensorProductMesh();
 
+  virtual std::size_t n_outputs();
+
   virtual double interpolateOutput(const V & solutionVector,
                                    const SimulationOutputPoint & outputPoint) const;
 
