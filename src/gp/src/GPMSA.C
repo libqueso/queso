@@ -50,7 +50,8 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const V & residual_in,
     const M & BT_Wy_B_inv_in,
     const M & KT_K_inv_in,
-    const GPMSAOptions & opts)
+    const GPMSAOptions & opts,
+    const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes_in)
   :
   BaseScalarFunction<V, M>("", m_totalPrior.imageSet()),
   m_scenarioSpace(m_scenarioSpace),
@@ -72,6 +73,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   BT_Wy_B_inv(BT_Wy_B_inv_in),
   KT_K_inv(KT_K_inv_in),
   m_opts(opts),
+  m_simulationMeshes(m_simulationMeshes_in),
   m_numExperimentOutputs(0)
 {
   queso_assert_greater(m_numSimulations, 0);
@@ -1086,7 +1088,8 @@ GPMSAFactory<V, M>::setUpEmulator()
       *this->residual,
       *this->BT_Wy_B_inv,
       *this->KT_K_inv,
-      *this->m_opts));
+      *this->m_opts,
+      this->m_simulationMeshes));
 
   // FIXME: epic hack.  pls fix.
   this->gpmsaEmulator->num_svd_terms = num_svd_terms;

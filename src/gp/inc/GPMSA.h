@@ -71,7 +71,8 @@ public:
                 const V & residual_in,
                 const M & BT_Wy_B_inv_in,
                 const M & KT_K_inv_in,
-                const GPMSAOptions & opts);
+                const GPMSAOptions & optsi,
+                const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes_in);
 
   virtual ~GPMSAEmulator();
 
@@ -125,6 +126,8 @@ public:
   const M & KT_K_inv;
 
   const GPMSAOptions & m_opts;
+
+  const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes;
 
   using BaseScalarFunction<V, M>::lnValue;
 
