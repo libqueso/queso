@@ -76,13 +76,6 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
 
   queso_assert_equal_to
     (m_simulationOutputs[0]->map().Comm().NumProc(), 1);
-
-  const unsigned int numOutputs =
-    this->m_experimentOutputSpace.dimLocal();
-
-  this->num_svd_terms = this->m_opts.m_maxEmulatorBasisVectors ?
-    std::min((unsigned int)(this->m_opts.m_maxEmulatorBasisVectors), numOutputs) :
-    numOutputs;
 }
 
 template <class V, class M>
@@ -500,6 +493,7 @@ GPMSAFactory<V, M>::GPMSAFactory(
     m_numSimulationAdds(0),
     m_numExperimentAdds(0),
     num_svd_terms(0),
+    num_nonzero_eigenvalues(0),
     priors(),
     m_constructedGP(false)
 {
@@ -799,10 +793,6 @@ GPMSAFactory<V, M>::setUpEmulator()
   const unsigned int numOutputs =
     this->m_simulationOutputSpace.dimLocal();
 
-  this->num_svd_terms = this->m_opts->m_maxEmulatorBasisVectors ?
-    std::min((unsigned int)(this->m_opts->m_maxEmulatorBasisVectors), numOutputs) :
-    numOutputs;
-
   const Map & output_map = m_simulationOutputs[0]->map();
 
   const MpiComm & comm = output_map.Comm();
@@ -846,6 +836,30 @@ GPMSAFactory<V, M>::setUpEmulator()
   for (unsigned int i = 0; i < numOutputs-1; i++) {
     queso_assert_less_equal(SM_singularValues[i], SM_singularValues[i+1]);
   }
+
+  // Count the number of "nonzero" eigenvalues (eigenvalues over a tolerance)
+  double eigenvalue_tolerance = 1e-10;
+  for (unsigned int i = 0; i < SM_singularValues.sizeLocal(); i++) {
+    // All eigenvalues should be positive, so we don't take fabs
+    if (SM_singularValues[i] > eigenvalue_tolerance) {
+      num_nonzero_eigenvalues++;
+    }
+  }
+
+  // Is this the right way to enforce the scalar case of num_svd_terms
+  if (numOutputs > 1) {
+    this->num_svd_terms = this->m_opts->m_maxEmulatorBasisVectors ?
+      std::min((unsigned int)(this->m_opts->m_maxEmulatorBasisVectors),
+          num_nonzero_eigenvalues) : num_nonzero_eigenvalues;
+  }
+  else {
+    // We do this so logic like 'num_svd_terms < num_nonzero_eigenvalues' is
+    // false in the scalar case.
+    this->num_svd_terms = 1;
+    this->num_nonzero_eigenvalues = 1;
+  }
+
+  queso_require_greater_equal(num_svd_terms, 0);
 
   // Copy only those vectors we want into K_eta
   m_TruncatedSVD_simulationOutputs.reset
@@ -1034,6 +1048,10 @@ GPMSAFactory<V, M>::setUpEmulator()
       *this->BT_Wy_B_inv,
       *this->KT_K_inv,
       *this->m_opts));
+
+  // FIXME: epic hack.  pls fix.
+  this->gpmsaEmulator->num_svd_terms = num_svd_terms;
+  this->gpmsaEmulator->num_nonzero_eigenvalues = num_nonzero_eigenvalues;
 }
 
 
