@@ -25,6 +25,7 @@
 #include <queso/GPMSA.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/SimulationOutputMesh.h>
 
 namespace QUESO {
 
@@ -718,6 +719,25 @@ const GPMSAEmulator<V, M> &
 GPMSAFactory<V, M>::getGPMSAEmulator() const
 {
   return *(this->gpmsaEmulator);
+}
+
+template <class V, class M>
+void
+GPMSAFactory<V, M>::addSimulationMesh
+  (typename SharedPtr<SimulationOutputMesh<V> >::Type simulationMesh)
+{
+  // Make sure the new mesh solution coefficients don't overlap with
+  // coefficients from any previously-added meshes
+  if (!m_simulationMeshes.empty())
+    {
+      const SimulationOutputMesh<V> & mesh = *m_simulationMeshes.back();
+      queso_require_equal_to
+        (mesh.first_solution_index() + mesh.n_outputs(),
+         simulationMesh->first_solution_index());
+      queso_require_greater(mesh.n_outputs(), 0);
+    }
+
+  m_simulationMeshes.push_back(simulationMesh);
 }
 
 template <class V, class M>

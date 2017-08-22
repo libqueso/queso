@@ -45,6 +45,9 @@ namespace QUESO {
 class GslVector;
 class GslMatrix;
 
+template <class V>
+class SimulationOutputMesh;
+
 template <class V = GslVector, class M = GslMatrix>
 class GPMSAEmulator : public BaseScalarFunction<V, M>
 {
@@ -253,6 +256,11 @@ public:
 
   //@}
 
+  //! Add a mesh to \c this, describing simulation output in
+  // space and/or time, for use in interpolation.
+  void addSimulationMesh
+    (typename SharedPtr<SimulationOutputMesh<V> >::Type simulationMesh);
+
   //! Add a simulation to \c this
   /*!
    * The simulation added to \c this is assumed to correspond to the point
@@ -347,6 +355,8 @@ public:
 
   unsigned int m_numSimulations;
   unsigned int m_numExperiments;
+
+  std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> m_simulationMeshes;
 
   std::vector<typename SharedPtr<V>::Type> m_simulationScenarios;
   std::vector<typename SharedPtr<V>::Type> m_simulationParameters;
