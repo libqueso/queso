@@ -314,6 +314,11 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     m_autoscaleMeanVarAll,
     "option to autoscale all parameters and outputs based on data statistics");
 
+  m_parser->registerOption
+    (m_option_maxEmulatorBasisVectors,
+    m_maxEmulatorBasisVectors,
+    "max number of basis vectors to use in SVD of simulation output");
+
   m_parser->scanInputFile();
 
   m_parser->getOption<std::string>(m_option_help,                           m_help);
@@ -336,6 +341,7 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<double>(m_option_observationalCovarianceRidge,        m_observationalCovarianceRidge);
   m_parser->getOption<bool>  (m_option_autoscaleMinMaxAll,                  m_autoscaleMinMaxAll);
   m_parser->getOption<bool>  (m_option_autoscaleMeanVarAll,                 m_autoscaleMeanVarAll);
+  m_parser->getOption<int>   (m_option_maxEmulatorBasisVectors,             m_maxEmulatorBasisVectors);
 #else
   m_help = env.input()(m_option_help, UQ_GPMSA_HELP);
 
@@ -404,6 +410,10 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_autoscaleMeanVarAll =
     env.input()(m_option_autoscaleMeanVarAll,
                 m_autoscaleMeanVarAll);
+
+  m_maxEmulatorBasisVectors =
+    env.input()(m_option_maxEmulatorBasisVectors,
+                m_maxEmulatorBasisVectors);
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   checkOptions();
