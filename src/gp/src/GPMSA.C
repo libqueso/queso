@@ -919,7 +919,7 @@ GPMSAFactory<V, M>::setUpEmulator()
       // we should have it done through the cholesky factorisation.
       //
       // inverse() returns a new matrix, so a reference is not enough here.
-      M W_i((*m_observationErrorMatrices[ex]).inverse());
+      M W_i(Sigma_i.inverse());
 
       // For the multivariate case, the bases K_eta computed from
       // simulator outputs are the same as the bases K_i which apply
