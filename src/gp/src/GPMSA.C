@@ -899,13 +899,17 @@ GPMSAFactory<V, M>::setUpEmulator()
   // Observation precision matrix
   M Wy(env, Wy_row_map, Wyrows);
 
+  m_observationErrorMatrix.reset(new M(env, Wy_row_map, Wyrows));
+
   for (unsigned int ex = 0; ex != m_numExperiments; ++ex)
     {
       const M & D_i = m_discrepancyMatrices[ex];
 
+      const M & Sigma_i = *m_observationErrorMatrices[ex];
+
 #ifndef NDEBUG
       // Each error covariance matrix had better be SPD
-      M Sigma_i_copy(*m_observationErrorMatrices[ex]);
+      M Sigma_i_copy(Sigma_i);
       int rv = Sigma_i_copy.chol();
       queso_assert_msg(!rv, "Observation error matrix Sigma_" << ex <<
                        " was not SPD!");
@@ -950,6 +954,11 @@ GPMSAFactory<V, M>::setUpEmulator()
               Wy(i,j) = W_i(outi,outj) *
                 (this->m_opts->output_scale(outi) *
                  this->m_opts->output_scale(outj));
+
+              (*m_observationErrorMatrix)(i,j) = Sigma_i(outi,outj) /
+                (this->m_opts->output_scale(outi) *
+                 this->m_opts->output_scale(outj));
+
             }
         }
     }
@@ -971,9 +980,6 @@ GPMSAFactory<V, M>::setUpEmulator()
   for (unsigned int i=0; i != Brows; ++i)
     (*BT_Wy_B_inv)(i,i) +=
       this->m_opts->m_observationalCovarianceRidge;
-
-  // Emulator expects the error matrix, so invert Wy to get it.
-  m_observationErrorMatrix.reset(new M(Wy.inverse()));
 
   this->setUpHyperpriors();
 
