@@ -493,15 +493,7 @@ GPMSAFactory<V, M>::GPMSAFactory(
                         experimentOutputSpace.dimGlobal());
 
   {
-    const unsigned int numOutputs =
-      this->m_experimentOutputSpace.dimLocal();
     const Map & output_map = experimentOutputSpace.map();
-
-    // Set up the default discrepancy basis:
-    typename SharedPtr<V>::Type all_ones_basis(new V(env, output_map));
-    for (unsigned int i=0; i != numOutputs; ++i)
-      (*all_ones_basis)[i] = 1;
-    m_discrepancyBases.push_back(all_ones_basis);
 
     // Set up the default observation error covariance matrix:
     for (unsigned int i = 0; i != numExperiments; ++i)
@@ -509,6 +501,11 @@ GPMSAFactory<V, M>::GPMSAFactory(
         typename SharedPtr<M>::Type identity_matrix(new M(env, output_map, 1.0));
         m_observationErrorMatrices.push_back(identity_matrix);
       }
+
+    // Set up a nonsense, "placeholder" discrepancy basis; we'll test
+    // for this later to determine whether or not the user has
+    // requested a non-default discrepancy basis.
+    m_discrepancyBases.push_back(NULL);
   }
 
   // DM: Not sure if the logic in these 3 if-blocks is correct
@@ -742,6 +739,36 @@ GPMSAFactory<V, M>::addSimulations(
 
 template <class V, class M>
 void
+GPMSAFactory<V, M>::setUpDiscrepancyBases()
+{
+  // If our "placeholder" basis is still there, then the user hasn't
+  // requested anything different, and we need to autogenerate the
+  // default basis.
+  if ((m_discrepancyBases.size() == 1) &&
+      !m_discrepancyBases[0].get())
+    {
+      const Map & output_map = m_simulationOutputs[0]->map();
+      const BaseEnvironment &env = m_simulationOutputs[0]->env();
+
+      // Replace our placeholder with the default discrepancy basis:
+      m_discrepancyBases.clear();
+
+      const unsigned int numOutputs =
+        this->m_simulationOutputSpace.dimLocal();
+      for (unsigned int i=0; i != numOutputs; ++i)
+        {
+          typename SharedPtr<V>::Type standard_basis(new V(env, output_map));
+          // De-normalize the basis so it will be re-normalized later.
+          (*standard_basis)[i] = this->m_opts->output_scale(i);
+          m_discrepancyBases.push_back(standard_basis);
+        }
+    }
+}
+
+
+
+template <class V, class M>
+void
 GPMSAFactory<V, M>::setUpEmulator()
 {
   this->m_opts->template set_final_scaling<V>
@@ -751,8 +778,10 @@ GPMSAFactory<V, M>::setUpEmulator()
      m_experimentScenarios,
      m_experimentOutputs);
 
+  this->setUpDiscrepancyBases();
+
   const unsigned int numOutputs =
-    this->m_experimentOutputSpace.dimLocal();
+    this->m_simulationOutputSpace.dimLocal();
 
   this->num_svd_terms = this->m_opts->m_maxEmulatorBasisVectors ?
     std::min((unsigned int)(this->m_opts->m_maxEmulatorBasisVectors), numOutputs) :
@@ -830,7 +859,7 @@ GPMSAFactory<V, M>::setUpEmulator()
 
       for (unsigned int j=0; j != numOutputs; ++j)
         for (unsigned int k=0; k != m_discrepancyBases.size(); ++k)
-          D_i(j,k) = (*m_discrepancyBases[k])[j];
+          D_i(j,k) = (*m_discrepancyBases[k])[j] / this->m_opts->output_scale(j);
 
       m_discrepancyMatrices.push_back(D_i);
     }
