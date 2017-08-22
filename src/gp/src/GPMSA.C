@@ -826,13 +826,21 @@ GPMSAFactory<V, M>::setUpEmulator()
 
   SM_squared.eigen(SM_singularValues, &SM_singularVectors);
 
+  // Check the eigenvalues are in ascending order
+  for (unsigned int i = 0; i < numOutputs-1; i++) {
+    queso_assert_less_equal(SM_singularValues[i], SM_singularValues[i+1]);
+  }
+
   // Copy only those vectors we want into K_eta
   m_TruncatedSVD_simulationOutputs.reset
     (new M(env, output_map, num_svd_terms));
 
+  // The singular values are in ascending order (with associated vectors ordered
+  // accordingly).  Therefore we want to pull the singular vectors from the
+  // back, not the front.
   for (unsigned int i=0; i != numOutputs; ++i)
     for (unsigned int k = 0; k != num_svd_terms; ++k)
-      (*m_TruncatedSVD_simulationOutputs)(i,k) = SM_singularVectors(i,k);
+      (*m_TruncatedSVD_simulationOutputs)(i,k) = SM_singularVectors(i,numOutputs-1-k);
 
   Map copied_map(numOutputs * m_numSimulations, 0, comm);
 
