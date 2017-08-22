@@ -52,7 +52,8 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const M & KT_K_inv_in,
     const GPMSAOptions & opts,
     const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes_in,
-    const std::vector<typename SharedPtr<std::vector<SimulationOutputPoint> >::Type> & m_experimentPoints_in)
+    const std::vector<std::vector<SimulationOutputPoint> > & m_experimentPoints_in,
+    const std::vector<std::vector<unsigned int> > & m_experimentVariables_in)
   :
   BaseScalarFunction<V, M>("", m_totalPrior.imageSet()),
   m_scenarioSpace(m_scenarioSpace),
@@ -76,6 +77,7 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   m_opts(opts),
   m_simulationMeshes(m_simulationMeshes_in),
   m_experimentPoints(m_experimentPoints_in),
+  m_experimentVariables(m_experimentVariables_in),
   m_numExperimentOutputs(0)
 {
   queso_assert_greater(m_numSimulations, 0);
@@ -1092,7 +1094,8 @@ GPMSAFactory<V, M>::setUpEmulator()
       *this->KT_K_inv,
       *this->m_opts,
       this->m_simulationMeshes,
-      this->m_experimentPoints));
+      this->m_experimentPoints,
+      this->m_experimentVariables));
 
   // FIXME: epic hack.  pls fix.
   this->gpmsaEmulator->num_svd_terms = num_svd_terms;
@@ -1108,6 +1111,8 @@ GPMSAFactory<V, M>::addExperiments(
     const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
     const typename SharedPtr<M>::Type experimentErrors)
 {
+  queso_deprecated();
+
   queso_require_less_equal_msg(experimentScenarios.size(), this->m_numExperiments, "too many experiments...");
 
   unsigned int offset = 0;
@@ -1140,13 +1145,39 @@ void
 GPMSAFactory<V, M>::addExperiments(
     const std::vector<typename SharedPtr<V>::Type> & experimentScenarios,
     const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
-    const std::vector<typename SharedPtr<M>::Type> & experimentErrors)
+    const std::vector<typename SharedPtr<M>::Type> & experimentErrors,
+    const std::vector<std::vector<SimulationOutputPoint> > * experimentPoints,
+    const std::vector<std::vector<unsigned int> > * experimentVariables)
 {
   queso_require_less_equal_msg(experimentScenarios.size(), this->m_numExperiments, "too many experiments...");
   queso_require_equal_to(experimentScenarios.size(),
                          experimentOutputs.size());
   queso_require_equal_to(experimentScenarios.size(),
                          experimentErrors.size());
+
+  if (experimentPoints)
+    {
+      queso_require_equal_to(experimentScenarios.size(),
+                             experimentPoints->size());
+      queso_require(experimentVariables);
+      queso_require_equal_to(experimentScenarios.size(),
+                             experimentVariables->size());
+    }
+
+  for (unsigned int i = 0; i != this->m_experimentScenarios.size(); ++i)
+    {
+      queso_require_equal_to(experimentOutputs[i]->sizeGlobal(),
+                             experimentErrors[i]->numCols());
+      queso_require_equal_to(experimentOutputs[i]->sizeGlobal(),
+                             experimentErrors[i]->numRowsGlobal());
+      if (experimentPoints)
+        {
+          queso_require_equal_to(experimentOutputs[i]->sizeGlobal(),
+                                 (*experimentPoints)[i].size());
+          queso_require_equal_to(experimentOutputs[i]->sizeGlobal(),
+                                 (*experimentVariables)[i].size());
+        }
+    }
 
   this->m_observationErrorMatrices.resize
     (this->m_experimentScenarios.size());
