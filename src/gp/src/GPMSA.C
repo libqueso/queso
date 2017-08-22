@@ -826,6 +826,11 @@ GPMSAFactory<V, M>::setUpEmulator()
 
   SM_squared.eigen(SM_singularValues, &SM_singularVectors);
 
+  // Check the eigenvalues are in ascending order
+  for (unsigned int i = 0; i < numOutputs-1; i++) {
+    queso_assert_less_equal(SM_singularValues[i], SM_singularValues[i+1]);
+  }
+
   // Copy only those vectors we want into K_eta
   m_TruncatedSVD_simulationOutputs.reset
     (new M(env, output_map, num_svd_terms));
