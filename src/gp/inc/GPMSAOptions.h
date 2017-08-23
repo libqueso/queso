@@ -34,6 +34,9 @@
 
 namespace QUESO {
 
+template <typename V>
+class SimulationOutputMesh;
+
 /*!
  * \file GPMSAOptions.h
  * \brief This class defines the options that specify the behaviour of the Gaussian process emulator
@@ -185,7 +188,8 @@ public:
      const std::vector<typename SharedPtr<V>::Type> & m_simulationParameters,
      const std::vector<typename SharedPtr<V>::Type> & m_simulationOutputs,
      const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
-     const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs);
+     const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs,
+     const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes);
 
   //! Calculate a normalized value from a physical value for the
   //  specified scenario parameter.
@@ -288,7 +292,8 @@ private:
   std::set<unsigned int> m_autoscaleMeanVarScenario;
 
   // True if the specified autoscaling should be done for the specific
-  // output index
+  // output variable index; this index could apply to many vector
+  // indices in the case of functional output.
   std::set<unsigned int> m_autoscaleMinMaxOutput;
   std::set<unsigned int> m_autoscaleMeanVarOutput;
 

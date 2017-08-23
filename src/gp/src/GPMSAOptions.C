@@ -35,6 +35,7 @@
 #include <queso/GPMSAOptions.h>
 
 #include <queso/GslVector.h>
+#include <queso/SimulationOutputMesh.h>
 
 
 // ODV = option default value
@@ -548,7 +549,8 @@ GPMSAOptions::set_final_scaling
    const std::vector<typename SharedPtr<V>::Type> & m_simulationParameters,
    const std::vector<typename SharedPtr<V>::Type> & m_simulationOutputs,
    const std::vector<typename SharedPtr<V>::Type> & m_experimentScenarios,
-   const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs)
+   const std::vector<typename SharedPtr<V>::Type> & m_experimentOutputs,
+   const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes)
 {
   if ((m_autoscaleMinMaxAll && m_autoscaleMeanVarAll) ||
       ((m_autoscaleMinMaxAll || m_autoscaleMeanVarAll) &&
@@ -642,18 +644,59 @@ GPMSAOptions::set_final_scaling
         min_max_update(minOutput, maxOutput,
                        (*m_simulationOutputs[i]));
 
-      for (unsigned int p=0; p != dimOutput; ++p)
-        if (m_autoscaleMinMaxAll ||
-            m_autoscaleMinMaxOutput.count(p))
-          {
-            if ((m_outputScaleMin.size() > p) &&
-                ((m_outputScaleMin[p] != 0) ||
-                 (m_outputScaleRange[p] != 1)))
-              queso_error_msg("Cannot autoscale and manually scale the same output data");
+      // Scale together any functional output data, data that is
+      // described by a simulation mesh, then scale multivariate
+      // outputs independently.
+      unsigned int first_multivariate_index = 0;
+      for (unsigned int m=0; m != m_simulationMeshes.size(); ++m)
+        {
+          const SimulationOutputMesh<V> & mesh = *m_simulationMeshes[m];
+          const unsigned int mesh_n_outputs = mesh.n_outputs();
+          queso_assert_greater(mesh_n_outputs, 0);
+          queso_assert_equal_to(mesh.first_solution_index(),
+                                first_multivariate_index);
+          first_multivariate_index += mesh_n_outputs;
 
-            this->set_output_scaling(p, minOutput[p],
-                                     maxOutput[p]);
-          }
+          if (m_autoscaleMinMaxAll ||
+              m_autoscaleMinMaxOutput.count(m))
+            {
+              if ((m_outputScaleMin.size() > m) &&
+                  ((m_outputScaleMin[m] != 0) ||
+                   (m_outputScaleRange[m] != 1)))
+                queso_error_msg("Cannot autoscale and manually scale the same output data");
+
+              // FIXME - this will break if/when we introduce
+              // non-Lagrange solution bases.
+              double full_min = minOutput[mesh.first_solution_index()],
+                     full_max = maxOutput[mesh.first_solution_index()];
+              for (unsigned int i=1; i != mesh_n_outputs; ++i)
+                {
+                  full_min = std::min(full_min, minOutput[mesh.first_solution_index()+i]);
+                  full_max = std::max(full_max, maxOutput[mesh.first_solution_index()+i]);
+                }
+              this->set_output_scaling(m, full_min, full_max);
+            }
+        }
+
+      const unsigned int n_multivariate_indices =
+        dimOutput - first_multivariate_index;
+      const unsigned int n_variables = m_simulationMeshes.size() + n_multivariate_indices;
+      const unsigned int variable_index_to_output_index = first_multivariate_index - m_simulationMeshes.size();
+      for (unsigned int p=m_simulationMeshes.size(); p != n_variables; ++p)
+        {
+          if (m_autoscaleMinMaxAll ||
+              m_autoscaleMinMaxOutput.count(p))
+            {
+              if ((m_outputScaleMin.size() > p) &&
+                  ((m_outputScaleMin[p] != 0) ||
+                   (m_outputScaleRange[p] != 1)))
+                queso_error_msg("Cannot autoscale and manually scale the same output data");
+
+              this->set_output_scaling
+                (p, minOutput[p+variable_index_to_output_index],
+                    maxOutput[p+variable_index_to_output_index]);
+            }
+        }
     }
 
 
@@ -729,13 +772,56 @@ GPMSAOptions::set_final_scaling
       V varOutput(m_simulationOutputs[0]->env(),
                   m_simulationOutputs[0]->map());
 
+      // This gives us the right mean and var values for any
+      // multivariate components of the problem; we'll handle
+      // functional components separately shortly.
       for (unsigned int i=0; i < m_simulationOutputs.size(); ++i)
         mean_var_update(n, meanOutput, varOutput,
                         *m_simulationOutputs[i]);
 
       varOutput /= n - 1;
 
-      for (unsigned int p=0; p != dimOutput; ++p)
+      // Scale together any functional output data, data that is
+      // described by a simulation mesh, then scale multivariate
+      // outputs independently.
+      unsigned int first_multivariate_index = 0;
+      for (unsigned int m=0; m != m_simulationMeshes.size(); ++m)
+        {
+          const SimulationOutputMesh<V> & mesh = *m_simulationMeshes[m];
+          const unsigned int mesh_n_outputs = mesh.n_outputs();
+          queso_assert_greater(mesh_n_outputs, 0);
+          queso_assert_equal_to(mesh.first_solution_index(),
+                                first_multivariate_index);
+          first_multivariate_index += mesh_n_outputs;
+
+          if (m_autoscaleMeanVarAll ||
+              m_autoscaleMeanVarOutput.count(m))
+            {
+              if ((m_outputScaleMin.size() > m) &&
+                  ((m_outputScaleMin[m] != 0) ||
+                   (m_outputScaleRange[m] != 1)))
+                queso_error_msg("Cannot autoscale and manually scale the same output data");
+
+              unsigned int n = 0;
+              double full_mean = 0, full_var = 0;
+              for (unsigned int i=0; i < m_simulationOutputs.size(); ++i)
+                for (unsigned int j=0; j != mesh_n_outputs; ++j)
+                  mean_var_update
+                    (n, full_mean, full_var,
+                     (*m_simulationOutputs[i])[mesh.first_solution_index()+i]);
+
+              full_var /= (n - 1);
+
+              this->set_output_scaling
+                (m, full_mean, full_mean + std::sqrt(full_var));
+            }
+        }
+
+      const unsigned int n_multivariate_indices =
+        dimOutput - first_multivariate_index;
+      const unsigned int n_variables = m_simulationMeshes.size() + n_multivariate_indices;
+      const unsigned int variable_index_to_output_index = first_multivariate_index - m_simulationMeshes.size();
+      for (unsigned int p=m_simulationMeshes.size(); p != n_variables; ++p)
         if (m_autoscaleMeanVarAll ||
             m_autoscaleMeanVarOutput.count(p))
           {
@@ -744,9 +830,10 @@ GPMSAOptions::set_final_scaling
                  (m_outputScaleRange[p] != 1)))
               queso_error_msg("Cannot autoscale and manually scale the same output data");
 
-            this->set_output_scaling(p, meanOutput[p],
-                                     meanOutput[p] +
-                                     std::sqrt(varOutput[p]));
+            this->set_output_scaling
+              (p, meanOutput[p+variable_index_to_output_index],
+               meanOutput[p+variable_index_to_output_index] +
+               std::sqrt(varOutput[p+variable_index_to_output_index]));
           }
     }
 
@@ -860,7 +947,8 @@ GPMSAOptions::set_final_scaling<GslVector>
    const std::vector<SharedPtr<GslVector>::Type> &,
    const std::vector<SharedPtr<GslVector>::Type> &,
    const std::vector<SharedPtr<GslVector>::Type> &,
-   const std::vector<SharedPtr<GslVector>::Type> &);
+   const std::vector<SharedPtr<GslVector>::Type> &,
+   const std::vector<typename SharedPtr<SimulationOutputMesh<GslVector> >::Type> &);
 
 
 }  // End namespace QUESO

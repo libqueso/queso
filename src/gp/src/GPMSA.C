@@ -821,7 +821,8 @@ GPMSAFactory<V, M>::setUpEmulator()
      m_simulationParameters,
      m_simulationOutputs,
      m_experimentScenarios,
-     m_experimentOutputs);
+     m_experimentOutputs,
+     m_simulationMeshes);
 
   this->setUpDiscrepancyBases();
 
