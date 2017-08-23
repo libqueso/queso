@@ -282,6 +282,17 @@ public:
                     m_gaussianDiscrepancyPeriodicZ,
                     m_gaussianDiscrepancyPeriodicT;
 
+  //! Gaussian discrepancy kernels have infinite support, and we want
+  //  to include some kernels which are not centered within a bounded
+  //  domain, so we have a cutoff (default 5% == 0.05) for what the
+  //  value of a gaussian at the domain boundary must be, relative to
+  //  the value of its out-of-boundary peak, for us to include it.
+  //
+  //  Currently this is a single scalar value, because I can't imagine
+  //  users wanting it to differ from mesh to mesh (or from direction
+  //  to direction) within a single problem.
+  double m_gaussianDiscrepancySupportThreshold;
+
   friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj);
 
 private:
@@ -370,6 +381,8 @@ private:
               m_option_gaussianDiscrepancyPeriodicY,
               m_option_gaussianDiscrepancyPeriodicZ,
               m_option_gaussianDiscrepancyPeriodicT;
+
+  std::string m_option_gaussianDiscrepancySupportThreshold;
 
   bool options_have_been_used;
 

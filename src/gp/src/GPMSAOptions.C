@@ -60,6 +60,7 @@
 #define UQ_GPMSA_OBSERVATIONAL_COVARIANCE_RIDGE 0.0
 #define UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE 1.0
 #define UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC false
+#define UQ_GPMSA_GAUSSIAN_DISCREPANCY_SUPPORT_THRESHOLD 0.05
 
 namespace { // Anonymous namespace for helper functions
 
@@ -179,6 +180,7 @@ GPMSAOptions::set_prefix(const char * prefix)
   m_option_gaussianDiscrepancyPeriodicY = m_prefix + "gaussian_discrepancy_periodic_y";
   m_option_gaussianDiscrepancyPeriodicZ = m_prefix + "gaussian_discrepancy_periodic_z";
   m_option_gaussianDiscrepancyPeriodicT = m_prefix + "gaussian_discrepancy_periodic_t";
+  m_option_gaussianDiscrepancySupportThreshold = m_prefix + "gaussian_discrepancy_support_threshold";
 }
 
 
@@ -211,6 +213,8 @@ GPMSAOptions::set_defaults()
 
   m_autoscaleMinMaxAll = false;
   m_autoscaleMeanVarAll = false;
+
+  m_gaussianDiscrepancySupportThreshold = UQ_GPMSA_GAUSSIAN_DISCREPANCY_SUPPORT_THRESHOLD;
 
   checkOptions();
 }
@@ -365,6 +369,11 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     m_gaussianDiscrepancyPeriodicT,
     "whether gaussian discrepancy kernels are periodic in t");
 
+  m_parser->registerOption
+    (m_option_gaussianDiscrepancySupportThreshold,
+    m_gaussianDiscrepancySupportThreshold,
+    "threshold below which to omit out-of-domain centered gaussian kernels");
+
 
   m_parser->registerOption
     (m_option_maxEmulatorBasisVectors,
@@ -402,6 +411,7 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicY,        m_gaussianDiscrepancyPeriodicY);
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicZ,        m_gaussianDiscrepancyPeriodicZ);
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicT,        m_gaussianDiscrepancyPeriodicT);
+  m_parser->getOption<double>(m_option_gaussianDiscrepancySupportThreshold, m_gaussianDiscrepancySupportThreshold);
 #else
   m_help = env.input()(m_option_help, UQ_GPMSA_HELP);
 
@@ -559,6 +569,10 @@ GPMSAOptions::parse(const BaseEnvironment & env,
         env.input()(m_option_gaussianDiscrepancyPeriodicT,
                     bool(m_gaussianDiscrepancyPeriodicT[i]));
     }
+
+  m_gaussianDiscrepancySupportThreshold =
+    env.input()(m_option_gaussianDiscrepancySupportThreshold,
+                m_gaussianDiscrepancySupportThreshold);
 
   m_maxEmulatorBasisVectors =
     env.input()(m_option_maxEmulatorBasisVectors,
@@ -1122,8 +1136,8 @@ GPMSAOptions::print(std::ostream& os) const
          os << this->m_gaussianDiscrepancyPeriodicT[i];
          os << ((i+1 == size) ? '}' : ',');
        }
-
-     os << std::endl;
+  os << "\n" << m_option_gaussianDiscrepancySupportThreshold << " = " << this->m_gaussianDiscrepancySupportThreshold
+     << std::endl;
 }
 
 std::ostream &
