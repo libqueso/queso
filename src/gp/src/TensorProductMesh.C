@@ -94,8 +94,11 @@ TensorProductMesh<V>::set_coordinates
   // We passed that argument by value, so it should be safe to steal.
   _coordinate_vals[i].swap(_coord_vals);
 
-  queso_assert(std::is_sorted(_coordinate_vals.begin(),
-                              _coordinate_vals.end()));
+  // Check for user error
+  // We won't check for empty coordinate_vals, because the user might
+  // be disabling a previously-enabled coordinate for some reason.
+  for (unsigned int v=1; v < _coordinate_vals[i].size(); ++v)
+    queso_require(_coordinate_vals[i][v-1] < _coordinate_vals[i][v]);
 }
 
 
