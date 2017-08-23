@@ -136,6 +136,15 @@ TensorProductMesh<V>::n_outputs() const
 }
 
 
+template <class V>
+void
+TensorProductMesh<V>::generateDiscrepancyBases
+  (const GPMSAOptions & opt,
+   std::vector<typename SharedPtr<V>::Type> bases) const
+{
+  queso_not_implemented(); // FIXME
+}
+
 
 template <class V>
 double

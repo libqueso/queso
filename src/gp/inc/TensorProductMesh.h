@@ -64,6 +64,9 @@ public:
   virtual double interpolateOutput(const V & solutionVector,
                                    const SimulationOutputPoint & outputPoint) const;
 
+  virtual void generateDiscrepancyBases(const GPMSAOptions & opt,
+                                        std::vector<typename SharedPtr<V>::Type> bases) const;
+
 private:
   void set_coordinates(unsigned int i, std::vector<double> & _coord_vals);
 

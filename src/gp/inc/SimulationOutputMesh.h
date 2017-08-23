@@ -25,14 +25,18 @@
 #ifndef UQ_SIMULATION_OUTPUT_MESH_H
 #define UQ_SIMULATION_OUTPUT_MESH_H
 
-#include <vector>
-
 #include <queso/SimulationOutputPoint.h>
+
+#include <queso/SharedPtr.h>
+
+#include <vector>
 
 namespace QUESO {
 
 // Forward declarations
 class GslVector;
+
+class GPMSAOptions;
 
 template <class V = GslVector>
 class SimulationOutputMesh
@@ -51,6 +55,9 @@ public:
   virtual void interpolateOutputs(const V & solutionVector,
                                   const std::vector<SimulationOutputPoint> & outputPoints,
                                   V & interpolatedValues);
+
+  virtual void generateDiscrepancyBases(const GPMSAOptions & opt,
+                                        std::vector<typename SharedPtr<V>::Type> bases) const = 0;
 
 protected:
 

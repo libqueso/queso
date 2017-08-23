@@ -798,13 +798,39 @@ GPMSAFactory<V, M>::setUpDiscrepancyBases()
       // Replace our placeholder with the default discrepancy basis:
       m_discrepancyBases.clear();
 
+      // Start by generating functional data gaussian discrepancy
+      // bases, then generate multivariate delta-function discrepancy
+      // bases.
+      unsigned int first_multivariate_index = 0;
+      for (unsigned int m=0; m != m_simulationMeshes.size(); ++m)
+        {
+          const SimulationOutputMesh<V> & mesh = *m_simulationMeshes[m];
+          const unsigned int mesh_n_outputs = mesh.n_outputs();
+          queso_assert_greater(mesh_n_outputs, 0);
+          queso_assert_equal_to(mesh.first_solution_index(),
+                                first_multivariate_index);
+          first_multivariate_index += mesh_n_outputs;
+
+          std::vector<typename SharedPtr<V>::Type> mesh_discrepancy_bases;
+          mesh.generateDiscrepancyBases
+            (this->options(), mesh_discrepancy_bases);
+          m_discrepancyBases.insert (m_discrepancyBases.end(),
+                                     mesh_discrepancy_bases.begin(),
+                                     mesh_discrepancy_bases.end());
+        }
+
       const unsigned int numSimulationOutputs =
         this->m_simulationOutputSpace.dimLocal();
-      for (unsigned int i=0; i != numSimulationOutputs; ++i)
+      const unsigned int n_multivariate_indices =
+        numSimulationOutputs - first_multivariate_index;
+      const unsigned int n_variables = m_simulationMeshes.size() + n_multivariate_indices;
+      const unsigned int variable_index_to_output_index = first_multivariate_index - m_simulationMeshes.size();
+      for (unsigned int i=0; i != n_variables; ++i)
         {
           typename SharedPtr<V>::Type standard_basis(new V(env, output_map));
           // De-normalize the basis so it will be re-normalized later.
-          (*standard_basis)[i] = this->m_opts->output_scale(i);
+          (*standard_basis)[i+variable_index_to_output_index] =
+            this->m_opts->output_scale(i);
           m_discrepancyBases.push_back(standard_basis);
         }
     }
