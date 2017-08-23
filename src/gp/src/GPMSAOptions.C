@@ -58,6 +58,8 @@
 #define UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV 333.333
 #define UQ_GPMSA_OBSERVATIONAL_PRECISION_RIDGE 1e-4
 #define UQ_GPMSA_OBSERVATIONAL_COVARIANCE_RIDGE 0.0
+#define UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE 1.0
+#define UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC false
 
 namespace { // Anonymous namespace for helper functions
 
@@ -169,6 +171,14 @@ GPMSAOptions::set_prefix(const char * prefix)
   m_option_observationalCovarianceRidge = m_prefix + "observational_covariance_ridge";
   m_option_autoscaleMinMaxAll = m_prefix + "autoscale_min_max_all";
   m_option_autoscaleMeanVarAll = m_prefix + "autoscale_mean_var_all";
+  m_option_gaussianDiscrepancyDistanceX = m_prefix + "gaussian_discrepancy_distance_x";
+  m_option_gaussianDiscrepancyDistanceY = m_prefix + "gaussian_discrepancy_distance_y";
+  m_option_gaussianDiscrepancyDistanceZ = m_prefix + "gaussian_discrepancy_distance_z";
+  m_option_gaussianDiscrepancyDistanceT = m_prefix + "gaussian_discrepancy_distance_t";
+  m_option_gaussianDiscrepancyPeriodicX = m_prefix + "gaussian_discrepancy_periodic_x";
+  m_option_gaussianDiscrepancyPeriodicY = m_prefix + "gaussian_discrepancy_periodic_y";
+  m_option_gaussianDiscrepancyPeriodicZ = m_prefix + "gaussian_discrepancy_periodic_z";
+  m_option_gaussianDiscrepancyPeriodicT = m_prefix + "gaussian_discrepancy_periodic_t";
 }
 
 
@@ -316,6 +326,47 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     "option to autoscale all parameters and outputs based on data statistics");
 
   m_parser->registerOption
+    (m_option_gaussianDiscrepancyDistanceX,
+    m_gaussianDiscrepancyDistanceX,
+    "x distance between neighboring gaussian discrepancy kernels");
+
+  m_parser->registerOption
+    (m_option_gaussianDiscrepancyDistanceY,
+    m_gaussianDiscrepancyDistanceY,
+    "y distance between neighboring gaussian discrepancy kernels");
+
+  m_parser->registerOption
+    (m_option_gaussianDiscrepancyDistanceZ,
+    m_gaussianDiscrepancyDistanceZ,
+    "z distance between neighboring gaussian discrepancy kernels");
+
+  m_parser->registerOption
+    (m_option_gaussianDiscrepancyDistanceT,
+    m_gaussianDiscrepancyDistanceT,
+    "t distance between neighboring gaussian discrepancy kernels");
+
+  m_parser->registerOption
+    (m_option_gaussianDiscrepancyPeriodicX,
+    m_gaussianDiscrepancyPeriodicX,
+    "whether gaussian discrepancy kernels are periodic in x");
+
+  m_parser->registerOption
+    (m_option_gaussianDiscrepancyPeriodicY,
+    m_gaussianDiscrepancyPeriodicY,
+    "whether gaussian discrepancy kernels are periodic in y");
+
+  m_parser->registerOption
+    (m_option_gaussianDiscrepancyPeriodicZ,
+    m_gaussianDiscrepancyPeriodicZ,
+    "whether gaussian discrepancy kernels are periodic in z");
+
+  m_parser->registerOption
+    (m_option_gaussianDiscrepancyPeriodicT,
+    m_gaussianDiscrepancyPeriodicT,
+    "whether gaussian discrepancy kernels are periodic in t");
+
+
+  m_parser->registerOption
     (m_option_maxEmulatorBasisVectors,
     m_maxEmulatorBasisVectors,
     "max number of basis vectors to use in SVD of simulation output");
@@ -343,6 +394,14 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<bool>  (m_option_autoscaleMinMaxAll,                  m_autoscaleMinMaxAll);
   m_parser->getOption<bool>  (m_option_autoscaleMeanVarAll,                 m_autoscaleMeanVarAll);
   m_parser->getOption<int>   (m_option_maxEmulatorBasisVectors,             m_maxEmulatorBasisVectors);
+  m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceX,        m_gaussianDiscrepancyDistanceX);
+  m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceY,        m_gaussianDiscrepancyDistanceY);
+  m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceZ,        m_gaussianDiscrepancyDistanceZ);
+  m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceT,        m_gaussianDiscrepancyDistanceT);
+  m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicX,        m_gaussianDiscrepancyPeriodicX);
+  m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicY,        m_gaussianDiscrepancyPeriodicY);
+  m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicZ,        m_gaussianDiscrepancyPeriodicZ);
+  m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicT,        m_gaussianDiscrepancyPeriodicT);
 #else
   m_help = env.input()(m_option_help, UQ_GPMSA_HELP);
 
@@ -411,6 +470,95 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_autoscaleMeanVarAll =
     env.input()(m_option_autoscaleMeanVarAll,
                 m_autoscaleMeanVarAll);
+
+  for (unsigned int i = 0,
+       size = env.input().vector_variable_size(m_option_gaussianDiscrepancyDistanceX);
+       i != size; ++i)
+    {
+      if (m_gaussianDiscrepancyDistanceX.size() <= i)
+        m_gaussianDiscrepancyDistanceX.push_back(UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE);
+      m_gaussianDiscrepancyDistanceX[i] =
+        env.input()(m_option_gaussianDiscrepancyDistanceX,
+                    m_gaussianDiscrepancyDistanceX[i]);
+    }
+
+  for (unsigned int i = 0,
+       size = env.input().vector_variable_size(m_option_gaussianDiscrepancyDistanceY);
+       i != size; ++i)
+    {
+      if (m_gaussianDiscrepancyDistanceY.size() <= i)
+        m_gaussianDiscrepancyDistanceY.push_back(UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE);
+      m_gaussianDiscrepancyDistanceY[i] =
+        env.input()(m_option_gaussianDiscrepancyDistanceY,
+                    m_gaussianDiscrepancyDistanceY[i]);
+    }
+
+  for (unsigned int i = 0,
+       size = env.input().vector_variable_size(m_option_gaussianDiscrepancyDistanceZ);
+       i != size; ++i)
+    {
+      if (m_gaussianDiscrepancyDistanceZ.size() <= i)
+        m_gaussianDiscrepancyDistanceZ.push_back(UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE);
+      m_gaussianDiscrepancyDistanceZ[i] =
+        env.input()(m_option_gaussianDiscrepancyDistanceZ,
+                    m_gaussianDiscrepancyDistanceZ[i]);
+    }
+
+  for (unsigned int i = 0,
+       size = env.input().vector_variable_size(m_option_gaussianDiscrepancyDistanceT);
+       i != size; ++i)
+    {
+      if (m_gaussianDiscrepancyDistanceT.size() <= i)
+        m_gaussianDiscrepancyDistanceT.push_back(UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE);
+      m_gaussianDiscrepancyDistanceT[i] =
+        env.input()(m_option_gaussianDiscrepancyDistanceT,
+                    m_gaussianDiscrepancyDistanceT[i]);
+    }
+
+
+  for (unsigned int i = 0,
+       size = env.input().vector_variable_size(m_option_gaussianDiscrepancyPeriodicX);
+       i != size; ++i)
+    {
+      if (m_gaussianDiscrepancyPeriodicX.size() <= i)
+        m_gaussianDiscrepancyPeriodicX.push_back(UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC);
+      m_gaussianDiscrepancyPeriodicX[i] =
+        env.input()(m_option_gaussianDiscrepancyPeriodicX,
+                    bool(m_gaussianDiscrepancyPeriodicX[i]));
+    }
+
+  for (unsigned int i = 0,
+       size = env.input().vector_variable_size(m_option_gaussianDiscrepancyPeriodicY);
+       i != size; ++i)
+    {
+      if (m_gaussianDiscrepancyPeriodicY.size() <= i)
+        m_gaussianDiscrepancyPeriodicY.push_back(UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC);
+      m_gaussianDiscrepancyPeriodicY[i] =
+        env.input()(m_option_gaussianDiscrepancyPeriodicY,
+                    bool(m_gaussianDiscrepancyPeriodicY[i]));
+    }
+
+  for (unsigned int i = 0,
+       size = env.input().vector_variable_size(m_option_gaussianDiscrepancyPeriodicZ);
+       i != size; ++i)
+    {
+      if (m_gaussianDiscrepancyPeriodicZ.size() <= i)
+        m_gaussianDiscrepancyPeriodicZ.push_back(UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC);
+      m_gaussianDiscrepancyPeriodicZ[i] =
+        env.input()(m_option_gaussianDiscrepancyPeriodicZ,
+                    bool(m_gaussianDiscrepancyPeriodicZ[i]));
+    }
+
+  for (unsigned int i = 0,
+       size = env.input().vector_variable_size(m_option_gaussianDiscrepancyPeriodicT);
+       i != size; ++i)
+    {
+      if (m_gaussianDiscrepancyPeriodicT.size() <= i)
+        m_gaussianDiscrepancyPeriodicT.push_back(UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC);
+      m_gaussianDiscrepancyPeriodicT[i] =
+        env.input()(m_option_gaussianDiscrepancyPeriodicT,
+                    bool(m_gaussianDiscrepancyPeriodicT[i]));
+    }
 
   m_maxEmulatorBasisVectors =
     env.input()(m_option_maxEmulatorBasisVectors,
@@ -923,8 +1071,59 @@ GPMSAOptions::print(std::ostream& os) const
      << "\n" << m_option_observationalCovarianceRidge << " = " << this->m_observationalCovarianceRidge
      << "\n" << m_option_autoscaleMinMaxAll << " = " << this->m_autoscaleMinMaxAll
      << "\n" << m_option_autoscaleMeanVarAll << " = " << this->m_autoscaleMeanVarAll
-     << "\n" << m_option_maxEmulatorBasisVectors << " = " << this->m_maxEmulatorBasisVectors
-     << std::endl;
+     << "\n" << m_option_maxEmulatorBasisVectors << " = " << this->m_maxEmulatorBasisVectors;
+
+     os << "\n" << m_option_gaussianDiscrepancyDistanceX << " = {";
+     for (unsigned int i = 0, size = this->m_gaussianDiscrepancyDistanceX.size(); i != size; ++i)
+       {
+         os << this->m_gaussianDiscrepancyDistanceX[i];
+         os << ((i+1 == size) ? '}' : ',');
+       }
+     os << "\n" << m_option_gaussianDiscrepancyDistanceY << " = {";
+     for (unsigned int i = 0, size = this->m_gaussianDiscrepancyDistanceY.size(); i != size; ++i)
+       {
+         os << this->m_gaussianDiscrepancyDistanceY[i];
+         os << ((i+1 == size) ? '}' : ',');
+       }
+     os << "\n" << m_option_gaussianDiscrepancyDistanceZ << " = {";
+     for (unsigned int i = 0, size = this->m_gaussianDiscrepancyDistanceZ.size(); i != size; ++i)
+       {
+         os << this->m_gaussianDiscrepancyDistanceZ[i];
+         os << ((i+1 == size) ? '}' : ',');
+       }
+     os << "\n" << m_option_gaussianDiscrepancyDistanceT << " = {";
+     for (unsigned int i = 0, size = this->m_gaussianDiscrepancyDistanceT.size(); i != size; ++i)
+       {
+         os << this->m_gaussianDiscrepancyDistanceT[i];
+         os << ((i+1 == size) ? '}' : ',');
+       }
+
+     os << "\n" << m_option_gaussianDiscrepancyPeriodicX << " = {";
+     for (unsigned int i = 0, size = this->m_gaussianDiscrepancyPeriodicX.size(); i != size; ++i)
+       {
+         os << this->m_gaussianDiscrepancyPeriodicX[i];
+         os << ((i+1 == size) ? '}' : ',');
+       }
+     os << "\n" << m_option_gaussianDiscrepancyPeriodicY << " = {";
+     for (unsigned int i = 0, size = this->m_gaussianDiscrepancyPeriodicY.size(); i != size; ++i)
+       {
+         os << this->m_gaussianDiscrepancyPeriodicY[i];
+         os << ((i+1 == size) ? '}' : ',');
+       }
+     os << "\n" << m_option_gaussianDiscrepancyPeriodicZ << " = {";
+     for (unsigned int i = 0, size = this->m_gaussianDiscrepancyPeriodicZ.size(); i != size; ++i)
+       {
+         os << this->m_gaussianDiscrepancyPeriodicZ[i];
+         os << ((i+1 == size) ? '}' : ',');
+       }
+     os << "\n" << m_option_gaussianDiscrepancyPeriodicT << " = {";
+     for (unsigned int i = 0, size = this->m_gaussianDiscrepancyPeriodicT.size(); i != size; ++i)
+       {
+         os << this->m_gaussianDiscrepancyPeriodicT[i];
+         os << ((i+1 == size) ? '}' : ',');
+       }
+
+     os << std::endl;
 }
 
 std::ostream &

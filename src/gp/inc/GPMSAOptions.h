@@ -275,12 +275,12 @@ public:
                       m_gaussianDiscrepancyDistanceZ,
                       m_gaussianDiscrepancyDistanceT;
 
-  //! Whether or not gaussian discrepancy kernels should be periodic
-  //  in each direction.
-  bool m_gaussianDiscrepancyPeriodicX,
-       m_gaussianDiscrepancyPeriodicY,
-       m_gaussianDiscrepancyPeriodicZ,
-       m_gaussianDiscrepancyPeriodicT;
+  //! Whether or not gaussian discrepancy kernels should be periodic,
+  //  on each simulation mesh, in each direction.
+  std::vector<bool> m_gaussianDiscrepancyPeriodicX,
+                    m_gaussianDiscrepancyPeriodicY,
+                    m_gaussianDiscrepancyPeriodicZ,
+                    m_gaussianDiscrepancyPeriodicT;
 
   friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj);
 
