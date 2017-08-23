@@ -277,7 +277,12 @@ public:
   //@}
 
   //! Add a mesh to \c this, describing simulation output in
-  // space and/or time, for use in interpolation.
+  // space and/or time, for use in interpolation of functional data.
+  //
+  // We currently assume that meshes are added in the order in which
+  // their data appears in a simulation output vector, and we assume
+  // that all multivariate data in simulation outputs comes after all
+  // functional data.
   void addSimulationMesh
     (typename SharedPtr<SimulationOutputMesh<V> >::Type simulationMesh);
 
