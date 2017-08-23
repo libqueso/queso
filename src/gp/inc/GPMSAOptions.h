@@ -268,6 +268,20 @@ public:
   //! The ridge to add to (B^T*W_y*B)^-1 before using it
   double m_observationalCovarianceRidge;
 
+  //! The distance between gaussian discrepancy kernels, on each
+  //  provided simulation mesh, in each direction.
+  std::vector<double> m_gaussianDiscrepancyDistanceX,
+                      m_gaussianDiscrepancyDistanceY,
+                      m_gaussianDiscrepancyDistanceZ,
+                      m_gaussianDiscrepancyDistanceT;
+
+  //! Whether or not gaussian discrepancy kernels should be periodic
+  //  in each direction.
+  bool m_gaussianDiscrepancyPeriodicX,
+       m_gaussianDiscrepancyPeriodicY,
+       m_gaussianDiscrepancyPeriodicZ,
+       m_gaussianDiscrepancyPeriodicT;
+
   friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj);
 
 private:
@@ -346,6 +360,16 @@ private:
 
   std::string m_option_autoscaleMinMaxAll;
   std::string m_option_autoscaleMeanVarAll;
+
+  std::string m_option_gaussianDiscrepancyDistanceX,
+              m_option_gaussianDiscrepancyDistanceY,
+              m_option_gaussianDiscrepancyDistanceZ,
+              m_option_gaussianDiscrepancyDistanceT;
+
+  std::string m_option_gaussianDiscrepancyPeriodicX,
+              m_option_gaussianDiscrepancyPeriodicY,
+              m_option_gaussianDiscrepancyPeriodicZ,
+              m_option_gaussianDiscrepancyPeriodicT;
 
   bool options_have_been_used;
 

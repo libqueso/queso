@@ -375,7 +375,9 @@ public:
    * multiply them.
    *
    * If no discrepancy basis is provided, the natural basis e_i
-   * vectors will be used.
+   * vectors will be used for multivariate data, and a gaussian
+   * discrepancy basis generated from user options will be used for
+   * functional data.
    *
    * Data vectors are consistently indexed for each simulation output
    * provided, and so discrepancy bases use the same indexing.
