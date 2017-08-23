@@ -156,8 +156,8 @@ TensorProductMesh<V>::interpolateOutput
           std::vector<double>::const_iterator ub =
             std::lower_bound(_coordinate_vals[dim].begin(),
                              _coordinate_vals[dim].end(), outputPoint.val(dim));
-          queso_assert_not_equal_to(ub, _coordinate_vals[dim].end());
-          queso_assert_not_equal_to(ub, _coordinate_vals[dim].begin());
+          queso_assert(ub != _coordinate_vals[dim].end());
+          queso_assert(ub != _coordinate_vals[dim].begin());
           indices[dim] = ub - _coordinate_vals[dim].begin() - 1;
 
           std::vector<double>::const_iterator lb = ub;
