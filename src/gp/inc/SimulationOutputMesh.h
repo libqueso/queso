@@ -42,8 +42,8 @@ public:
 
   virtual ~SimulationOutputMesh();
 
-  std::size_t first_solution_index() { return _first_solution_index; }
-  virtual std::size_t n_outputs() = 0;
+  std::size_t first_solution_index() const { return _first_solution_index; }
+  virtual std::size_t n_outputs() const = 0;
 
   virtual double interpolateOutput(const V & solutionVector,
                                    const SimulationOutputPoint & outputPoint) const = 0;

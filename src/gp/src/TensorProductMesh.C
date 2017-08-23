@@ -122,7 +122,7 @@ TensorProductMesh<V>::set_coordinate_order
 
 template <class V>
 std::size_t
-TensorProductMesh<V>::n_outputs()
+TensorProductMesh<V>::n_outputs() const
 {
   std::size_t n_outputs = 1;
   for (unsigned int dim = 0; dim != max_coordinates; ++dim)
