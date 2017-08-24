@@ -147,6 +147,8 @@ TensorProductMesh<V>::generateDiscrepancyBases
    unsigned int mesh_number,
    std::vector<typename SharedPtr<V>::Type> bases) const
 {
+  bases.clear(); // We're filling this, not appending to it
+
   double kernel_spacing[max_coordinates];
   kernel_spacing[0] = opt.m_gaussianDiscrepancyDistanceX[mesh_number];
   kernel_spacing[1] = opt.m_gaussianDiscrepancyDistanceY[mesh_number];
@@ -273,7 +275,21 @@ TensorProductMesh<V>::generateDiscrepancyBases
         }
     }
 
-  queso_not_implemented(); // FIXME
+  // Finally we need to normalize the bases we've just generated
+  double maxnorm = 0;
+  for (unsigned int b=0; b != bases.size(); ++b)
+    {
+      const V & basis = *bases[b];
+      maxnorm = std::max(maxnorm, basis.norm2());
+    }
+
+  const double invmaxnorm = 1./maxnorm;
+
+  for (unsigned int b=0; b != bases.size(); ++b)
+    {
+      V & basis = *bases[b];
+      basis *= invmaxnorm;
+    }
 }
 
 
