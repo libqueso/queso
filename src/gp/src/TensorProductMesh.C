@@ -25,6 +25,10 @@
 #include <queso/TensorProductMesh.h>
 #include <queso/GslVector.h>
 #include <queso/asserts.h>
+#include <queso/GPMSAOptions.h>
+
+#include <algorithm> // std::sort
+#include <cmath> // std::exp
 
 namespace QUESO {
 
@@ -140,8 +144,135 @@ template <class V>
 void
 TensorProductMesh<V>::generateDiscrepancyBases
   (const GPMSAOptions & opt,
+   unsigned int mesh_number,
    std::vector<typename SharedPtr<V>::Type> bases) const
 {
+  double kernel_spacing[max_coordinates];
+  kernel_spacing[0] = opt.m_gaussianDiscrepancyDistanceX[mesh_number];
+  kernel_spacing[1] = opt.m_gaussianDiscrepancyDistanceY[mesh_number];
+  kernel_spacing[2] = opt.m_gaussianDiscrepancyDistanceZ[mesh_number];
+  kernel_spacing[3] = opt.m_gaussianDiscrepancyDistanceT[mesh_number];
+
+  double kernel_periodic[max_coordinates];
+  kernel_periodic[0] = opt.m_gaussianDiscrepancyPeriodicX[mesh_number];
+  kernel_periodic[1] = opt.m_gaussianDiscrepancyPeriodicY[mesh_number];
+  kernel_periodic[2] = opt.m_gaussianDiscrepancyPeriodicZ[mesh_number];
+  kernel_periodic[3] = opt.m_gaussianDiscrepancyPeriodicT[mesh_number];
+
+  // "This could get very complicated - perhaps we do not want to
+  // attack this issue now"
+  for (unsigned int i=0; i != 4; ++i)
+    if (kernel_periodic[i])
+      queso_not_implemented();
+
+  std::vector<double> peaks_1D[max_coordinates];
+
+  const double support_threshold = opt.m_gaussianDiscrepancySupportThreshold;
+
+  unsigned int num_coordinates_used = 0;
+  unsigned int num_grid_points = 1;
+  unsigned int num_discrepancy_bases = 1;
+
+  // Figure out where peaks of Gaussian bases should be located, in
+  // each dimension.
+  for (unsigned int dim = 0; dim != max_coordinates; ++dim)
+    {
+      if (_coordinate_vals[dim].empty())
+        continue;
+
+      // We'll want to make this optional eventually
+      const double stddev = kernel_spacing[dim];
+
+      num_coordinates_used++;
+      num_grid_points *= _coordinate_vals[dim].size();
+
+      const double central_peak =
+        (_coordinate_vals[dim].front() + _coordinate_vals[dim].back()) / 2;
+
+      double peak = central_peak;
+
+      do
+        {
+          peaks_1D[dim].push_back(peak);
+
+          peak -= kernel_spacing[dim];
+          const double boundary_distance =
+            peak - _coordinate_vals[dim].front();
+          if (boundary_distance < 0)
+            {
+              const double boundary_value = std::exp(-(boundary_distance * boundary_distance)/2/stddev/stddev);
+
+              if (boundary_value < support_threshold)
+                break;
+            }
+        } while (true);
+
+      peak = central_peak;
+      do
+        {
+          peak += kernel_spacing[dim];
+          const double boundary_distance =
+            _coordinate_vals[dim].back() - peak;
+          if (boundary_distance < 0)
+            {
+              const double boundary_value = std::exp(-(boundary_distance * boundary_distance)/2/stddev/stddev);
+
+              if (boundary_value < support_threshold)
+                break;
+            }
+          peaks_1D[dim].push_back(peak);
+        } while (true);
+
+      num_discrepancy_bases *= peaks_1D[dim].size();
+      std::sort(peaks_1D[dim].begin(), peaks_1D[dim].end());
+    }
+
+  // Start constructing bases
+  double gaussian_peak_index[max_coordinates] = {0, 0, 0, 0};
+
+  for (unsigned int basis = 0; basis != num_discrepancy_bases; ++basis)
+    {
+      double mesh_point_index[max_coordinates] = {0, 0, 0, 0};
+
+      for (unsigned int ptindex = 0; ptindex != num_grid_points; ++ptindex)
+        {
+          double gaussian_value = 1;
+          std::size_t solution_index = this->_first_solution_index;
+          std::size_t stride = 1;
+
+          for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
+            {
+              const unsigned int raw_dim = _order[predim];
+              const double stddev = kernel_spacing[raw_dim];
+              const double peak = gaussian_peak_index[raw_dim];
+              const double point = mesh_point_index[raw_dim];
+              const double distance = peak - point;
+              gaussian_value *= std::exp(-(distance * distance)/2/stddev/stddev);
+
+              solution_index += stride * mesh_point_index[raw_dim];
+              stride *= _coordinate_vals[raw_dim].size();
+            }
+
+          for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
+            {
+              const unsigned int raw_dim = _order[predim];
+              if (++mesh_point_index[raw_dim] == _coordinate_vals[raw_dim].size())
+                mesh_point_index[raw_dim] = 0;
+              else
+                break;
+            }
+        }
+
+      for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
+        {
+          const unsigned int raw_dim = _order[predim];
+          if (++gaussian_peak_index[raw_dim] == peaks_1D[raw_dim].size())
+            gaussian_peak_index[raw_dim] = 0;
+          else
+            break;
+        }
+    }
+
   queso_not_implemented(); // FIXME
 }
 

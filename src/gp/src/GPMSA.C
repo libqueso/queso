@@ -813,7 +813,7 @@ GPMSAFactory<V, M>::setUpDiscrepancyBases()
 
           std::vector<typename SharedPtr<V>::Type> mesh_discrepancy_bases;
           mesh.generateDiscrepancyBases
-            (this->options(), mesh_discrepancy_bases);
+            (this->options(), m, mesh_discrepancy_bases);
           m_discrepancyBases.insert (m_discrepancyBases.end(),
                                      mesh_discrepancy_bases.begin(),
                                      mesh_discrepancy_bases.end());

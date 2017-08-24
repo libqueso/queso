@@ -57,6 +57,7 @@ public:
                                   V & interpolatedValues);
 
   virtual void generateDiscrepancyBases(const GPMSAOptions & opt,
+                                        unsigned int mesh_number,
                                         std::vector<typename SharedPtr<V>::Type> bases) const = 0;
 
 protected:
