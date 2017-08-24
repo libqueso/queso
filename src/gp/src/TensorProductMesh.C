@@ -275,12 +275,23 @@ TensorProductMesh<V>::generateDiscrepancyBases
         }
     }
 
-  // Finally we need to normalize the bases we've just generated
+  // Finally we need to normalize the bases we've just generated.
+  // This is based on:
+  // D_ij := d_j(tau_i,phi_i) for tau_i, phi_i from simulation data
+  // Dnorm := D / max(max(sqrt(D*D')))
   double maxnorm = 0;
-  for (unsigned int b=0; b != bases.size(); ++b)
+  const unsigned int end_solution_index =
+    this->_first_solution_index + num_grid_points;
+  for (unsigned int i=this->_first_solution_index;
+       i != end_solution_index; ++i)
     {
-      const V & basis = *bases[b];
-      maxnorm = std::max(maxnorm, basis.norm2());
+      double normval = 0;
+      for (unsigned int b=0; b != bases.size(); ++b)
+        {
+          const V & basis = *bases[b];
+          normval += basis[i]*basis[i];
+        }
+      maxnorm = std::max(maxnorm, normval);
     }
 
   const double invmaxnorm = 1./maxnorm;
