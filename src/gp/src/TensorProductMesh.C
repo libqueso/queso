@@ -160,31 +160,31 @@ TensorProductMesh<V>::interpolateOutput
   // Find where we are in the space of each coordinate
   for (unsigned int dim = 0; dim != max_coordinates; ++dim)
     {
-      if (!_coordinate_vals[dim].empty())
+      if (_coordinate_vals[dim].empty())
+        continue;
+
+      std::vector<double>::const_iterator ub =
+        std::lower_bound(_coordinate_vals[dim].begin(),
+                         _coordinate_vals[dim].end(), outputPoint.val(dim));
+      queso_assert(ub != _coordinate_vals[dim].end());
+      queso_assert(ub != _coordinate_vals[dim].begin());
+      indices[dim] = ub - _coordinate_vals[dim].begin() - 1;
+
+      std::vector<double>::const_iterator lb = ub;
+      lb--;
+      if (ub == _coordinate_vals[dim].end())
         {
-          std::vector<double>::const_iterator ub =
-            std::lower_bound(_coordinate_vals[dim].begin(),
-                             _coordinate_vals[dim].end(), outputPoint.val(dim));
-          queso_assert(ub != _coordinate_vals[dim].end());
-          queso_assert(ub != _coordinate_vals[dim].begin());
-          indices[dim] = ub - _coordinate_vals[dim].begin() - 1;
-
-          std::vector<double>::const_iterator lb = ub;
-          lb--;
-          if (ub == _coordinate_vals[dim].end())
-            {
-              // Hopefully we're just at the endpoint, not
-              // extrapolating past it
-              lb_fraction[dim] = 0;
-            }
-          else
-            {
-              lb_fraction[dim] =
-                (outputPoint.val(dim) - *lb)/(*ub - *lb);
-            }
-
-          num_coordinates_used++;
+          // Hopefully we're just at the endpoint, not
+          // extrapolating past it
+          lb_fraction[dim] = 0;
         }
+      else
+        {
+          lb_fraction[dim] =
+            (outputPoint.val(dim) - *lb)/(*ub - *lb);
+        }
+
+      num_coordinates_used++;
     }
 
   const unsigned int num_points = 1 << num_coordinates_used;
