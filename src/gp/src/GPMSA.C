@@ -951,22 +951,6 @@ GPMSAFactory<V, M>::setUpEmulator()
   KT_K_inv.reset
     (new M((K->transpose() * *K).inverse()));
 
-  // FIXME - this needs to be per-experiment in the functional case,
-  // and we can't let algebraic uses of it become dangling references.
-  Map serial_output_map(numSimulationOutputs, 0, comm);
-
-  for (unsigned int i = 0; i != m_numExperiments; ++i)
-    {
-      M D_i(env, serial_output_map,
-            (unsigned int)(m_discrepancyBases.size()));
-
-      for (unsigned int j=0; j != numSimulationOutputs; ++j)
-        for (unsigned int k=0; k != m_discrepancyBases.size(); ++k)
-          D_i(j,k) = (*m_discrepancyBases[k])[j] / this->m_opts->output_scale(j);
-
-      m_discrepancyMatrices.push_back(D_i);
-    }
-
   // Create the giant matrices!
 
   // We build B from two parts, the diag(D_i)*P_D^T block and
@@ -1006,7 +990,16 @@ GPMSAFactory<V, M>::setUpEmulator()
   // might have a different number of outputs.
   for (unsigned int ex = 0, i = 0; ex != m_numExperiments; ++ex)
     {
-      const M & D_i = m_discrepancyMatrices[ex];
+      const unsigned int numExperimentOutputs =
+        m_experimentOutputs[ex]->sizeGlobal();
+      Map serial_output_map(numExperimentOutputs, 0, comm);
+
+      M D_i(env, serial_output_map,
+            (unsigned int)(m_discrepancyBases.size()));
+
+      for (unsigned int j=0; j != numExperimentOutputs; ++j)
+        for (unsigned int k=0; k != m_discrepancyBases.size(); ++k)
+          D_i(j,k) = (*m_discrepancyBases[k])[j] / this->m_opts->output_scale(j);
 
       const M & Sigma_i = *m_observationErrorMatrices[ex];
 
