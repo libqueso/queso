@@ -985,6 +985,13 @@ GPMSAFactory<V, M>::setUpEmulator()
 
   m_observationErrorMatrix.reset(new M(env, Wy_row_map, Brows));
 
+  const unsigned int first_multivariate_index =
+    m_simulationMeshes.empty() ?  0 :
+    (m_simulationMeshes.back()->first_solution_index() +
+     m_simulationMeshes.back()->n_outputs());
+  const unsigned int variable_index_to_output_index =
+    first_multivariate_index - m_simulationMeshes.size();
+
   // i = the current experimental output, used as a row index
   // This is easier iterated than calculated when each experiment
   // might have a different number of outputs.
@@ -999,7 +1006,32 @@ GPMSAFactory<V, M>::setUpEmulator()
 
       for (unsigned int j=0; j != numExperimentOutputs; ++j)
         for (unsigned int k=0; k != m_discrepancyBases.size(); ++k)
-          D_i(j,k) = (*m_discrepancyBases[k])[j] / this->m_opts->output_scale(j);
+          {
+            const V & discrepancy_basis = *m_discrepancyBases[k];
+            // If there's just multivariate data here, then no
+            // interpolation is necessary.
+            double discrepancy_basis_value = discrepancy_basis[j];
+
+            if (this->m_experimentVariables.size())
+              {
+                const unsigned int var = this->m_experimentVariables[ex][j];
+                const SimulationOutputPoint & pt = this->m_experimentPoints[ex][j];
+
+                if (var < this->m_simulationMeshes.size())
+                  {
+                    SimulationOutputMesh<V> & mesh =
+                      *this->m_simulationMeshes[var];
+                    discrepancy_basis_value =
+                      mesh.interpolateOutput(discrepancy_basis, pt);
+                  }
+                else
+                  discrepancy_basis_value =
+                    discrepancy_basis[var + variable_index_to_output_index];
+              }
+
+            D_i(j,k) = discrepancy_basis_value /
+                       this->m_opts->output_scale(j);
+          }
 
       const M & Sigma_i = *m_observationErrorMatrices[ex];
 
