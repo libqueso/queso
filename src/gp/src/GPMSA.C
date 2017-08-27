@@ -117,7 +117,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // discrepancy_precision(1)     // = "lambda_delta" in scalar case,
   //                              //   "lambda_{v i}" in vector
   // ...
-  // discrepancy_precision(F)     // FIXME: F = 1, |G_1| = p_delta, for now.
+  // discrepancy_precision(F)     // FIXME: F = p_delta, |G_1| = 1, for now.
   // discrepancy_corr_strength(1) // = "rho_{delta k}" in scalar case,
   // ...                          //   "rho_{v i}" in vector
   // discrepancy_corr_strength(dimScenario)
@@ -1258,6 +1258,9 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   this->oneDSpace.reset
     (new VectorSpace<V, M>(this->m_env, "", 1, NULL));
 
+  this->numOutputsDSpace.reset
+    (new VectorSpace<V, M>(this->m_env, "", numOutputs, NULL));
+
   // Truncation error precision
   if (this->num_svd_terms < numOutputs)
     {
@@ -1403,13 +1406,13 @@ GPMSAFactory<V, M>::setUpHyperpriors()
 
   // Discrepancy precision
   this->discrepancyPrecisionMin.reset
-    (new V(this->oneDSpace->zeroVector()));
+    (new V(this->numOutputsDSpace->zeroVector()));
   this->discrepancyPrecisionMax.reset
-    (new V(this->oneDSpace->zeroVector()));
+    (new V(this->numOutputsDSpace->zeroVector()));
   this->m_discrepancyPrecisionShapeVec.reset
-    (new V(this->oneDSpace->zeroVector()));
+    (new V(this->numOutputsDSpace->zeroVector()));
   this->m_discrepancyPrecisionScaleVec.reset
-    (new V(this->oneDSpace->zeroVector()));
+    (new V(this->numOutputsDSpace->zeroVector()));
   this->discrepancyPrecisionMin->cwSet(0);
   this->discrepancyPrecisionMax->cwSet(INFINITY);
   this->m_discrepancyPrecisionShapeVec->cwSet(discrepancyPrecisionShape);
@@ -1418,7 +1421,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   this->discrepancyPrecisionDomain.reset
     (new BoxSubset<V, M>
      ("",
-      *(this->oneDSpace),
+      *(this->numOutputsDSpace),
       *(this->discrepancyPrecisionMin),
       *(this->discrepancyPrecisionMax)));
 
@@ -1494,12 +1497,13 @@ GPMSAFactory<V, M>::setUpHyperpriors()
 
   // Now form full prior
   const unsigned int dimHyper =
-    2 +
+    1 +
     (this->num_svd_terms < numOutputs) +
     this->m_opts->m_calibrateObservationalPrecision +
     num_svd_terms +
     dimParameter +
     dimScenario +
+    numOutputs +
     dimScenario;  // yum
 
   const unsigned int dimSum = dimParameter + dimHyper;
@@ -1530,11 +1534,19 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     (*(this->hyperparamMaxs))[(num_svd_terms<numOutputs)+basis] = INFINITY;
   }
 
-  // FIXME: F = 1 for now
-  // Min discrepancy precision
-  (*(this->hyperparamMins))[(num_svd_terms<numOutputs)+num_svd_terms+dimScenario+dimParameter] = 0;
-  // Max discrepancy precision
-  (*(this->hyperparamMaxs))[(num_svd_terms<numOutputs)+num_svd_terms+dimScenario+dimParameter] = INFINITY;
+  // FIXME: F = p_delta and |G_i| = 1 for now
+  for (unsigned int disc_grp = 0; disc_grp < numOutputs; disc_grp++) {
+    // Starting index of the discrepancy precisions in the hyperparameter vector
+    unsigned int discrepancyPrecisionIdx = (num_svd_terms<numOutputs) +
+                                           num_svd_terms +
+                                           dimScenario +
+                                           dimParameter;
+
+    // Min discrepancy precision
+    (*(this->hyperparamMins))[discrepancyPrecisionIdx+disc_grp] = 0;
+    // Max discrepancy precision
+    (*(this->hyperparamMaxs))[discrepancyPrecisionIdx+disc_grp] = INFINITY;
+  }
 
   const int emulator_data_precision_index =
     dimHyper - 1 - this->m_opts->m_calibrateObservationalPrecision;
