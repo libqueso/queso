@@ -108,6 +108,7 @@ public:
   // Intermediate calculations we can cache
   //
   unsigned int num_svd_terms;
+  unsigned int num_nonzero_eigenvalues;
 
   const ConcatenatedVectorRV<V, M> & m_totalPrior;
 
@@ -387,6 +388,9 @@ public:
 
   // Number of dimensions preserved from the SVD of simulation outputs
   unsigned int num_svd_terms;
+
+  // Number of "nonzero" eigenvalues in SVD of simulation outputs
+  unsigned int num_nonzero_eigenvalues;
 
   // Domains for all the hyperpriors
   typename ScopedPtr<VectorSpace<V, M> >::Type oneDSpace;
