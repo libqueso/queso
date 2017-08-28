@@ -319,9 +319,10 @@ int main(int argc, char ** argv) {
   paramInitials[12] = 0.80; // emulator corr str
   paramInitials[13] = 10.0; // discrepancy precision0
   paramInitials[14] = 10.0; // discrepancy precision1
-  paramInitials[15] = 0.97; // discrepancy corr str
-  paramInitials[16] = 8000.0; // emulator data precision
-  paramInitials[17]  = 1.0;  // observation error precision
+  paramInitials[15] = 0.97; // discrepancy corr str0
+  paramInitials[16] = 0.97; // discrepancy corr str1
+  paramInitials[17] = 8000.0; // emulator data precision
+  paramInitials[18]  = 1.0;  // observation error precision
 
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
@@ -351,9 +352,10 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(12, 12) = 0.0572 / scale;  // emulator corr str
   proposalCovMatrix(13, 13) = 1.3417 / scale;  // discrepancy precision0
   proposalCovMatrix(14, 14) = 1.3417 / scale;  // discrepancy precision1
-  proposalCovMatrix(15, 15) = 0.3461 / scale;  // discrepancy corr str
-  proposalCovMatrix(16, 16) = 495.3 / scale;  // emulator data precision
-  proposalCovMatrix(17, 17) = 0.4953 / scale;  // observation error precision
+  proposalCovMatrix(15, 15) = 0.3461 / scale;  // discrepancy corr str0
+  proposalCovMatrix(16, 16) = 0.3461 / scale;  // discrepancy corr str1
+  proposalCovMatrix(17, 17) = 495.3 / scale;  // emulator data precision
+  proposalCovMatrix(18, 18) = 0.4953 / scale;  // observation error precision
 
   // Square to get variances
   for (unsigned int i = 0; i < 15; i++) {

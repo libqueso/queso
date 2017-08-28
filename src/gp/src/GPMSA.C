@@ -120,7 +120,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // discrepancy_precision(F)     // FIXME: F = p_delta, |G_1| = 1, for now.
   // discrepancy_corr_strength(1) // = "rho_{delta k}" in scalar case,
   // ...                          //   "rho_{v i}" in vector
-  // discrepancy_corr_strength(dimScenario)
+  // discrepancy_corr_strength(F*dimScenario)  // FIXME: F = numOutputs, for now
   // emulator_data_precision(1)   // = "small white noise",
                                   // "small ridge", "nugget"
   // observation_error_precision  // = "lambda_y", iff user-requested
@@ -1453,7 +1453,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     (new VectorSpace<V, M>
      (this->m_env,
       "",
-      dimScenario,
+      numOutputs*dimScenario,
       NULL));
 
   this->discrepancyCorrelationMin.reset
@@ -1520,7 +1520,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     dimParameter +
     dimScenario +
     numOutputs +
-    dimScenario;  // yum
+    (numOutputs*dimScenario);  // yum
 
   const unsigned int dimSum = dimParameter + dimHyper;
 
