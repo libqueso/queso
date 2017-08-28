@@ -836,6 +836,7 @@ GPMSAOptions::print(std::ostream& os) const
      << "\n" << m_option_observationalCovarianceRidge << " = " << this->m_observationalCovarianceRidge
      << "\n" << m_option_autoscaleMinMaxAll << " = " << this->m_autoscaleMinMaxAll
      << "\n" << m_option_autoscaleMeanVarAll << " = " << this->m_autoscaleMeanVarAll
+     << "\n" << m_option_maxEmulatorBasisVectors << " = " << this->m_maxEmulatorBasisVectors
      << std::endl;
 }
 

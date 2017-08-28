@@ -167,7 +167,6 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // Length of prior+hyperprior inputs
   unsigned int dimSum = 2 +
                         (this->num_svd_terms < numOutputs) +
-                        (numOutputs > 1) +
                         m_opts.m_calibrateObservationalPrecision +
                         num_svd_terms +
                         dimParameter +
@@ -286,7 +285,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           // Sigma_uw etc. it's lambda_wi and we skip lambda_eta
           const double relevant_precision =
             domainVector[dimParameter + basis +
-                         (this->num_svd_terms<numOutputs) + (numOutputs>1)];
+                         (this->num_svd_terms<numOutputs)];
           queso_assert_greater(relevant_precision, 0.0);
 
           const unsigned int stridei =
@@ -311,7 +310,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         prodDiscrepancy = 1.0;
         unsigned int discrepancyCorrStrStart =
           dimParameter + num_svd_terms + dimParameter + dimScenario + 1 +
-          (this->num_svd_terms<numOutputs) + (numOutputs > 1);
+          (this->num_svd_terms<numOutputs);
         for (unsigned int k = 0; k < dimScenario; k++) {
           const double & discrepancy_corr_strength =
             domainVector[discrepancyCorrStrStart+k];
@@ -365,7 +364,6 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     // Barely alluded to, never described, in Higdon et. al.
     const double emulator_data_precision =
       domainVector[dimSum-1-
-                   (numOutputs>1)-
                    m_opts.m_calibrateObservationalPrecision];
 
     queso_assert_greater(emulator_data_precision, 0);
@@ -1299,7 +1297,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     (new VectorSpace<V, M>
      (this->m_env,
       "",
-      num_svd_terms + (numOutputs > 1),
+      num_svd_terms,
       NULL));
 
   this->emulatorPrecisionMin.reset
@@ -1498,7 +1496,6 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   const unsigned int dimHyper =
     2 +
     (this->num_svd_terms < numOutputs) +
-    (numOutputs > 1) +
     this->m_opts->m_calibrateObservationalPrecision +
     num_svd_terms +
     dimParameter +
@@ -1526,25 +1523,18 @@ GPMSAFactory<V, M>::setUpHyperpriors()
   this->hyperparamMins->cwSet(0.0);
   this->hyperparamMaxs->cwSet(1.0);
 
-  // Min emulator precision
-  (*(this->hyperparamMins))[0] = 0.3;
-  // Max emulator precision
-  (*(this->hyperparamMaxs))[0] = INFINITY;
-
-  if (numOutputs > 1)
-    for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
-      {
-        // Min weights precision
-        (*(this->hyperparamMins))[1+basis] = 0.3;
-        // Max weights precision
-        (*(this->hyperparamMaxs))[1+basis] = INFINITY;
-      }
+  for (unsigned int basis = 0; basis != num_svd_terms; ++basis) {
+    // Min emulator precision
+    (*(this->hyperparamMins))[(num_svd_terms<numOutputs)+basis] = 0.3;
+    // Max emulator precision
+    (*(this->hyperparamMaxs))[(num_svd_terms<numOutputs)+basis] = INFINITY;
+  }
 
   // FIXME: F = 1 for now
   // Min discrepancy precision
-  (*(this->hyperparamMins))[(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = 0;
+  (*(this->hyperparamMins))[(num_svd_terms<numOutputs)+num_svd_terms+dimScenario+dimParameter] = 0;
   // Max discrepancy precision
-  (*(this->hyperparamMaxs))[(numOutputs>1)+num_svd_terms+dimScenario+dimParameter] = INFINITY;
+  (*(this->hyperparamMaxs))[(num_svd_terms<numOutputs)+num_svd_terms+dimScenario+dimParameter] = INFINITY;
 
   const int emulator_data_precision_index =
     dimHyper - 1 - this->m_opts->m_calibrateObservationalPrecision;
