@@ -401,7 +401,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           covMatrix(i,j) += BT_Wy_B_inv(i,j) * inv_lambda_y;
 
       const double emulator_precision =
-        domainVector[dimParameter+1];
+        domainVector[dimParameter+(num_svd_terms<num_nonzero_eigenvalues)];
       const double inv_emulator_precision = 1.0/emulator_precision;
 
       unsigned int KT_K_size = KT_K_inv.numCols();
