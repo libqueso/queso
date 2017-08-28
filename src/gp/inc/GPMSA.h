@@ -390,7 +390,7 @@ public:
 
   // Domains for all the hyperpriors
   typename ScopedPtr<VectorSpace<V, M> >::Type oneDSpace;
-  typename ScopedPtr<VectorSpace<V, M> >::Type numOutputsDSpace;
+  typename ScopedPtr<VectorSpace<V, M> >::Type numDiscrepancyGroupsDSpace;
 
   // Truncation error precision
   typename ScopedPtr<VectorSpace<V, M> >::Type truncationErrorPrecisionSpace;
