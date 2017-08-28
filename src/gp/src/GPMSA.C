@@ -173,7 +173,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                         dimParameter +
                         dimScenario +
                         numOutputs +
-                        dimScenario;  // yum
+                        (numOutputs * dimScenario);  // yum
 
   // Offset for Sigma_eta equivalent in vector case
   const unsigned int offset1 = (numOutputs == 1) ?
@@ -308,30 +308,31 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
       if (i < this->m_numExperiments && j < this->m_numExperiments) {
         typename SharedPtr<V>::Type cross_scenario1 = (this->m_experimentScenarios)[i];
         typename SharedPtr<V>::Type cross_scenario2 = (this->m_experimentScenarios)[j];
-        prodDiscrepancy = 1.0;
         unsigned int discrepancyCorrStrStart =
           dimParameter + num_svd_terms + dimParameter + dimScenario + numOutputs +
           (this->num_svd_terms<numOutputs);
-        for (unsigned int k = 0; k < dimScenario; k++) {
-          const double & discrepancy_corr_strength =
-            domainVector[discrepancyCorrStrStart+k];
-          double cross_scenario_param1 =
-            m_opts.normalized_scenario_parameter(k, (*cross_scenario1)[k]);
-          double cross_scenario_param2 =
-            m_opts.normalized_scenario_parameter(k, (*cross_scenario2)[k]);
-          prodDiscrepancy *=
-            std::pow(discrepancy_corr_strength, 4.0 *
-                     (cross_scenario_param1 - cross_scenario_param2) *
-                     (cross_scenario_param1 - cross_scenario_param2));
-        }
-
-        queso_assert (!queso_isnan(prodDiscrepancy));
 
         // Loop over discrepancy groups.
         // Here I'm hard-coding the number of discrepancy groups F to be the
         // number of outputs, numOutputs.  This is the default for the
         // multivariate case.
         for (unsigned int disc_grp = 0; disc_grp < numOutputs; disc_grp++) {
+          prodDiscrepancy = 1.0;
+          for (unsigned int k = 0; k < dimScenario; k++) {
+            const double & discrepancy_corr_strength =
+              domainVector[discrepancyCorrStrStart+(disc_grp*dimScenario)+k];
+            double cross_scenario_param1 =
+              m_opts.normalized_scenario_parameter(k, (*cross_scenario1)[k]);
+            double cross_scenario_param2 =
+              m_opts.normalized_scenario_parameter(k, (*cross_scenario2)[k]);
+            prodDiscrepancy *=
+              std::pow(discrepancy_corr_strength, 4.0 *
+                       (cross_scenario_param1 - cross_scenario_param2) *
+                       (cross_scenario_param1 - cross_scenario_param2));
+          }
+
+          queso_assert (!queso_isnan(prodDiscrepancy));
+
           unsigned int discrepancyPrecisionStart = dimParameter +
                                                    (num_svd_terms<numOutputs) +
                                                    num_svd_terms +
