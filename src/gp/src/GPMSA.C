@@ -400,15 +400,18 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         for (unsigned int j=0; j != BT_Wy_B_size; ++j)
           covMatrix(i,j) += BT_Wy_B_inv(i,j) * inv_lambda_y;
 
-      const double emulator_precision =
-        domainVector[dimParameter+(num_svd_terms<num_nonzero_eigenvalues)];
-      const double inv_emulator_precision = 1.0/emulator_precision;
+      // Only add KT_K_inv if we're actually calibrating the truncation error
+      // precision term
+      if (num_svd_terms < num_nonzero_eigenvalues) {
+        const double trunc_err_precision = domainVector[dimParameter];
+        const double inv_trunc_err_precision = 1.0 / trunc_err_precision;
 
-      unsigned int KT_K_size = KT_K_inv.numCols();
-      for (unsigned int i=0; i != KT_K_size; ++i)
-        for (unsigned int j=0; j != KT_K_size; ++j)
-          covMatrix(i+offset2,j+offset2) +=
-            KT_K_inv(i,j) * inv_emulator_precision;
+        unsigned int KT_K_size = KT_K_inv.numCols();
+        for (unsigned int i=0; i != KT_K_size; ++i)
+          for (unsigned int j=0; j != KT_K_size; ++j)
+            covMatrix(i+offset2,j+offset2) +=
+              KT_K_inv(i,j) * inv_trunc_err_precision;
+      }
     }
 
 
