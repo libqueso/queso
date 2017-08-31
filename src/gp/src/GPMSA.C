@@ -924,16 +924,14 @@ GPMSAFactory<V, M>::setUpEmulator()
   queso_require_greater_equal(num_svd_terms, 0);
 
   // Copy only those vectors we want into K_eta
-  m_TruncatedSVD_simulationOutputs.reset
-    (new M(env, output_map, num_svd_terms));
+  m_TruncatedSVD_simulationOutputs.resize(num_svd_terms, V(env, output_map));
 
   // The singular values are in ascending order (with associated vectors ordered
   // accordingly).  Therefore we want to pull the singular vectors from the
   // back, not the front.
-  for (unsigned int i=0; i != numSimulationOutputs; ++i)
-    for (unsigned int k = 0; k != num_svd_terms; ++k)
-      (*m_TruncatedSVD_simulationOutputs)(i,k) =
-        SM_singularVectors(i,numSimulationOutputs-1-k);
+  for (unsigned int k = 0; k != num_svd_terms; ++k)
+    m_TruncatedSVD_simulationOutputs[k] =
+      SM_singularVectors.getColumn(numSimulationOutputs-1-k);
 
   Map copied_map(numSimulationOutputs * m_numSimulations, 0, comm);
 
@@ -945,7 +943,7 @@ GPMSAFactory<V, M>::setUpEmulator()
         {
           const unsigned int i = i1 * numSimulationOutputs + i2;
           const unsigned int j = k * m_numSimulations + i1;
-          (*K)(i,j) = (*m_TruncatedSVD_simulationOutputs)(i2,k);
+          (*K)(i,j) = m_TruncatedSVD_simulationOutputs[k][i2];
         }
 
   KT_K_inv.reset
@@ -1073,7 +1071,30 @@ GPMSAFactory<V, M>::setUpEmulator()
               unsigned int j = ex +
                 m_numExperiments * (num_discrepancy_bases + outj);
 
-              B(i,j) = (*m_TruncatedSVD_simulationOutputs)(outi,outj);
+              V & singular_vector = m_TruncatedSVD_simulationOutputs[outj];
+              // If there's just multivariate data here, then no
+              // interpolation is necessary.
+              double Kvalue = singular_vector[outi];
+
+              if (this->m_experimentVariables.size())
+                {
+                  const unsigned int var = this->m_experimentVariables[ex][outi];
+                  const SimulationOutputPoint & pt = this->m_experimentPoints[ex][outi];
+
+                  if (var < this->m_simulationMeshes.size())
+                    {
+                      SimulationOutputMesh<V> & mesh =
+                        *this->m_simulationMeshes[var];
+                      Kvalue =
+
+                        mesh.interpolateOutput(singular_vector, pt);
+                    }
+                  else
+                    Kvalue =
+                      singular_vector[var + variable_index_to_output_index];
+                }
+
+              B(i,j) = Kvalue;
             }
 
           // No fancy perturbation for Wj, just make sure it gets

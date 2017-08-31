@@ -557,9 +557,9 @@ public:
   //
   // Intermediate calculations we can cache
 
-  // Matrix of the SVD basis vectors we save.  Calculated from
+  // Vector of the SVD basis vectors we save.  Calculated from
   // normalized data.
-  typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
+  std::vector<V> m_TruncatedSVD_simulationOutputs;
 
   // B matrix from Higdon et. al.
   //
