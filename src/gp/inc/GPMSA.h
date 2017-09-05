@@ -57,7 +57,6 @@ public:
                 const VectorSpace<V, M> & m_scenarioSpace,
                 const VectorSpace<V, M> & m_parameterSpace,
                 const VectorSpace<V, M> & m_simulationOutputSpace,
-                const VectorSpace<V, M> & m_experimentOutputSpace,
                 const unsigned int m_numSimulations,
                 const unsigned int m_numExperiments,
                 const std::vector<typename SharedPtr<V>::Type> & m_simulationScenarios,
@@ -94,7 +93,6 @@ public:
   const VectorSpace<V, M> & m_scenarioSpace;
   const VectorSpace<V, M> & m_parameterSpace;
   const VectorSpace<V, M> & m_simulationOutputSpace;
-  const VectorSpace<V, M> & m_experimentOutputSpace;
 
   const unsigned int m_numSimulations;
   const unsigned int m_numExperiments;
@@ -164,7 +162,6 @@ public:
                const VectorSpace<V, M> & scenarioSpace,
                const VectorSpace<V, M> & parameterSpace,
                const VectorSpace<V, M> & simulationOutputSpace,
-               const VectorSpace<V, M> & experimentOutputSpace,
                unsigned int numSimulations,
                unsigned int numExperiments);
 
@@ -193,9 +190,6 @@ public:
 
   //! Return the vector space in which simulations live
   const VectorSpace<V, M> & simulationOutputSpace() const;
-
-  //! Return the vector space in which experiments live
-  const VectorSpace<V, M> & experimentOutputSpace() const;
 
   //! Return the point in \c scenarioSpace for simulation \c simulationId
   /*!
@@ -253,16 +247,9 @@ public:
   const std::vector<typename SharedPtr<V>::Type> & experimentScenarios() const;
 
   //! Return the experiment output for experiment \c experimentId
-  /*!
-   * The returned vector is a point in \c experimentOutputSpace
-   */
   const V & experimentOutput(unsigned int experimentId) const;
 
-  //! Return all points in \c experimentOutputSpace for all experiments
-  /*!
-   * This returns all points in experiment output space at which experiments
-   * were executed
-   */
+  //! Return all outputs for all experiments
   const std::vector<typename SharedPtr<V>::Type> & experimentOutputs() const;
 
   //! Return all observation error covarince matrices for all experiments
@@ -405,7 +392,6 @@ public:
   const VectorSpace<V, M> & m_scenarioSpace;
   const VectorSpace<V, M> & m_parameterSpace;
   const VectorSpace<V, M> & m_simulationOutputSpace;
-  const VectorSpace<V, M> & m_experimentOutputSpace;
 
   unsigned int m_numSimulations;
   unsigned int m_numExperiments;

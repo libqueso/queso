@@ -161,7 +161,6 @@ void run_scalar(const QUESO::FullEnvironment& env)
                                      configSpace,
                                      paramSpace,
                                      nEtaSpace,
-                                     experimentSpace,
                                      numSimulations,
                                      numExperiments);
 
@@ -364,7 +363,6 @@ void run_multivariate(const QUESO::FullEnvironment& env)
                                      configSpace,
                                      paramSpace,
                                      nEtaSpace,
-                                     experimentSpace,
                                      numSimulations,
                                      numExperiments);
 

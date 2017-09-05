@@ -183,7 +183,6 @@ int main(int argc, char ** argv) {
                  configSpace,
                  paramSpace,
                  nEtaSpace,
-                 experimentSpace,
                  numSimulations,
                  numExperiments);
 

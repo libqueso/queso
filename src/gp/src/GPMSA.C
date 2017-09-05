@@ -35,7 +35,6 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
     const VectorSpace<V, M> & m_scenarioSpace,
     const VectorSpace<V, M> & m_parameterSpace,
     const VectorSpace<V, M> & m_simulationOutputSpace,
-    const VectorSpace<V, M> & m_experimentOutputSpace,
     const unsigned int m_numSimulations,
     const unsigned int m_numExperiments,
     const std::vector<typename SharedPtr<V>::Type> & m_simulationScenarios,
@@ -59,7 +58,6 @@ GPMSAEmulator<V, M>::GPMSAEmulator(
   m_scenarioSpace(m_scenarioSpace),
   m_parameterSpace(m_parameterSpace),
   m_simulationOutputSpace(m_simulationOutputSpace),
-  m_experimentOutputSpace(m_simulationOutputSpace),
   m_numSimulations(m_numSimulations),
   m_numExperiments(m_numExperiments),
   m_simulationScenarios(m_simulationScenarios),
@@ -505,7 +503,6 @@ GPMSAFactory<V, M>::GPMSAFactory(
     const VectorSpace<V, M> & scenarioSpace,
     const VectorSpace<V, M> & parameterSpace,
     const VectorSpace<V, M> & simulationOutputSpace,
-    const VectorSpace<V, M> & experimentOutputSpace,
     unsigned int numSimulations,
     unsigned int numExperiments)
   :
@@ -514,7 +511,6 @@ GPMSAFactory<V, M>::GPMSAFactory(
     m_scenarioSpace(scenarioSpace),
     m_parameterSpace(parameterSpace),
     m_simulationOutputSpace(simulationOutputSpace),
-    m_experimentOutputSpace(experimentOutputSpace),
     m_numSimulations(numSimulations),
     m_numExperiments(numExperiments),
     m_simulationScenarios(numSimulations),
@@ -529,26 +525,10 @@ GPMSAFactory<V, M>::GPMSAFactory(
     priors(),
     m_constructedGP(false)
 {
-  // We should have the same number of outputs from both simulations
-  // and experiments
-  queso_assert_equal_to(simulationOutputSpace.dimGlobal(),
-                        experimentOutputSpace.dimGlobal());
-
-  {
-    const Map & output_map = experimentOutputSpace.map();
-
-    // Set up the default observation error covariance matrix:
-    for (unsigned int i = 0; i != numExperiments; ++i)
-      {
-        typename SharedPtr<M>::Type identity_matrix(new M(env, output_map, 1.0));
-        m_observationErrorMatrices.push_back(identity_matrix);
-      }
-
-    // Set up a nonsense, "placeholder" discrepancy basis; we'll test
-    // for this later to determine whether or not the user has
-    // requested a non-default discrepancy basis.
-    m_discrepancyBases.push_back(NULL);
-  }
+  // Set up a nonsense, "placeholder" discrepancy basis; we'll test
+  // for this later to determine whether or not the user has
+  // requested a non-default discrepancy basis.
+  m_discrepancyBases.push_back(NULL);
 
   // DM: Not sure if the logic in these 3 if-blocks is correct
   if ((opts == NULL) && (this->m_env.optionsInputFileName() == "")) {
@@ -625,13 +605,6 @@ const VectorSpace<V, M> &
 GPMSAFactory<V, M>::simulationOutputSpace() const
 {
   return this->m_simulationOutputSpace;
-}
-
-template <class V, class M>
-const VectorSpace<V, M> &
-GPMSAFactory<V, M>::experimentOutputSpace() const
-{
-  return this->m_experimentOutputSpace;
 }
 
 template <class V, class M>
@@ -1179,7 +1152,6 @@ GPMSAFactory<V, M>::setUpEmulator()
       this->m_scenarioSpace,
       this->m_parameterSpace,
       this->m_simulationOutputSpace,
-      this->m_experimentOutputSpace,
       this->m_numSimulations,
       this->m_numExperiments,
       this->m_simulationScenarios,
@@ -1224,6 +1196,12 @@ GPMSAFactory<V, M>::addExperiments(
 
     const unsigned int outsize =
       this->m_experimentOutputs[i]->sizeGlobal();
+
+    const BaseEnvironment & output_env = this->m_experimentOutputs[i]->env();
+    const Map & output_map = this->m_experimentOutputs[i]->map();
+    typename SharedPtr<M>::Type new_matrix(new M(output_env, output_map, 0.0));
+    m_observationErrorMatrices.push_back(new_matrix);
+
     for (unsigned int outi = 0; outi != outsize; ++outi)
       for (unsigned int outj = 0; outj != outsize; ++outj)
         (*this->m_observationErrorMatrices[i])(outi,outj) =
