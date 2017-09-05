@@ -118,10 +118,10 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   // discrepancy_precision(1)     // = "lambda_delta" in scalar case,
   //                              //   "lambda_{v i}" in vector
   // ...
-  // discrepancy_precision(F)     // FIXME: F = p_delta, |G_1| = 1, for now.
+  // discrepancy_precision(F)     // "F" == num_discrepancy_groups
   // discrepancy_corr_strength(1) // = "rho_{delta k}" in scalar case,
   // ...                          //   "rho_{v i}" in vector
-  // discrepancy_corr_strength(F*dimScenario)  // FIXME: F = numOutputs, for now
+  // discrepancy_corr_strength(F*dimScenario)
   // emulator_data_precision(1)   // = "small white noise",
                                   // "small ridge", "nugget"
   // observation_error_precision  // = "lambda_y", iff user-requested
@@ -157,7 +157,14 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   const unsigned int residualSize = (numSimulationOutputs == 1) ?
     (this->m_numSimulations + this->m_numExperiments) :
     totalRuns * num_svd_terms + m_numExperiments * num_discrepancy_bases;
-  const unsigned int num_discrepancy_groups = numSimulationOutputs;
+
+  const unsigned int first_multivariate_index = m_simulationMeshes.empty() ?
+    0 : (m_simulationMeshes.back()->first_solution_index() +
+         m_simulationMeshes.back()->n_outputs());
+  const unsigned int n_multivariate_indices =
+    numSimulationOutputs - first_multivariate_index;
+  const unsigned int n_variables = m_simulationMeshes.size() + n_multivariate_indices;
+  const unsigned int num_discrepancy_groups = n_variables;
 
   double prodScenario = 1.0;
   double prodParameter = 1.0;
@@ -313,11 +320,15 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           dimParameter + num_svd_terms + dimParameter + dimScenario + num_discrepancy_groups +
           (this->num_svd_terms<num_nonzero_eigenvalues);
 
-        // Loop over discrepancy groups.
-        // Here I'm hard-coding the number of discrepancy groups F to be the
-        // number of outputs, numOutputs.  This is the default for the
-        // multivariate case.
+        // Loop over discrepancy groups.  Keep track of which
+        // submatrix we're on.
+        unsigned int cov_matrix_offset = 0;
         for (unsigned int disc_grp = 0; disc_grp < num_discrepancy_groups; disc_grp++) {
+          // If this is a functional case then we may have many
+          // indices within this one discrepancy group
+          const unsigned int disc_grp_size = (disc_grp < m_simulationMeshes.size()) ?
+            m_simulationMeshes[disc_grp]->n_outputs() : 1;
+
           prodDiscrepancy = 1.0;
           for (unsigned int k = 0; k < dimScenario; k++) {
             const double & discrepancy_corr_strength =
@@ -349,10 +360,15 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           // Sigma_v term from p. 576 in multivariate case
           const double R_v = prodDiscrepancy / discrepancy_precision;
 
-          // This assumes there is 1 element in each discrepancy group.  This
-          // assumption is not legitimate for the functional case.
-          covMatrix(disc_grp*m_numExperiments+i,
-                    disc_grp*m_numExperiments+j) += R_v;
+          // In the functional case, we have many solution indices
+          // corresponding to the same discrepancy group.
+          for (unsigned int disc_grp_entry = 0; disc_grp_entry !=
+               disc_grp_size; ++disc_grp_entry)
+            {
+              covMatrix(cov_matrix_offset+i,
+                        cov_matrix_offset+j) += R_v;
+              cov_matrix_offset += m_numExperiments;
+            }
         }
 
         if (numSimulationOutputs == 1)
@@ -1051,8 +1067,6 @@ GPMSAFactory<V, M>::setUpEmulator()
       // simulator outputs are the same as the bases K_i which apply
       // to quantities of interest, because simulator outputs are QoIs
       // alone.
-      //
-      // FIXME - we need to interpolate K_i in the functional case.
 
       // Wj = the current experimental output, used as a col index for
       // cross-correlations
@@ -1334,7 +1348,14 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     this->m_simulationOutputSpace.dimLocal();
 
   const unsigned int num_discrepancy_bases = m_discrepancyBases.size();
-  const unsigned int num_discrepancy_groups = numSimulationOutputs;
+
+  const unsigned int first_multivariate_index = m_simulationMeshes.empty() ?
+    0 : (m_simulationMeshes.back()->first_solution_index() +
+         m_simulationMeshes.back()->n_outputs());
+  const unsigned int n_multivariate_indices =
+    numSimulationOutputs - first_multivariate_index;
+  const unsigned int n_variables = m_simulationMeshes.size() + n_multivariate_indices;
+  const unsigned int num_discrepancy_groups = n_variables;
 
   const MpiComm & comm = m_simulationOutputs[0]->map().Comm();
 
@@ -1732,14 +1753,13 @@ GPMSAFactory<V, M>::setUpHyperpriors()
     (*(this->hyperparamMaxs))[(num_svd_terms<num_nonzero_eigenvalues)+basis] = INFINITY;
   }
 
-  // FIXME: F = p_delta and |G_i| = 1 for now
-  for (unsigned int disc_grp = 0; disc_grp < num_discrepancy_groups; disc_grp++) {
-    // Starting index of the discrepancy precisions in the hyperparameter vector
-    unsigned int discrepancyPrecisionIdx = (num_svd_terms<num_nonzero_eigenvalues) +
-                                           num_svd_terms +
-                                           dimScenario +
-                                           dimParameter;
+  // Starting index of the discrepancy precisions in the hyperparameter vector
+  unsigned int discrepancyPrecisionIdx = (num_svd_terms<num_nonzero_eigenvalues) +
+                                         num_svd_terms +
+                                         dimScenario +
+                                         dimParameter;
 
+  for (unsigned int disc_grp = 0; disc_grp < num_discrepancy_groups; disc_grp++) {
     // Min discrepancy precision
     (*(this->hyperparamMins))[discrepancyPrecisionIdx+disc_grp] = 0;
     // Max discrepancy precision
