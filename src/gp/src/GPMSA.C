@@ -890,6 +890,21 @@ GPMSAFactory<V, M>::setUpEmulator()
   for (unsigned int j=0; j != numSimulationOutputs; ++j)
     (*simulationOutputMeans)[j] /= m_numSimulations;
 
+  // Each group of functional data will use a *single* mean
+  for (unsigned int m = 0; m != this->m_simulationMeshes.size(); ++m)
+    {
+      const SimulationOutputMesh<V> & mesh = *(this->m_simulationMeshes[m]);
+      const unsigned int begin = mesh.first_solution_index();
+      const unsigned int end = begin + mesh.n_outputs();
+      double mean = 0;
+      for (unsigned int i = begin; i != end; ++i)
+        mean += (*simulationOutputMeans)[i];
+      mean /= (end - begin);
+
+      for (unsigned int i = begin; i != end; ++i)
+        (*simulationOutputMeans)[i] = mean;
+    }
+
   M simulation_matrix(env, serial_map, numSimulationOutputs);
 
   for (unsigned int i=0; i != m_numSimulations; ++i)
