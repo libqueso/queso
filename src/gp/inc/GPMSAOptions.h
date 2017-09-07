@@ -209,13 +209,22 @@ public:
                                         double physical_param) const;
 
   //! Calculate a normalized value from a physical value for the
-  //  specified output index.
+  //  output variable at vector index i.
   double normalized_output(unsigned int i,
                            double output_data) const;
 
+  //! Calculate a normalized value from a physical value for the
+  //  output variable i.
+  double normalized_output_variable(unsigned int i,
+                                    double output_data) const;
+
   //! Returns the scale, in physical units, corresponding to a single
-  //  nondimensionalized unit for the specified output index.
+  //  nondimensionalized unit for the output at vector index i.
   double output_scale(unsigned int i) const;
+
+  //! Returns the scale, in physical units, corresponding to a single
+  //  nondimensionalized unit for output variable i.
+  double output_scale_variable(unsigned int i) const;
 
   //! The shape parameter for the Gamma hyperprior for the truncation error precision
   double m_truncationErrorPrecisionShape;
@@ -308,6 +317,9 @@ private:
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
   QUESO::ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+
+  // For fast lookups when doing normalization
+  std::vector<unsigned int> m_output_index_to_variable_index;
 
   // True if the specified autoscaling should be done for all inputs
   bool m_autoscaleMinMaxAll;

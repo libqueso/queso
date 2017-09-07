@@ -999,6 +999,23 @@ GPMSAOptions::set_final_scaling
           }
     }
 
+  m_output_index_to_variable_index.resize(dimOutput);
+
+  unsigned int next_variable_begin = 0;
+  for (unsigned int m=0; m != m_simulationMeshes.size(); ++m)
+    {
+      const SimulationOutputMesh<V> & mesh = *m_simulationMeshes[m];
+      const unsigned int mesh_n_outputs = mesh.n_outputs();
+      next_variable_begin += mesh_n_outputs;
+      for (unsigned int i = mesh.first_solution_index();
+           i != next_variable_begin; ++i)
+        m_output_index_to_variable_index[i] = m;
+    }
+
+  unsigned int next_mv_index = m_simulationMeshes.size();
+  for (unsigned int i = next_variable_begin; i != dimOutput; ++i)
+    m_output_index_to_variable_index[i] = next_mv_index++;
+
   options_have_been_used = true;
 }
 
@@ -1032,6 +1049,17 @@ GPMSAOptions::normalized_output(unsigned int i,
                                 double output_data)
 const
 {
+  return this->normalized_output_variable
+    (m_output_index_to_variable_index[i], output_data);
+}
+
+
+
+double
+GPMSAOptions::normalized_output_variable(unsigned int i,
+                                         double output_data)
+const
+{
   if (i < m_outputScaleMin.size())
     return (output_data - m_outputScaleMin[i]) /
             (m_outputScaleRange[i] ? m_outputScaleRange[i] : 1);
@@ -1042,6 +1070,16 @@ const
 
 double
 GPMSAOptions::output_scale(unsigned int i)
+const
+{
+  return this->output_scale_variable
+    (m_output_index_to_variable_index[i]);
+}
+
+
+
+double
+GPMSAOptions::output_scale_variable(unsigned int i)
 const
 {
   if (i < m_outputScaleRange.size() &&
