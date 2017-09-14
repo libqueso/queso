@@ -1235,7 +1235,7 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       }
 
       M& B = *m_BMatrix;
-      M& Wy = *m_observationErrorMatrix;
+      M Wy = m_observationErrorMatrix->inverse();
 
       V yhat(*BT_Wy_B_inv * (B.transpose() * (Wy * y)));
 
