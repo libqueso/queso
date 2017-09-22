@@ -432,6 +432,11 @@ EXTRA_DIST += test_gpmsa/sim_scalar_large.dat
 EXTRA_DIST += test_gpmsa/y_exp_scalar_large.txt
 EXTRA_DIST += test_gpmsa/regression_solution_pdf_large.txt
 EXTRA_DIST += test_gpmsa/scalar_pdf_large.sh
+EXTRA_DIST += test_gpmsa/mv_pdf_small.sh
+EXTRA_DIST += test_gpmsa/gpmsa_mv_pdf_small_input.txt
+EXTRA_DIST += test_gpmsa/sim_mv_small.dat
+EXTRA_DIST += test_gpmsa/y_exp_mv_small.txt
+EXTRA_DIST += test_gpmsa/regression_solution_pdf_mv_small.txt
 
 CLEANFILES =
 CLEANFILES += test_Environment/debug_output_sub0.txt
