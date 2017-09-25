@@ -32,7 +32,8 @@ namespace QUESO {
 class SimulationOutputPoint
 {
 public:
-  SimulationOutputPoint() {}
+  SimulationOutputPoint()
+  { _val[0] = _val[1] = _val[2] = _val[3] = 0;}
 
   // Getters
   double x() const { return _val[0]; }
