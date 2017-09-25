@@ -337,8 +337,8 @@ public:
    * a non-NULL experimentVariables vector may be supplied to indicate
    * the variable (corresponding to a particular functional or
    * multivariate entry) of each output.  E.g. if each simulation has
-   * 2 functional and 8 multivariate outputs, then an
-   * experimentVariables vector of {0, 1, 9}, then the first output
+   * 2 functional and 8 multivariate outputs, then for an
+   * experimentVariables vector of {0, 1, 9}, the first output
    * comes from the first functional variable, the second from the
    * second, and the third output comes from the last multivariate
    * variable.  Note that the last *variable* number in this case is 9
