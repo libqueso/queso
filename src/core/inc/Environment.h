@@ -170,10 +170,19 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor.
-  BaseEnvironment(const char* passedOptionsInputFileName, EnvOptionsValues* alternativeOptionsValues);
+  /*!
+   * initialOptionsValues can be overridden by those in
+   * passedOptionsInputFileName
+   */
+  BaseEnvironment(const char* passedOptionsInputFileName, EnvOptionsValues* initialOptionsValues);
 
+  //! Alternate constructor.
+  /*!
+   * initialOptionsValues can be overridden by those in
+   * passedOptionsInputFileName
+   */
   BaseEnvironment(const std::string & passedOptionsInputFileName,
-                  EnvOptionsValues* alternativeOptionsValues);
+                  EnvOptionsValues* initialOptionsValues);
 
   //! Destructor
   /*! It deallocates memory and does other cleanup for the class object and its class members when
@@ -456,7 +465,7 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor. Does nothing.
-  /*! It initialized BaseEnvironment with no input file and a NULL pointer for the alternativeOptionsValues.*/
+  /*! It initializes BaseEnvironment with no input file and default options */
   EmptyEnvironment();
 
   //! Destructor
@@ -486,12 +495,12 @@ public:
    * path for output files.
    */
 #ifdef QUESO_HAS_MPI
-  FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* alternativeOptionsValues);
+  FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* initialOptionsValues);
 
   FullEnvironment(RawType_MPI_Comm inputComm,
                   const std::string& passedOptionsInputFileName,
                   const std::string& prefix,
-                  EnvOptionsValues* alternativeOptionsValues);
+                  EnvOptionsValues* initialOptionsValues);
 #endif
 
   //! Serial constructor.
@@ -499,11 +508,11 @@ public:
    * No communicator is passed. Output path handling is exactly as in the
    * parallel ctor.
    */
-  FullEnvironment(const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* alternativeOptionsValues);
+  FullEnvironment(const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* initialOptionsValues);
 
   FullEnvironment(const std::string& passedOptionsInputFileName,
                   const std::string& prefix,
-                  EnvOptionsValues* alternativeOptionsValues);
+                  EnvOptionsValues* initialOptionsValues);
 
   //! Destructor
  ~FullEnvironment();
@@ -526,7 +535,7 @@ private:
   void        construct(const char *prefix);
 
   //! Checks the options input file and reads the options.
-  void        readOptionsInputFile();
+  void        readOptionsInputFile(const char* prefix);
   //void        queso_terminate_handler();
 
 };
