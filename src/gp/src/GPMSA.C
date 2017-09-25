@@ -891,7 +891,7 @@ GPMSAFactory<V, M>::setUpEmulator()
         {
           const unsigned int i = i1 * numOutputs + i2;
           const unsigned int j = k * m_numSimulations + i1;
-          (*K)(i,j) = SM_singularVectors(i2,k);
+          (*K)(i,j) = (*m_TruncatedSVD_simulationOutputs)(i2,k);
         }
 
   KT_K_inv.reset
