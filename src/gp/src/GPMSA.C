@@ -466,8 +466,6 @@ if (queso_isnan(minus_2_log_lhd))
 
 // std::cout << "minus_2_log_lhd = " << minus_2_log_lhd << std::endl;
 
-  queso_assert_greater(minus_2_log_lhd, 0);
-
   double cov_det = covMatrix.determinant();
 
   if (cov_det <= 0)
@@ -476,6 +474,8 @@ if (queso_isnan(minus_2_log_lhd))
       covMatrix.print(std::cout);
       queso_error();
     }
+
+  queso_assert_greater(minus_2_log_lhd, 0);
 
   minus_2_log_lhd += std::log(covMatrix.determinant());
 
