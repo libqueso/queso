@@ -1149,51 +1149,67 @@ GPMSAOptions::print(std::ostream& os) const
      for (unsigned int i = 0, size = this->m_gaussianDiscrepancyDistanceX.size(); i != size; ++i)
        {
          os << this->m_gaussianDiscrepancyDistanceX[i];
-         os << ((i+1 == size) ? '}' : ',');
+         if (i+1 != size)
+           os << ',';
        }
+     os << '}';
      os << "\n" << m_option_gaussianDiscrepancyDistanceY << " = {";
      for (unsigned int i = 0, size = this->m_gaussianDiscrepancyDistanceY.size(); i != size; ++i)
        {
          os << this->m_gaussianDiscrepancyDistanceY[i];
-         os << ((i+1 == size) ? '}' : ',');
+         if (i+1 != size)
+           os << ',';
        }
+     os << '}';
      os << "\n" << m_option_gaussianDiscrepancyDistanceZ << " = {";
      for (unsigned int i = 0, size = this->m_gaussianDiscrepancyDistanceZ.size(); i != size; ++i)
        {
          os << this->m_gaussianDiscrepancyDistanceZ[i];
-         os << ((i+1 == size) ? '}' : ',');
+         if (i+1 != size)
+           os << ',';
        }
+     os << '}';
      os << "\n" << m_option_gaussianDiscrepancyDistanceT << " = {";
      for (unsigned int i = 0, size = this->m_gaussianDiscrepancyDistanceT.size(); i != size; ++i)
        {
          os << this->m_gaussianDiscrepancyDistanceT[i];
-         os << ((i+1 == size) ? '}' : ',');
+         if (i+1 != size)
+           os << ',';
        }
+     os << '}';
 
      os << "\n" << m_option_gaussianDiscrepancyPeriodicX << " = {";
      for (unsigned int i = 0, size = this->m_gaussianDiscrepancyPeriodicX.size(); i != size; ++i)
        {
          os << this->m_gaussianDiscrepancyPeriodicX[i];
-         os << ((i+1 == size) ? '}' : ',');
+         if (i+1 != size)
+           os << ',';
        }
+     os << '}';
      os << "\n" << m_option_gaussianDiscrepancyPeriodicY << " = {";
      for (unsigned int i = 0, size = this->m_gaussianDiscrepancyPeriodicY.size(); i != size; ++i)
        {
          os << this->m_gaussianDiscrepancyPeriodicY[i];
-         os << ((i+1 == size) ? '}' : ',');
+         if (i+1 != size)
+           os << ',';
        }
+     os << '}';
      os << "\n" << m_option_gaussianDiscrepancyPeriodicZ << " = {";
      for (unsigned int i = 0, size = this->m_gaussianDiscrepancyPeriodicZ.size(); i != size; ++i)
        {
          os << this->m_gaussianDiscrepancyPeriodicZ[i];
-         os << ((i+1 == size) ? '}' : ',');
+         if (i+1 != size)
+           os << ',';
        }
+     os << '}';
      os << "\n" << m_option_gaussianDiscrepancyPeriodicT << " = {";
      for (unsigned int i = 0, size = this->m_gaussianDiscrepancyPeriodicT.size(); i != size; ++i)
        {
          os << this->m_gaussianDiscrepancyPeriodicT[i];
-         os << ((i+1 == size) ? '}' : ',');
+         if (i+1 != size)
+           os << ',';
        }
+     os << '}';
   os << "\n" << m_option_gaussianDiscrepancySupportThreshold << " = " << this->m_gaussianDiscrepancySupportThreshold
      << std::endl;
 }
