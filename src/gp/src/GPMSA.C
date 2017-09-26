@@ -1112,6 +1112,9 @@ GPMSAFactory<V, M>::addExperiments(
   queso_require_equal_to(experimentScenarios.size(),
                          experimentErrors.size());
 
+  this->m_observationErrorMatrices.resize
+    (this->m_experimentScenarios.size());
+
   for (unsigned int i = 0; i < this->m_experimentScenarios.size(); i++) {
     this->m_experimentScenarios[i] = experimentScenarios[i];
     this->m_experimentOutputs[i] = experimentOutputs[i];
