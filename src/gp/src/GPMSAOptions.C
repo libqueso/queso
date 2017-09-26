@@ -1016,6 +1016,26 @@ GPMSAOptions::set_final_scaling
   for (unsigned int i = next_variable_begin; i != dimOutput; ++i)
     m_output_index_to_variable_index[i] = next_mv_index++;
 
+  // Make sure we have gaussian discrepancy option values available
+  // for every mesh, even if they weren't set by the input file.
+  const unsigned int n_meshes = m_simulationMeshes.size();
+  m_gaussianDiscrepancyDistanceX.resize
+    (n_meshes, UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE);
+  m_gaussianDiscrepancyDistanceY.resize
+    (n_meshes, UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE);
+  m_gaussianDiscrepancyDistanceZ.resize
+    (n_meshes, UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE);
+  m_gaussianDiscrepancyDistanceT.resize
+    (n_meshes, UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE);
+  m_gaussianDiscrepancyPeriodicX.resize
+    (n_meshes, UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC);
+  m_gaussianDiscrepancyPeriodicY.resize
+    (n_meshes, UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC);
+  m_gaussianDiscrepancyPeriodicZ.resize
+    (n_meshes, UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC);
+  m_gaussianDiscrepancyPeriodicT.resize
+    (n_meshes, UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC);
+
   options_have_been_used = true;
 }
 
