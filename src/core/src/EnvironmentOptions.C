@@ -48,7 +48,7 @@ EnvOptionsValues::EnvOptionsValues()
   :
   m_env(NULL)
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-  , m_parser(new BoostInputOptionsParser())
+  , m_parser()
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 {
   this->set_defaults();
@@ -60,7 +60,7 @@ EnvOptionsValues::EnvOptionsValues(const BaseEnvironment* env,
 				   const char* prefix)
 {
   this->set_defaults();
-  this->parse(env, prefix);
+  this->parse(*env, prefix);
 }
 
 
@@ -172,9 +172,9 @@ EnvOptionsValues::set_defaults()
 
 
 void
-EnvOptionsValues::set_prefix(const char* prefix)
+EnvOptionsValues::set_prefix(const std::string& prefix)
 {
-  m_prefix = (std::string)(prefix) + "env_";
+  m_prefix = prefix + "env_";
 
   m_option_help = m_prefix + "help";
   m_option_numSubEnvironments = m_prefix + "numSubEnvironments";
@@ -194,9 +194,9 @@ EnvOptionsValues::set_prefix(const char* prefix)
 
 
 void
-EnvOptionsValues::parse(const BaseEnvironment* env, const char* prefix)
+EnvOptionsValues::parse(const BaseEnvironment& env, const std::string& prefix)
 {
-  m_env = env;
+  m_env = &env;
 
   if (m_env->optionsInputFileName().empty()) {
     queso_error_msg("Missing input file is required");
@@ -206,7 +206,7 @@ EnvOptionsValues::parse(const BaseEnvironment* env, const char* prefix)
 
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
-  m_parser.reset(new BoostInputOptionsParser(env->optionsInputFileName()));
+  m_parser.reset(new BoostInputOptionsParser(env.optionsInputFileName()));
 
   // Register all options with parser
   m_parser->registerOption<std::string>
@@ -225,13 +225,17 @@ EnvOptionsValues::parse(const BaseEnvironment* env, const char* prefix)
     (m_option_subDisplayAllowInter0, m_subDisplayAllowInter0,
     "Allow all inter0 nodes to write to output file");
 
-  // convert the current member set of integers to a string for default handling
-  std::ostringstream sdas_as_string;
-  std::ostream_iterator<unsigned int> out_it(sdas_as_string, " ");
-  std::copy(m_subDisplayAllowedSet.begin(), m_subDisplayAllowedSet.end(),
-            out_it);
+  // convert the current member set of integers to a string for
+  // default handling, omitting trailing whitespace
+  std::ostringstream sdas_oss;
+  std::set<unsigned int>::const_iterator sdas_it = m_subDisplayAllowedSet.begin();
+  for ( ; sdas_it != m_subDisplayAllowedSet.end(); ++sdas_it) {
+    if (sdas_it != m_subDisplayAllowedSet.begin())
+      sdas_oss << ' ';
+    sdas_oss << *sdas_it;
+  }
   m_parser->registerOption<std::string>
-    (m_option_subDisplayAllowedSet, sdas_as_string.str(),
+    (m_option_subDisplayAllowedSet, sdas_oss.str(),
     "subEnvs that will write to output file");
 
   m_parser->registerOption<unsigned int>

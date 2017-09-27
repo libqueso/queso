@@ -171,15 +171,23 @@ public:
   //@{
   //! Default constructor.
   /*!
-   * initialOptionsValues can be overridden by those in
-   * passedOptionsInputFileName
+   * initialOptionsValues apply first, followed by any overrides
+   * present in passedOptionsInputFileName.  Historically the behavior was:
+   *   IF      alternative options passed in, use them exclusively
+   *   ELSE IF input file, parse and set options from it
+   *   ELSE    use default options
+   * so the input file was ignored when options object was passed in.
    */
   BaseEnvironment(const char* passedOptionsInputFileName, EnvOptionsValues* initialOptionsValues);
 
   //! Alternate constructor.
   /*!
-   * initialOptionsValues can be overridden by those in
-   * passedOptionsInputFileName
+   * initialOptionsValues apply first, followed by any overrides
+   * present in passedOptionsInputFileName.  Historically the behavior was:
+   *   IF      alternative options passed in, use them exclusively
+   *   ELSE IF input file, parse and set options from it
+   *   ELSE    use default options
+   * so the input file was ignored when options object was passed in.
    */
   BaseEnvironment(const std::string & passedOptionsInputFileName,
                   EnvOptionsValues* initialOptionsValues);
@@ -493,10 +501,26 @@ public:
    * Initializes the full communicator, reads the options, deals with multiple
    * sub-environments, e.g. dealing with sub/self/inter0-communicators, handles
    * path for output files.
+   *
+   * initialOptionsValues apply first, followed by any overrides
+   * present in passedOptionsInputFileName.  Historically the behavior was:
+   *   IF      alternative options passed in, use them exclusively
+   *   ELSE IF input file, parse and set options from it
+   *   ELSE    use default options
+   * so the input file was ignored when options object was passed in.
    */
 #ifdef QUESO_HAS_MPI
   FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* initialOptionsValues);
 
+  //! Parallel constructor.
+  /*!
+   * initialOptionsValues apply first, followed by any overrides
+   * present in passedOptionsInputFileName.  Historically the behavior was:
+   *   IF      alternative options passed in, use them exclusively
+   *   ELSE IF input file, parse and set options from it
+   *   ELSE    use default options
+   * so the input file was ignored when options object was passed in.
+   */
   FullEnvironment(RawType_MPI_Comm inputComm,
                   const std::string& passedOptionsInputFileName,
                   const std::string& prefix,
@@ -507,9 +531,25 @@ public:
   /*!
    * No communicator is passed. Output path handling is exactly as in the
    * parallel ctor.
+   *
+   * initialOptionsValues apply first, followed by any overrides
+   * present in passedOptionsInputFileName.  Historically the behavior was:
+   *   IF      alternative options passed in, use them exclusively
+   *   ELSE IF input file, parse and set options from it
+   *   ELSE    use default options
+   * so the input file was ignored when options object was passed in.
    */
   FullEnvironment(const char* passedOptionsInputFileName, const char* prefix, EnvOptionsValues* initialOptionsValues);
 
+  //! Serial constructor.
+  /*!
+   * initialOptionsValues apply first, followed by any overrides
+   * present in passedOptionsInputFileName.  Historically the behavior was:
+   *   IF      alternative options passed in, use them exclusively
+   *   ELSE IF input file, parse and set options from it
+   *   ELSE    use default options
+   * so the input file was ignored when options object was passed in.
+   */
   FullEnvironment(const std::string& passedOptionsInputFileName,
                   const std::string& prefix,
                   EnvOptionsValues* initialOptionsValues);
@@ -535,7 +575,7 @@ private:
   void        construct(const char *prefix);
 
   //! Checks the options input file and reads the options.
-  void        readOptionsInputFile(const char* prefix);
+  void        readOptionsInputFile(const std::string& prefix);
   //void        queso_terminate_handler();
 
 };

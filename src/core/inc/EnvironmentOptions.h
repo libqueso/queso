@@ -95,13 +95,13 @@ public:
   EnvOptionsValues(const EnvOptionsValues& src);
 
   //! Set parameter option names to begin with prefix
-  void set_prefix(const char* prefix);
+  void set_prefix(const std::string& prefix);
 
   //! Set default values for parameter options
   void set_defaults();
 
   //! Given prefix, read the input file for parameters named "prefix"+*
-  void parse(const BaseEnvironment* env, const char* prefix);
+  void parse(const BaseEnvironment& env, const std::string& prefix);
 
   //! Destructor
   virtual ~EnvOptionsValues();

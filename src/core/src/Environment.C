@@ -342,8 +342,7 @@ BaseEnvironment::subDisplayFile() const
 std::string
 BaseEnvironment::subDisplayFileName() const
 {
-  if (m_optionsObj == NULL) return ".";
-
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
   return m_optionsObj->m_subDisplayFileName;
 }
 //-------------------------------------------------------
@@ -511,18 +510,21 @@ BaseEnvironment::basicPdfs() const
 std::string
 BaseEnvironment::platformName() const
 {
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
   return m_optionsObj->m_platformName;
 }
 //-------------------------------------------------------
 std::string
 BaseEnvironment::identifyingString() const
 {
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
   return m_optionsObj->m_identifyingString;
 }
 //-------------------------------------------------------
 void
 BaseEnvironment::resetIdentifyingString(const std::string& newString)
 {
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
   m_optionsObj->m_identifyingString = newString;
   return;
 }
@@ -1758,16 +1760,8 @@ void queso_terminate_handler()
 }
 
 
-//-------------------------------------------------------
-// Previous behavior:
-//   * IF      alternative options passed in, use them exclusively
-//   * ELSE IF input file, parse and set options from it
-//   * ELSE    use default options
-// New behavior:
-//   * START   with default options or passed alternative options
-//   * IF      input file, any parsed options override stored values
 void
-FullEnvironment::readOptionsInputFile(const char* prefix)
+FullEnvironment::readOptionsInputFile(const std::string& prefix)
 {
   // Check file for readability for both Boost and GetPot cases
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
@@ -1799,7 +1793,7 @@ FullEnvironment::readOptionsInputFile(const char* prefix)
   m_input->parse_input_file(m_optionsInputFileName);
 
   // allow input file options to override current options class values
-  m_optionsObj->parse(this, prefix);
+  m_optionsObj->parse(*this, prefix);
 
   return;
 }
