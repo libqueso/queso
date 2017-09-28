@@ -5,7 +5,7 @@
 env_numSubEnvironments   = 1
 env_subDisplayFileName   = outputData/display
 env_subDisplayAllowAll   = 0
-env_subDisplayAllowedSet = '0 1'
+env_subDisplayAllowedSet = 0 1
 env_displayVerbosity     = 2
 env_syncVerbosity        = 0
 
@@ -28,7 +28,7 @@ ip_dataOutputAllowedSet = 0
 #ip_ml_restartInputFileName = outputData/rawChain_ml_input
 #ip_ml_restartChainSize     = 10000
 ip_ml_dataOutputFileName   = outputData/sipOutput_ml
-ip_ml_dataOutputAllowedSet = '0 1'
+ip_ml_dataOutputAllowedSet = 0 1
 
 ###############################################
 # All levels, unless otherwise specified
@@ -57,7 +57,7 @@ ip_ml_6_putOutOfBoundsInChain = 0
 # Last level (level 4 for 'example_gsl' executable)
 ###############################################
 ip_ml_last_dataOutputFileName                  = outputData/sipOutput_ml
-ip_ml_last_dataOutputAllowedSet                = '0 1'
+ip_ml_last_dataOutputAllowedSet                = 0 1
 
 #ip_ml_last_loadBalance                         = 0
 ip_ml_last_rawChain_size                       = 10000
