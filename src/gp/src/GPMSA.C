@@ -1032,7 +1032,7 @@ GPMSAFactory<V, M>::setUpEmulator()
   queso_assert_equal_to(BT_Wy_B_inv->numCols(), BT_Wy_B_inv->numRowsGlobal());
   queso_assert_equal_to(BT_Wy_B_inv->numCols(), Bcols);
 
-  this->setUpHyperpriors();
+  this->setUpHyperpriors(Wy);
 
   this->m_constructedGP = true;
   this->gpmsaEmulator.reset
@@ -1185,7 +1185,7 @@ GPMSAFactory<V, M>::print(std::ostream& /* os */) const
 // Private methods follow
 template <class V, class M>
 void
-GPMSAFactory<V, M>::setUpHyperpriors()
+GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
 {
   const unsigned int numOutputs =
     this->m_experimentOutputSpace.dimLocal();
@@ -1238,7 +1238,6 @@ GPMSAFactory<V, M>::setUpHyperpriors()
       }
 
       M& B = *m_BMatrix;
-      M& Wy = *m_observationErrorMatrix;
 
       V yhat(*BT_Wy_B_inv * (B.transpose() * (Wy * y)));
 
