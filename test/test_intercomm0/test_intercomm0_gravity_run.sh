@@ -3,6 +3,8 @@ set -eu
 set -o pipefail
 
 if grep "QUESO_HAVE_MPI 1" ../config_queso.h 2>&1 >/dev/null; then
+  rm -rf output_test_intercomm0_gravity_[12]/
+
   mpirun -np 1 ../libtool --mode=execute ./test_intercomm0_gravity \
     test_intercomm0/gravity_1proc.txt
 
@@ -11,6 +13,7 @@ if grep "QUESO_HAVE_MPI 1" ../config_queso.h 2>&1 >/dev/null; then
 
   for i in output_test_intercomm0_gravity_1/*.m; do
     j=`basename $i`;
+    echo "Diffing $j"
     diff output_test_intercomm0_gravity_1/$j output_test_intercomm0_gravity_2/$j;
   done
 else
