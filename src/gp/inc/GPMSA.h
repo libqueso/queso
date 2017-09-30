@@ -384,7 +384,7 @@ public:
   void setUpEmulator();
 
   // All the GP priors information for a scalar GP follows:
-  void setUpHyperpriors();
+  void setUpHyperpriors(const M & Wy);
 
   // Number of dimensions preserved from the SVD of simulation outputs
   unsigned int num_svd_terms;
