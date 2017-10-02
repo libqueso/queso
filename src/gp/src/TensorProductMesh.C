@@ -230,11 +230,11 @@ TensorProductMesh<V>::generateDiscrepancyBases
     }
 
   // Start constructing bases
-  double gaussian_peak_index[max_coordinates] = {0, 0, 0, 0};
+  double gaussian_peak_index[max_coordinates] = {}; // 0-initialize
 
   for (unsigned int basis = 0; basis != num_discrepancy_bases; ++basis)
     {
-      double mesh_point_index[max_coordinates] = {0, 0, 0, 0};
+      double mesh_point_index[max_coordinates] = {}; // 0-initialize
 
       for (unsigned int ptindex = 0; ptindex != num_grid_points; ++ptindex)
         {
