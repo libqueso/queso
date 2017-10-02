@@ -345,9 +345,8 @@ TensorProductMesh<V>::interpolateOutput
       num_coordinates_used++;
     }
 
+  // Interpolate from 2 points in 1D, 4 in 2D, 8 in 3D...
   const unsigned int num_points = 1 << num_coordinates_used;
-
-  std::vector<unsigned int> point_indices(num_coordinates_used, 0);
 
   double interpolated_val = 0;
   for (unsigned int p = 0; p != num_points; ++p)
@@ -358,16 +357,40 @@ TensorProductMesh<V>::interpolateOutput
       for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
         {
           const unsigned int raw_dim = _order[predim];
+
+          // Iterate in binary order over neighboring points, e.g.:
+          // gridpoint_000(i) <= output_point(i) in all 3 indices i,
+          // gridpoint_001(0) >= output_point(0),
+          // ...
+          // gridpoint_101(i) >= output_point(i) for i in 0,2
           const bool on_larger_point = (1 << predim) & p;
-          point_indices[predim] = indices[raw_dim] + on_larger_point;
-          solution_index += stride * point_indices[predim];
+
+          // Get the index of the point we're looking at in the
+          // dimension we're looking at
+          const unsigned int point_index = indices[raw_dim] + on_larger_point;
+
+          // Skip ahead in the solution: at the end of this for loop
+          // solution_index will correspond to the index for
+          // neighboring point p
+          solution_index += stride * point_index;
           stride *= _coordinate_vals[raw_dim].size();
+
+          // Evaluate the (bi,tri,)linear "shape function" value at p
+          // by starting at 1 but multiplying by the 1-D linear shape
+          // function value for each dimension.  If we're looking at
+          // the larger point then the shape function goes from 0 on
+          // the "left" to 1 on the "right"; otherwise the opposite.
           coefficient *= on_larger_point ?
                          (1.0 - lb_fraction[raw_dim]) :
                          lb_fraction[raw_dim];
         }
 
+      // solution index and coefficient are finally correct here, so
+      // we can add the basis function times coefficient for point p.
       interpolated_val += solutionVector[solution_index] * coefficient;
+
+      // When *this* loop is done we'll have
+      // solution(outputPoint) = sum_p coefficient_p * shapefunction_p
     }
 
   return interpolated_val;
