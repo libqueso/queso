@@ -29,14 +29,26 @@
 
 namespace QUESO {
 
+/*!
+ * \file TensorProductMesh.h
+ * \brief This class implements the SimulationOutputMesh interface for
+ * meshes defined as tensor products of 1-D meshes
+ *
+ * \class TensorProductMesh
+ * \brief This class implements the SimulationOutputMesh interface for
+ * meshes defined as tensor products of 1-D meshes
+ */
+
 template <class V = GslVector>
 class TensorProductMesh : public SimulationOutputMesh<V>
 {
 public:
+  // Construct an empty mesh
   TensorProductMesh();
 
   static const unsigned int max_coordinates = 4;
 
+  // Set coordinates for 1-D meshes defining this product mesh.
   void set_x_coordinates(std::vector<double> _coord_vals);
   void set_y_coordinates(std::vector<double> _coord_vals);
   void set_z_coordinates(std::vector<double> _coord_vals);
@@ -59,6 +71,7 @@ public:
 
   virtual ~TensorProductMesh();
 
+  //! Return the product of the number of points in each dimension
   virtual std::size_t n_outputs() const;
 
   virtual double interpolateOutput(const V & solutionVector,
@@ -69,10 +82,13 @@ public:
                                         std::vector<typename SharedPtr<V>::Type> bases) const;
 
 private:
+  // Helper function to implement set_x,y,z,t_coordinates
   void set_coordinates(unsigned int i, std::vector<double> & _coord_vals);
 
+  // Coordinates for each of the definitional 1-D meshes
   std::vector<double> _coordinate_vals[max_coordinates];
 
+  // Order permuting index incidence in solution data
   std::vector<unsigned int> _order;
 };
 

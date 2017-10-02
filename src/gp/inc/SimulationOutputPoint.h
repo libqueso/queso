@@ -29,9 +29,18 @@
 
 namespace QUESO {
 
+/*!
+ * \file SimulationOutputPoint.h
+ * \brief This class represents a single point in space/time.
+ *
+ * \class SimulationOutputPoint
+ * \brief This class represents a single point in space/time.
+ */
+
 class SimulationOutputPoint
 {
 public:
+  // Initialize to (x,y,z,t) = 0
   SimulationOutputPoint()
   { _val[0] = _val[1] = _val[2] = _val[3] = 0;}
 
@@ -41,6 +50,7 @@ public:
   double z() const { return _val[2]; }
   double t() const { return _val[3]; }
 
+  // Get by index rather than coordinate name
   double val(unsigned int i) const { return _val[i]; }
 
   // Setters
