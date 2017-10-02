@@ -71,7 +71,7 @@ public:
                 const V & residual_in,
                 const M & BT_Wy_B_inv_in,
                 const M & KT_K_inv_in,
-                const GPMSAOptions & optsi,
+                const GPMSAOptions & opts,
                 const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes_in,
                 const std::vector<std::vector<SimulationOutputPoint> > & m_experimentPoints_in,
                 const std::vector<std::vector<unsigned int> > & m_experimentVariables_in);
