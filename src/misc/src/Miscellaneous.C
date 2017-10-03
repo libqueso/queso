@@ -30,6 +30,7 @@
 #include <sys/time.h>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <libgen.h>
 #include <sys/stat.h>
 #include <cmath>
@@ -595,8 +596,23 @@ MiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
   return;
 }
 
+
+template<typename T>
+std::string container_to_string(const T& container)
+{
+  std::ostringstream oss;
+  typename T::const_iterator it = container.begin();
+  for ( ; it != container.end(); ++it) {
+    if (it != container.begin())
+      oss << ' ';
+    oss << *it;
+  }
+  return oss.str();
+}
+
 }  // End namespace QUESO
 
 template void QUESO::MiscCheckTheParallelEnvironment<QUESO::GslVector, QUESO::GslVector>(QUESO::GslVector const&, QUESO::GslVector const&);
 template bool QUESO::MiscCheckForSameValueInAllNodes<bool>(bool&, double, QUESO::MpiComm const&, char const*);
 template bool QUESO::MiscCheckForSameValueInAllNodes<double>(double&, double, QUESO::MpiComm const&, char const*);
+template std::string QUESO::container_to_string(const std::set<unsigned int>& container);
