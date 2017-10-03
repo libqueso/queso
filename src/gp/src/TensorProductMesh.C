@@ -342,8 +342,13 @@ TensorProductMesh<V>::interpolateOutput
       std::vector<double>::const_iterator ub =
         std::lower_bound(_coordinate_vals[dim].begin(),
                          _coordinate_vals[dim].end(), outputPoint.val(dim));
-      queso_assert(ub != _coordinate_vals[dim].end());
-      queso_assert(ub != _coordinate_vals[dim].begin());
+
+      if (ub == _coordinate_vals[dim].begin())
+        {
+          queso_assert_equal_to(outputPoint.val(dim), *ub);
+          ++ub;
+        }
+
       indices[dim] = ub - _coordinate_vals[dim].begin() - 1;
 
       std::vector<double>::const_iterator lb = ub;
@@ -351,7 +356,11 @@ TensorProductMesh<V>::interpolateOutput
       if (ub == _coordinate_vals[dim].end())
         {
           // Hopefully we're just at the endpoint, not
-          // extrapolating past it
+          // extrapolating past it...
+          queso_assert_less
+            ((outputPoint.val(dim) - *lb)/
+             (*lb - *_coordinate_vals[dim].begin()),
+             1e-10);
           lb_fraction[dim] = 0;
         }
       else
