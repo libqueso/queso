@@ -616,3 +616,4 @@ template void QUESO::MiscCheckTheParallelEnvironment<QUESO::GslVector, QUESO::Gs
 template bool QUESO::MiscCheckForSameValueInAllNodes<bool>(bool&, double, QUESO::MpiComm const&, char const*);
 template bool QUESO::MiscCheckForSameValueInAllNodes<double>(double&, double, QUESO::MpiComm const&, char const*);
 template std::string QUESO::container_to_string(const std::set<unsigned int>& container);
+template std::string QUESO::container_to_string(const std::vector<double>& container);

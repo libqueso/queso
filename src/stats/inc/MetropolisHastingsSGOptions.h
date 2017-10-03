@@ -156,6 +156,15 @@ public:
   /*! Extract options from MLSamplingLevelOptions to \c this.*/
   MhOptionsValues (const MLSamplingLevelOptions& ml_opts);
 
+  //! Set parameter option names to begin with prefix
+  void set_prefix(const std::string& prefix);
+
+  //! Set default values for parameter options
+  void set_defaults();
+
+  //! Given prefix, read the input file for parameters named "prefix"+*
+  void parse(const BaseEnvironment& env, const std::string& prefix);
+
   //! Destructor
   virtual ~MhOptionsValues            ();
   //@}
@@ -751,9 +760,7 @@ private:
   //! Copies the option values from \c src to \c this.
   void copy(const MhOptionsValues& src);
 
-  // We pass the the passed environment to get access to the MPI ranks etc for
-  // sanity checks
-  void checkOptions(const BaseEnvironment * env);
+  void checkOptions();
 
   friend std::ostream & operator<<(std::ostream & os,
       const MhOptionsValues & obj);
