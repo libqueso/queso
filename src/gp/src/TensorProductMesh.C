@@ -242,9 +242,15 @@ TensorProductMesh<V>::generateDiscrepancyBases
           std::size_t solution_index = this->_first_solution_index;
           std::size_t stride = 1;
 
+          unsigned int nonemptypredim = 0;
           for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
             {
-              const unsigned int raw_dim = _order[predim];
+              unsigned int raw_dim = _order[nonemptypredim];
+              while (_coordinate_vals[raw_dim].empty())
+                {
+                  ++nonemptypredim;
+                  raw_dim = _order[nonemptypredim];
+                }
               const double stddev = kernel_spacing[raw_dim];
               const double peak = gaussian_peak_index[raw_dim];
               const double point = mesh_point_index[raw_dim];
@@ -255,9 +261,15 @@ TensorProductMesh<V>::generateDiscrepancyBases
               stride *= _coordinate_vals[raw_dim].size();
             }
 
+          nonemptypredim = 0;
           for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
             {
-              const unsigned int raw_dim = _order[predim];
+              unsigned int raw_dim = _order[nonemptypredim];
+              while (_coordinate_vals[raw_dim].empty())
+                {
+                  ++nonemptypredim;
+                  raw_dim = _order[nonemptypredim];
+                }
               if (++mesh_point_index[raw_dim] == _coordinate_vals[raw_dim].size())
                 mesh_point_index[raw_dim] = 0;
               else
@@ -265,9 +277,15 @@ TensorProductMesh<V>::generateDiscrepancyBases
             }
         }
 
+      unsigned int nonemptypredim = 0;
       for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
         {
-          const unsigned int raw_dim = _order[predim];
+          unsigned int raw_dim = _order[nonemptypredim];
+          while (_coordinate_vals[raw_dim].empty())
+            {
+              ++nonemptypredim;
+              raw_dim = _order[nonemptypredim];
+            }
           if (++gaussian_peak_index[raw_dim] == peaks_1D[raw_dim].size())
             gaussian_peak_index[raw_dim] = 0;
           else
@@ -354,9 +372,16 @@ TensorProductMesh<V>::interpolateOutput
       std::size_t solution_index = this->_first_solution_index;
       std::size_t stride = 1;
       double coefficient = 1;
+
+      unsigned int nonemptypredim = 0;
       for (unsigned int predim = 0; predim != num_coordinates_used; ++predim)
         {
-          const unsigned int raw_dim = _order[predim];
+          unsigned int raw_dim = _order[nonemptypredim];
+          while (_coordinate_vals[raw_dim].empty())
+            {
+              ++nonemptypredim;
+              raw_dim = _order[nonemptypredim];
+            }
 
           // Iterate in binary order over neighboring points, e.g.:
           // gridpoint_000(i) <= output_point(i) in all 3 indices i,
