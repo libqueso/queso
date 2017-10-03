@@ -47,9 +47,6 @@ namespace QUESO {
 EnvOptionsValues::EnvOptionsValues()
   :
   m_env(NULL)
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-  , m_parser()
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 {
   this->set_defaults();
   this->set_prefix("");
@@ -264,7 +261,7 @@ EnvOptionsValues::parse(const BaseEnvironment& env, const std::string& prefix)
   m_parser->scanInputFile();
 
   // Retrieve parsed options
-  m_parser->getOption<std::string >(m_option_help, m_help);
+  m_parser->getOption<std::string>(m_option_help, m_help);
   m_parser->getOption<unsigned int>(m_option_numSubEnvironments, m_numSubEnvironments);
   m_parser->getOption<std::string>(m_option_subDisplayFileName, m_subDisplayFileName);
   m_parser->getOption<bool>(m_option_subDisplayAllowAll, m_subDisplayAllowAll);
