@@ -415,8 +415,8 @@ TensorProductMesh<V>::interpolateOutput
           // the larger point then the shape function goes from 0 on
           // the "left" to 1 on the "right"; otherwise the opposite.
           coefficient *= on_larger_point ?
-                         (1.0 - lb_fraction[raw_dim]) :
-                         lb_fraction[raw_dim];
+                         lb_fraction[raw_dim] :
+                         (1.0 - lb_fraction[raw_dim]);
         }
 
       // solution index and coefficient are finally correct here, so
