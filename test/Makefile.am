@@ -134,6 +134,7 @@ unit_driver_SOURCES += unit/scalar_sequence.C
 unit_driver_SOURCES += unit/vector_space.C
 unit_driver_SOURCES += unit/base_vector_sequence.C
 unit_driver_SOURCES += unit/sequence_of_vectors.C
+unit_driver_SOURCES += unit/tensor_product_mesh.C
 unit_driver_SOURCES += unit/tensor_product_quadrature.C
 unit_driver_SOURCES += unit/monte_carlo_quadrature.C
 unit_driver_SOURCES += unit/rng_gsl.C
