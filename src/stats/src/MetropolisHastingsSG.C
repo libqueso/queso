@@ -332,15 +332,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_userDidNotProvideOptions(true),
   m_latestDirtyCovMatrixIteration(0)
 {
-  // We do this dance because one of the MetropolisHastingsSGOptions
-  // constructors takes one of the old-style MLSamplingLevelOptions options
-  // objects.
-  //
-  // We do a copy and then pull out the raw values from m_ov.  We also need it
-  // as a member (m_oldOptions) because otherwise m_ov will die when the
-  // MetropolisHastingsSGOptions instance dies.
-  m_oldOptions.reset(new MetropolisHastingsSGOptions(mlOptions));
-  m_optionsObj.reset(new MhOptionsValues(m_oldOptions->m_ov));
+  m_optionsObj.reset(new MhOptionsValues(mlOptions));
 
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -400,15 +392,7 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_userDidNotProvideOptions(true),
   m_latestDirtyCovMatrixIteration(0)
 {
-  // We do this dance because one of the MetropolisHastingsSGOptions
-  // constructors takes one of the old-style MLSamplingLevelOptions options
-  // objects.
-  //
-  // We do a copy and then pull out the raw values from m_ov.  We also need it
-  // as a member (m_oldOptions) because otherwise m_ov will die when the
-  // MetropolisHastingsSGOptions instance dies.
-  m_oldOptions.reset(new MetropolisHastingsSGOptions(mlOptions));
-  m_optionsObj.reset(new MhOptionsValues(m_oldOptions->m_ov));
+  m_optionsObj.reset(new MhOptionsValues(mlOptions));
 
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;

@@ -28,7 +28,6 @@
 #define LEVEL_REF_ID 0
 
 #include <queso/Environment.h>
-#include <queso/SequenceStatisticalOptions.h>
 
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 #include <queso/BoostInputOptionsParser.h>
@@ -273,7 +272,6 @@ public:
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   //! Compute statistics on raw chain.
   bool                               m_rawChainComputeStats;
-  SequenceStatisticalOptions*        m_rawChainStatisticalOptionsObj;
   bool                               m_rawChainStatOptsInstantiated;
 #endif
   //! Whether or not to generate filtered chain.
@@ -301,7 +299,6 @@ public:
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   //! Compute statistics on filtered chain.
   bool                               m_filteredChainComputeStats;
-  SequenceStatisticalOptions*        m_filteredChainStatisticalOptionsObj;
   bool                               m_filteredChainStatOptsInstantiated;
 #endif
   //! Display candidates generated in the core MH algorithm.
