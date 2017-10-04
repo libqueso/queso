@@ -335,7 +335,6 @@ private:
   MHRawChainInfoStruct m_rawChainInfo;
 
   ScopedPtr<const MhOptionsValues>::Type m_optionsObj;
-  ScopedPtr<MetropolisHastingsSGOptions>::Type m_oldOptions;
 
 	bool m_computeInitialPriorAndLikelihoodValues;
 	double m_initialLogPriorValue;
