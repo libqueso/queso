@@ -216,13 +216,15 @@ void run_scalar(const QUESO::FullEnvironment& env)
     simulationScenarios[i].reset(new QUESO::GslVector(configSpace.zeroVector()));  // 'x_{i+1}^*' in paper
     paramVecs          [i].reset(new QUESO::GslVector(paramSpace.zeroVector()));  // 't_{i+1}^*' in paper
     outputVecs         [i].reset(new QUESO::GslVector(nEtaSpace.zeroVector()));  // 'eta_{i+1}' in paper
-
-    // Must set scaling before adding experiments due to construct order
-    // As of this implementation autoscale only affects params/scenarios
-    gp_opts.set_autoscale_minmax_uncertain_parameter(i);
-    gp_opts.set_autoscale_minmax_scenario_parameter(i);
-    gp_opts.set_autoscale_meanvar_output(i);
   }
+
+  // Must set scaling before adding experiments due to construct order
+  for (unsigned int i = 0; i < numUncertainVars; i++)
+    gp_opts.set_autoscale_minmax_uncertain_parameter(i);
+  for (unsigned int i = 0; i < numConfigVars; i++)
+    gp_opts.set_autoscale_minmax_scenario_parameter(i);
+  for (unsigned int i = 0; i < numEta; i++)
+    gp_opts.set_autoscale_meanvar_output(i);
 
   for (unsigned int i = 0; i < numExperiments; i++) {
     experimentScenarios[i].reset(new QUESO::GslVector(configSpace.zeroVector())); // 'x_{i+1}' in paper
