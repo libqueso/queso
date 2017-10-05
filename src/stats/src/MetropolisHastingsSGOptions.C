@@ -704,7 +704,7 @@ MhOptionsValues::MhOptionsValues(
 
   if ((m_env->subDisplayFile() != NULL ) &&
       (m_totallyMute     == false)) {
-    *(m_env->subDisplayFile()) << "In MetropolisHastingsSGOptions::constructor(3)"
+    *(m_env->subDisplayFile()) << "In MhOptionsValues::constructor(3)"
 			       << ": after copying values of options with prefix '" << m_prefix
 			       << "', state of object is:"
 			       << "\n" << *this

@@ -670,16 +670,6 @@ BaseVectorSequence<V,M>::copy(const BaseVectorSequence<V,M>& src)
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeStatistics(
-  const SequenceStatisticalOptions& statisticalOptions,
-  std::ofstream*                           passedOfs)
-{
-  queso_deprecated();
-  computeStatistics(statisticalOptions.m_ov, passedOfs);
-}
-
-template<class V, class M>
-void
-BaseVectorSequence<V,M>::computeStatistics(
   const SsOptionsValues& statisticalOptions,
   std::ofstream*                           passedOfs)
 {
@@ -880,21 +870,6 @@ BaseVectorSequence<V,M>::computeStatistics(
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeMeanVars(
-  const SequenceStatisticalOptions& statisticalOptions,
-  std::ofstream*                           passedOfs,
-  V*                                       subMeanPtr,
-  V*                                       subMedianPtr,
-  V*                                       subSampleVarPtr,
-  V*                                       subPopulVarPtr)
-{
-  queso_deprecated();
-  computeMeanVars(statisticalOptions.m_ov, passedOfs, subMeanPtr, subMedianPtr,
-      subSampleVarPtr, subPopulVarPtr);
-}
-
-template<class V, class M>
-void
-BaseVectorSequence<V,M>::computeMeanVars(
   const SsOptionsValues& statisticalOptions,
   std::ofstream*                           passedOfs,
   V*                                       subMeanPtr,
@@ -1091,19 +1066,6 @@ BaseVectorSequence<V,M>::computeMeanVars(
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeAutoCorrViaDef(
-  const SequenceStatisticalOptions& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  const std::vector<unsigned int>&      lagsForCorrs,
-  std::ofstream*                        passedOfs)
-{
-  queso_deprecated();
-  computeAutoCorrViaDef(statisticalOptions.m_ov, initialPosForStatistics,
-      lagsForCorrs, passedOfs);
-}
-
-template<class V, class M>
-void
-BaseVectorSequence<V,M>::computeAutoCorrViaDef(
   const SsOptionsValues& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
   const std::vector<unsigned int>&      lagsForCorrs,
@@ -1223,19 +1185,6 @@ BaseVectorSequence<V,M>::computeAutoCorrViaDef(
   return;
 }
 // --------------------------------------------------
-template<class V, class M>
-void
-BaseVectorSequence<V,M>::computeAutoCorrViaFFT(
-  const SequenceStatisticalOptions& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  const std::vector<unsigned int>&      lagsForCorrs,
-  std::ofstream*                        passedOfs)
-{
-  queso_deprecated();
-  computeAutoCorrViaFFT(statisticalOptions.m_ov, initialPosForStatistics,
-      lagsForCorrs, passedOfs);
-}
-
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeAutoCorrViaFFT(
@@ -1408,16 +1357,6 @@ BaseVectorSequence<V,M>::computeAutoCorrViaFFT(
   return;
 }
 // --------------------------------------------------
-template<class V, class M>
-void
-BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
-  const SequenceStatisticalOptions& statisticalOptions,
-  std::ofstream*                           passedOfs)
-{
-  queso_deprecated();
-  computeHistCdfstaccKde(statisticalOptions.m_ov, passedOfs);
-}
-
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
@@ -1998,16 +1937,6 @@ BaseVectorSequence<V,M>::computeHistCdfstaccKde( // Use the whole chain
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeCovCorrMatrices( // Use the whole chain
-  const SequenceStatisticalOptions& statisticalOptions,
-  std::ofstream*                           passedOfs)
-{
-  queso_deprecated();
-  computeCovCorrMatrices(statisticalOptions.m_ov, passedOfs);
-}
-
-template<class V, class M>
-void
-BaseVectorSequence<V,M>::computeCovCorrMatrices( // Use the whole chain
   const SsOptionsValues& statisticalOptions,
   std::ofstream*                           passedOfs)
 {
@@ -2075,16 +2004,6 @@ BaseVectorSequence<V,M>::computeCovCorrMatrices( // Use the whole chain
 // --------------------------------------------------
 
 #ifdef UQ_CODE_HAS_MONITORS
-template<class V, class M>
-void
-BaseVectorSequence<V,M>::computeMeanEvolution(
-  const SequenceStatisticalOptions& statisticalOptions,
-  std::ofstream*                           passedOfs)
-{
-  queso_deprecated();
-  computeMeanEvolution(statisticalOptions.m_ov, passedOfs);
-}
-
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeMeanEvolution(
@@ -2200,17 +2119,6 @@ BaseVectorSequence<V,M>::computeMeanEvolution(
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template<class V, class M>
 void
-BaseVectorSequence<V,M>::computeBMM(
-  const SequenceStatisticalOptions& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  queso_deprecated();
-  computeMeanStacc(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
-}
-
-template<class V, class M>
-void
 BaseVectorSequence<V,M>::computeMeanStacc(
   const SsOptionsValues& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
@@ -2297,17 +2205,6 @@ BaseVectorSequence<V,M>::computeMeanStacc(
 // --------------------------------------------------
 template<class V, class M>
 void
-BaseVectorSequence<V,M>::computeFFT(
-  const SequenceStatisticalOptions& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  queso_deprecated();
-  computeBMM(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
-}
-
-template<class V, class M>
-void
 BaseVectorSequence<V,M>::computeBMM(
   const SsOptionsValues& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
@@ -2384,17 +2281,6 @@ BaseVectorSequence<V,M>::computeBMM(
 // --------------------------------------------------
 template<class V, class M>
 void
-BaseVectorSequence<V,M>::computePSD(
-  const SequenceStatisticalOptions& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  queso_deprecated();
-  computeFFT(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
-}
-
-template<class V, class M>
-void
 BaseVectorSequence<V,M>::computeFFT(
   const SsOptionsValues& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
@@ -2446,17 +2332,6 @@ BaseVectorSequence<V,M>::computeFFT(
   return;
 }
 // --------------------------------------------------
-template<class V, class M>
-void
-BaseVectorSequence<V,M>::computePSDAtZero(
-  const SequenceStatisticalOptions& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  queso_deprecated();
-  computePSD(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
-}
-
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computePSD(
@@ -2608,17 +2483,6 @@ BaseVectorSequence<V,M>::computePSD(
 // --------------------------------------------------
 template<class V, class M>
 void
-BaseVectorSequence<V,M>::computeGeweke(
-  const SequenceStatisticalOptions& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  queso_deprecated();
-  computePSDAtZero(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
-}
-
-template<class V, class M>
-void
 BaseVectorSequence<V,M>::computePSDAtZero(
   const SsOptionsValues& statisticalOptions,
   const std::vector<unsigned int>&      initialPosForStatistics,
@@ -2686,17 +2550,6 @@ BaseVectorSequence<V,M>::computePSDAtZero(
   return;
 }
 // --------------------------------------------------
-template<class V, class M>
-void
-BaseVectorSequence<V,M>::computeMeanStacc(
-  const SequenceStatisticalOptions& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  queso_deprecated();
-  computeGeweke(statisticalOptions.m_ov, initialPosForStatistics, passedOfs);
-}
-
 template<class V, class M>
 void
 BaseVectorSequence<V,M>::computeGeweke(

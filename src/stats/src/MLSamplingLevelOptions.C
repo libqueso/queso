@@ -609,14 +609,12 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
   this->getAllOptions();
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  if (m_rawChainComputeStats) {
-    m_rawChainStatisticalOptionsObj = new SequenceStatisticalOptions(m_env,m_prefix + "rawChain_");
-    m_rawChainStatOptsInstantiated  = true;
-  }
-  if (m_filteredChainComputeStats) {
-    m_filteredChainStatisticalOptionsObj = new SequenceStatisticalOptions(m_env,m_prefix + "filteredChain_");
-    m_filteredChainStatOptsInstantiated  = true;
-  }
+  // if (m_rawChainComputeStats) {
+  //   m_rawChainStatOptsInstantiated  = true;
+  // }
+  // if (m_filteredChainComputeStats) {
+  //   m_filteredChainStatOptsInstantiated  = true;
+  // }
 #endif
 }
 
