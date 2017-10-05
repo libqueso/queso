@@ -3,7 +3,6 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/UniformVectorRV.h>
-#include <queso/MetropolisHastingsSGOptions.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/StatisticalInverseProblemOptions.h>
 #include <queso/ScalarFunction.h>

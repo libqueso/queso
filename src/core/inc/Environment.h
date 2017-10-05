@@ -111,7 +111,7 @@ file per allowed rank is opened and allowed ranks can be specified through the '
 +<item> EnvOptionsValues
 +<item> SipOptionsValues
 +<item> SfpOptionsValues
-+<item> MhOptionsValues (and deprecated MetropolisHastingsSGOptions)
++<item> MhOptionsValues
 +<item> McOptionsValues
 </list>
     The last two classes also rely on
