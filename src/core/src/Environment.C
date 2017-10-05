@@ -43,7 +43,7 @@
 #include <queso/Miscellaneous.h>
 
 // Local includes
-#include "core/inc/FilePtr.h"
+#include <queso/FilePtr.h>
 
 #include <sys/time.h>
 #ifdef HAVE_GRVY

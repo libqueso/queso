@@ -25,7 +25,7 @@
 #include <queso/MonteCarloSG.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
-#include "core/inc/FilePtr.h"
+#include <queso/FilePtr.h>
 
 namespace QUESO {
 

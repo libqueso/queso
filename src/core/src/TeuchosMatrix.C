@@ -27,7 +27,7 @@
 #ifdef QUESO_HAS_TRILINOS
 #include <queso/TeuchosMatrix.h>
 #include <queso/TeuchosVector.h>
-#include <core/inc/FilePtr.h>
+#include <queso/FilePtr.h>
 #include <sys/time.h>
 #include <cmath>
 
