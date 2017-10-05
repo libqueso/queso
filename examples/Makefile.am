@@ -458,9 +458,6 @@ dist_gpmsa_linverif_DATA += ${gpmsa_linverif_SOURCES}
 dist_gpmsa_linverif_DATA += gp/linear_verif/gpmsa_scalar.txt
 dist_gpmsa_linverif_DATA += gp/linear_verif/sim_scalar.dat
 dist_gpmsa_linverif_DATA += gp/linear_verif/y_exp_scalar.txt
-dist_gpmsa_linverif_DATA += gp/linear_verif/gpmsa_mv.txt
-dist_gpmsa_linverif_DATA += gp/linear_verif/sim_mv.dat
-dist_gpmsa_linverif_DATA += gp/linear_verif/y_exp_mv.txt
 
 #######################################
 # Canned Gaussian likelihood examples #
