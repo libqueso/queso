@@ -23,7 +23,7 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/VectorSpace.h>
-#include "basic/inc/DiscreteSubset.h"
+#include <queso/DiscreteSubset.h>
 #include <queso/Defines.h>
 
 namespace QUESO {
