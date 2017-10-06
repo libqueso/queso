@@ -81,6 +81,9 @@ BUILT_SOURCES += exceptions.h
 BUILT_SOURCES += queso.h
 BUILT_SOURCES += GPMSA.h
 BUILT_SOURCES += GPMSAOptions.h
+BUILT_SOURCES += SimulationOutputMesh.h
+BUILT_SOURCES += SimulationOutputPoint.h
+BUILT_SOURCES += TensorProductMesh.h
 BUILT_SOURCES += 1D1DFunction.h
 BUILT_SOURCES += 1DQuadrature.h
 BUILT_SOURCES += 2dArrayOfStuff.h
@@ -351,6 +354,12 @@ queso.h: $(top_srcdir)/src/core/inc/queso.h
 GPMSA.h: $(top_srcdir)/src/gp/inc/GPMSA.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GPMSAOptions.h: $(top_srcdir)/src/gp/inc/GPMSAOptions.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+SimulationOutputMesh.h: $(top_srcdir)/src/gp/inc/SimulationOutputMesh.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+SimulationOutputPoint.h: $(top_srcdir)/src/gp/inc/SimulationOutputPoint.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TensorProductMesh.h: $(top_srcdir)/src/gp/inc/TensorProductMesh.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 1D1DFunction.h: $(top_srcdir)/src/misc/inc/1D1DFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

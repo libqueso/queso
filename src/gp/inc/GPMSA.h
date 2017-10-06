@@ -45,6 +45,10 @@ namespace QUESO {
 class GslVector;
 class GslMatrix;
 
+template <class V>
+class SimulationOutputMesh;
+class SimulationOutputPoint;
+
 template <class V = GslVector, class M = GslMatrix>
 class GPMSAEmulator : public BaseScalarFunction<V, M>
 {
@@ -53,7 +57,6 @@ public:
                 const VectorSpace<V, M> & m_scenarioSpace,
                 const VectorSpace<V, M> & m_parameterSpace,
                 const VectorSpace<V, M> & m_simulationOutputSpace,
-                const VectorSpace<V, M> & m_experimentOutputSpace,
                 const unsigned int m_numSimulations,
                 const unsigned int m_numExperiments,
                 const std::vector<typename SharedPtr<V>::Type> & m_simulationScenarios,
@@ -68,7 +71,10 @@ public:
                 const V & residual_in,
                 const M & BT_Wy_B_inv_in,
                 const M & KT_K_inv_in,
-                const GPMSAOptions & opts);
+                const GPMSAOptions & opts,
+                const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes_in,
+                const std::vector<std::vector<SimulationOutputPoint> > & m_experimentPoints_in,
+                const std::vector<std::vector<unsigned int> > & m_experimentVariables_in);
 
   virtual ~GPMSAEmulator();
 
@@ -87,7 +93,6 @@ public:
   const VectorSpace<V, M> & m_scenarioSpace;
   const VectorSpace<V, M> & m_parameterSpace;
   const VectorSpace<V, M> & m_simulationOutputSpace;
-  const VectorSpace<V, M> & m_experimentOutputSpace;
 
   const unsigned int m_numSimulations;
   const unsigned int m_numExperiments;
@@ -121,9 +126,29 @@ public:
 
   const M & KT_K_inv;
 
+  //
+  // GPMSA user options to query
+  //
   const GPMSAOptions & m_opts;
 
+  //
+  // Data for functional output(s) cases
+  //
+
+  // Mesh(es) on which functional output is defined
+  const std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> & m_simulationMeshes;
+
+  // Point(s) at which experimental data is located.
+  const std::vector<std::vector<SimulationOutputPoint> > & m_experimentPoints;
+
+  // Variable(s) for which experimental data is valid.
+  const std::vector<std::vector<unsigned int> > & m_experimentVariables;
+
   using BaseScalarFunction<V, M>::lnValue;
+
+private:
+
+  unsigned int m_numExperimentOutputs;
 };
 
 template <class V = GslVector, class M = GslMatrix>
@@ -137,7 +162,6 @@ public:
                const VectorSpace<V, M> & scenarioSpace,
                const VectorSpace<V, M> & parameterSpace,
                const VectorSpace<V, M> & simulationOutputSpace,
-               const VectorSpace<V, M> & experimentOutputSpace,
                unsigned int numSimulations,
                unsigned int numExperiments);
 
@@ -166,9 +190,6 @@ public:
 
   //! Return the vector space in which simulations live
   const VectorSpace<V, M> & simulationOutputSpace() const;
-
-  //! Return the vector space in which experiments live
-  const VectorSpace<V, M> & experimentOutputSpace() const;
 
   //! Return the point in \c scenarioSpace for simulation \c simulationId
   /*!
@@ -226,16 +247,9 @@ public:
   const std::vector<typename SharedPtr<V>::Type> & experimentScenarios() const;
 
   //! Return the experiment output for experiment \c experimentId
-  /*!
-   * The returned vector is a point in \c experimentOutputSpace
-   */
   const V & experimentOutput(unsigned int experimentId) const;
 
-  //! Return all points in \c experimentOutputSpace for all experiments
-  /*!
-   * This returns all points in experiment output space at which experiments
-   * were executed
-   */
+  //! Return all outputs for all experiments
   const std::vector<typename SharedPtr<V>::Type> & experimentOutputs() const;
 
   //! Return all observation error covarince matrices for all experiments
@@ -249,12 +263,31 @@ public:
 
   //@}
 
+  //! Add a mesh to \c this, describing simulation output in
+  // space and/or time, for use in interpolation of functional data.
+  //
+  // We currently assume that meshes are added in the order in which
+  // their data appears in a simulation output vector, and we assume
+  // that all multivariate data in simulation outputs comes after all
+  // functional data.
+  void addSimulationMesh
+    (typename SharedPtr<SimulationOutputMesh<V> >::Type simulationMesh);
+
   //! Add a simulation to \c this
   /*!
    * The simulation added to \c this is assumed to correspond to the point
    * \c simulationScenario in scenario space and \c simulationParameter in
    * parameter space.  The simulation output is assumed to be stored in
    * \c simulationOutput.
+   *
+   * If the simulation includes functional data, then the functional
+   * data is expected to be indexed according to conventions which are
+   * user-supplied via addSimulationMesh.
+   *
+   * If the simulation includes both functional and multivariate data,
+   * then the functional data indices are expected to start at 0 and
+   * the multivariate data is expected to always begin after the last
+   * functional data index.
    */
   void addSimulation(typename SharedPtr<V>::Type simulationScenario,
                      typename SharedPtr<V>::Type simulationParameter,
@@ -296,10 +329,28 @@ public:
    * point \c expermientScenarios[i] in scenario space.  Each
    * experiment has a corresponding error covariance matrix stored in
    * \c experimentErrors[i]
+   *
+   * In cases where simulations return functional data, each
+   * experiment output may correspond to that data at a given point;
+   * if so then a non-NULL experimentPoints vector may be supplied to
+   * indicate the location (as a space/time point) of each output, and
+   * a non-NULL experimentVariables vector may be supplied to indicate
+   * the variable (corresponding to a particular functional or
+   * multivariate entry) of each output.  E.g. if each simulation has
+   * 2 functional and 8 multivariate outputs, then for an
+   * experimentVariables vector of {0, 1, 9}, the first output
+   * comes from the first functional variable, the second from the
+   * second, and the third output comes from the last multivariate
+   * variable.  Note that the last *variable* number in this case is 9
+   * (10 variables, counting from 0), even though the last *simulation
+   * output* index will be larger, probably much larger depending on
+   * the discretizations of the two functional data variables.
    */
   void addExperiments(const std::vector<typename SharedPtr<V>::Type> & experimentScenarios,
                       const std::vector<typename SharedPtr<V>::Type> & experimentOutputs,
-                      const std::vector<typename SharedPtr<M>::Type> & experimentErrors);
+                      const std::vector<typename SharedPtr<M>::Type> & experimentErrors,
+                      const std::vector<std::vector<SimulationOutputPoint> > * experimentPoints = NULL,
+                      const std::vector<std::vector<unsigned int> > * experimentVariables = NULL);
 
   //! Add all discrepancy bases to \c this
   /*!
@@ -311,7 +362,9 @@ public:
    * multiply them.
    *
    * If no discrepancy basis is provided, the natural basis e_i
-   * vectors will be used.
+   * vectors will be used for multivariate data, and a gaussian
+   * discrepancy basis generated from user options will be used for
+   * functional data.
    *
    * Data vectors are consistently indexed for each simulation output
    * provided, and so discrepancy bases use the same indexing.
@@ -339,16 +392,20 @@ public:
   const VectorSpace<V, M> & m_scenarioSpace;
   const VectorSpace<V, M> & m_parameterSpace;
   const VectorSpace<V, M> & m_simulationOutputSpace;
-  const VectorSpace<V, M> & m_experimentOutputSpace;
 
   unsigned int m_numSimulations;
   unsigned int m_numExperiments;
+
+  std::vector<typename SharedPtr<SimulationOutputMesh<V> >::Type> m_simulationMeshes;
 
   std::vector<typename SharedPtr<V>::Type> m_simulationScenarios;
   std::vector<typename SharedPtr<V>::Type> m_simulationParameters;
   std::vector<typename SharedPtr<V>::Type> m_simulationOutputs;
   std::vector<typename SharedPtr<V>::Type> m_experimentScenarios;
   std::vector<typename SharedPtr<V>::Type> m_experimentOutputs;
+
+  std::vector<std::vector<SimulationOutputPoint> > m_experimentPoints;
+  std::vector<std::vector<unsigned int> > m_experimentVariables;
 
   // We will be recentering data around the simulation output mean.
   //
@@ -486,13 +543,9 @@ public:
   //
   // Intermediate calculations we can cache
 
-  // Matrix of the SVD basis vectors we save.  Calculated from
+  // Vector of the SVD basis vectors we save.  Calculated from
   // normalized data.
-  typename ScopedPtr<M>::Type m_TruncatedSVD_simulationOutputs;
-
-  // Discrepancy matrices, calculated from supplied discrepancy bases
-  // and normalized.
-  std::vector<M> m_discrepancyMatrices;
+  std::vector<V> m_TruncatedSVD_simulationOutputs;
 
   // B matrix from Higdon et. al.
   //
