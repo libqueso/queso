@@ -78,7 +78,7 @@ check_PROGRAMS += test_fd_fallback
 check_PROGRAMS += test_custom_tk_am
 check_PROGRAMS += test_no_initial_point
 check_PROGRAMS += test_parallel_h5
-check_PROGRAMS += test_gpmsa_scalar_pdf_small
+check_PROGRAMS += test_gpmsa_pdf_small
 check_PROGRAMS += test_gpmsa_scalar_pdf_large
 
 LDADD       = $(top_builddir)/src/libqueso.la
@@ -263,7 +263,7 @@ test_custom_tk_am_CPPFLAGS = -I$(srcdir)/custom_tk $(AM_CPPFLAGS)
 test_no_initial_point_SOURCES = test_StatisticalInverseProblem/test_no_initial_point.C
 test_parallel_h5_SOURCES = test_StatisticalInverseProblem/test_parallel_h5.C
 
-test_gpmsa_scalar_pdf_small_SOURCES = test_gpmsa/scalar_pdf_small.C
+test_gpmsa_pdf_small_SOURCES = test_gpmsa/pdf_small.C
 test_gpmsa_scalar_pdf_large_SOURCES = test_gpmsa/scalar_pdf_large.C
 
 TESTS =
