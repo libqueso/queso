@@ -67,9 +67,8 @@ gpmsa_emulator_data_precision_scale = 333.3333333333333
 # Calibration of obs error multiplier is critical for this problem
 
 gpmsa_calibrate_observational_precision = 1
-gpmsa_observational_precision_shape = 64
-# 1/64 (0.015625)
-gpmsa_observational_precision_scale = 0.015625
+gpmsa_observational_precision_shape = 1
+gpmsa_observational_precision_scale = 1000
 
 gpmsa_max_emulator_basis_vectors = 1
 
