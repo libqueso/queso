@@ -1358,8 +1358,8 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
   else
     rank_B = m_BMatrix->transpose().rank(0, 1.e-4);
 
-  double emulatorPrecisionShape = this->m_opts->m_emulatorPrecisionShape;
-  double emulatorPrecisionScale = this->m_opts->m_emulatorPrecisionScale;
+  double truncationErrorPrecisionShape = this->m_opts->m_truncationErrorPrecisionShape;
+  double truncationErrorPrecisionScale = this->m_opts->m_truncationErrorPrecisionScale;
 
   double observationalPrecisionShape = this->m_opts->m_observationalPrecisionShape;
   double observationalPrecisionScale = this->m_opts->m_observationalPrecisionScale;
@@ -1415,14 +1415,16 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
       for (unsigned int i = 0; i < etahat_size; ++i)
         (*residual)[yhat_size+i] = etahat[i];
 
-      emulatorPrecisionShape +=
+      truncationErrorPrecisionShape +=
         (this->m_numSimulations * (numSimulationOutputs - num_svd_terms)) / 2.0;
 
       V eta_temp(eta);
       eta_temp -= *K * etahat;
 
-      emulatorPrecisionScale +=
+      double truncationErrorPrecisionRate = 1.0 / truncationErrorPrecisionScale;
+      truncationErrorPrecisionRate +=
         scalarProduct(eta, eta_temp) / 2.0;
+      truncationErrorPrecisionScale = 1.0 / truncationErrorPrecisionRate;
 
       observationalPrecisionShape +=
         (totalExperimentOutputs - rank_B) / 2.0;
@@ -1432,8 +1434,10 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
 
       // At this point everything has already been normalized, so no
       // more normalization to do?
-      observationalPrecisionScale +=
+      double observationalPrecisionRate = 1.0 / observationalPrecisionScale;
+      observationalPrecisionRate +=
         scalarProduct(y, y_temp) / 2.0;
+      observationalPrecisionScale = 1.0 / observationalPrecisionRate;
     }
   else
     {
@@ -1491,6 +1495,9 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
       this->truncationErrorPrecisionMin->cwSet(0);
       this->truncationErrorPrecisionMax->cwSet(INFINITY);
 
+      this->m_truncationErrorPrecisionShapeVec->cwSet(truncationErrorPrecisionShape);
+      this->m_truncationErrorPrecisionScaleVec->cwSet(truncationErrorPrecisionScale);
+
       this->truncationErrorPrecisionDomain.reset
         (new BoxSubset<V, M>
           ("",
@@ -1524,8 +1531,8 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
     (new V(this->emulatorPrecisionSpace->zeroVector()));
   this->emulatorPrecisionMin->cwSet(0.3);
   this->emulatorPrecisionMax->cwSet(INFINITY);
-  this->m_emulatorPrecisionShapeVec->cwSet(emulatorPrecisionShape);
-  this->m_emulatorPrecisionScaleVec->cwSet(emulatorPrecisionScale);
+  this->m_emulatorPrecisionShapeVec->cwSet(m_opts->m_emulatorPrecisionShape);
+  this->m_emulatorPrecisionScaleVec->cwSet(m_opts->m_emulatorPrecisionScale);
 
   this->emulatorPrecisionDomain.reset
     (new BoxSubset<V, M>
