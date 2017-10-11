@@ -348,6 +348,7 @@ TESTS += test_no_initial_point
 TESTS += test_StatisticalInverseProblem/test_parallel_h5.sh
 TESTS += test_gpmsa/scalar_pdf_small.sh
 TESTS += test_gpmsa/scalar_pdf_large.sh
+TESTS += test_gpmsa/mv_pdf_small.sh
 
 if ! MPI_ENABLED
 XFAIL_TESTS = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
