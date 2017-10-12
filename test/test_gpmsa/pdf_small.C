@@ -306,29 +306,25 @@ void run_scalar(const QUESO::FullEnvironment& env)
 void run_multivariate(const QUESO::FullEnvironment& env)
 {
   // Step 0: Set up some variables
-  unsigned int numExperiments = 5;  // Number of experiments
-  unsigned int numUncertainVars = 3;  // Number of things to calibrate (3 beta)
-  unsigned int numSimulations = 60;  // Number of simulations
-  unsigned int numConfigVars = 3;  // Dimension of configuration space (3 x)
-  unsigned int numEta = 5;  // Number of responses the model is returning
-  unsigned int experimentSize = 5;  // Size of each experiment
+  unsigned int numExperiments = 1;  // Number of experiments
+  unsigned int numUncertainVars = 1;  // Number of things to calibrate (1 beta)
+  unsigned int numSimulations = 2;  // Number of simulations
+  unsigned int numConfigVars = 1;  // Dimension of configuration space (1 x)
+  unsigned int numEta = 2;  // Number of responses the model is returning
+  unsigned int experimentSize = 2;  // Size of each experiment
 
   // Step 2: Set up prior for calibration parameters
   QUESO::VectorSpace<> paramSpace(env, "param_", numUncertainVars, NULL);
 
   // Parameter (theta) bounds:
-  //   descriptors   'beta0'  'beta1'  'beta2'
-  //   upper_bounds    0.45   -0.1      0.4
-  //   lower_bounds   -0.1    -0.5     -0.2
+  //   descriptors   'beta'
+  //   upper_bounds  -0.1
+  //   lower_bounds  -0.5
   QUESO::GslVector paramMins(paramSpace.zeroVector());
-  paramMins[0] = -0.1;
-  paramMins[1] = -0.5;
-  paramMins[2] = -0.2;
+  paramMins[0] = -0.5;
 
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
-  paramMaxs[0] =  0.45;
-  paramMaxs[1] = -0.1;
-  paramMaxs[2] =  0.4;
+  paramMaxs[0] = -0.1;
 
   QUESO::BoxSubset<> paramDomain("param_", paramSpace, paramMins, paramMaxs);
 
@@ -338,9 +334,7 @@ void run_multivariate(const QUESO::FullEnvironment& env)
 
   // Config space:
   //         Min  Max
-  // x1      0.9   1.1
-  // x2     -1.5   1.0
-  // x3     -1.5   0.5
+  // x      -1.5   1.0
 
   QUESO::VectorSpace<> configSpace(env, "scenario_", numConfigVars, NULL);
 
@@ -419,21 +413,13 @@ void run_multivariate(const QUESO::FullEnvironment& env)
   // Experiment observation error
 
   // True observation error for each experiment uses this R among responses
-  //   0.0025   0.002   0.0016 0.00128 0.001024
-  //   0.002    0.0025  0.002  0.0016  0.00128
-  //   0.0016   0.002   0.0025 0.002   0.0016
-  //   0.00128  0.0016  0.002  0.0025  0.002
-  //   0.001024 0.00128 0.0016 0.002   0.0025
+  //   0.0025   0.002
+  //   0.002    0.0025
   QUESO::GslMatrix covarianceR(experimentSpace.zeroVector());
-  for (unsigned int i = 0; i < 5; ++i)
-    covarianceR(i, i) = 0.0025;
-  for (unsigned int i = 0; i < 4; ++i)
-    covarianceR(i, i+1) = covarianceR(i+1, i) = 0.002;
-  for (unsigned int i = 0; i < 3; ++i)
-    covarianceR(i, i+2) = covarianceR(i+2, i) = 0.0016;
   for (unsigned int i = 0; i < 2; ++i)
-    covarianceR(i, i+3) = covarianceR(i+3, i) = 0.00128;
-  covarianceR(0,4) = covarianceR(4,0) = 0.001024;
+    covarianceR(i, i) = 0.0025;
+  for (unsigned int i = 0; i < 1; ++i)
+    covarianceR(i, i+1) = covarianceR(i+1, i) = 0.002;
 
   // Populate the totalExperimentSpace covariance matrix
   std::vector<const QUESO::GslMatrix* > vec_covmat_ptrs(numExperiments,
@@ -442,9 +428,26 @@ void run_multivariate(const QUESO::FullEnvironment& env)
 
   // Read in data and store the standard deviation of the simulation
   // data (ignored for now).
-  //double stdsim =
-  readData("sim_mv.dat", "y_exp_mv.txt", simulationScenarios, paramVecs,
-           outputVecs, experimentScenarios, experimentVecs, *experimentMat);
+  const char * test_srcdir = std::getenv("srcdir");
+
+  std::string simInputFileName = "test_gpmsa/sim_mv_small.dat";
+  std::string expInputFileName = "test_gpmsa/y_exp_mv_small.txt";
+  std::string solInputFileName = "test_gpmsa/regression_solution_pdf_mv_small.txt";
+
+  if (test_srcdir) {
+    simInputFileName = test_srcdir + ('/' + simInputFileName);
+    expInputFileName = test_srcdir + ('/' + expInputFileName);
+    solInputFileName = test_srcdir + ('/' + solInputFileName);
+  }
+
+  readData(simInputFileName,
+           expInputFileName,
+           simulationScenarios,
+           paramVecs,
+           outputVecs,
+           experimentScenarios,
+           experimentVecs,
+           *experimentMat);
 
   // Add simulation and experimental data
   gpmsaFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
@@ -453,69 +456,62 @@ void run_multivariate(const QUESO::FullEnvironment& env)
   QUESO::GenericVectorRV<> postRv( "post_",
       gpmsaFactory.prior().imageSet().vectorSpace());
 
-  QUESO::StatisticalInverseProblem<> ip("", NULL, gpmsaFactory, postRv);
-
-  QUESO::GslVector paramInitials(
+  QUESO::GslVector point(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
 
-  // Start with the mean of the prior
-  gpmsaFactory.prior().pdf().distributionMean(paramInitials);
+  std::cout << "Point has size: " << point.sizeLocal() << std::endl;
+  queso_require_equal_to(point.sizeLocal(), 10);
 
-  // Initial condition of the chain: may need to tweak to Brian's expectations
-  std::cout << "\nPrior-based initial position:\n" << paramInitials << std::endl;
+  unsigned int num_lines = 10000;
+  std::vector<double> expected_log_likelihoods(num_lines);
+  std::vector<double> expected_log_priors(num_lines);
+  std::vector<double> expected_log_posteriors(num_lines);
+  std::vector<double> computed_log_likelihoods(num_lines);
+  std::vector<double> computed_log_priors(num_lines);
+  std::vector<double> computed_log_posteriors(num_lines);
 
-  // Brian Williams' recommended initial point
-  paramInitials[0]  = 0.175;    // beta0
-  paramInitials[1]  = -0.3;     // beta1
-  paramInitials[2]  = 0.1;      // beta2
-  // [ truncation error precision ] (truncated SVD case only)
-  paramInitials[3]  = 1.0;               // emul precision
-  paramInitials[4]  = 1.0;               // weights0 precision
-  paramInitials[5]  = 1.0;               // weights0 precision
-  paramInitials[6]  = 1.0;               // weights0 precision
-  paramInitials[7]  = 1.0;               // weights0 precision
-  paramInitials[8]  = 1.0;               // weights0 precision
-  paramInitials[9]  = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  paramInitials[10] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  paramInitials[11] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  paramInitials[12] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  paramInitials[13] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  paramInitials[14] = std::exp(-0.025);  // emul corr strength (scenario/beta?)
-  paramInitials[15] = 20.0;              // discrepancy precision
-  paramInitials[16] = std::exp(-0.025);  // discrepancy corr strength x1
-  paramInitials[17] = std::exp(-0.025);  // discrepancy corr strength x2
-  paramInitials[18] = std::exp(-0.025);  // discrepancy corr strength x3
-  paramInitials[19] = 1000.0;            // emul data precision
-  if (gpmsaFactory.options().m_calibrateObservationalPrecision)
-    // BJW: max(20, shape * scale)
-    paramInitials[20] = 20.0;   // obs precision
+  // File containing x, theta, y (vertical concatenation of lhs.txt, y_mod.txt)
+  std::ifstream solution_data;
+  open_data_file(solInputFileName, solution_data);
+  for (unsigned int i = 0; i < num_lines; i++) {
+    for (unsigned int j = 0; j < point.sizeLocal(); ++j)
+      solution_data >> point[j];
 
-  std::cout << "\nAdjusted initial position:\n" << paramInitials << std::endl;
+    double log_pdf;
+    solution_data >> log_pdf;
+    expected_log_likelihoods[i] = log_pdf;
 
-  QUESO::GslMatrix proposalCovMatrix(
-      gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
+    solution_data >> log_pdf;
+    expected_log_priors[i] = log_pdf;
 
-  // Start with the covariance matrix for the whole prior, including
-  // GPMSA hyper-parameters.
-  gpmsaFactory.prior().pdf().distributionVariance(proposalCovMatrix);
+    solution_data >> log_pdf;
+    expected_log_posteriors[i] = log_pdf;
 
-  std::cout << "\nPrior proposal covariance diagonal:\n";
-  for (unsigned int i=0; i<proposalCovMatrix.numCols(); ++i)
-    std::cout << proposalCovMatrix(i,i) << " ";
-  std::cout << std::endl;
+    log_pdf = (gpmsaFactory.prior().pdf().lnValue(point));
+    computed_log_priors[i] = log_pdf;
 
-  // FIXME: The default doesn't seem to work for this case; fudge it:
-  proposalCovMatrix(15, 15) = 1.0e2;
-  proposalCovMatrix(19, 19) = 1.0e1;
+    log_pdf = (gpmsaFactory.getGPMSAEmulator().lnValue(point, NULL, NULL, NULL, NULL));
+    computed_log_likelihoods[i] = log_pdf;
+  }
+  solution_data.close();
 
-  std::cout << "\nFinal proposal covariance diagonal:\n";
-  for (unsigned int i=0; i<proposalCovMatrix.numCols(); ++i)
-    std::cout << proposalCovMatrix(i,i) << " ";
-  std::cout << std::endl;
+  // We subtract off the first difference in log priors because the
+  // normalisation constants between our implementation and Matlab's
+  // implementation are not the same.  We expect them to only be the same up to
+  // an additive constant.
+  double initial_diff_prior = expected_log_priors[0] - computed_log_priors[0];
+  for (unsigned int i = 0; i < expected_log_priors.size(); i++) {
+    double diff_prior = expected_log_priors[i] - computed_log_priors[i] - initial_diff_prior;
+    queso_require_less_equal_msg(std::abs(diff_prior), TOL, "computed log prior differs too much from expected");
+  }
 
-  std::cout << "\nFinal GPMSA Options:" << gpmsaFactory.options() << std::endl;
-
-  ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
+  // We don't subtract off the initial because the normalisation constants
+  // between our implementation and Matlab's implementation appear to be the
+  // same
+  for (unsigned int i = 0; i < expected_log_likelihoods.size(); i++) {
+    double diff_likelihood = expected_log_likelihoods[i] - computed_log_likelihoods[i];
+    queso_require_less_equal_msg(std::abs(diff_likelihood), TOL, "computed log likelihood differs too much from expected");
+  }
 }
 
 int main(int argc, char ** argv)
