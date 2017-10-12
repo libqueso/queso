@@ -11,6 +11,7 @@ BUILT_SOURCES += BoxSubset.h
 BUILT_SOURCES += ConcatenationSubset.h
 BUILT_SOURCES += ConstantScalarFunction.h
 BUILT_SOURCES += ConstantVectorFunction.h
+BUILT_SOURCES += DiscreteSubset.h
 BUILT_SOURCES += GenericScalarFunction.h
 BUILT_SOURCES += GenericVectorFunction.h
 BUILT_SOURCES += InstantiateIntersection.h
@@ -40,6 +41,7 @@ BUILT_SOURCES += DistArray.h
 BUILT_SOURCES += Environment.h
 BUILT_SOURCES += EnvironmentOptions.h
 BUILT_SOURCES += Factory.h
+BUILT_SOURCES += FilePtr.h
 BUILT_SOURCES += FunctionBase.h
 BUILT_SOURCES += FunctionOperatorBuilder.h
 BUILT_SOURCES += GslBlockMatrix.h
@@ -113,6 +115,7 @@ BUILT_SOURCES += ConcatenatedVectorRV.h
 BUILT_SOURCES += ConcatenatedVectorRealizer.h
 BUILT_SOURCES += ExponentialMatrixCovarianceFunction.h
 BUILT_SOURCES += ExponentialScalarCovarianceFunction.h
+BUILT_SOURCES += FiniteDistribution.h
 BUILT_SOURCES += GammaJointPdf.h
 BUILT_SOURCES += GammaVectorRV.h
 BUILT_SOURCES += GammaVectorRealizer.h
@@ -215,6 +218,8 @@ ConstantScalarFunction.h: $(top_srcdir)/src/basic/inc/ConstantScalarFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ConstantVectorFunction.h: $(top_srcdir)/src/basic/inc/ConstantVectorFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+DiscreteSubset.h: $(top_srcdir)/src/basic/inc/DiscreteSubset.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GenericScalarFunction.h: $(top_srcdir)/src/basic/inc/GenericScalarFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GenericVectorFunction.h: $(top_srcdir)/src/basic/inc/GenericVectorFunction.h
@@ -272,6 +277,8 @@ Environment.h: $(top_srcdir)/src/core/inc/Environment.h
 EnvironmentOptions.h: $(top_srcdir)/src/core/inc/EnvironmentOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Factory.h: $(top_srcdir)/src/core/inc/Factory.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+FilePtr.h: $(top_srcdir)/src/core/inc/FilePtr.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FunctionBase.h: $(top_srcdir)/src/core/inc/FunctionBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -418,6 +425,8 @@ ConcatenatedVectorRealizer.h: $(top_srcdir)/src/stats/inc/ConcatenatedVectorReal
 ExponentialMatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/ExponentialMatrixCovarianceFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ExponentialScalarCovarianceFunction.h: $(top_srcdir)/src/stats/inc/ExponentialScalarCovarianceFunction.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+FiniteDistribution.h: $(top_srcdir)/src/stats/inc/FiniteDistribution.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GammaJointPdf.h: $(top_srcdir)/src/stats/inc/GammaJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

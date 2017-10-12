@@ -39,7 +39,7 @@
 #include <queso/TransitionKernelFactory.h>
 #include <queso/AlgorithmFactoryInitializer.h>
 #include <queso/AlgorithmFactory.h>
-#include "core/inc/FilePtr.h"
+#include <queso/FilePtr.h>
 
 namespace QUESO {
 

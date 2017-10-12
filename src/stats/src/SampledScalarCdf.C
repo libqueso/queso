@@ -23,7 +23,7 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/SampledScalarCdf.h>
-#include "core/inc/FilePtr.h"
+#include <queso/FilePtr.h>
 
 namespace QUESO {
 
