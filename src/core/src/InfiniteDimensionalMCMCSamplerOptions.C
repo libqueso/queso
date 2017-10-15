@@ -36,49 +36,11 @@ namespace QUESO {
 InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     const BaseEnvironment& env,
     const char * prefix)
-  : m_prefix((std::string)(prefix) + "infmcmc_"),
-    m_dataOutputDirName(UQ_INF_DATA_OUTPUT_DIR_NAME_ODV),
-    m_dataOutputFileName(UQ_INF_DATA_OUTPUT_FILE_NAME_ODV),
-    m_num_iters(UQ_INF_NUM_ITERS_ODV),
-    m_save_freq(UQ_INF_SAVE_FREQ_ODV),
-    m_rwmh_step(UQ_INF_RWMH_STEP_ODV),
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_parser(new BoostInputOptionsParser(env.optionsInputFileName())),
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_env(env),
-    m_option_help(m_prefix + "help"),
-    m_option_dataOutputDirName(m_prefix + "dataOutputDirName"),
-    m_option_dataOutputFileName(m_prefix + "dataOutputFileName"),
-    m_option_num_iters(m_prefix + "num_iters"),
-    m_option_save_freq(m_prefix + "save_freq"),
-    m_option_rwmh_step(m_prefix + "rwmh_step")
 {
-  queso_require_not_equal_to_msg(m_env.optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the abscense of an options input file"));
+  queso_require_not_equal_to_msg(m_env->optionsInputFileName(), std::string(""), std::string("this constructor is incompatible with the abscense of an options input file"));
 
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-  m_parser->registerOption(m_option_help, "produce help message for infinite dimensional sampler");
-  m_parser->registerOption<std::string>(m_option_dataOutputDirName, UQ_INF_DATA_OUTPUT_DIR_NAME_ODV, "name of data output dir");
-  m_parser->registerOption<std::string>(m_option_dataOutputFileName, UQ_INF_DATA_OUTPUT_FILE_NAME_ODV, "name of data output file (HDF5)");
-  m_parser->registerOption<unsigned int>(m_option_num_iters, UQ_INF_NUM_ITERS_ODV, "number of mcmc iterations to do");
-  m_parser->registerOption<unsigned int>(m_option_save_freq, UQ_INF_SAVE_FREQ_ODV, "the frequency at which to save the chain state");
-  m_parser->registerOption<double      >(m_option_rwmh_step, UQ_INF_RWMH_STEP_ODV, "the step-size in the random-walk Metropolis proposal");;
-
-  m_parser->scanInputFile();
-
-  m_parser->getOption<std::string>(m_option_dataOutputDirName,  m_dataOutputDirName);
-  m_parser->getOption<std::string>(m_option_dataOutputFileName, m_dataOutputFileName);
-  m_parser->getOption<unsigned int>(m_option_num_iters,         m_num_iters);
-  m_parser->getOption<unsigned int>(m_option_save_freq,         m_save_freq);
-  m_parser->getOption<double     >(m_option_rwmh_step,          m_rwmh_step);
-#else
-  m_dataOutputDirName = m_env.input()(m_option_dataOutputDirName, UQ_INF_DATA_OUTPUT_DIR_NAME_ODV);
-  m_dataOutputFileName = m_env.input()(m_option_dataOutputFileName, UQ_INF_DATA_OUTPUT_FILE_NAME_ODV);
-  m_num_iters = m_env.input()(m_option_num_iters, UQ_INF_NUM_ITERS_ODV);
-  m_save_freq = m_env.input()(m_option_save_freq, UQ_INF_SAVE_FREQ_ODV);
-  m_rwmh_step = m_env.input()(m_option_rwmh_step, UQ_INF_RWMH_STEP_ODV);;
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-
-  checkOptions();
+  this->set_defaults();
+  this->parse(env, prefix);
 }
 
 void
@@ -116,7 +78,66 @@ std::ostream & operator<<(std::ostream & os,
 const BaseEnvironment&
 InfiniteDimensionalMCMCSamplerOptions::env() const
 {
-  return this->m_env;
+  return *(this->m_env);
+}
+
+
+void InfiniteDimensionalMCMCSamplerOptions::set_defaults()
+{
+  m_dataOutputDirName = UQ_INF_DATA_OUTPUT_DIR_NAME_ODV;
+  m_dataOutputFileName = UQ_INF_DATA_OUTPUT_FILE_NAME_ODV;
+  m_num_iters = UQ_INF_NUM_ITERS_ODV;
+  m_save_freq = UQ_INF_SAVE_FREQ_ODV;
+  m_rwmh_step = UQ_INF_RWMH_STEP_ODV;
+}
+
+
+void InfiniteDimensionalMCMCSamplerOptions::set_prefix(const std::string& prefix)
+{
+  m_prefix = prefix+ "infmcmc_";
+
+  m_option_help = m_prefix + "help";
+  m_option_dataOutputDirName = m_prefix + "dataOutputDirName";
+  m_option_dataOutputFileName = m_prefix + "dataOutputFileName";
+  m_option_num_iters = m_prefix + "num_iters";
+  m_option_save_freq = m_prefix + "save_freq";
+  m_option_rwmh_step = m_prefix + "rwmh_step";
+}
+
+
+void InfiniteDimensionalMCMCSamplerOptions::parse(const BaseEnvironment& env, const std::string& prefix)
+{
+  m_env = &env;
+
+  this->set_prefix(prefix);
+
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+
+  m_parser.reset(new BoostInputOptionsParser(env.optionsInputFileName()));
+
+  m_parser->registerOption(m_option_help, "produce help message for infinite dimensional sampler");
+  m_parser->registerOption<std::string>(m_option_dataOutputDirName, m_dataOutputDirName, "name of data output dir");
+  m_parser->registerOption<std::string>(m_option_dataOutputFileName, m_dataOutputFileName, "name of data output file (HDF5)");
+  m_parser->registerOption<unsigned int>(m_option_num_iters, m_num_iters, "number of mcmc iterations to do");
+  m_parser->registerOption<unsigned int>(m_option_save_freq, m_save_freq, "the frequency at which to save the chain state");
+  m_parser->registerOption<double      >(m_option_rwmh_step, m_rwmh_step, "the step-size in the random-walk Metropolis proposal");;
+
+  m_parser->scanInputFile();
+
+  m_parser->getOption<std::string>(m_option_dataOutputDirName,  m_dataOutputDirName);
+  m_parser->getOption<std::string>(m_option_dataOutputFileName, m_dataOutputFileName);
+  m_parser->getOption<unsigned int>(m_option_num_iters,         m_num_iters);
+  m_parser->getOption<unsigned int>(m_option_save_freq,         m_save_freq);
+  m_parser->getOption<double     >(m_option_rwmh_step,          m_rwmh_step);
+#else
+  m_dataOutputDirName = m_env->input()(m_option_dataOutputDirName, m_dataOutputDirName);
+  m_dataOutputFileName = m_env->input()(m_option_dataOutputFileName, m_dataOutputFileName);
+  m_num_iters = m_env->input()(m_option_num_iters, m_num_iters);
+  m_save_freq = m_env->input()(m_option_save_freq, m_save_freq);
+  m_rwmh_step = m_env->input()(m_option_rwmh_step, m_rwmh_step);
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+
+  checkOptions();
 }
 
 }  // End namespace QUESO

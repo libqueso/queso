@@ -38,98 +38,18 @@
 namespace QUESO {
 
 OptimizerOptions::OptimizerOptions()
-  : m_prefix("ip_"),
-    m_help(UQ_OPT_HELP),
-    m_maxIterations(UQ_OPT_MAX_ITERATIONS),
-    m_tolerance(UQ_OPT_TOLERANCE),
-    m_finiteDifferenceStepSize(UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE),
-    m_solverType(UQ_OPT_SOLVER_TYPE),
-    m_fstepSize(UQ_OPT_FSTEP_SIZE),
-    m_fdfstepSize(UQ_OPT_FDFSTEP_SIZE),
-    m_lineTolerance(UQ_OPT_LINE_TOLERANCE),
-    m_env(NULL),
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_parser(NULL),
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_option_help(m_prefix + "help"),
-    m_option_maxIterations(m_prefix + "maxIterations"),
-    m_option_tolerance(m_prefix + "tolerance"),
-    m_option_finiteDifferenceStepSize(m_prefix + "finiteDifferenceStepSize"),
-    m_option_solverType(m_prefix + "solverType"),
-    m_option_fstepSize(m_prefix + "fstepSize"),
-    m_option_fdfstepSize(m_prefix + "fdfStepSize"),
-    m_option_lineTolerance(m_prefix + "lineTolerance")
+  : 
+  m_env(NULL)
 {
+  this->set_defaults();
+  this->set_prefix("");
 }
 
-OptimizerOptions::OptimizerOptions(const BaseEnvironment * env, const char *
-    prefix)
-  : m_prefix((std::string)(prefix) + "optimizer_"),
-    m_help(UQ_OPT_HELP),
-    m_maxIterations(UQ_OPT_MAX_ITERATIONS),
-    m_tolerance(UQ_OPT_TOLERANCE),
-    m_finiteDifferenceStepSize(UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE),
-    m_solverType(UQ_OPT_SOLVER_TYPE),
-    m_fstepSize(UQ_OPT_FSTEP_SIZE),
-    m_fdfstepSize(UQ_OPT_FDFSTEP_SIZE),
-    m_lineTolerance(UQ_OPT_LINE_TOLERANCE),
-    m_env(env),
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_option_help(m_prefix + "help"),
-    m_option_maxIterations(m_prefix + "maxIterations"),
-    m_option_tolerance(m_prefix + "tolerance"),
-    m_option_finiteDifferenceStepSize(m_prefix + "finiteDifferenceStepSize"),
-    m_option_solverType(m_prefix + "solverType"),
-    m_option_fstepSize(m_prefix + "fstepSize"),
-    m_option_fdfstepSize(m_prefix + "fdfStepSize"),
-    m_option_lineTolerance(m_prefix + "lineTolerance")
+OptimizerOptions::
+OptimizerOptions(const BaseEnvironment* env, const char* prefix)
 {
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-  m_parser->registerOption<std::string>(m_option_help, UQ_OPT_HELP,
-      "produce help message for statistical inverse problem");
-
-  m_parser->registerOption<unsigned int>(m_option_maxIterations,
-      UQ_OPT_MAX_ITERATIONS,
-      "max number of optimizer iterations to do");
-  m_parser->registerOption<double>(m_option_tolerance, UQ_OPT_TOLERANCE,
-      "optimize until gradient is less than tolerance");
-  m_parser->registerOption<double>(m_option_finiteDifferenceStepSize,
-      UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE,
-      "if no deriv is given, do finite difference with this step size");
-  m_parser->registerOption<std::string>(m_option_solverType, UQ_OPT_SOLVER_TYPE,
-      "which optimisation algorithm to use");
-  m_parser->registerOption<double>(m_option_fstepSize, UQ_OPT_FSTEP_SIZE,
-      "sets the step size used in gradient-free solvers");
-  m_parser->registerOption<double>(m_option_fdfstepSize, UQ_OPT_FDFSTEP_SIZE,
-      "sets the step size used in gradient-based solvers");
-  m_parser->registerOption<double>(m_option_lineTolerance, UQ_OPT_LINE_TOLERANCE,
-      "sets the line minimisation tolerance");
-
-  m_parser->scanInputFile();
-
-  m_parser->getOption<std::string>(m_option_help, m_help);
-  m_parser->getOption<unsigned int>(m_option_maxIterations, m_maxIterations);
-  m_parser->getOption<double>(m_option_tolerance, m_tolerance);
-  m_parser->getOption<double>(m_option_finiteDifferenceStepSize,
-      m_finiteDifferenceStepSize);
-  m_parser->getOption<std::string>(m_option_solverType, m_solverType);
-  m_parser->getOption<double>(m_option_fstepSize, m_fstepSize);
-  m_parser->getOption<double>(m_option_fdfstepSize, m_fdfstepSize);
-  m_parser->getOption<double>(m_option_lineTolerance, m_lineTolerance);
-#else
-  m_help = m_env->input()(m_option_help, UQ_OPT_HELP);
-  m_maxIterations = m_env->input()(m_option_maxIterations, UQ_OPT_MAX_ITERATIONS);
-  m_tolerance = m_env->input()(m_option_tolerance, UQ_OPT_TOLERANCE);
-  m_finiteDifferenceStepSize = m_env->input()(m_option_finiteDifferenceStepSize, UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE);
-  m_solverType = m_env->input()(m_option_solverType, UQ_OPT_SOLVER_TYPE);
-  m_fstepSize = m_env->input()(m_option_fstepSize, UQ_OPT_FSTEP_SIZE);
-  m_fdfstepSize = m_env->input()(m_option_fdfstepSize, UQ_OPT_FDFSTEP_SIZE);
-  m_lineTolerance = m_env->input()(m_option_lineTolerance, UQ_OPT_LINE_TOLERANCE);
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-
-  checkOptions();
+  this->set_defaults();
+  this->parse(*env, prefix);
 }
 
 OptimizerOptions::OptimizerOptions(const OptimizerOptions & rhs)
@@ -143,7 +63,9 @@ OptimizerOptions::OptimizerOptions(const OptimizerOptions & rhs)
     m_fstepSize(rhs.m_fstepSize),
     m_fdfstepSize(rhs.m_fdfstepSize),
     m_lineTolerance(rhs.m_lineTolerance),
-    m_parser(rhs.m_parser),  // We'll never touch the input file in a copied object
+// #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+//     m_parser(rhs.m_parser),  // We'll never touch the input file in a copied object
+// #endif
     m_option_help(rhs.m_option_help),
     m_option_maxIterations(rhs.m_option_maxIterations),
     m_option_tolerance(rhs.m_option_tolerance),
@@ -183,6 +105,91 @@ operator<<(std::ostream& os, const OptimizerOptions & obj)
   os << "\n" << obj.m_option_lineTolerance << " = " << obj.m_lineTolerance;
   os << std::endl;
   return os;
+}
+
+
+void OptimizerOptions::set_defaults()
+{
+  m_help = UQ_OPT_HELP;
+  m_maxIterations = UQ_OPT_MAX_ITERATIONS;
+  m_tolerance = UQ_OPT_TOLERANCE;
+  m_finiteDifferenceStepSize = UQ_OPT_FINITE_DIFFERENCE_STEP_SIZE;
+  m_solverType = UQ_OPT_SOLVER_TYPE;
+  m_fstepSize = UQ_OPT_FSTEP_SIZE;
+  m_fdfstepSize = UQ_OPT_FDFSTEP_SIZE;
+  m_lineTolerance = UQ_OPT_LINE_TOLERANCE;
+}
+
+
+void OptimizerOptions::set_prefix(const std::string& prefix)
+{
+  // NOTE: previously default ctor was setting to "ip_"
+  m_prefix = prefix + "optimizer_";
+
+  m_option_help = m_prefix + "help";
+  m_option_maxIterations = m_prefix + "maxIterations";
+  m_option_tolerance = m_prefix + "tolerance";
+  m_option_finiteDifferenceStepSize = m_prefix + "finiteDifferenceStepSize";
+  m_option_solverType = m_prefix + "solverType";
+  m_option_fstepSize = m_prefix + "fstepSize";
+  m_option_fdfstepSize = m_prefix + "fdfStepSize";
+  m_option_lineTolerance = m_prefix + "lineTolerance";
+}
+
+
+void OptimizerOptions::
+parse(const BaseEnvironment& env, const std::string& prefix)
+{
+  m_env = &env;
+
+  this->set_prefix(prefix);
+
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+
+  m_parser.reset(new BoostInputOptionsParser(env.optionsInputFileName()));
+
+  m_parser->registerOption<std::string>(m_option_help, m_help,
+      "produce help message for statistical inverse problem");
+  m_parser->registerOption<unsigned int>(m_option_maxIterations,
+      m_maxIterations,
+      "max number of optimizer iterations to do");
+  m_parser->registerOption<double>(m_option_tolerance, m_tolerance,
+      "optimize until gradient is less than tolerance");
+  m_parser->registerOption<double>(m_option_finiteDifferenceStepSize,
+      m_finiteDifferenceStepSize,
+      "if no deriv is given, do finite difference with this step size");
+  m_parser->registerOption<std::string>(m_option_solverType, m_solverType,
+      "which optimisation algorithm to use");
+  m_parser->registerOption<double>(m_option_fstepSize, m_fstepSize,
+      "sets the step size used in gradient-free solvers");
+  m_parser->registerOption<double>(m_option_fdfstepSize, m_fdfstepSize,
+      "sets the step size used in gradient-based solvers");
+  m_parser->registerOption<double>(m_option_lineTolerance, m_lineTolerance,
+      "sets the line minimisation tolerance");
+
+  m_parser->scanInputFile();
+
+  m_parser->getOption<std::string>(m_option_help, m_help);
+  m_parser->getOption<unsigned int>(m_option_maxIterations, m_maxIterations);
+  m_parser->getOption<double>(m_option_tolerance, m_tolerance);
+  m_parser->getOption<double>(m_option_finiteDifferenceStepSize,
+      m_finiteDifferenceStepSize);
+  m_parser->getOption<std::string>(m_option_solverType, m_solverType);
+  m_parser->getOption<double>(m_option_fstepSize, m_fstepSize);
+  m_parser->getOption<double>(m_option_fdfstepSize, m_fdfstepSize);
+  m_parser->getOption<double>(m_option_lineTolerance, m_lineTolerance);
+#else
+  m_help = m_env->input()(m_option_help, m_help);
+  m_maxIterations = m_env->input()(m_option_maxIterations, m_maxIterations);
+  m_tolerance = m_env->input()(m_option_tolerance, m_tolerance);
+  m_finiteDifferenceStepSize = m_env->input()(m_option_finiteDifferenceStepSize, m_finiteDifferenceStepSize);
+  m_solverType = m_env->input()(m_option_solverType, m_solverType);
+  m_fstepSize = m_env->input()(m_option_fstepSize, m_fstepSize);
+  m_fdfstepSize = m_env->input()(m_option_fdfstepSize, m_fdfstepSize);
+  m_lineTolerance = m_env->input()(m_option_lineTolerance, m_lineTolerance);
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+
+  checkOptions();
 }
 
 }  // End namespace QUESO

@@ -134,6 +134,15 @@ public:
 
   //MLSamplingLevelOptions(const MLSamplingLevelOptions& inputOptions);
 
+  //! Set default values for parameter options
+  void set_defaults();
+
+  //! Set parameter option names to begin with prefix
+  void set_prefix(const std::string& prefix);
+
+  //! Given prefix, read the input file for parameters named "prefix"+*
+  void parse(const BaseEnvironment& env, const std::string& prefix);
+
   //! Destructor
   virtual ~MLSamplingLevelOptions();
   //@}
@@ -175,9 +184,6 @@ public:
 
   //! subEnvs that will write to generic output file.
   std::set<unsigned int>             m_dataOutputAllowedSet;
-
-  //! subEnvs that will write to generic output file.
-  std::string                        m_str1;
 
   //! Perform load balancing with chosen algorithm (0 = no balancing).
   unsigned int                       m_loadBalanceAlgorithmId;
@@ -227,9 +233,7 @@ public:
 
 
   std::set<unsigned int>             m_parameterDisabledSet; // gpmsa2
-  std::string                        m_str2; // gpmsa2
   std::vector<double>                m_initialValuesOfDisabledParameters; // gpmsa2
-  std::string                        m_str3; // gpmsa2
 
   //! Name of input file for raw chain.
   std::string                        m_rawChainDataInputFileName;
@@ -268,7 +272,6 @@ public:
   //! subEnvs that will write to output file for raw chain.
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
 
-  std::string                        m_str4;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   //! Compute statistics on raw chain.
   bool                               m_rawChainComputeStats;
@@ -294,7 +297,6 @@ public:
 
   //! subEnvs that will write to output file for filtered chain.
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
-  std::string                        m_str5;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   //! Compute statistics on filtered chain.
@@ -318,7 +320,6 @@ public:
 
   //! 'dr' list of scales for proposal covariance matrices from 2nd stage on.
   std::vector<double>                m_drScalesForExtraStages;
-  std::string                        m_str6;
 
   //! Whether or not 'dr' is used during 'am' non adaptive interval.
   bool                               m_drDuringAmNonAdaptiveInt;
@@ -347,9 +348,6 @@ public:
   //! subEnvs that will write to output file for 'am' adapted matrices.
   std::set<unsigned int>             m_amAdaptedMatricesDataOutputAllowedSet;
 
-
-  std::string                        m_str7;
-
   //! 'am' eta.
   double                             m_amEta;
 
@@ -374,10 +372,10 @@ private:
   void getAllOptions();
   void defineAllOptions();
 
-  const BaseEnvironment&        m_env;
+  const BaseEnvironment*        m_env;
 
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-  BoostInputOptionsParser * m_parser;
+  ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   std::string                   m_option_help;
@@ -458,7 +456,7 @@ private:
   std::string                   m_option_tk;
   std::string                   m_option_updateInterval;
 
-  void checkOptions(const BaseEnvironment * env);
+  void checkOptions();
 
   friend std::ostream & operator<<(std::ostream & os,
       const MLSamplingLevelOptions & obj);

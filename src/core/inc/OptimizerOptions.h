@@ -71,6 +71,15 @@ public:
   //! Copy constructor
   OptimizerOptions(const OptimizerOptions & rhs);
 
+  //! Set default values for parameter options
+  void set_defaults();
+
+  //! Set parameter option names to begin with prefix
+  void set_prefix(const std::string& prefix);
+
+  //! Given prefix, read the input file for parameters named "prefix"+*
+  void parse(const BaseEnvironment& env, const std::string& prefix);
+
   //! Destructor
   virtual ~OptimizerOptions();
   //@}
@@ -135,7 +144,9 @@ public:
 private:
   const BaseEnvironment * m_env;
 
-  BoostInputOptionsParser * m_parser;
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+  ScopedPtr<BoostInputOptionsParser>::Type m_parser;
+#endif
 
   // The input options as strings so we can parse the input file later
   std::string m_option_help;
