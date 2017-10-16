@@ -59,7 +59,7 @@
 #define UQ_GPMSA_OBSERVATIONAL_PRECISION_RIDGE 1e-4
 #define UQ_GPMSA_OBSERVATIONAL_COVARIANCE_RIDGE 0.0
 #define UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE 1.0
-#define UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC false
+static const bool UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC = false;
 #define UQ_GPMSA_GAUSSIAN_DISCREPANCY_SUPPORT_THRESHOLD 0.05
 
 namespace { // Anonymous namespace for helper functions
@@ -329,44 +329,50 @@ GPMSAOptions::parse(const BaseEnvironment & env,
     m_autoscaleMeanVarAll,
     "option to autoscale all parameters and outputs based on data statistics");
 
+  std::ostringstream defaultDiscrepancyDistanceString;
+  defaultDiscrepancyDistanceString << UQ_GPMSA_GAUSSIAN_DISCREPANCY_DISTANCE;
+
   m_parser->registerOption
     (m_option_gaussianDiscrepancyDistanceX,
-    m_gaussianDiscrepancyDistanceX,
+    defaultDiscrepancyDistanceString.str(),
     "x distance between neighboring gaussian discrepancy kernels");
 
   m_parser->registerOption
     (m_option_gaussianDiscrepancyDistanceY,
-    m_gaussianDiscrepancyDistanceY,
+    defaultDiscrepancyDistanceString.str(),
     "y distance between neighboring gaussian discrepancy kernels");
 
   m_parser->registerOption
     (m_option_gaussianDiscrepancyDistanceZ,
-    m_gaussianDiscrepancyDistanceZ,
+    defaultDiscrepancyDistanceString.str(),
     "z distance between neighboring gaussian discrepancy kernels");
 
   m_parser->registerOption
     (m_option_gaussianDiscrepancyDistanceT,
-    m_gaussianDiscrepancyDistanceT,
+    defaultDiscrepancyDistanceString.str(),
     "t distance between neighboring gaussian discrepancy kernels");
+
+  std::ostringstream defaultDiscrepancyPeriodicString;
+  defaultDiscrepancyPeriodicString << std::boolalpha << UQ_GPMSA_GAUSSIAN_DISCREPANCY_PERIODIC;
 
   m_parser->registerOption
     (m_option_gaussianDiscrepancyPeriodicX,
-    m_gaussianDiscrepancyPeriodicX,
+    defaultDiscrepancyPeriodicString.str(),
     "whether gaussian discrepancy kernels are periodic in x");
 
   m_parser->registerOption
     (m_option_gaussianDiscrepancyPeriodicY,
-    m_gaussianDiscrepancyPeriodicY,
+    defaultDiscrepancyPeriodicString.str(),
     "whether gaussian discrepancy kernels are periodic in y");
 
   m_parser->registerOption
     (m_option_gaussianDiscrepancyPeriodicZ,
-    m_gaussianDiscrepancyPeriodicZ,
+    defaultDiscrepancyPeriodicString.str(),
     "whether gaussian discrepancy kernels are periodic in z");
 
   m_parser->registerOption
     (m_option_gaussianDiscrepancyPeriodicT,
-    m_gaussianDiscrepancyPeriodicT,
+    defaultDiscrepancyPeriodicString.str(),
     "whether gaussian discrepancy kernels are periodic in t");
 
   m_parser->registerOption
@@ -407,10 +413,18 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceY,        m_gaussianDiscrepancyDistanceY);
   m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceZ,        m_gaussianDiscrepancyDistanceZ);
   m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceT,        m_gaussianDiscrepancyDistanceT);
+
+  // I cannot get boost::program_options to play nicely with
+  // vector<bool>, and we don't yet implement periodic discrepancy
+  // options, so let's just ignore them here for now.  By the time we
+  // implement them we'll have removed the deprecated boost::po code
+  // anyway.
+/*
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicX,        m_gaussianDiscrepancyPeriodicX);
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicY,        m_gaussianDiscrepancyPeriodicY);
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicZ,        m_gaussianDiscrepancyPeriodicZ);
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicT,        m_gaussianDiscrepancyPeriodicT);
+*/
   m_parser->getOption<double>(m_option_gaussianDiscrepancySupportThreshold, m_gaussianDiscrepancySupportThreshold);
 #else
   m_help = env.input()(m_option_help, UQ_GPMSA_HELP);
