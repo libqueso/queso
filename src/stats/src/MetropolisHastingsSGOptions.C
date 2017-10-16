@@ -50,6 +50,9 @@ MhOptionsValues::MhOptionsValues(
   )
   :
   m_env(NULL)
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+  , m_parser(new BoostInputOptionsParser())
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativeRawSsOptionsValues     ) m_alternativeRawSsOptionsValues      = *alternativeRawSsOptionsValues;

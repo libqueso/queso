@@ -129,6 +129,9 @@ class MLSamplingLevelOptions
 public:
   //! @name Constructor/Destructor methods
   //@{
+  //! Constructor
+  MLSamplingLevelOptions();
+
   //! Constructor: reads options from the input file.
   MLSamplingLevelOptions(const BaseEnvironment& env, const char* prefix);
 

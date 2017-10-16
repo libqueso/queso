@@ -47,6 +47,9 @@ namespace QUESO {
 EnvOptionsValues::EnvOptionsValues()
   :
   m_env(NULL)
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+  , m_parser(new BoostInputOptionsParser())
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 {
   this->set_defaults();
   this->set_prefix("");

@@ -76,6 +76,9 @@ public:
   //@{
   //! Default constructor.
   /*! Assigns the default suite of options to the Multilevel sequence generator.*/
+  MLSamplingOptions();
+
+  //! Parsing constructor.
   MLSamplingOptions(const BaseEnvironment& env, const char* prefix);
 
   //! Set default values for parameter options

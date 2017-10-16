@@ -47,6 +47,9 @@ namespace QUESO {
 class InfiniteDimensionalMCMCSamplerOptions
 {
 public:
+  //! Constructor
+  InfiniteDimensionalMCMCSamplerOptions();
+
   //! Given prefix, read the input file for parameters named prefix_*
   InfiniteDimensionalMCMCSamplerOptions(const BaseEnvironment& env, const char* prefix);
 

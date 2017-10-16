@@ -33,6 +33,17 @@
 
 namespace QUESO {
 
+InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions()
+  :
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+  m_parser(new BoostInputOptionsParser()),
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+  m_env(NULL)
+{
+  this->set_defaults();
+  this->set_prefix("");
+}
+
 InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     const BaseEnvironment& env,
     const char * prefix)
