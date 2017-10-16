@@ -413,10 +413,18 @@ GPMSAOptions::parse(const BaseEnvironment & env,
   m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceY,        m_gaussianDiscrepancyDistanceY);
   m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceZ,        m_gaussianDiscrepancyDistanceZ);
   m_parser->getOption<std::vector<double> >(m_option_gaussianDiscrepancyDistanceT,        m_gaussianDiscrepancyDistanceT);
+
+  // I cannot get boost::program_options to play nicely with
+  // vector<bool>, and we don't yet implement periodic discrepancy
+  // options, so let's just ignore them here for now.  By the time we
+  // implement them we'll have removed the deprecated boost::po code
+  // anyway.
+/*
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicX,        m_gaussianDiscrepancyPeriodicX);
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicY,        m_gaussianDiscrepancyPeriodicY);
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicZ,        m_gaussianDiscrepancyPeriodicZ);
   m_parser->getOption<std::vector<bool> > (m_option_gaussianDiscrepancyPeriodicT,        m_gaussianDiscrepancyPeriodicT);
+*/
   m_parser->getOption<double>(m_option_gaussianDiscrepancySupportThreshold, m_gaussianDiscrepancySupportThreshold);
 #else
   m_help = env.input()(m_option_help, UQ_GPMSA_HELP);
